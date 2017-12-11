@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TableLayout;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.BaseFragment;
 
 /**
@@ -15,22 +16,23 @@ import com.paobuqianjin.pbq.step.view.base.BaseFragment;
  */
 
 public class HotCircleFragment extends BaseFragment {
-    private View rootView;
+    private final static String TAG = HotCircleFragment.class.getSimpleName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = super.onCreateView(inflater, container, savedInstanceState);
-        return rootView;
+        LocalLog.d(TAG,  "onCreateView() enter");
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     protected int getLayoutResId() {
+        LocalLog.d(TAG, "getLayoutResId() layout R " + R.layout.hot_circle_fragment);
         return R.layout.hot_circle_fragment;
     }
 
     @Override
-    protected void initView() {
-        super.initView();
+    protected void initView(View rootView) {
+        super.initView(rootView);
     }
 
     /*@desc  返回Fragment标签

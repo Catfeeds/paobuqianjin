@@ -79,14 +79,8 @@ public class StepService extends Service implements SharedPreferences.OnSharedPr
         super.onCreate();
         LocalLog.d(TAG, "onCreate() enter");
         init();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                LocalLog.d(TAG, "register at thread!");
-                boolean isSuccess = registerStepSensor();
-                LocalLog.d(TAG, "注册计步Sensor " + isSuccess);
-            }
-        }).start();
+        boolean isSuccess = registerStepSensor();
+        LocalLog.d(TAG, "注册计步Sensor " + isSuccess);
         setForeGroundNotify();
         setStartServiceTime();
         startTick();
@@ -94,6 +88,7 @@ public class StepService extends Service implements SharedPreferences.OnSharedPr
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        LocalLog.d(TAG, "onStartCommand() enter");
         return START_STICKY;
     }
 

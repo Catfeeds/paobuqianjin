@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.BaseFragment;
 
 /**
@@ -15,16 +16,17 @@ import com.paobuqianjin.pbq.step.view.base.BaseFragment;
  */
 
 public class AttentionCircleFragment extends BaseFragment {
-    private View rootView;
+    private final static String TAG = AttentionCircleFragment.class.getSimpleName();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return rootView = super.onCreateView(inflater, container, savedInstanceState);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     protected int getLayoutResId() {
+        LocalLog.d(TAG, "getLayoutResId() layout R " + R.layout.attention_circle_fragment);
         return R.layout.attention_circle_fragment;
     }
 

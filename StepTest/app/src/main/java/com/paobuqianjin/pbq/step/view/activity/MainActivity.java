@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +34,7 @@ public class MainActivity extends BaseActivity {
     private TextView mBtn_friend;
     private TextView mBtn_honor;
     private TextView mBtn_owner;
-    private int mCurrentIndex = -1;
+    private int mCurrentIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         if (!loginCheck()) {
             LocalLog.d(TAG, "启动登陆注册界面！");
-            startActivity(LoginActivity.class, null, false);
+            //startActivity(LoginActivity.class, null, false);
         }
         bindService(this);
     }
@@ -122,6 +123,17 @@ public class MainActivity extends BaseActivity {
     */
     private void onTabIndex(int fragmentIndex) {
         LocalLog.d(TAG, "onTabIndex() enter mIndex " + mIndex);
+        if (mCurrentIndex != mIndex) {
+            FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
+            trx.hide(mFragments[mCurrentIndex]);
+            if (!mFragments[mIndex].isAdded()) {
+                trx.add(R.id.fragment_container, mFragments[mIndex]);
+            }
+            trx.show(mFragments[mIndex]).commit();
+        }
+        mTabSelect[mCurrentIndex].setSelected(false);
+        mTabSelect[mIndex].setSelected(true);
+        mCurrentIndex = mIndex;
     }
 
     private boolean loginCheck() {
