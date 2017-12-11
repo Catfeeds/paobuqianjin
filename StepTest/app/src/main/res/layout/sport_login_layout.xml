@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/login_page"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_login">
+
+    <TextView
+        android:id="@+id/text_tile_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:text="@string/app_name"
+        android:textColor="@color/color_f8"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/reg_login_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_tile_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:text="全球计步运动领导品牌"
+        android:textColor="@color/color_ccfffffff"
+        android:textSize="12sp" />
+
+    <RelativeLayout
+        android:id="@+id/login_pan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reg_login_des"
+        android:layout_marginTop="185dp"
+        android:background="@drawable/bj_login">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingEnd="60dp"
+            android:paddingStart="60dp">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:onClick="onTabLogSign"
+                    android:paddingTop="8dp"
+                    android:text="@string/action_sign_in_short"
+                    android:textColor="@color/color_f8"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="right"
+                    android:onClick="onTabLogSign"
+                    android:paddingTop="8dp"
+                    android:text="@string/action_sign_in_reg"
+                    android:textColor="@color/color_f8"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/line_white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/color_f8" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="3dp"
+                android:layout_marginStart="45dp"
+                android:background="@color/color_6c71c4" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="3dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="45dp"
+                android:background="@color/color_6c71c4"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

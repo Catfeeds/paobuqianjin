@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bacekgound_home_page"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/main_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/btn_home_page"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:drawableTop="@drawable/home"
+                android:gravity="center"
+                android:onClick="onTabSelect"
+                android:paddingBottom="0dip"
+                android:paddingTop="7dip"
+                android:scaleType="matrix"
+                android:text="@string/home_page"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/btn_friend_circle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/cicle"
+                android:gravity="center"
+                android:onClick="onTabSelect"
+                android:paddingBottom="0dip"
+                android:paddingTop="7dip"
+                android:scaleType="matrix"
+                android:text="@string/friend_circle"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/btn_honor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/bangdan"
+                android:gravity="center"
+                android:onClick="onTabSelect"
+                android:paddingBottom="0dip"
+                android:paddingTop="7dip"
+                android:scaleType="matrix"
+                android:text="@string/try_ones"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/btn_owner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableTop="@drawable/me"
+                android:gravity="center"
+                android:onClick="onTabSelect"
+                android:paddingBottom="0dip"
+                android:paddingTop="7dip"
+                android:scaleType="matrix"
+                android:text="@string/owner_center"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/main_bottom">
+
+    </RelativeLayout>
+</RelativeLayout>
