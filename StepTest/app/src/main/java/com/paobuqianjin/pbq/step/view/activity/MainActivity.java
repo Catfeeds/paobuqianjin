@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -35,12 +36,14 @@ public class MainActivity extends BaseActivity {
     private TextView mBtn_honor;
     private TextView mBtn_owner;
     private int mCurrentIndex = 0;
+    private int[][] icon = new int[][]{{R.drawable.home_n, R.drawable.home_s}, {R.drawable.circle_n, R.drawable.circle_s},
+            {R.drawable.list_n, R.drawable.list_s}, {R.drawable.me_n, R.drawable.me_s}};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         float scale = getResources().getDisplayMetrics().density;
-        LocalLog.d(TAG,"scale = " +  scale);
+        LocalLog.d(TAG, "scale = " + scale);
         setContentView(R.layout.activity_main);
         if (!loginCheck()) {
             LocalLog.d(TAG, "启动登陆注册界面！");
@@ -94,6 +97,7 @@ public class MainActivity extends BaseActivity {
         Presenter.getInstance(context).bindService(StepService.START_STEP_ACTION, StepService.class);
     }
 
+
     public void onTabSelect(View view) {
         if (view != null) {
             switch (view.getId()) {
@@ -116,24 +120,38 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private void updateDrawableFalse(int index) {
+        Drawable top = getResources().getDrawable(icon[index][0]);
+        top.setBounds(0, 0, top.getMinimumWidth(), top.getMinimumHeight());
+        mTabSelect[index].setCompoundDrawables(null, top, null, null);
+    }
+
+    private void upDateDrawableTrue(int index) {
+        Drawable top = getResources().getDrawable(icon[index][1]);
+        top.setBounds(0, 0, top.getMinimumWidth(), top.getMinimumHeight());
+        mTabSelect[index].setCompoundDrawables(null, top, null, null);
+    }
+
     /*
     *@function onTabIndex() 切换到不同Fragment 界面
     *@param
     *@return
     */
     private void onTabIndex(int fragmentIndex) {
-        LocalLog.d(TAG, "onTabIndex() enter mIndex " + mIndex);
-        if (mCurrentIndex != mIndex) {
+        LocalLog.d(TAG, "onTabIndex() enter mIndex " + fragmentIndex);
+        mTabSelect[mCurrentIndex].setSelected(false);
+        updateDrawableFalse(mCurrentIndex);
+        mTabSelect[fragmentIndex].setSelected(true);
+        upDateDrawableTrue(fragmentIndex);
+        if (mCurrentIndex != fragmentIndex) {
             FragmentTransaction trx = getSupportFragmentManager().beginTransaction();
             trx.hide(mFragments[mCurrentIndex]);
-            if (!mFragments[mIndex].isAdded()) {
-                trx.add(R.id.fragment_container, mFragments[mIndex]);
+            if (!mFragments[fragmentIndex].isAdded()) {
+                trx.add(R.id.fragment_container, mFragments[fragmentIndex]);
             }
-            trx.show(mFragments[mIndex]).commit();
+            trx.show(mFragments[fragmentIndex]).commit();
         }
-        mTabSelect[mCurrentIndex].setSelected(false);
-        mTabSelect[mIndex].setSelected(true);
-        mCurrentIndex = mIndex;
+        mCurrentIndex = fragmentIndex;
     }
 
     private boolean loginCheck() {

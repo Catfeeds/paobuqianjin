@@ -9,6 +9,7 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 /**
@@ -45,8 +46,9 @@ public final class StepCircleView extends View {
     private void initParam() {
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setColor(Color.RED);
-        mPaint.setStrokeWidth(10.0f);
+        mPaint.setColor(getResources().getColor(R.color.color_ffc14c));
+        mPaint.setStrokeWidth(12.0f);
+        mPaint.setAntiAlias(true);
     }
 
     @Override
@@ -57,9 +59,9 @@ public final class StepCircleView extends View {
         int height = MeasureSpec.getMode(heightMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
-        mRadius = widthSize / 2 - 0.5f;
-        LocalLog.d(TAG, "width =  " + width + ", widthSize = " + widthSize + " ,height  =  " + height
-                + ", heightSize =  " + heightSize + " radius = " + mRadius );
+        mRadius = widthSize / 2;
+/*        LocalLog.d(TAG, "width =  " + width + ", widthSize = " + widthSize + " ,height  =  " + height
+                + ", heightSize =  " + heightSize + " radius = " + mRadius);*/
     }
 
     @Override
@@ -80,6 +82,6 @@ public final class StepCircleView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawCircle(mRadius, mRadius, mRadius, mPaint);
+        canvas.drawCircle(mRadius, mRadius, mRadius - 6.0f, mPaint);
     }
 }
