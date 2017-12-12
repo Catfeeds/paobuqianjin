@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/circle_hot_a"
+        android:layout_width="58dp"
+        android:layout_height="58dp"
+        android:src="@drawable/quan_a" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/circle_hot_a"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:includeFontPadding="true"
+        android:text="圈子A"
+        android:textColor="@color/color_161727"
+        android:textSize="12sp" />
+</RelativeLayout>

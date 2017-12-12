@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 
 /**
@@ -19,15 +20,19 @@ import com.paobuqianjin.pbq.step.R;
 *@description
 */
 public class CircleTabView extends FrameLayout {
+    private final static String TAG = CircleTabView.class.getSimpleName();
     private TextView mLabelTV;
 
     public CircleTabView(Context context) {
         super(context);
+        init(context);
     }
 
     public CircleTabView(Context context, AttributeSet attributes) {
         super(context, attributes);
+        init(context);
     }
+
 
     private void init(Context context) {
         View.inflate(context, R.layout.circle_view_tab, this);
@@ -35,6 +40,7 @@ public class CircleTabView extends FrameLayout {
     }
 
     public void setData(String label) {
+        LocalLog.d(TAG, "");
         mLabelTV.setText(label);
     }
 }

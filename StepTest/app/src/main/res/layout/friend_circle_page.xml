@@ -1,15 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/circle_item_tab"
+    <LinearLayout
+        android:id="@+id/circlr_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.design.widget.TabLayout>
+        android:layout_height="64dp"
+        android:background="@color/color_232433">
 
-    <android.support.v4.view.ViewPager
+        <RelativeLayout
+            android:id="@+id/scan_mark_2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/circle_item_tab_layout"
+            android:layout_alignTop="@+id/circle_item_tab_layout"
+            android:layout_toEndOf="@+id/circle_item_tab_layout"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="22dp"
+                android:layout_height="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="14dp"
+                android:layout_marginEnd="14dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/circle_item_tab_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="0dp"
+            android:layout_weight="8">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/circle_item_tab"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_alignParentBottom="true"
+                app:tabIndicatorColor="@color/color_ffc14c"
+                app:tabIndicatorHeight="2dp"></android.support.design.widget.TabLayout>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/scan_mark"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/circle_item_tab_layout"
+            android:layout_alignTop="@+id/circle_item_tab_layout"
+            android:layout_toEndOf="@+id/circle_item_tab_layout"
+            android:layout_weight="1">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="20dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="14dp"
+                android:layout_marginEnd="14dp"
+                android:src="@drawable/scan" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <com.paobuqianjin.pbq.step.view.base.adapter.UnScrollViewPager
         android:id="@+id/circle_item_page"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/circlr_tab_layout"
+        android:layout_marginTop="0dp"
+        android:isScrollContainer="true"></com.paobuqianjin.pbq.step.view.base.adapter.UnScrollViewPager>
 </RelativeLayout>
