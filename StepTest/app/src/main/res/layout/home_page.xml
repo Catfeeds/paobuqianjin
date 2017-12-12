@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/home_page"
-    android:fitsSystemWindows="true"
-    android:background="@drawable/bacekgound_home_page"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/bacekgound_home_page"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:id="@+id/step_and_money"
@@ -18,7 +18,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="跑步钱进" />
+                android:text="跑步钱进"
+                android:textColor="@color/color_d6d6d6" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -64,6 +65,7 @@
                     android:textSize="20sp" />
             </RelativeLayout>
         </RelativeLayout>
+
         <com.paobuqianjin.pbq.step.view.base.StepCircleView
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

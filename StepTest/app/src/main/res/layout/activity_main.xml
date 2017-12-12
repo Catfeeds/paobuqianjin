@@ -42,7 +42,7 @@
                 android:id="@+id/btn_friend_circle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawableTop="@drawable/cicle"
+                android:drawableTop="@drawable/cicle_"
                 android:gravity="center"
                 android:onClick="onTabSelect"
                 android:paddingBottom="0dip"
