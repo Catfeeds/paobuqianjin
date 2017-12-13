@@ -32,8 +32,8 @@ public abstract class BaseBarActivity extends BaseActivity {
         return null;
     }
 
-    public void setToolBarListener(ToolBarListener toolBarListener) {
-        mToolBarListener = toolBarListener;
+    public void setToolBarListener() {
+
     }
 
     public interface ToolBarListener {
