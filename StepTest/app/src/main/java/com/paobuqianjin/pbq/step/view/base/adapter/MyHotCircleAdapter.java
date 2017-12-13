@@ -9,13 +9,16 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 /**
  * Created by pbq on 2017/12/12.
  */
 
 public class MyHotCircleAdapter extends RecyclerView.Adapter<MyHotCircleAdapter.MyHotCircleViewHolder> {
+    private final static String  TAG = MyHotCircleAdapter.class.getSimpleName();
     private Context myHotContext;
+    private final static int defaultValue = 3;
 
     public MyHotCircleAdapter(Context context) {
         super();
@@ -31,7 +34,7 @@ public class MyHotCircleAdapter extends RecyclerView.Adapter<MyHotCircleAdapter.
 
     @Override
     public int getItemCount() {
-        return 10;
+        return defaultValue;
     }
 
     @Override
@@ -59,7 +62,12 @@ public class MyHotCircleAdapter extends RecyclerView.Adapter<MyHotCircleAdapter.
             } else {
                 outRect.left = mSpace;
             }
-            outRect.right = mSpace;
+            if (parent.getChildAdapterPosition(view) == defaultValue - 1) {
+                outRect.right = 0;
+                LocalLog.d(TAG,"getItemOffsets() last set");
+            } else {
+                outRect.right = 50;
+            }
         }
 
         public SpaceItemDecoration(int space) {
