@@ -31,7 +31,7 @@ public class MyHotCircleAdapter extends RecyclerView.Adapter<MyHotCircleAdapter.
 
     @Override
     public int getItemCount() {
-        return 1;
+        return 10;
     }
 
     @Override
@@ -54,12 +54,12 @@ public class MyHotCircleAdapter extends RecyclerView.Adapter<MyHotCircleAdapter.
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
-/*
-            outRect.left = mSpace;
+            if (parent.getChildAdapterPosition(view) == 0) {
+                outRect.left = 0;
+            } else {
+                outRect.left = mSpace;
+            }
             outRect.right = mSpace;
-            outRect.bottom = mSpace;
-*/
-
         }
 
         public SpaceItemDecoration(int space) {
