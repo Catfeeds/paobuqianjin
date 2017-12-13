@@ -35,9 +35,7 @@
             android:name=".view.activity.LoginActivity"
             android:launchMode="singleTask"
             android:parentActivityName=".view.base.BaseActivity"
-            android:theme="@style/ImageTranslucentTheme">
-
-        </activity>
+            android:theme="@style/ImageTranslucentTheme"></activity>
 
         <receiver
             android:name=".model.broadcast.BootStepReceiver"
@@ -69,6 +67,17 @@
                 <action android:name="android.intent.action.DATE_CHANGED" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".view.activity.UitetsActivity"
+            android:label="@string/title_activity_uitets"
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

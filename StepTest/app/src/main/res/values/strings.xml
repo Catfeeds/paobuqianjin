@@ -29,11 +29,13 @@
     <string name="error_invalid_password">密码太短</string>
     <string name="error_incorrect_password">密码不正确</string>
     <string name="desc_login">全球计步运动领导品牌</string>
-    <string name ="desc_sign">为了孩子和老人福泽及全人类</string>
+    <string name="desc_sign">为了孩子和老人福泽及全人类</string>
     <string name="user_read">点击注册，即表示你已阅读并同意《跑步钱进服务协议》</string>
     <string name="mu_biao">目标</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_uitets">UitetsActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>
