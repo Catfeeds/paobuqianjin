@@ -66,7 +66,7 @@ public class MyHotCircleAdapter extends RecyclerView.Adapter<MyHotCircleAdapter.
                 outRect.right = 0;
                 LocalLog.d(TAG,"getItemOffsets() last set");
             } else {
-                outRect.right = 50;
+                outRect.right = mSpace;
             }
         }
 

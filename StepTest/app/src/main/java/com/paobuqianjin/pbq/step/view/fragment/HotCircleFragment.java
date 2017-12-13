@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.adapter.CircleChooseGoodAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.MyHotCircleAdapter;
 
 /**
@@ -20,8 +21,7 @@ import com.paobuqianjin.pbq.step.view.base.adapter.MyHotCircleAdapter;
 public class HotCircleFragment extends BaseFragment {
     private final static String TAG = HotCircleFragment.class.getSimpleName();
     private RecyclerView myHotRecyclerView;
-    private LinearLayoutManager layoutManager;
-    private RecyclerView systemLiveRecyclerView;
+    private LinearLayoutManager layoutManagerHot,layoutManagerChoose;
     private RecyclerView allHotRecyclerView;
 
     @Override
@@ -41,11 +41,23 @@ public class HotCircleFragment extends BaseFragment {
         super.initView(rootView);
         LocalLog.d(TAG, "initView() enter");
         myHotRecyclerView = (RecyclerView) rootView.findViewById(R.id.hot_my_circle_recycler);
-        layoutManager = new LinearLayoutManager(getContext());
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        myHotRecyclerView.setLayoutManager(layoutManager);
+        layoutManagerHot = new LinearLayoutManager(getContext());
+        layoutManagerHot.setOrientation(LinearLayoutManager.HORIZONTAL);
+        myHotRecyclerView.setLayoutManager(layoutManagerHot);
         myHotRecyclerView.addItemDecoration(new MyHotCircleAdapter.SpaceItemDecoration(50));
         myHotRecyclerView.setAdapter(new MyHotCircleAdapter(getContext()));
+
+        //TODO 圈子活动
+        //TODO 精选圈子
+        allHotRecyclerView = (RecyclerView) rootView
+                .findViewById(R.id.live_choose_good_module)
+                .findViewById(R.id.live_choose_good_module_recycler);
+        layoutManagerChoose = new LinearLayoutManager(getContext());
+        layoutManagerChoose.setOrientation(LinearLayoutManager.VERTICAL);
+        allHotRecyclerView.setLayoutManager(layoutManagerChoose);
+        allHotRecyclerView.addItemDecoration(new CircleChooseGoodAdapter.SpaceItemDecoration(5));
+        allHotRecyclerView.setAdapter(new CircleChooseGoodAdapter(getContext()));
+
     }
 
     /*@desc  返回Fragment标签

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/live_module_pan">
+
+    <ImageView
+        android:id="@+id/circle_live_line"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/color_f6f6f6" />
+
+    <TextView
+        android:id="@+id/circle_choose_good_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/circle_live_line"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="20dp"
+        android:text="精选圈子"
+        android:textColor="@color/color_161727"
+        android:textSize="14dp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/circle_choose_good_des"
+        android:layout_below="@+id/circle_choose_good_des"
+        android:layout_marginTop="15dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/live_choose_good_module_recycler"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+</RelativeLayout>
