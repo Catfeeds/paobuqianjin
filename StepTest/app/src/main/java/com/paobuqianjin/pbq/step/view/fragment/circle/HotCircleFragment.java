@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.base.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleChooseGoodAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.MyHotCircleAdapter;
@@ -21,8 +24,9 @@ import com.paobuqianjin.pbq.step.view.base.adapter.MyHotCircleAdapter;
 public class HotCircleFragment extends BaseFragment {
     private final static String TAG = HotCircleFragment.class.getSimpleName();
     private RecyclerView myHotRecyclerView;
-    private LinearLayoutManager layoutManagerHot,layoutManagerChoose;
+    private LinearLayoutManager layoutManagerHot, layoutManagerChoose;
     private RecyclerView allHotRecyclerView;
+    private ImageView createCircleView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,6 +62,10 @@ public class HotCircleFragment extends BaseFragment {
         allHotRecyclerView.addItemDecoration(new CircleChooseGoodAdapter.SpaceItemDecoration(5));
         allHotRecyclerView.setAdapter(new CircleChooseGoodAdapter(getContext()));
 
+
+        //
+        createCircleView =(ImageView)rootView.findViewById(R.id.circle_create);
+        createCircleView.setOnClickListener(onClickListener);
     }
 
     /*@desc  返回Fragment标签
@@ -65,6 +73,20 @@ public class HotCircleFragment extends BaseFragment {
     *@param
     *@return
     */
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.circle_create:
+                    LocalLog.d(TAG, "创建圈子");
+                    Intent intent = new Intent();
+                    intent.setClass(HotCircleFragment.this.getContext(),CreateCircleActivity.class);
+                    HotCircleFragment.this.getActivity().startActivity(intent);
+                    break;
+            }
+        }
+    };
+
     public String getTabLabel() {
         return "热门";
     }

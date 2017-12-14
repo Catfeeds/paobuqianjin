@@ -114,7 +114,9 @@ public class BaseActivity extends FragmentActivity {
         Point size = new Point();
         ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay().getSize(size);
         Log.d(TAG, "WindowSize x= " + size.x + "  y = " + size.y);
-        getResources().getDisplayMetrics().xdpi = size.x /750 *72;
+        LocalLog.d(TAG, "xdpi = " + getResources().getDisplayMetrics().xdpi);
+        getResources().getDisplayMetrics().xdpi = size.x / 750 * 72;
+        LocalLog.d(TAG, "xdpi = " + getResources().getDisplayMetrics().xdpi);
     }
 
     /*@desc 检测或启动计算步数的后台服务
@@ -132,6 +134,7 @@ public class BaseActivity extends FragmentActivity {
 
     private static class DetectThread extends Thread {
         WeakReference<BaseActivity> activity;
+
         DetectThread(BaseActivity baseActivity) {
             activity = new WeakReference<BaseActivity>(baseActivity);
         }

@@ -34,7 +34,11 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:launchMode="singleTask"
-            android:parentActivityName=".view.base.BaseActivity"
+            android:theme="@style/ImageTranslucentTheme"></activity>
+
+        <activity
+            android:name=".view.activity.CreateCircleActivity"
+            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme"></activity>
 
         <receiver
