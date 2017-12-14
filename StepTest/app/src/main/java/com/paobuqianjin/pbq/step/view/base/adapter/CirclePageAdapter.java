@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 
 import com.paobuqianjin.pbq.step.view.base.CircleTabView;
-import com.paobuqianjin.pbq.step.view.fragment.AttentionCircleFragment;
-import com.paobuqianjin.pbq.step.view.fragment.HotCircleFragment;
+import com.paobuqianjin.pbq.step.view.fragment.circle.AttentionCircleFragment;
+import com.paobuqianjin.pbq.step.view.fragment.circle.HotCircleFragment;
 
 import java.util.List;
 

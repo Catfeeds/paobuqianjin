@@ -1,24 +1,22 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.model.services.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.BaseActivity;
-import com.paobuqianjin.pbq.step.view.fragment.FriendCircleFragment;
+import com.paobuqianjin.pbq.step.view.fragment.circle.FriendCircleFragment;
 import com.paobuqianjin.pbq.step.view.fragment.HomePageFragment;
-import com.paobuqianjin.pbq.step.view.fragment.HonorFragment;
-import com.paobuqianjin.pbq.step.view.fragment.OwnerFragment;
+import com.paobuqianjin.pbq.step.view.fragment.honor.HonorFragment;
+import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerFragment;
 
 
 public class MainActivity extends BaseActivity {

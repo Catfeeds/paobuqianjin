@@ -1,4 +1,4 @@
-package com.paobuqianjin.pbq.step.view.fragment;
+package com.paobuqianjin.pbq.step.view.fragment.honor;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,16 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.BaseFragment;
 
 /**
- * Created by pbq on 2017/12/11.
+ * Created by pbq on 2017/12/1.
  */
 
-public class AttentionCircleFragment extends BaseFragment {
-    private final static String TAG = AttentionCircleFragment.class.getSimpleName();
-
+public final class HonorFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -26,11 +23,6 @@ public class AttentionCircleFragment extends BaseFragment {
 
     @Override
     protected int getLayoutResId() {
-        LocalLog.d(TAG, "getLayoutResId() layout R " + R.layout.attention_circle_fragment);
-        return R.layout.attention_circle_fragment;
-    }
-
-    public String getTabLabel() {
-        return "关注";
+        return R.layout.honor_page;
     }
 }

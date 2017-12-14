@@ -8,11 +8,13 @@
         layout="@layout/bar_return"></include>
 
     <RelativeLayout
+        android:id="@+id/style_circle_pan"
         android:layout_width="match_parent"
         android:layout_height="49dp"
         android:layout_below="@+id/bar_create_circle">
 
         <TextView
+            android:id="@+id/circle_style_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -31,17 +33,100 @@
             android:src="@drawable/menu_age" />
 
         <TextView
-            android:text="个人圈子"
-            android:layout_marginRight="14dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/switch_style"
             android:id="@+id/cir_cle_style"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:layout_toLeftOf="@+id/switch_style"
+            android:text="个人圈子" />
+
         <ImageView
-            android:background="@color/color_161727"
-            android:layout_width="match_parent"
-            android:layout_height="1dp" />
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_alignLeft="@+id/circle_style_text"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@color/color_161727" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/name_circle_span"
+        android:layout_width="wrap_content"
+        android:layout_height="49dp"
+        android:layout_below="@+id/style_circle_pan">
+
+        <TextView
+            android:id="@+id/circle_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:text="圈子名称"
+            android:textColor="@color/color_161727"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/cir_name_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:background="@null"
+            android:gravity="right"
+            android:hint="输入群名"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_alignLeft="@+id/circle_name_text"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@color/color_161727" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/stand_circle_pan"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_below="@+id/name_circle_span">
+
+        <TextView
+            android:id="@+id/circle_stand_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:text="圈子目标"
+            android:textColor="@color/color_161727"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/switch_stand"
+            android:layout_width="13dp"
+            android:layout_height="7dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/menu_age" />
+
+        <TextView
+            android:id="@+id/circle_stand_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:layout_toLeftOf="@+id/switch_stand"
+            android:text="6000" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_alignLeft="@+id/circle_stand_text"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:background="@color/color_161727" />
+    </RelativeLayout>
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.paobuqianjin.pbq.step.view.fragment;
+package com.paobuqianjin.pbq.step.view.fragment.login;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,7 +14,7 @@ import com.paobuqianjin.pbq.step.view.base.BaseFragment;
  * Created by pbq on 2017/12/8.
  */
 
-public final class LoginFragment extends BaseFragment {
+public final class SignFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -23,6 +23,6 @@ public final class LoginFragment extends BaseFragment {
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.sport_login_layout;
+        return R.layout.login_sign_layout;
     }
 }

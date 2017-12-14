@@ -1,4 +1,4 @@
-package com.paobuqianjin.pbq.step.view.fragment;
+package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

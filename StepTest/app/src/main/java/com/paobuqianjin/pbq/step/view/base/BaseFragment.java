@@ -18,6 +18,11 @@ import android.view.inputmethod.InputMethodManager;
  */
 
 public abstract class BaseFragment extends Fragment {
+
+    protected void runOnMainUi(Runnable runnable) {
+        getActivity().runOnUiThread(runnable);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
