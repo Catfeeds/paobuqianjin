@@ -48,16 +48,16 @@ public class LoginActivity extends BaseActivity {
         signLayout = (RelativeLayout) findViewById(R.id.sign_pan);
         blueLoginLine = (ImageView) findViewById(R.id.blue_line_login);
         blueSignLine = (ImageView) findViewById(R.id.blue_line_sign);
-        loginOrSignTV = findViewById(R.id.reg_login_des);
+        loginOrSignTV = (TextView) findViewById(R.id.reg_login_des);
 
-        useNameTV = signLayout.findViewById(R.id.phone);
-        signCodeTV = signLayout.findViewById(R.id.sign_code);
-        passWordTV = signLayout.findViewById(R.id.password);
-        userReadTV = signLayout.findViewById(R.id.xie_yi);
+        useNameTV = (EditText) signLayout.findViewById(R.id.phone);
+        signCodeTV = (EditText)signLayout.findViewById(R.id.sign_code);
+        passWordTV = (EditText)signLayout.findViewById(R.id.password);
+        userReadTV = (EditText)signLayout.findViewById(R.id.xie_yi);
 
 
-        useNameTV = loginLayout.findViewById(R.id.login_user_name);
-        passWordTV = loginLayout.findViewById(R.id.login_user_password);
+        useNameTV = (EditText)loginLayout.findViewById(R.id.login_user_name);
+        passWordTV = (EditText)loginLayout.findViewById(R.id.login_user_password);
     }
 
     private String[] collectLoginUserInfo() {

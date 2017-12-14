@@ -22,7 +22,7 @@ public class UitetsActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ui_test_layout);
-        layout = findViewById(R.id.test_ui);
+        layout = (RelativeLayout)findViewById(R.id.test_ui);
         layout.setOnClickListener(this);
     }
 

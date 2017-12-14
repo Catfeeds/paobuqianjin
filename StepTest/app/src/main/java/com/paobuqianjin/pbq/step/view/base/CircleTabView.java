@@ -36,7 +36,7 @@ public class CircleTabView extends FrameLayout {
 
     private void init(Context context) {
         View.inflate(context, R.layout.circle_view_tab, this);
-        mLabelTV = findViewById(R.id.circle_label_tv);
+        mLabelTV = (TextView) findViewById(R.id.circle_label_tv);
     }
 
     public void setData(String label) {
