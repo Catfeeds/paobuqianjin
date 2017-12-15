@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Looper;
@@ -15,9 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.os.Process;
 
-import com.paobuqianjin.pbq.step.model.services.StepService;
+import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
@@ -29,13 +27,11 @@ import java.lang.ref.WeakReference;
 
 public class BaseActivity extends FragmentActivity {
     private final static String TAG = BaseActivity.class.getSimpleName();
-    private static boolean isAsyncRun = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        detectOrStartStepService();
-        resetDensity();
+        //resetDensity();
     }
 
 
@@ -119,35 +115,5 @@ public class BaseActivity extends FragmentActivity {
         LocalLog.d(TAG, "xdpi = " + getResources().getDisplayMetrics().xdpi);
     }
 
-    /*@desc 检测或启动计算步数的后台服务
-    *@function detectOrStartStepService
-    *@param
-    *@return 
-    */
-    protected void detectOrStartStepService() {
-        if (!isAsyncRun) {
-            LocalLog.d(TAG, "isAsyncRun is " + isAsyncRun + " and run detectOrStartStepService()");
-            new DetectThread(this).start();
-        }
-        isAsyncRun = true;
-    }
-
-    private static class DetectThread extends Thread {
-        WeakReference<BaseActivity> activity;
-
-        DetectThread(BaseActivity baseActivity) {
-            activity = new WeakReference<BaseActivity>(baseActivity);
-        }
-
-        @Override
-        public void run() {
-            Looper.prepare();
-            final BaseActivity baseActivity = activity.get();
-            if (baseActivity != null) {
-                LocalLog.d(TAG, "DetectThread() service");
-                Presenter.getInstance(baseActivity).startService(StepService.START_STEP_ACTION, StepService.class);
-            }
-        }
-    }
 
 }

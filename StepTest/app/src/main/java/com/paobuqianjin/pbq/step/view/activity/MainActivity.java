@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.model.services.StepService;
+import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.BaseActivity;

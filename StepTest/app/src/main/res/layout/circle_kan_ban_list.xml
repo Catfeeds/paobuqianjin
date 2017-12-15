@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.percent.PercentRelativeLayout
+            android:id="@+id/list_item_search"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            app:layout_heightPercent="11%">
+
+            <ImageView
+                android:id="@+id/circle_logo_search"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:src="@drawable/logo" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:layout_toEndOf="@+id/circle_logo_search">
+
+                <RelativeLayout
+                    android:id="@+id/search_circle_des_list_relative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/search_circle_des_list_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/lock"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="跑步有钱进福田"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14sp" />
+
+                    <ImageView
+                        android:id="@+id/lock"
+                        android:layout_width="12dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="7dp"
+                        android:layout_toEndOf="@+id/search_circle_des_list_name"
+                        android:src="@drawable/lock" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/search_circle_des_list_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/search_circle_des_list_relative"
+                    android:layout_marginTop="10dp"
+                    android:includeFontPadding="false"
+                    android:text="成员500人"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/line1"
+                    android:layout_width="1dp"
+                    android:layout_height="12dp"
+                    android:layout_alignBottom="@+id/search_circle_des_list_num"
+                    android:layout_alignTop="@+id/search_circle_des_list_num"
+                    android:layout_marginLeft="7dp"
+                    android:layout_toEndOf="@+id/search_circle_des_list_num"
+                    android:background="@color/color_5a5a5a" />
+
+                <TextView
+                    android:id="@+id/location_desc_search_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/search_circle_des_list_num"
+                    android:layout_alignTop="@+id/search_circle_des_list_num"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="7dp"
+                    android:layout_toEndOf="@+id/line1"
+                    android:includeFontPadding="false"
+                    android:text="深圳福田"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="14dp"
+                android:background="@drawable/button_join"
+                android:text="加入"
+                android:textColor="@color/color_161727"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignLeft="@+id/circle_logo_search"
+                android:layout_alignParentBottom="true"
+                android:background="@color/color_ebebed" />
+        </android.support.percent.PercentRelativeLayout>
+
+    </android.support.percent.PercentRelativeLayout>
+</android.support.constraint.ConstraintLayout>

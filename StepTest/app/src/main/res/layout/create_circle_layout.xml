@@ -301,6 +301,7 @@
         android:id="@+id/logo_circle_pan"
         android:layout_width="match_parent"
         android:layout_height="49dp"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/money_use_desc">
 
         <TextView
@@ -395,17 +396,35 @@
         android:id="@+id/circle_theme_phone_line"
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        android:layout_below="@+id/stand_circle_pan"
+        android:layout_below="@+id/circle_theme_pan"
         android:background="@color/color_f6f6f6" />
 
     <EditText
+        android:id="@+id/circle_desc_of_your"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/circle_theme_phone_line"
+        android:layout_marginLeft="14dp"
+        android:textSize="14sp"
+        android:background="@null"
+        android:textColor="@color/color_8a8a8a"
+        android:hint="请对你的圈子进行描述" />
+
+    <ImageView
+
+        android:id="@+id/circle_theme_phone_line_2"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_above="@+id/create_circle_confim"
+        android:layout_alignParentStart="true"
+        android:background="@color/color_f6f6f6" />
 
     <Button
+        android:id="@+id/create_circle_confim"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         android:background="@drawable/create_button"
         android:text="创建"
         android:textColor="@color/color_fefefe"

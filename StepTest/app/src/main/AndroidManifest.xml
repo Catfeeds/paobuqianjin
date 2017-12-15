@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <!--百度地图权限-->
+    <!-- 百度地图权限 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -22,13 +22,15 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
+        android:name=".view.base.PaoBuApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <!-- 配置百度地图KEY-->
+
+        <!-- 配置百度地图KEY -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="0ug1iU9lhYsMn10Ukwz4d2oxh8uP3zga" />
@@ -50,12 +52,15 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme"></activity>
-
+            android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.CreateCircleActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme"></activity>
+            android:theme="@style/ImageTranslucentTheme" />
+        <activity
+            android:name=".view.activity.SearchCircleActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
 
         <receiver
             android:name=".model.broadcast.BootStepReceiver"
@@ -73,7 +78,7 @@
             android:exported="false" />
 
         <service
-            android:name=".model.services.StepService"
+            android:name=".model.services.local.StepService"
             android:exported="false"
             android:process=":stepservice" />
 
@@ -98,6 +103,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".model.services.local.LocalBaiduService"
+            android:enabled="true"
+            android:exported="false"></service>
     </application>
 
 </manifest>

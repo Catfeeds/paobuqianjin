@@ -17,13 +17,13 @@ public final class LocalLog {
     *@return 
     */
     public static void d(String className, String msg) {
-        if (/*Log.isLoggable(TAG, DEBUG) && */msg != null) {
+        if (Log.isLoggable(TAG, DEBUG) && msg != null) {
             Log.d(TAG, " ->" + className + " :" + msg);
         }
     }
 
     public static void e(String className ,String msg) {
-        if (/*Log.isLoggable(TAG, ERROR) && */msg != null) {
+        if (Log.isLoggable(TAG, ERROR) && msg != null) {
             Log.e(TAG, " ->" + className + " :" + msg);
         }
 

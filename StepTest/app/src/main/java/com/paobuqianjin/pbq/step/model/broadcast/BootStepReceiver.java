@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.paobuqianjin.pbq.step.model.services.StepService;
+import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.MainActivity;
 
