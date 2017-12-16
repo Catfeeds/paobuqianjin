@@ -1,57 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <android.support.percent.PercentRelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-        <android.support.percent.PercentRelativeLayout
-            android:layout_width="match_parent"
-            android:layout_alignParentTop="true"
-            android:background="@color/color_ebebed"
-            app:layout_heightPercent="5%">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/color_ebebed">
 
-            <android.support.percent.PercentRelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/column">
+
+            <ImageView
+                android:id="@+id/search_icon"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
-                android:background="@drawable/column"
-                app:layout_heightPercent="69.0%">
+                android:layout_marginLeft="12dp"
+                android:src="@drawable/search_circle" />
 
-                <ImageView
-                    android:id="@+id/search_icon"
-                    android:layout_width="13dp"
-                    android:layout_height="15dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="12dp"
-                    android:src="@drawable/search_circle" />
+            <ImageView
+                android:id="@+id/search_cancel"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:src="@drawable/cancel" />
 
-                <ImageView
-                    android:id="@+id/search_cancel"
-                    android:layout_width="19dp"
-                    android:layout_height="19dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="12dp"
-                    android:src="@drawable/cancel" />
-
-                <EditText
-                    android:id="@+id/search_circle_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentTop="true"
-                    android:layout_toEndOf="@+id/search_icon"
-                    android:hint="输入圈子id,名称"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textSize="15sp" />
-            </android.support.percent.PercentRelativeLayout>
-        </android.support.percent.PercentRelativeLayout>
-    </android.support.percent.PercentRelativeLayout>
-</android.support.constraint.ConstraintLayout>
+            <EditText
+                android:id="@+id/search_circle_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/search_icon"
+                android:layout_toRightOf="@+id/search_cancel"
+                android:background="@null"
+                android:hint="输入圈子id、名称"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="false"
+                android:textColorHint="@color/color_8a8a8a"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

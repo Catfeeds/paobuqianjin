@@ -81,8 +81,8 @@ public class HotCircleFragment extends BaseFragment {
                 case R.id.circle_create:
                     LocalLog.d(TAG, "创建圈子");
                     Intent intent = new Intent();
-                    //intent.setClass(HotCircleFragment.this.getContext(),CreateCircleActivity.class);
-                    intent.setClass(HotCircleFragment.this.getContext(),SearchCircleActivity.class);
+                    intent.setClass(HotCircleFragment.this.getContext(),CreateCircleActivity.class);
+                    //intent.setClass(HotCircleFragment.this.getContext(),SearchCircleActivity.class);
                     HotCircleFragment.this.getActivity().startActivity(intent);
                     break;
             }

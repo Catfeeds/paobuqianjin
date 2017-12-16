@@ -18,7 +18,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 public class MyHotCircleAdapter extends RecyclerView.Adapter<MyHotCircleAdapter.MyHotCircleViewHolder> {
     private final static String  TAG = MyHotCircleAdapter.class.getSimpleName();
     private Context myHotContext;
-    private final static int defaultValue = 3;
+    private final static int defaultValue = 10;
 
     public MyHotCircleAdapter(Context context) {
         super();

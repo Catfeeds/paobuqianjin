@@ -18,7 +18,7 @@ import com.paobuqianjin.pbq.step.view.base.CircleTabView;
 public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGoodAdapter.CircleChooseViewHolder> {
     private final static String TAG = CircleChooseGoodAdapter.class.getSimpleName();
     private Context mContext;
-    private final static int defaultCount = 3;
+    private final static int defaultCount = 10;
 
     public CircleChooseGoodAdapter(Context context) {
         super();
@@ -38,7 +38,7 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
 
     @Override
     public int getItemCount() {
-        return 3;
+        return defaultCount;
     }
 
     class CircleChooseViewHolder extends RecyclerView.ViewHolder {

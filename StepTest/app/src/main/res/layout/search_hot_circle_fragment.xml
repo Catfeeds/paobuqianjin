@@ -5,27 +5,33 @@
 
     <include
         android:id="@+id/percent_bar"
-        layout="@layout/percent_bar"></include>
+        layout="@layout/bar_return"></include>
 
     <include
         android:id="@+id/search_pan"
         layout="@layout/serch_bar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/percent_bar"></include>
+        android:layout_below="@+id/percent_bar"
+        android:layout_marginTop="0dp"></include>
 
     <ScrollView
-        android:layout_marginTop="0dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/search_pan">
+        android:layout_below="@+id/search_pan"
+        android:layout_alignParentBottom="true">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/search_choose_circle_recycler"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </android.support.v7.widget.RecyclerView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/search_choose_circle_recycler"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
     </ScrollView>
+
 
 </RelativeLayout>
