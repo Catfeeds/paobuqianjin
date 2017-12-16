@@ -1,4 +1,4 @@
-package com.paobuqianjin.pbq.step.view.base;
+package com.paobuqianjin.pbq.step.view.base.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 
 /**

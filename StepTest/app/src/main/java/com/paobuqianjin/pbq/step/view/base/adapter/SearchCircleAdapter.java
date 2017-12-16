@@ -14,7 +14,7 @@ import com.paobuqianjin.pbq.step.R;
 
 public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapter.SearchCirCleViewHolder> {
     private final static String TAG = SearchCircleAdapter.class.getSimpleName();
-    private final static int defaultValue = 7;
+    private final static int defaultValue = 15;
     private Context mContext;
     public SearchCircleAdapter(Context context){
         mContext = context;

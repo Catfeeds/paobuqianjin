@@ -9,7 +9,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.Poi;
 import com.paobuqianjin.pbq.step.model.services.baidu.LocationService;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.base.PaoBuApplication;
+import com.paobuqianjin.pbq.step.view.base.view.PaoBuApplication;
 
 public class LocalBaiduService extends Service {
     private final static String TAG = LocalBaiduService.class.getSimpleName();

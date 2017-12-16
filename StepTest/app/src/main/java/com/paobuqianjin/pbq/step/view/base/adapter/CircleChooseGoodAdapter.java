@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.base.CircleTabView;
 
 /**
  * Created by pbq on 2017/12/13.

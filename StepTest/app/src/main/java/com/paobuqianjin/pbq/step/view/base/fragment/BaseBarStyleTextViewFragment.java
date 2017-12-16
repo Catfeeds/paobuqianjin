@@ -1,21 +1,26 @@
-package com.paobuqianjin.pbq.step.view.base;
+package com.paobuqianjin.pbq.step.view.base.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
 /**
  * Created by pbq on 2017/12/15.
  */
 
-public abstract class BaseBarFragment extends BaseFragment {
+public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
     private BaseBarActivity.ToolBarListener mToolBarListener;
     private TextView tv_title;
     private ImageView tv_left;
@@ -46,19 +51,26 @@ public abstract class BaseBarFragment extends BaseFragment {
         return null;
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        initBarView(rootView);
+        return rootView;
+    }
+
     public BaseBarActivity.ToolBarListener setToolBarListener() {
         return null;
     }
 
-    public void initBarView() {
-        tv_title = getView(R.id.bar_title);
-        tv_right = getView(R.id.bar_tv_right);
-        tv_left = getView(R.id.bar_return_drawable);
+    public void initBarView(View rootView) {
+        tv_title = getView(rootView, R.id.bar_title);
+        tv_right = getView(rootView, R.id.bar_tv_right);
+        tv_left = getView(rootView, R.id.bar_return_drawable);
         setToolBarListener();
         tv_left.setOnClickListener(clickListener);
         tv_right.setOnClickListener(clickListener);
-        tv_right.setText(title());
-        refreshTop();
+        refreshTop(rootView);
     }
 
     public void setToolBarListener(BaseBarActivity.ToolBarListener toolBarListener) {
@@ -71,7 +83,7 @@ public abstract class BaseBarFragment extends BaseFragment {
             switch (view.getId()) {
                 case R.id.bar_return_drawable:
                     if (mToolBarListener == null) {
-                        BaseBarFragment.this.getActivity().finish();
+                        BaseBarStyleTextViewFragment.this.getActivity().finish();
                     } else {
                         mToolBarListener.clickLeft();
                     }
@@ -85,23 +97,23 @@ public abstract class BaseBarFragment extends BaseFragment {
         }
     };
 
-    protected void refreshTop() {
+    protected void refreshTop(View viewRoot) {
         setLeftView(left() == null ? R.drawable.bar_bg_selector : left());
-        setRightValue(R.id.bar_tv_right, right());
+        setRightValue(viewRoot, R.id.bar_tv_right, right());
         tv_title.setText(title());
     }
 
-    protected void setRightValue(int id, Object obj) {
+    protected void setRightValue(View viewRoot, int id, Object obj) {
         if (obj != null && !obj.equals("")) {
-            ((TextView) getView(id)).setText("");
-            getView(id).setBackgroundDrawable(new BitmapDrawable());
+            ((TextView) getView(viewRoot, id)).setText("");
+            getView(viewRoot, id).setBackgroundDrawable(new BitmapDrawable());
             if (obj instanceof String) {
-                ((TextView) getView(id)).setText(obj.toString());
+                ((TextView) getView(viewRoot, id)).setText(obj.toString());
             } else if (obj instanceof Integer) {
-                getView(id).setBackgroundResource(Integer.parseInt(obj.toString()));
+                getView(viewRoot, id).setBackgroundResource(Integer.parseInt(obj.toString()));
             } else {
-                ((TextView) getView(id)).setText("");
-                getView(id).setBackgroundDrawable(new BitmapDrawable());
+                ((TextView) getView(viewRoot, id)).setText("");
+                getView(viewRoot, id).setBackgroundDrawable(new BitmapDrawable());
             }
         }
     }
@@ -123,8 +135,8 @@ public abstract class BaseBarFragment extends BaseFragment {
         }
     }
 
-    protected <T extends View> T getView(int id) {
-        return (T) BaseBarFragment.this.getActivity().findViewById(id);
+    protected <T extends View> T getView(View viewRoot, int id) {
+        return (T) viewRoot.findViewById(id);
     }
 
     /**
@@ -135,9 +147,9 @@ public abstract class BaseBarFragment extends BaseFragment {
      */
     public void startActivity(Class<? extends Activity> target, Bundle bundle) {
         Intent intent = new Intent();
-        intent.setClass(BaseBarFragment.this.getActivity(), target);
+        intent.setClass(BaseBarStyleTextViewFragment.this.getActivity(), target);
         if (bundle != null)
-            intent.putExtra(BaseBarFragment.this.getActivity().getPackageName(), bundle);
+            intent.putExtra(BaseBarStyleTextViewFragment.this.getActivity().getPackageName(), bundle);
         startActivity(intent);
     }
 

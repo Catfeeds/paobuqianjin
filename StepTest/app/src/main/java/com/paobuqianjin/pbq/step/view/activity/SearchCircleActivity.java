@@ -4,15 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.view.base.BaseBarActivity;
-import com.paobuqianjin.pbq.step.view.fragment.circle.SearchCircleFragment;
+import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
+import com.paobuqianjin.pbq.step.view.fragment.circle.SearchCircleStyleTextViewFragment;
 
 /**
  * Created by pbq on 2017/12/15.
  */
 
 public class SearchCircleActivity extends BaseBarActivity {
-    private SearchCircleFragment searchCircleFragment = new SearchCircleFragment();
+    private SearchCircleStyleTextViewFragment searchCircleFragment = new SearchCircleStyleTextViewFragment();
 
     @Override
     protected String title() {

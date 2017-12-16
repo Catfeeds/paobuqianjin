@@ -11,15 +11,15 @@ import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.base.BaseBarFragment;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.SearchCircleAdapter;
 
 /**
  * Created by pbq on 2017/12/15.
  */
 
-public class SearchCircleFragment extends BaseBarFragment {
-    private final static String TAG = SearchCircleFragment.class.getSimpleName();
+public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragment {
+    private final static String TAG = SearchCircleStyleTextViewFragment.class.getSimpleName();
     private LinearLayoutManager layoutManager;
     private RecyclerView recyclerView;
 

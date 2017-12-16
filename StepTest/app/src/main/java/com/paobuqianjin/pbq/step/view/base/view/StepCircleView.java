@@ -1,16 +1,13 @@
-package com.paobuqianjin.pbq.step.view.base;
+package com.paobuqianjin.pbq.step.view.base.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 /**
  * Created by pbq on 2017/12/2.

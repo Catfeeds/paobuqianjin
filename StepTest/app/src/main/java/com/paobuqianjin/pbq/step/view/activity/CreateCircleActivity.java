@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.view.base.BaseBarActivity;
+import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
 /**
  * Created by pbq on 2017/12/14.

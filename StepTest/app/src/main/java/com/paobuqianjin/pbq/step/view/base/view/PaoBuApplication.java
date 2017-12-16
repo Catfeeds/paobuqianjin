@@ -1,4 +1,4 @@
-package com.paobuqianjin.pbq.step.view.base;
+package com.paobuqianjin.pbq.step.view.base.view;
 
 import android.app.Application;
 import android.content.Context;

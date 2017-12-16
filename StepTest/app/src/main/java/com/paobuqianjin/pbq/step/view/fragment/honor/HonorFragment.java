@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.view.base.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 /**
  * Created by pbq on 2017/12/1.

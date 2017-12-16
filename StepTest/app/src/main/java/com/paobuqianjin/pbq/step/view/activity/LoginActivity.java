@@ -3,7 +3,6 @@ package com.paobuqianjin.pbq.step.view.activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.base.BaseActivity;
+import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 
 /**
  * Created by pbq on 2017/12/7.
