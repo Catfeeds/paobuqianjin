@@ -24,7 +24,7 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
     private BaseBarActivity.ToolBarListener mToolBarListener;
     private TextView tv_title;
     private ImageView tv_left;
-    private TextView tv_right;
+    private ImageView tv_right;
 
     /*@desc 设置导航栏标题
     *@function title

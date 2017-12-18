@@ -6,13 +6,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="60dp"
         android:layout_alignParentTop="true"
         android:background="@color/color_ebebed">
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
@@ -45,6 +45,8 @@
                 android:layout_toEndOf="@+id/search_icon"
                 android:layout_toRightOf="@+id/search_cancel"
                 android:background="@null"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:hint="输入圈子id、名称"
                 android:inputType="text"
                 android:maxLines="1"
