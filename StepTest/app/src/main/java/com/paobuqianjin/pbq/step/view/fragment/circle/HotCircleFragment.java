@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.MemberManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
@@ -85,6 +86,7 @@ public class HotCircleFragment extends BaseFragment {
                     //intent.setClass(HotCircleFragment.this.getContext(),SearchCircleActivity.class);
                     intent.setClass(HotCircleFragment.this.getContext(), MemberManagerActivity.class);
                     HotCircleFragment.this.getActivity().startActivity(intent);
+                    Presenter.getInstance(HotCircleFragment.this.getContext()).getCirCleType();
                     break;
             }
         }

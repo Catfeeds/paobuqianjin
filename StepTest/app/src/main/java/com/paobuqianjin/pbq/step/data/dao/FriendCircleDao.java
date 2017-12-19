@@ -3,8 +3,8 @@ package com.paobuqianjin.pbq.step.data.dao;
 import android.content.Context;
 
 import com.j256.ormlite.dao.Dao;
-import com.paobuqianjin.pbq.step.data.Bean.FriendCircle;
-import com.paobuqianjin.pbq.step.data.Bean.User;
+import com.paobuqianjin.pbq.step.data.bean.table.FriendCircle;
+import com.paobuqianjin.pbq.step.data.bean.table.User;
 import com.paobuqianjin.pbq.step.data.sql.DataBaseHelper;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 

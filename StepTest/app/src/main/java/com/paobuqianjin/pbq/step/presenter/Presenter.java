@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 
 import com.paobuqianjin.pbq.step.model.Engine;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 
 /**
@@ -57,5 +58,8 @@ public final class Presenter {
     }
 
     /*添加业务*/
-    
+    public void getCirCleType() {
+        LocalLog.d(TAG, "getCirCleType() enter");
+        engine.getCircleType();
+    }
 }

@@ -1,4 +1,4 @@
-package com.paobuqianjin.pbq.step.data.Bean;
+package com.paobuqianjin.pbq.step.data.bean.table;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

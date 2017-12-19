@@ -52,7 +52,7 @@ public class LoginActivity extends BaseActivity {
         useNameTV = (EditText) signLayout.findViewById(R.id.phone);
         signCodeTV = (EditText)signLayout.findViewById(R.id.sign_code);
         passWordTV = (EditText)signLayout.findViewById(R.id.password);
-        userReadTV = (EditText)signLayout.findViewById(R.id.xie_yi);
+        userReadTV = (TextView) signLayout.findViewById(R.id.xie_yi);
 
 
         useNameTV = (EditText)loginLayout.findViewById(R.id.login_user_name);

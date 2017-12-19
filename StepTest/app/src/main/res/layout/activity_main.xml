@@ -6,7 +6,7 @@
     <LinearLayout
         android:id="@+id/main_bottom"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical"
         android:orientation="horizontal">
@@ -29,6 +29,7 @@
                 android:paddingTop="7dip"
                 android:scaleType="matrix"
                 android:text="@string/home_page"
+                android:drawablePadding="0dp"
                 android:textSize="12sp" />
 
         </RelativeLayout>
@@ -49,6 +50,7 @@
                 android:paddingTop="7dip"
                 android:scaleType="matrix"
                 android:text="@string/friend_circle"
+                android:drawablePadding="0dp"
                 android:textSize="12sp" />
 
         </RelativeLayout>
@@ -62,6 +64,9 @@
                 android:id="@+id/btn_honor"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:drawablePadding="0dp"
                 android:drawableTop="@drawable/list_n"
                 android:gravity="center"
                 android:onClick="onTabSelect"
@@ -89,6 +94,7 @@
                 android:paddingTop="7dip"
                 android:scaleType="matrix"
                 android:text="@string/owner_center"
+                android:drawablePadding="0dp"
                 android:textSize="12sp" />
 
         </RelativeLayout>

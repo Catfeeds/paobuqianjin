@@ -1,4 +1,4 @@
-package com.paobuqianjin.pbq.step.data.Bean;
+package com.paobuqianjin.pbq.step.data.bean.table;
 
 /**
  * Created by pbq on 2017/12/4.

@@ -5,7 +5,7 @@ import android.content.Context;
 import java.sql.SQLException;
 
 import com.j256.ormlite.dao.Dao;
-import com.paobuqianjin.pbq.step.data.Bean.User;
+import com.paobuqianjin.pbq.step.data.bean.table.User;
 import com.paobuqianjin.pbq.step.data.sql.DataBaseHelper;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 

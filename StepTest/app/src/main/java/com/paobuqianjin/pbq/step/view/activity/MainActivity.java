@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         if (!loginCheck()) {
             LocalLog.d(TAG, "启动登陆注册界面！");
-            //startActivity(LoginActivity.class, null, false);
+            startActivity(LoginActivity.class, null, false);
         }
         bindService(this);
     }
@@ -68,7 +68,26 @@ public class MainActivity extends BaseActivity {
         mTabSelect[2] = mBtn_honor;
         mTabSelect[3] = mBtn_owner;
         mTabSelect[0].setSelected(true);
+        initTextViewIcon();
         initFragment();
+    }
+
+    //更改图片大小
+    private void initTextViewIcon() {
+        Drawable home = getResources().getDrawable(R.drawable.home_s);
+        Drawable circle = getResources().getDrawable(R.drawable.circle_n);
+        Drawable honor = getResources().getDrawable(R.drawable.list_n);
+        Drawable me = getResources().getDrawable(R.drawable.me_n);
+
+        home.setBounds(0,0,54,54);
+        mBtn_home.setCompoundDrawables(null, home, null, null);
+        circle.setBounds(0,0,54,54);
+        mBtn_friend.setCompoundDrawables(null, circle, null, null);
+        honor.setBounds(0,0,54,54);
+        mBtn_honor.setCompoundDrawables(null, honor, null, null);
+        me.setBounds(0,0,54,54);
+        mBtn_owner.setCompoundDrawables(null, me, null, null);
+
     }
 
     private void initFragment() {
@@ -120,13 +139,13 @@ public class MainActivity extends BaseActivity {
 
     private void updateDrawableFalse(int index) {
         Drawable top = getResources().getDrawable(icon[index][0]);
-        top.setBounds(0, 0, top.getMinimumWidth(), top.getMinimumHeight());
+        top.setBounds(0, 0, 54, 54);
         mTabSelect[index].setCompoundDrawables(null, top, null, null);
     }
 
     private void upDateDrawableTrue(int index) {
         Drawable top = getResources().getDrawable(icon[index][1]);
-        top.setBounds(0, 0, top.getMinimumWidth(), top.getMinimumHeight());
+        top.setBounds(0, 0, 54, 54);
         mTabSelect[index].setCompoundDrawables(null, top, null, null);
     }
 

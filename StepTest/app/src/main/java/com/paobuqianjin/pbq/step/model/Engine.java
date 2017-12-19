@@ -12,8 +12,23 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.l.okhttppaobu.okhttp.OkHttpUtils;
+import com.l.okhttppaobu.okhttp.callback.Callback;
+import com.l.okhttppaobu.okhttp.callback.StringCallback;
+import com.paobuqianjin.pbq.step.data.bean.gson.CircleType;
+import com.paobuqianjin.pbq.step.data.netcallback.ListCircleCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
+
+import java.io.IOException;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by pbq on 2017/11/29.
@@ -115,8 +130,34 @@ public final class Engine {
         return FlagPreference.getEffectStartSportTime(context);
     }
 
-    public void setStartServiceTime(Context context,String startServiceTime) {
-        FlagPreference.setStartServiceTime(context,startServiceTime);
+    public void setStartServiceTime(Context context, String startServiceTime) {
+        FlagPreference.setStartServiceTime(context, startServiceTime);
+    }
+
+    /*@desc
+    *@function getCircleType
+    *@param
+    *@return
+    */
+    public void getCircleType() {
+        LocalLog.d(TAG, "getCircleType() enter");
+        OkHttpUtils
+                .get()
+                .url(NetApi.urlCircleType)
+                .build()
+                .execute(new ListCircleCallBack() {
+                    @Override
+                    public void onError(Call call, Exception e, int i) {
+                        LocalLog.e(TAG, e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(List<CircleType.DataBean> dataBeans, int i) {
+                        for (int j = 0; j < dataBeans.size(); j++) {
+                            LocalLog.d(TAG, "getCircleType() 圈子类型数据:" + dataBeans.toString());
+                        }
+                    }
+                });
     }
 
     private static class ServiceHandler extends Handler {

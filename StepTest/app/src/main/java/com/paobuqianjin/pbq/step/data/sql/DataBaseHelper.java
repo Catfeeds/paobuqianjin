@@ -7,8 +7,8 @@ import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.paobuqianjin.pbq.step.data.Bean.FriendCircle;
-import com.paobuqianjin.pbq.step.data.Bean.User;
+import com.paobuqianjin.pbq.step.data.bean.table.FriendCircle;
+import com.paobuqianjin.pbq.step.data.bean.table.User;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.sql.SQLException;
