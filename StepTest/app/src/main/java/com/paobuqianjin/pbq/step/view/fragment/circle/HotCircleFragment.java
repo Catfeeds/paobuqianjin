@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.MemberManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -82,9 +83,9 @@ public class HotCircleFragment extends BaseFragment {
                 case R.id.circle_create:
                     LocalLog.d(TAG, "创建圈子");
                     Intent intent = new Intent();
-                    //intent.setClass(HotCircleFragment.this.getContext(),CreateCircleActivity.class);
+                    intent.setClass(HotCircleFragment.this.getContext(), CreateCircleActivity.class);
                     //intent.setClass(HotCircleFragment.this.getContext(),SearchCircleActivity.class);
-                    intent.setClass(HotCircleFragment.this.getContext(), MemberManagerActivity.class);
+                    //intent.setClass(HotCircleFragment.this.getContext(), MemberManagerActivity.class);
                     HotCircleFragment.this.getActivity().startActivity(intent);
                     Presenter.getInstance(HotCircleFragment.this.getContext()).getCirCleType();
                     break;

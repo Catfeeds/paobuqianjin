@@ -73,8 +73,8 @@ public class PaoBuApplication extends Application {
             Looper.prepare();
             final PaoBuApplication app = application.get();
             if (app != null) {
+                LocalLog.d(TAG, "DetectThread run() 初始化网络、计步服务、定位SDK、三方登陆注册、三方支付SDK等");
                 app.initHttpOk();
-                LocalLog.d(TAG, "DetectThread() service");
                 Presenter.getInstance(app).startService(StepService.START_STEP_ACTION, StepService.class);
                 app.initBaiDuSDK(app);
                 Presenter.getInstance(app).startService(null, LocalBaiduService.class);

@@ -44,10 +44,9 @@ public class MainActivity extends BaseActivity {
         LocalLog.d(TAG, "scale = " + scale);
         setContentView(R.layout.activity_main);
         if (!loginCheck()) {
-            LocalLog.d(TAG, "启动登陆注册界面！");
+            LocalLog.d(TAG, "启动登入注册界面！");
             startActivity(LoginActivity.class, null, false);
         }
-        bindService(this);
     }
 
     @Override
@@ -79,13 +78,13 @@ public class MainActivity extends BaseActivity {
         Drawable honor = getResources().getDrawable(R.drawable.list_n);
         Drawable me = getResources().getDrawable(R.drawable.me_n);
 
-        home.setBounds(0,0,54,54);
+        home.setBounds(0, 0, 54, 54);
         mBtn_home.setCompoundDrawables(null, home, null, null);
-        circle.setBounds(0,0,54,54);
+        circle.setBounds(0, 0, 54, 54);
         mBtn_friend.setCompoundDrawables(null, circle, null, null);
-        honor.setBounds(0,0,54,54);
+        honor.setBounds(0, 0, 54, 54);
         mBtn_honor.setCompoundDrawables(null, honor, null, null);
-        me.setBounds(0,0,54,54);
+        me.setBounds(0, 0, 54, 54);
         mBtn_owner.setCompoundDrawables(null, me, null, null);
 
     }
@@ -106,15 +105,12 @@ public class MainActivity extends BaseActivity {
                 .show(mHomePageFragment).commit();
     }
 
-    private void startStepService(Context context) {
-        Presenter.getInstance(context).startService(StepService.START_STEP_ACTION, StepService.class);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Presenter.getInstance(this).bindService(StepService.START_STEP_ACTION, StepService.class);
     }
-
-    private void bindService(Context context) {
-        Presenter.getInstance(context).bindService(StepService.START_STEP_ACTION, StepService.class);
-    }
-
-
+    
     public void onTabSelect(View view) {
         if (view != null) {
             switch (view.getId()) {

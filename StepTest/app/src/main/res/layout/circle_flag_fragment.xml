@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/add_flag_bar"
+        layout="@layout/bar_return_a_style"></include>
+
+    <com.paobuqianjin.pbq.step.view.base.view.PaoBuScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_flag_bar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/add_flag_bar">
+
+            <TextView
+                android:id="@+id/hot_sport_flag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="25dp"
+                android:text="热门标签"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12sp" />
+
+            <RelativeLayout
+                android:id="@+id/hot_flags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/hot_sport_flag"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="25dp">
+
+                <RelativeLayout
+                    android:id="@+id/flag_first_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/flag_a0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="爱运动"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/flag_a1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toEndOf="@+id/flag_a0"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="美少女"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+
+                    <TextView
+                        android:id="@+id/flag_a2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toEndOf="@+id/flag_a1"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="飞毛腿"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/flag_second_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/flag_first_line"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/flag_b0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="大长腿"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/flag_b1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toEndOf="@+id/flag_b0"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="高富帅"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+
+                    <TextView
+                        android:id="@+id/flag_b2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toEndOf="@+id/flag_b1"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="耳机族"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/flag_b3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toEndOf="@+id/flag_b2"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="背包族"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/sep_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/hot_flags"
+                android:layout_marginTop="20dp"
+                android:background="@color/color_ebebed" />
+
+            <TextView
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="14dp"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12sp"
+                android:text="全部标签"
+                android:layout_below="@+id/sep_line"
+                android:id="@+id/all_flags_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RelativeLayout
+                android:id="@+id/all_flags"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/all_flags_text"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="25dp">
+
+                <RelativeLayout
+                    android:id="@+id/flag_first_all_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/flag_all_a0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="爱运动"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/flag_all_a1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toEndOf="@+id/flag_all_a0"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="美少女"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+
+                    <TextView
+                        android:id="@+id/flag_all_a2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toEndOf="@+id/flag_all_a1"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="飞毛腿"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/flag_all_a3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toEndOf="@+id/flag_all_a2"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="女神"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/flag_second_all_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/flag_first_all_line"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/flag_all_b0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="大长腿"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/flag_all_b1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toEndOf="@+id/flag_all_b0"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="高富帅"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+
+                    <TextView
+                        android:id="@+id/flag_all_b2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toEndOf="@+id/flag_all_b1"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="耳机族"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/flag_all_b3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toEndOf="@+id/flag_all_b2"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="背包族"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/flag_third_all_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/flag_second_all_line"
+                    android:layout_marginTop="20dp">
+
+                    <TextView
+                        android:id="@+id/flag_all_c0"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="精力充沛"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/flag_all_c1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toEndOf="@+id/flag_all_c0"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="生活达人"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+
+                    <TextView
+                        android:id="@+id/flag_all_c2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="24dp"
+                        android:layout_toEndOf="@+id/flag_all_c1"
+                        android:background="@drawable/flag_back_ground"
+                        android:paddingLeft="13dp"
+                        android:paddingRight="13dp"
+                        android:text="魅力大叔"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </com.paobuqianjin.pbq.step.view.base.view.PaoBuScrollView>
+
+</RelativeLayout>
