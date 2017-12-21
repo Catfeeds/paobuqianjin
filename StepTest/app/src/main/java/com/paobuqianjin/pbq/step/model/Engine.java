@@ -5,30 +5,26 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
-import com.l.okhttppaobu.okhttp.callback.Callback;
-import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.CircleType;
 import com.paobuqianjin.pbq.step.data.netcallback.ListCircleCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 
-import java.io.IOException;
 import java.util.List;
 
 import okhttp3.Call;
-import okhttp3.Request;
-import okhttp3.Response;
+
+import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
+import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
+import static com.paobuqianjin.pbq.step.utils.NetApi.urlRegisterPhone;
 
 /**
  * Created by pbq on 2017/11/29.
@@ -132,6 +128,75 @@ public final class Engine {
 
     public void setStartServiceTime(Context context, String startServiceTime) {
         FlagPreference.setStartServiceTime(context, startServiceTime);
+    }
+
+    public void getUserInfo() {
+        LocalLog.d(TAG, "getUserInfo() enter");
+        int id = 0;
+        String url = NetApi.urlUser + String.valueOf(id);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack());
+    }
+
+    //重置密码
+    public void refreshPassWorld() {
+        LocalLog.d(TAG, "findPassWorld() enter");
+        String url = urlFindPassWord + "13424156029";
+        OkHttpUtils
+                .put()
+                .url(urlFindPassWord)
+                .param("code", "123456")
+                .param("password", "23dasdd")
+                .build()
+                .execute(new NetStringCallBack());
+    }
+
+    //手机号码注册
+    public void registerByPhoneNumber() {
+        LocalLog.d(TAG, "registerByPhoneNumber() enter");
+        OkHttpUtils
+                .post()
+                .url(urlRegisterPhone)
+                .addParams("mobile", "13424156029")
+                .addParams("password", "123456")
+                .addParams("code", "123456")
+                .build()
+                .execute(new NetStringCallBack());
+    }
+
+    //获取附近的人
+    public void getNearByPeople() {
+        LocalLog.d(TAG, "urlNearByPeople() enter");
+        OkHttpUtils
+                .get()
+                .url(urlNearByPeople)
+                .build()
+                .execute(new NetStringCallBack());
+    }
+
+    //获取验证码
+    public void getMsg() {
+        LocalLog.d(TAG, "getMsg() enter");
+        String url = NetApi.urlSendMsg + "18276810059";
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack());
+    }
+
+    public void userLoginByPhoneNumber() {
+        LocalLog.d(TAG, "userLoginByPhoneNumber() enter");
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlUserLogin)
+                .addParams("mobile", "13424156029")
+                .addParams("password", "123456")
+                .build()
+                .execute(new NetStringCallBack());
     }
 
     /*@desc

@@ -62,4 +62,28 @@ public final class Presenter {
         LocalLog.d(TAG, "getCirCleType() enter");
         engine.getCircleType();
     }
+
+    public void userLoginByPhoneNumber() {
+        engine.userLoginByPhoneNumber();
+    }
+
+    public void getMsg() {
+        engine.getMsg();
+    }
+
+    public void getNearByPeople() {
+        engine.getNearByPeople();
+    }
+
+    public void registerByPhoneNumber() {
+        engine.registerByPhoneNumber();
+    }
+
+    public void refreshPassWorld() {
+        engine.refreshPassWorld();
+    }
+
+    public void getUserInfo() {
+        engine.getUserInfo();
+    }
 }

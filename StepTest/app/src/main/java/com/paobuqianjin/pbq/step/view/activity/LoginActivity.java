@@ -1,29 +1,37 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 
 /**
  * Created by pbq on 2017/12/7.
  */
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelper.SoftKeyboardStateListener {
     private final static String TAG = LoginActivity.class.getSimpleName();
     /*默认显示登入界面*/
     private int currentIndex;
+    private RelativeLayout loginPan;
+    private RelativeLayout.LayoutParams layoutParams, newLayoutParams;
     private RelativeLayout loginLayout;
     private RelativeLayout signLayout;
     private ImageView blueLoginLine, blueSignLine;
@@ -40,8 +48,38 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        detectKeyBoardHide();
+    }
+
+
+    private void detectKeyBoardHide() {
+        final SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.background_login_sign));
+        softKeyboardStateHelper.addSoftKeyboardStateListener(this);
+    }
+
+    public void onSoftKeyboardOpened(int keyboardHeightInPx) {
+        //Toast.makeText(LoginActivity.this, "弹出", Toast.LENGTH_SHORT).show();
+        newLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        newLayoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin - 100, layoutParams.rightMargin, layoutParams.bottomMargin);
+        loginPan.setLayoutParams(newLayoutParams);
+
+    }
+
+    public void onSoftKeyboardClosed() {
+        //Toast.makeText(LoginActivity.this, "隐藏", Toast.LENGTH_SHORT).show();
+        loginPan.setLayoutParams(layoutParams);
+    }
+
+
+    @Override
     protected void initView() {
         super.initView();
+
+        loginPan = (RelativeLayout) findViewById(R.id.login_pan);
+        layoutParams = (RelativeLayout.LayoutParams) loginPan.getLayoutParams();
         backGround = (RelativeLayout) findViewById(R.id.background_login_sign);
         loginLayout = (RelativeLayout) findViewById(R.id.log_pan);
         signLayout = (RelativeLayout) findViewById(R.id.sign_pan);
@@ -50,14 +88,15 @@ public class LoginActivity extends BaseActivity {
         loginOrSignTV = (TextView) findViewById(R.id.reg_login_des);
 
         useNameTV = (EditText) signLayout.findViewById(R.id.phone);
-        signCodeTV = (EditText)signLayout.findViewById(R.id.sign_code);
-        passWordTV = (EditText)signLayout.findViewById(R.id.password);
+        signCodeTV = (EditText) signLayout.findViewById(R.id.sign_code);
+        passWordTV = (EditText) signLayout.findViewById(R.id.password);
         userReadTV = (TextView) signLayout.findViewById(R.id.xie_yi);
 
 
-        useNameTV = (EditText)loginLayout.findViewById(R.id.login_user_name);
-        passWordTV = (EditText)loginLayout.findViewById(R.id.login_user_password);
+        useNameTV = (EditText) loginLayout.findViewById(R.id.login_user_name);
+        passWordTV = (EditText) loginLayout.findViewById(R.id.login_user_password);
     }
+
 
     private String[] collectLoginUserInfo() {
         userInfo[0] = useNameTV.getText().toString();

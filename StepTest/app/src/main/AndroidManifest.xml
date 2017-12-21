@@ -52,6 +52,7 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.CreateCircleActivity"
