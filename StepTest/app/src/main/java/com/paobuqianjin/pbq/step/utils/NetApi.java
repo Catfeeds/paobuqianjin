@@ -25,7 +25,7 @@ public class NetApi {
     //手机号登陆、微信登陆、微博登陆统一接口 请求方式post 地址：http://pb.com/v1/user/login 参数：mobile、password
     public final static String urlUserLogin = "http://192.168.2.130/v1/user/login";
     //发送验证码接口 请求方式 get,地址：http://pb.com/v1/user/sendmsg 参数：mobile 状态：0成功 -1失败
-    public final static String urlSendMsg = "192.168.2.130/v1/user/sendMsg/?mobile=";
+    public final static String urlSendMsg = "http://192.168.2.130/v1/user/sendMsg/?mobile=";
     //获取附近的人接口，请求方式：get 地址：http://pb.com/v1/user/?latitude=35.17000&longitude=86.26000，暂定10万米之内
     public final static String urlNearByPeople = "http://192.168.2.130/v1/user/?latitude=35.17000&longitude=86.26000";
     //手机号注册账号 请求方式post 地址：http://pb.com/v1/user 参数：mobile、password、code

@@ -21,6 +21,7 @@ import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerFragment;
 
 public class MainActivity extends BaseActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
+    private boolean stepServiceBind = false;
     //Fragment页面索引
     private HomePageFragment mHomePageFragment;
     private HonorFragment mHonorFragment;
@@ -46,6 +47,7 @@ public class MainActivity extends BaseActivity {
         if (!loginCheck()) {
             LocalLog.d(TAG, "启动登入注册界面！");
             startActivity(LoginActivity.class, null, false);
+            finish();
         }
     }
 
@@ -109,8 +111,9 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         Presenter.getInstance(this).bindService(StepService.START_STEP_ACTION, StepService.class);
+        stepServiceBind = true;
     }
-    
+
     public void onTabSelect(View view) {
         if (view != null) {
             switch (view.getId()) {
@@ -174,6 +177,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Presenter.getInstance(this).unbindStepService();
+        if (stepServiceBind) {
+            Presenter.getInstance(this).unbindStepService();
+        }
     }
 }

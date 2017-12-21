@@ -11,14 +11,23 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.widget.Toast;
 
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.paobuqianjin.pbq.step.data.bean.gson.CircleType;
+import com.paobuqianjin.pbq.step.data.bean.gson.SignCodeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.UserInfo;
 import com.paobuqianjin.pbq.step.data.netcallback.ListCircleCallBack;
+import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UiCallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 
@@ -39,6 +48,7 @@ public final class Engine {
     private Messenger serviceMessenger = new Messenger(new ServiceHandler());
     private final static int MSG_SEND_DATA_TO_SETP_SERVICE = 0;
     private final static int MSG_SEND_DATA_TO_ENGINE = 1;
+    private UiCallBackInterface uiCallBackInterface;
 
     private Engine() {
 
@@ -122,6 +132,10 @@ public final class Engine {
         return FlagPreference.getLoginFlag(context);
     }
 
+    public void setLogFlag(Context context, boolean isLogin) {
+        FlagPreference.setLoginFlag(context, isLogin);
+    }
+
     public String getStartSportTime(Context context) {
         return FlagPreference.getEffectStartSportTime(context);
     }
@@ -130,15 +144,20 @@ public final class Engine {
         FlagPreference.setStartServiceTime(context, startServiceTime);
     }
 
-    public void getUserInfo() {
+    public void getUserInfo(final int userId) {
         LocalLog.d(TAG, "getUserInfo() enter");
-        int id = 0;
-        String url = NetApi.urlUser + String.valueOf(id);
+        String url = NetApi.urlUser + String.valueOf(userId);
+        LocalLog.d(TAG, "getUserInfo() url = " + url);
         OkHttpUtils
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack());
+                .execute(new NetStringCallBack(new UserInfoInterface() {
+                    @Override
+                    public void update(UserInfo userInfo) {
+                        LocalLog.d(TAG, " 获取用户信息回调成功!" + userInfo.toString());
+                    }
+                }));
     }
 
     //重置密码
@@ -151,20 +170,20 @@ public final class Engine {
                 .param("code", "123456")
                 .param("password", "23dasdd")
                 .build()
-                .execute(new NetStringCallBack());
+                .execute(new NetStringCallBack(uiCallBackInterface));
     }
 
     //手机号码注册
-    public void registerByPhoneNumber() {
+    public void registerByPhoneNumber(String[] userInfo) {
         LocalLog.d(TAG, "registerByPhoneNumber() enter");
         OkHttpUtils
                 .post()
                 .url(urlRegisterPhone)
-                .addParams("mobile", "13424156029")
-                .addParams("password", "123456")
-                .addParams("code", "123456")
+                .addParams("mobile", userInfo[0])
+                .addParams("password", userInfo[2])
+                .addParams("code", userInfo[1])
                 .build()
-                .execute(new NetStringCallBack());
+                .execute(new NetStringCallBack(uiCallBackInterface));
     }
 
     //获取附近的人
@@ -174,29 +193,68 @@ public final class Engine {
                 .get()
                 .url(urlNearByPeople)
                 .build()
-                .execute(new NetStringCallBack());
+                .execute(new NetStringCallBack(uiCallBackInterface));
     }
 
     //获取验证码
-    public void getMsg() {
-        LocalLog.d(TAG, "getMsg() enter");
-        String url = NetApi.urlSendMsg + "18276810059";
+    public void getMsg(String phone) {
+        LocalLog.d(TAG, "getMsg() enter phone =" + phone);
+        if (!isPhone(phone)) {
+            Toast.makeText(mContext, "请输入一个手机号码:", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+        String url = NetApi.urlSendMsg + phone;
         OkHttpUtils
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack());
+                .execute(new NetStringCallBack(new SignCodeCallBackInterface() {
+                    @Override
+                    public void signCodeCallBack(SignCodeResponse response) {
+                        Toast.makeText(mContext, "验证码已发送，请查看短信！" + response.getMessage() + " data : " + response.getData(), Toast.LENGTH_SHORT).show();
+                        if (uiCallBackInterface != null && uiCallBackInterface instanceof LoginSignCallbackInterface) {
+                            // 设置验码
+                            ((LoginSignCallbackInterface) uiCallBackInterface).requestPhoneSignCodeCallBack(response.getData());
+                        }
+                        return;
+                    }
+                }));
     }
 
-    public void userLoginByPhoneNumber() {
+    /**
+     * 判断手机格式是否正确
+     *
+     * @param str 需要判断的字符串
+     * @return 返回true说明字符串匹配成功
+     */
+    // Pattern类的作用在于编译正则表达式后创建一个匹配模式. Matcher类使用Pattern实例提供的模式信息对正则表达式进行匹配
+    private boolean isPhone(String str) {
+        // 将给定的正则表达式编译并赋予给Pattern类
+        Pattern pattern = Pattern.compile("1[0-9]{10}");
+        // 对指定输入的字符串创建一个Matcher对象
+        Matcher matcher = pattern.matcher(str);
+        // 尝试对整个目标字符展开匹配检测,也就是只有整个目标字符串完全匹配时才返回真值.
+        if (matcher.matches()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void userLoginByPhoneNumber(String[] userInfo) {
         LocalLog.d(TAG, "userLoginByPhoneNumber() enter");
+        if (!isPhone(userInfo[0])) {
+            Toast.makeText(mContext, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
+            return;
+        }
         OkHttpUtils
                 .post()
                 .url(NetApi.urlUserLogin)
-                .addParams("mobile", "13424156029")
-                .addParams("password", "123456")
+                .addParams("mobile", userInfo[0])
+                .addParams("password", userInfo[1])
                 .build()
-                .execute(new NetStringCallBack());
+                .execute(new NetStringCallBack(uiCallBackInterface));
     }
 
     /*@desc
@@ -235,5 +293,17 @@ public final class Engine {
             }
             super.handleMessage(msg);
         }
+    }
+
+
+    //call onResume
+    public void attachUiInterface(UiCallBackInterface uiCallBackInterface) {
+        this.uiCallBackInterface = uiCallBackInterface;
+
+    }
+
+    //call onDestroy
+    public void dispatchUiInterface() {
+        this.uiCallBackInterface = null;
     }
 }

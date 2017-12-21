@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 /**
@@ -15,6 +17,8 @@ import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
  */
 
 public final class OwnerFragment extends BaseFragment {
+    private TextView logoutTV;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -25,4 +29,26 @@ public final class OwnerFragment extends BaseFragment {
     protected int getLayoutResId() {
         return R.layout.owner_page;
     }
+
+    @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+        logoutTV = (TextView) viewRoot.findViewById(R.id.login_out);
+        logoutTV.setOnClickListener(clickListener);
+    }
+
+    private View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (view != null) {
+                switch (view.getId()) {
+                    case R.id.login_out:
+                        Presenter.getInstance(getContext()).steLogFlg(false);
+                        getActivity().finish();
+                        break;
+                }
+            }
+
+        }
+    };
 }

@@ -62,6 +62,18 @@ public class BaseActivity extends FragmentActivity {
             finish();
     }
 
+    public void startActivity(Class<? extends Activity> target, Bundle bundle, boolean finish,String action) {
+        Intent intent = new Intent();
+        intent.setClass(this, target);
+        intent.setAction(action);
+        if (bundle != null) {
+            intent.putExtra(getPackageName(), bundle);
+        }
+        startActivity(intent);
+        if (finish)
+            finish();
+    }
+
     public Bundle getBundle() {
         if (getIntent() != null && getIntent().hasExtra(getPackageName()))
             return getIntent().getBundleExtra(getPackageName());

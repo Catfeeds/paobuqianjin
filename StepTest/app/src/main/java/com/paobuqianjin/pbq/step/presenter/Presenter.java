@@ -4,6 +4,8 @@ import android.app.Service;
 import android.content.Context;
 
 import com.paobuqianjin.pbq.step.model.Engine;
+import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UiCallBackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 
@@ -49,10 +51,14 @@ public final class Presenter {
         return engine.getLogFlag(mContext);
     }
 
-    private Context getAppContext(Context context) {
+    public void steLogFlg(boolean isLogin) {
+        engine.setLogFlag(mContext,isLogin);
+    }
+
+    public Context getAppContext() {
         Context appContext = null;
-        if (context != null) {
-            appContext = context.getApplicationContext();
+        if (mContext != null) {
+            appContext = mContext.getApplicationContext();
         }
         return appContext;
     }
@@ -63,27 +69,40 @@ public final class Presenter {
         engine.getCircleType();
     }
 
-    public void userLoginByPhoneNumber() {
-        engine.userLoginByPhoneNumber();
+    public void userLoginByPhoneNumber(String[] userInfo) {
+        engine.userLoginByPhoneNumber(userInfo);
     }
 
-    public void getMsg() {
-        engine.getMsg();
+    public void getMsg(String phone) {
+        engine.getMsg(phone);
     }
 
     public void getNearByPeople() {
         engine.getNearByPeople();
     }
 
-    public void registerByPhoneNumber() {
-        engine.registerByPhoneNumber();
+    public void registerByPhoneNumber(String[] userInfo) {
+        engine.registerByPhoneNumber(userInfo);
     }
 
     public void refreshPassWorld() {
         engine.refreshPassWorld();
     }
 
-    public void getUserInfo() {
-        engine.getUserInfo();
+    public void getUserInfo(int userId) {
+        engine.getUserInfo(userId);
+    }
+
+    //call onResume
+    public void attachUiInterface(UiCallBackInterface uiCallBackInterface) {
+        LocalLog.d(TAG, "attachUiInterface() ");
+        engine.attachUiInterface(uiCallBackInterface);
+
+    }
+
+    //call onDestroy
+    public void dispatchUiInterface() {
+        LocalLog.d(TAG, "dispatchUiInterface() enter");
+        engine.dispatchUiInterface();
     }
 }

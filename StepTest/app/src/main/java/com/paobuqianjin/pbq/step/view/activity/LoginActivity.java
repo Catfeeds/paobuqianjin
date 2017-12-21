@@ -1,23 +1,27 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.LoginResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
@@ -26,8 +30,10 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
  * Created by pbq on 2017/12/7.
  */
 
-public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelper.SoftKeyboardStateListener {
+public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelper.SoftKeyboardStateListener, LoginSignCallbackInterface {
+    private final static String LOGIN_SUCCESS_ACTION = "com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION";
     private final static String TAG = LoginActivity.class.getSimpleName();
+    private boolean showPass = false;
     /*默认显示登入界面*/
     private int currentIndex;
     private RelativeLayout loginPan;
@@ -35,11 +41,13 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     private RelativeLayout loginLayout;
     private RelativeLayout signLayout;
     private ImageView blueLoginLine, blueSignLine;
-    private EditText useNameTV, passWordTV, signCodeTV;
+    private ImageView passWordOpenIV;
+    private EditText useNameTV, phoneNumTV, passWordTV, signCodeTV, passWordSignTV;
     private TextView loginOrSignTV;
-    private TextView userReadTV;
+    private TextView userReadTV, signRequestTV;
+    private TextView findPassTV;
     private RelativeLayout backGround;
-    private String[] userInfo = new String[3];
+    private String[] userInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +59,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     protected void onResume() {
         super.onResume();
         detectKeyBoardHide();
+        Presenter.getInstance(this).attachUiInterface(this);
     }
 
 
@@ -64,6 +73,9 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
         newLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         newLayoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin - 100, layoutParams.rightMargin, layoutParams.bottomMargin);
+/*        TranslateAnimation translateAnimation = new TranslateAnimation(layoutParams.leftMargin, newLayoutParams.leftMargin, layoutParams.topMargin, newLayoutParams.topMargin);
+        translateAnimation.setDuration(500);
+        loginPan.startAnimation(translateAnimation);*/
         loginPan.setLayoutParams(newLayoutParams);
 
     }
@@ -73,6 +85,11 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
         loginPan.setLayoutParams(layoutParams);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Presenter.getInstance(this).dispatchUiInterface();
+    }
 
     @Override
     protected void initView() {
@@ -87,36 +104,65 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
         blueSignLine = (ImageView) findViewById(R.id.blue_line_sign);
         loginOrSignTV = (TextView) findViewById(R.id.reg_login_des);
 
-        useNameTV = (EditText) signLayout.findViewById(R.id.phone);
+        phoneNumTV = (EditText) signLayout.findViewById(R.id.phone);
         signCodeTV = (EditText) signLayout.findViewById(R.id.sign_code);
-        passWordTV = (EditText) signLayout.findViewById(R.id.password);
+        passWordSignTV = (EditText) signLayout.findViewById(R.id.password);
+        signRequestTV = (TextView) signLayout.findViewById(R.id.sign_code_request);
         userReadTV = (TextView) signLayout.findViewById(R.id.xie_yi);
 
 
         useNameTV = (EditText) loginLayout.findViewById(R.id.login_user_name);
         passWordTV = (EditText) loginLayout.findViewById(R.id.login_user_password);
+        passWordOpenIV = (ImageView) loginLayout.findViewById(R.id.password_open);
+        findPassTV = (TextView) loginLayout.findViewById(R.id.wang_ji);
+
     }
 
 
     private String[] collectLoginUserInfo() {
+        userInfo = new String[3];
         userInfo[0] = useNameTV.getText().toString();
         userInfo[1] = passWordTV.getText().toString();
-        LocalLog.d(TAG, "userInfo name:" + userInfo[0] + " ,signCode: " + userInfo[1]);
         return userInfo;
     }
 
     private String[] collectSignUserInfo() {
-        userInfo[0] = useNameTV.getText().toString();
+        userInfo = new String[3];
+        userInfo[0] = phoneNumTV.getText().toString();
         userInfo[1] = signCodeTV.getText().toString();
-        userInfo[2] = passWordTV.getText().toString();
-
-        LocalLog.d(TAG, "userInfo name:" + userInfo[0] + " ,passWord: " + userInfo[1] + ", passWord: " + userInfo[2]);
+        userInfo[2] = passWordSignTV.getText().toString();
         return userInfo;
     }
 
     public void onTabLogin(View view) {
         LocalLog.d(TAG, "onTabLogin() enter");
-
+        if (view != null) {
+            switch (view.getId()) {
+                case R.id.password_open:
+                    if (!showPass) {
+                        LocalLog.d(TAG, " 设置显示密码!");
+                        passWordTV.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                        showPass = true;
+                        passWordOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_yes));
+                    } else {
+                        LocalLog.d(TAG, " 设置不显示密码!");
+                        passWordTV.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                        showPass = false;
+                        passWordOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_no));
+                    }
+                    break;
+                case R.id.wang_ji:
+                    //TODO
+                    break;
+                case R.id.sign_code_request:
+                    LocalLog.d(TAG, " 请求验证码!");
+                    collectSignUserInfo();
+                    Presenter.getInstance(this).getMsg(userInfo[0]);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public void onTabLogSign(View view) {
@@ -164,12 +210,30 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                 case R.id.btn_sign_foot:
                     LocalLog.d(TAG, "currentIndex = " + currentIndex);
                     if (currentIndex == 0) {
-                        collectLoginUserInfo();
+                        Presenter.getInstance(this).userLoginByPhoneNumber(collectLoginUserInfo());
                     } else if (currentIndex == 1) {
-                        collectSignUserInfo();
+                        Presenter.getInstance(this).registerByPhoneNumber(collectSignUserInfo());
                     }
                     break;
             }
         }
+    }
+
+    @Override
+    public void requestPhoneLoginCallback(LoginResponse loginResponse) {
+        LocalLog.d(TAG, "手机号登入成功! 去获取用户信息!");
+        Presenter.getInstance(this).steLogFlg(true);
+        startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+        Presenter.getInstance(this).getUserInfo(loginResponse.getData().getId());
+    }
+
+    @Override
+    public void requestPhoneSignCodeCallBack(int signCode) {
+        signCodeTV.setText(String.valueOf(signCode));
+    }
+
+    @Override
+    public void requestThirdLoginCallBack() {
+
     }
 }

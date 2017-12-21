@@ -42,8 +42,10 @@
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.APP_START" />
@@ -52,8 +54,8 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/ImageTranslucentTheme" />
+            android:theme="@style/ImageTranslucentTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".view.activity.CreateCircleActivity"
             android:launchMode="singleTask"

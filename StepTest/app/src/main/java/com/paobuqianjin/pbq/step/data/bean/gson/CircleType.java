@@ -41,6 +41,15 @@ public class CircleType {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "CircleType{" +
+                "error=" + error +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public static class DataBean {
         /**
          * id : 1
@@ -64,6 +73,14 @@ public class CircleType {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "id=" + id +
+                    ", name='" + name + '\'' +
+                    '}';
         }
     }
 }
