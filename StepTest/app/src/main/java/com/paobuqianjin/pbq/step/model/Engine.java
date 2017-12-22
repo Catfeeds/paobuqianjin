@@ -24,8 +24,14 @@ import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import okio.BufferedSink;
 
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
@@ -48,6 +54,7 @@ public final class Engine {
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
     public final static int COMMAND_LOGIN_IN = 2;
+    public final static int COMMAND_REFRESH_PASSWORD = 3;
 
     private Engine() {
 
@@ -165,11 +172,22 @@ public final class Engine {
         String url = urlFindPassWord + "13424156029";
         OkHttpUtils
                 .put()
-                .url(urlFindPassWord)
-                .param("code", "123456")
-                .param("password", "23dasdd")
+                .url(url)
+                .requestBody(new RequestBody() {
+                    @Override
+                    public MediaType contentType() {
+                        return MediaType.parse("application/x-www-form-urlencoded");
+                    }
+
+                    @Override
+                    public void writeTo(BufferedSink sink) throws IOException {
+
+                    }
+                })
+                .param("password","1223434")
+                .param("code","123456")
                 .build()
-                .execute(new NetStringCallBack(uiCallBackInterface));
+                .execute(new NetStringCallBack(uiCallBackInterface, COMMAND_REFRESH_PASSWORD));
     }
 
     //手机号码注册
@@ -261,17 +279,17 @@ public final class Engine {
             Toast.makeText(mContext, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (userInfo[1] == null){
+        if (userInfo[1] == null) {
             Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT).show();
             return;
         }
-            OkHttpUtils
-                    .post()
-                    .url(NetApi.urlUserLogin)
-                    .addParams("mobile", userInfo[0])
-                    .addParams("password", userInfo[1])
-                    .build()
-                    .execute(new NetStringCallBack(uiCallBackInterface, COMMAND_LOGIN_IN));
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlUserLogin)
+                .addParams("mobile", userInfo[0])
+                .addParams("password", userInfo[1])
+                .build()
+                .execute(new NetStringCallBack(uiCallBackInterface, COMMAND_LOGIN_IN));
     }
 
     /*@desc

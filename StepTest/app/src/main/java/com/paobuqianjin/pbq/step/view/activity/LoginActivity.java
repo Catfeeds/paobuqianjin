@@ -224,7 +224,8 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                 case R.id.btn_sign_foot:
                     LocalLog.d(TAG, "currentIndex = " + currentIndex);
                     if (currentIndex == 0) {
-                        Presenter.getInstance(this).userLoginByPhoneNumber(collectLoginUserInfo());
+                        //Presenter.getInstance(this).userLoginByPhoneNumber(collectLoginUserInfo());
+                        Presenter.getInstance(this).refreshPassWord();
                     } else if (currentIndex == 1) {
                         Presenter.getInstance(this).registerByPhoneNumber(collectSignUserInfo());
                     }

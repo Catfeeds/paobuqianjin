@@ -85,7 +85,7 @@ public final class Presenter {
         engine.registerByPhoneNumber(userInfo);
     }
 
-    public void refreshPassWorld() {
+    public void refreshPassWord() {
         engine.refreshPassWorld();
     }
 

@@ -69,6 +69,9 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null && callBackInterface instanceof SignCodeCallBackInterface) {
             SignCodeResponse signCodeResponse = new Gson().fromJson(s, SignCodeResponse.class);
             ((SignCodeCallBackInterface) callBackInterface).signCodeCallBack(signCodeResponse);
+        } else if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface
+                && command == Engine.COMMAND_REFRESH_PASSWORD) {
+            LocalLog.d(TAG,s);
         }
     }
 }

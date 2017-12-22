@@ -6,6 +6,7 @@ import com.l.okhttppaobu.okhttp.request.RequestCall;
 
 import java.util.LinkedHashMap;
 
+import okhttp3.FormBody;
 import okhttp3.RequestBody;
 
 /**
@@ -44,4 +45,14 @@ public class OtherRequestBuilder extends OkHttpRequestBuilder<OtherRequestBuilde
         return this;
     }
 
+    private void addParams(FormBody.Builder builder)
+    {
+        if (params != null)
+        {
+            for (String key : params.keySet())
+            {
+                builder.add(key, params.get(key));
+            }
+        }
+    }
 }
