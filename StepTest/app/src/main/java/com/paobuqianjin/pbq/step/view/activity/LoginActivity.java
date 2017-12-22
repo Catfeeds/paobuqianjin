@@ -1,10 +1,8 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.method.HideReturnsTransformationMethod;
@@ -12,14 +10,15 @@ import android.text.method.PasswordTransformationMethod;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.LoginResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.SignUserResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -33,7 +32,7 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelper.SoftKeyboardStateListener, LoginSignCallbackInterface {
     private final static String LOGIN_SUCCESS_ACTION = "com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION";
     private final static String TAG = LoginActivity.class.getSimpleName();
-    private boolean showPass = false;
+    private boolean showLoginPass = false, showSignPass = false;
     /*默认显示登入界面*/
     private int currentIndex;
     private RelativeLayout loginPan;
@@ -42,6 +41,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     private RelativeLayout signLayout;
     private ImageView blueLoginLine, blueSignLine;
     private ImageView passWordOpenIV;
+    private ImageView passWordSignOpenIV;
     private EditText useNameTV, phoneNumTV, passWordTV, signCodeTV, passWordSignTV;
     private TextView loginOrSignTV;
     private TextView userReadTV, signRequestTV;
@@ -109,6 +109,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
         passWordSignTV = (EditText) signLayout.findViewById(R.id.password);
         signRequestTV = (TextView) signLayout.findViewById(R.id.sign_code_request);
         userReadTV = (TextView) signLayout.findViewById(R.id.xie_yi);
+        passWordSignOpenIV = (ImageView) signLayout.findViewById(R.id.password_open_sign);
 
 
         useNameTV = (EditText) loginLayout.findViewById(R.id.login_user_name);
@@ -139,15 +140,15 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
         if (view != null) {
             switch (view.getId()) {
                 case R.id.password_open:
-                    if (!showPass) {
+                    if (!showLoginPass) {
                         LocalLog.d(TAG, " 设置显示密码!");
                         passWordTV.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                        showPass = true;
+                        showLoginPass = true;
                         passWordOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_yes));
                     } else {
                         LocalLog.d(TAG, " 设置不显示密码!");
                         passWordTV.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                        showPass = false;
+                        showLoginPass = false;
                         passWordOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_no));
                     }
                     break;
@@ -158,6 +159,19 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                     LocalLog.d(TAG, " 请求验证码!");
                     collectSignUserInfo();
                     Presenter.getInstance(this).getMsg(userInfo[0]);
+                    break;
+                case R.id.password_open_sign:
+                    if (!showSignPass) {
+                        LocalLog.d(TAG, " 设置显示密码!");
+                        passWordSignTV.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                        showSignPass = true;
+                        passWordSignOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_yes));
+                    } else {
+                        LocalLog.d(TAG, " 设置不显示密码!");
+                        passWordSignTV.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                        showSignPass = false;
+                        passWordSignOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_no));
+                    }
                     break;
                 default:
                     break;
@@ -235,5 +249,10 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     @Override
     public void requestThirdLoginCallBack() {
 
+    }
+
+    @Override
+    public void registerByPhoneCallBack(SignUserResponse signUserResponse) {
+        Toast.makeText(this, signUserResponse.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

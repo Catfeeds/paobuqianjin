@@ -93,6 +93,7 @@
                     android:textSize="12sp" />
 
                 <ImageView
+                    android:onClick="onTabLogin"
                     android:id="@+id/password_open_sign"
                     android:layout_width="18dp"
                     android:layout_height="13dp"

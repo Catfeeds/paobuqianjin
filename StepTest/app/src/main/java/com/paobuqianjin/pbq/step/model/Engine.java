@@ -14,10 +14,9 @@ import android.os.RemoteException;
 import android.widget.Toast;
 
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
-import com.paobuqianjin.pbq.step.data.bean.gson.CircleType;
 import com.paobuqianjin.pbq.step.data.bean.gson.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.UserInfo;
-import com.paobuqianjin.pbq.step.data.netcallback.ListCircleCallBack;
+import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCallBackInterface;
@@ -25,11 +24,8 @@ import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import okhttp3.Call;
 
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
@@ -49,6 +45,9 @@ public final class Engine {
     private final static int MSG_SEND_DATA_TO_SETP_SERVICE = 0;
     private final static int MSG_SEND_DATA_TO_ENGINE = 1;
     private UiCallBackInterface uiCallBackInterface;
+    public final static int COMMAND_REQUEST_SIGN = 0;
+    public final static int COMMAND_REG_BY_PHONE = 1;
+    public final static int COMMAND_LOGIN_IN = 2;
 
     private Engine() {
 
@@ -176,6 +175,20 @@ public final class Engine {
     //手机号码注册
     public void registerByPhoneNumber(String[] userInfo) {
         LocalLog.d(TAG, "registerByPhoneNumber() enter");
+        if (userInfo[0] == null && !isPhone(userInfo[0])) {
+            Toast.makeText(mContext, "请输入一个手机号码:", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (userInfo[0] == null) {
+            Toast.makeText(mContext, "需要验证码:", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (userInfo[2] == null) {
+            Toast.makeText(mContext, "注册需要设置密码:", Toast.LENGTH_SHORT).show();
+            return;
+        }
         OkHttpUtils
                 .post()
                 .url(urlRegisterPhone)
@@ -183,7 +196,7 @@ public final class Engine {
                 .addParams("password", userInfo[2])
                 .addParams("code", userInfo[1])
                 .build()
-                .execute(new NetStringCallBack(uiCallBackInterface));
+                .execute(new NetStringCallBack(uiCallBackInterface, COMMAND_REG_BY_PHONE));
     }
 
     //获取附近的人
@@ -248,13 +261,17 @@ public final class Engine {
             Toast.makeText(mContext, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
             return;
         }
-        OkHttpUtils
-                .post()
-                .url(NetApi.urlUserLogin)
-                .addParams("mobile", userInfo[0])
-                .addParams("password", userInfo[1])
-                .build()
-                .execute(new NetStringCallBack(uiCallBackInterface));
+        if (userInfo[1] == null){
+            Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+            OkHttpUtils
+                    .post()
+                    .url(NetApi.urlUserLogin)
+                    .addParams("mobile", userInfo[0])
+                    .addParams("password", userInfo[1])
+                    .build()
+                    .execute(new NetStringCallBack(uiCallBackInterface, COMMAND_LOGIN_IN));
     }
 
     /*@desc
@@ -268,18 +285,7 @@ public final class Engine {
                 .get()
                 .url(NetApi.urlCircleType)
                 .build()
-                .execute(new ListCircleCallBack() {
-                    @Override
-                    public void onError(Call call, Exception e, int i) {
-                        LocalLog.e(TAG, e.getMessage());
-                    }
-
-                    @Override
-                    public void onResponse(List<CircleType.DataBean> dataBeans, int i) {
-                        for (int j = 0; j < dataBeans.size(); j++) {
-                            LocalLog.d(TAG, "getCircleType() 圈子类型数据:" + dataBeans.toString());
-                        }
-                    }
+                .execute(new NetStringCallBack(uiCallBackInterface) {
                 });
     }
 
