@@ -55,6 +55,7 @@ public final class Engine {
     public final static int COMMAND_REG_BY_PHONE = 1;
     public final static int COMMAND_LOGIN_IN = 2;
     public final static int COMMAND_REFRESH_PASSWORD = 3;
+    public final static int COMMAND_NEARBY_PEOPLE = 4;
 
     private Engine() {
 
@@ -184,8 +185,8 @@ public final class Engine {
 
                     }
                 })
-                .param("password","1223434")
-                .param("code","123456")
+                .param("password", "1223434")
+                .param("code", "123456")
                 .build()
                 .execute(new NetStringCallBack(uiCallBackInterface, COMMAND_REFRESH_PASSWORD));
     }
@@ -224,7 +225,7 @@ public final class Engine {
                 .get()
                 .url(urlNearByPeople)
                 .build()
-                .execute(new NetStringCallBack(uiCallBackInterface));
+                .execute(new NetStringCallBack(uiCallBackInterface,COMMAND_NEARBY_PEOPLE));
     }
 
     //获取验证码

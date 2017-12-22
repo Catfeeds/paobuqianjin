@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.data.netcallback;
 import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.LoginResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.NearByPeople;
 import com.paobuqianjin.pbq.step.data.bean.gson.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.SignUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.UserInfo;
@@ -63,6 +64,11 @@ public class NetStringCallBack extends StringCallback {
                 SignUserResponse signUserResponse = new Gson().fromJson(s, SignUserResponse.class);
                 ((LoginSignCallbackInterface) callBackInterface).registerByPhoneCallBack(signUserResponse);
             }
+
+            if (command == Engine.COMMAND_NEARBY_PEOPLE) {
+                NearByPeople nearByPeople = new Gson().fromJson(s, NearByPeople.class);
+                LocalLog.d(TAG, nearByPeople.toString());
+            }
         } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {
             UserInfo userInfo = new Gson().fromJson(s, UserInfo.class);
             ((UserInfoInterface) callBackInterface).update(userInfo);
@@ -71,7 +77,7 @@ public class NetStringCallBack extends StringCallback {
             ((SignCodeCallBackInterface) callBackInterface).signCodeCallBack(signCodeResponse);
         } else if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface
                 && command == Engine.COMMAND_REFRESH_PASSWORD) {
-            LocalLog.d(TAG,s);
+            LocalLog.d(TAG, s);
         }
     }
 }
