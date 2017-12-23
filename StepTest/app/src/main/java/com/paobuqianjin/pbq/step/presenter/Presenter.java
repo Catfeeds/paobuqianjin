@@ -3,9 +3,9 @@ package com.paobuqianjin.pbq.step.presenter;
 import android.app.Service;
 import android.content.Context;
 
+import com.paobuqianjin.pbq.step.data.bean.gson.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.model.Engine;
-import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
-import com.paobuqianjin.pbq.step.presenter.im.UiCallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 
@@ -52,7 +52,7 @@ public final class Presenter {
     }
 
     public void steLogFlg(boolean isLogin) {
-        engine.setLogFlag(mContext,isLogin);
+        engine.setLogFlag(mContext, isLogin);
     }
 
     public Context getAppContext() {
@@ -93,8 +93,12 @@ public final class Presenter {
         engine.getUserInfo(userId);
     }
 
+    public void createCircle(CreateCircleBodyParam createCircleBodyParam) {
+        engine.createCircle(createCircleBodyParam);
+    }
+
     //call onResume
-    public void attachUiInterface(UiCallBackInterface uiCallBackInterface) {
+    public void attachUiInterface(LoginCallBackInterface uiCallBackInterface) {
         LocalLog.d(TAG, "attachUiInterface() ");
         engine.attachUiInterface(uiCallBackInterface);
 

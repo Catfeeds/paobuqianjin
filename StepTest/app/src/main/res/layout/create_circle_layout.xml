@@ -84,6 +84,7 @@
                     android:layout_marginRight="14dp"
                     android:background="@null"
                     android:gravity="right"
+                    android:lines="1"
                     android:hint="输入群名"
                     android:textSize="12sp" />
 

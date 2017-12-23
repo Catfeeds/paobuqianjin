@@ -12,7 +12,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.SignUserResponse;
 *@author
 *@description  登陆注册接口
 */
-public interface LoginSignCallbackInterface extends UiCallBackInterface {
+public interface LoginSignCallbackInterface extends LoginCallBackInterface {
     /*@desc获取验证码
     *@function requestPhoneSignCodeCallBack
     *@param

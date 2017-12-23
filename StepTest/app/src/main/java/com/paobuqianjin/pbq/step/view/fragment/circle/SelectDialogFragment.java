@@ -15,7 +15,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.presenter.im.CreateCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.List;
@@ -29,15 +29,15 @@ public class SelectDialogFragment extends DialogFragment {
     public final static String SELECT_TYPE = "select_type";
     private static SelectDialogFragment selectDialogFragment;
     private static List<String> mList;
-    private static CreateCircleInterface mCreateCircleInterface;
+    private static UiCreateCircleInterface mUiCreateCircleInterface;
     private TextView bt_cancelTV, bt_confirmTV;
     private RecyclerView selectRecycler;
     private LinearLayoutManager selectManager;
 
-    public static SelectDialogFragment newInstance(List<String> selectList, CreateCircleInterface createCircleInterface) {
+    public static SelectDialogFragment newInstance(List<String> selectList, UiCreateCircleInterface uiCreateCircleInterface) {
         SelectDialogFragment selectDialogFragment = new SelectDialogFragment();
         mList = selectList;
-        mCreateCircleInterface = createCircleInterface;
+        mUiCreateCircleInterface = uiCreateCircleInterface;
         return selectDialogFragment;
     }
 

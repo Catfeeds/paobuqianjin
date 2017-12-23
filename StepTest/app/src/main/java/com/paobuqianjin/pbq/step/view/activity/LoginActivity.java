@@ -141,12 +141,12 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
             switch (view.getId()) {
                 case R.id.password_open:
                     if (!showLoginPass) {
-                        LocalLog.d(TAG, " 设置显示密码!");
+                        LocalLog.d(TAG, " onTabLogin() 设置显示密码!");
                         passWordTV.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                         showLoginPass = true;
                         passWordOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_yes));
                     } else {
-                        LocalLog.d(TAG, " 设置不显示密码!");
+                        LocalLog.d(TAG, " onTabLogin() 设置不显示密码!");
                         passWordTV.setTransformationMethod(PasswordTransformationMethod.getInstance());
                         showLoginPass = false;
                         passWordOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_no));
@@ -154,20 +154,21 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                     break;
                 case R.id.wang_ji:
                     //TODO
+                    LocalLog.d(TAG, "onTabLogin() 忘记密码");
                     break;
                 case R.id.sign_code_request:
-                    LocalLog.d(TAG, " 请求验证码!");
+                    LocalLog.d(TAG, "onTabLogin() 请求验证码!");
                     collectSignUserInfo();
                     Presenter.getInstance(this).getMsg(userInfo[0]);
                     break;
                 case R.id.password_open_sign:
                     if (!showSignPass) {
-                        LocalLog.d(TAG, " 设置显示密码!");
+                        LocalLog.d(TAG, " onTabLogin() 设置显示密码!");
                         passWordSignTV.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                         showSignPass = true;
                         passWordSignOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_yes));
                     } else {
-                        LocalLog.d(TAG, " 设置不显示密码!");
+                        LocalLog.d(TAG, " onTabLogin() 设置不显示密码!");
                         passWordSignTV.setTransformationMethod(PasswordTransformationMethod.getInstance());
                         showSignPass = false;
                         passWordSignOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_no));

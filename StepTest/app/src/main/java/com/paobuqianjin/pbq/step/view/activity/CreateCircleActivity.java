@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.presenter.im.CreateCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.fragment.circle.SelectDialogFragment;
@@ -39,22 +39,14 @@ public class CreateCircleActivity extends BaseBarActivity {
                     List<String> strings = new LinkedList<String>();
                     strings.add("个人圈子");
                     strings.add("企业圈子");
-                    SelectDialogFragment selectDialogFragment = SelectDialogFragment.newInstance(strings, createCircleInterface);
+                    SelectDialogFragment selectDialogFragment = SelectDialogFragment.newInstance(strings, uiCreateCircleInterface);
                     selectDialogFragment.show(this.getFragmentManager(), null);
                     break;
             }
         }
     }
 
-    private CreateCircleInterface createCircleInterface = new CreateCircleInterface() {
-        @Override
-        public void setCircleStyle(String circleStyle) {
-            LocalLog.d(TAG, "setCircleStyle() enter");
-        }
+    private UiCreateCircleInterface uiCreateCircleInterface = new UiCreateCircleInterface() {
 
-        @Override
-        public void setDistanceStyle(String distanceStyle) {
-            LocalLog.d(TAG, "setDistanceStyle() enter");
-        }
     };
 }

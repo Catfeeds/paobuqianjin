@@ -14,12 +14,14 @@ import android.os.RemoteException;
 import android.widget.Toast;
 
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
+import com.paobuqianjin.pbq.step.data.bean.gson.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.UserInfo;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
-import com.paobuqianjin.pbq.step.presenter.im.UiCallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
@@ -50,12 +52,15 @@ public final class Engine {
     private Messenger serviceMessenger = new Messenger(new ServiceHandler());
     private final static int MSG_SEND_DATA_TO_SETP_SERVICE = 0;
     private final static int MSG_SEND_DATA_TO_ENGINE = 1;
-    private UiCallBackInterface uiCallBackInterface;
+    private LoginCallBackInterface loginCallBackInterface;
+    private UiCreateCircleInterface uiCreateCircleInterface;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
     public final static int COMMAND_LOGIN_IN = 2;
     public final static int COMMAND_REFRESH_PASSWORD = 3;
     public final static int COMMAND_NEARBY_PEOPLE = 4;
+    //
+    private final static int COMMAND_CREATE_CIRCLE = 5;
 
     private Engine() {
 
@@ -188,7 +193,7 @@ public final class Engine {
                 .param("password", "1223434")
                 .param("code", "123456")
                 .build()
-                .execute(new NetStringCallBack(uiCallBackInterface, COMMAND_REFRESH_PASSWORD));
+                .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_REFRESH_PASSWORD));
     }
 
     //手机号码注册
@@ -215,7 +220,7 @@ public final class Engine {
                 .addParams("password", userInfo[2])
                 .addParams("code", userInfo[1])
                 .build()
-                .execute(new NetStringCallBack(uiCallBackInterface, COMMAND_REG_BY_PHONE));
+                .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_REG_BY_PHONE));
     }
 
     //获取附近的人
@@ -225,7 +230,7 @@ public final class Engine {
                 .get()
                 .url(urlNearByPeople)
                 .build()
-                .execute(new NetStringCallBack(uiCallBackInterface,COMMAND_NEARBY_PEOPLE));
+                .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_NEARBY_PEOPLE));
     }
 
     //获取验证码
@@ -245,9 +250,9 @@ public final class Engine {
                     @Override
                     public void signCodeCallBack(SignCodeResponse response) {
                         Toast.makeText(mContext, "验证码已发送，请查看短信！" + response.getMessage() + " data : " + response.getData(), Toast.LENGTH_SHORT).show();
-                        if (uiCallBackInterface != null && uiCallBackInterface instanceof LoginSignCallbackInterface) {
+                        if (loginCallBackInterface != null && loginCallBackInterface instanceof LoginSignCallbackInterface) {
                             // 设置验码
-                            ((LoginSignCallbackInterface) uiCallBackInterface).requestPhoneSignCodeCallBack(response.getData());
+                            ((LoginSignCallbackInterface) loginCallBackInterface).requestPhoneSignCodeCallBack(response.getData());
                         }
                         return;
                     }
@@ -290,7 +295,7 @@ public final class Engine {
                 .addParams("mobile", userInfo[0])
                 .addParams("password", userInfo[1])
                 .build()
-                .execute(new NetStringCallBack(uiCallBackInterface, COMMAND_LOGIN_IN));
+                .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_LOGIN_IN));
     }
 
     /*@desc
@@ -304,8 +309,19 @@ public final class Engine {
                 .get()
                 .url(NetApi.urlCircleType)
                 .build()
-                .execute(new NetStringCallBack(uiCallBackInterface) {
+                .execute(new NetStringCallBack(loginCallBackInterface) {
                 });
+    }
+
+    //创建圈子
+    public void createCircle(CreateCircleBodyParam createCircleBodyParam) {
+        LocalLog.d(TAG, "createCircle() enter");
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlCircle)
+                .params(createCircleBodyParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(uiCreateCircleInterface,COMMAND_CREATE_CIRCLE));
     }
 
     private static class ServiceHandler extends Handler {
@@ -322,13 +338,13 @@ public final class Engine {
 
 
     //call onResume
-    public void attachUiInterface(UiCallBackInterface uiCallBackInterface) {
-        this.uiCallBackInterface = uiCallBackInterface;
+    public void attachUiInterface(LoginCallBackInterface uiCallBackInterface) {
+        this.loginCallBackInterface = uiCallBackInterface;
 
     }
 
     //call onDestroy
     public void dispatchUiInterface() {
-        this.uiCallBackInterface = null;
+        this.loginCallBackInterface = null;
     }
 }

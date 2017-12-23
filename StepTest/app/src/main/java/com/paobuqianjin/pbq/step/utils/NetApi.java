@@ -9,7 +9,7 @@ public class NetApi {
     //圈子接口
     public final static String urlCircle = "http://www.paobu.com/v1/Circle";
     //圈子类型接口
-    public final static String urlCircleType = "http://www.391k.com/api/xapi.ashx/info.json?key=bd_hyrzjjfb4modhj&size=10&page=1"/*"http://www.paobu.com/v1/CircleType"*/;
+    public final static String urlCircleType = "http://www.paobu.com/v1/CircleType";
     //圈子目标接口
     public final static String urlTarget = "http://www.paobu.com/v1/CircleTarget";
     //圈子成员接口
