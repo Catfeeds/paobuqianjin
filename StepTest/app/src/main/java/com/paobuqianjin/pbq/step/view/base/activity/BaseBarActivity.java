@@ -57,7 +57,6 @@ public abstract class BaseBarActivity extends BaseActivity {
         setToolBarListener();
         tv_left.setOnClickListener(clickListener);
         tv_right.setOnClickListener(clickListener);
-        tv_right.setText(title());
         refreshTop();
     }
 
