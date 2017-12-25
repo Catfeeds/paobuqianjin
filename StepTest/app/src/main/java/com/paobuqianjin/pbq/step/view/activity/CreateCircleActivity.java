@@ -7,6 +7,7 @@ import android.view.View;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.fragment.circle.SelectDialogFragment;
 
@@ -17,7 +18,7 @@ import java.util.List;
  * Created by pbq on 2017/12/14.
  */
 
-public class CreateCircleActivity extends BaseBarActivity {
+public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboardStateHelper.SoftKeyboardStateListener {
     private final static String TAG = CreateCircleActivity.class.getSimpleName();
 
     @Override
@@ -42,6 +43,9 @@ public class CreateCircleActivity extends BaseBarActivity {
                     SelectDialogFragment selectDialogFragment = SelectDialogFragment.newInstance(strings, uiCreateCircleInterface);
                     selectDialogFragment.show(this.getFragmentManager(), null);
                     break;
+                case R.id.switch_stand:
+                    LocalLog.d(TAG, "设定目标距离");
+                    break;
             }
         }
     }
@@ -49,4 +53,14 @@ public class CreateCircleActivity extends BaseBarActivity {
     private UiCreateCircleInterface uiCreateCircleInterface = new UiCreateCircleInterface() {
 
     };
+
+    @Override
+    public void onSoftKeyboardOpened(int keyboardHeightInPx) {
+        LocalLog.d(TAG, "onSoftKeyboardOpened() 键盘弹出高度 ：" + keyboardHeightInPx);
+    }
+
+    @Override
+    public void onSoftKeyboardClosed() {
+        LocalLog.d(TAG,"");
+    }
 }

@@ -14,9 +14,14 @@ import android.os.RemoteException;
 import android.widget.Toast;
 
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
+import com.paobuqianjin.pbq.step.data.bean.gson.AddFollowParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.AuthenticationParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.CreateCircleBodyParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.PostIncomeParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.PostWithDrawParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.UserInfo;
+import com.paobuqianjin.pbq.step.data.bean.gson.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
@@ -36,8 +41,12 @@ import okhttp3.RequestBody;
 import okio.BufferedSink;
 
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
+import static com.paobuqianjin.pbq.step.utils.NetApi.urlIncome;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlRegisterPhone;
+import static com.paobuqianjin.pbq.step.utils.NetApi.urlTarget;
+import static com.paobuqianjin.pbq.step.utils.NetApi.urlUser;
+import static com.paobuqianjin.pbq.step.utils.NetApi.urlWithDraw;
 
 /**
  * Created by pbq on 2017/11/29.
@@ -298,11 +307,58 @@ public final class Engine {
                 .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_LOGIN_IN));
     }
 
-    /*@desc
-    *@function getCircleType
-    *@param
-    *@return
-    */
+    //搜索圈子成员 TODO
+    public void searchCircleMember(int circleId, String keyword) {
+        LocalLog.d(TAG, "searchCircleMember() enter");
+
+    }
+
+    //获取圈子订单类型列表
+    public void getOrderType() {
+        LocalLog.d(TAG, "getOrderType() enter");
+    }
+
+    //获取所有圈子成员
+    public void getCircleMemberAll(int circleid, int page, int pagesize) {
+        LocalLog.d(TAG, "getCircleMemberAll() enter");
+        String url = NetApi.urlCircleMember + "/" + String.valueOf(circleid)
+                + "&page=" + page + "&pagesize=" + pagesize;
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //修改备注名称和设为管理员
+    public void markAdminReset() {
+        LocalLog.d(TAG, "markAdminReset() enter");
+        String url = NetApi.urlCircleMember;
+    }
+
+    //加入圈子
+    public void addCircle(int userid, int circleid) {
+        LocalLog.d(TAG, "addCircle() enter");
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlCircleMember)
+                .addParams("userid", String.valueOf(userid))
+                .addParams("circleid", String.valueOf(circleid))
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //获取圈子目标列表
+    public void getCircleTarget() {
+        LocalLog.d(TAG, "getCircleTarget() enter");
+        OkHttpUtils
+                .get()
+                .url(NetApi.urlTarget)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //获取圈子类型列表
     public void getCircleType() {
         LocalLog.d(TAG, "getCircleType() enter");
         OkHttpUtils
@@ -313,6 +369,18 @@ public final class Engine {
                 });
     }
 
+    //获取我的圈子，精选圈子 ：http://api.runmoneyin.com/v1/Circle?action=my&userid=5&page=1&pagesize=2
+    public void getCircleByAction(String action, int userid, int page, int pagesize) {
+        LocalLog.d(TAG, "getCircleByAction() enter");
+        String url = NetApi.urlCircle + "?action=" + action + "&userid=" + String.valueOf(userid)
+                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
     //创建圈子
     public void createCircle(CreateCircleBodyParam createCircleBodyParam) {
         LocalLog.d(TAG, "createCircle() enter");
@@ -321,8 +389,221 @@ public final class Engine {
                 .url(NetApi.urlCircle)
                 .params(createCircleBodyParam.getParams())
                 .build()
-                .execute(new NetStringCallBack(uiCreateCircleInterface,COMMAND_CREATE_CIRCLE));
+                .execute(new NetStringCallBack(uiCreateCircleInterface, COMMAND_CREATE_CIRCLE));
     }
+
+    //获取圈子详情 http://api.runmoneyin.com/v1/Circle/100000
+    public void getCircleDetail(int circleId) {
+        LocalLog.d(TAG, "getCircleDetail() enter");
+        String url = NetApi.urlCircle + "/" + String.valueOf(circleId);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+
+    //获取用户登录记录，暂时无需实现
+    public void getUserRecord(int userId) {
+        LocalLog.d(TAG, "getUserRecord() enter");
+        String url = NetApi.urlUserRecord + String.valueOf(userId);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //psot用户登陆记录
+    public void postUserRecord(int id, double longitude, double latitude) {
+        UserRecordParam userRecordParam = new UserRecordParam();
+        userRecordParam
+                .setId(id)
+                .setLongitude(longitude)
+                .setLatitude(latitude);
+
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlUserRecordPost)
+                .params(userRecordParam.getParam())
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+
+    }
+
+    //请求方式get，地址：http://pb.com/v1/userstep/1 参数：用户id
+    public void getUserStep(int id) {
+        LocalLog.d(TAG, "getUserStep() enter");
+        String url = NetApi.urlUserStep + String.valueOf(id);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //请求方式：put，地址：http://pb.com/v1/userstep/1，参数：用户id，用户最新行走步数：step_number
+    public void putUserStep(int id, int todayStep) {
+        LocalLog.d(TAG, "putUserStep() enter");
+        String url = NetApi.urlUserStep + String.valueOf(id);
+        OkHttpUtils
+                .put()
+                /*.requestBody("application/x-www-form-urlencoded")*/
+                .param("step_number", String.valueOf(todayStep))
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //获取昨日收益，当月收益，总收益，请求方式：get，地址：http://pb.com/v1/income/?id=1&action=yesterday，参数：用户id、action=all（总收益）、action=month（当月收益）、action=yesterday（昨日收益）
+    public void getIncome(int id, String yesterday) {
+        String url;
+        OkHttpUtils
+                .get()
+                .url(NetApi.urlIncome)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //请求方式post，地址：http://pb.com/v1/income，参数：userid（用户id）、typeid（收益类型）、circleid（圈子id）、amount（收益金额）
+    public void putIncome(PostIncomeParam param) {
+        String url;
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlIncomePost)
+                .params(param.getParam())
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //用户认证，请求方式：post，地址：http://api.runmoneyin.com/v1/userauthentication，参数：id（用户id）、idcard（身份证号）、realname（真实名字）
+    public void postAuthentication(AuthenticationParam authenticationParam) {
+        LocalLog.d(TAG, "postAuthentication() enter");
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlAuthentication)
+                .params(authenticationParam.getParam())
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //获取用户认证状态，请求方式：get，地址：http://api.runmoneyin.com/v1/userauthentication/5（用户id）
+    public void getAuthenticationState(int id) {
+        LocalLog.d(TAG, "getAuthenticationState() enter");
+        String url = NetApi.getUrlAuthenticationState + String.valueOf(id);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, 0));
+    }
+
+    //用户收益类型相关接口，地址：http://api.runmoneyin.com/v1/incometype/?id=1
+    public void getIncomeType(int id) {
+        LocalLog.d(TAG, "getIncomeType() enter");
+        String url = NetApi.urlIncomeType + String.valueOf(id);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //获取用户步币详细信息，请求方式：get，地址：http://api.runmoneyin.com/v1/usercredit/?id=5
+    public void getUserCredit(int id) {
+        LocalLog.d(TAG, "getUserCredit() enter");
+        String url = NetApi.urlCredit + String.valueOf(id);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, 0));
+    }
+
+    //获取用户提现信息记录，请求方式：get，地址：http://api.runmoneyin.com/v1/withdraw/2，参数：用户id
+    public void getWithDraw(int id) {
+        LocalLog.d(TAG, "getWithDraw() enter");
+        String url = NetApi.urlWithDraw + String.valueOf(id);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //添加用户提现记录，请求方式：post，地址：http://api.runmoneyin.com/v1/withdraw，参数：type提现类型、amount提现金额、userid用户id
+    public void postWithDraw(PostWithDrawParam postWithDrawParam) {
+        LocalLog.d(TAG, "postWithDraw() enter");
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlWithDraw)
+                .params(postWithDrawParam.getParam())
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //邀请排行榜，请求方式：get，地址：http://api.runmoneyin.com/v1/userinviter
+    public void getUserInviter() {
+        LocalLog.d(TAG, "getUserInviter() enter");
+        OkHttpUtils
+                .get()
+                .url(NetApi.urlUserInviter)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //获取我邀请的人数，请求方式：get，地址：http://api.runmoneyin.com/v1/userinviter/1
+    public void getUserInter(int id) {
+        LocalLog.d(TAG, "getUserInter(id) enter");
+        String url = NetApi.urlUserInviter + String.valueOf(id);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //我的关注
+    public void getUserMeFollow(int id) {
+        LocalLog.d(TAG, "getUserMeFollow( id ) enter");
+        String url = NetApi.urlUserFollow + "?userid=" + String.valueOf(id);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //添加关注
+    public void postAddUserFollow(AddFollowParam addFollowParam) {
+        LocalLog.d(TAG, "postAddUserFollow()");
+        OkHttpUtils
+                .get()
+                .url(NetApi.urlUserFollow)
+                .params(addFollowParam.getParam())
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //关注我的： http://api.runmoneyin.com/v1/UserFollow/5
+    public void getUserFollowMe(int id) {
+        LocalLog.d(TAG, "getUserFollowMe() enter");
+        String url = NetApi.urlUserFollow + "/" + String.valueOf(id);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //取消关注 TODO
+    public void deleteMeFollow(int id) {
+        LocalLog.d(TAG, "deleteMeFollow() enter");
+
+    }
+
+
+    //
 
     private static class ServiceHandler extends Handler {
         @Override

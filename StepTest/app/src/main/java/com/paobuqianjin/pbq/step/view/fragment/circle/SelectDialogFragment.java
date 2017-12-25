@@ -33,7 +33,6 @@ public class SelectDialogFragment extends DialogFragment {
     private TextView bt_cancelTV, bt_confirmTV;
     private RecyclerView selectRecycler;
     private LinearLayoutManager selectManager;
-
     public static SelectDialogFragment newInstance(List<String> selectList, UiCreateCircleInterface uiCreateCircleInterface) {
         SelectDialogFragment selectDialogFragment = new SelectDialogFragment();
         mList = selectList;
@@ -102,6 +101,5 @@ public class SelectDialogFragment extends DialogFragment {
             }
         }
     };
-
 
 }

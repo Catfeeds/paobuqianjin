@@ -97,6 +97,14 @@ public final class Presenter {
         engine.createCircle(createCircleBodyParam);
     }
 
+    public void getUserRecoder(int userId) {
+        engine.getUserRecord(userId);
+    }
+
+    public void getUserStep(int id) {
+        engine.getUserStep(id);
+    }
+
     //call onResume
     public void attachUiInterface(LoginCallBackInterface uiCallBackInterface) {
         LocalLog.d(TAG, "attachUiInterface() ");

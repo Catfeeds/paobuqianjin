@@ -69,19 +69,17 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     }
 
     public void onSoftKeyboardOpened(int keyboardHeightInPx) {
-        //Toast.makeText(LoginActivity.this, "弹出", Toast.LENGTH_SHORT).show();
+        Toast.makeText(LoginActivity.this, "弹出", Toast.LENGTH_SHORT).show();
         newLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         newLayoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin - 100, layoutParams.rightMargin, layoutParams.bottomMargin);
-/*        TranslateAnimation translateAnimation = new TranslateAnimation(layoutParams.leftMargin, newLayoutParams.leftMargin, layoutParams.topMargin, newLayoutParams.topMargin);
-        translateAnimation.setDuration(500);
-        loginPan.startAnimation(translateAnimation);*/
+
         loginPan.setLayoutParams(newLayoutParams);
 
     }
 
     public void onSoftKeyboardClosed() {
-        //Toast.makeText(LoginActivity.this, "隐藏", Toast.LENGTH_SHORT).show();
+        Toast.makeText(LoginActivity.this, "隐藏", Toast.LENGTH_SHORT).show();
         loginPan.setLayoutParams(layoutParams);
     }
 

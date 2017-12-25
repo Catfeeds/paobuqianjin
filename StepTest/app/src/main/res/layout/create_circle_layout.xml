@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <include
         android:id="@+id/bar_create_circle"
         layout="@layout/bar_return_a_style"></include>
 
     <ScrollView
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bar_create_circle">
@@ -116,6 +117,7 @@
                     android:textSize="14sp" />
 
                 <ImageView
+                    android:onClick="onStyleSelect"
                     android:id="@+id/switch_stand"
                     android:layout_width="13dp"
                     android:layout_height="7dp"
@@ -440,19 +442,35 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="160dp"
                 android:layout_below="@+id/circle_theme_phone_line">
 
-                <EditText
-                    android:id="@+id/circle_desc_of_your"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="160dp"
-                    android:layout_marginLeft="14dp"
-                    android:background="@null"
-                    android:gravity="left|top"
-                    android:hint="请对你的圈子进行描述"
-                    android:textColor="@color/color_8a8a8a"
-                    android:textSize="14sp" />
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/circle_desc_of_your"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:layout_marginLeft="14dp"
+                        android:background="@null"
+                        android:gravity="left|top"
+                        android:hint="请对你的圈子进行描述"
+                        android:textColor="@color/color_8a8a8a"
+                        android:textSize="14sp" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/bound_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginRight="14dp"
+                    android:text="0/400字" />
+
             </RelativeLayout>
 
 
@@ -474,7 +492,7 @@
             android:layout_height="15dp"
             android:layout_above="@+id/create_circle_confim"
             android:layout_alignParentStart="true"
-            android:background="@color/color_f6f6f6" />
+            android:background="@color/color_fefefe" />
 
         <Button
             android:id="@+id/create_circle_confim"
