@@ -5,6 +5,9 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
@@ -51,7 +54,20 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     }
 
     private UiCreateCircleInterface uiCreateCircleInterface = new UiCreateCircleInterface() {
+        @Override
+        public void response(CircleTagResponse circleTagResponse) {
 
+        }
+
+        @Override
+        public void response(CircleTypeResponse circleTypeResponse) {
+
+        }
+
+        @Override
+        public void response(CircleTargetResponse circleTargetResponse) {
+
+        }
     };
 
     @Override
@@ -61,6 +77,6 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
     @Override
     public void onSoftKeyboardClosed() {
-        LocalLog.d(TAG,"");
+        LocalLog.d(TAG, "");
     }
 }

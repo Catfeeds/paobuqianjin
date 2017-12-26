@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.model.Engine;
+import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
@@ -18,6 +19,8 @@ public final class Presenter {
     private static Presenter instance;
     private Engine engine;
     private static Context mContext;
+    private int defaultPage = 1;
+    private int defaultPageSize = 10;
 
     private Presenter() {
         engine = Engine.getEngine(mContext);
@@ -53,6 +56,14 @@ public final class Presenter {
 
     public void steLogFlg(boolean isLogin) {
         engine.setLogFlag(mContext, isLogin);
+    }
+
+    public int getId() {
+        return engine.getId(mContext);
+    }
+
+    public void setId(int id) {
+        engine.setId(mContext, id);
     }
 
     public Context getAppContext() {
@@ -105,16 +116,28 @@ public final class Presenter {
         engine.getUserStep(id);
     }
 
+    /*热门界面*/
+    //获取我的圈子
+    public void getCircleMy() {
+        engine.getCircleMy(engine.getId(mContext),
+                1, 10);
+    }
+
+    //获取精选圈子
+    public void getCircleChoice() {
+        engine.getCircleChoice(engine.getId(mContext), 1, 10);
+    }
+
     //call onResume
-    public void attachUiInterface(LoginCallBackInterface uiCallBackInterface) {
+    public void attachUiInterface(CallBackInterface uiCallBackInterface) {
         LocalLog.d(TAG, "attachUiInterface() ");
         engine.attachUiInterface(uiCallBackInterface);
 
     }
 
     //call onDestroy
-    public void dispatchUiInterface() {
+    public void dispatchUiInterface(CallBackInterface uiCallBackInterface) {
         LocalLog.d(TAG, "dispatchUiInterface() enter");
-        engine.dispatchUiInterface();
+        engine.dispatchUiInterface(uiCallBackInterface);
     }
 }

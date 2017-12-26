@@ -39,6 +39,15 @@ public class LoginResponse {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "LoginResponse{" +
+                "error=" + error +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public static class DataBean {
         /**
          * id : 30
@@ -172,6 +181,25 @@ public class LoginResponse {
 
         public void setRegister_time(int register_time) {
             this.register_time = register_time;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "id=" + id +
+                    ", mobile='" + mobile + '\'' +
+                    ", avatar='" + avatar + '\'' +
+                    ", openid='" + openid + '\'' +
+                    ", type=" + type +
+                    ", nickname='" + nickname + '\'' +
+                    ", sex=" + sex +
+                    ", city='" + city + '\'' +
+                    ", amount='" + amount + '\'' +
+                    ", target_step=" + target_step +
+                    ", credit='" + credit + '\'' +
+                    ", levelid=" + levelid +
+                    ", register_time=" + register_time +
+                    '}';
         }
     }
 

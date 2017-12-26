@@ -6,7 +6,7 @@ import java.util.List;
  * Created by pbq on 2017/12/26.
  */
 
-public class TagResponse {
+public class CircleTagResponse {
     /**
      * error : 0
      * message : success

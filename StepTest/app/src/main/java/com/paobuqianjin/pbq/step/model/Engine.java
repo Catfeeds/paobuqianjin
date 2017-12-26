@@ -27,10 +27,12 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
+import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
@@ -63,13 +65,17 @@ public final class Engine {
     private final static int MSG_SEND_DATA_TO_ENGINE = 1;
     private LoginCallBackInterface loginCallBackInterface;
     private UiCreateCircleInterface uiCreateCircleInterface;
+    private UiHotCircleInterface uiHotCircleInterface;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
     public final static int COMMAND_LOGIN_IN = 2;
     public final static int COMMAND_REFRESH_PASSWORD = 3;
     public final static int COMMAND_NEARBY_PEOPLE = 4;
     //
-    private final static int COMMAND_CREATE_CIRCLE = 5;
+    public final static int COMMAND_CREATE_CIRCLE = 5;
+    //
+    public final static int COMMAND_GET_MY_CIRCLE = 6;
+    public final static int COMMAND_GET_CHOICE_CIRCLE = 7;
 
     private Engine() {
 
@@ -155,6 +161,14 @@ public final class Engine {
 
     public void setLogFlag(Context context, boolean isLogin) {
         FlagPreference.setLoginFlag(context, isLogin);
+    }
+
+    public int getId(Context context) {
+        return FlagPreference.getUid(context);
+    }
+
+    public void setId(Context context, int id) {
+        FlagPreference.setUid(context, id);
     }
 
     public String getStartSportTime(Context context) {
@@ -579,16 +593,65 @@ public final class Engine {
                 });
     }
 
-    //获取我的圈子，精选圈子 ：http://api.runmoneyin.com/v1/Circle?action=my&userid=5&page=1&pagesize=2
-    public void getCircleByAction(String action, int userid, int page, int pagesize) {
+
+    //我的和精选圈子
+    public void getCircleAll(int userid, int page, int pagesize) {
         LocalLog.d(TAG, "getCircleByAction() enter");
-        String url = NetApi.urlCircle + "?action=" + action + "&userid=" + String.valueOf(userid)
+        String url = NetApi.urlCircle + "?action=all" + "&userid=" + String.valueOf(userid)
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         OkHttpUtils
                 .get()
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(null, -1));
+    }
+
+    //步数排行榜
+    public void getCircleStep(int userid, int page, int pagesize) {
+        LocalLog.d(TAG, "getCircleByAction() enter");
+        String url = NetApi.urlCircle + "?action=step" + "&userid=" + String.valueOf(userid)
+                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //充值排行榜
+    public void getCircleRecharge(int userid, int page, int pagesize) {
+        LocalLog.d(TAG, "getCircleByAction() enter");
+        String url = NetApi.urlCircle + "?action=recharge" + "&userid=" + String.valueOf(userid)
+                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //精选圈子 ：http://api.runmoneyin.com/v1/Circle?action=choice&userid=5&page=1&pagesize=2
+    public void getCircleChoice(int userid, int page, int pagesize) {
+        LocalLog.d(TAG, "getCircleByAction() enter");
+        String url = NetApi.urlCircle + "?action=choice" + "&userid=" + String.valueOf(userid)
+                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_CHOICE_CIRCLE));
+    }
+
+    //获取我的圈子
+    public void getCircleMy(int userid, int page, int pagesize) {
+        LocalLog.d(TAG, "getCircleByAction() enter");
+        String url = NetApi.urlCircle + "?action=my" + "&userid=" + String.valueOf(userid)
+                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_MY_CIRCLE));
     }
 
     //创建圈子
@@ -829,13 +892,21 @@ public final class Engine {
 
 
     //call onResume
-    public void attachUiInterface(LoginCallBackInterface uiCallBackInterface) {
-        this.loginCallBackInterface = uiCallBackInterface;
+    public void attachUiInterface(CallBackInterface uiCallBackInterface) {
+        if (uiCallBackInterface != null && uiCallBackInterface instanceof LoginSignCallbackInterface) {
+            this.loginCallBackInterface = (LoginCallBackInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UiHotCircleInterface) {
+            this.uiHotCircleInterface = (UiHotCircleInterface) uiCallBackInterface;
+        }
 
     }
 
     //call onDestroy
-    public void dispatchUiInterface() {
-        this.loginCallBackInterface = null;
+    public void dispatchUiInterface(CallBackInterface uiCallBackInterface) {
+        if (uiCallBackInterface != null && uiCallBackInterface instanceof LoginSignCallbackInterface) {
+            this.loginCallBackInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UiHotCircleInterface) {
+            this.uiHotCircleInterface = null;
+        }
     }
 }

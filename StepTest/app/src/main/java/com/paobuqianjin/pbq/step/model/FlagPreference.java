@@ -15,6 +15,20 @@ import android.content.SharedPreferences;
 public final class FlagPreference {
     private final static String SHARE_PREF_NAME = "com.paobuqianjin.pbq.step.login";
 
+    public static void setUid(Context context, int id) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putInt("id", id);
+        editor.commit();
+    }
+
+    public static int getUid(Context context) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+
+        int id = flagPreference.getInt("id", -1);
+        return id;
+    }
+
     public static boolean getLoginFlag(Context context) {
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
 
@@ -66,7 +80,7 @@ public final class FlagPreference {
     }
 
     /*记录服务开启时间点*/
-    public static void setStartServiceTime(Context context,String startServiceTime) {
+    public static void setStartServiceTime(Context context, String startServiceTime) {
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = flagPreference.edit();

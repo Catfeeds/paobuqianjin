@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Presenter.getInstance(this).dispatchUiInterface();
+        Presenter.getInstance(this).dispatchUiInterface(this);
     }
 
     @Override
@@ -236,6 +236,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     public void requestPhoneLoginCallback(LoginResponse loginResponse) {
         LocalLog.d(TAG, "手机号登入成功! 去获取用户信息!");
         Presenter.getInstance(this).steLogFlg(true);
+        Presenter.getInstance(this).setId(loginResponse.getData().getId());
         startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
         Presenter.getInstance(this).getUserInfo(loginResponse.getData().getId());
     }

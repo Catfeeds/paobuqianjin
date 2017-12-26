@@ -16,6 +16,10 @@ import android.widget.LinearLayout;
 
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -35,6 +39,7 @@ public final class FriendCircleFragment extends BaseFragment {
     private android.support.design.widget.TabLayout mCircleTabLayout;
     private ViewPager mCirclePager;
     private BaseActivity mActivity;
+    private Context mContext;
     private int currentIndexFriend = 0;
     private int mIndexFriend = 0;
 
@@ -42,11 +47,14 @@ public final class FriendCircleFragment extends BaseFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mActivity = (BaseActivity) context;
+        mContext = context;
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
     }
 
     @Override
@@ -62,6 +70,12 @@ public final class FriendCircleFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Presenter.getInstance(mContext).dispatchUiInterface(uiHotCircleInterface);
     }
 
     @Nullable
@@ -133,6 +147,26 @@ public final class FriendCircleFragment extends BaseFragment {
             }
         });
         LocalLog.d(TAG, "initView() leave");
+        Presenter.getInstance(mContext).attachUiInterface(uiHotCircleInterface);
+        loadingData();
     }
+
+    private void loadingData() {
+        Presenter.getInstance(mContext).getCircleMy();
+        Presenter.getInstance(mContext).getCircleChoice();
+
+    }
+
+    private UiHotCircleInterface uiHotCircleInterface = new UiHotCircleInterface() {
+        @Override
+        public void response(MyHotCircleResponse myHotCircleResponse) {
+            LocalLog.d(TAG, myHotCircleResponse.toString());
+        }
+
+        @Override
+        public void response(ChoiceCircleResponse choiceCircleResponse) {
+            LocalLog.d(TAG, choiceCircleResponse.toString());
+        }
+    };
 }
 

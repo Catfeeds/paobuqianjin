@@ -3,6 +3,8 @@ package com.paobuqianjin.pbq.step.data.netcallback;
 import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.NearByPeopleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
@@ -11,6 +13,7 @@ import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
@@ -75,6 +78,15 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface
                 && command == Engine.COMMAND_REFRESH_PASSWORD) {
             LocalLog.d(TAG, s);
+        } else if (callBackInterface != null && callBackInterface instanceof UiHotCircleInterface
+                && command == Engine.COMMAND_GET_MY_CIRCLE) {
+            LocalLog.d(TAG, "获取我的圈子");
+            MyHotCircleResponse myHotCircleResponse = new Gson().fromJson(s, MyHotCircleResponse.class);
+            ((UiHotCircleInterface) callBackInterface).response(myHotCircleResponse);
+        } else if (callBackInterface != null && callBackInterface instanceof UiHotCircleInterface
+                && command == Engine.COMMAND_GET_CHOICE_CIRCLE) {
+            ChoiceCircleResponse choiceCircleResponse = new Gson().fromJson(s, ChoiceCircleResponse.class);
+            ((UiHotCircleInterface) callBackInterface).response(choiceCircleResponse);
         }
     }
 }
