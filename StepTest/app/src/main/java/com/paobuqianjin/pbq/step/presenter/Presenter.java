@@ -3,7 +3,7 @@ package com.paobuqianjin.pbq.step.presenter;
 import android.app.Service;
 import android.content.Context;
 
-import com.paobuqianjin.pbq.step.data.bean.gson.CreateCircleBodyParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;

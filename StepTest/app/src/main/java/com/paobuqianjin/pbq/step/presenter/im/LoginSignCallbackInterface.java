@@ -1,7 +1,7 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
-import com.paobuqianjin.pbq.step.data.bean.gson.LoginResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.SignUserResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 
 /**
  * Created by pbq on 2017/12/9.

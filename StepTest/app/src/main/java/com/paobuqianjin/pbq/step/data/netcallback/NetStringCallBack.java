@@ -2,11 +2,11 @@ package com.paobuqianjin.pbq.step.data.netcallback;
 
 import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
-import com.paobuqianjin.pbq.step.data.bean.gson.LoginResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.NearByPeople;
-import com.paobuqianjin.pbq.step.data.bean.gson.SignCodeResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.SignUserResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.UserInfo;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.NearByPeopleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
@@ -14,10 +14,7 @@ import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
-import java.io.IOException;
-
 import okhttp3.Call;
-import okhttp3.Response;
 
 /**
  * Created by pbq on 2017/12/20.
@@ -66,12 +63,12 @@ public class NetStringCallBack extends StringCallback {
             }
 
             if (command == Engine.COMMAND_NEARBY_PEOPLE) {
-                NearByPeople nearByPeople = new Gson().fromJson(s, NearByPeople.class);
-                LocalLog.d(TAG, nearByPeople.toString());
+                NearByPeopleResponse nearByPeopleResponse = new Gson().fromJson(s, NearByPeopleResponse.class);
+                LocalLog.d(TAG, nearByPeopleResponse.toString());
             }
         } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {
-            UserInfo userInfo = new Gson().fromJson(s, UserInfo.class);
-            ((UserInfoInterface) callBackInterface).update(userInfo);
+            UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
+            ((UserInfoInterface) callBackInterface).update(userInfoResponse);
         } else if (callBackInterface != null && callBackInterface instanceof SignCodeCallBackInterface) {
             SignCodeResponse signCodeResponse = new Gson().fromJson(s, SignCodeResponse.class);
             ((SignCodeCallBackInterface) callBackInterface).signCodeCallBack(signCodeResponse);

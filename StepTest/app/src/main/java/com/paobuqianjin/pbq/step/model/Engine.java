@@ -14,14 +14,18 @@ import android.os.RemoteException;
 import android.widget.Toast;
 
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
-import com.paobuqianjin.pbq.step.data.bean.gson.AddFollowParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.AuthenticationParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.CreateCircleBodyParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.PostIncomeParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.PostWithDrawParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.SignCodeResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.UserInfo;
-import com.paobuqianjin.pbq.step.data.bean.gson.UserRecordParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.AddFollowParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicContentParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.FeedBackParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostIncomeParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostMessageParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWithDrawParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
@@ -41,12 +45,8 @@ import okhttp3.RequestBody;
 import okio.BufferedSink;
 
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
-import static com.paobuqianjin.pbq.step.utils.NetApi.urlIncome;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlRegisterPhone;
-import static com.paobuqianjin.pbq.step.utils.NetApi.urlTarget;
-import static com.paobuqianjin.pbq.step.utils.NetApi.urlUser;
-import static com.paobuqianjin.pbq.step.utils.NetApi.urlWithDraw;
 
 /**
  * Created by pbq on 2017/11/29.
@@ -175,8 +175,8 @@ public final class Engine {
                 .build()
                 .execute(new NetStringCallBack(new UserInfoInterface() {
                     @Override
-                    public void update(UserInfo userInfo) {
-                        LocalLog.d(TAG, " 获取用户信息回调成功!" + userInfo.toString());
+                    public void update(UserInfoResponse userInfoResponse) {
+                        LocalLog.d(TAG, " 获取用户信息回调成功!" + userInfoResponse.toString());
                     }
                 }));
     }
@@ -316,6 +316,158 @@ public final class Engine {
     //获取圈子订单类型列表
     public void getOrderType() {
         LocalLog.d(TAG, "getOrderType() enter");
+        OkHttpUtils
+                .get()
+                .url(NetApi.urlCircleOrderType)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //获取圈子标签列表和热门标签
+    public void getCircleTag(String action) {
+        String url = NetApi.urlCircleTags;
+        if (action.equals("hot")) {
+            url = NetApi.urlCircleTags + "?action=" + action;
+        }
+
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //GET read 获取单个或者多个标签 http://119.29.10.64/v1/CircleTags/4,5,6,7
+    public void getCircleTagByTagId(int a[]) {
+        LocalLog.d(TAG, "getCircleTagByTagId() enter");
+        String url = NetApi.urlCircleTags + "/";
+        for (int i = 0; i < a.length; i++) {
+            url += String.valueOf(a[i]) + ",";
+        }
+
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //获取圈子封面列表
+    public void getCircleCover() {
+        LocalLog.d(TAG, "getCircleCover() enter");
+        OkHttpUtils
+                .get()
+                .url(NetApi.urlCircleCover)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //TODO 获取圈子的封面
+    public void getCircleCoverByCircleId(int circleId) {
+
+    }
+
+    //动态接口
+    public void getDynamic(int page, int pagesize) {
+        LocalLog.d(TAG, "getDynamic() enter");
+        String url = NetApi.urlDynamic + "?page=" + page + "&pagesize=" + pagesize;
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //发布动态
+    public void postDynamic(DynamicParam dynamicParam) {
+        LocalLog.d(TAG, "postDynamic() enter");
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlDynamic)
+                .params(dynamicParam.getParam())
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //获取动他详情by    动态id
+    public void getDynamicDetail(int id) {
+        LocalLog.d(TAG, "getDynamicDetail() enter");
+        String url = NetApi.urlDynamic + "/" + String.valueOf(id);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //获取评论列表 http://119.29.10.64/v1/DynamicComment?dynamicid=2
+    public void getDynamicCommentList(int dynamicid, int page, int pagesize) {
+        LocalLog.d(TAG, "getDynamicCommentList() enter");
+        String url = NetApi.urlDynamicComment + "?dynamicid=" + dynamicid + "&page=" + page + " &pagesize=" + pagesize;
+
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //获取单条评论
+    public void getDynamicById(int id) {
+        LocalLog.d(TAG, "getDynamicById() enter");
+        String url = NetApi.urlDynamicComment + "/" + String.valueOf(id);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //Post 发送评论
+    public void postDynamicComment(DynamicContentParam dynamicContentParam) {
+        LocalLog.d(TAG, "postDynamicComment() enter");
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlDynamicComment)
+                .params(dynamicContentParam.getParam())
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+
+    //获取点赞用户列表
+    public void getDynamicVoteList(int dynamicid, int page, int pagesize) {
+        LocalLog.d(TAG, "getDynamicVoteList() enter");
+        String url = NetApi.urlDynamicVote + "?dynamicid=" + dynamicid + "&page=" + page + "&pagesie=" + pagesize;
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //获取反馈信息列表
+    public void getFeedBackList(String name, String content, String mobile, String creattime) {
+        LocalLog.d(TAG, "getFeedBackList() enter");
+        String url = NetApi.urlFeedBack + "?name=" + name + "&content=" + content
+                + "&mobile=" + mobile + "&creattime=" + creattime;
+
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //添加用户反馈
+    public void postFeedBack(FeedBackParam feedBackParam) {
+        LocalLog.d(TAG, "postFeedBack() enter");
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlFeedBack)
+                .params(feedBackParam.getParam())
+                .build()
+                .execute(new NetStringCallBack(null, -1));
     }
 
     //获取所有圈子成员
@@ -330,14 +482,72 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
+    //关于我们类型 http://119.29.10.64/v1/abouttype
+    public void getAboutType() {
+        LocalLog.d(TAG, "getAboutType() enter");
+        OkHttpUtils
+                .get()
+                .url(NetApi.urlAboutType)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //关于详情http://119.29.10.64/v1/about/2
+    public void getAboutTypeId(int id) {
+        LocalLog.d(TAG, "getAboutTypeId() enter");
+        String url = NetApi.urlAboutType + "/" + String.valueOf(id);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, 0));
+    }
+
+    //获取消息列表请求方式：get，地址：http://119.29.10.64/v1/messages/?userid=5&typeid=1，
+    // 参数：userid用户id，typeid消息类型id，如果是系统消息，请不要传值用户userid和类型typeid,-------------分页：
+    // page默认当前页为第一页，pagesize默认10条数据
+
+    public void getMessage(int userid, int typeid) {
+        String url = NetApi.urlMessage + "/?useid=" + String.valueOf(userid)
+                + "&typeid=" + String.valueOf(typeid);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //获取消息详情，请求方式：get，地址：http://119.29.10.64/v1/messages/detail/?id=1，参数：消息id
+    public void getMessageDetail(int id) {
+        LocalLog.d(TAG, "getMessageDetail() enter");
+        String url = NetApi.urlMessage + "/detail/?id=" + String.valueOf(id);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
+    //Post message
+    public void postMessage(PostMessageParam postMessageParam) {
+        LocalLog.d(TAG, "postMessage() enter");
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlMessage)
+                .params(postMessageParam.getParam())
+                .build()
+                .execute(new NetStringCallBack(null, -1));
+    }
+
     //修改备注名称和设为管理员
     public void markAdminReset() {
         LocalLog.d(TAG, "markAdminReset() enter");
         String url = NetApi.urlCircleMember;
     }
 
+
     //加入圈子
-    public void addCircle(int userid, int circleid) {
+    public void addInCircle(int userid, int circleid) {
         LocalLog.d(TAG, "addCircle() enter");
         OkHttpUtils
                 .post()
