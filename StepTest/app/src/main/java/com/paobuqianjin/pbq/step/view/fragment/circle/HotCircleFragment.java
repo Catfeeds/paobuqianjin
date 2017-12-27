@@ -27,7 +27,7 @@ import com.paobuqianjin.pbq.step.view.base.adapter.MyHotCircleAdapter;
 public class HotCircleFragment extends BaseFragment {
     private final static String TAG = HotCircleFragment.class.getSimpleName();
     private RecyclerView myHotRecyclerView;
-    private LinearLayoutManager layoutManagerHot, layoutManagerChoose;
+    private LinearLayoutManager  layoutManagerChoose;
     private RecyclerView allHotRecyclerView;
     private ImageView createCircleView;
 
@@ -47,13 +47,6 @@ public class HotCircleFragment extends BaseFragment {
     protected void initView(View rootView) {
         super.initView(rootView);
         LocalLog.d(TAG, "initView() enter");
-        myHotRecyclerView = (RecyclerView) rootView.findViewById(R.id.hot_my_circle_recycler);
-        layoutManagerHot = new LinearLayoutManager(getContext());
-        layoutManagerHot.setOrientation(LinearLayoutManager.HORIZONTAL);
-        myHotRecyclerView.setLayoutManager(layoutManagerHot);
-        myHotRecyclerView.addItemDecoration(new MyHotCircleAdapter.SpaceItemDecoration(50));
-        myHotRecyclerView.setAdapter(new MyHotCircleAdapter(getContext()));
-
         //TODO 圈子活动
         //TODO 精选圈子
         allHotRecyclerView = (RecyclerView) rootView
