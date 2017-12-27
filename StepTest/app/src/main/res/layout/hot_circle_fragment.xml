@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
     <!--我的圈子-->
     <ScrollView
+        android:scrollbars="none"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <RelativeLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:id="@+id/my_circles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,57 +79,77 @@
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/create_circle_lab"
                     android:layout_alignTop="@+id/create_circle_lab"
-                    android:layout_centerInParent="true">
+                    android:layout_centerInParent="true"
+                    android:visibility="gone">
 
-                    <ImageView
-                        android:id="@+id/circle_hot_a"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/circle_hot_a_img"
                         android:layout_width="58dp"
                         android:layout_height="58dp"
-                        android:src="@drawable/quan_a" />
+                        android:background="@drawable/image_circle"
+                        app:civ_border_color="@color/color_8a8a8a"
+                        app:civ_border_width="1dp" />
 
                     <TextView
+                        android:id="@+id/circle_hot_a_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/circle_hot_a"
+                        android:layout_below="@+id/circle_hot_a_img"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp"
                         android:includeFontPadding="true"
-                        android:text="圈子名称"
+                        android:text=""
                         android:textColor="@color/color_161727"
                         android:textSize="12sp" />
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/hot_circle_b"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/create_circle_lab"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignTop="@+id/create_circle_lab">
+                    android:layout_alignTop="@+id/create_circle_lab"
+                    android:visibility="gone">
 
-                    <ImageView
-                        android:id="@+id/circle_hot_b"
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/circle_hot_b_img"
                         android:layout_width="58dp"
                         android:layout_height="58dp"
-                        android:src="@drawable/quan_a" />
+                        app:civ_border_color="@color/color_8a8a8a"
+                        app:civ_border_width="1dp" />
 
                     <TextView
+                        android:id="@+id/circle_hot_b_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/circle_hot_b"
+                        android:layout_below="@+id/circle_hot_b_img"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp"
                         android:includeFontPadding="true"
-                        android:text="圈子名称"
+                        android:text=""
                         android:textColor="@color/color_161727"
                         android:textSize="12sp" />
                 </RelativeLayout>
 
                 <ImageView
+                    android:id="@+id/red_pack_b"
+                    android:layout_width="16dp"
+                    android:layout_height="17dp"
+                    android:layout_alignEnd="@+id/hot_circle_b"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/red_pack"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/red_pack_a"
                     android:layout_width="16dp"
                     android:layout_height="17dp"
                     android:layout_alignEnd="@+id/circle_hot_a_span"
                     android:layout_alignParentTop="true"
-                    android:src="@drawable/red_pack" />
+                    android:src="@drawable/red_pack"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <ImageView
@@ -135,7 +158,8 @@
                 android:layout_height="8dp"
                 android:layout_below="@+id/my_circle_spans"
                 android:layout_marginTop="15dp"
-                android:background="@color/color_f6f6f6" />
+                android:background="@color/color_f6f6f6"
+                android:visibility="gone" />
 
             <include
                 android:id="@+id/live_module_pan"

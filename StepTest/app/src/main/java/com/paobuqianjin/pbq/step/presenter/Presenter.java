@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.presenter;
 
 import android.app.Service;
 import android.content.Context;
+import android.widget.ImageView;
 
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.model.Engine;
@@ -126,6 +127,10 @@ public final class Presenter {
     //获取精选圈子
     public void getCircleChoice() {
         engine.getCircleChoice(engine.getId(mContext), 1, 10);
+    }
+
+    public void getImage(ImageView view, String urlImg) {
+        engine.getImage(view, urlImg);
     }
 
     //call onResume

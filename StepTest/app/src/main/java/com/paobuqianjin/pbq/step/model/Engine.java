@@ -5,15 +5,18 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
+import com.l.okhttppaobu.okhttp.callback.BitmapCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddFollowParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
@@ -36,12 +39,14 @@ import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
@@ -618,6 +623,8 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
+
+    //我加入的圈子
     //充值排行榜
     public void getCircleRecharge(int userid, int page, int pagesize) {
         LocalLog.d(TAG, "getCircleByAction() enter");
@@ -875,6 +882,30 @@ public final class Engine {
 
     }
 
+    //网络图片获取接口
+    public void getImage(final ImageView imageView, String urlImage) {
+        LocalLog.d(TAG, "getImage() enter");
+        Picasso.with(mContext).load(urlImage).into(imageView);
+/*        OkHttpUtils
+                .get()
+                .url(urlImage)
+                .build()
+                .connTimeOut(20000)
+                .readTimeOut(20000)
+                .writeTimeOut(20000)
+                .execute(new BitmapCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(Bitmap bitmap, int i) {
+                        if(imageView != null){
+                        imageView.setImageBitmap(bitmap);}
+                    }
+                });*/
+    }
 
     //
 

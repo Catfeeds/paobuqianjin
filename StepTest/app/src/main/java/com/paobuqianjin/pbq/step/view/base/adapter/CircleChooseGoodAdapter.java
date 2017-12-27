@@ -17,7 +17,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGoodAdapter.CircleChooseViewHolder> {
     private final static String TAG = CircleChooseGoodAdapter.class.getSimpleName();
     private Context mContext;
-    private final static int defaultCount = 10;
+    private final static int defaultCount = 3;
 
     public CircleChooseGoodAdapter(Context context) {
         super();

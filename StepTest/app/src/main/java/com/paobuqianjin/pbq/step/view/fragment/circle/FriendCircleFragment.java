@@ -75,7 +75,6 @@ public final class FriendCircleFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Presenter.getInstance(mContext).dispatchUiInterface(uiHotCircleInterface);
     }
 
     @Nullable
@@ -120,6 +119,7 @@ public final class FriendCircleFragment extends BaseFragment {
         }
     }
 
+
     @Override
     protected void initView(View rootView) {
         super.initView(rootView);
@@ -146,27 +146,12 @@ public final class FriendCircleFragment extends BaseFragment {
                 setIndicator(mCircleTabLayout, 30, 30);
             }
         });
+
+
         LocalLog.d(TAG, "initView() leave");
-        Presenter.getInstance(mContext).attachUiInterface(uiHotCircleInterface);
-        loadingData();
     }
 
-    private void loadingData() {
-        Presenter.getInstance(mContext).getCircleMy();
-        Presenter.getInstance(mContext).getCircleChoice();
 
-    }
 
-    private UiHotCircleInterface uiHotCircleInterface = new UiHotCircleInterface() {
-        @Override
-        public void response(MyHotCircleResponse myHotCircleResponse) {
-            LocalLog.d(TAG, myHotCircleResponse.toString());
-        }
-
-        @Override
-        public void response(ChoiceCircleResponse choiceCircleResponse) {
-            LocalLog.d(TAG, choiceCircleResponse.toString());
-        }
-    };
 }
 
