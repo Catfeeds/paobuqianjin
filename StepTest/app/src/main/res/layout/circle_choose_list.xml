@@ -58,6 +58,16 @@
             android:textColor="@color/color_161727"
             android:textSize="17sp" />
 
+        <ImageView
+            android:id="@+id/lock"
+            android:layout_width="12dp"
+            android:layout_height="15dp"
+            android:layout_alignBottom="@+id/circle_name"
+            android:layout_marginLeft="7dp"
+            android:layout_toEndOf="@+id/circle_name"
+            android:src="@drawable/lock"
+            android:visibility="gone" />
+
         <TextView
             android:id="@+id/circle_num_desc"
             android:layout_width="wrap_content"
@@ -82,11 +92,11 @@
             android:id="@+id/circle_join"
             android:layout_width="50dp"
             android:layout_height="25dp"
-            android:background="@drawable/button_join"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="10dp"
+            android:background="@drawable/button_join"
             android:text="加入"
             android:textColor="@color/color_161727"
             android:textSize="10dp" />

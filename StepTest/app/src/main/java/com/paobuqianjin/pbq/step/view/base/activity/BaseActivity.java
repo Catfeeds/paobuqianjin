@@ -16,6 +16,9 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
+import butterknife.ButterKnife;
+
+
 /**
  * Created by pbq on 2017/11/29.
  */
@@ -34,21 +37,30 @@ public class BaseActivity extends FragmentActivity {
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         initView();
+        ButterKnife.bind(this);
     }
 
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         super.setContentView(view, params);
         initView();
+        ButterKnife.bind(this);
     }
 
     @Override
     public void setContentView(View view) {
         super.setContentView(view);
         initView();
+        ButterKnife.bind(this);
     }
 
     protected void initView() {
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ButterKnife.unbind(this);
     }
 
     public void startActivity(Class<? extends Activity> target, Bundle bundle, boolean finish) {
@@ -62,7 +74,7 @@ public class BaseActivity extends FragmentActivity {
             finish();
     }
 
-    public void startActivity(Class<? extends Activity> target, Bundle bundle, boolean finish,String action) {
+    public void startActivity(Class<? extends Activity> target, Bundle bundle, boolean finish, String action) {
         Intent intent = new Intent();
         intent.setClass(this, target);
         intent.setAction(action);

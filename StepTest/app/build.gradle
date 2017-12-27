@@ -22,6 +22,18 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
+
+    android {
+
+        defaultConfig {
+
+            javaCompileOptions {
+                annotationProcessorOptions {
+                    includeCompileClasspath = true
+                }
+            }
+        }
+    }
 }
 
 dependencies {
@@ -44,4 +56,5 @@ dependencies {
     compile 'com.github.franmontiel:PersistentCookieJar:v0.9.3'
     implementation 'de.hdodenhof:circleimageview:2.0.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.jakewharton:butterknife:7.0.1'
 }

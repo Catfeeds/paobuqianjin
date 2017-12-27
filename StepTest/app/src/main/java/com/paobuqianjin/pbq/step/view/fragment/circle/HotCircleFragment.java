@@ -2,9 +2,9 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
@@ -22,11 +21,10 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
-import com.paobuqianjin.pbq.step.view.activity.MemberManagerActivity;
-import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleChooseGoodAdapter;
-import com.paobuqianjin.pbq.step.view.base.adapter.MyHotCircleAdapter;
+
+import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -37,7 +35,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class HotCircleFragment extends BaseFragment {
     private final static String TAG = HotCircleFragment.class.getSimpleName();
     private LinearLayoutManager layoutManagerChoose;
-    private RecyclerView allHotRecyclerView;
+    private RecyclerView choiceRecyclerView;
     private RelativeLayout myHotLa, myHotLb;
     private ImageView createCircleView;
     private CircleImageView myHotCircleIV, secondHotCircleIV;
@@ -76,14 +74,14 @@ public class HotCircleFragment extends BaseFragment {
         LocalLog.d(TAG, "initView() enter");
         //TODO 圈子活动
         //TODO 精选圈子
-        allHotRecyclerView = (RecyclerView) rootView
+        choiceRecyclerView = (RecyclerView) rootView
                 .findViewById(R.id.live_choose_good_module)
                 .findViewById(R.id.live_choose_good_module_recycler);
         layoutManagerChoose = new LinearLayoutManager(getContext());
         layoutManagerChoose.setOrientation(LinearLayoutManager.VERTICAL);
-        allHotRecyclerView.setLayoutManager(layoutManagerChoose);
-        allHotRecyclerView.addItemDecoration(new CircleChooseGoodAdapter.SpaceItemDecoration(5));
-        allHotRecyclerView.setAdapter(new CircleChooseGoodAdapter(getContext()));
+        choiceRecyclerView.setLayoutManager(layoutManagerChoose);
+        choiceRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        choiceRecyclerView.addItemDecoration(new CircleChooseGoodAdapter.SpaceItemDecoration(5));
 
 
         //
@@ -93,11 +91,19 @@ public class HotCircleFragment extends BaseFragment {
         myHotLa = (RelativeLayout) rootView.findViewById(R.id.circle_hot_a_span);
         myHotLb = (RelativeLayout) rootView.findViewById(R.id.hot_circle_b);
         myHotCircleIV = (CircleImageView) rootView.findViewById(R.id.circle_hot_a_img);
+        myHotCircleIV.setOnClickListener(onClickListener);
         secondHotCircleIV = (CircleImageView) rootView.findViewById(R.id.circle_hot_b_img);
+        myHotCircleIV.setOnClickListener(onClickListener);
         myHotCircleTV = (TextView) rootView.findViewById(R.id.circle_hot_a_name);
         secondHotCircleTV = (TextView) rootView.findViewById(R.id.circle_hot_b_name);
         readPackAIV = (ImageView) rootView.findViewById(R.id.red_pack_a);
         readPackBIV = (ImageView) rootView.findViewById(R.id.red_pack_b);
+
+        moreMyCircleTV = (TextView) rootView.findViewById(R.id.find_more_my_circle);
+        moreMyCircleTV.setOnClickListener(onClickListener);
+        RelativeLayout relativeLayout = (RelativeLayout) rootView.findViewById(R.id.live_choose_good_module);
+        moreChoiceTV =(TextView)relativeLayout.findViewById(R.id.find_more_choice) ;
+        moreChoiceTV.setOnClickListener(onClickListener);
         Presenter.getInstance(mContext).attachUiInterface(uiHotCircleInterface);
         loadingData();
     }
@@ -117,15 +123,29 @@ public class HotCircleFragment extends BaseFragment {
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            LocalLog.d(TAG, "onClick() enter");
             switch (view.getId()) {
                 case R.id.circle_create:
-                    LocalLog.d(TAG, "创建圈子");
+                    LocalLog.d(TAG, "onClick()创建圈子");
                     Intent intent = new Intent();
                     intent.setClass(HotCircleFragment.this.getContext(), CreateCircleActivity.class);
                     //intent.setClass(HotCircleFragment.this.getContext(),SearchCircleActivity.class);
                     //intent.setClass(HotCircleFragment.this.getContext(), MemberManagerActivity.class);
                     HotCircleFragment.this.getActivity().startActivity(intent);
                     Presenter.getInstance(HotCircleFragment.this.getContext()).getCirCleType();
+                    break;
+                case R.id.circle_hot_a_img:
+                    LocalLog.d(TAG, "onClick() 我的第一个圈子被点击");
+                    break;
+                case R.id.circle_hot_b_img:
+                    break;
+                case R.id.find_more_my_circle:
+
+                    break;
+                case R.id.live_choose_good_module:
+
+                    break;
+                default:
                     break;
             }
         }
@@ -183,7 +203,9 @@ public class HotCircleFragment extends BaseFragment {
 
         @Override
         public void response(ChoiceCircleResponse choiceCircleResponse) {
-
+            LocalLog.d(TAG, " response() 更新精选圈子 size = " + choiceCircleResponse.getData().getData().size());
+            choiceRecyclerView.setAdapter(new CircleChooseGoodAdapter(getContext(),
+                    (ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData()));
         }
     };
 }

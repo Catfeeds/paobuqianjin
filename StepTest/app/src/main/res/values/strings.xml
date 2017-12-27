@@ -32,6 +32,7 @@
     <string name="desc_sign">为了孩子和老人福泽及全人类</string>
     <string name="user_read">点击注册，即表示你已阅读并同意《跑步钱进服务协议》</string>
     <string name="mu_biao">目标</string>
+    <string name="member_number">"成员%1d人"</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
