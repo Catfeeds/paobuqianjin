@@ -124,7 +124,7 @@ public final class FriendCircleFragment extends BaseFragment {
     protected void initView(View rootView) {
         super.initView(rootView);
         mCircleTabLayout = (TabLayout) rootView.findViewById(R.id.circle_item_tab);
-        mCirclePager = (UnScrollViewPager) rootView.findViewById(R.id.circle_item_page);
+        mCirclePager = (ViewPager) rootView.findViewById(R.id.circle_item_page);
         LocalLog.d(TAG, "initView() enter");
         HotCircleFragment hotCircleFragment = new HotCircleFragment();
         AttentionCircleFragment attentionCircleFragment = new AttentionCircleFragment();

@@ -10,14 +10,13 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/circle_logo_search"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="14dp"
-            android:src="@drawable/logo" />
+            android:layout_marginStart="14dp" />
 
         <RelativeLayout
             android:id="@+id/circle_desc_info"
@@ -39,7 +38,7 @@
                     android:layout_alignBottom="@+id/lock"
                     android:gravity="center"
                     android:includeFontPadding="false"
-                    android:text="跑步有钱进福田"
+                    android:text=""
                     android:textColor="@color/color_161727"
                     android:textSize="14sp" />
 
@@ -64,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:includeFontPadding="false"
-                    android:text="成员500人"
+                    android:text=""
                     android:textColor="@color/color_8a8a8a"
                     android:textSize="12sp" />
 
@@ -83,10 +82,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/line1"
+                    android:layout_marginLeft="7dp"
                     android:layout_toEndOf="@+id/line1"
                     android:includeFontPadding="false"
-                    android:text="深圳福田"
-                    android:layout_marginLeft="7dp"
+                    android:text=""
                     android:textColor="@color/color_8a8a8a"
                     android:textSize="12sp" />
             </RelativeLayout>
@@ -94,6 +93,7 @@
         </RelativeLayout>
 
         <Button
+            android:id="@+id/join_in"
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"

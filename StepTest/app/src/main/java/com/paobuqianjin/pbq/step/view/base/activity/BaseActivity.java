@@ -37,21 +37,19 @@ public class BaseActivity extends FragmentActivity {
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
         initView();
-        ButterKnife.bind(this);
     }
 
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         super.setContentView(view, params);
         initView();
-        ButterKnife.bind(this);
     }
 
     @Override
     public void setContentView(View view) {
         super.setContentView(view);
         initView();
-        ButterKnife.bind(this);
+
     }
 
     protected void initView() {
@@ -60,7 +58,6 @@ public class BaseActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
     }
 
     public void startActivity(Class<? extends Activity> target, Bundle bundle, boolean finish) {

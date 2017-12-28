@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -43,6 +44,14 @@ public abstract class BaseFragment extends Fragment {
         intent.setClass(getActivity(), target);
         if (bundle != null)
             intent.putExtra(getActivity().getPackageName(), bundle);
+        getActivity().startActivity(intent);
+    }
+
+    public void startActivity(Class<? extends Activity> target, Parcelable parcelable) {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), target);
+        if (parcelable != null)
+            intent.putExtra(getActivity().getPackageName(), parcelable);
         getActivity().startActivity(intent);
     }
 

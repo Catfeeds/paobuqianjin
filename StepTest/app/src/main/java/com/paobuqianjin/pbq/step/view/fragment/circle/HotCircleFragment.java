@@ -15,12 +15,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.bundle.ChoiceBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleChooseGoodAdapter;
 
@@ -43,6 +45,7 @@ public class HotCircleFragment extends BaseFragment {
     private TextView moreMyCircleTV, moreChoiceTV;
     private ImageView readPackAIV, readPackBIV;
     private Context mContext;
+    private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData;
 
     @Override
     public void onAttach(Context context) {
@@ -102,7 +105,7 @@ public class HotCircleFragment extends BaseFragment {
         moreMyCircleTV = (TextView) rootView.findViewById(R.id.find_more_my_circle);
         moreMyCircleTV.setOnClickListener(onClickListener);
         RelativeLayout relativeLayout = (RelativeLayout) rootView.findViewById(R.id.live_choose_good_module);
-        moreChoiceTV =(TextView)relativeLayout.findViewById(R.id.find_more_choice) ;
+        moreChoiceTV = (TextView) relativeLayout.findViewById(R.id.find_more_choice);
         moreChoiceTV.setOnClickListener(onClickListener);
         Presenter.getInstance(mContext).attachUiInterface(uiHotCircleInterface);
         loadingData();
@@ -140,10 +143,15 @@ public class HotCircleFragment extends BaseFragment {
                 case R.id.circle_hot_b_img:
                     break;
                 case R.id.find_more_my_circle:
-
+                    LocalLog.d(TAG, "");
                     break;
                 case R.id.live_choose_good_module:
 
+                    break;
+                case R.id.find_more_choice:
+                    LocalLog.d(TAG, "查看更多圈子！");
+                    ChoiceBundleData choiceBundleData = new ChoiceBundleData(choiceCircleData);
+                    startActivity(SearchCircleActivity.class, choiceBundleData);
                     break;
                 default:
                     break;
@@ -204,8 +212,9 @@ public class HotCircleFragment extends BaseFragment {
         @Override
         public void response(ChoiceCircleResponse choiceCircleResponse) {
             LocalLog.d(TAG, " response() 更新精选圈子 size = " + choiceCircleResponse.getData().getData().size());
+            choiceCircleData = (ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData();
             choiceRecyclerView.setAdapter(new CircleChooseGoodAdapter(getContext(),
-                    (ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData()));
+                    choiceCircleData));
         }
     };
 }

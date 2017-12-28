@@ -49,30 +49,42 @@
         android:layout_marginLeft="13dp"
         android:layout_toEndOf="@+id/circle_log">
 
-        <TextView
-            android:id="@+id/circle_name"
+        <RelativeLayout
+            android:gravity="center"
+            android:id="@+id/circle_name_rel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:text="跑步钱进福田"
-            android:textColor="@color/color_161727"
-            android:textSize="17sp" />
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/lock"
-            android:layout_width="12dp"
-            android:layout_height="15dp"
-            android:layout_alignBottom="@+id/circle_name"
-            android:layout_marginLeft="7dp"
-            android:layout_toEndOf="@+id/circle_name"
-            android:src="@drawable/lock"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/circle_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:includeFontPadding="false"
+                android:text="跑步钱进福田"
+                android:textColor="@color/color_161727"
+                android:textSize="17sp" />
+
+            <ImageView
+                android:visibility="gone"
+                android:layout_centerVertical="true"
+                android:id="@+id/lock"
+                android:layout_width="12dp"
+                android:layout_height="15dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@+id/circle_name"
+                android:layout_alignTop="@+id/circle_name"
+                android:layout_marginLeft="7dp"
+                android:layout_toEndOf="@+id/circle_name"
+                android:src="@drawable/lock" />
+
+        </RelativeLayout>
+
 
         <TextView
             android:id="@+id/circle_num_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/circle_name"
+            android:layout_below="@+id/circle_name_rel"
             android:layout_marginTop="15dp"
             android:includeFontPadding="false"
             android:text="成员500人"
