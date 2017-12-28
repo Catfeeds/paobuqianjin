@@ -9,6 +9,8 @@ import android.view.View;
 import com.paobuqianjin.pbq.step.view.base.view.CircleTabView;
 import com.paobuqianjin.pbq.step.view.fragment.circle.AttentionCircleFragment;
 import com.paobuqianjin.pbq.step.view.fragment.circle.HotCircleFragment;
+import com.paobuqianjin.pbq.step.view.fragment.circle.OwnerCreateFragment;
+import com.paobuqianjin.pbq.step.view.fragment.circle.OwnerJoinFragment;
 
 import java.util.List;
 
@@ -39,10 +41,14 @@ public class CirclePageAdapter extends FragmentPagerAdapter {
     public View getTabView(int position) {
         CircleTabView tabView = new CircleTabView(mContext);
         Fragment fragment = getItem(position);
-        if (fragment instanceof HotCircleFragment ) {
-            tabView.setData(((HotCircleFragment)fragment).getTabLabel());
-        }else if(fragment instanceof AttentionCircleFragment){
-            tabView.setData(((AttentionCircleFragment)fragment).getTabLabel());
+        if (fragment instanceof HotCircleFragment) {
+            tabView.setData(((HotCircleFragment) fragment).getTabLabel());
+        } else if (fragment instanceof AttentionCircleFragment) {
+            tabView.setData(((AttentionCircleFragment) fragment).getTabLabel());
+        } else if (fragment instanceof OwnerCreateFragment) {
+            tabView.setData(((OwnerCreateFragment) fragment).getTabLabel());
+        } else if (fragment instanceof OwnerJoinFragment) {
+            tabView.setData(((OwnerJoinFragment) fragment).getTabLabel());
         }
         return tabView;
     }

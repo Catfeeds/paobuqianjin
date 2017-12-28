@@ -94,7 +94,6 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
         ImageView lock;
 
 
-
         public CircleChooseViewHolder(View view) {
             super(view);
             init(view);
@@ -105,9 +104,22 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
             circleLocation = (TextView) view.findViewById(R.id.circle_location);
             circleName = (TextView) view.findViewById(R.id.circle_name);
             circleNumDesc = (TextView) view.findViewById(R.id.circle_num_desc);
-
+            circleJoin = (Button) view.findViewById(R.id.circle_join);
+            circleJoin.setOnClickListener(onClickListener);
             lock = (ImageView) view.findViewById(R.id.lock);
+
         }
+
+        private View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.circle_join:
+                        LocalLog.d(TAG, "点击加入");
+                        break;
+                }
+            }
+        };
     }
 
     public static class SpaceItemDecoration extends RecyclerView.ItemDecoration {

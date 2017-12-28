@@ -16,12 +16,14 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.ChoiceBundleData;
+import com.paobuqianjin.pbq.step.data.bean.bundle.MyCircleBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleChooseGoodAdapter;
@@ -46,6 +48,7 @@ public class HotCircleFragment extends BaseFragment {
     private ImageView readPackAIV, readPackBIV;
     private Context mContext;
     private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData;
+    private ArrayList<MyHotCircleResponse.DataBeanX.DataBean> myCircleData;
 
     @Override
     public void onAttach(Context context) {
@@ -143,7 +146,9 @@ public class HotCircleFragment extends BaseFragment {
                 case R.id.circle_hot_b_img:
                     break;
                 case R.id.find_more_my_circle:
-                    LocalLog.d(TAG, "");
+                    LocalLog.d(TAG, "我的圈子");
+                    MyCircleBundleData myCircleBundleData = new MyCircleBundleData(myCircleData);
+                    startActivity(OwnerCircleActivity.class, myCircleBundleData);
                     break;
                 case R.id.live_choose_good_module:
 
@@ -185,6 +190,7 @@ public class HotCircleFragment extends BaseFragment {
     private UiHotCircleInterface uiHotCircleInterface = new UiHotCircleInterface() {
         @Override
         public void response(MyHotCircleResponse myHotCircleResponse) {
+            myCircleData = (ArrayList<MyHotCircleResponse.DataBeanX.DataBean>) myHotCircleResponse.getData().getData();
             int size = myHotCircleResponse.getData().getData().size();
             LocalLog.d(TAG, "myHotCircleResponse() size =" + size);
             switch (size) {

@@ -45,7 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION"/>
+                <action android:name="com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.APP_START" />
@@ -67,6 +67,11 @@
 
         <activity
             android:name=".view.activity.MemberManagerActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+
+        <activity
+            android:name=".view.activity.OwnerCircleActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
 

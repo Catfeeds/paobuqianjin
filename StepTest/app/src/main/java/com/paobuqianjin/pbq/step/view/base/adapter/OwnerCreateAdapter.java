@@ -7,41 +7,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.ArrayList;
 
-import butterknife.Bind;
-import butterknife.OnClick;
-
 /**
- * Created by pbq on 2017/12/15.
+ * Created by pbq on 2017/12/28.
  */
 
-public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapter.SearchCirCleViewHolder> {
-    private final static String TAG = SearchCircleAdapter.class.getSimpleName();
-    private final static int defaultValue = 15;
+public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.OwnerCreateViewHolder> {
+    private final static String TAG = OwnerCreateAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data;
-    private ChoiceCircleResponse.DataBeanX.DataBean tmpData;
+    private ArrayList<MyHotCircleResponse.DataBeanX.DataBean> data;
+    private MyHotCircleResponse.DataBeanX.DataBean tmpData;
 
-    public SearchCircleAdapter(Context context, ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data) {
+    public OwnerCreateAdapter(Context context, ArrayList<MyHotCircleResponse.DataBeanX.DataBean> data) {
         super();
-        mContext = context;
         this.data = data;
-    }
-
-    @Override
-    public SearchCirCleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        SearchCirCleViewHolder holder = new SearchCirCleViewHolder(
-                LayoutInflater.from(mContext).inflate(R.layout.circle_kan_ban_list, parent, false));
-        return holder;
+        mContext = context;
     }
 
     @Override
@@ -53,14 +41,22 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
     }
 
     @Override
-    public void onBindViewHolder(SearchCirCleViewHolder holder, int position) {
-        updateCircleList(holder, position);
+    public OwnerCreateViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        OwnerCreateViewHolder holder = new OwnerCreateViewHolder(LayoutInflater.from(mContext)
+                .inflate(R.layout.circle_kan_ban_list, parent, false));
+        return holder;
     }
 
-    private void updateCircleList(SearchCirCleViewHolder holder, int position) {
-        LocalLog.d(TAG, "updateCircleList() enter" + data.get(position).toString());
+    @Override
+    public void onBindViewHolder(OwnerCreateViewHolder holder, int position) {
 
-        tmpData = data.get(position);
+        updateMyCreateList(holder, position);
+    }
+
+    private void updateMyCreateList(OwnerCreateViewHolder holder, int position) {
+        LocalLog.d(TAG, "updateCircleList() enter" + data.get(0).toString());
+
+        tmpData = data.get(0);
         LocalLog.d(TAG, "city = " + tmpData.getCity() +
                 ", name =" + tmpData.getName() + "logo url = " + tmpData.getLogo() + " ,member_number ="
                 + tmpData.getMember_number());
@@ -70,13 +66,9 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
         String sAgeFormat = mContext.getResources().getString(R.string.member_number);
         String sFinalMember = String.format(sAgeFormat, tmpData.getMember_number());
         holder.searchCircleDesListNum.setText(sFinalMember);
-        if (tmpData.getIs_pwd() == 1) {
-            holder.lock.setVisibility(View.VISIBLE);
-            holder.needPass = true;
-        }
     }
 
-    class SearchCirCleViewHolder extends RecyclerView.ViewHolder {
+    class OwnerCreateViewHolder extends RecyclerView.ViewHolder {
         boolean needPass;
         ImageView circleLogoSearch;
         TextView searchCircleDesListName;
@@ -85,7 +77,7 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
         TextView locationDescSearchList;
         Button joinIn;
 
-        public SearchCirCleViewHolder(View view) {
+        public OwnerCreateViewHolder(View view) {
             super(view);
             init(view);
         }
@@ -113,6 +105,4 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
             }
         };
     }
-
-
 }
