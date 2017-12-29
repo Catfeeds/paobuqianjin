@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,13 +21,12 @@ import butterknife.ButterKnife;
 
 public class AttentionCircleFragment extends BaseFragment {
     private final static String TAG = AttentionCircleFragment.class.getSimpleName();
-    @Bind(R.id.dynamic_recyclerView)
     RecyclerView dynamicRecyclerView;
+    LinearLayoutManager layoutManager;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ButterKnife.bind(this, super.onCreateView(inflater, container, savedInstanceState));
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -42,11 +42,15 @@ public class AttentionCircleFragment extends BaseFragment {
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+        dynamicRecyclerView = (RecyclerView) viewRoot.findViewById(R.id.dynamic_recyclerView);
+        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        dynamicRecyclerView.setLayoutManager(layoutManager);
+        //
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }
