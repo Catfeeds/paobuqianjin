@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/dynamic_owner_rel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/dynamic_user_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toEndOf="@+id/dynamic_user_icon"
+            android:text="阳阳"
+            android:textColor="@color/color_161727"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="14dp"
+            android:text="4小时前"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/pic_content_rel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dynamic_owner_rel"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:id="@+id/dynamic_content_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="今天干哈？"
+            android:textColor="@color/color_161727"
+            android:textSize="15dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dynamic_content_text">
+
+            <ImageView
+                android:id="@+id/dynamic_pic_one"
+                android:layout_width="150dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/circle_live_default_a" />
+
+            <ImageView
+                android:layout_marginLeft="9dp"
+                android:layout_toEndOf="@+id/dynamic_pic_one"
+                android:id="@+id/dynamic_pic_two"
+                android:layout_width="150dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/circle_live_default_a" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/location_support_rel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pic_content_rel"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/dynamic_location_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="深圳"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/content_numbers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="16"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/content_number_icon"
+            android:layout_width="16dp"
+            android:layout_height="15dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toStartOf="@+id/content_numbers"
+            android:background="@drawable/comment_dynimic" />
+
+        <TextView
+
+            android:id="@+id/content_supports"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="22dp"
+            android:layout_toStartOf="@+id/content_number_icon"
+            android:text="44"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="17dp"
+            android:layout_height="14dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:layout_toStartOf="@+id/content_supports"
+            android:background="@drawable/fabulous_s" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/content_des"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/location_support_rel"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:id="@+id/line_content"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/color_f6f6f7" />
+
+        <TextView
+            android:id="@+id/first_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/line_content"
+            android:layout_marginTop="15dp"
+            android:gravity="left"
+            android:text="女侠请留言:向你学习"
+            android:textColor="@color/color_161727"
+            android:textSize="14dp" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/first_content"
+            android:layout_marginTop="15dp"
+            android:gravity="left"
+            android:text="查看全部评价"
+            android:textColor="@color/color_6c71c4"
+            android:textSize="14dp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/content_des"
+        android:background="@color/color_f6f6f6"
+        android:id="@+id/line_content_list"
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+</RelativeLayout>

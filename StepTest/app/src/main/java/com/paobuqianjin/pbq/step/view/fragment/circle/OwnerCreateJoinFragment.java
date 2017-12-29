@@ -19,15 +19,14 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.CirclePageAdapter;
+import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 
 /**
  * Created by pbq on 2017/12/28.
@@ -72,20 +71,20 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
         OwnerCreateFragment ownerCreateFragment1 = new OwnerCreateFragment();
         ownerCreateFragment1.setOwnerCreateCircleData(ownerCreateCircleData);
         //OwnerJoinFragment ownerJoinFragment = new OwnerJoinFragment();
-
+        String[] title = {"我创建的", "我加入的"};
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(ownerCreateFragment);
         fragments.add(ownerCreateFragment1);
         createOrJoin = (TabLayout) viewRoot.findViewById(R.id.create_or_join);
         ownerCreateJoinPager = (ViewPager) viewRoot.findViewById(R.id.owner_create_join_pager);
-        CirclePageAdapter pageAdapter = new CirclePageAdapter(getContext()
-                , getActivity().getSupportFragmentManager(), fragments);
+        TabAdapter pageAdapter = new TabAdapter(getContext()
+                , getActivity().getSupportFragmentManager(), fragments,title);
         ownerCreateJoinPager.setAdapter(pageAdapter);
         createOrJoin.setupWithViewPager(ownerCreateJoinPager);
 
         for (int i = 0; i < createOrJoin.getTabCount(); i++) {
             LocalLog.d(TAG, "initView() i = " + i);
-            createOrJoin.getTabAt(i).setCustomView(pageAdapter.getTabView(i));
+            //createOrJoin.getTabAt(i).setCustomView(pageAdapter.getTabView(i));
         }
         createOrJoin.post(new Runnable() {
             @Override

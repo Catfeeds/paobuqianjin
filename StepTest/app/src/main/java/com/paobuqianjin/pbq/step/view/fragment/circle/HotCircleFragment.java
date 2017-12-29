@@ -23,6 +23,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.LoveRankActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -142,6 +143,7 @@ public class HotCircleFragment extends BaseFragment {
                     break;
                 case R.id.circle_hot_a_img:
                     LocalLog.d(TAG, "onClick() 我的第一个圈子被点击");
+                    startActivity(LoveRankActivity.class, null);
                     break;
                 case R.id.circle_hot_b_img:
                     break;

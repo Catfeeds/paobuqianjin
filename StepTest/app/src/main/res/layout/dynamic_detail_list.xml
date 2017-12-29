@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/src_dynamic_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <include layout="@layout/dynamic_style_one_pic_list">
+
+            </include>
+            <!-- 动态加载布局 ，原动态-->
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/support_rel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/src_dynamic_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp">
+
+            <TextView
+                android:id="@+id/support_peoples"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="2个人赞过"
+                android:textColor="@color/color_161727"
+                android:textSize="14sp" />
+
+            <RelativeLayout
+                android:id="@+id/support_pics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/support_peoples"
+                android:layout_marginTop="20dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_toStartOf="@+id/share_icon"></android.support.v7.widget.RecyclerView>
+
+                <ImageView
+                    android:id="@+id/share_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/share_ico" />
+            </RelativeLayout>
+        </RelativeLayout>
+        <!-- 一级回复-->
+        <RelativeLayout
+            android:id="@+id/first_content_rel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/support_rel">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/firs"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

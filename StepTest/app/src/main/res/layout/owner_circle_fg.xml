@@ -23,6 +23,7 @@
         android:layout_below="@+id/owner_circle_search_pan"
         app:tabIndicatorColor="@color/color_ffc14c"
         app:tabIndicatorHeight="2dp"
+        app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
         app:tabSelectedTextColor="@color/color_161727"
         app:tabTextColor="@color/color_8a8a8a" />
 
