@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.view.base.adapter.AttentionCircleAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -46,7 +47,7 @@ public class AttentionCircleFragment extends BaseFragment {
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         dynamicRecyclerView.setLayoutManager(layoutManager);
-        //
+        dynamicRecyclerView.setAdapter(new AttentionCircleAdapter(getContext()));
     }
 
     @Override

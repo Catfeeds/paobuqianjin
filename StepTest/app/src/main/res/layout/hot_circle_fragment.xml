@@ -86,9 +86,7 @@
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/circle_hot_a_img"
                         android:layout_width="58dp"
-                        android:layout_height="58dp"
-                        app:civ_border_color="@color/color_8a8a8a"
-                        app:civ_border_width="1dp" />
+                        android:layout_height="58dp" />
 
                     <TextView
                         android:id="@+id/circle_hot_a_name"
