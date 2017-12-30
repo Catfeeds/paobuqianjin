@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
@@ -25,6 +26,7 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
     private TextView tv_title;
     private ImageView tv_left;
     private TextView tv_right;
+    private RelativeLayout rv_left;
 
     /*@desc 设置导航栏标题
     *@function title
@@ -67,9 +69,11 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
         tv_title = getView(rootView, R.id.bar_title);
         tv_right = getView(rootView, R.id.bar_tv_right);
         tv_left = getView(rootView, R.id.bar_return_drawable);
+        rv_left = getView(rootView,R.id.button_return_bar);
         setToolBarListener();
         tv_left.setOnClickListener(clickListener);
         tv_right.setOnClickListener(clickListener);
+        rv_left.setOnClickListener(clickListener);
         refreshTop(rootView);
     }
 
@@ -82,6 +86,7 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.bar_return_drawable:
+                case R.id.button_return_bar:
                     if (mToolBarListener == null) {
                         BaseBarStyleTextViewFragment.this.getActivity().finish();
                     } else {

@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
@@ -20,6 +21,7 @@ public abstract class BaseBarActivity extends BaseActivity {
     private TextView tv_title;
     private ImageView tv_left;
     private TextView tv_right;
+    private RelativeLayout rv_left;
 
     /*@desc 设置导航栏标题
     *@function title
@@ -54,8 +56,10 @@ public abstract class BaseBarActivity extends BaseActivity {
         tv_title = getView(R.id.bar_title);
         tv_right = getView(R.id.bar_tv_right);
         tv_left = getView(R.id.bar_return_drawable);
+        rv_left = getView(R.id.button_return_bar);
         setToolBarListener();
         tv_left.setOnClickListener(clickListener);
+        rv_left.setOnClickListener(clickListener);
         tv_right.setOnClickListener(clickListener);
         refreshTop();
     }
@@ -69,6 +73,7 @@ public abstract class BaseBarActivity extends BaseActivity {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.bar_return_drawable:
+                case R.id.button_return_bar:
                     if (mToolBarListener == null) {
                         finish();
                     } else {
@@ -126,7 +131,9 @@ public abstract class BaseBarActivity extends BaseActivity {
         return (T) findViewById(id);
     }
 
-    /**启动指定Activity
+    /**
+     * 启动指定Activity
+     *
      * @param target
      * @param bundle
      */
@@ -137,6 +144,7 @@ public abstract class BaseBarActivity extends BaseActivity {
             intent.putExtra(this.getPackageName(), bundle);
         startActivity(intent);
     }
+
     public interface ToolBarListener {
         void clickLeft();
 
