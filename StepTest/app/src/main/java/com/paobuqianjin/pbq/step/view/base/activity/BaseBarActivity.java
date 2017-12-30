@@ -77,7 +77,8 @@ public abstract class BaseBarActivity extends BaseActivity {
                     if (mToolBarListener == null) {
                         finish();
                     } else {
-                        mToolBarListener.clickLeft();
+                        //mToolBarListener.clickLeft();
+                        finish();
                     }
                     break;
                 case R.id.bar_tv_right:

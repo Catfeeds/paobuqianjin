@@ -16,11 +16,23 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.circle_detail_fg;
+        return R.layout.circle_detail_fg_normal;
     }
 
     @Override
     public Object right() {
-        return getDrawableResource(R.drawable.home_s);
+        return getDrawableResource(R.drawable.exit);
     }
+
+    private ToolBarListener toolBarListener = new ToolBarListener() {
+        @Override
+        public void clickLeft() {
+
+        }
+
+        @Override
+        public void clickRight() {
+
+        }
+    };
 }

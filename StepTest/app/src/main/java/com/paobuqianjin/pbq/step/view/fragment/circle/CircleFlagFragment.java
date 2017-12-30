@@ -10,6 +10,7 @@ import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment
 public class CircleFlagFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = CircleFlagFragment.class.getSimpleName();
 
+
     public CircleFlagFragment() {
         super();
     }

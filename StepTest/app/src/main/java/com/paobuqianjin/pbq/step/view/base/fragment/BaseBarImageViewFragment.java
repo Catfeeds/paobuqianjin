@@ -91,7 +91,8 @@ public abstract class BaseBarImageViewFragment extends BaseFragment {
                     if (mToolBarListener == null) {
                         BaseBarImageViewFragment.this.getActivity().finish();
                     } else {
-                        mToolBarListener.clickLeft();
+                        //mToolBarListener.clickLeft();
+                        BaseBarImageViewFragment.this.getActivity().finish();
                     }
                     break;
                 case R.id.bar_tv_right:

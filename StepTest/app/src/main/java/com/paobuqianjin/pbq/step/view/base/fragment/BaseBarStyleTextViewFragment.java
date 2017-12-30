@@ -90,7 +90,8 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
                     if (mToolBarListener == null) {
                         BaseBarStyleTextViewFragment.this.getActivity().finish();
                     } else {
-                        mToolBarListener.clickLeft();
+                        //mToolBarListener.clickLeft();
+                        BaseBarStyleTextViewFragment.this.getActivity().finish();
                     }
                     break;
                 case R.id.bar_tv_right:

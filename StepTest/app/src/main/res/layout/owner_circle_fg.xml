@@ -26,12 +26,17 @@
         app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
         app:tabSelectedTextColor="@color/color_161727"
         app:tabTextColor="@color/color_8a8a8a" />
-
+    <ImageView
+        android:layout_below="@+id/create_or_join"
+        android:id="@+id/line_view"
+        android:background="@color/color_ebebed"
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
     <android.support.v4.view.ViewPager
         android:id="@+id/owner_create_join_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/create_or_join"></android.support.v4.view.ViewPager>
+        android:layout_below="@+id/line_view"></android.support.v4.view.ViewPager>
 
 
 </RelativeLayout>
