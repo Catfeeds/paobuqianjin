@@ -9,7 +9,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/title_bar">
 
         <RelativeLayout
@@ -53,18 +53,101 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rank_money"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/circle_message"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp">
 
-                <TextView
-                    android:id="@+id/love_money_list"
+                <RelativeLayout
+                    android:id="@+id/love_money_list_rel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/love_money_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="本圈爱心排行榜"
+                        android:textColor="@color/color_161727"
+                        android:textSize="15sp" />
+
+                    <RelativeLayout
+                        android:id="@+id/image_button"
+                        android:layout_width="30dp"
+                        android:layout_height="15dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true">
+
+                        <ImageView
+                            android:layout_width="7dp"
+                            android:layout_height="13dp"
+                            android:layout_alignParentEnd="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/go_to" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rank_recycler"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="本圈爱心排行榜"
-                    android:textColor="@color/color_f8" />
+                    android:layout_below="@+id/love_money_list_rel"
+                    android:layout_marginTop="20dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <Button
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/rank_recycler"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/rectangle_four_dp"
+                    android:text="充值" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/step_rank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rank_money">
+
+                <ImageView
+                    android:id="@+id/line_rank_step"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:background="@color/color_ebebed" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/line_rank_step"
+                    android:layout_marginLeft="14dp"
+                    android:text="步数排行榜"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/member_num_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/textView"
+                    android:layout_alignBottom="@+id/textView"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView"
+                    android:text="共78人"
+                    android:textColor="@color/color_161727"
+                    android:textSize="12sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView"
+                    android:layout_below="@+id/textView"></android.support.v7.widget.RecyclerView>
             </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
