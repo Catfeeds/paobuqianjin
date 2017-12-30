@@ -7,15 +7,16 @@
         android:id="@+id/bar_dynamic_detail"
         layout="@layout/bar_return_a_style"></include>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bar_dynamic_detail">
 
-        <android.support.v7.widget.RecyclerView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        </android.support.v7.widget.RecyclerView>
-    </ScrollView>
+            <include layout="@layout/dynamic_detail_list"></include>
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
 </RelativeLayout>

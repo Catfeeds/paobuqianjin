@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/content_user_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/logo" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="14dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="31dp"
+        android:layout_toEndOf="@id/content_user_icon">
+
+        <TextView
+            android:id="@+id/user_content_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text="阳阳"
+            android:textColor="@color/color_161727"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/user_content_ranka"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/user_content_name"
+            android:layout_marginTop="15dp"
+            android:gravity="left"
+            android:text="今天尝试跑了三公里，朋友一起比赛没"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_marginTop="15dp"
+            android:text="08-03"
+            android:textSize="12sp"
+            android:textColor="@color/color_8a8a8a"
+            android:layout_below="@+id/user_content_ranka"
+            android:id="@+id/time_content_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_alignBaseline="@+id/time_content_a"
+            android:layout_alignBottom="@+id/time_content_a"
+            android:layout_toEndOf="@+id/time_content_a"
+            android:text="18:14" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/contend_all_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/time_content_a"></android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+</RelativeLayout>

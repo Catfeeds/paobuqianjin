@@ -56,50 +56,71 @@
             android:text="今天干哈？"
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/dynamic_content_text">
-
-            <ImageView
-                android:id="@+id/dynamic_pic_one"
-                android:layout_width="0dp"
-                android:layout_height="110dp"
-                android:layout_marginTop="15dp"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"
-                android:src="@drawable/circle_live_default_a" />
-
-            <ImageView
-                android:id="@+id/dynamic_pic_two"
-                android:layout_width="0dp"
-                android:layout_height="110dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginTop="15dp"
-                android:layout_toEndOf="@+id/dynamic_pic_one"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"
-                android:src="@drawable/circle_live_default_a" />
-
-            <ImageView
-                android:id="@+id/dynamic_pic_three"
-                android:layout_width="0dp"
-                android:layout_height="110dp"
-                android:layout_marginLeft="7dp"
-                android:layout_marginTop="15dp"
-                android:layout_toEndOf="@+id/dynamic_pic_one"
-                android:layout_weight="1"
-                android:scaleType="centerCrop"
-                android:src="@drawable/circle_live_default_a" />
-        </LinearLayout>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/pic_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pic_content_rel"
+        android:layout_marginTop="15dp">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/image_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="375dp">
+
+        </android.support.v4.view.ViewPager>
+
+        <LinearLayout
+            android:id="@+id/dot_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image_viewpager"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/image_viewpager_dot_selected"
+                android:id="@+id/dot_1"
+                android:layout_width="8dp"
+                android:layout_height="8dp"></View>
+
+            <View
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/image_viewpager_dot_unselected"
+                android:id="@+id/dot_2"
+                android:layout_width="8dp"
+                android:layout_height="8dp"></View>
+
+            <View
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/image_viewpager_dot_unselected"
+                android:id="@+id/dot_3"
+                android:layout_width="8dp"
+                android:layout_height="8dp"></View>
+
+            <View
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/image_viewpager_dot_unselected"
+                android:id="@+id/dot_4"
+                android:layout_width="8dp"
+                android:layout_height="8dp"></View>
+        </LinearLayout>
+    </RelativeLayout>
     <RelativeLayout
         android:id="@+id/location_support_rel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/pic_content_rel"
+        android:layout_below="@+id/pic_viewpager"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
         android:layout_marginTop="20dp">
@@ -150,51 +171,12 @@
             android:background="@drawable/fabulous_s" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/content_des"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/location_support_rel"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-        android:layout_marginTop="15dp">
-
-        <ImageView
-            android:id="@+id/line_content"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/color_f6f6f7" />
-
-        <TextView
-            android:id="@+id/first_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/line_content"
-            android:layout_marginTop="15dp"
-            android:gravity="left"
-            android:text="女侠请留言:向你学习"
-            android:textColor="@color/color_161727"
-            android:textSize="14dp" />
-
-        <TextView
-            android:id="@+id/scan_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/first_content"
-            android:layout_marginTop="15dp"
-            android:gravity="left"
-            android:text="查看全部评价"
-            android:textColor="@color/color_6c71c4"
-            android:textSize="14dp" />
-    </RelativeLayout>
 
     <ImageView
         android:id="@+id/line_content_list"
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:layout_below="@+id/content_des"
+        android:layout_below="@+id/location_support_rel"
         android:layout_marginTop="20dp"
         android:background="@color/color_f6f6f6" />
 </RelativeLayout>

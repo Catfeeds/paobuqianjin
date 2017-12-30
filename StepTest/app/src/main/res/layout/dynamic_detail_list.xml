@@ -12,10 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/dynamic_style_one_pic_list">
-
-            </include>
-            <!-- 动态加载布局 ，原动态-->
+            <include layout="@layout/dynamic_detail_style_one_pic"></include>
         </RelativeLayout>
 
         <RelativeLayout
@@ -43,9 +40,11 @@
                 android:layout_marginTop="20dp">
 
                 <android.support.v7.widget.RecyclerView
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_toStartOf="@+id/share_icon"></android.support.v7.widget.RecyclerView>
+                    android:id="@+id/support_icon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp">
+
+                </android.support.v7.widget.RecyclerView>
 
                 <ImageView
                     android:id="@+id/share_icon"
@@ -55,16 +54,19 @@
                     android:src="@drawable/share_ico" />
             </RelativeLayout>
         </RelativeLayout>
-        <!-- 一级回复-->
+
         <RelativeLayout
-            android:id="@+id/first_content_rel"
+            android:id="@+id/content_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/support_rel">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/firs"
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/content_details_list_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
+        <!-- 一级回复-->
     </RelativeLayout>
 </RelativeLayout>

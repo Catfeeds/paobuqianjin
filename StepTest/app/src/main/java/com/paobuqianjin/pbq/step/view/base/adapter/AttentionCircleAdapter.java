@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 
 import butterknife.Bind;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -119,6 +121,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ImageView lineContentList;
         //@Bind(R.id.scan_more)
         TextView scanMore;
+
         public OneOrZeroViewHodler(View view, int viewType) {
             super(view);
             this.viewType = viewType;
@@ -149,7 +152,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 switch (view.getId()) {
                     case R.id.scan_more:
                         LocalLog.d(TAG, "点击查看更多评价");
-
+                        Intent intent = new Intent();
+                        intent.setClass(mContext, DynamicActivity.class);
+                        mContext.startActivity(intent);
                         break;
                 }
             }

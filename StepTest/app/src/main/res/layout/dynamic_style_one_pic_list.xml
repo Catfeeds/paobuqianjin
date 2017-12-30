@@ -61,9 +61,10 @@
             android:id="@+id/dynamic_pic_one"
             android:layout_width="190dp"
             android:layout_height="130dp"
+            android:scaleType="centerCrop"
             android:layout_below="@+id/dynamic_content_text"
             android:layout_marginTop="15dp"
-            android:background="@drawable/circle_live_default_a" />
+            android:src="@drawable/circle_live_default_a" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -145,7 +146,6 @@
             android:layout_marginTop="15dp"
             android:gravity="left"
             android:text="女侠请留言:向你学习"
-            android:visibility="gone"
             android:textColor="@color/color_161727"
             android:textSize="14dp" />
 
