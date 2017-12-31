@@ -41,7 +41,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:gravity="center"
-            android:text="关注"
+            android:text="已关注"
             android:textColor="@color/color_161727"
             android:textSize="14sp" />
 

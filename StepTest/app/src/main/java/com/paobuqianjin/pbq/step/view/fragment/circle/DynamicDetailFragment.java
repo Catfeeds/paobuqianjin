@@ -14,8 +14,10 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.LikeSupportActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
+import com.paobuqianjin.pbq.step.view.base.adapter.TopLevelContentAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import java.util.ArrayList;
@@ -90,6 +92,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment {
     ImageViewPagerAdapter adapter;
     private LayoutInflater inflater;
     private LinearLayoutManager layoutManager;
+    private LinearLayoutManager layoutManagerContent;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.dynamic_detail_fg;
@@ -144,6 +148,13 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment {
         supportIcon.setLayoutManager(layoutManager);
         supportIcon.setAdapter(new LikeUserAdapter(getContext()));
         supportIcon.addItemDecoration(new LikeUserAdapter.SpaceItemDecoration(10));
+        shareIcon = (ImageView) viewRoot.findViewById(R.id.share_icon);
+        shareIcon.setOnClickListener(onClickListener);
+
+        contentDetailsListItem = (RecyclerView) viewRoot.findViewById(R.id.content_details_list_item);
+        layoutManagerContent = new LinearLayoutManager(getContext());
+        contentDetailsListItem.setLayoutManager(layoutManagerContent);
+        contentDetailsListItem.setAdapter(new TopLevelContentAdapter(getContext()));
     }
 
     private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -164,6 +175,21 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment {
         @Override
         public void onPageScrollStateChanged(int state) {
 
+        }
+    };
+
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            LocalLog.d(TAG, "onClick() enter 查看点赞");
+            switch (view.getId()) {
+                case R.id.share_icon:
+                    startActivity(LikeSupportActivity.class, null);
+                    break;
+                default:
+                    break;
+            }
         }
     };
 

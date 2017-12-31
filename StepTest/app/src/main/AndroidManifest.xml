@@ -86,6 +86,11 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
 
+        <activity
+            android:name=".view.activity.LikeSupportActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+
         <receiver
             android:name=".model.broadcast.BootStepReceiver"
             android:exported="false">
