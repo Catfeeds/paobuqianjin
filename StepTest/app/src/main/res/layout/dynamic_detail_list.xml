@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,7 +12,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/dynamic_detail_style_one_pic"></include>
+            <include
+                android:id="@+id/dynamic_detail_style_with_or_pic"
+                layout="@layout/dynamic_detail_style_one_pic"></include>
         </RelativeLayout>
 
         <RelativeLayout
@@ -40,8 +42,10 @@
                 android:layout_marginTop="20dp">
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/support_icon"
-                    android:layout_width="30dp"
+                    android:orientation="horizontal"
+                    android:id="@+id/support_icon_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_toStartOf="@+id/share_icon"
                     android:layout_height="30dp">
 
                 </android.support.v7.widget.RecyclerView>
@@ -55,11 +59,20 @@
             </RelativeLayout>
         </RelativeLayout>
 
+        <ImageView
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/support_rel"
+            android:background="@color/color_ebebed"
+            android:id="@+id/line_like_content"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
         <RelativeLayout
             android:id="@+id/content_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/support_rel">
+            android:layout_below="@+id/line_like_content">
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/content_details_list_item"
                 android:layout_width="match_parent"

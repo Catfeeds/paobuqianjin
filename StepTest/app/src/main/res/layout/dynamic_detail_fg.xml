@@ -16,7 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/dynamic_detail_list"></include>
+            <include
+                android:id="@+id/one_dynamic_detail"
+                layout="@layout/dynamic_detail_list"></include>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 </RelativeLayout>

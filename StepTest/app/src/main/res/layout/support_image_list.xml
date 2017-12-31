@@ -7,5 +7,7 @@
         android:id="@+id/share_icon"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/share_ico" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/logo" />
 </RelativeLayout>
