@@ -134,8 +134,8 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
                 outRect.bottom = mSpace;
             }
             if (parent.getChildAdapterPosition(view) == defaultCount - 1) {
-                outRect.bottom = 0;
-                LocalLog.d(TAG, "getItemOffsets() last set");
+/*                outRect.bottom = 0;
+                LocalLog.d(TAG, "getItemOffsets() last set");*/
             } else {
                 outRect.bottom = mSpace;
             }

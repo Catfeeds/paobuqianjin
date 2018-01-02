@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,8 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 
+import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
@@ -39,6 +42,7 @@ public final class FriendCircleFragment extends BaseFragment {
     private android.support.design.widget.TabLayout mCircleTabLayout;
     private ViewPager mCirclePager;
     private BaseActivity mActivity;
+    RelativeLayout scanMark;
     private Context mContext;
     private int currentIndexFriend = 0;
     private int mIndexFriend = 0;
@@ -149,9 +153,19 @@ public final class FriendCircleFragment extends BaseFragment {
 
 
         LocalLog.d(TAG, "initView() leave");
+        scanMark = (RelativeLayout) rootView.findViewById(R.id.scan_mark);
+        scanMark.setOnClickListener(onClickListener);
     }
 
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.scan_mark:
 
-
+                    break;
+            }
+        }
+    };
 }
 
