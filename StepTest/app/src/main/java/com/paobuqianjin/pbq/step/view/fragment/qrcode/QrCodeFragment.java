@@ -13,6 +13,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -74,7 +75,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         BitMatrix result = null;
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-        try {
+       /* try {
             result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 175, 175);
             int w = result.getWidth();
             int h = result.getHeight();
@@ -89,6 +90,17 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
             bitmap.setPixels(pixels, 0, w, 0, 0, w, h);
         } catch (WriterException e) {
             LocalLog.e(TAG, e.getMessage());
+        }*/
+
+        try {
+            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 175, 175);
+            // 使用 ZXing Android Embedded 要写的代码
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            bitmap = barcodeEncoder.createBitmap(result);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException iae) {
+            return null;
         }
         return bitmap;
     }

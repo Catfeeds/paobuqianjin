@@ -1,13 +1,17 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -179,6 +183,25 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         if (stepServiceBind) {
             Presenter.getInstance(this).unbindStepService();
+        }
+    }
+
+
+    @Override
+// 通过 onActivityResult的方法获取 扫描回来的 值
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (intentResult != null) {
+            if (intentResult.getContents() == null) {
+                Toast.makeText(this, "内容为空", Toast.LENGTH_LONG).show();
+            } else {
+                // ScanResult 为 获取到的字符串
+                String ScanResult = intentResult.getContents();
+                Toast.makeText(this, "扫描成功:" + ScanResult, Toast.LENGTH_LONG).show();
+
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

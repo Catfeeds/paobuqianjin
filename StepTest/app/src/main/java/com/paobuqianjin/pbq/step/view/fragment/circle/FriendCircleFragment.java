@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
@@ -24,6 +25,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.CirclePageAdapter;
@@ -162,7 +164,11 @@ public final class FriendCircleFragment extends BaseFragment {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.scan_mark:
-
+                    LocalLog.d(TAG, "扫描二维码!");
+                    new IntentIntegrator(getActivity())
+                            .setOrientationLocked(false)
+                            .setCaptureActivity(QrCodeScanActivity.class)
+                            .initiateScan();
                     break;
             }
         }
