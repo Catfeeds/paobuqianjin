@@ -6,6 +6,10 @@ package com.paobuqianjin.pbq.step.utils;
 
 public class NetApi {
     //圈子接口
+    /*获取我的圈子--地址：http://119.29.10.64/v1/Circle/?action=my&userid=1（userid用户真实id）
+    获取精选圈子--地址：http://119.29.10.64/v1/Circle/?action=choice&userid=1
+    获取我加入的圈子--地址：http://119.29.10.64/v1/Circle/?action=join&userid=1
+    获取我创建的圈子--地址：http://119.29.10.64/v1/Circle/?action=create&userid=1*/
     public final static String urlCircle = "http://119.29.10.64/v1/Circle";
     //圈子类型接口
     public final static String urlCircleType = "http://119.29.10.64/v1/CircleType";

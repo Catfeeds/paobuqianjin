@@ -1,10 +1,13 @@
 package com.l.okhttppaobu.okhttp.builder;
 
 
+import android.util.Log;
+
 import com.l.okhttppaobu.okhttp.request.OtherRequest;
 import com.l.okhttppaobu.okhttp.request.RequestCall;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
@@ -45,12 +48,15 @@ public class OtherRequestBuilder extends OkHttpRequestBuilder<OtherRequestBuilde
         return this;
     }
 
-    private void addParams(FormBody.Builder builder)
-    {
-        if (params != null)
-        {
-            for (String key : params.keySet())
-            {
+    public OtherRequestBuilder params(Map<String, String> params) {
+        Log.e("Okhttp", "增加参数");
+        this.params = params;
+        return this;
+    }
+
+    private void addParams(FormBody.Builder builder) {
+        if (params != null) {
+            for (String key : params.keySet()) {
                 builder.add(key, params.get(key));
             }
         }

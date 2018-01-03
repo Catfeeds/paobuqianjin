@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class CreateCircleBodyParam {
     /*
-
+    userid  用户ID      true    int
     typeid	圈子类型	true	int
     name	圈子名称	true	string
     targetid	目标ID	true	int
@@ -29,6 +29,7 @@ public class CreateCircleBodyParam {
     latitude	纬度	true	float	0
     total_amount	圈子总金额	true	float	0
     * */
+    private int userid;
     private int typeid;
     private String name;
     private int targetid;
@@ -241,11 +242,11 @@ public class CreateCircleBodyParam {
         return this;
     }
 
-
     @Override
     public String toString() {
         return "CreateCircleBodyParam{" +
-                "typeid=" + typeid +
+                "userid=" + userid +
+                ", typeid=" + typeid +
                 ", name='" + name + '\'' +
                 ", targetid=" + targetid +
                 ", mobile='" + mobile + '\'' +
@@ -264,5 +265,19 @@ public class CreateCircleBodyParam {
                 ", latitude=" + latitude +
                 ", total_amount=" + total_amount +
                 '}';
+    }
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public CreateCircleBodyParam setUserid(int userid) {
+        this.userid = userid;
+        params.put("userid", String.valueOf(userid));
+        return this;
+    }
+
+    public void setParams(Map<String, String> params) {
+        this.params = params;
     }
 }

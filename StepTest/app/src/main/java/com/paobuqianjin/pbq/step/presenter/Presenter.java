@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
-import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 
@@ -120,13 +119,17 @@ public final class Presenter {
     /*热门界面*/
     //获取我的圈子
     public void getCircleMy() {
-        engine.getCircleMy(engine.getId(mContext),
+        engine.getMyCirlce(engine.getId(mContext),
                 1, 10);
     }
 
     //获取精选圈子
     public void getCircleChoice() {
         engine.getCircleChoice(engine.getId(mContext), 1, 10);
+    }
+
+    private void getTest() {
+        LocalLog.d(TAG, "getTest() enter  批量测试所有接口API");
     }
 
     public void getImage(ImageView view, String urlImg) {

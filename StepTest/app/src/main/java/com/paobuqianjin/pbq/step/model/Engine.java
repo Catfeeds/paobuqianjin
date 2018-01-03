@@ -81,6 +81,9 @@ public final class Engine {
     //
     public final static int COMMAND_GET_MY_CIRCLE = 6;
     public final static int COMMAND_GET_CHOICE_CIRCLE = 7;
+    public final static int COMMAND_GET_MY_CREATE_CIRCLE = 8;
+    public final static int COMMAND_GET_MY_JOIN_CIRCLE = 9;
+    public final static int COMMAND_GET_CIRCLE_DETAIL = 10;
 
     private Engine() {
 
@@ -637,9 +640,34 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //精选圈子 ：http://api.runmoneyin.com/v1/Circle?action=choice&userid=5&page=1&pagesize=2
+    /* TODO 圈子接口*/
+    public void getMyJoin(int userid, int page, int pagesize) {
+        LocalLog.d(TAG, "getMyJoin() enter");
+        String url = NetApi.urlCircle + "?action=join" + "&userid=" + String.valueOf(userid)
+                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_MY_JOIN_CIRCLE));
+    }
+
+
+    public void getMyCreateCirlce(int userid, int page, int pagesize) {
+
+        LocalLog.d(TAG, "getMyCreateCirlce() enter");
+        String url = NetApi.urlCircle + "?action=create" + "&userid=" + String.valueOf(userid)
+                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_MY_CREATE_CIRCLE));
+    }
+
+
     public void getCircleChoice(int userid, int page, int pagesize) {
-        LocalLog.d(TAG, "getCircleByAction() enter");
+        LocalLog.d(TAG, "getCircleChoice() enter");
         String url = NetApi.urlCircle + "?action=choice" + "&userid=" + String.valueOf(userid)
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         OkHttpUtils
@@ -649,8 +677,8 @@ public final class Engine {
                 .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_CHOICE_CIRCLE));
     }
 
-    //获取我的圈子
-    public void getCircleMy(int userid, int page, int pagesize) {
+
+    public void getMyCirlce(int userid, int page, int pagesize) {
         LocalLog.d(TAG, "getCircleByAction() enter");
         String url = NetApi.urlCircle + "?action=my" + "&userid=" + String.valueOf(userid)
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
@@ -661,7 +689,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_MY_CIRCLE));
     }
 
-    //创建圈子
+
     public void createCircle(CreateCircleBodyParam createCircleBodyParam) {
         LocalLog.d(TAG, "createCircle() enter");
         OkHttpUtils
@@ -672,7 +700,6 @@ public final class Engine {
                 .execute(new NetStringCallBack(uiCreateCircleInterface, COMMAND_CREATE_CIRCLE));
     }
 
-    //获取圈子详情 http://api.runmoneyin.com/v1/Circle/100000
     public void getCircleDetail(int circleId) {
         LocalLog.d(TAG, "getCircleDetail() enter");
         String url = NetApi.urlCircle + "/" + String.valueOf(circleId);
@@ -680,9 +707,13 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(null, -1));
+                .execute(new NetStringCallBack(null, COMMAND_GET_CIRCLE_DETAIL));
     }
 
+    public void putCircle(CreateCircleBodyParam createCircleBodyParam, int circleId) {
+        LocalLog.d(TAG, "编辑圈子 putCircle()");
+        String url = NetApi.urlCircle + "/" + circleId;
+    }
 
     //获取用户登录记录，暂时无需实现
     public void getUserRecord(int userId) {
