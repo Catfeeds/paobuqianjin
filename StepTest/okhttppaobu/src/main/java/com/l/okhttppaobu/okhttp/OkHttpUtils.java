@@ -26,6 +26,7 @@ import okhttp3.Response;
  * Created by zhy on 15/8/17.
  */
 public class OkHttpUtils {
+    private final static String TAG = OkHttpUtils.class.getSimpleName();
     public static final long DEFAULT_MILLISECONDS = 10_000L;
     private volatile static OkHttpUtils mInstance;
     private OkHttpClient mOkHttpClient;
@@ -43,6 +44,7 @@ public class OkHttpUtils {
 
 
     public static OkHttpUtils initClient(OkHttpClient okHttpClient) {
+        Log.e(TAG,"com.squareup.okhttp3 Version == 3.8.1");
         if (mInstance == null) {
             synchronized (OkHttpUtils.class) {
                 if (mInstance == null) {
