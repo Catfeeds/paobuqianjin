@@ -42,7 +42,9 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
 
     @Override
     public CircleChooseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        CircleChooseViewHolder holder = new CircleChooseViewHolder(LayoutInflater.from(mContext).inflate(R.layout.circle_choose_list, parent, false));
+        CircleChooseViewHolder holder = new CircleChooseViewHolder(
+                LayoutInflater.from(mContext).inflate(R.layout.circle_choose_list,
+                        parent, false));
         return holder;
     }
 
@@ -66,6 +68,15 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
         holder.circleNumDesc.setText(sFinalMember);
         if (tmpData.getIs_pwd() == 1) {
             holder.lock.setVisibility(View.VISIBLE);
+            holder.is_pwd = true;
+        }
+        if (tmpData.getIs_join() == 0) {
+            LocalLog.d(TAG, "未在该圈可以加入");
+            holder.circleJoin.setText("加入");
+            holder.setCircleId(tmpData.getCircleid());
+            holder.circleJoin.setOnClickListener(holder.onClickListener);
+        } else if (tmpData.getIs_join() == 1) {
+            holder.circleJoin.setText("已加入");
         }
     }
 
@@ -76,6 +87,17 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
 
 
     class CircleChooseViewHolder extends RecyclerView.ViewHolder {
+        boolean getIs_pwd() {
+            return is_pwd;
+        }
+
+        void setIs_pwd(boolean is_pwd) {
+            this.is_pwd = is_pwd;
+        }
+
+        boolean is_pwd;
+
+        int circleId;
 
         ImageView circleLogo;
 
@@ -105,21 +127,30 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
             circleName = (TextView) view.findViewById(R.id.circle_name);
             circleNumDesc = (TextView) view.findViewById(R.id.circle_num_desc);
             circleJoin = (Button) view.findViewById(R.id.circle_join);
-            circleJoin.setOnClickListener(onClickListener);
             lock = (ImageView) view.findViewById(R.id.lock);
 
         }
 
-        private View.OnClickListener onClickListener = new View.OnClickListener() {
+        View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.circle_join:
                         LocalLog.d(TAG, "点击加入");
+                        if (is_pwd) {
+                            //TODO 需要密码,获取密码再调用以下
+                            Presenter.getInstance(mContext).joinCircle(circleId, "123456");
+                        } else {
+                            Presenter.getInstance(mContext).joinCircle(circleId);
+                        }
                         break;
                 }
             }
         };
+
+        void setCircleId(int circleId) {
+            this.circleId = circleId;
+        }
     }
 
     public static class SpaceItemDecoration extends RecyclerView.ItemDecoration {

@@ -2,11 +2,11 @@ package com.paobuqianjin.pbq.step.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.bundle.MyCircleBundleData;
+import com.paobuqianjin.pbq.step.data.bean.bundle.MyCreateCircleBundleData;
+import com.paobuqianjin.pbq.step.data.bean.bundle.MyJoinCreateCircleBudleData;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.fragment.circle.OwnerCreateJoinFragment;
@@ -31,12 +31,16 @@ public class OwnerCircleActivity extends BaseActivity {
         super.initView();
         LocalLog.d(TAG, "initView() enter");
         Intent intent = getIntent();
-        if (intent != null && intent.getParcelableExtra(getPackageName()) != null) {
-            MyCircleBundleData myCircleBundleData = (MyCircleBundleData) intent.getParcelableExtra(getPackageName());
-            ownerCircleFragment.setOwnerCreateCircleData(myCircleBundleData.getMyCircleData());
-        } else {
-            ownerCircleFragment.setOwnerCreateCircleData(null);
+        MyCreateCircleBundleData myCreateCircleBundleData = null;
+        MyJoinCreateCircleBudleData myJoinCreateCircleBudleData = null;
+        if (intent != null && intent.getParcelableExtra(getPackageName() + "my_create") != null) {
+            myCreateCircleBundleData = (MyCreateCircleBundleData) intent.getParcelableExtra(getPackageName() + "my_create");
         }
+        if (intent != null && intent.getParcelableExtra(getPackageName() + "my_join") != null) {
+            myJoinCreateCircleBudleData = (MyJoinCreateCircleBudleData) intent.getParcelableExtra(getPackageName() + "my_join");
+        }
+        ownerCircleFragment.setOwnerCreateCircleData(myCreateCircleBundleData.getMyCreateCircleData(), myJoinCreateCircleBudleData.getMyJoinCircleData());
+
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.owner_circle_container, ownerCircleFragment)
                 .show(ownerCircleFragment).commit();

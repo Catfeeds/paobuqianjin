@@ -117,10 +117,14 @@ public final class Presenter {
     }
 
     /*热门界面*/
-    //获取我的圈子
-    public void getCircleMy() {
-        engine.getMyCirlce(engine.getId(mContext),
-                1, 10);
+    //TODO 我创建的圈子
+    public void getMyCreateCirlce() {
+        engine.getMyCreateCirlce(1, 10);
+    }
+
+    //TODO 我加入的圈子
+    public void getMyJoinCircle() {
+        engine.getMyJoinCircle(1, 10);
     }
 
     //获取精选圈子
@@ -134,6 +138,15 @@ public final class Presenter {
 
     public void getImage(ImageView view, String urlImg) {
         engine.getImage(view, urlImg);
+    }
+
+    //TODO 加入圈子
+    public void joinCircle(int circleId) {
+        engine.joinCircle(circleId);
+    }
+
+    public void joinCircle(int circleId, String password) {
+        engine.joinCircle(circleId, password);
     }
 
     //call onResume

@@ -14,11 +14,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.ChoiceBundleData;
-import com.paobuqianjin.pbq.step.data.bean.bundle.MyCircleBundleData;
+import com.paobuqianjin.pbq.step.data.bean.bundle.MyCreateCircleBundleData;
+import com.paobuqianjin.pbq.step.data.bean.bundle.MyJoinCreateCircleBudleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -49,7 +53,8 @@ public class HotCircleFragment extends BaseFragment {
     private ImageView readPackAIV, readPackBIV;
     private Context mContext;
     private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData;
-    private ArrayList<MyHotCircleResponse.DataBeanX.DataBean> myCircleData;
+    private ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> myCreateCircle;
+    private ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> myJoinCirCle;
 
     @Override
     public void onAttach(Context context) {
@@ -100,7 +105,7 @@ public class HotCircleFragment extends BaseFragment {
         myHotCircleIV = (CircleImageView) rootView.findViewById(R.id.circle_hot_a_img);
         myHotCircleIV.setOnClickListener(onClickListener);
         secondHotCircleIV = (CircleImageView) rootView.findViewById(R.id.circle_hot_b_img);
-        myHotCircleIV.setOnClickListener(onClickListener);
+        secondHotCircleIV.setOnClickListener(onClickListener);
         myHotCircleTV = (TextView) rootView.findViewById(R.id.circle_hot_a_name);
         secondHotCircleTV = (TextView) rootView.findViewById(R.id.circle_hot_b_name);
         readPackAIV = (ImageView) rootView.findViewById(R.id.red_pack_a);
@@ -117,9 +122,9 @@ public class HotCircleFragment extends BaseFragment {
 
 
     private void loadingData() {
-        Presenter.getInstance(mContext).getCircleMy();
+        Presenter.getInstance(mContext).getMyJoinCircle();
         Presenter.getInstance(mContext).getCircleChoice();
-
+        Presenter.getInstance(mContext).getMyCreateCirlce();
     }
 
     /*@desc  返回Fragment标签
@@ -146,11 +151,18 @@ public class HotCircleFragment extends BaseFragment {
                     startActivity(LoveRankActivity.class, null);
                     break;
                 case R.id.circle_hot_b_img:
+                    LocalLog.d(TAG, "onClick() 我的第二个圈子被点击");
+                    startActivity(LoveRankActivity.class, null);
                     break;
                 case R.id.find_more_my_circle:
                     LocalLog.d(TAG, "我的圈子");
-                    MyCircleBundleData myCircleBundleData = new MyCircleBundleData(myCircleData);
-                    startActivity(OwnerCircleActivity.class, myCircleBundleData);
+                    MyCreateCircleBundleData myCreateCircleBundleData = new MyCreateCircleBundleData(myCreateCircle);
+                    MyJoinCreateCircleBudleData myJoinCreateCircleBudleData = new MyJoinCreateCircleBudleData(myJoinCirCle);
+                    Intent intentCircle = new Intent();
+                    intentCircle.setClass(getActivity(), OwnerCircleActivity.class);
+                    intentCircle.putExtra(getActivity().getPackageName() + "my_create", myCreateCircleBundleData);
+                    intentCircle.putExtra(getActivity().getPackageName() + "my_join",myJoinCreateCircleBudleData );
+                    getActivity().startActivity(intentCircle);
                     break;
                 case R.id.live_choose_good_module:
 
@@ -190,31 +202,31 @@ public class HotCircleFragment extends BaseFragment {
     }
 
     private UiHotCircleInterface uiHotCircleInterface = new UiHotCircleInterface() {
+
         @Override
-        public void response(MyHotCircleResponse myHotCircleResponse) {
-            myCircleData = (ArrayList<MyHotCircleResponse.DataBeanX.DataBean>) myHotCircleResponse.getData().getData();
-            int size = myHotCircleResponse.getData().getData().size();
+        public void response(MyJoinCircleResponse myJoinCircleResponse) {
+            LocalLog.d(TAG, "myJoinCircleResponse ");
+            myJoinCirCle = (ArrayList<MyJoinCircleResponse.DataBeanX.DataBean>) myJoinCircleResponse.getData().getData();
+            int size = myJoinCircleResponse.getData().getData().size();
             LocalLog.d(TAG, "myHotCircleResponse() size =" + size);
-            switch (size) {
-                case 0:
-                    LocalLog.d(TAG, "未加入也未创建任何圈子");
-                    break;
-                case 1:
-                    setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
-                            myHotCircleResponse.getData().getData().get(0).getLogo(),
-                            true);
-                    break;
-                case 2:
-                    setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
-                            myHotCircleResponse.getData().getData().get(0).getLogo(),
-                            true);
-                    setMyHotLb(myHotCircleResponse.getData().getData().get(1).getName(),
-                            myHotCircleResponse.getData().getData().get(1).getLogo(),
-                            true);
-                    break;
-                default:
-                    break;
+            if (size == 1) {
+                setMyHotLa(myJoinCircleResponse.getData().getData().get(0).getName(),
+                        myJoinCircleResponse.getData().getData().get(0).getLogo(),
+                        true);
+            } else if (size >= 2) {
+                setMyHotLa(myJoinCircleResponse.getData().getData().get(0).getName(),
+                        myJoinCircleResponse.getData().getData().get(0).getLogo(),
+                        true);
+                setMyHotLb(myJoinCircleResponse.getData().getData().get(1).getName(),
+                        myJoinCircleResponse.getData().getData().get(1).getLogo(),
+                        true);
             }
+        }
+
+        @Override
+        public void response(MyCreateCircleResponse myCreateCircleResponse) {
+            LocalLog.d(TAG, "myCreateCircleResponse  ");
+            myCreateCircle = (ArrayList<MyCreateCircleResponse.DataBeanX.DataBean>) myCreateCircleResponse.getData().getData();
         }
 
         @Override

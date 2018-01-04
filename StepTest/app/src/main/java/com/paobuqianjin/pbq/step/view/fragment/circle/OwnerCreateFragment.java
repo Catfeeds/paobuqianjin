@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.OwnerCreateAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -27,9 +27,9 @@ public class OwnerCreateFragment extends BaseFragment {
     @Bind(R.id.owner_create_circle_lists)
     RecyclerView ownerCreateCircleLists;
     private LinearLayoutManager layoutManager;
-    private ArrayList<MyHotCircleResponse.DataBeanX.DataBean> ownerCreateCircleData;
+    private ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> ownerCreateCircleData;
 
-    public void setOwnerCreateCircleData(ArrayList<MyHotCircleResponse.DataBeanX.DataBean> ownerCreateCircleData) {
+    public void setOwnerCreateCircleData(ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> ownerCreateCircleData) {
         this.ownerCreateCircleData = ownerCreateCircleData;
         if (ownerCreateCircleData == null) {
             //重新获取

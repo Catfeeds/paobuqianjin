@@ -16,7 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.CirclePageAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
@@ -25,7 +27,6 @@ import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-
 
 
 /**
@@ -37,14 +38,14 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
     ViewPager ownerCreateJoinPager;
 
     private android.support.design.widget.TabLayout createOrJoin;
-    private ArrayList<MyHotCircleResponse.DataBeanX.DataBean> ownerCreateCircleData;
+    private ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> ownerCreateCircleData;
+    private ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> ownerJoinCircleData;
 
-    public void setOwnerCreateCircleData(ArrayList<MyHotCircleResponse.DataBeanX.DataBean> ownerCreateCircleData) {
+    public void setOwnerCreateCircleData(ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> ownerCreateCircleData,
+                                         ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> ownerJoinCircleData) {
         this.ownerCreateCircleData = ownerCreateCircleData;
-        if (ownerCreateCircleData == null) {
-            //重新获取
-            return;
-        }
+        this.ownerJoinCircleData = ownerJoinCircleData;
+
         LocalLog.d(TAG, "setOwnerCreateCircleData() enter" + ownerCreateCircleData.toString());
     }
 
@@ -68,17 +69,16 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
         super.initView(viewRoot);
         OwnerCreateFragment ownerCreateFragment = new OwnerCreateFragment();
         ownerCreateFragment.setOwnerCreateCircleData(ownerCreateCircleData);
-        OwnerCreateFragment ownerCreateFragment1 = new OwnerCreateFragment();
-        ownerCreateFragment1.setOwnerCreateCircleData(ownerCreateCircleData);
-        //OwnerJoinFragment ownerJoinFragment = new OwnerJoinFragment();
+        OwnerJoinFragment ownerJoinFragment = new OwnerJoinFragment();
+        ownerJoinFragment.setOwnerCircleData(ownerJoinCircleData);
         String[] title = {"我创建的", "我加入的"};
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(ownerCreateFragment);
-        fragments.add(ownerCreateFragment1);
+        fragments.add(ownerJoinFragment);
         createOrJoin = (TabLayout) viewRoot.findViewById(R.id.create_or_join);
         ownerCreateJoinPager = (ViewPager) viewRoot.findViewById(R.id.owner_create_join_pager);
         TabAdapter pageAdapter = new TabAdapter(getContext()
-                , getActivity().getSupportFragmentManager(), fragments,title);
+                , getActivity().getSupportFragmentManager(), fragments, title);
         ownerCreateJoinPager.setAdapter(pageAdapter);
         createOrJoin.setupWithViewPager(ownerCreateJoinPager);
 

@@ -2,7 +2,7 @@ package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
 import java.util.List;
 
-/**
+/**关于类型应答
  * Created by pbq on 2017/12/26.
  */
 

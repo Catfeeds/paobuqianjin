@@ -79,11 +79,16 @@ public final class Engine {
     //
     public final static int COMMAND_CREATE_CIRCLE = 5;
     //
-    public final static int COMMAND_GET_MY_CIRCLE = 6;
     public final static int COMMAND_GET_CHOICE_CIRCLE = 7;
     public final static int COMMAND_GET_MY_CREATE_CIRCLE = 8;
     public final static int COMMAND_GET_MY_JOIN_CIRCLE = 9;
     public final static int COMMAND_GET_CIRCLE_DETAIL = 10;
+    public final static int COMMAND_EDIT_CIRCLE = 11;
+    public final static int COMMAND_DELETE_CIRCLE = 12;
+    public final static int COMMAND_STEP_RANK = 13;
+    public final static int COMMAND_RECHARGE_RANK = 14;
+    public final static int COMMAND_CIRCLE_TYPE = 15;
+    public final static int COMMAND_JOIN_CIRCLE = 16;
 
     private Engine() {
 
@@ -569,15 +574,27 @@ public final class Engine {
 
 
     //加入圈子
-    public void addInCircle(int userid, int circleid) {
-        LocalLog.d(TAG, "addCircle() enter");
+    public void joinCircle(int circleid) {
+        LocalLog.d(TAG, "joinCircle() enter");
         OkHttpUtils
                 .post()
                 .url(NetApi.urlCircleMember)
-                .addParams("userid", String.valueOf(userid))
+                .addParams("userid", String.valueOf(getId(mContext)))
                 .addParams("circleid", String.valueOf(circleid))
                 .build()
-                .execute(new NetStringCallBack(null, -1));
+                .execute(new NetStringCallBack(null, COMMAND_JOIN_CIRCLE));
+    }
+
+    public void joinCircle(int circleid, String password) {
+        LocalLog.d(TAG, "joinCircle() password");
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlCircleMember)
+                .addParams("userid", String.valueOf(getId(mContext)))
+                .addParams("circleid", String.valueOf(circleid))
+                .addParams("password", password)
+                .build()
+                .execute(new NetStringCallBack(null, COMMAND_JOIN_CIRCLE));
     }
 
     //获取圈子目标列表
@@ -590,60 +607,45 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //获取圈子类型列表
+    /*TODO 圈子类型接口*/
     public void getCircleType() {
-        LocalLog.d(TAG, "getCircleType() enter");
+        LocalLog.d(TAG, "圈子类型列表：getCircleType() enter");
         OkHttpUtils
                 .get()
                 .url(NetApi.urlCircleType)
                 .build()
-                .execute(new NetStringCallBack(loginCallBackInterface) {
+                .execute(new NetStringCallBack(null, COMMAND_CIRCLE_TYPE) {
                 });
     }
 
 
-    //我的和精选圈子
-    public void getCircleAll(int userid, int page, int pagesize) {
-        LocalLog.d(TAG, "getCircleByAction() enter");
-        String url = NetApi.urlCircle + "?action=all" + "&userid=" + String.valueOf(userid)
-                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
-        OkHttpUtils
-                .get()
-                .url(url)
-                .build()
-                .execute(new NetStringCallBack(null, -1));
-    }
-
-    //步数排行榜
-    public void getCircleStep(int userid, int page, int pagesize) {
-        LocalLog.d(TAG, "getCircleByAction() enter");
-        String url = NetApi.urlCircle + "?action=step" + "&userid=" + String.valueOf(userid)
-                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
-        OkHttpUtils
-                .get()
-                .url(url)
-                .build()
-                .execute(new NetStringCallBack(null, -1));
-    }
-
-
-    //我加入的圈子
-    //充值排行榜
-    public void getCircleRecharge(int userid, int page, int pagesize) {
-        LocalLog.d(TAG, "getCircleByAction() enter");
-        String url = NetApi.urlCircle + "?action=recharge" + "&userid=" + String.valueOf(userid)
-                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
-        OkHttpUtils
-                .get()
-                .url(url)
-                .build()
-                .execute(new NetStringCallBack(null, -1));
-    }
-
     /* TODO 圈子接口*/
-    public void getMyJoin(int userid, int page, int pagesize) {
-        LocalLog.d(TAG, "getMyJoin() enter");
-        String url = NetApi.urlCircle + "?action=join" + "&userid=" + String.valueOf(userid)
+    public void getCircleStepRank(int circleId, int page, int pagesize) {
+        LocalLog.d(TAG, "圈子步数排行：getCircleStepRank() enter");
+        String url = NetApi.urlCircleRank + "/?circleid=" + String.valueOf(circleId)
+                + "&action=step";
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, COMMAND_STEP_RANK));
+    }
+
+
+    public void getCircleRechargeRank(int circleId, int page, int pagesize) {
+        LocalLog.d(TAG, "充值排行：getCircleRechargeRank() enter");
+        String url = NetApi.urlCircleRank + "/?circleid=" + String.valueOf(circleId)
+                + "&action=recharge";
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, COMMAND_RECHARGE_RANK));
+    }
+
+    public void getMyJoinCircle(int page, int pagesize) {
+        LocalLog.d(TAG, "我加入的圈子：getMyJoin() enter");
+        String url = NetApi.urlCircle + "?action=join" + "&userid=" + String.valueOf(getId(mContext))
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         OkHttpUtils
                 .get()
@@ -653,10 +655,9 @@ public final class Engine {
     }
 
 
-    public void getMyCreateCirlce(int userid, int page, int pagesize) {
-
-        LocalLog.d(TAG, "getMyCreateCirlce() enter");
-        String url = NetApi.urlCircle + "?action=create" + "&userid=" + String.valueOf(userid)
+    public void getMyCreateCirlce(int page, int pagesize) {
+        LocalLog.d(TAG, " 我创建的圈子：getMyCreateCirlce() enter");
+        String url = NetApi.urlCircle + "?action=create" + "&userid=" + String.valueOf(engine.getId(mContext))
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         OkHttpUtils
                 .get()
@@ -667,7 +668,7 @@ public final class Engine {
 
 
     public void getCircleChoice(int userid, int page, int pagesize) {
-        LocalLog.d(TAG, "getCircleChoice() enter");
+        LocalLog.d(TAG, "精选圈子：getCircleChoice() enter");
         String url = NetApi.urlCircle + "?action=choice" + "&userid=" + String.valueOf(userid)
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         OkHttpUtils
@@ -678,20 +679,8 @@ public final class Engine {
     }
 
 
-    public void getMyCirlce(int userid, int page, int pagesize) {
-        LocalLog.d(TAG, "getCircleByAction() enter");
-        String url = NetApi.urlCircle + "?action=my" + "&userid=" + String.valueOf(userid)
-                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
-        OkHttpUtils
-                .get()
-                .url(url)
-                .build()
-                .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_MY_CIRCLE));
-    }
-
-
     public void createCircle(CreateCircleBodyParam createCircleBodyParam) {
-        LocalLog.d(TAG, "createCircle() enter");
+        LocalLog.d(TAG, "  创建圈子createCircle() enter");
         OkHttpUtils
                 .post()
                 .url(NetApi.urlCircle)
@@ -701,7 +690,7 @@ public final class Engine {
     }
 
     public void getCircleDetail(int circleId) {
-        LocalLog.d(TAG, "getCircleDetail() enter");
+        LocalLog.d(TAG, " 获取圈子详情 getCircleDetail() ");
         String url = NetApi.urlCircle + "/" + String.valueOf(circleId);
         OkHttpUtils
                 .get()
@@ -713,6 +702,23 @@ public final class Engine {
     public void putCircle(CreateCircleBodyParam createCircleBodyParam, int circleId) {
         LocalLog.d(TAG, "编辑圈子 putCircle()");
         String url = NetApi.urlCircle + "/" + circleId;
+        OkHttpUtils
+                .put()
+                .url(url)
+                .params(createCircleBodyParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(null, COMMAND_EDIT_CIRCLE));
+    }
+
+
+    public void deleteCircle(int circleId) {
+        LocalLog.d(TAG, "删除圈子：deleteCircle() enter");
+        String url = NetApi.urlCircle + "/" + circleId;
+        OkHttpUtils
+                .delete()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(null, COMMAND_DELETE_CIRCLE));
     }
 
     //获取用户登录记录，暂时无需实现

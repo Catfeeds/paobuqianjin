@@ -25,132 +25,17 @@ import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
  */
 
 public final class OwnerFragment extends BaseFragment {
-    //   private TextView logoutTV;
-    private BaseBarActivity.ToolBarListener mToolBarListener;
-    private TextView tv_title;
-    private ImageView tv_right;
-    private RelativeLayout rv_right;
-
-    /*@desc 设置导航栏标题
-    *@function title
-    *@param
-    *@return
-    */
-    protected String title() {
-        return "我";
-    }
-
-    /*@desc 左导航栏
-    *@function left
-    *@param
-    *@return
-    */
-    public Object left() {
-        return null;
-    }
-
-    /*@desc 左导航栏
-    *@function left
-    *@param
-    *@return
-    */
-    public Object right() {
-        return null;
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        initBarView(rootView);
         return rootView;
     }
 
-    public BaseBarActivity.ToolBarListener setToolBarListener() {
-        return null;
-    }
 
-    public void initBarView(View rootView) {
-        tv_title = getView(rootView, R.id.bar_title);
-        tv_right = getView(rootView, R.id.bar_tv_right);
-        setToolBarListener();
-        tv_right.setOnClickListener(clickListener);
-        refreshTop(rootView);
-    }
 
-    public void setToolBarListener(BaseBarActivity.ToolBarListener toolBarListener) {
-        mToolBarListener = toolBarListener;
-    }
 
-    View.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.bar_return_drawable:
-                case R.id.button_return_bar:
-                    if (mToolBarListener == null) {
-                        OwnerFragment.this.getActivity().finish();
-                    } else {
-                        //mToolBarListener.clickLeft();
-                        OwnerFragment.this.getActivity().finish();
-                    }
-                    break;
-                case R.id.bar_tv_right:
-                    if (mToolBarListener != null) {
-                        mToolBarListener.clickRight();
-                    }
-                    break;
-            }
-        }
-    };
 
-    protected void refreshTop(View viewRoot) {
-        setRightValue(viewRoot, R.id.bar_tv_right, right());
-        tv_title.setText(title());
-    }
-
-    protected void setRightValue(View viewRoot, int id, Object obj) {
-        if (obj != null && !obj.equals("")) {
-            ((TextView) getView(viewRoot, id)).setText("");
-            getView(viewRoot, id).setBackgroundDrawable(new BitmapDrawable());
-            if (obj instanceof String) {
-                ((TextView) getView(viewRoot, id)).setText(obj.toString());
-            } else if (obj instanceof Integer) {
-                getView(viewRoot, id).setBackgroundResource(Integer.parseInt(obj.toString()));
-            } else {
-                ((TextView) getView(viewRoot, id)).setText("");
-                getView(viewRoot, id).setBackgroundDrawable(new BitmapDrawable());
-            }
-        }
-    }
-
-    public Drawable getDrawableResource(int id) {
-        return getResources().getDrawable(id);
-    }
-
-    protected <T extends View> T getView(View viewRoot, int id) {
-        return (T) viewRoot.findViewById(id);
-    }
-
-    /**
-     * 启动指定Activity
-     *
-     * @param target
-     * @param bundle
-     */
-    public void startActivity(Class<? extends Activity> target, Bundle bundle) {
-        Intent intent = new Intent();
-        intent.setClass(OwnerFragment.this.getActivity(), target);
-        if (bundle != null)
-            intent.putExtra(OwnerFragment.this.getActivity().getPackageName(), bundle);
-        startActivity(intent);
-    }
-
-    public interface ToolBarListener {
-        void clickLeft();
-
-        void clickRight();
-    }
     @Override
     protected int getLayoutResId() {
         return R.layout.owner_page;

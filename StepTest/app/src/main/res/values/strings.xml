@@ -3,7 +3,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="home_page"> 首页</string>
     <string name="friend_circle">圈子</string>
-    <string name="try_ones">挑战</string>
+    <string name="try_ones">榜单</string>
     <string name="owner_center">我的</string>
     <string name="message_a">把本该给孩子和老人的赡养费充值到他们的账户里，</string>
     <string name="message_b">把本该给员工的福利充值到他们的账户里，把本该给子侄和亲朋好友的红包充值到账户里</string>

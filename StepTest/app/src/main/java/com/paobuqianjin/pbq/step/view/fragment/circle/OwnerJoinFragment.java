@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.base.adapter.OwnerCreateAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import java.util.ArrayList;
@@ -25,13 +27,12 @@ import butterknife.ButterKnife;
 
 public class OwnerJoinFragment extends BaseFragment {
     private final static String TAG = OwnerJoinFragment.class.getSimpleName();
-    @Bind(R.id.owner_join_circle_lists)
     RecyclerView ownerJoinCircleLists;
     private LinearLayoutManager layoutManager;
     private Context mContext;
-    private ArrayList<MyHotCircleResponse.DataBeanX.DataBean> ownerCircleData;
+    private ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> ownerCircleData;
 
-    public void setOwnerCircleData(ArrayList<MyHotCircleResponse.DataBeanX.DataBean> ownerCircleData) {
+    public void setOwnerCircleData(ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> ownerCircleData) {
         this.ownerCircleData = ownerCircleData;
         if (ownerCircleData == null) {
             //重新获取
@@ -55,7 +56,6 @@ public class OwnerJoinFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
@@ -63,10 +63,11 @@ public class OwnerJoinFragment extends BaseFragment {
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         //TODO
-/*        layoutManager = new LinearLayoutManager(mContext);
+        ownerJoinCircleLists = (RecyclerView) viewRoot.findViewById(R.id.owner_join_circle_lists);
+        layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         ownerJoinCircleLists.setLayoutManager(layoutManager);
-        ownerJoinCircleLists.setAdapter(null);*/
+        ownerJoinCircleLists.setAdapter(new OwnerCreateAdapter(getContext(), ownerCircleData));
 
     }
 
@@ -77,6 +78,5 @@ public class OwnerJoinFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

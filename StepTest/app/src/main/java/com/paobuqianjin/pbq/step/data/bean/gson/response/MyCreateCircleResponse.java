@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -41,6 +42,15 @@ public class MyCreateCircleResponse {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "MyCreateCircleResponse{" +
+                "error=" + error +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public static class DataBeanX {
         /**
          * pagenation : {"page":1,"pageSize":10,"totalPage":2,"totalCount":14}
@@ -64,6 +74,14 @@ public class MyCreateCircleResponse {
 
         public void setData(List<DataBean> data) {
             this.data = data;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBeanX{" +
+                    "pagenation=" + pagenation +
+                    ", data=" + data +
+                    '}';
         }
 
         public static class PagenationBean {
@@ -112,7 +130,7 @@ public class MyCreateCircleResponse {
             }
         }
 
-        public static class DataBean {
+        public static class DataBean implements Serializable {
             /**
              * circleid : 100000
              * name : 烦死了
@@ -195,6 +213,20 @@ public class MyCreateCircleResponse {
 
             public void setIs_recharge(int is_recharge) {
                 this.is_recharge = is_recharge;
+            }
+
+            @Override
+            public String toString() {
+                return "DataBean{" +
+                        "circleid=" + circleid +
+                        ", name='" + name + '\'' +
+                        ", logo='" + logo + '\'' +
+                        ", city='" + city + '\'' +
+                        ", is_pwd=" + is_pwd +
+                        ", member_number=" + member_number +
+                        ", order_no='" + order_no + '\'' +
+                        ", is_recharge=" + is_recharge +
+                        '}';
             }
         }
     }
