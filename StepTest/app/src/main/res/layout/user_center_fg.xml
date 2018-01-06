@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/color_232433"></RelativeLayout>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_head_ico"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="90dp"
+                android:src="@drawable/logo" />
+
+            <Button
+                android:id="@+id/bnt_like"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_alignBottom="@+id/user_head_ico"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="14dp"
+                android:background="@drawable/shape"
+                android:gravity="center"
+                android:text="关注" />
+
+            <RelativeLayout
+                android:id="@+id/user_simple_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/user_head_ico"
+                android:layout_below="@+id/user_head_ico"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="周大傻"
+                    android:textColor="@color/color_161727"
+                    android:textSize="24sp" />
+
+                <ImageView
+                    android:id="@+id/sex_icon"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:layout_toRightOf="@+id/user_name"
+                    android:src="@drawable/man_flag" />
+
+                <TextView
+                    android:id="@+id/mu_biao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:layout_toRightOf="@+id/sex_icon"
+                    android:text="目标"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:layout_toRightOf="@+id/mu_biao"
+                    android:text="6000步"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/location_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/user_head_ico"
+                android:layout_below="@+id/user_simple_info"
+                android:layout_marginTop="25dp"
+                android:text="福建省,厦门市"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/line_center"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/location_city"
+                android:layout_marginTop="25dp"
+                android:background="@color/color_ecf0f3" />
+
+            <TextView
+                android:id="@+id/dynamic_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/user_head_ico"
+                android:layout_below="@+id/line_center"
+                android:layout_marginTop="25dp"
+                android:text="动态日记"
+                android:textColor="@color/color_161727"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/line_dynamic_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/dynamic_record"
+                android:layout_marginTop="25dp"
+                android:background="@color/color_ebebed" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/dynamic_record_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line_dynamic_line">
+
+            </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+    </ScrollView>
+
+    <include layout="@layout/bar_return_a_style"></include>
+</RelativeLayout>

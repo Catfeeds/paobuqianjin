@@ -24,6 +24,7 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
     private ArrayList<String> data;
     private Context context;
     private int selectPosition = 0;
+    private OnItemClickListener onItemClickListener;
 
     public SelectSettingAdapter(Context context, ArrayList<String> data) {
         this.context = context;
@@ -64,9 +65,13 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
         void OnItemClick(View view, SelectItemViewHolder selectItemViewHolder, int position);
     }
 
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     public class SelectItemViewHolder extends RecyclerView.ViewHolder {
         int viewType;
-        private OnItemClickListener onItemClickListener;
 
         @TargetApi(23)
         public SelectItemViewHolder(View view, int ViewType) {
@@ -76,8 +81,5 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
         }
 
 
-        public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-            this.onItemClickListener = onItemClickListener;
-        }
     }
 }

@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 
 import java.util.List;
 
@@ -80,9 +82,24 @@ public class RechargeRankSimpleAdapter extends RecyclerView.Adapter<RechargeRank
             initView(view);
         }
 
+        private View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.user_icon_money:
+                        LocalLog.d(TAG, "点击个人用户头像");
+                        Intent intent = new Intent();
+                        intent.setClass(context, UserCenterActivity.class);
+                        context.startActivity(intent);
+                        break;
+                }
+            }
+        };
+
         private void initView(View view) {
             moneyNumDes = (TextView) view.findViewById(R.id.money_num_des);
             userIconMoney = (CircleImageView) view.findViewById(R.id.user_icon_money);
+            userIconMoney.setOnClickListener(onClickListener);
         }
     }
 

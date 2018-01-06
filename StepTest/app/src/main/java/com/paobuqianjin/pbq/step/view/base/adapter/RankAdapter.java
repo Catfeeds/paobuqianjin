@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 
 import java.util.List;
 
@@ -104,8 +106,23 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             LocalLog.d(TAG, "initView() enter");
             rankNum = (TextView) view.findViewById(R.id.rank_num);
             circleLogoSearch = (CircleImageView) view.findViewById(R.id.circle_logo_search);
+            circleLogoSearch.setOnClickListener(onClickListener);
             searchCircleDesListName = (TextView) view.findViewById(R.id.search_circle_des_list_name);
             loveNumber = (TextView) view.findViewById(R.id.love_number);
         }
+
+        private View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.circle_logo_search:
+                        LocalLog.d(TAG,"点击个人头像");
+                        Intent intent = new Intent();
+                        intent.setClass(mContext, UserCenterActivity.class);
+                        mContext.startActivity(intent);
+                        break;
+                }
+            }
+        };
     }
 }

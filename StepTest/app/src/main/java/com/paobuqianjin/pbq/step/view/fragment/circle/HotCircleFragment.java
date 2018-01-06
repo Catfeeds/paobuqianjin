@@ -57,7 +57,8 @@ public class HotCircleFragment extends BaseFragment {
     private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData;
     private ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> myCreateCircle;
     private ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> myJoinCirCle;
-    private int circleIdA, circleIdB;
+    private int circleIdA = -1, circleIdB = -1;
+    private int circleNumA = -1, circleNumB = -1;
     private ArrayList<String> circleTypeList;
 
     @Override
@@ -150,16 +151,24 @@ public class HotCircleFragment extends BaseFragment {
                     intent.setClass(HotCircleFragment.this.getContext(), CreateCircleActivity.class);
                     //intent.setClass(HotCircleFragment.this.getContext(),SearchCircleActivity.class);
                     //intent.setClass(HotCircleFragment.this.getContext(), MemberManagerActivity.class);
-                    intent.putStringArrayListExtra(getContext().getPackageName() + "circle_type",circleTypeList);
+                    intent.putStringArrayListExtra(getContext().getPackageName() + "circle_type", circleTypeList);
                     HotCircleFragment.this.getActivity().startActivity(intent);
                     break;
                 case R.id.circle_hot_a_img:
                     LocalLog.d(TAG, "onClick() 我的第一个圈子被点击");
-                    startActivity(CirCleDetailActivity.class, null);
+                    Intent intent1 = new Intent();
+                    intent1.setClass(getContext(), CirCleDetailActivity.class);
+                    intent1.putExtra(mContext.getPackageName() + "circleid", circleIdA);
+                    intent1.putExtra(mContext.getPackageName() + "membernum", circleNumA);
+                    startActivity(intent1);
                     break;
                 case R.id.circle_hot_b_img:
                     LocalLog.d(TAG, "onClick() 我的第二个圈子被点击");
-                    startActivity(CirCleDetailActivity.class, null);
+                    Intent intent2 = new Intent();
+                    intent2.setClass(getContext(), CirCleDetailActivity.class);
+                    intent2.putExtra(mContext.getPackageName() + "circleid", circleIdB);
+                    intent2.putExtra(mContext.getPackageName() + "membernum", circleNumB);
+                    startActivity(intent2);
                     break;
                 case R.id.find_more_my_circle:
                     LocalLog.d(TAG, "我的圈子");
@@ -229,6 +238,8 @@ public class HotCircleFragment extends BaseFragment {
                 setMyHotLa(myJoinCircleResponse.getData().getData().get(0).getName(),
                         myJoinCircleResponse.getData().getData().get(0).getLogo(),
                         true);
+                circleIdA = myJoinCircleResponse.getData().getData().get(0).getCircleid();
+                circleNumA = myJoinCircleResponse.getData().getData().get(0).getMember_number();
             } else if (size >= 2) {
                 setMyHotLa(myJoinCircleResponse.getData().getData().get(0).getName(),
                         myJoinCircleResponse.getData().getData().get(0).getLogo(),
@@ -236,6 +247,12 @@ public class HotCircleFragment extends BaseFragment {
                 setMyHotLb(myJoinCircleResponse.getData().getData().get(1).getName(),
                         myJoinCircleResponse.getData().getData().get(1).getLogo(),
                         true);
+
+                circleIdA = myJoinCircleResponse.getData().getData().get(0).getCircleid();
+                circleNumA = myJoinCircleResponse.getData().getData().get(0).getMember_number();
+
+                circleIdB = myJoinCircleResponse.getData().getData().get(1).getCircleid();
+                circleNumB = myJoinCircleResponse.getData().getData().get(1).getMember_number();
             }
         }
 

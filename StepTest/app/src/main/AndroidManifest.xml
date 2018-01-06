@@ -37,7 +37,7 @@
 
         <activity
             android:name=".view.activity.MainActivity"
-            android:label=""
+            android:label="跑步前进"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
@@ -99,6 +99,10 @@
         <activity android:name=".view.activity.QrCodeScanActivity" />
         <activity
             android:name=".view.activity.CirCleDetailActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+        <activity
+            android:name=".view.activity.UserCenterActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
 
