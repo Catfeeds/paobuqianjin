@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/create_circle_layout"
     android:layout_height="wrap_content">
 
     <include
@@ -8,8 +9,7 @@
         layout="@layout/bar_return_a_style"></include>
 
     <ScrollView
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+        android:id="@+id/scroll_view"
         android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,6 +64,8 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:id="@+id/name_circle_span"
                 android:layout_width="wrap_content"
                 android:layout_height="49dp"
@@ -148,6 +150,8 @@
                 android:background="@color/color_f6f6f6" />
 
             <RelativeLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:id="@+id/phone_circle_pan"
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
@@ -221,6 +225,8 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:id="@+id/money_mum_pan"
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
@@ -256,6 +262,8 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:id="@+id/read_package_mum_pan"
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
@@ -269,7 +277,6 @@
                     android:layout_marginLeft="14dp" />
 
                 <EditText
-                    android:focusable="true"
                     android:id="@+id/circle_read_package_editor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -291,6 +298,8 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:id="@+id/money_pkg_pan"
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
@@ -304,7 +313,6 @@
                     android:layout_marginLeft="14dp" />
 
                 <EditText
-                    android:focusable="true"
                     android:id="@+id/money_pkg_num_editor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -341,7 +349,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:gravity="right"
-                    android:hint="所充值金额将全部用于运动达标成员发红包"
+                    android:text="所充值金额将全部用于运动达标成员发红包"
                     android:textColor="@color/color_161727"
                     android:textSize="12sp" />
             </RelativeLayout>
@@ -454,6 +462,8 @@
                 android:layout_below="@+id/circle_theme_phone_line">
 
                 <FrameLayout
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 

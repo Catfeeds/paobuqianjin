@@ -1,11 +1,12 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
@@ -23,10 +25,12 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
+import com.paobuqianjin.pbq.step.presenter.im.RecyclerItemClickListener;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
+import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -138,16 +142,32 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     RelativeLayout createSpan;
     @Bind(R.id.container_create_circle)
     RelativeLayout containerCreateCircle;
+    @Bind(R.id.scroll_view)
+    ScrollView scrollView;
+    @Bind(R.id.create_circle_layout)
+    RelativeLayout createCircleLayout;
 
     private ArrayList<String> circleTypeList;
     CreateCircleBodyParam createCircleBodyParam = new CreateCircleBodyParam();
     private PopupWindow popupCircleTypeWindow;
     private View popupCircleTypeView;
     private TranslateAnimation animationCircleType;
+    private Handler mHandler;
 
     @Override
     protected String title() {
         return "创建圈子";
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        detectKeyBoardHide();
+    }
+
+    private void detectKeyBoardHide() {
+        final SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.create_circle_layout));
+        softKeyboardStateHelper.addSoftKeyboardStateListener(this);
     }
 
     @Override
@@ -164,19 +184,20 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         } else {
 
         }
-
+        mHandler = new Handler(getMainLooper());
+        scrollView = (ScrollView) findViewById(R.id.scroll_view);
     }
 
     public void onStyleSelect(View view) {
         if (view != null) {
             switch (view.getId()) {
                 case R.id.switch_style:
-                    List<String> strings = new LinkedList<String>();
-                    strings.add("个人圈子");
-                    strings.add("企业圈子");
+                    LocalLog.d(TAG, " 圈子类型选择");
+                    selectCircleType();
                     break;
                 case R.id.switch_stand:
                     LocalLog.d(TAG, "设定目标距离");
+                    selectCircleTarget();
                     break;
             }
         }
@@ -203,49 +224,151 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     @Override
     public void onSoftKeyboardOpened(int keyboardHeightInPx) {
         LocalLog.d(TAG, "onSoftKeyboardOpened() 键盘弹出高度 ：" + keyboardHeightInPx);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                LocalLog.d(TAG, "键盘弹出滚动到底部!");
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
 
     }
 
+    public void selectCircleTarget() {
+        popupCircleTypeView = View.inflate(this, R.layout.select_dialog_layout, null);
+        popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupCircleTypeWindow onDismiss() enter");
+                popupCircleTypeWindow = null;
+            }
+        });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        ///popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupCircleTypeWindow.setFocusable(true);
+
+        popupCircleTypeWindow.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
+                , 0, Animation.RELATIVE_TO_PARENT, 0,
+                Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+        popupCircleTypeView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //
+                LocalLog.d(TAG, "onClick() 取消");
+                if (popupCircleTypeWindow.isShowing()) {
+                    popupCircleTypeWindow.dismiss();
+                    popupCircleTypeWindow = null;
+                }
+            }
+        });
+
+        popupCircleTypeView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "onClick() 确定");
+                if (popupCircleTypeWindow.isShowing()) {
+                    popupCircleTypeWindow.dismiss();
+                    popupCircleTypeWindow = null;
+                }
+            }
+        });
+        RecyclerView recyclerView = (RecyclerView) popupCircleTypeView.findViewById(R.id.select_recycler_view);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        ArrayList<String> strings = new ArrayList<String>();
+        strings.add("6000");
+        strings.add("7000");
+        strings.add("8000");
+        strings.add("9000");
+        strings.add("10000");
+        recyclerView.setAdapter(new SelectSettingAdapter(this, strings));
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int position) {
+                LocalLog.d(TAG, "OnItemClick() enter " + position);
+            }
+
+            @Override
+            public void OnItemLongClick(View view, int position) {
+                LocalLog.d(TAG, "OnItemLongClick() enter " + position);
+            }
+        }));
+
+        popupCircleTypeWindow.showAtLocation(CreateCircleActivity.this.findViewById(R.id.create_circle_layout), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
+                , 0, 0);
+        popupCircleTypeView.startAnimation(animationCircleType);
+    }
+
     public void selectCircleType() {
-        if (popupCircleTypeWindow == null) {
-            popupCircleTypeView = View.inflate(this, R.layout.select_dialog_layout, null);
-            popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
-                    WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-            popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
+        popupCircleTypeView = View.inflate(this, R.layout.select_dialog_layout, null);
+        popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupCircleTypeWindow onDismiss() enter");
+                popupCircleTypeWindow = null;
+            }
+        });
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        ///popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupCircleTypeWindow.setFocusable(true);
 
+        popupCircleTypeWindow.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
+                , 0, Animation.RELATIVE_TO_PARENT, 0,
+                Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+        popupCircleTypeView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //
+                LocalLog.d(TAG, "onClick() 取消");
+                if (popupCircleTypeWindow.isShowing()) {
+                    popupCircleTypeWindow.dismiss();
+                    popupCircleTypeWindow = null;
                 }
-            });
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
-            popupCircleTypeWindow.setFocusable(true);
+            }
+        });
 
-            popupCircleTypeWindow.setOutsideTouchable(true);
-
-            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
-                    , 0, Animation.RELATIVE_TO_PARENT, 0,
-                    Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
-            animationCircleType.setInterpolator(new AccelerateInterpolator());
-            animationCircleType.setDuration(200);
-            popupCircleTypeView.findViewById(R.id.cancel).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //
-                    LocalLog.d(TAG, "onClick() 取消");
+        popupCircleTypeView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "onClick() 确定");
+                if (popupCircleTypeWindow.isShowing()) {
+                    popupCircleTypeWindow.dismiss();
+                    popupCircleTypeWindow = null;
                 }
-            });
+            }
+        });
+        RecyclerView recyclerView = (RecyclerView) popupCircleTypeView.findViewById(R.id.select_recycler_view);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        ArrayList<String> strings = new ArrayList<String>();
+        strings.add("个人圈子");
+        strings.add("企业圈子");
+        recyclerView.setAdapter(new SelectSettingAdapter(this, strings));
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int position) {
+                LocalLog.d(TAG, "OnItemClick() enter " + position);
+            }
 
-            popupCircleTypeView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    LocalLog.d(TAG, "onClick() 确定");
-                }
-            });
-            RecyclerView recyclerView = (RecyclerView) popupCircleTypeView.findViewById(R.id.select_recycler_view);
-            recyclerView.setLayoutManager(linearLayoutManager);
+            @Override
+            public void OnItemLongClick(View view, int position) {
+                LocalLog.d(TAG, "OnItemLongClick() enter " + position);
+            }
+        }));
 
-        }
+        popupCircleTypeWindow.showAtLocation(CreateCircleActivity.this.findViewById(R.id.create_circle_layout), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
+                , 0, 0);
+        popupCircleTypeView.startAnimation(animationCircleType);
 
     }
 
@@ -257,5 +380,15 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
     @OnClick(R.id.container_create_circle)
     public void onClick() {
+    }
+
+    @OnClick({R.id.scroll_view, R.id.create_circle_layout})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.scroll_view:
+                break;
+            case R.id.create_circle_layout:
+                break;
+        }
     }
 }

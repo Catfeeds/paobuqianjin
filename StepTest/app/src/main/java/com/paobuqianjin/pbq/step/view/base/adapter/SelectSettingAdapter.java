@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -19,26 +20,26 @@ import butterknife.Bind;
  */
 
 public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdapter.SelectItemViewHolder> {
-    @Bind(R.id.select_content)
-    TextView selectContent;
     private ArrayList<String> data;
     private Context context;
     private int selectPosition = 0;
-    private OnItemClickListener onItemClickListener;
 
     public SelectSettingAdapter(Context context, ArrayList<String> data) {
         this.context = context;
+        this.data = data;
     }
 
     @Override
     @TargetApi(23)
     public void onBindViewHolder(SelectItemViewHolder holder, int position) {
         if (selectPosition == position) {
-            selectContent.setTextColor(context.getColor(R.color.color_161727));
-            selectContent.setTextSize(19.0f);
+            holder.selectContent.setTextColor(context.getColor(R.color.color_161727));
+            holder.selectContent.setTextSize(19.0f);
+            holder.selectContent.setText(data.get(position));
         } else {
-            selectContent.setTextColor(context.getColor(R.color.color_8a8a8a));
-            selectContent.setTextSize(18.0f);
+            holder.selectContent.setTextColor(context.getColor(R.color.color_8a8a8a));
+            holder.selectContent.setTextSize(18.0f);
+            holder.selectContent.setText(data.get(position));
         }
     }
 
@@ -56,22 +57,17 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
         }
     }
 
+
     @Override
     public int getItemViewType(int position) {
         return super.getItemViewType(position);
     }
 
-    public interface OnItemClickListener {
-        void OnItemClick(View view, SelectItemViewHolder selectItemViewHolder, int position);
-    }
-
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
 
     public class SelectItemViewHolder extends RecyclerView.ViewHolder {
         int viewType;
+        @Bind(R.id.select_content)
+        TextView selectContent;
 
         @TargetApi(23)
         public SelectItemViewHolder(View view, int ViewType) {
@@ -79,7 +75,5 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
             this.viewType = viewType;
             selectContent = (TextView) view.findViewById(R.id.select_content);
         }
-
-
     }
 }

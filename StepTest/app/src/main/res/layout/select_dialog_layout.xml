@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_f8">
 
     <RelativeLayout
         android:id="@+id/select_yes_no"
@@ -28,13 +29,20 @@
             android:text="确定"
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_ebebed" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/select_recycler_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="114dp"
         android:layout_below="@+id/select_yes_no">
 
     </android.support.v7.widget.RecyclerView>
+
 </RelativeLayout>
