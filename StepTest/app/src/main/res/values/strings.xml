@@ -33,6 +33,10 @@
     <string name="user_read">点击注册，即表示你已阅读并同意《跑步钱进服务协议》</string>
     <string name="mu_biao">目标</string>
     <string name="member_number">"成员%1d人"</string>
+    <string name="member_total">"共%1d人"</string>
+    <string name="total_step">%1d步</string>
+    <string name="total_money">%$.2元</string>
+    <string name="target_step">目标步数 %1d步</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."

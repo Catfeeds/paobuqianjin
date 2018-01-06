@@ -38,7 +38,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="45dp"
                     android:layout_marginTop="30dp"
-                    android:text="目标步数 12000步"
                     android:textColor="@color/color_ecf0f3"
                     android:textSize="19sp" />
 
@@ -58,7 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/circle_message"
                 android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp">
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="20dp">
 
                 <RelativeLayout
                     android:id="@+id/love_money_list_rel"
@@ -81,6 +81,7 @@
                         android:layout_centerVertical="true">
 
                         <ImageView
+                            android:id="@+id/go_to_recharge_rank"
                             android:layout_width="7dp"
                             android:layout_height="13dp"
                             android:layout_alignParentEnd="true"
@@ -96,7 +97,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/love_money_list_rel"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="20dp"
+                    android:nestedScrollingEnabled="false">
 
                 </android.support.v7.widget.RecyclerView>
 
@@ -105,6 +107,7 @@
                     android:layout_height="40dp"
                     android:layout_below="@+id/rank_recycler"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
                     android:background="@drawable/rectangle_four_dp"
                     android:text="充值" />
             </RelativeLayout>
@@ -113,7 +116,8 @@
                 android:id="@+id/step_rank"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rank_money">
+                android:layout_below="@+id/rank_money"
+                android:layout_marginTop="20dp">
 
                 <ImageView
                     android:id="@+id/line_rank_step"
@@ -144,6 +148,7 @@
                     android:textSize="12sp" />
 
                 <android.support.v7.widget.RecyclerView
+                    android:id="@+id/step_recycler"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/textView"

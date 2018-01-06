@@ -8,12 +8,15 @@
         layout="@layout/bar_return_a_style"></include>
 
     <ScrollView
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bar_create_circle">
 
         <RelativeLayout
+            android:id="@+id/container_create_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -77,6 +80,7 @@
                     android:textSize="14sp" />
 
                 <EditText
+                    android:focusable="true"
                     android:id="@+id/cir_name_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -160,6 +164,7 @@
                     android:textSize="14sp" />
 
                 <EditText
+                    android:focusable="true"
                     android:id="@+id/circle_phone_num_editor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -229,6 +234,7 @@
                     android:layout_marginLeft="14dp" />
 
                 <EditText
+                    android:focusable="true"
                     android:id="@+id/circle_money_num_editor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -263,6 +269,7 @@
                     android:layout_marginLeft="14dp" />
 
                 <EditText
+                    android:focusable="true"
                     android:id="@+id/circle_read_package_editor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -297,6 +304,7 @@
                     android:layout_marginLeft="14dp" />
 
                 <EditText
+                    android:focusable="true"
                     android:id="@+id/money_pkg_num_editor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -450,6 +458,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
+                        android:focusable="true"
                         android:id="@+id/circle_desc_of_your"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"

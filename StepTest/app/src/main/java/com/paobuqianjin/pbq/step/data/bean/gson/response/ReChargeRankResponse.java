@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -7,7 +8,7 @@ import java.util.List;
  * Created by pbq on 2018/1/4.
  */
 
-public class ReChargeResponse {
+public class ReChargeRankResponse {
     /**
      * error : 0
      * message : success
@@ -42,6 +43,15 @@ public class ReChargeResponse {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "ReChargeRankResponse{" +
+                "error=" + error +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public static class DataBeanX {
         /**
          * pagenation : {"page":1,"pageSize":10,"totalPage":2,"totalCount":13}
@@ -65,6 +75,14 @@ public class ReChargeResponse {
 
         public void setData(List<DataBean> data) {
             this.data = data;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBeanX{" +
+                    "pagenation=" + pagenation +
+                    ", data=" + data +
+                    '}';
         }
 
         public static class PagenationBean {
@@ -113,7 +131,7 @@ public class ReChargeResponse {
             }
         }
 
-        public static class DataBean {
+        public static class DataBean implements Serializable {
             /**
              * userid : 8
              * nickname : 酒自斟
@@ -156,6 +174,16 @@ public class ReChargeResponse {
 
             public void setAmount(String amount) {
                 this.amount = amount;
+            }
+
+            @Override
+            public String toString() {
+                return "DataBean{" +
+                        "userid=" + userid +
+                        ", nickname='" + nickname + '\'' +
+                        ", avatar='" + avatar + '\'' +
+                        ", amount='" + amount + '\'' +
+                        '}';
             }
         }
     }

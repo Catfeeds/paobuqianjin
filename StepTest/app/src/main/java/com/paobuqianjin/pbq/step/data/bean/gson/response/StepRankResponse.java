@@ -42,6 +42,15 @@ public class StepRankResponse {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "StepRankResponse{" +
+                "error=" + error +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public static class DataBeanX {
         /**
          * pagenation : {"page":1,"pageSize":5,"totalPage":4,"totalCount":20}
@@ -65,6 +74,14 @@ public class StepRankResponse {
 
         public void setData(List<DataBean> data) {
             this.data = data;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBeanX{" +
+                    "pagenation=" + pagenation +
+                    ", data=" + data +
+                    '}';
         }
 
         public static class PagenationBean {
@@ -156,6 +173,16 @@ public class StepRankResponse {
 
             public void setStep_number(int step_number) {
                 this.step_number = step_number;
+            }
+
+            @Override
+            public String toString() {
+                return "DataBean{" +
+                        "id=" + id +
+                        ", nickname='" + nickname + '\'' +
+                        ", avatar='" + avatar + '\'' +
+                        ", step_number=" + step_number +
+                        '}';
             }
         }
     }

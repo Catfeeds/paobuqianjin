@@ -4,9 +4,13 @@ import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.NearByPeopleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
@@ -16,6 +20,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
@@ -95,6 +100,29 @@ public class NetStringCallBack extends StringCallback {
             LocalLog.d(TAG, "我加入的圈子");
             MyJoinCircleResponse myJoinCircleResponse = new Gson().fromJson(s, MyJoinCircleResponse.class);
             ((UiHotCircleInterface) callBackInterface).response(myJoinCircleResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof UiHotCircleInterface
+                && command == Engine.COMMAND_CIRCLE_TYPE) {
+            CircleTypeResponse circleTypeResponse = new Gson().fromJson(s,CircleTypeResponse.class);
+            ((UiHotCircleInterface) callBackInterface).response(circleTypeResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof UiStepAndLoveRankInterface
+                && command == Engine.COMMAND_RECHARGE_RANK) {
+            LocalLog.d(TAG, "充值排行");
+            ReChargeRankResponse reChargeRankResponse = new Gson().fromJson(s, ReChargeRankResponse.class);
+            ((UiStepAndLoveRankInterface) callBackInterface).response(reChargeRankResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof UiStepAndLoveRankInterface
+                && command == Engine.COMMAND_STEP_RANK) {
+            LocalLog.d(TAG, "步数排行");
+            StepRankResponse stepRankResponse = new Gson().fromJson(s, StepRankResponse.class);
+            ((UiStepAndLoveRankInterface) callBackInterface).response(stepRankResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof UiStepAndLoveRankInterface
+                && command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
+            LocalLog.d(TAG, "圈子详情");
+            CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
+            ((UiStepAndLoveRankInterface) callBackInterface).response(circleDetailResponse);
         }
     }
 }

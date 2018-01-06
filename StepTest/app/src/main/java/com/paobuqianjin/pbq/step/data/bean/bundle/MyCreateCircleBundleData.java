@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
+
 
 import java.util.ArrayList;
 

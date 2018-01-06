@@ -116,6 +116,11 @@ public final class Presenter {
         engine.getUserStep(id);
     }
 
+    //TODO  获取圈子详情
+    public void getCircleDetail(int circleId) {
+        engine.getCircleDetail(circleId);
+    }
+
     /*热门界面*/
     //TODO 我创建的圈子
     public void getMyCreateCirlce() {
@@ -137,12 +142,23 @@ public final class Presenter {
     }
 
     public void getImage(ImageView view, String urlImg) {
+        if (urlImg.equals("")) {
+            return;
+        }
         engine.getImage(view, urlImg);
     }
 
     //TODO 加入圈子
     public void joinCircle(int circleId) {
         engine.joinCircle(circleId);
+    }
+
+    public void getCircleStepRank(int circleId) {
+        engine.getCircleStepRank(circleId, 1, 10);
+    }
+
+    public void getCircleRechargeRand(int circleId) {
+        engine.getCircleRechargeRank(circleId, 1, 10);
     }
 
     public void joinCircle(int circleId, String password) {

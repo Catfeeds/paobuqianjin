@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -23,7 +24,14 @@ public class CirCleDetailActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-
+        Intent intent = getIntent();
+        if (intent != null) {
+            int circleId = intent.getIntExtra(getPackageName() + "circleid", -1);
+            int memberNum = intent.getIntExtra(getPackageName() + "membernum", -1);
+            if (circleId != -1 && memberNum > 0) {
+                circleDetailFragment.setCircleId(this,circleId, memberNum);
+            }
+        }
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.circle_detail_container, circleDetailFragment)
                 .show(circleDetailFragment)

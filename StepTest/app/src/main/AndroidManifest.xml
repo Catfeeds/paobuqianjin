@@ -96,9 +96,11 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
 
-        <activity android:name=".view.activity.QrCodeScanActivity">
-
-        </activity>
+        <activity android:name=".view.activity.QrCodeScanActivity" />
+        <activity
+            android:name=".view.activity.CirCleDetailActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
 
         <receiver
             android:name=".model.broadcast.BootStepReceiver"

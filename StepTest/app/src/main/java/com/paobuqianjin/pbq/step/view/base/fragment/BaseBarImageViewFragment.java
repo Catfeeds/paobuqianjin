@@ -75,7 +75,7 @@ public abstract class BaseBarImageViewFragment extends BaseFragment {
         setToolBarListener();
         tv_left.setOnClickListener(clickListener);
         tv_right.setOnClickListener(clickListener);
-        refreshTop(rootView);
+        tv_title.setText(title());
     }
 
     public void setToolBarListener(BaseBarActivity.ToolBarListener toolBarListener) {
@@ -107,22 +107,11 @@ public abstract class BaseBarImageViewFragment extends BaseFragment {
     protected void refreshTop(View viewRoot) {
         setLeftView(left() == null ? R.drawable.bar_bg_selector : left());
         setRightValue(viewRoot, R.id.bar_tv_right, right());
-        tv_title.setText(title());
+
     }
 
     protected void setRightValue(View viewRoot, int id, Object obj) {
-        if (obj != null && !obj.equals("")) {
-            ((TextView) getView(viewRoot, id)).setText("");
-            getView(viewRoot, id).setBackgroundDrawable(new BitmapDrawable());
-            if (obj instanceof String) {
-                ((TextView) getView(viewRoot, id)).setText(obj.toString());
-            } else if (obj instanceof Integer) {
-                getView(viewRoot, id).setBackgroundResource(Integer.parseInt(obj.toString()));
-            } else {
-                ((TextView) getView(viewRoot, id)).setText("");
-                getView(viewRoot, id).setBackgroundDrawable(new BitmapDrawable());
-            }
-        }
+
     }
 
     public Drawable getDrawableResource(int id) {

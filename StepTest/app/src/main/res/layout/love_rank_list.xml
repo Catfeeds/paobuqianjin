@@ -10,6 +10,7 @@
         android:layout_alignParentTop="true">
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/rank_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +57,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_alignLeft="@+id/search_circle_des_list_name"
+            android:layout_alignLeft="@+id/circle_logo_search"
             android:layout_alignParentBottom="true"
             android:background="@color/color_ebebed" />
     </RelativeLayout>

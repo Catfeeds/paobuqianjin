@@ -252,6 +252,7 @@ public class StepService extends Service implements SharedPreferences.OnSharedPr
     //主动刷新,触发上报
     private void flush() {
         flushStepSensor(mStepCountListener);
+
     }
 
     /*@desc主动刷新Sensor数据
@@ -264,6 +265,7 @@ public class StepService extends Service implements SharedPreferences.OnSharedPr
         LocalLog.d(TAG, "flushStepSensor() enter");
         if (sensorEventListener == null) {
             LocalLog.e(TAG, "sensorEventListener() is null");
+            return false;
         }
 
         isFlush = ((SensorManager) getSystemService(SENSOR_SERVICE)).flush(sensorEventListener);

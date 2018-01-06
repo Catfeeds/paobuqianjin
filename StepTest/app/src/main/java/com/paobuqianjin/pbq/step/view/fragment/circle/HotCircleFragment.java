@@ -20,12 +20,14 @@ import com.paobuqianjin.pbq.step.data.bean.bundle.ChoiceBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.MyCreateCircleBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.MyJoinCreateCircleBudleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.LoveRankActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
@@ -55,8 +57,11 @@ public class HotCircleFragment extends BaseFragment {
     private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData;
     private ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> myCreateCircle;
     private ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> myJoinCirCle;
+    private int circleIdA, circleIdB;
+    private ArrayList<String> circleTypeList;
 
     @Override
+
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
@@ -86,6 +91,7 @@ public class HotCircleFragment extends BaseFragment {
         LocalLog.d(TAG, "initView() enter");
         //TODO 圈子活动
         //TODO 精选圈子
+        circleTypeList = new ArrayList<>();
         choiceRecyclerView = (RecyclerView) rootView
                 .findViewById(R.id.live_choose_good_module)
                 .findViewById(R.id.live_choose_good_module_recycler);
@@ -125,6 +131,7 @@ public class HotCircleFragment extends BaseFragment {
         Presenter.getInstance(mContext).getMyJoinCircle();
         Presenter.getInstance(mContext).getCircleChoice();
         Presenter.getInstance(mContext).getMyCreateCirlce();
+        Presenter.getInstance(mContext).getCirCleType();
     }
 
     /*@desc  返回Fragment标签
@@ -143,16 +150,16 @@ public class HotCircleFragment extends BaseFragment {
                     intent.setClass(HotCircleFragment.this.getContext(), CreateCircleActivity.class);
                     //intent.setClass(HotCircleFragment.this.getContext(),SearchCircleActivity.class);
                     //intent.setClass(HotCircleFragment.this.getContext(), MemberManagerActivity.class);
+                    intent.putStringArrayListExtra(getContext().getPackageName() + "circle_type",circleTypeList);
                     HotCircleFragment.this.getActivity().startActivity(intent);
-                    Presenter.getInstance(HotCircleFragment.this.getContext()).getCirCleType();
                     break;
                 case R.id.circle_hot_a_img:
                     LocalLog.d(TAG, "onClick() 我的第一个圈子被点击");
-                    startActivity(LoveRankActivity.class, null);
+                    startActivity(CirCleDetailActivity.class, null);
                     break;
                 case R.id.circle_hot_b_img:
                     LocalLog.d(TAG, "onClick() 我的第二个圈子被点击");
-                    startActivity(LoveRankActivity.class, null);
+                    startActivity(CirCleDetailActivity.class, null);
                     break;
                 case R.id.find_more_my_circle:
                     LocalLog.d(TAG, "我的圈子");
@@ -161,7 +168,7 @@ public class HotCircleFragment extends BaseFragment {
                     Intent intentCircle = new Intent();
                     intentCircle.setClass(getActivity(), OwnerCircleActivity.class);
                     intentCircle.putExtra(getActivity().getPackageName() + "my_create", myCreateCircleBundleData);
-                    intentCircle.putExtra(getActivity().getPackageName() + "my_join",myJoinCreateCircleBudleData );
+                    intentCircle.putExtra(getActivity().getPackageName() + "my_join", myJoinCreateCircleBudleData);
                     getActivity().startActivity(intentCircle);
                     break;
                 case R.id.live_choose_good_module:
@@ -202,6 +209,14 @@ public class HotCircleFragment extends BaseFragment {
     }
 
     private UiHotCircleInterface uiHotCircleInterface = new UiHotCircleInterface() {
+        @Override
+        public void response(CircleTypeResponse circleTypeResponse) {
+            LocalLog.d(TAG, "CircleTypeResponse() ");
+            int size = circleTypeResponse.getData().size();
+            for (int i = 0; i < size; i++) {
+                circleTypeList.add(circleTypeResponse.getData().get(i).getName());
+            }
+        }
 
         @Override
         public void response(MyJoinCircleResponse myJoinCircleResponse) {
@@ -210,6 +225,7 @@ public class HotCircleFragment extends BaseFragment {
             int size = myJoinCircleResponse.getData().getData().size();
             LocalLog.d(TAG, "myHotCircleResponse() size =" + size);
             if (size == 1) {
+
                 setMyHotLa(myJoinCircleResponse.getData().getData().get(0).getName(),
                         myJoinCircleResponse.getData().getData().get(0).getLogo(),
                         true);

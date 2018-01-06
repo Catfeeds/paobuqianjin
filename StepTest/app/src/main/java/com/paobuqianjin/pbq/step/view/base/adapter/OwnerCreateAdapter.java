@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 
 import java.util.ArrayList;
 
@@ -78,6 +80,8 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
                 holder.joinIn.setText("充值");
                 holder.is_recharge = false;
             }
+            holder.setCircleid(tmpData.getCircleid());
+            holder.setCircle_member_num(tmpData.getMember_number());
         } else if (data.get(position) instanceof MyJoinCircleResponse.DataBeanX.DataBean) {
             tmpData1 = (MyJoinCircleResponse.DataBeanX.DataBean) data.get(position);
             LocalLog.d(TAG, "city = " + tmpData1.getCity() +
@@ -90,6 +94,8 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
             String sFinalMember = String.format(sAgeFormat, tmpData1.getMember_number());
             holder.searchCircleDesListNum.setText(sFinalMember);
             holder.joinIn.setVisibility(View.GONE);
+            holder.setCircle_member_num(tmpData1.getMember_number());
+            holder.setCircleid(tmpData1.getCircleid());
         }
     }
 
@@ -104,6 +110,25 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
             this.is_recharge = is_recharge;
         }
 
+        public int getCircleid() {
+            return circleid;
+        }
+
+        public void setCircleid(int id) {
+            circleid = id;
+        }
+
+        int circleid;
+
+        public int getCircle_member_num() {
+            return circle_member_num;
+        }
+
+        public void setCircle_member_num(int circle_member_num) {
+            this.circle_member_num = circle_member_num;
+        }
+
+        int circle_member_num;
         boolean is_recharge;
         ImageView circleLogoSearch;
         TextView searchCircleDesListName;
@@ -119,6 +144,7 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
 
         private void init(View view) {
             circleLogoSearch = (ImageView) view.findViewById(R.id.circle_logo_search);
+            circleLogoSearch.setOnClickListener(onClickListener);
             searchCircleDesListName = (TextView) view.findViewById(R.id.search_circle_des_list_name);
             lock = (ImageView) view.findViewById(R.id.lock);
             searchCircleDesListNum = (TextView) view.findViewById(R.id.search_circle_des_list_num);
@@ -132,11 +158,19 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.join_in:
-                        if(is_recharge){
-                            LocalLog.d(TAG,"管理");
-                        }else{
-                            LocalLog.d(TAG,"充值");
+                        if (is_recharge) {
+                            LocalLog.d(TAG, "管理");
+                        } else {
+                            LocalLog.d(TAG, "充值");
                         }
+                        break;
+                    case R.id.circle_logo_search:
+                        LocalLog.d(TAG, " 点击圈子头像进入圈子");
+                        Intent intent = new Intent();
+                        intent.setClass(mContext, CirCleDetailActivity.class);
+                        intent.putExtra(mContext.getPackageName() + "circleid", getCircleid());
+                        intent.putExtra(mContext.getPackageName() + "membernum", getCircle_member_num());
+                        mContext.startActivity(intent);
                         break;
                     default:
                         break;

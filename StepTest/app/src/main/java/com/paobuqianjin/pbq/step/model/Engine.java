@@ -36,6 +36,7 @@ import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
@@ -71,6 +72,7 @@ public final class Engine {
     private LoginCallBackInterface loginCallBackInterface;
     private UiCreateCircleInterface uiCreateCircleInterface;
     private UiHotCircleInterface uiHotCircleInterface;
+    private UiStepAndLoveRankInterface uiStepAndLoveRankInterface;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
     public final static int COMMAND_LOGIN_IN = 2;
@@ -614,7 +616,7 @@ public final class Engine {
                 .get()
                 .url(NetApi.urlCircleType)
                 .build()
-                .execute(new NetStringCallBack(null, COMMAND_CIRCLE_TYPE) {
+                .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_CIRCLE_TYPE) {
                 });
     }
 
@@ -628,7 +630,7 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(null, COMMAND_STEP_RANK));
+                .execute(new NetStringCallBack(uiStepAndLoveRankInterface, COMMAND_STEP_RANK));
     }
 
 
@@ -640,7 +642,7 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(null, COMMAND_RECHARGE_RANK));
+                .execute(new NetStringCallBack(uiStepAndLoveRankInterface, COMMAND_RECHARGE_RANK));
     }
 
     public void getMyJoinCircle(int page, int pagesize) {
@@ -696,7 +698,7 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(null, COMMAND_GET_CIRCLE_DETAIL));
+                .execute(new NetStringCallBack(uiStepAndLoveRankInterface, COMMAND_GET_CIRCLE_DETAIL));
     }
 
     public void putCircle(CreateCircleBodyParam createCircleBodyParam, int circleId) {
@@ -965,6 +967,8 @@ public final class Engine {
             this.loginCallBackInterface = (LoginCallBackInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UiHotCircleInterface) {
             this.uiHotCircleInterface = (UiHotCircleInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UiStepAndLoveRankInterface) {
+            uiStepAndLoveRankInterface = (UiStepAndLoveRankInterface) uiCallBackInterface;
         }
 
     }
@@ -975,6 +979,8 @@ public final class Engine {
             this.loginCallBackInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UiHotCircleInterface) {
             this.uiHotCircleInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UiStepAndLoveRankInterface) {
+            uiStepAndLoveRankInterface = null;
         }
     }
 }

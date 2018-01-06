@@ -8,9 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.RankAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+
+import java.util.ArrayList;
 
 
 /**
@@ -21,10 +24,11 @@ public class LoveRankFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = LoveRankFragment.class.getSimpleName();
     RecyclerView rankRecycler;
     LinearLayoutManager layoutManager;
+    ArrayList<ReChargeRankResponse.DataBeanX.DataBean> mData;
 
     // 设置数据
-    public void setRankData() {
-
+    public void setRankData(ArrayList<ReChargeRankResponse.DataBeanX.DataBean> data) {
+        mData = data;
     }
 
     @Override
@@ -45,7 +49,7 @@ public class LoveRankFragment extends BaseBarStyleTextViewFragment {
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rankRecycler.setLayoutManager(layoutManager);
-        rankRecycler.setAdapter(new RankAdapter(getContext()));
+        rankRecycler.setAdapter(new RankAdapter(getContext(),mData));
     }
 
     @Override
