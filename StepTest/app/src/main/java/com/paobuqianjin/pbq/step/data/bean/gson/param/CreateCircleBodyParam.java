@@ -15,8 +15,8 @@ public class CreateCircleBodyParam {
     targetid	目标ID	true	int
     mobile	管理员手机号	true	string
     is_recharge	是否充值 0不充值 1充值	true	boolean	0
-    start_amount	红包起始金额	true	float	0
-    end_amount	红包起止金额	true	float	0
+    red_packet_amount	红包起始金额	true	float	0
+    total_amount	红包起止金额	true	float	0
     red_packet	红包个数	true	int	0
     logo	圈子LOGO	true	string	0
     coverid	封面ID	true	int	0
@@ -34,13 +34,12 @@ public class CreateCircleBodyParam {
     private String name;
     private int targetid;
     private String mobile;
-    private boolean is_recharge;
-    private float start_amount;
-    private float end_amount;
+    private int is_recharge;
+    private float red_packet_amount;
     private int red_packet;
     private String logo;
     private int coverid;
-    private boolean is_pwd;
+    private int is_pwd;
     private String password;
     private String tags;
     private String description;
@@ -101,33 +100,23 @@ public class CreateCircleBodyParam {
         return this;
     }
 
-    public boolean isIs_recharge() {
+    public int isIs_recharge() {
         return is_recharge;
     }
 
-    public CreateCircleBodyParam setIs_recharge(boolean is_recharge) {
+    public CreateCircleBodyParam setIs_recharge(int is_recharge) {
         this.is_recharge = is_recharge;
         params.put("is_recharge", String.valueOf(is_recharge));
         return this;
     }
 
-    public float getStart_amount() {
-        return start_amount;
+    public float getRed_packet_amount() {
+        return red_packet_amount;
     }
 
-    public CreateCircleBodyParam setStart_amount(float start_amount) {
-        this.start_amount = start_amount;
-        params.put("start_amount", String.valueOf(start_amount));
-        return this;
-    }
-
-    public float getEnd_amount() {
-        return end_amount;
-    }
-
-    public CreateCircleBodyParam setEnd_amount(float end_amount) {
-        this.end_amount = end_amount;
-        params.put("end_amount", String.valueOf(end_amount));
+    public CreateCircleBodyParam setRed_packet_amount(float red_packet_amount) {
+        this.red_packet_amount = red_packet_amount;
+        params.put("red_packet_amount", String.valueOf(red_packet_amount));
         return this;
     }
 
@@ -161,11 +150,11 @@ public class CreateCircleBodyParam {
         return this;
     }
 
-    public boolean isIs_pwd() {
+    public int isIs_pwd() {
         return is_pwd;
     }
 
-    public CreateCircleBodyParam setIs_pwd(boolean is_pwd) {
+    public CreateCircleBodyParam setIs_pwd(int is_pwd) {
         this.is_pwd = is_pwd;
         params.put("is_pwd", String.valueOf(is_pwd));
         return this;
@@ -251,8 +240,8 @@ public class CreateCircleBodyParam {
                 ", targetid=" + targetid +
                 ", mobile='" + mobile + '\'' +
                 ", is_recharge=" + is_recharge +
-                ", start_amount=" + start_amount +
-                ", end_amount=" + end_amount +
+                ", red_packet_amount=" + red_packet_amount +
+                ", total_amount=" + total_amount +
                 ", red_packet=" + red_packet +
                 ", logo='" + logo + '\'' +
                 ", coverid=" + coverid +
@@ -262,9 +251,7 @@ public class CreateCircleBodyParam {
                 ", description='" + description + '\'' +
                 ", city='" + city + '\'' +
                 ", longitude=" + longitude +
-                ", latitude=" + latitude +
-                ", total_amount=" + total_amount +
-                '}';
+                ", latitude=" + latitude + '}';
     }
 
     public int getUserid() {
@@ -280,4 +267,13 @@ public class CreateCircleBodyParam {
     public void setParams(Map<String, String> params) {
         this.params = params;
     }
+
+    public int getIs_recharge() {
+        return is_recharge;
+    }
+
+    public int getIs_pwd() {
+        return is_pwd;
+    }
+
 }

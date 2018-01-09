@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 
@@ -20,9 +22,11 @@ import butterknife.Bind;
  */
 
 public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdapter.SelectItemViewHolder> {
+    private final static String TAG = SelectSettingAdapter.class.getSimpleName();
     private ArrayList<String> data;
     private Context context;
     private int selectPosition = 0;
+    private int lastSelectPosition = 0;
 
     public SelectSettingAdapter(Context context, ArrayList<String> data) {
         this.context = context;
@@ -32,6 +36,34 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
     @Override
     @TargetApi(23)
     public void onBindViewHolder(SelectItemViewHolder holder, int position) {
+ /*       if (selectPosition == position) {
+            holder.selectContent.setTextColor(context.getColor(R.color.color_161727));
+            holder.selectContent.setTextSize(19.0f);
+            holder.selectContent.setText(data.get(position));
+        } else {
+            holder.selectContent.setTextColor(context.getColor(R.color.color_8a8a8a));
+            holder.selectContent.setTextSize(18.0f);
+            holder.selectContent.setText(data.get(position));
+        }*/
+    }
+
+    public void setSelectPosition(int position) {
+        lastSelectPosition = selectPosition;
+        selectPosition = position;
+    }
+
+    public int getSelectPosition() {
+        return selectPosition;
+    }
+
+    public String getSelectContent() {
+        return data.get(selectPosition);
+    }
+
+    @TargetApi(23)
+    @Override
+    public void onBindViewHolder(SelectItemViewHolder holder, int position, List<Object> payloads) {
+        LocalLog.d(TAG, "onBindViewHolder() payloads position " + position + " selectPosition= " + selectPosition);
         if (selectPosition == position) {
             holder.selectContent.setTextColor(context.getColor(R.color.color_161727));
             holder.selectContent.setTextSize(19.0f);
@@ -41,6 +73,7 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
             holder.selectContent.setTextSize(18.0f);
             holder.selectContent.setText(data.get(position));
         }
+        onBindViewHolder(holder, position);
     }
 
     @Override

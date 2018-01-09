@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.OwnerCreateAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -28,6 +30,8 @@ public class OwnerCreateFragment extends BaseFragment {
     RecyclerView ownerCreateCircleLists;
     private LinearLayoutManager layoutManager;
     private ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> ownerCreateCircleData;
+    private boolean isRefresh;
+    private int currentPage = 1;
 
     public void setOwnerCreateCircleData(ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> ownerCreateCircleData) {
         this.ownerCreateCircleData = ownerCreateCircleData;
@@ -46,6 +50,7 @@ public class OwnerCreateFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
+        Presenter.getInstance(getContext()).attachUiInterface(reflashMyCircleInterface);
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         return rootView;
     }
@@ -59,8 +64,35 @@ public class OwnerCreateFragment extends BaseFragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         ownerCreateCircleLists.setLayoutManager(layoutManager);
         ownerCreateCircleLists.setAdapter(new OwnerCreateAdapter(getContext(), ownerCreateCircleData));
+        ownerCreateCircleLists.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && (layoutManager.findLastVisibleItemPosition() == layoutManager.getItemCount() - 1)
+                        && !isRefresh) {
+                    LocalLog.d(TAG, "正在刷新...");
+                    isRefresh = true;
+                    currentPage++;
+                    Presenter.getInstance(getContext()).reflashMyCircle(currentPage);
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
 
     }
+
+    private ReflashMyCircleInterface reflashMyCircleInterface = new ReflashMyCircleInterface() {
+        @Override
+        public void response(MyCreateCircleResponse myCreateCircleResponse) {
+            LocalLog.d(TAG," Reflash MyCreateCircleResponse()");
+            isRefresh = false;
+        }
+    };
 
     public String getTabLabel() {
         return "我创建的";
@@ -69,5 +101,6 @@ public class OwnerCreateFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Presenter.getInstance(getContext()).dispatchUiInterface(reflashMyCircleInterface);
     }
 }

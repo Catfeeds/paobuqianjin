@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/create_circle_layout"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <include
@@ -10,10 +10,10 @@
 
     <ScrollView
         android:id="@+id/scroll_view"
-        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bar_create_circle">
+        android:layout_below="@+id/bar_create_circle"
+        android:fitsSystemWindows="true">
 
         <RelativeLayout
             android:id="@+id/container_create_circle"
@@ -42,7 +42,6 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
-                    android:onClick="onStyleSelect"
                     android:src="@drawable/menu_age" />
 
                 <TextView
@@ -52,7 +51,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:layout_toLeftOf="@+id/switch_style"
-                    android:text="个人圈子" />
+                    android:text="个人圈子"
+                    android:textColor="@color/color_161727"
+                    android:textSize="12sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -64,12 +65,12 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:id="@+id/name_circle_span"
                 android:layout_width="wrap_content"
                 android:layout_height="49dp"
-                android:layout_below="@+id/style_circle_pan">
+                android:layout_below="@+id/style_circle_pan"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <TextView
                     android:id="@+id/circle_name_text"
@@ -82,7 +83,6 @@
                     android:textSize="14sp" />
 
                 <EditText
-                    android:focusable="true"
                     android:id="@+id/cir_name_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -90,10 +90,11 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:background="@null"
+                    android:focusable="true"
                     android:gravity="right"
                     android:hint="输入群名"
                     android:lines="1"
-                    android:maxLength="32"
+                    android:maxLength="20"
                     android:textSize="12sp" />
 
                 <ImageView
@@ -123,7 +124,6 @@
                     android:textSize="14sp" />
 
                 <ImageView
-                    android:onClick="onStyleSelect"
                     android:id="@+id/switch_stand"
                     android:layout_width="13dp"
                     android:layout_height="7dp"
@@ -139,7 +139,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:layout_toLeftOf="@+id/switch_stand"
-                    android:text="6000" />
+                    android:text="6000"
+                    android:textColor="@color/color_161727"
+                    android:textSize="12sp" />
             </RelativeLayout>
 
             <ImageView
@@ -150,12 +152,12 @@
                 android:background="@color/color_f6f6f6" />
 
             <RelativeLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:id="@+id/phone_circle_pan"
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
-                android:layout_below="@+id/circle_owner_phone_line">
+                android:layout_below="@+id/circle_owner_phone_line"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <TextView
                     android:id="@+id/phone_num_text"
@@ -168,7 +170,6 @@
                     android:textSize="14sp" />
 
                 <EditText
-                    android:focusable="true"
                     android:id="@+id/circle_phone_num_editor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -176,9 +177,13 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:background="@null"
+                    android:focusable="true"
                     android:gravity="right"
                     android:hint="必填"
                     android:inputType="number|phone"
+                    android:lines="1"
+                    android:maxLength="14"
+                    android:textColor="@color/color_161727"
                     android:textSize="12sp" />
 
                 <ImageView
@@ -202,7 +207,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="14dp"
-                    android:text=" 请输入充值金额"
+                    android:text="是否充值金额"
                     android:textColor="@color/color_161727"
                     android:textSize="14sp" />
 
@@ -224,13 +229,15 @@
                     android:background="@color/color_ebebed" />
             </RelativeLayout>
 
+
             <RelativeLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:id="@+id/money_mum_pan"
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
-                android:layout_below="@+id/circle_start_money">
+                android:layout_below="@+id/circle_start_money"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/money_num_text"
@@ -240,7 +247,6 @@
                     android:layout_marginLeft="14dp" />
 
                 <EditText
-                    android:focusable="true"
                     android:id="@+id/circle_money_num_editor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -248,8 +254,11 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:background="@null"
+                    android:focusable="true"
                     android:gravity="right"
                     android:hint="请输入每日红包总金额"
+                    android:inputType="number"
+                    android:textColor="@color/color_161727"
                     android:textSize="12sp" />
 
                 <ImageView
@@ -262,12 +271,13 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:id="@+id/read_package_mum_pan"
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
-                android:layout_below="@+id/money_mum_pan">
+                android:layout_below="@+id/money_mum_pan"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/read_package_num_text"
@@ -286,6 +296,8 @@
                     android:background="@null"
                     android:gravity="right"
                     android:hint="请输入每日红包总金额"
+                    android:inputType="number"
+                    android:textColor="@color/color_161727"
                     android:textSize="12sp" />
 
                 <ImageView
@@ -298,12 +310,13 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:id="@+id/money_pkg_pan"
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
-                android:layout_below="@+id/read_package_mum_pan">
+                android:layout_below="@+id/read_package_mum_pan"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/money_pkg_text"
@@ -322,6 +335,8 @@
                     android:background="@null"
                     android:gravity="right"
                     android:hint="请输入每日红包总个数"
+                    android:inputType="number"
+                    android:textColor="@color/color_161727"
                     android:textSize="12sp" />
 
                 <ImageView
@@ -371,7 +386,7 @@
                     android:textColor="@color/color_161727"
                     android:textSize="14sp" />
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/logo_circle_pic"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
@@ -425,10 +440,52 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/password_pan"
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_below="@+id/pass_circle_span"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/password_num_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp" />
+
+                <EditText
+                    android:id="@+id/password_num_editor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:background="@null"
+                    android:focusable="true"
+                    android:gravity="right"
+                    android:hint="请输入6位密码"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:maxLength="6"
+                    android:textColor="@color/color_161727"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/password_num_text"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"
+                    android:background="@color/color_ebebed" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/circle_theme_pan"
                 android:layout_width="match_parent"
                 android:layout_height="49dp"
-                android:layout_below="@+id/pass_circle_span">
+                android:layout_below="@+id/password_pan">
 
                 <TextView
                     android:id="@+id/circle_theme_text"
@@ -439,6 +496,43 @@
                     android:text="添加标签"
                     android:textColor="@color/color_161727"
                     android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/flag_a0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="@drawable/tag_back_ground_unselect"
+                    android:paddingBottom="2dp"
+                    android:paddingLeft="13dp"
+                    android:paddingRight="13dp"
+                    android:paddingTop="2dp"
+                    android:text="爱运动"
+                    android:textColor="@color/color_6c71c4"
+                    android:textSize="12sp"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/flag_a1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/flag_a0"
+                    android:background="@drawable/tag_back_ground_unselect"
+                    android:paddingBottom="2dp"
+                    android:layout_marginRight="14dp"
+                    android:paddingLeft="13dp"
+                    android:paddingRight="13dp"
+                    android:paddingTop="2dp"
+                    android:text="马猴烧酒"
+                    android:textColor="@color/color_6c71c4"
+                    android:textSize="12sp"
+                    android:visibility="gone"/>
+
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -462,18 +556,18 @@
                 android:layout_below="@+id/circle_theme_phone_line">
 
                 <FrameLayout
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
 
                     <EditText
-                        android:focusable="true"
                         android:id="@+id/circle_desc_of_your"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:layout_marginLeft="14dp"
                         android:background="@null"
+                        android:focusable="true"
                         android:gravity="left|top"
                         android:hint="请对你的圈子进行描述"
                         android:textColor="@color/color_8a8a8a"

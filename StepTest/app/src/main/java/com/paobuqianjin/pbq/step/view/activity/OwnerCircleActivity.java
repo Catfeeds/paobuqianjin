@@ -19,6 +19,8 @@ import com.paobuqianjin.pbq.step.view.fragment.circle.OwnerCreateJoinFragment;
 public class OwnerCircleActivity extends BaseActivity {
     private final static String TAG = OwnerCircleActivity.class.getSimpleName();
     private OwnerCreateJoinFragment ownerCircleFragment = new OwnerCreateJoinFragment();
+    private int my_create_total_page = 0;
+    private int my_join_total_page = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class OwnerCircleActivity extends BaseActivity {
         if (intent != null && intent.getParcelableExtra(getPackageName() + "my_join") != null) {
             myJoinCreateCircleBudleData = (MyJoinCreateCircleBudleData) intent.getParcelableExtra(getPackageName() + "my_join");
         }
+
         ownerCircleFragment.setOwnerCreateCircleData(myCreateCircleBundleData.getMyCreateCircleData(), myJoinCreateCircleBudleData.getMyJoinCircleData());
 
         getSupportFragmentManager().beginTransaction()

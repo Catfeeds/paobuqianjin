@@ -32,8 +32,10 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
@@ -71,7 +73,9 @@ public final class Engine {
     private final static int MSG_SEND_DATA_TO_ENGINE = 1;
     private LoginCallBackInterface loginCallBackInterface;
     private UiCreateCircleInterface uiCreateCircleInterface;
+    private TagFragInterface tagFragInterface;
     private UiHotCircleInterface uiHotCircleInterface;
+    private ReflashMyCircleInterface reflashMyCircleInterface;
     private UiStepAndLoveRankInterface uiStepAndLoveRankInterface;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
@@ -91,6 +95,9 @@ public final class Engine {
     public final static int COMMAND_RECHARGE_RANK = 14;
     public final static int COMMAND_CIRCLE_TYPE = 15;
     public final static int COMMAND_JOIN_CIRCLE = 16;
+    public final static int COMMAND_GET_TAG = 17;
+    public final static int COMMAND_GET_CIRCLE_TARGET = 18;
+    public final static int COMMAND_REFLASH_CIRCLE = 19;
 
     private Engine() {
 
@@ -352,21 +359,17 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //获取圈子标签列表和热门标签
-    public void getCircleTag(String action) {
+    //获取圈子标签列表
+    public void getCircleTag() {
         String url = NetApi.urlCircleTags;
-        if (action.equals("hot")) {
-            url = NetApi.urlCircleTags + "?action=" + action;
-        }
-
         OkHttpUtils
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(null, -1));
+                .execute(new NetStringCallBack(tagFragInterface, COMMAND_GET_TAG));
     }
 
-    //GET read 获取单个或者多个标签 http://119.29.10.64/v1/CircleTags/4,5,6,7
+/*    //GET read 获取单个或者多个标签 http://119.29.10.64/v1/CircleTags/4,5,6,7
     public void getCircleTagByTagId(int a[]) {
         LocalLog.d(TAG, "getCircleTagByTagId() enter");
         String url = NetApi.urlCircleTags + "/";
@@ -379,7 +382,7 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(null, -1));
-    }
+    }*/
 
     //获取圈子封面列表
     public void getCircleCover() {
@@ -599,14 +602,14 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, COMMAND_JOIN_CIRCLE));
     }
 
-    //获取圈子目标列表
+    //TODO 获取圈子目标列表
     public void getCircleTarget() {
         LocalLog.d(TAG, "getCircleTarget() enter");
         OkHttpUtils
                 .get()
                 .url(NetApi.urlTarget)
                 .build()
-                .execute(new NetStringCallBack(null, -1));
+                .execute(new NetStringCallBack(uiCreateCircleInterface, COMMAND_GET_CIRCLE_TARGET));
     }
 
     /*TODO 圈子类型接口*/
@@ -616,7 +619,7 @@ public final class Engine {
                 .get()
                 .url(NetApi.urlCircleType)
                 .build()
-                .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_CIRCLE_TYPE) {
+                .execute(new NetStringCallBack(uiCreateCircleInterface, COMMAND_CIRCLE_TYPE) {
                 });
     }
 
@@ -657,6 +660,17 @@ public final class Engine {
     }
 
 
+    public void reflashMyCreateCircle(int page, int pagesize) {
+        LocalLog.d(TAG, " 我创建的圈子：getMyCreateCirlce() enter");
+        String url = NetApi.urlCircle + "?action=create" + "&userid=" + String.valueOf(engine.getId(mContext))
+                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(reflashMyCircleInterface, COMMAND_REFLASH_CIRCLE));
+    }
+
     public void getMyCreateCirlce(int page, int pagesize) {
         LocalLog.d(TAG, " 我创建的圈子：getMyCreateCirlce() enter");
         String url = NetApi.urlCircle + "?action=create" + "&userid=" + String.valueOf(engine.getId(mContext))
@@ -682,7 +696,7 @@ public final class Engine {
 
 
     public void createCircle(CreateCircleBodyParam createCircleBodyParam) {
-        LocalLog.d(TAG, "  创建圈子createCircle() enter");
+        LocalLog.d(TAG, "  创建圈子createCircle() enter" + createCircleBodyParam.toString());
         OkHttpUtils
                 .post()
                 .url(NetApi.urlCircle)
@@ -969,6 +983,12 @@ public final class Engine {
             this.uiHotCircleInterface = (UiHotCircleInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UiStepAndLoveRankInterface) {
             uiStepAndLoveRankInterface = (UiStepAndLoveRankInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TagFragInterface) {
+            tagFragInterface = (TagFragInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UiCreateCircleInterface) {
+            uiCreateCircleInterface = (UiCreateCircleInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReflashMyCircleInterface) {
+            reflashMyCircleInterface = (ReflashMyCircleInterface) uiCallBackInterface;
         }
 
     }
@@ -981,6 +1001,13 @@ public final class Engine {
             this.uiHotCircleInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UiStepAndLoveRankInterface) {
             uiStepAndLoveRankInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TagFragInterface) {
+            tagFragInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UiCreateCircleInterface) {
+            uiCreateCircleInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReflashMyCircleInterface) {
+            reflashMyCircleInterface = null;
         }
+
     }
 }

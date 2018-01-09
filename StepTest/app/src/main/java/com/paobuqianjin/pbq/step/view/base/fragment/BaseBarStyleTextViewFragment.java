@@ -22,7 +22,7 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
  */
 
 public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
-    private BaseBarActivity.ToolBarListener mToolBarListener;
+    private BaseBarImageViewFragment.ToolBarListener mToolBarListener;
     private TextView tv_title;
     private ImageView tv_left;
     private TextView tv_right;
@@ -61,7 +61,7 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
         return rootView;
     }
 
-    public BaseBarActivity.ToolBarListener setToolBarListener() {
+    public BaseBarImageViewFragment.ToolBarListener setToolBarListener() {
         return null;
     }
 
@@ -77,7 +77,7 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
         refreshTop(rootView);
     }
 
-    public void setToolBarListener(BaseBarActivity.ToolBarListener toolBarListener) {
+    public void setToolBarListener(BaseBarImageViewFragment.ToolBarListener toolBarListener) {
         mToolBarListener = toolBarListener;
     }
 
@@ -159,9 +159,4 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
         startActivity(intent);
     }
 
-    public interface ToolBarListener {
-        void clickLeft();
-
-        void clickRight();
-    }
 }

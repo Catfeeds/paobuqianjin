@@ -5,7 +5,10 @@ import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.NearByPeopleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
@@ -18,7 +21,10 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
@@ -101,10 +107,11 @@ public class NetStringCallBack extends StringCallback {
             MyJoinCircleResponse myJoinCircleResponse = new Gson().fromJson(s, MyJoinCircleResponse.class);
             ((UiHotCircleInterface) callBackInterface).response(myJoinCircleResponse);
         } else if (callBackInterface != null
-                && callBackInterface instanceof UiHotCircleInterface
+                && callBackInterface instanceof UiCreateCircleInterface
                 && command == Engine.COMMAND_CIRCLE_TYPE) {
-            CircleTypeResponse circleTypeResponse = new Gson().fromJson(s,CircleTypeResponse.class);
-            ((UiHotCircleInterface) callBackInterface).response(circleTypeResponse);
+            LocalLog.d(TAG, "圈子类型");
+            CircleTypeResponse circleTypeResponse = new Gson().fromJson(s, CircleTypeResponse.class);
+            ((UiCreateCircleInterface) callBackInterface).response(circleTypeResponse);
         } else if (callBackInterface != null
                 && callBackInterface instanceof UiStepAndLoveRankInterface
                 && command == Engine.COMMAND_RECHARGE_RANK) {
@@ -123,6 +130,32 @@ public class NetStringCallBack extends StringCallback {
             LocalLog.d(TAG, "圈子详情");
             CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
             ((UiStepAndLoveRankInterface) callBackInterface).response(circleDetailResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof TagFragInterface
+                && command == Engine.COMMAND_GET_TAG) {
+            LocalLog.d(TAG, "获取标签!");
+            CircleTagResponse circleTagResponse = new Gson().fromJson(s, CircleTagResponse.class);
+            ((TagFragInterface) callBackInterface).response(circleTagResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof UiCreateCircleInterface
+                && command == Engine.COMMAND_CREATE_CIRCLE) {
+            LocalLog.d(TAG, "创建圈子");
+            CreateCircleResponse createCircleResponse = new Gson().fromJson(s, CreateCircleResponse.class);
+            ((UiCreateCircleInterface) callBackInterface).response(createCircleResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof UiCreateCircleInterface
+                && command == Engine.COMMAND_GET_CIRCLE_TARGET) {
+            LocalLog.d(TAG, "获取圈子目标");
+            CircleTargetResponse circleTargetResponse = new Gson().fromJson(s, CircleTargetResponse.class);
+            ((UiCreateCircleInterface) callBackInterface).response(circleTargetResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof ReflashMyCircleInterface
+                && command == Engine.COMMAND_REFLASH_CIRCLE) {
+            LocalLog.d(TAG, "获取圈子目标");
+            MyCreateCircleResponse myCreateCircleResponse = new Gson().fromJson(s, MyCreateCircleResponse.class);
+            ((ReflashMyCircleInterface) callBackInterface).response(myCreateCircleResponse);
+        } else {
+            LocalLog.d(TAG, " dispatch not match");
         }
     }
 }
