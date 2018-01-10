@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp">
+
+            <FrameLayout
+                android:id="@+id/bg"
+                android:layout_width="328dp"
+                android:layout_height="428dp"
+                android:layout_centerHorizontal="true">
+
+                <ImageView
+                    android:layout_width="328dp"
+                    android:layout_height="428dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_honor" />
+            </FrameLayout>
+
+            <RelativeLayout
+                android:id="@+id/rank_data_span"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="62dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp">
+
+                    <TextView
+                        android:id="@+id/rank_honor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="true"
+                        android:text="15"
+                        android:textColor="@color/color_f8"
+                        android:textSize="36sp" />
+
+                    <TextView
+                        android:id="@+id/rank_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rank_honor"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="9dp"
+                        android:includeFontPadding="false"
+                        android:text="名次"
+                        android:textColor="@color/color_f8"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp">
+
+                    <TextView
+                        android:id="@+id/step_num"
+                        android:layout_width="wrap_content"
+
+                        android:layout_height="wrap_content"
+                        android:text="10086"
+                        android:textColor="@color/color_f8"
+                        android:textSize="36sp" />
+
+                    <TextView
+                        android:id="@+id/step_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/step_num"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="9dp"
+                        android:includeFontPadding="false"
+                        android:text="步数"
+                        android:textColor="@color/color_f8"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rank_master_span"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rank_data_span"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="35dp"
+                android:layout_marginTop="45dp">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rank_recycler_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="45dp"
+                android:layout_below="@+id/rank_master_span"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/rank_detail_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="排行榜详情"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="13dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toEndOf="@+id/rank_detail_des"
+                    android:src="@drawable/go_to" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+</RelativeLayout>
