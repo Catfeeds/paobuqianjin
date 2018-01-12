@@ -1,7 +1,5 @@
-package com.paobuqianjin.pbq.step.ushare.wxapi;
+package com.paobuqianjin.pbq.step.wxapi;
 
-
-//import com.umeng.weixin.callback.WXCallbackActivity;
 
 import com.umeng.socialize.weixin.view.WXCallbackActivity;
 

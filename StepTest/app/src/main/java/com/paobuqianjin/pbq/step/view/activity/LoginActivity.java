@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,6 +29,7 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.utils.Log;
 import com.umeng.socialize.utils.SocializeUtils;
 
 import java.util.Map;
@@ -106,6 +108,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     protected void onDestroy() {
         super.onDestroy();
         Presenter.getInstance(this).dispatchUiInterface(this);
+        UMShareAPI.get(this).release();
     }
 
     @Override
@@ -291,6 +294,8 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
             for (String key : map.keySet()) {
                 temp = temp + key + ":" + map.get(key) + "\n";
             }
+
+            LocalLog.d(TAG,temp);
         }
 
         @Override
@@ -311,10 +316,13 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
         switch (view.getId()) {
             case R.id.wenxin:
                 LocalLog.d(TAG, "微信三方登录");
+                LocalLog.d(TAG,"xxxxxx install-="+UMShareAPI.get(this).isInstall(this,SHARE_MEDIA.WEIXIN));
                 UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
                 UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
+
                 break;
             case R.id.qq:
+              LocalLog.d(TAG,"xxxxxx install-="+UMShareAPI.get(this).isInstall(this,SHARE_MEDIA.QQ));
                 UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.QQ, authListener);
                 UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, authListener);
                 break;
@@ -323,5 +331,19 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                 UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
                 break;
         }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        UMShareAPI.get(this).onSaveInstanceState(outState);
     }
 }

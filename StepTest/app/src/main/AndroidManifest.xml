@@ -117,7 +117,7 @@
         <!---->
         <!-- wechat callback-->
         <activity
-            android:name=".ushare.wxapi.WXEntryActivity"
+            android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
