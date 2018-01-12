@@ -17,6 +17,8 @@ import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
@@ -48,6 +50,11 @@ public class PaoBuApplication extends Application {
         return true;
     }
 
+    private boolean initWXapi(Context context) {
+        PlatformConfig.setWeixin("wx1ed4ccc9a2226a73", "b1398e4064b5ea28549201f43965c1dc");
+        return true;
+    }
+
     /*@desc 检测或启动计算步数的后台服务
   *@function initSDKService
   *@param
@@ -73,11 +80,13 @@ public class PaoBuApplication extends Application {
             Looper.prepare();
             final PaoBuApplication app = application.get();
             if (app != null) {
+                UMShareAPI.get(app);
                 LocalLog.d(TAG, "DetectThread run() 初始化网络、计步服务、定位SDK、三方登陆注册、三方支付SDK等");
                 app.initHttpOk();
                 Presenter.getInstance(app).startService(StepService.START_STEP_ACTION, StepService.class);
                 app.initBaiDuSDK(app);
                 Presenter.getInstance(app).startService(null, LocalBaiduService.class);
+                app.initWXapi(app);
             }
         }
     }

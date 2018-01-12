@@ -13,6 +13,11 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+           // signingConfig signingConfigs.debug
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            //signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -22,7 +27,16 @@ android {
             jniLibs.srcDirs = ['libs']
         }
     }
-
+    //add 友盟Key
+    signingConfigs {
+/*        debug {
+            storeFile file('debug.keystore')
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }*/
+    }
+    //
     android {
 
         defaultConfig {
@@ -63,4 +77,9 @@ dependencies {
     implementation files('libs/fastjson-1.1.62.android.jar')
     implementation files('libs/qcloud-core-1.2.1.2.jar')
     implementation files('libs/xstream-1.4.7.jar')
+    implementation files('libs/umeng_social_api.jar')
+    implementation files('libs/umeng_social_net.jar')
+    implementation files('libs/umeng_social_tool.jar')
+    implementation files('libs/SocialSDK_WeiXin_Full.jar')
+    implementation files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
 }

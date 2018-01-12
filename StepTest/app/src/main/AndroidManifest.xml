@@ -20,7 +20,10 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
+    <!---->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <!---->
     <application
         android:name=".view.base.PaoBuApplication"
         android:allowBackup="true"
@@ -110,6 +113,20 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
 
+
+        <!---->
+        <!-- wechat callback-->
+        <activity
+            android:name=".ushare.wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!--友盟appkey-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5a5718adf43e482eb000012a"></meta-data>
+        <!---->
         <receiver
             android:name=".model.broadcast.BootStepReceiver"
             android:exported="false">

@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +25,16 @@ import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.utils.SocializeUtils;
+
+import java.util.Map;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2017/12/7.
@@ -32,6 +43,12 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelper.SoftKeyboardStateListener, LoginSignCallbackInterface {
     private final static String LOGIN_SUCCESS_ACTION = "com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION";
     private final static String TAG = LoginActivity.class.getSimpleName();
+    @Bind(R.id.wenxin)
+    ImageView wenxin;
+    @Bind(R.id.qq)
+    ImageView qq;
+    @Bind(R.id.sina)
+    ImageView sina;
     private boolean showLoginPass = false, showSignPass = false;
     /*默认显示登入界面*/
     private int currentIndex;
@@ -48,11 +65,13 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     private TextView findPassTV;
     private RelativeLayout backGround;
     private String[] userInfo;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_sign_layout);
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -93,6 +112,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     protected void initView() {
         super.initView();
 
+        dialog = new ProgressDialog(this);
         loginPan = (RelativeLayout) findViewById(R.id.login_pan);
         layoutParams = (RelativeLayout.LayoutParams) loginPan.getLayoutParams();
         backGround = (RelativeLayout) findViewById(R.id.background_login_sign);
@@ -254,5 +274,54 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     @Override
     public void registerByPhoneCallBack(SignUserResponse signUserResponse) {
         Toast.makeText(this, signUserResponse.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    private UMAuthListener authListener = new UMAuthListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+            LocalLog.d(TAG, "授权开始callback:" + share_media.toString());
+            SocializeUtils.safeCloseDialog(dialog);
+        }
+
+        @Override
+        public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+            LocalLog.d(TAG, "授权成功callback:" + share_media.toString());
+            Toast.makeText(LoginActivity.this, "成功：", Toast.LENGTH_LONG).show();
+            String temp = "";
+            for (String key : map.keySet()) {
+                temp = temp + key + ":" + map.get(key) + "\n";
+            }
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+            SocializeUtils.safeCloseDialog(dialog);
+            Toast.makeText(LoginActivity.this, "失败：" + throwable.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media, int i) {
+            SocializeUtils.safeCloseDialog(dialog);
+            Toast.makeText(LoginActivity.this, "取消了", Toast.LENGTH_LONG).show();
+        }
+    };
+
+    @OnClick({R.id.wenxin, R.id.qq, R.id.sina})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.wenxin:
+                LocalLog.d(TAG, "微信三方登录");
+                UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
+                UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
+                break;
+            case R.id.qq:
+                UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.QQ, authListener);
+                UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, authListener);
+                break;
+            case R.id.sina:
+                UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
+                UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
+                break;
+        }
     }
 }
