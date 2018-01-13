@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.data.netcallback;
 
+import android.speech.tts.TextToSpeech;
+
 import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.NearByPeopleResponse;
@@ -9,6 +11,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
@@ -20,6 +23,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
@@ -154,6 +158,11 @@ public class NetStringCallBack extends StringCallback {
             LocalLog.d(TAG, "获取圈子目标");
             MyCreateCircleResponse myCreateCircleResponse = new Gson().fromJson(s, MyCreateCircleResponse.class);
             ((ReflashMyCircleInterface) callBackInterface).response(myCreateCircleResponse);
+        } else if (callBackInterface != null &&
+                callBackInterface instanceof DynamicIndexUiInterface
+                && command == Engine.COMMAND_GET_DYNAMIC_INDEX) {
+            DynamicAllIndexResponse dynamicAllIndexResponse = new Gson().fromJson(s, DynamicAllIndexResponse.class);
+            ((DynamicIndexUiInterface) callBackInterface).response(dynamicAllIndexResponse);
         } else {
             LocalLog.d(TAG, " dispatch not match");
         }

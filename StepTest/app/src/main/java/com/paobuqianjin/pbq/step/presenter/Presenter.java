@@ -116,6 +116,11 @@ public final class Presenter {
         engine.getUserStep(id);
     }
 
+    //TODO 获取动态列表
+    public void getDynamicIndex(int page, int pagesize) {
+        engine.getDynamicIndex(page, pagesize);
+    }
+
     //TODO 获取圈子目标
     public void getCircleTarget() {
         engine.getCircleTarget();
@@ -133,7 +138,7 @@ public final class Presenter {
     }
 
     public void reflashMyCircle(int pageIndex) {
-        engine.reflashMyCreateCircle(pageIndex,10);
+        engine.reflashMyCreateCircle(pageIndex, 10);
     }
 
     //TODO 我加入的圈子

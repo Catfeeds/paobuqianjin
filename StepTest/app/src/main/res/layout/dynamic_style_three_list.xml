@@ -18,6 +18,7 @@
             android:src="@drawable/logo" />
 
         <TextView
+            android:id="@id/dynamic_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -54,19 +55,20 @@
             android:layout_height="wrap_content"
             android:gravity="left"
             android:text="今天干哈？"
+            android:layout_below="@+id/image_span"
+            android:layout_marginTop="15dp"
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
         <LinearLayout
+            android:id="@+id/image_span"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/dynamic_content_text">
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/dynamic_pic_one"
                 android:layout_width="0dp"
                 android:layout_height="110dp"
-                android:layout_marginTop="15dp"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
                 android:src="@drawable/circle_live_default_a" />
@@ -76,7 +78,6 @@
                 android:layout_width="0dp"
                 android:layout_height="110dp"
                 android:layout_marginLeft="7dp"
-                android:layout_marginTop="15dp"
                 android:layout_toEndOf="@+id/dynamic_pic_one"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
@@ -87,7 +88,6 @@
                 android:layout_width="0dp"
                 android:layout_height="110dp"
                 android:layout_marginLeft="7dp"
-                android:layout_marginTop="15dp"
                 android:layout_toEndOf="@+id/dynamic_pic_one"
                 android:layout_weight="1"
                 android:scaleType="centerCrop"
@@ -142,6 +142,7 @@
             android:textSize="15sp" />
 
         <ImageView
+            android:id="@+id/like_num_icon"
             android:layout_width="17dp"
             android:layout_height="14dp"
             android:layout_centerVertical="true"
@@ -173,7 +174,7 @@
             android:layout_below="@+id/line_content"
             android:layout_marginTop="15dp"
             android:gravity="left"
-            android:text="女侠请留言:向你学习"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="14dp" />
 

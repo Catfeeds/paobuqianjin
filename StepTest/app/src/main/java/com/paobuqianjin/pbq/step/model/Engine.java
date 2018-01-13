@@ -31,6 +31,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
@@ -77,6 +78,7 @@ public final class Engine {
     private UiHotCircleInterface uiHotCircleInterface;
     private ReflashMyCircleInterface reflashMyCircleInterface;
     private UiStepAndLoveRankInterface uiStepAndLoveRankInterface;
+    private DynamicIndexUiInterface dynamicIndexUiInterface;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
     public final static int COMMAND_LOGIN_IN = 2;
@@ -98,6 +100,7 @@ public final class Engine {
     public final static int COMMAND_GET_TAG = 17;
     public final static int COMMAND_GET_CIRCLE_TARGET = 18;
     public final static int COMMAND_REFLASH_CIRCLE = 19;
+    public final static int COMMAND_GET_DYNAMIC_INDEX = 20;
 
     private Engine() {
 
@@ -400,14 +403,14 @@ public final class Engine {
     }
 
     //动态接口
-    public void getDynamic(int page, int pagesize) {
-        LocalLog.d(TAG, "getDynamic() enter");
+    public void getDynamicIndex(int page, int pagesize) {
+        LocalLog.d(TAG, "getDynamicIndex() enter" + "当前页 " + page + "页最大数据目:" + pagesize);
         String url = NetApi.urlDynamic + "?page=" + page + "&pagesize=" + pagesize;
         OkHttpUtils
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(null, -1));
+                .execute(new NetStringCallBack(dynamicIndexUiInterface, Engine.COMMAND_GET_DYNAMIC_INDEX));
     }
 
     //发布动态
@@ -989,6 +992,8 @@ public final class Engine {
             uiCreateCircleInterface = (UiCreateCircleInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReflashMyCircleInterface) {
             reflashMyCircleInterface = (ReflashMyCircleInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicIndexUiInterface) {
+            dynamicIndexUiInterface = (DynamicIndexUiInterface) uiCallBackInterface;
         }
 
     }
@@ -1007,6 +1012,8 @@ public final class Engine {
             uiCreateCircleInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReflashMyCircleInterface) {
             reflashMyCircleInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicIndexUiInterface) {
+            dynamicIndexUiInterface = null;
         }
 
     }
