@@ -108,7 +108,7 @@
             android:id="@+id/dynamic_location_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="深圳"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15sp" />
 
@@ -117,7 +117,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="16"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15sp" />
 
@@ -137,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="22dp"
             android:layout_toStartOf="@+id/content_number_icon"
-            android:text="44"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15sp" />
 

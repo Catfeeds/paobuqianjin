@@ -13,6 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.LikeSupportActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
@@ -94,6 +97,17 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment {
     private LinearLayoutManager layoutManager;
     private LinearLayoutManager layoutManagerContent;
 
+    public int getDynamicid() {
+        return dynamicid;
+    }
+
+    public void setDynamicid(int dynamicid) {
+        this.dynamicid = dynamicid;
+    }
+
+    private int dynamicid = -1;
+    private int currentIndexPage = 1;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.dynamic_detail_fg;
@@ -107,6 +121,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.inflater = inflater;
+        Presenter.getInstance(getContext()).attachUiInterface(dynamicCommentUiInterface);
+        Presenter.getInstance(getContext()).getDynamicCommentList(dynamicid, currentIndexPage, 10);
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
@@ -197,6 +213,16 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment {
     public void onDestroyView() {
         super.onDestroyView();
         imageViewpager.removeOnPageChangeListener(onPageChangeListener);
+        Presenter.getInstance(getContext()).dispatchUiInterface(dynamicCommentUiInterface);
         ButterKnife.unbind(this);
     }
+
+
+    private DynamicCommentUiInterface dynamicCommentUiInterface = new DynamicCommentUiInterface() {
+        @Override
+        public void response(DynamicCommentResponse dynamicCommentResponse) {
+            LocalLog.d(TAG, "DynamicCommentResponse() enter" + dynamicCommentResponse.toString());
+
+        }
+    };
 }

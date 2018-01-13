@@ -111,6 +111,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     @TargetApi(23)
     private void updateItem(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof OneOrZeroViewHodler) {
+            ((OneOrZeroViewHodler) holder).dynamicid = data.get(position).getId();
             if (((OneOrZeroViewHodler) holder).viewType == 1) {
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicPicOne, data.get(position).getImages().get(0));
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar());
@@ -119,8 +120,13 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getCity());
                 ((OneOrZeroViewHodler) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
                 ((OneOrZeroViewHodler) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
-                if (data.get(position).getVote() < 0) {
+                if (data.get(position).getVote() <= 0) {
+                    LocalLog.d(TAG, "updateItem() 无人点赞");
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(mContext.getDrawable(R.drawable.fabulous_n));
+                }
+                if (data.get(position).getComment() <= 0) {
+                    LocalLog.d(TAG, "updateItem() 无人评论");
+                    ((OneOrZeroViewHodler) holder).scanMore.setVisibility(View.GONE);
                 }
 
                 if (data.get(position).getOne_comment() != null) {
@@ -134,7 +140,6 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     }
                 }
 
-                ((OneOrZeroViewHodler) holder).dynamicId = data.get(position).getId();
             } else if (((OneOrZeroViewHodler) holder).viewType == 0) {
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar());
                 ((OneOrZeroViewHodler) holder).dynamicContentText.setText(data.get(position).getDynamic());
@@ -142,8 +147,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getCity());
                 ((OneOrZeroViewHodler) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
                 ((OneOrZeroViewHodler) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
-                if (data.get(position).getVote() < 0) {
+                if (data.get(position).getVote() <= 0) {
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(mContext.getDrawable(R.drawable.fabulous_n));
+                }
+                if (data.get(position).getComment() <= 0) {
+                    LocalLog.d(TAG, "updateItem() 无人评论");
+                    ((OneOrZeroViewHodler) holder).scanMore.setVisibility(View.GONE);
                 }
                 if (data.get(position).getOne_comment() != null) {
                     if (data.get(position).getOne_comment().getNickname() != null) {
@@ -157,6 +166,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             }
         } else if (holder instanceof TwoPicViewHolder) {
+            ((TwoPicViewHolder) holder).dynamicid = data.get(position).getId();
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0));
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1));
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar());
@@ -165,8 +175,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((TwoPicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getCity());
             ((TwoPicViewHolder) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
             ((TwoPicViewHolder) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
-            if (data.get(position).getVote() < 0) {
+            if (data.get(position).getVote() <= 0) {
                 ((TwoPicViewHolder) holder).likeNumIcon.setImageDrawable(mContext.getDrawable(R.drawable.fabulous_n));
+            }
+            if (data.get(position).getComment() <= 0) {
+                LocalLog.d(TAG, "updateItem() 无人评论");
+                ((TwoPicViewHolder) holder).scanMore.setVisibility(View.GONE);
             }
             if (data.get(position).getOne_comment() != null) {
                 if (data.get(position).getOne_comment().getNickname() != null) {
@@ -179,6 +193,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             }
         } else if (holder instanceof ThreePicViewHolder) {
+            ((ThreePicViewHolder) holder).dynamicid = data.get(position).getId();
+            ((ThreePicViewHolder) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
             Presenter.getInstance(mContext).getImage(((ThreePicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0));
             Presenter.getInstance(mContext).getImage(((ThreePicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1));
             Presenter.getInstance(mContext).getImage(((ThreePicViewHolder) holder).dynamicPicThree, data.get(position).getImages().get(2));
@@ -187,8 +203,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((ThreePicViewHolder) holder).dynamicUserName.setText(data.get(position).getNickname());
             ((ThreePicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getCity());
             ((ThreePicViewHolder) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
-            if (data.get(position).getVote() < 0) {
+            if (data.get(position).getVote() <= 0) {
                 ((ThreePicViewHolder) holder).likeNumIcon.setImageDrawable(mContext.getDrawable(R.drawable.fabulous_n));
+            }
+            if (data.get(position).getComment() <= 0) {
+                LocalLog.d(TAG, "updateItem() 无人评论");
+                ((ThreePicViewHolder) holder).scanMore.setVisibility(View.GONE);
             }
             if (data.get(position).getOne_comment() != null) {
                 if (data.get(position).getOne_comment().getNickname() != null) {
@@ -243,7 +263,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         //@Bind(R.id.like_num_icon)
         ImageView likeNumIcon;
 
-        int dynamicId;
+        int dynamicid = -1;
 
         public OneOrZeroViewHodler(View view, int viewType) {
             super(view);
@@ -286,6 +306,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         LocalLog.d(TAG, "点击查看更多评价");
                         Intent intent = new Intent();
                         intent.setClass(mContext, DynamicActivity.class);
+                        intent.putExtra(mContext.getPackageName() + "dynamicid", dynamicid);
                         mContext.startActivity(intent);
                         break;
                 }
@@ -334,6 +355,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         //@Bind(R.id.like_num_icon)
         ImageView likeNumIcon;
 
+        int dynamicid = -1;
+
         public TwoPicViewHolder(View view, int viewType) {
             super(view);
             this.viewType = viewType;
@@ -363,7 +386,11 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 switch (view.getId()) {
                     case R.id.scan_more:
                         LocalLog.d(TAG, "点击查看更多评价");
-
+                        LocalLog.d(TAG, "点击查看更多评价");
+                        Intent intent = new Intent();
+                        intent.setClass(mContext, DynamicActivity.class);
+                        intent.putExtra(mContext.getPackageName() + "dynamicid", dynamicid);
+                        mContext.startActivity(intent);
                         break;
                 }
             }
@@ -412,6 +439,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         //@Bind(R.id.scan_more)
         TextView scanMore;
 
+        int dynamicid = -1;
+
         public ThreePicViewHolder(View view, int viewType) {
             super(view);
             this.viewType = viewType;
@@ -443,7 +472,11 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 switch (view.getId()) {
                     case R.id.scan_more:
                         LocalLog.d(TAG, "点击查看更多评价");
-
+                        LocalLog.d(TAG, "点击查看更多评价");
+                        Intent intent = new Intent();
+                        intent.setClass(mContext, DynamicActivity.class);
+                        intent.putExtra(mContext.getPackageName() + "dynamicid", dynamicid);
+                        mContext.startActivity(intent);
                         break;
                 }
             }

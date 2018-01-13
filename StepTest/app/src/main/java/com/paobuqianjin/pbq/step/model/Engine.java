@@ -31,6 +31,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
@@ -79,6 +80,7 @@ public final class Engine {
     private ReflashMyCircleInterface reflashMyCircleInterface;
     private UiStepAndLoveRankInterface uiStepAndLoveRankInterface;
     private DynamicIndexUiInterface dynamicIndexUiInterface;
+    private DynamicCommentUiInterface dynamicCommentUiInterface;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
     public final static int COMMAND_LOGIN_IN = 2;
@@ -101,6 +103,7 @@ public final class Engine {
     public final static int COMMAND_GET_CIRCLE_TARGET = 18;
     public final static int COMMAND_REFLASH_CIRCLE = 19;
     public final static int COMMAND_GET_DYNAMIC_INDEX = 20;
+    public final static int COMMAND_DYNAMIC_CONTENTS = 21;
 
     private Engine() {
 
@@ -402,10 +405,10 @@ public final class Engine {
 
     }
 
-    //动态接口
+    //TODO 动态接口 GET index 获取已关注人动态列表
     public void getDynamicIndex(int page, int pagesize) {
         LocalLog.d(TAG, "getDynamicIndex() enter" + "当前页 " + page + "页最大数据目:" + pagesize);
-        String url = NetApi.urlDynamic + "?page=" + page + "&pagesize=" + pagesize;
+        String url = NetApi.urlDynamic + "/?userid=" + String.valueOf(getId(mContext)) + "&page=" + page + "&pagesize=" + pagesize;
         OkHttpUtils
                 .get()
                 .url(url)
@@ -413,7 +416,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(dynamicIndexUiInterface, Engine.COMMAND_GET_DYNAMIC_INDEX));
     }
 
-    //发布动态
+    //TODO 发表动态
     public void postDynamic(DynamicParam dynamicParam) {
         LocalLog.d(TAG, "postDynamic() enter");
         OkHttpUtils
@@ -424,7 +427,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //获取动他详情by    动态id
+    //TODO 动态详情 id
     public void getDynamicDetail(int id) {
         LocalLog.d(TAG, "getDynamicDetail() enter");
         String url = NetApi.urlDynamic + "/" + String.valueOf(id);
@@ -435,16 +438,16 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //获取评论列表 http://119.29.10.64/v1/DynamicComment?dynamicid=2
+    //TODO 获取评论列表 http://119.29.10.64/v1/DynamicComment/?dynamicid=1
     public void getDynamicCommentList(int dynamicid, int page, int pagesize) {
-        LocalLog.d(TAG, "getDynamicCommentList() enter");
-        String url = NetApi.urlDynamicComment + "?dynamicid=" + dynamicid + "&page=" + page + " &pagesize=" + pagesize;
-
+        String url = NetApi.urlDynamicComment + "?dynamicid=" + String.valueOf(dynamicid) + "&page=" +
+                String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        LocalLog.d(TAG, "getDynamicCommentList() enter url = " + url);
         OkHttpUtils
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(null, -1));
+                .execute(new NetStringCallBack(dynamicCommentUiInterface, COMMAND_DYNAMIC_CONTENTS));
     }
 
     //获取单条评论
@@ -994,6 +997,8 @@ public final class Engine {
             reflashMyCircleInterface = (ReflashMyCircleInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicIndexUiInterface) {
             dynamicIndexUiInterface = (DynamicIndexUiInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicCommentUiInterface) {
+            dynamicCommentUiInterface = (DynamicCommentUiInterface) uiCallBackInterface;
         }
 
     }
@@ -1014,6 +1019,8 @@ public final class Engine {
             reflashMyCircleInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicIndexUiInterface) {
             dynamicIndexUiInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicCommentUiInterface) {
+            dynamicCommentUiInterface = null;
         }
 
     }

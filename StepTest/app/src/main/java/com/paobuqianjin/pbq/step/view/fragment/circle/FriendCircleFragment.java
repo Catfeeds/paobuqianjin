@@ -13,6 +13,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -45,6 +46,7 @@ public final class FriendCircleFragment extends BaseFragment {
     private ViewPager mCirclePager;
     private BaseActivity mActivity;
     RelativeLayout scanMark;
+    private ImageView iScanView, iCamemaView;
     private Context mContext;
     private int currentIndexFriend = 0;
     private int mIndexFriend = 0;
@@ -153,10 +155,45 @@ public final class FriendCircleFragment extends BaseFragment {
             }
         });
 
+        mCircleTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                LocalLog.d(TAG, "onTabSelected() enter" + tab.getPosition());
+                switch (tab.getPosition()) {
+                    case 0:
+                        if (iCamemaView.getVisibility() == View.VISIBLE) {
+                            iCamemaView.setVisibility(View.GONE);
+                        }
+                        if (iScanView.getVisibility() == View.GONE) {
+                            iScanView.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case 1:
+                        if (iCamemaView.getVisibility() == View.GONE) {
+                            iCamemaView.setVisibility(View.VISIBLE);
+                        }
+                        if (iScanView.getVisibility() == View.VISIBLE) {
+                            iScanView.setVisibility(View.GONE);
+                        }
+                        break;
+                }
+            }
 
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         LocalLog.d(TAG, "initView() leave");
         scanMark = (RelativeLayout) rootView.findViewById(R.id.scan_mark);
         scanMark.setOnClickListener(onClickListener);
+        iScanView = (ImageView) rootView.findViewById(R.id.scan_qr);
+        iCamemaView = (ImageView) rootView.findViewById(R.id.camema);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -164,11 +201,17 @@ public final class FriendCircleFragment extends BaseFragment {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.scan_mark:
-                    LocalLog.d(TAG, "扫描二维码!");
-                    new IntentIntegrator(getActivity())
-                            .setOrientationLocked(false)
-                            .setCaptureActivity(QrCodeScanActivity.class)
-                            .initiateScan();
+                    if (iScanView.getVisibility() == View.VISIBLE) {
+                        LocalLog.d(TAG, "扫描二维码!");
+                        new IntentIntegrator(getActivity())
+                                .setOrientationLocked(false)
+                                .setCaptureActivity(QrCodeScanActivity.class)
+                                .initiateScan();
+                    }
+
+                    if(iCamemaView.getVisibility() == View.VISIBLE){
+                        LocalLog.d(TAG," 发布动态!");
+                    }
                     break;
             }
         }

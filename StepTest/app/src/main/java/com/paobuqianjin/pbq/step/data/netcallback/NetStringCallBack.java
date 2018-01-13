@@ -12,6 +12,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
@@ -23,6 +24,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
@@ -161,8 +163,15 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null &&
                 callBackInterface instanceof DynamicIndexUiInterface
                 && command == Engine.COMMAND_GET_DYNAMIC_INDEX) {
+            LocalLog.d(TAG, "动态列表");
             DynamicAllIndexResponse dynamicAllIndexResponse = new Gson().fromJson(s, DynamicAllIndexResponse.class);
             ((DynamicIndexUiInterface) callBackInterface).response(dynamicAllIndexResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof DynamicCommentUiInterface
+                && command == Engine.COMMAND_DYNAMIC_CONTENTS) {
+            LocalLog.d(TAG, "评论列表");
+            DynamicCommentResponse dynamicCommentResponse = new Gson().fromJson(s, DynamicCommentResponse.class);
+            ((DynamicCommentUiInterface) callBackInterface).response(dynamicCommentResponse);
         } else {
             LocalLog.d(TAG, " dispatch not match");
         }

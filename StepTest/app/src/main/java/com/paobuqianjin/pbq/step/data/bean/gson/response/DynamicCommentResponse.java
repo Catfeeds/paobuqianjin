@@ -5,17 +5,13 @@ import java.util.List;
 /**
  * Created by pbq on 2017/12/26.
  */
-/*
-@className :DynamicAllIndexResponse
-*@date 2018/1/12
-*@author
-*@description   GET index 获取动态列表
-*/
-public class DynamicAllIndexResponse {
+
+public class DynamicCommentResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":3},"data":[{"nickname":"李五","avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","id":2,"userid":2,"dynamic":"我有个小小的愿望，下次如路人相遇的时候，人们都能大大方方的来打个招呼，而不是偷偷的举起相机。","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"惠州","vote":100,"comment":5,"creat_time":1513393712,"one_comment":{"id":10,"parent_id":0,"reply_userid":0,"userid":32,"dynamicid":2,"content":"哎呦","creat_time":0,"nickname":"rm_13424156025"}}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":9},"data":[{"id":4,"parent_id":0,"reply_userid":0,"userid":5,"dynamicid":1,"content":"那就买买买 然后攒着","creat_time":1513394224,"nickname":"孤央","child":[{"id":5,"parent_id":4,"reply_userid":5,"userid":6,"dynamicid":1,"content":"励志 我罗牛逼","creat_time":1513394224,"nickname":"青冘","reply_nickname":"孤央"},{"id":6,"parent_id":4,"reply_userid":6,"userid":7,"dynamicid":1,"content":"大家误会了，这位巴萨球迷是在自我介绍","creat_time":1513394224,"nickname":"沉秋","reply_nickname":"青冘"},{"id":7,"parent_id":4,"reply_userid":6,"userid":8,"dynamicid":1,"content":"前几天梅西得的是什么奖来着","creat_time":1513394224,"nickname":"酒自斟","reply_nickname":"青冘"}]},{"id":8,"parent_id":0,"reply_userid":0,"userid":9,"dynamicid":1,"content":"三票罗的逆袭","creat_time":1513394224,"nickname":"孤傲王者"},{"id":9,"parent_id":0,"reply_userid":0,"userid":10,"dynamicid":1,"content":"所有的成功，都是日夜苦练的褒奖！","creat_time":1513394224,"nickname":"孤君独战"},{"id":16,"parent_id":0,"reply_userid":0,"userid":1,"dynamicid":1,"content":"你是不是傻？？？","creat_time":0,"nickname":"陈杰"}]}
      */
 
     private int error;
@@ -48,7 +44,7 @@ public class DynamicAllIndexResponse {
 
     @Override
     public String toString() {
-        return "DynamicAllIndexResponse{" +
+        return "DynamicCommentResponse{" +
                 "error=" + error +
                 ", message='" + message + '\'' +
                 ", data=" + data +
@@ -57,8 +53,8 @@ public class DynamicAllIndexResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":3}
-         * data : [{"nickname":"李五","avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","id":2,"userid":2,"dynamic":"我有个小小的愿望，下次如路人相遇的时候，人们都能大大方方的来打个招呼，而不是偷偷的举起相机。","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"惠州","vote":100,"comment":5,"creat_time":1513393712,"one_comment":{"id":10,"parent_id":0,"reply_userid":0,"userid":32,"dynamicid":2,"content":"哎呦","creat_time":0,"nickname":"rm_13424156025"}}]
+         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":9}
+         * data : [{"id":4,"parent_id":0,"reply_userid":0,"userid":5,"dynamicid":1,"content":"那就买买买 然后攒着","creat_time":1513394224,"nickname":"孤央","child":[{"id":5,"parent_id":4,"reply_userid":5,"userid":6,"dynamicid":1,"content":"励志 我罗牛逼","creat_time":1513394224,"nickname":"青冘","reply_nickname":"孤央"},{"id":6,"parent_id":4,"reply_userid":6,"userid":7,"dynamicid":1,"content":"大家误会了，这位巴萨球迷是在自我介绍","creat_time":1513394224,"nickname":"沉秋","reply_nickname":"青冘"},{"id":7,"parent_id":4,"reply_userid":6,"userid":8,"dynamicid":1,"content":"前几天梅西得的是什么奖来着","creat_time":1513394224,"nickname":"酒自斟","reply_nickname":"青冘"}]},{"id":8,"parent_id":0,"reply_userid":0,"userid":9,"dynamicid":1,"content":"三票罗的逆袭","creat_time":1513394224,"nickname":"孤傲王者"},{"id":9,"parent_id":0,"reply_userid":0,"userid":10,"dynamicid":1,"content":"所有的成功，都是日夜苦练的褒奖！","creat_time":1513394224,"nickname":"孤君独战"},{"id":16,"parent_id":0,"reply_userid":0,"userid":1,"dynamicid":1,"content":"你是不是傻？？？","creat_time":0,"nickname":"陈杰"}]
          */
 
         private PagenationBean pagenation;
@@ -93,7 +89,7 @@ public class DynamicAllIndexResponse {
              * page : 1
              * pageSize : 10
              * totalPage : 1
-             * totalCount : 3
+             * totalCount : 9
              */
 
             private int page;
@@ -146,46 +142,26 @@ public class DynamicAllIndexResponse {
 
         public static class DataBean {
             /**
-             * nickname : 李五
-             * avatar : http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg
-             * id : 2
-             * userid : 2
-             * dynamic : 我有个小小的愿望，下次如路人相遇的时候，人们都能大大方方的来打个招呼，而不是偷偷的举起相机。
-             * images : ["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"]
-             * city : 惠州
-             * vote : 100
-             * comment : 5
-             * creat_time : 1513393712
-             * one_comment : {"id":10,"parent_id":0,"reply_userid":0,"userid":32,"dynamicid":2,"content":"哎呦","creat_time":0,"nickname":"rm_13424156025"}
+             * id : 4
+             * parent_id : 0
+             * reply_userid : 0
+             * userid : 5
+             * dynamicid : 1
+             * content : 那就买买买 然后攒着
+             * creat_time : 1513394224
+             * nickname : 孤央
+             * child : [{"id":5,"parent_id":4,"reply_userid":5,"userid":6,"dynamicid":1,"content":"励志 我罗牛逼","creat_time":1513394224,"nickname":"青冘","reply_nickname":"孤央"},{"id":6,"parent_id":4,"reply_userid":6,"userid":7,"dynamicid":1,"content":"大家误会了，这位巴萨球迷是在自我介绍","creat_time":1513394224,"nickname":"沉秋","reply_nickname":"青冘"},{"id":7,"parent_id":4,"reply_userid":6,"userid":8,"dynamicid":1,"content":"前几天梅西得的是什么奖来着","creat_time":1513394224,"nickname":"酒自斟","reply_nickname":"青冘"}]
              */
 
-            private String nickname;
-            private String avatar;
             private int id;
+            private int parent_id;
+            private int reply_userid;
             private int userid;
-            private String dynamic;
-            private String city;
-            private int vote;
-            private int comment;
+            private int dynamicid;
+            private String content;
             private int creat_time;
-            private OneCommentBean one_comment;
-            private List<String> images;
-
-            public String getNickname() {
-                return nickname;
-            }
-
-            public void setNickname(String nickname) {
-                this.nickname = nickname;
-            }
-
-            public String getAvatar() {
-                return avatar;
-            }
-
-            public void setAvatar(String avatar) {
-                this.avatar = avatar;
-            }
+            private String nickname;
+            private List<ChildBean> child;
 
             public int getId() {
                 return id;
@@ -193,6 +169,22 @@ public class DynamicAllIndexResponse {
 
             public void setId(int id) {
                 this.id = id;
+            }
+
+            public int getParent_id() {
+                return parent_id;
+            }
+
+            public void setParent_id(int parent_id) {
+                this.parent_id = parent_id;
+            }
+
+            public int getReply_userid() {
+                return reply_userid;
+            }
+
+            public void setReply_userid(int reply_userid) {
+                this.reply_userid = reply_userid;
             }
 
             public int getUserid() {
@@ -203,36 +195,20 @@ public class DynamicAllIndexResponse {
                 this.userid = userid;
             }
 
-            public String getDynamic() {
-                return dynamic;
+            public int getDynamicid() {
+                return dynamicid;
             }
 
-            public void setDynamic(String dynamic) {
-                this.dynamic = dynamic;
+            public void setDynamicid(int dynamicid) {
+                this.dynamicid = dynamicid;
             }
 
-            public String getCity() {
-                return city;
+            public String getContent() {
+                return content;
             }
 
-            public void setCity(String city) {
-                this.city = city;
-            }
-
-            public int getVote() {
-                return vote;
-            }
-
-            public void setVote(int vote) {
-                this.vote = vote;
-            }
-
-            public int getComment() {
-                return comment;
-            }
-
-            public void setComment(int comment) {
-                this.comment = comment;
+            public void setContent(String content) {
+                this.content = content;
             }
 
             public int getCreat_time() {
@@ -243,49 +219,48 @@ public class DynamicAllIndexResponse {
                 this.creat_time = creat_time;
             }
 
-            public OneCommentBean getOne_comment() {
-                return one_comment;
+            public String getNickname() {
+                return nickname;
             }
 
-            public void setOne_comment(OneCommentBean one_comment) {
-                this.one_comment = one_comment;
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
             }
 
-            public List<String> getImages() {
-                return images;
+            public List<ChildBean> getChild() {
+                return child;
             }
 
-            public void setImages(List<String> images) {
-                this.images = images;
+            public void setChild(List<ChildBean> child) {
+                this.child = child;
             }
 
             @Override
             public String toString() {
                 return "DataBean{" +
-                        "nickname='" + nickname + '\'' +
-                        ", avatar='" + avatar + '\'' +
-                        ", id=" + id +
+                        "id=" + id +
+                        ", parent_id=" + parent_id +
+                        ", reply_userid=" + reply_userid +
                         ", userid=" + userid +
-                        ", dynamic='" + dynamic + '\'' +
-                        ", city='" + city + '\'' +
-                        ", vote=" + vote +
-                        ", comment=" + comment +
+                        ", dynamicid=" + dynamicid +
+                        ", content='" + content + '\'' +
                         ", creat_time=" + creat_time +
-                        ", one_comment=" + one_comment +
-                        ", images=" + images +
+                        ", nickname='" + nickname + '\'' +
+                        ", child=" + child +
                         '}';
             }
 
-            public static class OneCommentBean {
+            public static class ChildBean {
                 /**
-                 * id : 10
-                 * parent_id : 0
-                 * reply_userid : 0
-                 * userid : 32
-                 * dynamicid : 2
-                 * content : 哎呦
-                 * creat_time : 0
-                 * nickname : rm_13424156025
+                 * id : 5
+                 * parent_id : 4
+                 * reply_userid : 5
+                 * userid : 6
+                 * dynamicid : 1
+                 * content : 励志 我罗牛逼
+                 * creat_time : 1513394224
+                 * nickname : 青冘
+                 * reply_nickname : 孤央
                  */
 
                 private int id;
@@ -296,6 +271,7 @@ public class DynamicAllIndexResponse {
                 private String content;
                 private int creat_time;
                 private String nickname;
+                private String reply_nickname;
 
                 public int getId() {
                     return id;
@@ -361,9 +337,17 @@ public class DynamicAllIndexResponse {
                     this.nickname = nickname;
                 }
 
+                public String getReply_nickname() {
+                    return reply_nickname;
+                }
+
+                public void setReply_nickname(String reply_nickname) {
+                    this.reply_nickname = reply_nickname;
+                }
+
                 @Override
                 public String toString() {
-                    return "OneCommentBean{" +
+                    return "ChildBean{" +
                             "id=" + id +
                             ", parent_id=" + parent_id +
                             ", reply_userid=" + reply_userid +
@@ -372,6 +356,7 @@ public class DynamicAllIndexResponse {
                             ", content='" + content + '\'' +
                             ", creat_time=" + creat_time +
                             ", nickname='" + nickname + '\'' +
+                            ", reply_nickname='" + reply_nickname + '\'' +
                             '}';
                 }
             }

@@ -4,7 +4,9 @@ import android.app.Service;
 import android.content.Context;
 import android.widget.ImageView;
 
+import com.baidu.mapapi.cloud.CloudEvent;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicParam;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -119,6 +121,16 @@ public final class Presenter {
     //TODO 获取动态列表
     public void getDynamicIndex(int page, int pagesize) {
         engine.getDynamicIndex(page, pagesize);
+    }
+
+    //TODO 获取评论列表
+    public void getDynamicCommentList(int dynamicid, int page, int pagesize) {
+        engine.getDynamicCommentList(dynamicid, page, pagesize);
+    }
+
+    //TODO 发布动态
+    public void postDynamic(DynamicParam dynamicParam) {
+        engine.postDynamic(dynamicParam);
     }
 
     //TODO 获取圈子目标
