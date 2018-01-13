@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Environment;
 import android.os.Looper;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -21,13 +22,21 @@ import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
+import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.internal.cache.CacheInterceptor;
+import okhttp3.internal.cache.InternalCache;
 
 /**
  * Created by pbq on 2017/12/14.
@@ -37,6 +46,7 @@ public class PaoBuApplication extends Application {
     private final static String TAG = PaoBuApplication.class.getSimpleName();
     public LocationService locationService;
     private static boolean isAsyncRun = false;
+    private static final long cacheSize = 1024 * 1024 * 20;
 
     @Override
     public void onCreate() {
@@ -93,10 +103,25 @@ public class PaoBuApplication extends Application {
         }
     }
 
+    public class CacheInterceptor implements Interceptor {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            LocalLog.d(TAG,"intercept() enter");
+            Request request = chain.request();
+            Response response = chain.proceed(request);
+            Response response1 = response.newBuilder()
+                    .removeHeader("Pragma")
+                    .removeHeader("Cache-Control")
+                    //cache for 30 days
+                    .header("Cache-Control", "max-age=" + 3600 * 2)
+                    .build();
+            return response1;
+        }
+    }
 
     private void initHttpOk() {
         ClearableCookieJar cookieJar1 = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(getApplicationContext()));
-
+        Cache cache = new Cache(this.getCacheDir(), cacheSize);
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
 
 //        CookieJarImpl cookieJar1 = new CookieJarImpl(new MemoryCookieStore());
@@ -105,6 +130,8 @@ public class PaoBuApplication extends Application {
                 .readTimeout(10000L, TimeUnit.MILLISECONDS)
                 .addInterceptor(new LoggerInterceptor("TAG"))
                 .cookieJar(cookieJar1)
+                .addNetworkInterceptor(new CacheInterceptor())
+                .cache(cache)
                 .hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String hostname, SSLSession session) {
