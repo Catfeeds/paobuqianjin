@@ -44,6 +44,9 @@ import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.squareup.picasso.Cache;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -81,6 +84,7 @@ public final class Engine {
     private UiStepAndLoveRankInterface uiStepAndLoveRankInterface;
     private DynamicIndexUiInterface dynamicIndexUiInterface;
     private DynamicCommentUiInterface dynamicCommentUiInterface;
+    private Picasso picasso = null;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
     public final static int COMMAND_LOGIN_IN = 2;
@@ -105,11 +109,28 @@ public final class Engine {
     public final static int COMMAND_GET_DYNAMIC_INDEX = 20;
     public final static int COMMAND_DYNAMIC_CONTENTS = 21;
 
-    private Engine() {
-
+    public NetworkPolicy getNetworkPolicy() {
+        return networkPolicy;
     }
 
-    public static Engine getEngine(Context context) {
+    public void setNetworkPolicy(NetworkPolicy networkPolicy) {
+        this.networkPolicy = networkPolicy;
+    }
+
+    private NetworkPolicy networkPolicy = NetworkPolicy.NO_CACHE;
+
+    private Engine() {
+        if (picasso == null) {
+            picasso = new Picasso.Builder(mContext)
+                    .downloader(new OkHttp3Downloader(OkHttpUtils.getInstance().getOkHttpClient()))
+                    .memoryCache(Cache.NONE)
+                    .build();
+            LocalLog.d(TAG, " 设置Picasso ");
+            Picasso.setSingletonInstance(picasso);
+        }
+    }
+
+    public static synchronized Engine getEngine(Context context) {
         mContext = context;
         if (engine == null) {
             engine = new Engine();
@@ -944,7 +965,12 @@ public final class Engine {
     //网络图片获取接口
     public void getImage(final ImageView imageView, String urlImage) {
         LocalLog.d(TAG, "getImage() enter");
-        Picasso.with(mContext).load(urlImage).into(imageView);
+        Picasso picasso = Picasso.with(mContext);
+        picasso.setIndicatorsEnabled(true);
+        picasso.setLoggingEnabled(true);
+        LocalLog.d(TAG,"networkPolicy = " +networkPolicy.name()+ " -> "+ networkPolicy.toString() );
+        picasso.load(urlImage).config(Bitmap.Config.RGB_565).networkPolicy(networkPolicy).into(imageView);
+        //Picasso.with(mContext).load(urlImage).into(imageView);
 /*        OkHttpUtils
                 .get()
                 .url(urlImage)

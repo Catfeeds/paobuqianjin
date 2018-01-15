@@ -10,6 +10,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicParam;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.squareup.picasso.NetworkPolicy;
 
 
 /**
@@ -28,7 +29,7 @@ public final class Presenter {
         engine = Engine.getEngine(mContext);
     }
 
-    public static Presenter getInstance(Context context) {
+    public static synchronized Presenter getInstance(Context context) {
         mContext = context.getApplicationContext();
         if (instance == null) {
             instance = new Presenter();
@@ -194,6 +195,14 @@ public final class Presenter {
     // 获取标签列表
     public void getCircleTag() {
         engine.getCircleTag();
+    }
+
+    public NetworkPolicy getNetworkPolicy() {
+        return engine.getNetworkPolicy();
+    }
+
+    public void setNetworkPolicy(NetworkPolicy networkPolicy) {
+        engine.setNetworkPolicy(networkPolicy);
     }
 
     //call onResume

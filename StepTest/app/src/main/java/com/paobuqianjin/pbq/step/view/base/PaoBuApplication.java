@@ -46,11 +46,12 @@ public class PaoBuApplication extends Application {
     private final static String TAG = PaoBuApplication.class.getSimpleName();
     public LocationService locationService;
     private static boolean isAsyncRun = false;
-    private static final long cacheSize = 1024 * 1024 * 20;
+    private static final long cacheSize = 1024 * 1024 * 60;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        initHttpOk();
         initSDKService();
     }
 
@@ -94,7 +95,6 @@ public class PaoBuApplication extends Application {
             if (app != null) {
                 UMShareAPI.get(app);
                 LocalLog.d(TAG, "DetectThread run() 初始化网络、计步服务、定位SDK、三方登陆注册、三方支付SDK等");
-                app.initHttpOk();
                 Presenter.getInstance(app).startService(StepService.START_STEP_ACTION, StepService.class);
                 app.initBaiDuSDK(app);
                 Presenter.getInstance(app).startService(null, LocalBaiduService.class);
@@ -113,17 +113,31 @@ public class PaoBuApplication extends Application {
                     .removeHeader("Pragma")
                     .removeHeader("Cache-Control")
                     //cache for 30 days
-                    .header("Cache-Control", "max-age=" + 180 * 1)
+                    .header("Cache-Control", "max-age=" + 1800 * 1)
                     .build();
             return response1;
         }
     }
 
+
+    private File getDiskCacheDir(Context context) {
+        File cachePath = null;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = context.getExternalCacheDir();
+            LocalLog.d(TAG, "getExternalCachdir() = " + cachePath.getPath());
+        } else {
+            cachePath = context.getCacheDir();
+            LocalLog.d(TAG, "getCacheDir() = " + cachePath.getPath());
+        }
+        return cachePath;
+    }
+
     private void initHttpOk() {
         ClearableCookieJar cookieJar1 = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(getApplicationContext()));
-        Cache cache = new Cache(this.getCacheDir(), cacheSize);
+        Cache cache = new Cache(getDiskCacheDir(this), cacheSize);
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
-        LocalLog.d(TAG, "Cache: " + this.getCacheDir().toString());
+        LocalLog.d(TAG, "Cache: " + getDiskCacheDir(this).getPath());
 //        CookieJarImpl cookieJar1 = new CookieJarImpl(new MemoryCookieStore());
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)

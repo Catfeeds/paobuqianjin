@@ -20,10 +20,11 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!---->
+    <!--  -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <!---->
+
+    <!--  -->
     <application
         android:name=".view.base.PaoBuApplication"
         android:allowBackup="true"
@@ -45,6 +46,7 @@
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
@@ -67,38 +69,30 @@
             android:name=".view.activity.SearchCircleActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-
         <activity
             android:name=".view.activity.MemberManagerActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-
         <activity
             android:name=".view.activity.OwnerCircleActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-
-
         <activity
             android:name=".view.activity.LoveRankActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-
         <activity
             android:name=".view.activity.DynamicActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-
         <activity
             android:name=".view.activity.LikeSupportActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-
         <activity
             android:name=".view.activity.QrCodeMakeActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-
         <activity android:name=".view.activity.QrCodeScanActivity" />
         <activity
             android:name=".view.activity.CirCleDetailActivity"
@@ -113,20 +107,19 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
 
-
-        <!---->
-        <!-- wechat callback-->
+        <!--  -->
+        <!-- wechat callback -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!--友盟appkey-->
+        <!-- 友盟appkey -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5a5718adf43e482eb000012a"></meta-data>
-        <!---->
+            android:value="5a5718adf43e482eb000012a" />
+        <!--  -->
         <receiver
             android:name=".model.broadcast.BootStepReceiver"
             android:exported="false">
@@ -172,7 +165,13 @@
         <service
             android:name=".model.services.local.LocalBaiduService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <receiver android:name=".model.broadcast.NetStateReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

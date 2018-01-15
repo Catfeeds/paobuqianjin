@@ -69,7 +69,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp-urlconnection:3.2.0'
     compile 'com.github.franmontiel:PersistentCookieJar:v0.9.3'
     implementation 'de.hdodenhof:circleimageview:2.0.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.5.3-SNAPSHOT'
     implementation 'com.jakewharton:butterknife:7.0.1'
     implementation 'com.google.zxing:core:3.3.0'
     compile 'com.journeyapps:zxing-android-embedded:3.3.0'
