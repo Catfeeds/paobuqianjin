@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f6f6f6">
+
+    <include
+        android:id="@+id/wallet_card_info"
+        layout="@layout/bar_return_a_style"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/wallet_card_info"
+        android:layout_marginTop="60dp">
+
+        <RelativeLayout
+            android:id="@+id/name_span_identify"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/color_f8">
+
+            <TextView
+                android:id="@+id/identify_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:text="卡类型"
+                android:textColor="@color/color_161727"
+                android:textSize="16sp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/identify_name"
+                android:background="@null"
+                android:hint="中国银行储蓄卡"
+                android:inputType="text" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/card_span_identify"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/name_span_identify"
+            android:layout_marginTop="20dp"
+            android:background="@color/color_f8">
+
+            <TextView
+                android:id="@+id/identify_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:text="手机号"
+                android:textColor="@color/color_161727"
+                android:textSize="16sp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/identify_card"
+                android:background="@null"
+                android:hint="请输入银行预留手机号"
+                android:inputType="text" />
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_span_identify"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rect_angle_background"
+            android:gravity="center"
+            android:text="下一步"
+            android:textColor="@color/color_f8"
+            android:textSize="36sp" />
+    </RelativeLayout>
+</RelativeLayout>

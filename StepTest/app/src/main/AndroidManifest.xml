@@ -107,6 +107,11 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
 
+        <!--我的钱包-->
+        <activity
+            android:name=".view.activity.MyWalletActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme"></activity>
         <!--  -->
         <!-- wechat callback -->
         <activity
