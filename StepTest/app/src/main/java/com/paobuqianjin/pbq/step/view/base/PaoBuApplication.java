@@ -106,14 +106,14 @@ public class PaoBuApplication extends Application {
     public class CacheInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
-            LocalLog.d(TAG,"intercept() enter");
             Request request = chain.request();
             Response response = chain.proceed(request);
+            LocalLog.d(TAG, "intercept() enter" + response.toString());
             Response response1 = response.newBuilder()
                     .removeHeader("Pragma")
                     .removeHeader("Cache-Control")
                     //cache for 30 days
-                    .header("Cache-Control", "max-age=" + 3600 * 2)
+                    .header("Cache-Control", "max-age=" + 180 * 1)
                     .build();
             return response1;
         }
@@ -123,7 +123,7 @@ public class PaoBuApplication extends Application {
         ClearableCookieJar cookieJar1 = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(getApplicationContext()));
         Cache cache = new Cache(this.getCacheDir(), cacheSize);
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
-
+        LocalLog.d(TAG, "Cache: " + this.getCacheDir().toString());
 //        CookieJarImpl cookieJar1 = new CookieJarImpl(new MemoryCookieStore());
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(10000L, TimeUnit.MILLISECONDS)
