@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/bar_invite_friend"
+        layout="@layout/bar_return_a_style"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar_invite_friend">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/invite_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/rect_angle_background"
+                android:gravity="center"
+                android:text="马上邀请"
+                android:textColor="@color/color_f8"
+                android:textSize="36sp" />
+
+            <ImageView
+                android:id="@+id/invite_line"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_below="@+id/invite_btn"
+                android:layout_marginTop="15dp"
+                android:background="@color/color_f3f3f5" />
+
+            <RelativeLayout
+                android:id="@+id/invite_code_span"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/invite_line">
+
+                <TextView
+                    android:id="@+id/invite_code_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="填写邀请码"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="14dp"
+                    android:src="@drawable/go_to" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/invite_no_span"
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                android:layout_below="@+id/invite_code_span">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/color_f3f3f5"></RelativeLayout>
+
+                <ImageView
+                    android:layout_width="175dp"
+                    android:layout_height="38dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="17dp"
+                    android:src="@drawable/label_invite" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginLeft="14dp"
+                    android:text="2017年1月1日至今"
+                    android:textColor="@color/color_8a8a8a" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_f3f3f5" />
+            </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/invite_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/invite_no_span"></android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

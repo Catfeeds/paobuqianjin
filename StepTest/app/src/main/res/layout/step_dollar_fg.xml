@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f6f6f6">
+
+    <include
+        android:id="@+id/bar_step_dollar_detail"
+        layout="@layout/bar_return_a_style"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar_step_dollar_detail">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/step_dollar_icon"
+                android:layout_width="105dp"
+                android:layout_height="105dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="30dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/step_dollar_bg" />
+
+            <RelativeLayout
+                android:id="@+id/dollar_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/step_dollars"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:includeFontPadding="false"
+                    android:text="步币"
+                    android:textColor="@color/color_f8"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/step_dollar_nums"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/step_dollars"
+                    android:includeFontPadding="false"
+                    android:text="36"
+                    android:textColor="@color/color_f8"
+                    android:textSize="36sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/step_dollar_span"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/step_dollar_icon"
+                android:layout_marginLeft="53dp"
+                android:layout_marginRight="53dp"
+                android:layout_marginTop="30dp">
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/step_dollar_detal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    app:tabIndicatorColor="@color/color_ffc14c"
+                    app:tabIndicatorHeight="2dp"></android.support.design.widget.TabLayout>
+
+                <android.support.v4.view.ViewPager
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/step_dollar_detal">
+
+                </android.support.v4.view.ViewPager>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

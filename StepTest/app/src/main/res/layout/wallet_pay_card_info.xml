@@ -68,10 +68,34 @@
                 android:inputType="text" />
         </RelativeLayout>
 
+        <ImageView
+            android:id="@+id/protol_ico"
+            android:layout_width="29dp"
+            android:layout_height="29dp"
+            android:layout_below="@+id/card_span_identify"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/circle_outline_style29"
+            android:src="@drawable/selected_icon" />
+
+        <TextView
+            android:id="@+id/user_protocol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button"
+            android:layout_alignBottom="@+id/protol_ico"
+            android:layout_alignTop="@+id/protol_ico"
+            android:layout_marginLeft="14dp"
+            android:layout_toEndOf="@+id/protol_ico"
+            android:gravity="center"
+            android:text="同意用户协议"
+            android:textSize="12sp" />
+
         <Button
+            android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/card_span_identify"
+            android:layout_below="@+id/protol_ico"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
             android:layout_marginTop="40dp"
