@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -39,11 +40,22 @@ public abstract class BaseBarActivity extends BaseActivity {
         return null;
     }
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(layoutResID);
+        initBarView();
+    }
+
     /*@desc 左导航栏
-    *@function left
-    *@param
-    *@return
-    */
+            *@function left
+            *@param
+            *@return
+            */
     public Object right() {
         return null;
     }

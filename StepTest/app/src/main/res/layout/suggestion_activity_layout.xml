@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/suggetion_bar"
+        layout="@layout/bar_return_a_style"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/suggetion_bar"
+        android:background="@color/color_f3f3f5">
+
+        <TextView
+            android:id="@+id/content_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="20dp"
+            android:text="内容"
+            android:textColor="@color/color_5c5c5c"
+            android:textSize="14sp" />
+
+        <RelativeLayout
+            android:id="@+id/content_span"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_below="@+id/content_text"
+            android:layout_marginTop="14dp"
+            android:background="@color/color_f8">
+
+            <EditText
+                android:id="@+id/content_edit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="left|top"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/content_bound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:text="0/200" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/phone_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/content_span"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="20dp"
+            android:text="联系电话" />
+
+        <EditText
+            android:id="@+id/connect_us"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/content_span"
+            android:layout_marginTop="45dp"
+            android:background="@color/color_f8"
+            android:gravity="center|left"
+            android:hint="选填，便于我们与你联系"
+            android:paddingLeft="14dp"
+            android:textColorHint="@color/color_cbcacf"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/suggetion_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/connect_us"
+            android:layout_marginLeft="62dp"
+            android:layout_marginRight="62dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rect_angle_diss_bt"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@color/color_f8"
+            android:textSize="36sp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="26dp">
+
+            <TextView
+                android:id="@+id/help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="如需要帮助或获取更多信息，请关注或联系："
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/help"
+                android:layout_centerHorizontal="true"
+                android:text="微信公众号 跑步前进"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

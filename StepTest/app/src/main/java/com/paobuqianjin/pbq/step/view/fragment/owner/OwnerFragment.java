@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +13,13 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.AboutActivity;
+import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
+import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
+import com.paobuqianjin.pbq.step.view.activity.SuggestionActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -169,6 +176,7 @@ public final class OwnerFragment extends BaseFragment {
 
     @OnClick({R.id.bar_tv_right, R.id.user_icon, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span, R.id.circle_span, R.id.dan_span, R.id.about_span, R.id.suggestion_span})
     public void onClick(View view) {
+        Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.bar_tv_right:
                 LocalLog.d(TAG, "设置");
@@ -178,27 +186,40 @@ public final class OwnerFragment extends BaseFragment {
                 break;
             case R.id.wallet_span:
                 LocalLog.d(TAG, "钱包");
+                intent.setClass(getContext(), MyWalletActivity.class);
+                startActivity(intent);
                 break;
             case R.id.step_dollar_span:
                 LocalLog.d(TAG, "步币");
+                intent.setClass(getContext(), StepDollarActivity.class);
+                startActivity(intent);
                 break;
             case R.id.gitf_span:
                 LocalLog.d(TAG, "邀请有礼");
+                intent.setClass(getContext(), InviteActivity.class);
+                startActivity(intent);
                 break;
             case R.id.dynamic_span:
                 LocalLog.d(TAG, "我的动态");
                 break;
             case R.id.circle_span:
                 LocalLog.d(TAG, "我的圈子");
+                intent.setClass(getContext(), OwnerCircleActivity.class);
+                //With Action
+                getContext().startActivity(intent);
                 break;
             case R.id.dan_span:
                 LocalLog.d(TAG, "我的段位");
                 break;
             case R.id.about_span:
                 LocalLog.d(TAG, "关于我们");
+                intent.setClass(getContext(), AboutActivity.class);
+                getContext().startActivity(intent);
                 break;
             case R.id.suggestion_span:
                 LocalLog.d(TAG, "意见反馈");
+                intent.setClass(getContext(), SuggestionActivity.class);
+                getContext().startActivity(intent);
                 break;
             default:
                 break;

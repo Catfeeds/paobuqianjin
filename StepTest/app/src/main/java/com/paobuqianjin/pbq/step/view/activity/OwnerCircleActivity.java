@@ -41,9 +41,10 @@ public class OwnerCircleActivity extends BaseActivity {
         if (intent != null && intent.getParcelableExtra(getPackageName() + "my_join") != null) {
             myJoinCreateCircleBudleData = (MyJoinCreateCircleBudleData) intent.getParcelableExtra(getPackageName() + "my_join");
         }
-
-        ownerCircleFragment.setOwnerCreateCircleData(myCreateCircleBundleData.getMyCreateCircleData(), myJoinCreateCircleBudleData.getMyJoinCircleData());
-
+        //TODO 区分ACTION
+        if (myCreateCircleBundleData != null && myJoinCreateCircleBudleData != null) {
+            ownerCircleFragment.setOwnerCreateCircleData(myCreateCircleBundleData.getMyCreateCircleData(), myJoinCreateCircleBudleData.getMyJoinCircleData());
+        }
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.owner_circle_container, ownerCircleFragment)
                 .show(ownerCircleFragment).commit();

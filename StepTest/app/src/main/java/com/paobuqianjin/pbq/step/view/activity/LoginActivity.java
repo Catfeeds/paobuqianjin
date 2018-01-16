@@ -317,7 +317,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
             case R.id.wenxin:
                 LocalLog.d(TAG, "微信三方登录");
                 LocalLog.d(TAG,"xxxxxx install-="+UMShareAPI.get(this).isInstall(this,SHARE_MEDIA.WEIXIN));
-                UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
+                //UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
                 UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
 
                 break;

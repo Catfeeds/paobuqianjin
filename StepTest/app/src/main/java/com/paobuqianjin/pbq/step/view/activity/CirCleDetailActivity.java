@@ -29,7 +29,7 @@ public class CirCleDetailActivity extends BaseActivity {
             int circleId = intent.getIntExtra(getPackageName() + "circleid", -1);
             int memberNum = intent.getIntExtra(getPackageName() + "membernum", -1);
             if (circleId != -1 && memberNum > 0) {
-                circleDetailFragment.setCircleId(this,circleId, memberNum);
+                circleDetailFragment.setCircleId(this, circleId, memberNum);
             }
         }
         getSupportFragmentManager().beginTransaction()

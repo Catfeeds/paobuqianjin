@@ -76,7 +76,11 @@
         <activity
             android:name=".view.activity.OwnerCircleActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme" />
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.ACTION.GOTO_MYCIRCLE" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.activity.LoveRankActivity"
             android:launchMode="singleTask"
@@ -112,6 +116,25 @@
             android:name=".view.activity.MyWalletActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme"></activity>
+        <!--邀请有礼-->
+        <activity
+            android:name=".view.activity.InviteActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+        <activity
+            android:name=".view.activity.StepDollarActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+        <!--意见反馈-->
+        <activity
+            android:name=".view.activity.SuggestionActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+        <!--关于我们-->
+        <activity
+            android:name=".view.activity.AboutActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
         <!--  -->
         <!-- wechat callback -->
         <activity

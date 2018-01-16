@@ -211,7 +211,6 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_circle_layout);
         ButterKnife.bind(this);
-        initBarView();
         Intent intent = new Intent();
         Presenter.getInstance(this).attachUiInterface(uiCreateCircleInterface);
         //circleTypeList = intent.getStringArrayListExtra(getPackageName() + "circle_type");

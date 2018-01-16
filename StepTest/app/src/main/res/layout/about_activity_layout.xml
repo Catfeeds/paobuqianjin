@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/about_bar"
+        layout="@layout/bar_return_a_style"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/about_bar"
+        android:background="@color/color_ecf0f3">
+
+        <RelativeLayout
+            android:id="@+id/version_span"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/app_logo"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:src="@drawable/app_logo" />
+
+            <RelativeLayout
+                android:id="@+id/version_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="19dp"
+                android:layout_toRightOf="@+id/app_logo">
+
+                <TextView
+                    android:id="@+id/app_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="跑步钱进"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/app_name"
+                    android:layout_marginTop="8dp"
+                    android:text="当前版本  1.0"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/introduce_span"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/version_span"
+            android:layout_marginTop="35dp"
+            android:background="@color/color_f8">
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:text="功能介绍"
+                android:textColor="@color/color_161727"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="14dp"
+                android:src="@drawable/go_to" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignLeft="@+id/text"
+                android:layout_alignParentBottom="true"
+                android:background="@color/color_ebebed" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/protol_span"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/introduce_span"
+            android:background="@color/color_f8">
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:text="使用协议"
+                android:textColor="@color/color_161727"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="14dp"
+                android:src="@drawable/go_to" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp">
+
+        <TextView
+            android:id="@+id/copyright"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="跑步钱进公司 版权所有"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/copyright"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Copyright © 2018-2019 Runmoney.All Rights Reserved" />
+    </RelativeLayout>
+</RelativeLayout>
