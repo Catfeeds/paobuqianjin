@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/dan_ico1"
+        android:layout_width="16dp"
+        android:layout_height="18dp"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/dan_ico1" />
+
     <RelativeLayout
-        android:layout_width="280dp"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:layout_marginLeft="26dp"
+        android:layout_marginRight="33dp"
+        android:layout_toRightOf="@+id/dan_ico1"
+        android:background="@drawable/bg1_dan">
+
         <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/circle_outline_dan" />
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
