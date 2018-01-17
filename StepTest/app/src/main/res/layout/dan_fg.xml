@@ -1,5 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_alignParentTop="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/dan_bg" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="59dp"
+                android:layout_height="59dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="90dp"
+                android:src="@drawable/default_head_ico" />
+
+            <ImageView
+                android:id="@+id/decorate"
+                android:layout_width="106dp"
+                android:layout_height="95dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="110dp"
+                android:src="@drawable/decorate" />
+
+            <RelativeLayout
+                android:id="@+id/dan_text_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/decorate"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:id="@+id/dan_step_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:includeFontPadding="false"
+                    android:text="当前累计步数9856步"
+                    android:textColor="@color/color_161727"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/dan_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dan_step_des"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="17dp"
+                    android:includeFontPadding="false"
+                    android:text="打败了10%的用户"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <include
+        android:id="@+id/dan_bar"
+        layout="@layout/bar_return_null_bg_style"></include>
 </RelativeLayout>

@@ -126,6 +126,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/friend_rel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/line_1"
@@ -153,6 +154,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/message_rel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

@@ -14,8 +14,11 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.AboutActivity;
-import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
+import com.paobuqianjin.pbq.step.view.activity.MessageActivity;
+import com.paobuqianjin.pbq.step.view.activity.MyDynamicActivity;
+import com.paobuqianjin.pbq.step.view.activity.MyFriendActivity;
+import com.paobuqianjin.pbq.step.view.activity.MyLikeFriendActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
@@ -133,6 +136,10 @@ public final class OwnerFragment extends BaseFragment {
     ImageView goToSuggestion;
     @Bind(R.id.suggestion_span)
     RelativeLayout suggestionSpan;
+    @Bind(R.id.message_rel)
+    RelativeLayout messageRel;
+    @Bind(R.id.friend_rel)
+    RelativeLayout friendRel;
 
     @Nullable
     @Override
@@ -151,6 +158,7 @@ public final class OwnerFragment extends BaseFragment {
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
+        barTitle.setText("我");
         headIcon = (CircleImageView) viewRoot.findViewById(R.id.head_icon);
         userIcon = (RelativeLayout) viewRoot.findViewById(R.id.user_icon);
         userName = (TextView) viewRoot.findViewById(R.id.user_name);
@@ -174,7 +182,8 @@ public final class OwnerFragment extends BaseFragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.bar_tv_right, R.id.user_icon, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span, R.id.circle_span, R.id.dan_span, R.id.about_span, R.id.suggestion_span})
+    @OnClick({R.id.bar_tv_right, R.id.user_icon, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span,
+            R.id.circle_span, R.id.dan_span, R.id.about_span, R.id.suggestion_span, R.id.message_rel, R.id.like_rel, R.id.friend_rel})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -201,12 +210,14 @@ public final class OwnerFragment extends BaseFragment {
                 break;
             case R.id.dynamic_span:
                 LocalLog.d(TAG, "我的动态");
+                intent.setClass(getContext(), MyDynamicActivity.class);
+                startActivity(intent);
                 break;
             case R.id.circle_span:
                 LocalLog.d(TAG, "我的圈子");
                 intent.setClass(getContext(), OwnerCircleActivity.class);
                 //With Action
-                getContext().startActivity(intent);
+                startActivity(intent);
                 break;
             case R.id.dan_span:
                 LocalLog.d(TAG, "我的段位");
@@ -214,12 +225,27 @@ public final class OwnerFragment extends BaseFragment {
             case R.id.about_span:
                 LocalLog.d(TAG, "关于我们");
                 intent.setClass(getContext(), AboutActivity.class);
-                getContext().startActivity(intent);
+                startActivity(intent);
                 break;
             case R.id.suggestion_span:
                 LocalLog.d(TAG, "意见反馈");
                 intent.setClass(getContext(), SuggestionActivity.class);
-                getContext().startActivity(intent);
+                startActivity(intent);
+                break;
+            case R.id.message_rel:
+                LocalLog.d(TAG, "消息");
+                intent.setClass(getContext(), MessageActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.like_rel:
+                LocalLog.d(TAG, "关注");
+                intent.setClass(getContext(), MyLikeFriendActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.friend_rel:
+                LocalLog.d(TAG, "好友");
+                intent.setClass(getContext(), MyFriendActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;

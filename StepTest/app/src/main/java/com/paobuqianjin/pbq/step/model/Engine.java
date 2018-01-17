@@ -967,7 +967,7 @@ public final class Engine {
         LocalLog.d(TAG, "getImage() enter");
         Picasso picasso = Picasso.with(mContext);
         picasso.setIndicatorsEnabled(true);
-        picasso.setLoggingEnabled(true);
+        //picasso.setLoggingEnabled(true);
         LocalLog.d(TAG,"networkPolicy = " +networkPolicy.name()+ " -> "+ networkPolicy.toString() );
         picasso.load(urlImage).config(Bitmap.Config.RGB_565).networkPolicy(networkPolicy).into(imageView);
         //Picasso.with(mContext).load(urlImage).into(imageView);

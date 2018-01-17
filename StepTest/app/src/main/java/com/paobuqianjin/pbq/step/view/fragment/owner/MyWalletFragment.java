@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
@@ -22,7 +25,7 @@ import butterknife.OnClick;
  */
 
 public class MyWalletFragment extends BaseBarStyleTextViewFragment {
-
+    private final static String TAG = MyWalletFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -85,6 +88,12 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment {
     }
 
     @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+        crash = (Button) viewRoot.findViewById(R.id.crash);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
@@ -92,10 +101,14 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment {
 
     @OnClick({R.id.charge_bar, R.id.crash})
     public void onClick(View view) {
+        Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.charge_bar:
                 break;
             case R.id.crash:
+                intent.setClass(getContext(), CrashActivity.class);
+                startActivity(intent);
+                LocalLog.d(TAG, "提现");
                 break;
         }
     }

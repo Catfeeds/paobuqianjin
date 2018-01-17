@@ -69,7 +69,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="14dp"
-                android:text="功能介绍"
+                android:text="用户协议"
                 android:textColor="@color/color_161727"
                 android:textSize="15sp" />
 
@@ -103,11 +103,22 @@
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="14dp"
-                android:text="使用协议"
+                android:text="微信公众号"
                 android:textColor="@color/color_161727"
                 android:textSize="15sp" />
 
+            <TextView
+                android:layout_marginRight="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/go_to"
+                android:text="全民跑步钱进"
+                android:textColor="@color/color_161727"
+                android:textSize="14sp" />
+
             <ImageView
+                android:id="@+id/go_to"
                 android:layout_width="8dp"
                 android:layout_height="14dp"
                 android:layout_alignParentRight="true"
@@ -133,13 +144,13 @@
             android:textSize="14sp" />
 
         <TextView
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/copyright"
-            android:layout_marginTop="7dp"
-            android:textColor="@color/color_8a8a8a"
-            android:textSize="12sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Copyright © 2018-2019 Runmoney.All Rights Reserved" />
+            android:layout_below="@+id/copyright"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="7dp"
+            android:text="Copyright © 2018-2019 Runmoney.All Rights Reserved"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="12sp" />
     </RelativeLayout>
 </RelativeLayout>

@@ -116,6 +116,12 @@
             android:name=".view.activity.MyWalletActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme"></activity>
+
+        <!--提现-->
+        <activity
+            android:name=".view.activity.CrashActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
         <!--邀请有礼-->
         <activity
             android:name=".view.activity.InviteActivity"
@@ -123,6 +129,26 @@
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.StepDollarActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+        <!--我的好友-->
+        <activity
+            android:name=".view.activity.MyFriendActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+        <!--我的动态-->
+        <activity
+            android:name=".view.activity.MyDynamicActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+        <!--我的关注-->
+        <activity
+            android:name=".view.activity.MyLikeFriendActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+        <!--消息-->
+        <activity
+            android:name=".view.activity.MessageActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!--意见反馈-->
@@ -136,6 +162,11 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!--  -->
+        <!--我的段位-->
+        <activity
+            android:name=".view.activity.DanActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
         <!-- wechat callback -->
         <activity
             android:name=".wxapi.WXEntryActivity"
