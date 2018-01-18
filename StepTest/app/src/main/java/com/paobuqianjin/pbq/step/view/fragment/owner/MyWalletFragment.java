@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
+import com.paobuqianjin.pbq.step.view.base.adapter.owner.WalletRedPkgIncomeAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
@@ -68,6 +71,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment {
     Button chargeBar;
     @Bind(R.id.crash)
     Button crash;
+    private LinearLayoutManager layoutManager;
 
     @Override
     protected int getLayoutResId() {
@@ -91,6 +95,10 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment {
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         crash = (Button) viewRoot.findViewById(R.id.crash);
+        layoutManager = new LinearLayoutManager(getContext());
+        incomeRecycler = (RecyclerView) viewRoot.findViewById(R.id.income_recycler);
+        incomeRecycler.setLayoutManager(layoutManager);
+        incomeRecycler.setAdapter(new WalletRedPkgIncomeAdapter(getContext()));
     }
 
     @Override

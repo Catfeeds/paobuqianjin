@@ -24,6 +24,7 @@ import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
 import com.paobuqianjin.pbq.step.view.activity.SuggestionActivity;
+import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -190,6 +191,8 @@ public final class OwnerFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.bar_tv_right:
                 LocalLog.d(TAG, "设置");
+                intent.setClass(getContext(), UserInfoSettingActivity.class);
+                startActivity(intent);
                 break;
             case R.id.user_icon:
                 LocalLog.d(TAG, "设置头像");

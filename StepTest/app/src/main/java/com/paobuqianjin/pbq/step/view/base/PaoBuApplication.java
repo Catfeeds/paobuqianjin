@@ -13,6 +13,8 @@ import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersisto
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.l.okhttppaobu.okhttp.https.HttpsUtils;
 import com.l.okhttppaobu.okhttp.log.LoggerInterceptor;
+import com.lljjcoder.style.citylist.utils.CityListLoader;
+import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.paobuqianjin.pbq.step.model.services.baidu.LocationService;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.model.services.local.StepService;
@@ -99,6 +101,7 @@ public class PaoBuApplication extends Application {
                 app.initBaiDuSDK(app);
                 Presenter.getInstance(app).startService(null, LocalBaiduService.class);
                 app.initWXapi(app);
+                app.loadCitySelect(app);
             }
         }
     }
@@ -119,6 +122,10 @@ public class PaoBuApplication extends Application {
         }
     }
 
+    private void loadCitySelect(Context context) {
+        LocalLog.d(TAG, "加载城市选择控件");
+        CityPickerView.getInstance().init(context);
+    }
 
     private File getDiskCacheDir(Context context) {
         File cachePath = null;

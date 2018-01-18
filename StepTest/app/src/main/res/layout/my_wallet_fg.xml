@@ -8,11 +8,14 @@
         layout="@layout/bar_return_a_style"></include>
 
     <ScrollView
+        android:id="@+id/scroll_view_income"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bar_wallet_detail">
 
         <RelativeLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -78,6 +81,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:text="当月收益(元)"
+                            android:textStyle="bold"
                             android:textColor="@color/color_f8"
                             android:textSize="12sp" />
 
@@ -108,6 +112,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:text="昨日收益(元)"
+                            android:textStyle="bold"
                             android:textColor="@color/color_f8"
                             android:textSize="12sp" />
 
@@ -139,6 +144,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:text="累计收益(元)"
+                            android:textStyle="bold"
                             android:textColor="@color/color_f8"
                             android:textSize="12sp" />
 

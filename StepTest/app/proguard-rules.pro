@@ -101,3 +101,9 @@
 
 	-keep class com.linkedin.** { *; }
 	-keepattributes Signature
+
+#地区3级联动选择器
+
+-keep class com.lljjcoder.**{
+	*;
+}

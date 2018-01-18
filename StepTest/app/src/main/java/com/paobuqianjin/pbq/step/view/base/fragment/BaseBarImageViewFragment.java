@@ -22,7 +22,7 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
  */
 
 public abstract class BaseBarImageViewFragment extends BaseFragment {
-    private BaseBarActivity.ToolBarListener mToolBarListener;
+    private BaseBarImageViewFragment.ToolBarListener mToolBarListener;
     private TextView tv_title;
     private ImageView tv_left;
     private ImageView tv_right;
@@ -78,7 +78,7 @@ public abstract class BaseBarImageViewFragment extends BaseFragment {
         tv_title.setText(title());
     }
 
-    public void setToolBarListener(BaseBarActivity.ToolBarListener toolBarListener) {
+    public void setToolBarListener(BaseBarImageViewFragment.ToolBarListener toolBarListener) {
         mToolBarListener = toolBarListener;
     }
 
