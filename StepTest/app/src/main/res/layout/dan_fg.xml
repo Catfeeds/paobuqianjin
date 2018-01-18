@@ -8,61 +8,210 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <RelativeLayout
+                android:id="@+id/dan_text_layer"
                 android:layout_width="match_parent"
-                android:layout_height="110dp"
-                android:layout_alignParentTop="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/dan_bg" />
+                android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_width="59dp"
-                android:layout_height="59dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="90dp"
-                android:src="@drawable/default_head_ico" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:layout_alignParentTop="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/dan_bg" />
 
-            <ImageView
-                android:id="@+id/decorate"
-                android:layout_width="106dp"
-                android:layout_height="95dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="110dp"
-                android:src="@drawable/decorate" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="59dp"
+                    android:layout_height="59dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="90dp"
+                    android:src="@drawable/default_head_ico" />
+
+                <ImageView
+                    android:id="@+id/decorate"
+                    android:layout_width="106dp"
+                    android:layout_height="95dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="110dp"
+                    android:src="@drawable/decorate" />
+
+                <RelativeLayout
+                    android:id="@+id/dan_text_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/decorate"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp">
+
+                    <TextView
+                        android:id="@+id/dan_step_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:includeFontPadding="false"
+                        android:text="当前累计步数9856步"
+                        android:textColor="@color/color_161727"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/dan_percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/dan_step_des"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="17dp"
+                        android:includeFontPadding="false"
+                        android:text="打败了10%的用户"
+                        android:textColor="@color/color_8a8a8a"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+            </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/dan_text_des"
+                android:id="@+id/next_dan_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dan_text_layer"
+                android:layout_marginTop="25dp">
+
+                <RelativeLayout
+                    android:id="@+id/next_rel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/flag_icon"
+                        android:layout_width="4dp"
+                        android:layout_height="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:background="@color/color_ffc400" />
+
+                    <TextView
+                        android:id="@+id/next_dan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/flag_icon"
+                        android:text="下一等级"
+                        android:textColor="@color/color_161727"
+                        android:textSize="18sp" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/main_dan_layer"
+                    android:layout_width="match_parent"
+                    android:layout_height="116dp"
+                    android:layout_below="@+id/next_rel"
+                    android:layout_marginLeft="63dp"
+                    android:layout_marginRight="33dp"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/bg2_dan">
+
+                    <RelativeLayout
+                        android:id="@+id/dan_main_rel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginTop="12dp">
+
+                        <ImageView
+                            android:id="@+id/distance_process"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/circle_outline_dan" />
+
+                        <TextView
+                            android:id="@+id/process_dan"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="20dp"
+                            android:layout_toRightOf="@+id/distance_finish"
+                            android:text="累计里程达到70000步"
+                            android:textColor="@color/color_8a8a8a"
+                            android:textSize="15sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/process_bar_rel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/dan_main_rel"
+                        android:layout_below="@+id/dan_main_rel"
+                        android:layout_marginTop="13dp">
+
+                        <RelativeLayout
+                            android:id="@+id/process_bar"
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toStartOf="@+id/percent"
+                            android:layout_marginRight="15dp"
+                            android:background="@drawable/process_bar_bg"></RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/percent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="10dp"
+                            android:text="100%"
+                            android:textColor="@color/color_8a8a8a"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
+
+
+                    <TextView
+                        android:id="@+id/process_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/process_bar_rel"
+                        android:layout_below="@+id/process_bar_rel"
+                        android:layout_marginTop="17dp"
+                        android:text="77888人已完成"
+                        android:textSize="14sp" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/dan_step_rel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/decorate"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp">
+                android:layout_below="@+id/next_dan_progress"
+                android:layout_marginTop="40dp">
+
+                <ImageView
+                    android:id="@+id/dan_step_flag_icon"
+                    android:layout_width="4dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:background="@color/color_ffc400" />
 
                 <TextView
-                    android:id="@+id/dan_step_des"
+                    android:id="@+id/step_dan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:includeFontPadding="false"
-                    android:text="当前累计步数9856步"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/dan_step_flag_icon"
+                    android:text="等级阶梯"
                     android:textColor="@color/color_161727"
                     android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/dan_percent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/dan_step_des"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="17dp"
-                    android:includeFontPadding="false"
-                    android:text="打败了10%的用户"
-                    android:textColor="@color/color_8a8a8a"
-                    android:textSize="14sp" />
             </RelativeLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/dan_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dan_step_rel"
+                android:layout_marginTop="20dp">
+
+            </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
     </ScrollView>
 

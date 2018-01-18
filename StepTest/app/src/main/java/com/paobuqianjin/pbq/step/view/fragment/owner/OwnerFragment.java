@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.AboutActivity;
+import com.paobuqianjin.pbq.step.view.activity.DanActivity;
 import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
 import com.paobuqianjin.pbq.step.view.activity.MessageActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyDynamicActivity;
@@ -221,6 +222,8 @@ public final class OwnerFragment extends BaseFragment {
                 break;
             case R.id.dan_span:
                 LocalLog.d(TAG, "我的段位");
+                intent.setClass(getContext(), DanActivity.class);
+                startActivity(intent);
                 break;
             case R.id.about_span:
                 LocalLog.d(TAG, "关于我们");
