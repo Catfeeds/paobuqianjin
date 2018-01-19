@@ -688,7 +688,7 @@ public final class Engine {
 
 
     public void reflashMyCreateCircle(int page, int pagesize) {
-        LocalLog.d(TAG, " 我创建的圈子：getMyCreateCirlce() enter");
+        LocalLog.d(TAG, " 我创建的圈子：reflashMyCreateCircle() enter");
         String url = NetApi.urlCircle + "?action=create" + "&userid=" + String.valueOf(engine.getId(mContext))
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         OkHttpUtils
@@ -968,7 +968,7 @@ public final class Engine {
         Picasso picasso = Picasso.with(mContext);
         picasso.setIndicatorsEnabled(true);
         //picasso.setLoggingEnabled(true);
-        LocalLog.d(TAG,"networkPolicy = " +networkPolicy.name()+ " -> "+ networkPolicy.toString() );
+        LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         picasso.load(urlImage).config(Bitmap.Config.RGB_565).networkPolicy(networkPolicy).into(imageView);
         //Picasso.with(mContext).load(urlImage).into(imageView);
 /*        OkHttpUtils
@@ -993,6 +993,11 @@ public final class Engine {
     }
 
     //
+
+    public void getTest() {
+        LocalLog.d(TAG, "############################测试所有接口#####################");
+
+    }
 
     private static class ServiceHandler extends Handler {
         @Override
