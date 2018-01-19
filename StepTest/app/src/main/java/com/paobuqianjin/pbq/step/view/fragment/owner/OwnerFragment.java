@@ -24,6 +24,7 @@ import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
 import com.paobuqianjin.pbq.step.view.activity.SuggestionActivity;
+import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -184,7 +185,7 @@ public final class OwnerFragment extends BaseFragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.bar_tv_right, R.id.user_icon, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span,
+    @OnClick({R.id.bar_tv_right, R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span,
             R.id.circle_span, R.id.dan_span, R.id.about_span, R.id.suggestion_span, R.id.message_rel, R.id.like_rel, R.id.friend_rel})
     public void onClick(View view) {
         Intent intent = new Intent();
@@ -194,8 +195,10 @@ public final class OwnerFragment extends BaseFragment {
                 intent.setClass(getContext(), UserInfoSettingActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.user_icon:
+            case R.id.user_span:
                 LocalLog.d(TAG, "设置头像");
+                intent.setClass(getContext(), UserCenterActivity.class);
+                startActivity(intent);
                 break;
             case R.id.wallet_span:
                 LocalLog.d(TAG, "钱包");

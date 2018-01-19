@@ -23,66 +23,90 @@ import java.util.Map;
  */
 public class QServiceCfg {
 
-    /** 腾讯云 cos 服务的 appid */
+    /**
+     * 腾讯云 cos 服务的 appid
+     */
     private final String appid = "1255484416";
 
-    /** appid 对应的 秘钥 */
+    /**
+     * appid 对应的 秘钥
+     */
     private final String secretId = "AKIDwqbCewU2ZxABC3QDWp1EWrBLK9nF5dZL";
 
-    /** appid 对应的 秘钥 */
+    /**
+     * appid 对应的 秘钥
+     */
     private final String secretKey = "jHj5GIAvV8eFk3B8tSwKXYO4f0IUcqJu";
 
-    /** bucketForObjectAPITest 所处在的地域 */
+    /**
+     * bucketForObjectAPITest 所处在的地域
+     */
     private String region = Region.AP_Guangzhou.getRegion();
 
 
     /**
      * bucketForObjectAPITest api 操作测试
-     *
+     * <p>
      * bucketForBucketAPITest : 用于测试 bucket API 的 bucket
-     *
      */
     private String bucketForBucketAPITest;
 
     /**
      * Object api 操作测试
-     *
+     * <p>
      * bucketForObjectAPITest: 用于测试object API 的 bucket
      * cosPath: 将文件上传到 cos 上的远端绝对路径，格式为： /dirName/fileName
      */
     private String bucketForObjectAPITest;
 
-    /** 用于 put 上传文件的 cosPath: 小文件上传 */
+    /**
+     * 用于 put 上传文件的 cosPath: 小文件上传
+     */
     private String uploadCosPath;
 
-    /** 用于 分片上传文件的 cosPath：大文件分片上传 */
+    /**
+     * 用于 分片上传文件的 cosPath：大文件分片上传
+     */
     private String multiUploadCosPath;
 
-    /** 用于 append 上传文件的 cosPath：追加形式上传文件 */
+    /**
+     * 用于 append 上传文件的 cosPath：追加形式上传文件
+     */
     private String appendCosPath;
 
-    /** 用于 下载文件的 cosPath：cos 上文件的位置 */
+    /**
+     * 用于 下载文件的 cosPath：cos 上文件的位置
+     */
     private String getCosPath;
 
-   /** 下载文件到本地的路径*/
-   private String downloadDir;
+    /**
+     * 下载文件到本地的路径
+     */
+    private String downloadDir;
 
-    /** 本地文件的路径: 小文件*/
+    /**
+     * 本地文件的路径: 小文件
+     */
     private String uploadFileUrl;
 
-    /** 本地文件的路径: 追加文件*/
+    /**
+     * 本地文件的路径: 追加文件
+     */
     private String appendUploadFileUrl;
 
-    /** 本地文件的路径: 大文件*/
+    /**
+     * 本地文件的路径: 大文件
+     */
     private String multiUploadFileUrl;
 
-    /** 用于分片上传中 保留的 分片号 和对应的 eTag */
+    /**
+     * 用于分片上传中 保留的 分片号 和对应的 eTag
+     */
     private Map<Integer, String> partNumberAndEtag;
 
 
-
     /**
-     *  xml sdk 服务类: 通过 CosXmlService 调用各种API服务
+     * xml sdk 服务类: 通过 CosXmlService 调用各种API服务
      */
     public CosXmlService cosXmlService;
 
@@ -103,7 +127,11 @@ public class QServiceCfg {
         return instance;
     }
 
-    private QServiceCfg(Context context){
+    public void setUploadFileUrl(String uploadFileUrl) {
+        this.uploadFileUrl = uploadFileUrl;
+    }
+
+    private QServiceCfg(Context context) {
         this.context = context;
 
         /** 初始化服务配置 CosXmlServiceConfig */
@@ -127,8 +155,8 @@ public class QServiceCfg {
          */
 
         /** 初始化服务类 CosXmlService */
-        cosXmlService = new CosXmlService(context,cosXmlServiceConfig,
-                new LocalCredentialProvider(secretId,secretKey,600));
+        cosXmlService = new CosXmlService(context, cosXmlServiceConfig,
+                new LocalCredentialProvider(secretId, secretKey, 600));
 
 
         /**
@@ -136,17 +164,17 @@ public class QServiceCfg {
          */
         identity = Identifier.getIdentifier(context);
 
-        bucketForObjectAPITest = "objecttest";
+        bucketForObjectAPITest = "runmoney-1255484416";
 
-        uploadCosPath = String.format("/upload_%d.txt", identity);
+        //uploadCosPath = String.format("/upload_%d.txt", identity);
         multiUploadCosPath = String.format("/bigfile_%d", identity);
         appendCosPath = String.format("/append_%d", identity);
         getCosPath = uploadCosPath;
 
-        uploadFileUrl = context.getExternalCacheDir().getPath() + File.separator + "upload.txt";
+        //uploadFileUrl = context.getExternalCacheDir().getPath() + File.separator + "upload.txt";
         multiUploadFileUrl = context.getExternalCacheDir().getPath() + File.separator + "bigfile.txt";
         appendUploadFileUrl = context.getExternalCacheDir().getPath() + File.separator + "append.txt";
-        downloadDir = context.getExternalCacheDir().getPath() +  File.separator + "download";
+        downloadDir = context.getExternalCacheDir().getPath() + File.separator + "download";
 
         partNumberAndEtag = new LinkedHashMap<Integer, String>();
     }
@@ -213,7 +241,6 @@ public class QServiceCfg {
     }
 
 
-
     public void setCurrentUploadId(String currentUploadId) {
         Identifier.setUploadId(currentUploadId);
     }
@@ -223,20 +250,22 @@ public class QServiceCfg {
     }
 
     public String getMultiUploadFileUrl() {
-       return writeLocalFile(multiUploadFileUrl, 1024 * 1024 * 2);
+        return writeLocalFile(multiUploadFileUrl, 1024 * 1024 * 2);
     }
 
-    /** construct a large file for multi upload file */
-    private String writeLocalFile(String fileName, long fileSize){
+    /**
+     * construct a large file for multi upload file
+     */
+    private String writeLocalFile(String fileName, long fileSize) {
         File file = new File(fileName);
-        if(!file.exists()){
+        if (!file.exists()) {
             try {
                 file.createNewFile();
-                RandomAccessFile randomAccessFile = new RandomAccessFile(file,"rw");
+                RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
                 randomAccessFile.setLength(fileSize);
                 randomAccessFile.close();
             } catch (IOException e) {
-               e.printStackTrace();
+                e.printStackTrace();
             }
         }
         return fileName;
@@ -246,7 +275,7 @@ public class QServiceCfg {
         return downloadDir;
     }
 
-    public void setPartNumberAndEtag(int partNumber, String eTag){
+    public void setPartNumberAndEtag(int partNumber, String eTag) {
         partNumberAndEtag.put(partNumber, eTag);
     }
 
@@ -254,7 +283,7 @@ public class QServiceCfg {
         return partNumberAndEtag;
     }
 
-    public void toastShow(String message){
+    public void toastShow(String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
