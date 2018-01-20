@@ -99,6 +99,90 @@
 
     </FrameLayout>
 
+    <RelativeLayout
+        android:id="@+id/income_out_look"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/process_step"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="9dp">
+
+        <RelativeLayout
+            android:id="@+id/today_income_span"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
+            android:layout_toStartOf="@+id/line">
+
+            <TextView
+                android:id="@+id/income_today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当天钱进"
+                android:textColor="@color/color_f8"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/income_today"
+                android:text="￥8.41元"
+                android:textColor="@color/color_f8"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+
+        <ImageView
+            android:id="@+id/line"
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/today_income_span"
+            android:layout_alignTop="@+id/today_income_span"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/color_a2a3a9" />
+
+        <RelativeLayout
+            android:id="@+id/month_income_span"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_toEndOf="@+id/line">
+
+            <TextView
+                android:id="@+id/income_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当月钱进"
+                android:textColor="@color/color_f8"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/income_month">
+
+                <ImageView
+                    android:id="@+id/moth_income_ico"
+                    android:layout_width="9dp"
+                    android:layout_height="11dp"
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/month_income" />
+
+                <TextView
+                    android:id="@+id/month_income_home"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toEndOf="@+id/moth_income_ico"
+                    android:text="88元"
+                    android:textColor="@color/color_f8"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/major_span"
@@ -148,4 +232,47 @@
         android:textColor="@color/color_d6d6d6"
         android:textSize="23sp" />
 
+    <RelativeLayout
+        android:id="@+id/weather_span"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/home_title"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/home_title"
+        android:layout_marginLeft="20dp"
+        android:layout_toStartOf="@+id/home_title">
+
+        <ImageView
+            android:id="@+id/weather_icon"
+            android:layout_width="28dp"
+            android:layout_height="22dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/weather_icon" />
+
+        <TextView
+            android:id="@+id/wendu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/weather_icon"
+            android:layout_alignTop="@+id/weather_icon"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/weather_icon"
+            android:gravity="center"
+            android:text="25°"
+            android:textColor="@color/color_f8"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/home_title"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/home_title"
+        android:layout_marginRight="20dp"
+        android:gravity="center"
+        android:text="深圳"
+        android:textColor="@color/color_f8"
+        android:textSize="14sp" />
 </RelativeLayout>
