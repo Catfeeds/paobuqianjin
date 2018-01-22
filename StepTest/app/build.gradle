@@ -83,4 +83,5 @@ dependencies {
     implementation files('libs/SocialSDK_WeiXin_Full.jar')
     implementation files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
     compile 'liji.library.dev:citypickerview:3.0.1'
+    compile 'org.jsoup:jsoup:1.9.2'
 }

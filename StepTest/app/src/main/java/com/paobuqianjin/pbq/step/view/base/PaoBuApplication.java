@@ -102,6 +102,7 @@ public class PaoBuApplication extends Application {
                 Presenter.getInstance(app).startService(null, LocalBaiduService.class);
                 app.initWXapi(app);
                 app.loadCitySelect(app);
+                Presenter.getInstance(app).getWeather();
             }
         }
     }

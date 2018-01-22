@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.l.okhttppaobu.okhttp.callback.BitmapCallback;
+import com.paobuqianjin.pbq.step.data.Weather;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddFollowParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
@@ -997,6 +998,11 @@ public final class Engine {
     public void getTest() {
         LocalLog.d(TAG, "############################测试所有接口#####################");
 
+    }
+
+    //TODO get Weather
+    public void getWeather() {
+        Weather.getWeather(22.548335d, 114.02133d);
     }
 
     private static class ServiceHandler extends Handler {

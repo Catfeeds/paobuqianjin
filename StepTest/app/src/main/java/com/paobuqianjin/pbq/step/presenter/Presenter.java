@@ -201,6 +201,10 @@ public final class Presenter {
         return engine.getNetworkPolicy();
     }
 
+    public void getWeather() {
+        engine.getWeather();
+    }
+
     public void setNetworkPolicy(NetworkPolicy networkPolicy) {
         engine.setNetworkPolicy(networkPolicy);
     }
