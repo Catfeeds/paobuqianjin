@@ -30,7 +30,7 @@
     <application
         android:name=".view.base.PaoBuApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/app_icon"
         android:supportsRtl="true"
@@ -111,6 +111,10 @@
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.CirCleTagActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+        <activity
+            android:name=".view.activity.CreateDynamicActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!--个人榜单-->

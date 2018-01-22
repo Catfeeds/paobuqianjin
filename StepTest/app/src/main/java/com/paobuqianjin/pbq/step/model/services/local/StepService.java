@@ -198,9 +198,9 @@ public class StepService extends Service implements SharedPreferences.OnSharedPr
         mBuilder = new Notification.Builder(this.getApplicationContext());
         mActivityIntent = new Intent(this, MainActivity.class);
         mBuilder.setContentIntent(PendingIntent.getActivity(this, 0, mActivityIntent, 0))
-                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher_round))
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.app_icon))
                 .setContentTitle(StepService.this.getResources().getString(R.string.app_name))
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.app_icon)
                 .setContentText("运动总步数: " + mCurDayStep);
         Notification stepNotification = mBuilder.build();
         mNotificationManager.notify(110, stepNotification);
@@ -341,9 +341,9 @@ public class StepService extends Service implements SharedPreferences.OnSharedPr
         mBuilder = new Notification.Builder(this.getApplicationContext());
         mActivityIntent = new Intent(this, MainActivity.class);
         mBuilder.setContentIntent(PendingIntent.getActivity(this, 0, mActivityIntent, 0))
-                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher_round))
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.app_icon))
                 .setContentTitle(StepService.this.getResources().getString(R.string.app_name))
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.app_icon)
                 .setContentText("今日步数: " + mCurDayStep + "步");
         Notification stepNotification = mBuilder.build();
         mNotificationManager.notify(110, stepNotification);

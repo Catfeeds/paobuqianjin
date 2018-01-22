@@ -26,7 +26,7 @@
                 <EditText
                     android:id="@+id/dynamic_content"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="95dp"
                     android:background="@null"
                     android:gravity="left"
                     android:hint="这一刻的想法..."
@@ -133,14 +133,14 @@
                     android:src="@drawable/at" />
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toEndOf="@+id/at"
-                    android:layout_centerVertical="true"
                     android:text="提醒谁看"
-                    android:textSize="15sp"
                     android:textColor="@color/color_161727"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:layout_width="7dp"

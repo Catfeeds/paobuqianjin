@@ -26,6 +26,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.CreateDynamicActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -209,8 +210,11 @@ public final class FriendCircleFragment extends BaseFragment {
                                 .initiateScan();
                     }
 
-                    if(iCamemaView.getVisibility() == View.VISIBLE){
-                        LocalLog.d(TAG," 发布动态!");
+                    if (iCamemaView.getVisibility() == View.VISIBLE) {
+                        LocalLog.d(TAG, " 发布动态!");
+                        Intent intent = new Intent();
+                        intent.setClass(getContext(), CreateDynamicActivity.class);
+                        startActivity(intent);
                     }
                     break;
             }
