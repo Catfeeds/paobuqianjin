@@ -61,6 +61,28 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/btn_task"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:drawablePadding="0dp"
+                android:drawableTop="@drawable/task_n"
+                android:gravity="center"
+                android:onClick="onTabSelect"
+                android:paddingBottom="0dip"
+                android:paddingTop="7dip"
+                android:scaleType="matrix"
+                android:text="任务"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
                 android:id="@+id/btn_honor"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

@@ -35,6 +35,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
@@ -85,6 +86,7 @@ public final class Engine {
     private UiStepAndLoveRankInterface uiStepAndLoveRankInterface;
     private DynamicIndexUiInterface dynamicIndexUiInterface;
     private DynamicCommentUiInterface dynamicCommentUiInterface;
+    private OwnerUiInterface ownerUiInterface;
     private Picasso picasso = null;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
@@ -109,6 +111,7 @@ public final class Engine {
     public final static int COMMAND_REFLASH_CIRCLE = 19;
     public final static int COMMAND_GET_DYNAMIC_INDEX = 20;
     public final static int COMMAND_DYNAMIC_CONTENTS = 21;
+    public final static int COMMAND_OWNER_USER_INFO = 22;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -237,12 +240,7 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(new UserInfoInterface() {
-                    @Override
-                    public void update(UserInfoResponse userInfoResponse) {
-                        LocalLog.d(TAG, " 获取用户信息回调成功!" + userInfoResponse.toString());
-                    }
-                }));
+                .execute(new NetStringCallBack(ownerUiInterface, COMMAND_OWNER_USER_INFO));
     }
 
     //重置密码
@@ -1036,6 +1034,8 @@ public final class Engine {
             dynamicIndexUiInterface = (DynamicIndexUiInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicCommentUiInterface) {
             dynamicCommentUiInterface = (DynamicCommentUiInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof OwnerUiInterface) {
+            ownerUiInterface = (OwnerUiInterface) uiCallBackInterface;
         }
 
     }
@@ -1058,6 +1058,8 @@ public final class Engine {
             dynamicIndexUiInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicCommentUiInterface) {
             dynamicCommentUiInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof OwnerUiInterface) {
+            ownerUiInterface = null;
         }
 
     }

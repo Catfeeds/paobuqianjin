@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
@@ -172,6 +173,12 @@ public class NetStringCallBack extends StringCallback {
             LocalLog.d(TAG, "评论列表");
             DynamicCommentResponse dynamicCommentResponse = new Gson().fromJson(s, DynamicCommentResponse.class);
             ((DynamicCommentUiInterface) callBackInterface).response(dynamicCommentResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof OwnerUiInterface
+                && command == Engine.COMMAND_OWNER_USER_INFO) {
+            LocalLog.d(TAG, "评论列表");
+            UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
+            ((OwnerUiInterface) callBackInterface).response(userInfoResponse);
         } else {
             LocalLog.d(TAG, " dispatch not match");
         }

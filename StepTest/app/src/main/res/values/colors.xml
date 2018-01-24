@@ -38,4 +38,9 @@
     <color name="color_33333">#33333333</color>
     <color name="color_999999">#ff999999</color>
     <color name="color_a2a3a9">#ffa2a3a9</color>
+    <color name="color_ebf0f3">#ffebf0f3</color>
+    <color name="color_646464">#ff646464</color>
+    <color name="color_660000">#66000000</color>
+    <color name="color_323232">#ff323232</color>
+    <color name="color_007aff">#ff007aff</color>
 </resources>

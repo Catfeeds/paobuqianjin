@@ -21,6 +21,7 @@ import com.paobuqianjin.pbq.step.view.fragment.circle.FriendCircleFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.HomePageFragment;
 import com.paobuqianjin.pbq.step.view.fragment.honor.HonorFragment;
 import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerFragment;
+import com.paobuqianjin.pbq.step.view.fragment.task.TaskFragment;
 
 
 public class MainActivity extends BaseActivity {
@@ -30,16 +31,19 @@ public class MainActivity extends BaseActivity {
     private HomePageFragment mHomePageFragment;
     private HonorFragment mHonorFragment;
     private FriendCircleFragment mFriendCircleFragment;
+    private TaskFragment taskFragment;
     private OwnerFragment mOwnerFragment;
     private Fragment[] mFragments;
     private int mIndex = 0;
     private TextView[] mTabSelect;
     private TextView mBtn_home;
     private TextView mBtn_friend;
+    private TextView mBtn_task;
     private TextView mBtn_honor;
     private TextView mBtn_owner;
     private int mCurrentIndex = 0;
     private int[][] icon = new int[][]{{R.drawable.home_n, R.drawable.home_s}, {R.drawable.circle_n, R.drawable.circle_s},
+            {R.drawable.task_n, R.drawable.task_s},
             {R.drawable.list_n, R.drawable.list_s}, {R.drawable.me_n, R.drawable.me_s}};
 
     @Override
@@ -65,13 +69,15 @@ public class MainActivity extends BaseActivity {
     private void initTab() {
         mBtn_home = (TextView) findViewById(R.id.btn_home_page);
         mBtn_friend = (TextView) findViewById(R.id.btn_friend_circle);
+        mBtn_task = (TextView) findViewById(R.id.btn_task);
         mBtn_honor = (TextView) findViewById(R.id.btn_honor);
         mBtn_owner = (TextView) findViewById(R.id.btn_owner);
-        mTabSelect = new TextView[4];
+        mTabSelect = new TextView[5];
         mTabSelect[0] = mBtn_home;
         mTabSelect[1] = mBtn_friend;
-        mTabSelect[2] = mBtn_honor;
-        mTabSelect[3] = mBtn_owner;
+        mTabSelect[2] = mBtn_task;
+        mTabSelect[3] = mBtn_honor;
+        mTabSelect[4] = mBtn_owner;
         mTabSelect[0].setSelected(true);
         initTextViewIcon();
         initFragment();
@@ -81,6 +87,7 @@ public class MainActivity extends BaseActivity {
     private void initTextViewIcon() {
         Drawable home = getResources().getDrawable(R.drawable.home_s);
         Drawable circle = getResources().getDrawable(R.drawable.circle_n);
+        Drawable task = getResources().getDrawable(R.drawable.task_n);
         Drawable honor = getResources().getDrawable(R.drawable.list_n);
         Drawable me = getResources().getDrawable(R.drawable.me_n);
 
@@ -88,6 +95,8 @@ public class MainActivity extends BaseActivity {
         mBtn_home.setCompoundDrawables(null, home, null, null);
         circle.setBounds(0, 0, 54, 54);
         mBtn_friend.setCompoundDrawables(null, circle, null, null);
+        task.setBounds(0, 0, 54, 54);
+        mBtn_task.setCompoundDrawables(null, task, null, null);
         honor.setBounds(0, 0, 54, 54);
         mBtn_honor.setCompoundDrawables(null, honor, null, null);
         me.setBounds(0, 0, 54, 54);
@@ -98,12 +107,14 @@ public class MainActivity extends BaseActivity {
     private void initFragment() {
         mHomePageFragment = new HomePageFragment();
         mFriendCircleFragment = new FriendCircleFragment();
+        taskFragment = new TaskFragment();
         mHonorFragment = new HonorFragment();
         mOwnerFragment = new OwnerFragment();
-        mFragments = new Fragment[]{mHomePageFragment, mFriendCircleFragment, mHonorFragment, mOwnerFragment};
+        mFragments = new Fragment[]{mHomePageFragment, mFriendCircleFragment, taskFragment, mHonorFragment, mOwnerFragment};
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mHomePageFragment).
                 add(R.id.fragment_container, mFriendCircleFragment)
+                .add(R.id.fragment_container, taskFragment)
                 .add(R.id.fragment_container, mHonorFragment)
                 .add(R.id.fragment_container, mOwnerFragment)
                 .hide(mFriendCircleFragment).hide(mHonorFragment)
@@ -127,11 +138,14 @@ public class MainActivity extends BaseActivity {
                 case R.id.btn_friend_circle:
                     mIndex = 1;
                     break;
-                case R.id.btn_honor:
+                case R.id.btn_task:
                     mIndex = 2;
                     break;
-                case R.id.btn_owner:
+                case R.id.btn_honor:
                     mIndex = 3;
+                    break;
+                case R.id.btn_owner:
+                    mIndex = 4;
                     break;
                 default:
                     break;

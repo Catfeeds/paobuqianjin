@@ -3,12 +3,18 @@ package com.paobuqianjin.pbq.step.data.bean.gson.response;
 /**
  * Created by pbq on 2017/12/21.
  */
-
+/*
+@className :UserInfoResponse
+*@date 2018/1/24
+*@author
+*@description  用户个人信息
+*/
 public class UserInfoResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"id":30,"mobile":"13424156029","avatar":"","openid":"","type":0,"nickname":"rm_13424156029","sex":0,"city":"","amount":"0.00","target_step":0,"credit":"0.00","levelid":0,"register_time":1513757559,"level":null,"friendCount":0,"followCount":0,"messagesCount":0}
+     * data : {"id":1,"openid":"","mobile":"18588278880","levelid":3,"sex":0,"birthyear":1992,"birthmonth":1,"birthday":30,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184235460.jpg","type":1,"nickname":"陈杰","province":"广东省","city":"深圳市","balance":"43.66","target_step":10000,"credit":"0.00","status":0,"creat_time":1512699325,"level":"第三段","followCount":9,"circleCount":44,"authentication_status":4,"messagesCount":1}
      */
 
     private int error;
@@ -50,41 +56,53 @@ public class UserInfoResponse {
 
     public static class DataBean {
         /**
-         * id : 30
-         * mobile : 13424156029
-         * avatar :
+         * id : 1
          * openid :
-         * type : 0
-         * nickname : rm_13424156029
-         * sex : 0
-         * city :
-         * amount : 0.00
-         * target_step : 0
-         * credit : 0.00
-         * levelid : 0
-         * register_time : 1513757559
-         * level : null
-         * friendCount : 0
-         * followCount : 0
-         * messagesCount : 0
+         * mobile : 18588278880
+         * levelid : 3
+         * sex : 0 0:男 1：女
+         * birthyear : 1992
+         * birthmonth : 1
+         * birthday : 30
+         * avatar : http://pic.qqtn.com/up/2017-12/2017120911184235460.jpg
+         * type : 1
+         * nickname : 陈杰
+         * province : 广东省
+         * city : 深圳市
+         * balance : 43.66  余额
+         * target_step : 10000
+         * credit : 0.00  步币
+         * status : 0     是否被禁用
+         * creat_time : 1512699325
+         * level : 第三段
+         * followCount : 9
+         * circleCount : 44
+         * authentication_status : 4  4，未认证
+         * messagesCount : 1
          */
 
         private int id;
-        private String mobile;
-        private String avatar;
         private String openid;
+        private String mobile;
+        private int levelid;
+        private int sex;
+        private int birthyear;
+        private int birthmonth;
+        private int birthday;
+        private String avatar;
         private int type;
         private String nickname;
-        private int sex;
+        private String province;
         private String city;
-        private String amount;
+        private String balance;
         private int target_step;
         private String credit;
-        private int levelid;
-        private int register_time;
-        private Object level;
-        private int friendCount;
+        private int status;
+        private int creat_time;
+        private String level;
         private int followCount;
+        private int circleCount;
+        private int authentication_status;
         private int messagesCount;
 
         public int getId() {
@@ -95,6 +113,14 @@ public class UserInfoResponse {
             this.id = id;
         }
 
+        public String getOpenid() {
+            return openid;
+        }
+
+        public void setOpenid(String openid) {
+            this.openid = openid;
+        }
+
         public String getMobile() {
             return mobile;
         }
@@ -103,20 +129,52 @@ public class UserInfoResponse {
             this.mobile = mobile;
         }
 
+        public int getLevelid() {
+            return levelid;
+        }
+
+        public void setLevelid(int levelid) {
+            this.levelid = levelid;
+        }
+
+        public int getSex() {
+            return sex;
+        }
+
+        public void setSex(int sex) {
+            this.sex = sex;
+        }
+
+        public int getBirthyear() {
+            return birthyear;
+        }
+
+        public void setBirthyear(int birthyear) {
+            this.birthyear = birthyear;
+        }
+
+        public int getBirthmonth() {
+            return birthmonth;
+        }
+
+        public void setBirthmonth(int birthmonth) {
+            this.birthmonth = birthmonth;
+        }
+
+        public int getBirthday() {
+            return birthday;
+        }
+
+        public void setBirthday(int birthday) {
+            this.birthday = birthday;
+        }
+
         public String getAvatar() {
             return avatar;
         }
 
         public void setAvatar(String avatar) {
             this.avatar = avatar;
-        }
-
-        public String getOpenid() {
-            return openid;
-        }
-
-        public void setOpenid(String openid) {
-            this.openid = openid;
         }
 
         public int getType() {
@@ -135,12 +193,12 @@ public class UserInfoResponse {
             this.nickname = nickname;
         }
 
-        public int getSex() {
-            return sex;
+        public String getProvince() {
+            return province;
         }
 
-        public void setSex(int sex) {
-            this.sex = sex;
+        public void setProvince(String province) {
+            this.province = province;
         }
 
         public String getCity() {
@@ -151,12 +209,12 @@ public class UserInfoResponse {
             this.city = city;
         }
 
-        public String getAmount() {
-            return amount;
+        public String getBalance() {
+            return balance;
         }
 
-        public void setAmount(String amount) {
-            this.amount = amount;
+        public void setBalance(String balance) {
+            this.balance = balance;
         }
 
         public int getTarget_step() {
@@ -175,36 +233,28 @@ public class UserInfoResponse {
             this.credit = credit;
         }
 
-        public int getLevelid() {
-            return levelid;
+        public int getStatus() {
+            return status;
         }
 
-        public void setLevelid(int levelid) {
-            this.levelid = levelid;
+        public void setStatus(int status) {
+            this.status = status;
         }
 
-        public int getRegister_time() {
-            return register_time;
+        public int getCreat_time() {
+            return creat_time;
         }
 
-        public void setRegister_time(int register_time) {
-            this.register_time = register_time;
+        public void setCreat_time(int creat_time) {
+            this.creat_time = creat_time;
         }
 
-        public Object getLevel() {
+        public String getLevel() {
             return level;
         }
 
-        public void setLevel(Object level) {
+        public void setLevel(String level) {
             this.level = level;
-        }
-
-        public int getFriendCount() {
-            return friendCount;
-        }
-
-        public void setFriendCount(int friendCount) {
-            this.friendCount = friendCount;
         }
 
         public int getFollowCount() {
@@ -213,6 +263,22 @@ public class UserInfoResponse {
 
         public void setFollowCount(int followCount) {
             this.followCount = followCount;
+        }
+
+        public int getCircleCount() {
+            return circleCount;
+        }
+
+        public void setCircleCount(int circleCount) {
+            this.circleCount = circleCount;
+        }
+
+        public int getAuthentication_status() {
+            return authentication_status;
+        }
+
+        public void setAuthentication_status(int authentication_status) {
+            this.authentication_status = authentication_status;
         }
 
         public int getMessagesCount() {
@@ -227,21 +293,27 @@ public class UserInfoResponse {
         public String toString() {
             return "DataBean{" +
                     "id=" + id +
-                    ", mobile='" + mobile + '\'' +
-                    ", avatar='" + avatar + '\'' +
                     ", openid='" + openid + '\'' +
+                    ", mobile='" + mobile + '\'' +
+                    ", levelid=" + levelid +
+                    ", sex=" + sex +
+                    ", birthyear=" + birthyear +
+                    ", birthmonth=" + birthmonth +
+                    ", birthday=" + birthday +
+                    ", avatar='" + avatar + '\'' +
                     ", type=" + type +
                     ", nickname='" + nickname + '\'' +
-                    ", sex=" + sex +
+                    ", province='" + province + '\'' +
                     ", city='" + city + '\'' +
-                    ", amount='" + amount + '\'' +
+                    ", balance='" + balance + '\'' +
                     ", target_step=" + target_step +
                     ", credit='" + credit + '\'' +
-                    ", levelid=" + levelid +
-                    ", register_time=" + register_time +
-                    ", level=" + level +
-                    ", friendCount=" + friendCount +
+                    ", status=" + status +
+                    ", creat_time=" + creat_time +
+                    ", level='" + level + '\'' +
                     ", followCount=" + followCount +
+                    ", circleCount=" + circleCount +
+                    ", authentication_status=" + authentication_status +
                     ", messagesCount=" + messagesCount +
                     '}';
         }

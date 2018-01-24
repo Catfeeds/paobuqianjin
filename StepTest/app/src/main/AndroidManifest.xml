@@ -129,7 +129,14 @@
             android:name=".view.activity.MyWalletActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme"></activity>
-
+        <!--商家详情-->
+        <activity android:name=".view.activity.SponsorDetailActivity" />
+        <!--商品图片详情-->
+        <activity android:name=".view.activity.SponsorGoodsPicLookActivity"></activity>
+        <!--系统消息-->
+        <activity android:name=".view.activity.SystemMsgActivity" />
+        <!--查看评论-->
+        <activity android:name=".view.activity.UserCenterContentActivity"></activity>
         <!--提现-->
         <activity
             android:name=".view.activity.CrashActivity"

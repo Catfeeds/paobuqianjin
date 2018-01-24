@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.SystemMsgActivity;
+import com.paobuqianjin.pbq.step.view.activity.UserCenterContentActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
@@ -81,15 +84,22 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment {
 
     @OnClick({R.id.message_span, R.id.like_span, R.id.system_span})
     public void onClick(View view) {
+        Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.message_span:
                 LocalLog.d(TAG, "评论");
+                intent.setClass(getContext(), UserCenterContentActivity.class);
+                startActivity(intent);
                 break;
             case R.id.like_span:
                 LocalLog.d(TAG, "点赞");
+                intent.setClass(getContext(), UserCenterContentActivity.class);
+                startActivity(intent);
                 break;
             case R.id.system_span:
                 LocalLog.d(TAG, "系统消息");
+                intent.setClass(getContext(), SystemMsgActivity.class);
+                startActivity(intent);
                 break;
         }
     }

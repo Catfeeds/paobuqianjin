@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/empty_icon"
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/content_empty" />
+
+        <TextView
+            android:id="@+id/empty_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/empty_icon"
+            android:layout_marginTop="20dp"
+            android:text="还没收到评论"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</RelativeLayout>

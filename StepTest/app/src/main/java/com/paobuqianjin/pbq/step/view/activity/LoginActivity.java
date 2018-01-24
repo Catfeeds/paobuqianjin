@@ -261,7 +261,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
         Presenter.getInstance(this).steLogFlg(true);
         Presenter.getInstance(this).setId(loginResponse.getData().getId());
         startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
-        Presenter.getInstance(this).getUserInfo(loginResponse.getData().getId());
+        //Presenter.getInstance(this).getUserInfo(loginResponse.getData().getId());
     }
 
     @Override

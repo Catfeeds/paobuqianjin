@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/sponsor_detail"
+        layout="@layout/bar_return_a_style" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sponsor_detail">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/sponsor_face_span"
+                android:layout_width="match_parent"
+                android:layout_height="160dp">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/sponsor_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+                <RelativeLayout
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp">
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sponsor_pics" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true">
+
+                        <ImageView
+                            android:id="@+id/pic_sample"
+                            android:layout_width="16dp"
+                            android:layout_height="14dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/sponsor_pic_num" />
+
+                        <TextView
+                            android:id="@+id/current_pic"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/pic_sample"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="5dp"
+                            android:includeFontPadding="false"
+                            android:text="1/5"
+                            android:textColor="@color/color_f8"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/sponsor_face_span"
+                android:background="@color/color_ecf0f3" />
+
+            <RelativeLayout
+                android:id="@+id/sponsor_tel_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/line">
+
+                <ImageView
+                    android:id="@+id/sponsor_tel_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sponsor_tel" />
+
+                <TextView
+                    android:id="@+id/sponsor_tel_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toEndOf="@+id/sponsor_tel_icon"
+                    android:text="商家电话:"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/sponsor_tel_num"
+                    android:text="0755-8682 121"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/sponsor_tel_icon"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_ebebed" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sponsor_time_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/sponsor_tel_span">
+
+                <ImageView
+                    android:id="@+id/sponsor_time_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sponsor_open" />
+
+                <TextView
+                    android:id="@+id/sponsor_time_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toEndOf="@+id/sponsor_time_icon"
+                    android:text="营业时间:"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@+id/sponsor_time_num"
+                    android:text="周一至周日 00:00 - 23:59"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/sponsor_time_icon"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_ebebed" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sponsor_location_span"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@+id/sponsor_time_span">
+
+                <ImageView
+                    android:id="@+id/sponsor_location_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginTop="16dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sponsor_location" />
+
+                <TextView
+                    android:id="@+id/sponsor_location_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_toEndOf="@+id/sponsor_location_icon"
+                    android:text="商家地址:"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_toRightOf="@+id/sponsor_location_num"
+                    android:maxLength="20"
+                    android:maxLines="2"
+                    android:text="福田八卦四路新阳大厦"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/line2"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/sponsor_location_span"
+                android:background="@color/color_ecf0f3" />
+
+            <RelativeLayout
+                android:id="@+id/goto_sponsor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line2"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    android:id="@+id/sponsor_have"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="商品图片"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5pt"
+                    android:layout_toLeftOf="@+id/go_to"
+                    android:text="更多"
+                    android:textColor="@color/color_8a8a8a" />
+
+                <ImageView
+                    android:id="@+id/go_to"
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/go_to" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@+id/goto_sponsor"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:layout_width="109dp"
+                    android:layout_height="80dp"
+                    android:layout_alignParentLeft="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/circle_live_default_b" />
+
+                <ImageView
+                    android:id="@+id/center_pic"
+                    android:layout_width="109dp"
+                    android:layout_height="80dp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/circle_live_default_b" />
+
+                <ImageView
+                    android:layout_width="109dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentRight="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/circle_live_default_b" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

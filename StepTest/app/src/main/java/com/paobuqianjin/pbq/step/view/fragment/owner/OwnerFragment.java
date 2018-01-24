@@ -12,6 +12,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.AboutActivity;
 import com.paobuqianjin.pbq.step.view.activity.DanActivity;
@@ -149,6 +152,8 @@ public final class OwnerFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
+        Presenter.getInstance(getContext()).attachUiInterface(ownerUiInterface);
+        Presenter.getInstance(getContext()).getUserInfo(Presenter.getInstance(getContext()).getId());
         return rootView;
     }
 
@@ -261,6 +266,12 @@ public final class OwnerFragment extends BaseFragment {
         }
     }
 
+    private OwnerUiInterface ownerUiInterface = new OwnerUiInterface() {
+        @Override
+        public void response(UserInfoResponse userInfoResponse) {
+            LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
+        }
+    };
 /*    private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
