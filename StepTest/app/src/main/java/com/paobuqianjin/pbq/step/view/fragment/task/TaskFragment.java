@@ -1,15 +1,157 @@
 package com.paobuqianjin.pbq.step.view.fragment.task;
 
+import android.annotation.TargetApi;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/1/24.
  */
 
 public class TaskFragment extends BaseFragment {
+    private final static String TAG = TaskFragment.class.getSimpleName();
+    @Bind(R.id.bar_title)
+    TextView barTitle;
+    @Bind(R.id.task_all)
+    Button taskAll;
+    @Bind(R.id.task_un_finish)
+    Button taskUnFinish;
+    @Bind(R.id.task_finished)
+    Button taskFinished;
+    @Bind(R.id.bar)
+    LinearLayout bar;
+    @Bind(R.id.line1)
+    ImageView line1;
+    @Bind(R.id.container_task)
+    RelativeLayout containerLive;
+
+    AllTaskFragment allTaskFragment;
+    FinishedTaskFragment finishedTaskFragment;
+    UnFinishTaskFragment unFinishTaskFragment;
+    private int mCurrentIndex = 0;
+    private int mIndex = 0;
+    private Fragment[] mFragments;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.task_top_fg;
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // TODO: inflate a fragment view
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
+        return rootView;
+    }
+
+    @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+        allTaskFragment = new AllTaskFragment();
+        finishedTaskFragment = new FinishedTaskFragment();
+        unFinishTaskFragment = new UnFinishTaskFragment();
+        barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
+        barTitle.setText("任务列表");
+        mFragments = new Fragment[]{allTaskFragment, finishedTaskFragment, unFinishTaskFragment};
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .add(R.id.container_task, allTaskFragment)
+                .add(R.id.container_task, finishedTaskFragment)
+                .add(R.id.container_task, unFinishTaskFragment)
+                .show(allTaskFragment)
+                .hide(finishedTaskFragment)
+                .hide(unFinishTaskFragment)
+                .commit();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @OnClick({R.id.task_all, R.id.task_un_finish, R.id.task_finished})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.task_all:
+                mIndex = 0;
+                LocalLog.d(TAG, "全部");
+                break;
+            case R.id.task_un_finish:
+                mIndex = 1;
+                LocalLog.d(TAG, "未完成");
+                break;
+            case R.id.task_finished:
+                mIndex = 2;
+                LocalLog.d(TAG, "已完成");
+                break;
+        }
+        onTabIndex(mIndex);
+    }
+
+    /*@desc  当前不再选中状态
+    *@function setCurrentIndexStateUnSelect
+    *@param
+    *@return 
+    */
+    @TargetApi(21)
+    private void setCurrentIndexStateUnSelect() {
+        if (mCurrentIndex == 0) {
+            taskAll.setBackground(getContext().getDrawable(R.drawable.rectangle_four_full_r_selected));
+        } else if (mCurrentIndex == 1) {
+            taskUnFinish.setBackground(getContext().getDrawable(R.drawable.rectangle_four_fill_outline_unselected));
+        } else if (mCurrentIndex == 2) {
+            taskFinished.setBackground(getContext().getDrawable(R.drawable.rectangle_four_full_left_unselect));
+        }
+    }
+
+    /*@desc   当前为选中状态
+    *@function
+    *@param
+    *@return 
+    */
+    @TargetApi(21)
+    private void setCurrentIndexStateSelected() {
+        if (mCurrentIndex == 0) {
+            taskAll.setBackground(getContext().getDrawable(R.drawable.rectangele_four_full_r_unselected));
+        } else if (mCurrentIndex == 1) {
+            taskUnFinish.setBackground(getContext().getDrawable(R.drawable.rectangle_four_fill_outline_selected));
+        } else if (mCurrentIndex == 2) {
+            taskFinished.setBackground(getContext().getDrawable(R.drawable.rectangle_four_full_left_select));
+        }
+    }
+
+    private void onTabIndex(int fragmentIndex) {
+        LocalLog.d(TAG, "onTabIndex() enter mIndex " + fragmentIndex);
+
+        if (mCurrentIndex != fragmentIndex) {
+            FragmentTransaction trx = getActivity().getSupportFragmentManager().beginTransaction();
+            trx.hide(mFragments[mCurrentIndex]);
+            if (!mFragments[fragmentIndex].isAdded()) {
+                trx.add(R.id.fragment_container, mFragments[fragmentIndex]);
+            }
+            trx.show(mFragments[fragmentIndex]).commit();
+            setCurrentIndexStateUnSelect();
+        }
+        mCurrentIndex = fragmentIndex;
+        setCurrentIndexStateSelected();
+    }
+
 }

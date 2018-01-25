@@ -117,7 +117,9 @@ public class MainActivity extends BaseActivity {
                 .add(R.id.fragment_container, taskFragment)
                 .add(R.id.fragment_container, mHonorFragment)
                 .add(R.id.fragment_container, mOwnerFragment)
-                .hide(mFriendCircleFragment).hide(mHonorFragment)
+                .hide(mFriendCircleFragment)
+                .hide(taskFragment)
+                .hide(mHonorFragment)
                 .hide(mOwnerFragment)
                 .show(mHomePageFragment).commit();
     }

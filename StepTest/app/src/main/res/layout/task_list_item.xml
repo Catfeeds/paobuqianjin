@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="120dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/head_icon"
+        android:layout_width="59dp"
+        android:layout_height="59dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="14dp"
+        android:src="@drawable/default_head_ico" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:layout_toEndOf="@+id/head_icon">
+
+        <TextView
+            android:id="@+id/task_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="五公里挑战赛"
+            android:textColor="@color/color_161727"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/task_invite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/task_desc"
+            android:layout_marginTop="13dp"
+            android:text="派发人:微微"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/task_gift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/task_invite"
+            android:layout_marginTop="13dp"
+            android:text="奖金: ￥10.00"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <Button
+        android:textSize="14sp"
+        android:id="@+id/release_details"
+        android:layout_width="70dp"
+        android:layout_height="28dp"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="14dp"
+        android:background="@drawable/release_detail_bg"
+        android:text="领取任务"
+        android:textColor="@color/color_6c71c4" />
+</RelativeLayout>

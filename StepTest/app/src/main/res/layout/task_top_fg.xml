@@ -7,4 +7,58 @@
         android:id="@+id/bar_no_return"
         layout="@layout/bar_no_return" />
 
+    <LinearLayout
+        android:id="@+id/bar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/bar_no_return"
+        android:layout_marginLeft="38dp"
+        android:layout_marginRight="38dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rectangle_four_dp">
+
+        <Button
+            android:id="@+id/task_all"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/rectangle_four_full_r_selected"
+            android:text="全部"
+            android:textColor="@color/color_f8"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/task_un_finish"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/rectangle_four_fill_outline_unselected"
+            android:text="未完成"
+            android:textColor="@color/color_161727"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/task_finished"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/rectangle_four_full_left_unselect"
+            android:text="已完成"
+            android:textColor="@color/color_161727"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@+id/bar"
+        android:layout_marginTop="10dp"
+        android:background="@color/color_f9f9f9" />
+
+    <RelativeLayout
+        android:id="@+id/container_task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/line1"></RelativeLayout>
 </RelativeLayout>
