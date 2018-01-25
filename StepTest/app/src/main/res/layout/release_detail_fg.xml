@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/bar_release_detail"
+        layout="@layout/bar_return_a_style" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar_release_detail">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/release_live_bg"
+                android:layout_width="match_parent"
+                android:layout_height="160dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/release_bg" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true">
+
+                    <TextView
+                        android:id="@+id/target_step"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8000步达标赛"
+                        android:textColor="@color/color_f8"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/target_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/target_step"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="18dp"
+                        android:text="奖励总金额: 200元"
+                        android:textColor="@color/color_f8"
+                        android:textSize="15dp" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/release_sample_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/release_live_bg"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="15dp"
+                android:text="任务简介"
+                android:textColor="@color/color_161727"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/release_target"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/release_sample_des"
+                android:layout_below="@+id/release_sample_des"
+                android:layout_marginTop="10dp"
+                android:text="目标步数:8000 步"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/release_live_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/release_target"
+                android:layout_below="@+id/release_target"
+                android:layout_marginTop="10dp"
+                android:text="奖励总金额:200 元"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/release_live_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/release_live_money"
+                android:layout_below="@+id/release_live_money"
+                android:layout_marginTop="10dp"
+                android:text="任务天数:10 元"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/release_live_rules"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/release_live_money"
+                android:layout_below="@+id/release_live_days"
+                android:layout_marginTop="10dp"
+                android:text="任务规则:达标者获得红包奖励，未达标者无奖励"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/release_live_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/release_live_money"
+                android:layout_below="@+id/release_live_rules"
+                android:layout_marginTop="10dp"
+                android:text="任务说明:"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12sp" />
+
+            <RelativeLayout
+                android:id="@+id/num_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/release_live_money"
+                android:layout_below="@+id/release_live_desc"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/flag_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/num_circle"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/flag_1"
+                    android:text="AAAAAAAAAAAAAAAAAAAAAAA"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/num_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/release_live_money"
+                android:layout_below="@+id/num_1"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/flag_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/num_circle"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/flag_2"
+                    android:text="AAAAAAAAAAAAAAAAAAAAAAA"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/num_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/release_live_money"
+                android:layout_below="@+id/num_2"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/flag_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/num_circle"
+                    android:gravity="center"
+                    android:text="3"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/flag_3"
+                    android:text="AAAAAAAAAAAAAAAAAAAAAAA"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="12sp" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/get_release"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/release_sample_des"
+                android:layout_below="@+id/num_3"
+                android:layout_marginTop="15dp"
+                android:text="任务领取人"
+                android:textColor="@color/color_161727"
+                android:textSize="14sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_below="@+id/get_release">
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <ImageView
+                    android:id="@+id/go_to"
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:src="@drawable/go_to" />
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:textSize="12sp"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/color_8a8a8a"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/go_to"
+                    android:text="10人" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+</RelativeLayout>

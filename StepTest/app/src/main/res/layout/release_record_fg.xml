@@ -4,23 +4,22 @@
     android:layout_height="match_parent">
 
     <include
-        android:id="@+id/bar_release"
+        android:id="@+id/bar_release_record"
         layout="@layout/bar_return_a_style" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bar_release">
+        android:layout_below="@+id/bar_release_record">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/release_record"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </android.support.v7.widget.RecyclerView>
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>
