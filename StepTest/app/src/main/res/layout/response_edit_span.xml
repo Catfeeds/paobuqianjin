@@ -23,7 +23,7 @@
         android:layout_toStartOf="@+id/send_content"
         android:background="@color/color_f8">
 
-        <ScrollView
+        <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:hint="回复@" />
-        </ScrollView>
+        </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
     </RelativeLayout>
 
     <Button

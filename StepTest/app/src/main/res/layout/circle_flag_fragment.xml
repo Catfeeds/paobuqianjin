@@ -7,7 +7,7 @@
         android:id="@+id/add_flag_bar"
         layout="@layout/bar_return_a_style"></include>
 
-    <ScrollView
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -351,6 +351,6 @@
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
-    </ScrollView>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 
 </RelativeLayout>

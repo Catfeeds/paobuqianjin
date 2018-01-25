@@ -176,6 +176,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                 case R.id.wang_ji:
                     //TODO
                     LocalLog.d(TAG, "onTabLogin() 忘记密码");
+                    startActivity(LoginForgetPassActivity.class,null,false);
                     break;
                 case R.id.sign_code_request:
                     LocalLog.d(TAG, "onTabLogin() 请求验证码!");

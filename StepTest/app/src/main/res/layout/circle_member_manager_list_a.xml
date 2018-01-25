@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <com.paobuqianjin.pbq.step.view.base.view.PaoBuScrollView
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:id="@+id/member_info_desc_scroll"
         android:scrollbars="none"
         android:layout_width="wrap_content"
@@ -96,7 +96,7 @@
 
             </RelativeLayout>
         </RelativeLayout>
-    </com.paobuqianjin.pbq.step.view.base.view.PaoBuScrollView>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 
     <ImageView
         android:layout_width="match_parent"

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -130,7 +130,7 @@
 
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
-    </ScrollView>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 
     <include layout="@layout/bar_return_a_style"></include>
 </RelativeLayout>

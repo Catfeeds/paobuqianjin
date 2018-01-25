@@ -117,6 +117,8 @@
             android:name=".view.activity.CreateDynamicActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
+        <!--忘记密码-->
+        <activity android:name=".view.activity.LoginForgetPassActivity" />
         <!--个人榜单-->
         <activity
             android:name=".view.activity.FriendStepDanActivity"

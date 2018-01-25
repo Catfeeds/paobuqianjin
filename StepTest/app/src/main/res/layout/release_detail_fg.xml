@@ -7,7 +7,7 @@
         android:id="@+id/bar_release_detail"
         layout="@layout/bar_return_a_style" />
 
-    <ScrollView
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bar_release_detail">
@@ -251,5 +251,5 @@
             </RelativeLayout>
         </RelativeLayout>
 
-    </ScrollView>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 </RelativeLayout>

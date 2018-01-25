@@ -7,7 +7,7 @@
         android:id="@+id/bar_dynamic_detail"
         layout="@layout/bar_return_a_style"></include>
 
-    <android.support.v4.widget.NestedScrollView
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bar_dynamic_detail">
@@ -20,5 +20,5 @@
                 android:id="@+id/one_dynamic_detail"
                 layout="@layout/dynamic_detail_list"></include>
         </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 </RelativeLayout>

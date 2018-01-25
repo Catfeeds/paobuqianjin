@@ -7,7 +7,7 @@
         android:id="@+id/sponsor_detail"
         layout="@layout/bar_return_a_style" />
 
-    <ScrollView
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/sponsor_detail">
@@ -281,5 +281,5 @@
                     android:src="@drawable/circle_live_default_b" />
             </RelativeLayout>
         </RelativeLayout>
-    </ScrollView>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 </RelativeLayout>

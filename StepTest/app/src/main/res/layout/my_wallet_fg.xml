@@ -7,7 +7,7 @@
         android:id="@+id/bar_wallet_detail"
         layout="@layout/bar_return_a_style"></include>
 
-    <ScrollView
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:id="@+id/scroll_view_income"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
         </RelativeLayout>
 
 
-    </ScrollView>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"

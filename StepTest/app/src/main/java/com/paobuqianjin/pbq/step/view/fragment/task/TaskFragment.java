@@ -1,7 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.task;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 /**

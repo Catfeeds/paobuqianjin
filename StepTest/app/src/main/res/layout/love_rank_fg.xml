@@ -7,7 +7,7 @@
         android:id="@+id/owner_circle_bar"
         layout="@layout/bar_return_a_style"></include>
 
-    <ScrollView
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/owner_circle_bar">
@@ -21,5 +21,5 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
         </RelativeLayout>
-    </ScrollView>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 </RelativeLayout>
