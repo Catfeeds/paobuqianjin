@@ -3,27 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:layout_alignParentTop="true"
-    android:background="@null">
+    android:background="@color/color_232433">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentBottom="true">
 
-        <RelativeLayout
-            android:id="@+id/button_return_bar"
-            android:layout_width="40dp"
-            android:layout_height="44dp">
 
-            <ImageView
-                android:id="@+id/bar_return_drawable"
-                android:layout_width="10dp"
-                android:layout_height="19dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="14dp"
-                android:src="@drawable/bar_bg_selector" />
-        </RelativeLayout>
+        <TextView
+            android:id="@+id/bar_return_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:includeFontPadding="true"
+            android:textColor="@color/color_f8"
+            android:textSize="15dp"
+            android:src="@drawable/bar_bg_selector" />
 
         <TextView
             android:id="@+id/bar_title"

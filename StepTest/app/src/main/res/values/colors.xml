@@ -41,8 +41,10 @@
     <color name="color_ebf0f3">#ffebf0f3</color>
     <color name="color_646464">#ff646464</color>
     <color name="color_660000">#66000000</color>
+    <color name="color_800000">#80000000</color>
     <color name="color_323232">#ff323232</color>
     <color name="color_007aff">#ff007aff</color>
     <color name="color_e4393c">#ffe4393c</color>
     <color name="color_f9f9f9">#fff9f9f9</color>
+    <color name="color_ffbe24">#ffffbe24</color>
 </resources>

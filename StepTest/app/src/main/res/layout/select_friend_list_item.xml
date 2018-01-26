@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dp">
+
+    <ImageView
+        android:id="@+id/select_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="14dp"
+        android:background="@drawable/circle_outline"
+        android:src="@drawable/selected_icon" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/dear_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="18dp"
+        android:layout_toRightOf="@+id/select_icon"
+        android:src="@drawable/default_head_ico" />
+
+    <TextView
+        android:id="@+id/dear_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="12dp"
+        android:layout_toRightOf="@+id/dear_icon"
+        android:text="用户昵称"
+        android:textColor="@color/color_161727"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@+id/select_icon"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_ebebed" />
+</RelativeLayout>

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <include
+        android:id="@+id/task_release_bar"
+        layout="@layout/bar_return_a_style"></include>
+
+    <ImageView
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@+id/task_release_bar"
+        android:background="@color/color_f6f6f6" />
+
+    <RelativeLayout
+        android:id="@+id/target_task_span"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/line1">
+
+        <TextView
+            android:id="@+id/target_step_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:text="目标步数"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/go_to_target_step"
+            android:layout_width="7dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/go_to" />
+
+        <TextView
+            android:id="@+id/target_task_step_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:layout_toLeftOf="@+id/go_to_target_step"
+            android:text="8000步"
+            android:textColor="@color/color_161727" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignLeft="@+id/target_step_des"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_ebebed" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/money_task_span"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/target_task_span">
+
+        <TextView
+            android:id="@+id/target_money_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:text="奖励金额"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/target_task_money_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:text="200元"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignLeft="@+id/target_money_des"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_ebebed" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/day_task_span"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/money_task_span">
+
+        <TextView
+            android:id="@+id/target_day_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:text="任务天数"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/target_task_day_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:background="@null"
+            android:hint="请输入任务天数"
+            android:inputType="number"
+            android:maxLength="3"
+            android:maxLines="1"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_below="@+id/day_task_span"
+        android:background="@color/color_f6f6f6" />
+
+    <RelativeLayout
+        android:id="@+id/add_task_friend"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/line2">
+
+        <ImageView
+            android:id="@+id/task_recv_ico"
+            android:layout_width="16dp"
+            android:layout_height="19dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:src="@drawable/contact_head_ico" />
+
+        <TextView
+            android:id="@+id/task_recv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="9dp"
+            android:layout_toEndOf="@+id/task_recv_ico"
+            android:text="领取人"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/add_friend_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/add_recv"
+            android:text="添加互相关注好友"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/add_recv"
+            android:layout_width="7dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/go_to" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignLeft="@+id/task_recv_ico"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_ebebed" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/add_friend_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_task_friend"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="16dp"
+        android:text="已经添加2位好友" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recv_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/add_friend_des"
+        android:layout_below="@+id/add_friend_des"
+        android:layout_marginTop="15dp">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <ImageView
+        android:id="@+id/add_ico"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignBottom="@+id/recv_recycler"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/recv_recycler"
+        android:layout_marginRight="14dp"
+        android:src="@drawable/add_more_recv" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/recv_recycler"
+        android:layout_marginTop="15dp"
+        android:background="@color/color_f6f6f6">
+
+        <TextView
+            android:id="@+id/attention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="10dp"
+            android:text="提示:"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/attention"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="14dp"
+            android:layout_toEndOf="@+id/attention"
+            android:text="派发给好友的任务未完成，则不能重复派发任务;\n总金额=奖励金额*任务天数*领取总人数"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="12sp" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -119,6 +119,21 @@
             android:theme="@style/ImageTranslucentTheme" />
         <!--忘记密码-->
         <activity android:name=".view.activity.LoginForgetPassActivity" />
+        <!--任务发布-->
+        <activity
+            android:name=".view.activity.TaskReleaseActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+        <!--选择任务发布对象-->
+        <activity
+            android:name=".view.activity.SelectFriendForTaskActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+        <!--任务详情-->
+        <activity
+            android:name=".view.activity.TaskDetailActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
         <!--个人榜单-->
         <activity
             android:name=".view.activity.FriendStepDanActivity"

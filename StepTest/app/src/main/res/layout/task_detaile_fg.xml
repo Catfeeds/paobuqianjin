@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/bar_task_detail"
+        layout="@layout/bar_return_a_style" />
+
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar_task_detail">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/release_live_bg"
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/release_bg" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="40dp">
+
+                    <TextView
+                        android:id="@+id/target_step"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8000步达标赛"
+                        android:textColor="@color/color_f8"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:id="@+id/target_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/target_step"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="18dp"
+                        android:text="奖励总金额: 200元"
+                        android:textColor="@color/color_f8"
+                        android:textSize="15dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/create_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_800000">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/release_use_ico"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="47dp"
+                        android:src="@drawable/default_head_ico" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="12dp"
+                        android:layout_toRightOf="@+id/release_use_ico">
+
+                        <TextView
+                            android:id="@+id/dear_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="用户昵称"
+                            android:textColor="@color/color_f8"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/dear_id"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/dear_name"
+                            android:layout_marginTop="8dp"
+                            android:text="ID:10000"
+                            android:textColor="@color/color_f8"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/button_1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/release_live_bg"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/circular"
+                android:gravity="center"
+                android:text="01"
+                android:textColor="@color/color_161727"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/current_step"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/button_1"
+                android:layout_alignTop="@+id/button_1"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@+id/button_1"
+                android:gravity="center"
+                android:text="当前步数"
+                android:textColor="@color/color_161727"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/man_run_ico"
+                android:layout_width="13dp"
+                android:layout_height="20dp"
+                android:layout_alignEnd="@+id/button_1"
+                android:layout_alignStart="@+id/button_1"
+                android:layout_below="@+id/button_1"
+                android:layout_marginTop="25dp"
+                android:src="@drawable/motion" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/man_run_ico"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/man_run_ico"
+                android:layout_marginRight="14dp"
+                android:text="4000/10000" />
+
+            <ImageView
+                android:id="@+id/process_run"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_alignLeft="@+id/button_1"
+                android:layout_below="@+id/man_run_ico"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="12dp"
+                android:background="@color/color_f6f6f6"
+                android:src="@color/color_ffbe24" />
+
+            <Button
+                android:id="@+id/button_2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/process_run"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/circular"
+                android:gravity="center"
+                android:text="02"
+                android:textColor="@color/color_161727"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/task_tells"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/button_2"
+                android:layout_alignTop="@+id/button_2"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@+id/button_2"
+                android:gravity="center"
+                android:text="任务简介"
+                android:textColor="@color/color_161727"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/step_target"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/button_2"
+                android:layout_marginTop="20dp"
+                android:text="开始时间: 2018/01/01 00:00:00"
+                android:textColor="@color/color_161727"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/target_moneys"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/step_target"
+                android:layout_marginTop="8dp"
+                android:text="结束时间: 2018/01/01 23:59:59"
+                android:textColor="@color/color_161727"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/try_days_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/target_moneys"
+                android:layout_marginTop="8dp"
+                android:text="目标步数: 10000 步"
+                android:textColor="@color/color_161727"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/try_target"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/try_days_des"
+                android:layout_marginTop="8dp"
+                android:text="奖励金额: 20 元"
+                android:textColor="@color/color_161727"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/task_rules"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/try_target"
+                android:layout_marginTop="8dp"
+                android:text="任务规则:达标即可获得红包奖励，未达标者无奖励"
+                android:textColor="@color/color_161727"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/task_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/task_rules"
+                android:layout_marginTop="8dp"
+                android:text="任务说明:"
+                android:textColor="@color/color_161727"
+                android:textSize="12sp" />
+
+            <RelativeLayout
+                android:id="@+id/num_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/task_desc"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/flag_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/num_circle"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/color_161727"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/flag_1"
+                    android:text="任务每天晚上12点重置，未达标者的红包退回到账户;"
+                    android:textColor="@color/color_161727"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/num_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/num_1"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/flag_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/num_circle"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textColor="@color/color_161727"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/flag_2"
+                    android:text="运动数据以跑步钱进的数据为准"
+                    android:textColor="@color/color_161727"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_below="@+id/num_2"></RelativeLayout>
+        </RelativeLayout>
+
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+    <Button
+        android:id="@+id/button_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_b8bbbd"
+        android:gravity="center"
+        android:text="领取奖励"
+        android:textColor="@color/color_f8"
+        android:textSize="36sp" />
+</RelativeLayout>

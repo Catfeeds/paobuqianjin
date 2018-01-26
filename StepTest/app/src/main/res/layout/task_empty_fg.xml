@@ -22,7 +22,8 @@
         android:textColor="@color/color_999999"
         android:textSize="14sp" />
 
-    <Button
+    <TextView
+        android:id="@+id/go_to_release"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_below="@+id/no_task"

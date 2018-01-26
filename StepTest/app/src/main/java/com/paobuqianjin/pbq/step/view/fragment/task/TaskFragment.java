@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -113,6 +114,7 @@ public class TaskFragment extends BaseFragment {
                 break;
             case R.id.bar_tv_right:
                 LocalLog.d(TAG, "发布");
+                startActivity(TaskReleaseActivity.class, null);
                 break;
             default:
                 break;
