@@ -59,4 +59,10 @@
         android:background="@drawable/release_detail_bg"
         android:text="领取任务"
         android:textColor="@color/color_6c71c4" />
+    <ImageView
+        android:background="@color/color_ebebed"
+        android:layout_alignLeft="@+id/head_icon"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
 </RelativeLayout>

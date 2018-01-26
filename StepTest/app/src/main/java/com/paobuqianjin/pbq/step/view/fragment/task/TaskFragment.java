@@ -45,6 +45,9 @@ public class TaskFragment extends BaseFragment {
     AllTaskFragment allTaskFragment;
     FinishedTaskFragment finishedTaskFragment;
     UnFinishTaskFragment unFinishTaskFragment;
+    EmptyTaskFragment emptyTaskFragment;
+    @Bind(R.id.bar_tv_right)
+    TextView barTvRight;
     private int mCurrentIndex = 0;
     private int mIndex = 0;
     private Fragment[] mFragments;
@@ -68,16 +71,19 @@ public class TaskFragment extends BaseFragment {
         allTaskFragment = new AllTaskFragment();
         finishedTaskFragment = new FinishedTaskFragment();
         unFinishTaskFragment = new UnFinishTaskFragment();
+        emptyTaskFragment = new EmptyTaskFragment();
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
+        barTvRight = (TextView) viewRoot.findViewById(R.id.bar_tv_right);
         barTitle.setText("任务列表");
-        mFragments = new Fragment[]{allTaskFragment, finishedTaskFragment, unFinishTaskFragment};
+        barTvRight.setText("发布");
+        mFragments = new Fragment[]{allTaskFragment, finishedTaskFragment, emptyTaskFragment};
         getActivity().getSupportFragmentManager().beginTransaction()
                 .add(R.id.container_task, allTaskFragment)
                 .add(R.id.container_task, finishedTaskFragment)
-                .add(R.id.container_task, unFinishTaskFragment)
+                .add(R.id.container_task, emptyTaskFragment)
                 .show(allTaskFragment)
                 .hide(finishedTaskFragment)
-                .hide(unFinishTaskFragment)
+                .hide(emptyTaskFragment)
                 .commit();
     }
 
@@ -87,23 +93,30 @@ public class TaskFragment extends BaseFragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.task_all, R.id.task_un_finish, R.id.task_finished})
+    @OnClick({R.id.task_all, R.id.task_un_finish, R.id.task_finished, R.id.bar_tv_right})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.task_all:
                 mIndex = 0;
                 LocalLog.d(TAG, "全部");
+                onTabIndex(mIndex);
                 break;
             case R.id.task_un_finish:
                 mIndex = 1;
                 LocalLog.d(TAG, "未完成");
+                onTabIndex(mIndex);
                 break;
             case R.id.task_finished:
                 mIndex = 2;
                 LocalLog.d(TAG, "已完成");
+                onTabIndex(mIndex);
+                break;
+            case R.id.bar_tv_right:
+                LocalLog.d(TAG, "发布");
+                break;
+            default:
                 break;
         }
-        onTabIndex(mIndex);
     }
 
     /*@desc  当前不再选中状态
@@ -111,14 +124,17 @@ public class TaskFragment extends BaseFragment {
     *@param
     *@return 
     */
-    @TargetApi(21)
+    @TargetApi(23)
     private void setCurrentIndexStateUnSelect() {
         if (mCurrentIndex == 0) {
-            taskAll.setBackground(getContext().getDrawable(R.drawable.rectangle_four_full_r_selected));
+            taskAll.setBackground(getContext().getDrawable(R.drawable.rectangele_four_full_r_unselected));
+            taskAll.setTextColor(getContext().getColor(R.color.color_161727));
         } else if (mCurrentIndex == 1) {
             taskUnFinish.setBackground(getContext().getDrawable(R.drawable.rectangle_four_fill_outline_unselected));
+            taskUnFinish.setTextColor(getContext().getColor(R.color.color_161727));
         } else if (mCurrentIndex == 2) {
             taskFinished.setBackground(getContext().getDrawable(R.drawable.rectangle_four_full_left_unselect));
+            taskFinished.setTextColor(getContext().getColor(R.color.color_161727));
         }
     }
 
@@ -127,14 +143,17 @@ public class TaskFragment extends BaseFragment {
     *@param
     *@return 
     */
-    @TargetApi(21)
+    @TargetApi(23)
     private void setCurrentIndexStateSelected() {
         if (mCurrentIndex == 0) {
-            taskAll.setBackground(getContext().getDrawable(R.drawable.rectangele_four_full_r_unselected));
+            taskAll.setBackground(getContext().getDrawable(R.drawable.rectangle_four_full_r_selected));
+            taskAll.setTextColor(getContext().getColor(R.color.color_f8));
         } else if (mCurrentIndex == 1) {
             taskUnFinish.setBackground(getContext().getDrawable(R.drawable.rectangle_four_fill_outline_selected));
+            taskUnFinish.setTextColor(getContext().getColor(R.color.color_f8));
         } else if (mCurrentIndex == 2) {
             taskFinished.setBackground(getContext().getDrawable(R.drawable.rectangle_four_full_left_select));
+            taskFinished.setTextColor(getContext().getColor(R.color.color_f8));
         }
     }
 

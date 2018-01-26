@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/no_record"
+        android:layout_width="105dp"
+        android:layout_height="101dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="96dp"
+        android:src="@drawable/task_norecord" />
+
+    <TextView
+        android:id="@+id/no_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/no_record"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="27dp"
+        android:text="暂时没有任务哦，要不给好友派发一个任务吧！"
+        android:textColor="@color/color_999999"
+        android:textSize="14sp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/no_task"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="80dp"
+        android:background="@drawable/rect_angle_background"
+        android:gravity="center"
+        android:text="发布任务"
+        android:textColor="@color/color_f8"
+        android:textSize="18sp" />
+</RelativeLayout>

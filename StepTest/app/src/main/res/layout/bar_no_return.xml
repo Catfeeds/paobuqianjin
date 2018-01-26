@@ -19,6 +19,17 @@
             android:includeFontPadding="true"
             android:textColor="@color/color_f8"
             android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/bar_tv_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:includeFontPadding="true"
+            android:textColor="@color/color_f8"
+            android:textSize="15dp" />
     </RelativeLayout>
     <!--        <ImageView
                 android:id="@+id/bar_return_drawable"

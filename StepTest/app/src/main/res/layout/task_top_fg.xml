@@ -7,11 +7,12 @@
         android:id="@+id/bar_no_return"
         layout="@layout/bar_no_return" />
 
+
     <LinearLayout
+        android:layout_below="@+id/bar_no_return"
         android:id="@+id/bar"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_below="@+id/bar_no_return"
         android:layout_marginLeft="38dp"
         android:layout_marginRight="38dp"
         android:layout_marginTop="10dp"
@@ -61,4 +62,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/line1"></RelativeLayout>
+
 </RelativeLayout>
