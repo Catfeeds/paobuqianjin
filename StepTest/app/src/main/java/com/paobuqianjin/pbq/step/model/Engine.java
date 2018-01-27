@@ -19,6 +19,7 @@ import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.paobuqianjin.pbq.step.data.Weather;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddFollowParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.CircleOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicParam;
@@ -30,11 +31,13 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
+import com.paobuqianjin.pbq.step.data.netcallback.OkhttpDownLoader;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
@@ -44,6 +47,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.view.activity.PayActivity;
 import com.squareup.picasso.Cache;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -85,6 +89,7 @@ public final class Engine {
     private DynamicIndexUiInterface dynamicIndexUiInterface;
     private DynamicCommentUiInterface dynamicCommentUiInterface;
     private OwnerUiInterface ownerUiInterface;
+    private PayInterface payInterface;
     private Picasso picasso = null;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
@@ -111,6 +116,7 @@ public final class Engine {
     public final static int COMMAND_DYNAMIC_CONTENTS = 21;
     public final static int COMMAND_OWNER_USER_INFO = 22;
     public final static int COMMAND_LOGIN_BY_THIRD = 23;
+    public final static int COMMAND_CIRCLE_ORDER_POST = 24;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -990,9 +996,18 @@ public final class Engine {
                 });*/
     }
 
-    //
+    //TODO 圈子订单
+    public void postCircleOrder(CircleOrderParam circleOrderParam) {
+        LocalLog.d(TAG, circleOrderParam.toString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlCircleOrder)
+                .params(circleOrderParam.getParam())
+                .build()
+                .execute(new NetStringCallBack(payInterface,COMMAND_CIRCLE_ORDER_POST ));
+    }
 
-    //
+    //TODO 三方登录
     public void PostThirdPartyLogin(ThirdPartyLoginParam thirdPartyLoginParam) {
         LocalLog.d(TAG, thirdPartyLoginParam.toString());
         OkHttpUtils
@@ -1046,6 +1061,8 @@ public final class Engine {
             dynamicCommentUiInterface = (DynamicCommentUiInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof OwnerUiInterface) {
             ownerUiInterface = (OwnerUiInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof PayInterface) {
+            payInterface = (PayInterface) uiCallBackInterface;
         }
 
     }
@@ -1070,6 +1087,8 @@ public final class Engine {
             dynamicCommentUiInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof OwnerUiInterface) {
             ownerUiInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof PayInterface) {
+            payInterface = null;
         }
 
     }

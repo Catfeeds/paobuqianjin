@@ -11,7 +11,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 
-import com.paobuqianjin.pbq.step.utils.Util;
+import com.paobuqianjin.pbq.step.utils.Utils;
 
 /**
  * Created by pbq on 2018/1/19.
@@ -73,9 +73,9 @@ public class WaveView extends View {
     public WaveView(Context context, AttributeSet attrs) {
         super(context, attrs);
         // 将dp转化为px，用于控制不同分辨率上移动速度基本一致
-        mXOffsetSpeedOne = Util.dip2px(context, TRANSLATE_X_SPEED_ONE);
-        mXOffsetSpeedTwo = Util.dip2px(context, TRANSLATE_X_SPEED_TWO);
-        mXOffsetSpeedThree = Util.dip2px(context, TRANSLATE_X_SPEED_Three);
+        mXOffsetSpeedOne = Utils.dip2px(context, TRANSLATE_X_SPEED_ONE);
+        mXOffsetSpeedTwo = Utils.dip2px(context, TRANSLATE_X_SPEED_TWO);
+        mXOffsetSpeedThree = Utils.dip2px(context, TRANSLATE_X_SPEED_Three);
 
         // 初始绘制波纹的画笔
         mWavePaint1 = new Paint();

@@ -20,12 +20,14 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
@@ -178,9 +180,15 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null
                 && callBackInterface instanceof OwnerUiInterface
                 && command == Engine.COMMAND_OWNER_USER_INFO) {
-            LocalLog.d(TAG, "评论列表");
+            LocalLog.d(TAG, "用户信息");
             UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
             ((OwnerUiInterface) callBackInterface).response(userInfoResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof PayInterface
+                && command == Engine.COMMAND_CIRCLE_ORDER_POST) {
+            LocalLog.d(TAG, "订单信息");
+            WxPayOrderResponse wxPayOrderResponse = new Gson().fromJson(s, WxPayOrderResponse.class);
+            ((PayInterface) callBackInterface).response(wxPayOrderResponse);
         } else {
             LocalLog.d(TAG, " dispatch not match");
         }

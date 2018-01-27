@@ -117,6 +117,13 @@
             android:name=".view.activity.CreateDynamicActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
+        <activity android:name=".view.activity.PayActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!--忘记密码-->
         <activity android:name=".view.activity.LoginForgetPassActivity" />
         <!--任务发布-->
@@ -147,19 +154,23 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme"></activity>
         <!--商家详情-->
-        <activity android:name=".view.activity.SponsorDetailActivity"
+        <activity
+            android:name=".view.activity.SponsorDetailActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme"/>
+            android:theme="@style/ImageTranslucentTheme" />
         <!--商品图片详情-->
-        <activity android:name=".view.activity.SponsorGoodsPicLookActivity"
+        <activity
+            android:name=".view.activity.SponsorGoodsPicLookActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme"></activity>
         <!--系统消息-->
-        <activity android:name=".view.activity.SystemMsgActivity"
+        <activity
+            android:name=".view.activity.SystemMsgActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme"/>
+            android:theme="@style/ImageTranslucentTheme" />
         <!--查看评论-->
-        <activity android:name=".view.activity.UserCenterContentActivity"
+        <activity
+            android:name=".view.activity.UserCenterContentActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme"></activity>
         <!--提现-->
@@ -234,6 +245,13 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <!-- 友盟appkey -->
         <meta-data
             android:name="UMENG_APPKEY"
@@ -274,11 +292,7 @@
             android:name=".view.activity.UitetsActivity"
             android:label="@string/title_activity_uitets"
             android:theme="@style/ImageTranslucentTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service

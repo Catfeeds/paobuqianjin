@@ -6,7 +6,7 @@ import android.content.Context;
  * Created by pbq on 2017/12/4.
  */
 
-public class Util {
+public class Utils {
 
     public static Context getApplicationContext(Context context) {
         return context.getApplicationContext();
