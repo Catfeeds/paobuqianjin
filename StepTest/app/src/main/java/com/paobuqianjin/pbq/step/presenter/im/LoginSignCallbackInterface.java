@@ -1,7 +1,9 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
+import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
 
 /**
  * Created by pbq on 2017/12/9.
@@ -32,7 +34,7 @@ public interface LoginSignCallbackInterface extends LoginCallBackInterface {
     *@param
     *@return 
     */
-    public void requestThirdLoginCallBack();
+    public void requestThirdLoginCallBack(ThirdPartyLoginResponse thirdPartyLoginResponse);
 
     public void registerByPhoneCallBack(SignUserResponse response);
 }

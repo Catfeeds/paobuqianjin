@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import com.baidu.mapapi.cloud.CloudEvent;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -199,6 +200,11 @@ public final class Presenter {
 
     public NetworkPolicy getNetworkPolicy() {
         return engine.getNetworkPolicy();
+    }
+
+    //TODO 三方登录
+    public void PostThirdPartyLogin(ThirdPartyLoginParam thirdPartyLoginParam) {
+        engine.PostThirdPartyLogin(thirdPartyLoginParam);
     }
 
     public void getWeather() {

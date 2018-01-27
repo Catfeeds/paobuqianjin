@@ -27,7 +27,7 @@
                     android:layout_width="59dp"
                     android:layout_height="59dp"
                     android:layout_marginLeft="14dp"
-                    android:background="@drawable/women_back">
+                    android:background="@drawable/man_head_back">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/head_icon"
@@ -44,7 +44,16 @@
                         android:layout_height="16dp"
                         android:layout_alignBottom="@+id/head_icon"
                         android:layout_alignEnd="@+id/head_icon"
-                        android:src="@drawable/girl" />
+                        android:src="@drawable/girl"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/man"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_alignEnd="@+id/head_icon"
+                        android:layout_alignTop="@+id/head_icon"
+                        android:src="@drawable/man" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -102,7 +111,7 @@
                 android:layout_marginTop="12dp">
 
                 <TextView
-                    android:id="@+id/fiends"
+                    android:id="@+id/circle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -113,7 +122,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/fiends"
+                    android:layout_below="@+id/circle"
                     android:layout_marginTop="8dp"
                     android:text="圈子"
                     android:textColor="@color/color_8a8a8a"
@@ -131,7 +140,7 @@
                 android:layout_marginTop="12dp">
 
                 <TextView
-                    android:id="@+id/message"
+                    android:id="@+id/friend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -142,7 +151,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/message"
+                    android:layout_below="@+id/friend"
                     android:layout_marginTop="8dp"
                     android:text="关注"
                     android:textColor="@color/color_8a8a8a"
@@ -457,6 +466,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="14dp"
                     android:src="@drawable/go_to" />
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

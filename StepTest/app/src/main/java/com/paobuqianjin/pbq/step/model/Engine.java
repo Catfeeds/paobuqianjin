@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
-import com.l.okhttppaobu.okhttp.callback.BitmapCallback;
 import com.paobuqianjin.pbq.step.data.Weather;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddFollowParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
@@ -27,7 +26,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.FeedBackParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostIncomeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostMessageParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWithDrawParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
@@ -43,7 +42,6 @@ import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
-import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.squareup.picasso.Cache;
@@ -56,7 +54,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
@@ -64,6 +61,7 @@ import okio.BufferedSink;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlRegisterPhone;
+import static com.paobuqianjin.pbq.step.utils.NetApi.urlThirdLogin;
 
 /**
  * Created by pbq on 2017/11/29.
@@ -90,7 +88,7 @@ public final class Engine {
     private Picasso picasso = null;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
-    public final static int COMMAND_LOGIN_IN = 2;
+    public final static int COMMAND_LOGIN_IN_BY_PHONE = 2;
     public final static int COMMAND_REFRESH_PASSWORD = 3;
     public final static int COMMAND_NEARBY_PEOPLE = 4;
     //
@@ -112,6 +110,7 @@ public final class Engine {
     public final static int COMMAND_GET_DYNAMIC_INDEX = 20;
     public final static int COMMAND_DYNAMIC_CONTENTS = 21;
     public final static int COMMAND_OWNER_USER_INFO = 22;
+    public final static int COMMAND_LOGIN_BY_THIRD = 23;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -366,7 +365,7 @@ public final class Engine {
                 .addParams("mobile", userInfo[0])
                 .addParams("password", userInfo[1])
                 .build()
-                .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_LOGIN_IN));
+                .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_LOGIN_IN_BY_PHONE));
     }
 
     //搜索圈子成员 TODO
@@ -992,6 +991,17 @@ public final class Engine {
     }
 
     //
+
+    //
+    public void PostThirdPartyLogin(ThirdPartyLoginParam thirdPartyLoginParam) {
+        LocalLog.d(TAG, thirdPartyLoginParam.toString());
+        OkHttpUtils
+                .post()
+                .url(urlThirdLogin)
+                .params(thirdPartyLoginParam.getParam())
+                .build()
+                .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_LOGIN_BY_THIRD));
+    }
 
     public void getTest() {
         LocalLog.d(TAG, "############################测试所有接口#####################");

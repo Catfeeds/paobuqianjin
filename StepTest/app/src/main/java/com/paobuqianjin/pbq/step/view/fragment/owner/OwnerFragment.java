@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -62,10 +63,10 @@ public final class OwnerFragment extends BaseFragment {
     RelativeLayout userSpan;
     @Bind(R.id.line_1)
     ImageView line1;
-    @Bind(R.id.fiends)
-    TextView fiends;
-    @Bind(R.id.message)
-    TextView message;
+    @Bind(R.id.circle)
+    TextView circle;
+    @Bind(R.id.friend)
+    TextView friends;
     @Bind(R.id.line_2)
     ImageView line2;
     @Bind(R.id.wallet_icon)
@@ -124,6 +125,24 @@ public final class OwnerFragment extends BaseFragment {
     RelativeLayout friendRel;
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
+    @Bind(R.id.man)
+    ImageView man;
+    @Bind(R.id.bank_icon)
+    ImageView bankIcon;
+    @Bind(R.id.bank_desc)
+    TextView bankDesc;
+    @Bind(R.id.go_to_bank)
+    ImageView goToBank;
+    @Bind(R.id.bank_span)
+    RelativeLayout bankSpan;
+    @Bind(R.id.task_release_icon)
+    ImageView taskReleaseIcon;
+    @Bind(R.id.task_release_desc)
+    TextView taskReleaseDesc;
+    @Bind(R.id.go_to_task)
+    ImageView goToTask;
+    @Bind(R.id.task_release_span)
+    RelativeLayout taskReleaseSpan;
 
     @Nullable
     @Override
@@ -150,8 +169,8 @@ public final class OwnerFragment extends BaseFragment {
         userIcon = (RelativeLayout) viewRoot.findViewById(R.id.user_icon);
         userName = (TextView) viewRoot.findViewById(R.id.user_name);
         userId = (TextView) viewRoot.findViewById(R.id.user_id);
-        fiends = (TextView) viewRoot.findViewById(R.id.fiends);
-        message = (TextView) viewRoot.findViewById(R.id.message);
+        circle = (TextView) viewRoot.findViewById(R.id.circle);
+        friends = (TextView) viewRoot.findViewById(R.id.friend);
         walletSpan = (RelativeLayout) viewRoot.findViewById(R.id.wallet_span);
         stepDollarSpan = (RelativeLayout) viewRoot.findViewById(R.id.step_dollar_span);
         gitfSpan = (RelativeLayout) viewRoot.findViewById(R.id.gitf_span);
@@ -219,7 +238,7 @@ public final class OwnerFragment extends BaseFragment {
                 break;
             case R.id.circle_rel:
                 LocalLog.d(TAG, "圈子");
-                intent.setClass(getContext(),OwnerCircleActivity.class);
+                intent.setClass(getContext(), OwnerCircleActivity.class);
                 startActivity(intent);
                 break;
             case R.id.bar_return_drawable:
@@ -232,10 +251,28 @@ public final class OwnerFragment extends BaseFragment {
         }
     }
 
+
     private OwnerUiInterface ownerUiInterface = new OwnerUiInterface() {
+
+        @TargetApi(21)
         @Override
         public void response(UserInfoResponse userInfoResponse) {
             LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
+            Presenter.getInstance(getContext()).getImage(headIcon, userInfoResponse.getData().getAvatar());
+            userName.setText(userInfoResponse.getData().getNickname());
+            userId.setText("ID:"+String.valueOf(userInfoResponse.getData().getId()));
+            circle.setText(String.valueOf(userInfoResponse.getData().getCircleCount()));
+            friends.setText(String.valueOf(userInfoResponse.getData().getFollowCount()));
+            if (userInfoResponse.getData().getSex() == 0) {
+                userIcon.setBackground(getContext().getDrawable(R.drawable.man_head_back));
+                manWoman.setVisibility(View.GONE);
+                man.setVisibility(View.VISIBLE);
+            } else if (userInfoResponse.getData().getSex() == 1) {
+                userIcon.setBackground(getContext().getDrawable(R.drawable.women_back));
+                manWoman.setVisibility(View.VISIBLE);
+                man.setVisibility(View.GONE);
+            }
+
         }
     };
 

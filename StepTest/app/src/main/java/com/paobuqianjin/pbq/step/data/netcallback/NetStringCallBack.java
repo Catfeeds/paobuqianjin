@@ -1,7 +1,5 @@
 package com.paobuqianjin.pbq.step.data.netcallback;
 
-import android.speech.tts.TextToSpeech;
-
 import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.NearByPeopleResponse;
@@ -14,10 +12,10 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
@@ -75,11 +73,15 @@ public class NetStringCallBack extends StringCallback {
     private void disPatchResponse(String s, int i) {
         if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface) {
             LocalLog.d(TAG, "disPatchResponse() enter body " + s);
-            if (command == Engine.COMMAND_LOGIN_IN) {
+            if (command == Engine.COMMAND_LOGIN_IN_BY_PHONE) {
                 LoginResponse loginResponse = new Gson().fromJson(s, LoginResponse.class);
                 ((LoginSignCallbackInterface) callBackInterface).requestPhoneLoginCallback(loginResponse);
             }
-
+            if (command == Engine.COMMAND_LOGIN_BY_THIRD) {
+                LocalLog.d(TAG, "三方登录成功");
+                ThirdPartyLoginResponse thirdPartyLoginResponse = new Gson().fromJson(s, ThirdPartyLoginResponse.class);
+                ((LoginSignCallbackInterface) callBackInterface).requestThirdLoginCallBack(thirdPartyLoginResponse);
+            }
             if (command == Engine.COMMAND_REG_BY_PHONE) {
                 SignUserResponse signUserResponse = new Gson().fromJson(s, SignUserResponse.class);
                 ((LoginSignCallbackInterface) callBackInterface).registerByPhoneCallBack(signUserResponse);

@@ -19,8 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -176,7 +178,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                 case R.id.wang_ji:
                     //TODO
                     LocalLog.d(TAG, "onTabLogin() 忘记密码");
-                    startActivity(LoginForgetPassActivity.class,null,false);
+                    startActivity(LoginForgetPassActivity.class, null, false);
                     break;
                 case R.id.sign_code_request:
                     LocalLog.d(TAG, "onTabLogin() 请求验证码!");
@@ -271,8 +273,10 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     }
 
     @Override
-    public void requestThirdLoginCallBack() {
-
+    public void requestThirdLoginCallBack(ThirdPartyLoginResponse thirdPartyLoginResponse) {
+        Presenter.getInstance(this).steLogFlg(true);
+        Presenter.getInstance(this).setId(thirdPartyLoginResponse.getData().getId());
+        startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
     }
 
     @Override
@@ -289,14 +293,45 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
 
         @Override
         public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
+            ThirdPartyLoginParam thirdPartyLoginParam = new ThirdPartyLoginParam();
             LocalLog.d(TAG, "授权成功callback:" + share_media.toString());
             Toast.makeText(LoginActivity.this, "成功：", Toast.LENGTH_LONG).show();
             String temp = "";
-            for (String key : map.keySet()) {
-                temp = temp + key + ":" + map.get(key) + "\n";
-            }
+            if (share_media.ordinal() == SHARE_MEDIA.WEIXIN.ordinal()) {
+                thirdPartyLoginParam.setAction("wx ");
+                for (String key : map.keySet()) {
+                    temp = temp + key + ":" + map.get(key) + "\n";
+                    switch (key) {
+                        case "openid":
+                            thirdPartyLoginParam.setOpenid(map.get(key));
+                            continue;
+                        case "screen_name":
+                            thirdPartyLoginParam.setNickname(map.get(key));
+                            continue;
+                        case "iconurl":
+                            thirdPartyLoginParam.setAvatar(map.get(key));
+                            continue;
+                        case "province":
+                            thirdPartyLoginParam.setProvince(map.get(key));
+                            continue;
+                        case "city":
+                            thirdPartyLoginParam.setCity(map.get(key));
+                            continue;
+                        case "gender":
+                            if (map.get(key).equals("男")) {
+                                thirdPartyLoginParam.setSex(0);
+                            } else {
+                                thirdPartyLoginParam.setSex(1);
+                            }
+                            continue;
+                        default:
+                            continue;
+                    }
+                }
 
-            LocalLog.d(TAG,temp);
+            }
+            Presenter.getInstance(LoginActivity.this).PostThirdPartyLogin(thirdPartyLoginParam);
+            LocalLog.d(TAG, temp);
         }
 
         @Override
@@ -317,13 +352,13 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
         switch (view.getId()) {
             case R.id.wenxin:
                 LocalLog.d(TAG, "微信三方登录");
-                LocalLog.d(TAG,"xxxxxx install-="+UMShareAPI.get(this).isInstall(this,SHARE_MEDIA.WEIXIN));
+                LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.WEIXIN));
                 //UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
                 UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
 
                 break;
             case R.id.qq:
-              LocalLog.d(TAG,"xxxxxx install-="+UMShareAPI.get(this).isInstall(this,SHARE_MEDIA.QQ));
+                LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.QQ));
                 UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.QQ, authListener);
                 UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, authListener);
                 break;

@@ -101,4 +101,8 @@ public class NetApi {
     //用户消息接口
     public final static String urlMessage = "http://119.29.10.64/v1/messages";
     //获取消息详情，请求方式：get，地址：http://119.29.10.64/v1/messages/detail/?id=1，参数：消息id
+
+
+    //TODO 三方登录
+    public final static String urlThirdLogin = "http://119.29.10.64/v1/user/thirdPartyLogin";
 }
