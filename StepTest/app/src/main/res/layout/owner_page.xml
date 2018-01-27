@@ -16,11 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color_ebebed" />
-
             <RelativeLayout
                 android:id="@+id/user_span"
                 android:layout_width="match_parent"
@@ -98,40 +93,12 @@
                 android:background="@color/color_ebebed" />
 
             <RelativeLayout
-                android:id="@+id/like_rel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/line_1"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="12dp">
-
-                <TextView
-                    android:id="@+id/like_user"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="29"
-                    android:textColor="@color/color_161727"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/like_user"
-                    android:layout_marginTop="8dp"
-                    android:text="关注"
-                    android:textColor="@color/color_8a8a8a"
-                    android:textSize="12sp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/friend_rel"
+                android:id="@+id/circle_rel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/line_1"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="55dp"
+                android:layout_marginLeft="82dp"
                 android:layout_marginTop="12dp">
 
                 <TextView
@@ -148,19 +115,19 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/fiends"
                     android:layout_marginTop="8dp"
-                    android:text="好友"
+                    android:text="圈子"
                     android:textColor="@color/color_8a8a8a"
                     android:textSize="12sp" />
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/message_rel"
+                android:id="@+id/friend_rel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_below="@+id/line_1"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="55dp"
+                android:layout_marginEnd="82dp"
                 android:layout_marginTop="12dp">
 
                 <TextView
@@ -177,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/message"
                     android:layout_marginTop="8dp"
-                    android:text="消息"
+                    android:text="关注"
                     android:textColor="@color/color_8a8a8a"
                     android:textSize="12sp" />
             </RelativeLayout>
@@ -186,7 +153,7 @@
                 android:id="@+id/line_2"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:layout_below="@+id/like_rel"
+                android:layout_below="@+id/friend_rel"
                 android:layout_marginTop="12dp"
                 android:background="@color/color_f3f3f5" />
 
@@ -310,13 +277,106 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="14dp"
                     android:src="@drawable/go_to" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/gift_desc"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_ebebed" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/bank_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/gitf_span">
+
+                <ImageView
+                    android:id="@+id/bank_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:src="@drawable/bank_icon" />
+
+                <TextView
+                    android:id="@+id/bank_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toEndOf="@+id/bank_icon"
+                    android:includeFontPadding="false"
+                    android:text="银行卡"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/go_to_bank"
+                    android:layout_width="14dp"
+                    android:layout_height="17dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="14dp"
+                    android:src="@drawable/go_to" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/bank_desc"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_ebebed" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/task_release_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/bank_span">
+
+                <ImageView
+                    android:id="@+id/task_release_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:src="@drawable/my_release" />
+
+                <TextView
+                    android:id="@+id/task_release_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toEndOf="@+id/task_release_icon"
+                    android:includeFontPadding="false"
+                    android:text="我的发布"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/go_to_task"
+                    android:layout_width="14dp"
+                    android:layout_height="17dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="14dp"
+                    android:src="@drawable/go_to" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/task_release_desc"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_ebebed" />
             </RelativeLayout>
 
             <ImageView
                 android:id="@+id/line_3"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:layout_below="@+id/gitf_span"
+                android:layout_below="@+id/task_release_span"
                 android:background="@color/color_f3f3f5" />
 
 
@@ -364,53 +424,10 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/circle_span"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/dynamic_span">
-
-                <ImageView
-                    android:id="@+id/circle_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:src="@drawable/cirlce" />
-
-                <TextView
-                    android:id="@+id/cirlce_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="15dp"
-                    android:layout_toEndOf="@+id/circle_icon"
-                    android:includeFontPadding="false"
-                    android:text="我的圈子"
-                    android:textColor="@color/color_161727"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/go_to_cirlce"
-                    android:layout_width="14dp"
-                    android:layout_height="17dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="14dp"
-                    android:src="@drawable/go_to" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/cirlce_desc"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/color_ebebed" />
-            </RelativeLayout>
-
-            <RelativeLayout
                 android:id="@+id/dan_span"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_below="@+id/circle_span">
+                android:layout_below="@+id/dynamic_span">
 
                 <ImageView
                     android:id="@+id/dan_icon"
@@ -440,53 +457,10 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="14dp"
                     android:src="@drawable/go_to" />
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/line_4"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_below="@+id/dan_span"
-                android:background="@color/color_f3f3f5" />
-
-            <RelativeLayout
-                android:id="@+id/about_span"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_below="@+id/line_4">
-
-                <ImageView
-                    android:id="@+id/about_icon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:src="@drawable/we" />
-
-                <TextView
-                    android:id="@+id/about_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="15dp"
-                    android:layout_toEndOf="@+id/about_icon"
-                    android:includeFontPadding="false"
-                    android:text="关于我们"
-                    android:textColor="@color/color_161727"
-                    android:textSize="15sp" />
-
-                <ImageView
-                    android:id="@+id/go_to_we"
-                    android:layout_width="14dp"
-                    android:layout_height="17dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="14dp"
-                    android:src="@drawable/go_to" />
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/about_desc"
+                    android:layout_alignLeft="@+id/dan_desc"
                     android:layout_alignParentBottom="true"
                     android:background="@color/color_ebebed" />
             </RelativeLayout>
@@ -495,7 +469,7 @@
                 android:id="@+id/suggestion_span"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_below="@+id/about_span">
+                android:layout_below="@+id/dan_span">
 
                 <ImageView
                     android:id="@+id/suggestion_icon"
@@ -526,6 +500,7 @@
                     android:layout_marginEnd="14dp"
                     android:src="@drawable/go_to" />
             </RelativeLayout>
+
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 </RelativeLayout>

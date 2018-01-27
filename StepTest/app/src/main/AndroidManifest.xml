@@ -147,13 +147,21 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme"></activity>
         <!--商家详情-->
-        <activity android:name=".view.activity.SponsorDetailActivity" />
+        <activity android:name=".view.activity.SponsorDetailActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme"/>
         <!--商品图片详情-->
-        <activity android:name=".view.activity.SponsorGoodsPicLookActivity"></activity>
+        <activity android:name=".view.activity.SponsorGoodsPicLookActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme"></activity>
         <!--系统消息-->
-        <activity android:name=".view.activity.SystemMsgActivity" />
+        <activity android:name=".view.activity.SystemMsgActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme"/>
         <!--查看评论-->
-        <activity android:name=".view.activity.UserCenterContentActivity"></activity>
+        <activity android:name=".view.activity.UserCenterContentActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme"></activity>
         <!--提现-->
         <activity
             android:name=".view.activity.CrashActivity"

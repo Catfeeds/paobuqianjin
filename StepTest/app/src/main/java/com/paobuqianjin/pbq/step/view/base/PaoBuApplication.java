@@ -113,11 +113,12 @@ public class PaoBuApplication extends Application {
             Request request = chain.request();
             Response response = chain.proceed(request);
             LocalLog.d(TAG, "intercept() enter" + response.toString());
+            /*在此处定义缓存策略，图片缓存，信息缓存，验证码缓存.....,按链接性质过滤*/
             Response response1 = response.newBuilder()
                     .removeHeader("Pragma")
                     .removeHeader("Cache-Control")
                     //cache for 30 days
-                    .header("Cache-Control", "max-age=" + 1800 * 1)
+                    .header("Cache-Control", "max-age=" + 60) //缓存60 秒，在60秒内不会重新访问网络只会访问缓存
                     .build();
             return response1;
         }

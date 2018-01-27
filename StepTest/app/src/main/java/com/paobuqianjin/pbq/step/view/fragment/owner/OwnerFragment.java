@@ -16,13 +16,11 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.AboutActivity;
 import com.paobuqianjin.pbq.step.view.activity.DanActivity;
 import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
 import com.paobuqianjin.pbq.step.view.activity.MessageActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyDynamicActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyFriendActivity;
-import com.paobuqianjin.pbq.step.view.activity.MyLikeFriendActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
@@ -64,10 +62,6 @@ public final class OwnerFragment extends BaseFragment {
     RelativeLayout userSpan;
     @Bind(R.id.line_1)
     ImageView line1;
-    @Bind(R.id.like_user)
-    TextView likeUser;
-    @Bind(R.id.like_rel)
-    RelativeLayout likeRel;
     @Bind(R.id.fiends)
     TextView fiends;
     @Bind(R.id.message)
@@ -108,14 +102,6 @@ public final class OwnerFragment extends BaseFragment {
     ImageView goToDymamic;
     @Bind(R.id.dynamic_span)
     RelativeLayout dynamicSpan;
-    @Bind(R.id.circle_icon)
-    ImageView circleIcon;
-    @Bind(R.id.cirlce_desc)
-    TextView cirlceDesc;
-    @Bind(R.id.go_to_cirlce)
-    ImageView goToCirlce;
-    @Bind(R.id.circle_span)
-    RelativeLayout circleSpan;
     @Bind(R.id.dan_icon)
     ImageView danIcon;
     @Bind(R.id.dan_desc)
@@ -124,16 +110,6 @@ public final class OwnerFragment extends BaseFragment {
     ImageView goToDan;
     @Bind(R.id.dan_span)
     RelativeLayout danSpan;
-    @Bind(R.id.line_4)
-    ImageView line4;
-    @Bind(R.id.about_icon)
-    ImageView aboutIcon;
-    @Bind(R.id.about_desc)
-    TextView aboutDesc;
-    @Bind(R.id.go_to_we)
-    ImageView goToWe;
-    @Bind(R.id.about_span)
-    RelativeLayout aboutSpan;
     @Bind(R.id.suggestion_icon)
     ImageView suggestionIcon;
     @Bind(R.id.suggestion_desc)
@@ -142,10 +118,12 @@ public final class OwnerFragment extends BaseFragment {
     ImageView goToSuggestion;
     @Bind(R.id.suggestion_span)
     RelativeLayout suggestionSpan;
-    @Bind(R.id.message_rel)
-    RelativeLayout messageRel;
     @Bind(R.id.friend_rel)
+    RelativeLayout messageRel;
+    @Bind(R.id.circle_rel)
     RelativeLayout friendRel;
+    @Bind(R.id.bar_return_drawable)
+    ImageView barReturnDrawable;
 
     @Nullable
     @Override
@@ -165,22 +143,20 @@ public final class OwnerFragment extends BaseFragment {
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+        barReturnDrawable = (ImageView) viewRoot.findViewById(R.id.bar_return_drawable);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
-        barTitle.setText("我");
+        barTitle.setText("我的");
         headIcon = (CircleImageView) viewRoot.findViewById(R.id.head_icon);
         userIcon = (RelativeLayout) viewRoot.findViewById(R.id.user_icon);
         userName = (TextView) viewRoot.findViewById(R.id.user_name);
         userId = (TextView) viewRoot.findViewById(R.id.user_id);
-        likeUser = (TextView) viewRoot.findViewById(R.id.like_user);
         fiends = (TextView) viewRoot.findViewById(R.id.fiends);
         message = (TextView) viewRoot.findViewById(R.id.message);
         walletSpan = (RelativeLayout) viewRoot.findViewById(R.id.wallet_span);
         stepDollarSpan = (RelativeLayout) viewRoot.findViewById(R.id.step_dollar_span);
         gitfSpan = (RelativeLayout) viewRoot.findViewById(R.id.gitf_span);
         dynamicSpan = (RelativeLayout) viewRoot.findViewById(R.id.dynamic_span);
-        circleSpan = (RelativeLayout) viewRoot.findViewById(R.id.circle_span);
         danSpan = (RelativeLayout) viewRoot.findViewById(R.id.dan_span);
-        aboutSpan = (RelativeLayout) viewRoot.findViewById(R.id.about_span);
         suggestionSpan = (RelativeLayout) viewRoot.findViewById(R.id.suggestion_span);
     }
 
@@ -191,7 +167,8 @@ public final class OwnerFragment extends BaseFragment {
     }
 
     @OnClick({R.id.bar_tv_right, R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span,
-            R.id.circle_span, R.id.dan_span, R.id.about_span, R.id.suggestion_span, R.id.message_rel, R.id.like_rel, R.id.friend_rel})
+            R.id.dan_span, R.id.suggestion_span, R.id.friend_rel, R.id.circle_rel,
+            R.id.bar_return_drawable})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -225,20 +202,9 @@ public final class OwnerFragment extends BaseFragment {
                 intent.setClass(getContext(), MyDynamicActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.circle_span:
-                LocalLog.d(TAG, "我的圈子");
-                intent.setClass(getContext(), OwnerCircleActivity.class);
-                //With Action
-                startActivity(intent);
-                break;
             case R.id.dan_span:
                 LocalLog.d(TAG, "我的段位");
                 intent.setClass(getContext(), DanActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.about_span:
-                LocalLog.d(TAG, "关于我们");
-                intent.setClass(getContext(), AboutActivity.class);
                 startActivity(intent);
                 break;
             case R.id.suggestion_span:
@@ -246,19 +212,19 @@ public final class OwnerFragment extends BaseFragment {
                 intent.setClass(getContext(), SuggestionActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.message_rel:
+            case R.id.friend_rel:
+                LocalLog.d(TAG, "关注");
+                intent.setClass(getContext(), MyFriendActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.circle_rel:
+                LocalLog.d(TAG, "圈子");
+                intent.setClass(getContext(),OwnerCircleActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.bar_return_drawable:
                 LocalLog.d(TAG, "消息");
                 intent.setClass(getContext(), MessageActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.like_rel:
-                LocalLog.d(TAG, "关注");
-                intent.setClass(getContext(), MyLikeFriendActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.friend_rel:
-                LocalLog.d(TAG, "好友");
-                intent.setClass(getContext(), MyFriendActivity.class);
                 startActivity(intent);
                 break;
             default:
@@ -272,6 +238,7 @@ public final class OwnerFragment extends BaseFragment {
             LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
         }
     };
+
 /*    private View.OnClickListener clickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {

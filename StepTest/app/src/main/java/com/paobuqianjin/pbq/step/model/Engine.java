@@ -118,7 +118,7 @@ public final class Engine {
     }
 
     public void setNetworkPolicy(NetworkPolicy networkPolicy) {
-        this.networkPolicy = networkPolicy;
+        //this.networkPolicy = networkPolicy;
     }
 
     private NetworkPolicy networkPolicy = NetworkPolicy.NO_CACHE;
