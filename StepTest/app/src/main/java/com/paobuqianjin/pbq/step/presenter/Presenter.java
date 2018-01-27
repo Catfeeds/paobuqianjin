@@ -208,7 +208,7 @@ public final class Presenter {
         circleOrderParam.setTypeid(2)
                 .setUserid(56)
                 .setCircleid(100000)
-                .setTotal_fee(2.0f);
+                .setTotal_fee(2);
         engine.postCircleOrder(circleOrderParam);
     }
 
