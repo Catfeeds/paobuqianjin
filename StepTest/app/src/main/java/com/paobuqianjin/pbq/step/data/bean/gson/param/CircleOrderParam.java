@@ -20,7 +20,7 @@ total_fee	充值金额	true	float	*/
     private int typeid;
     private int userid;
     private int circleid;
-    private float total_fee;
+    private int total_fee;
     private Map<String, String> param;
 
     public CircleOrderParam() {
@@ -82,7 +82,7 @@ total_fee	充值金额	true	float	*/
         this.param = param;
     }
 
-    public CircleOrderParam setTotal_fee(float total_fee) {
+    public CircleOrderParam setTotal_fee(int total_fee) {
         this.total_fee = total_fee;
         param.put("total_fee", String.valueOf(total_fee));
         return this;
