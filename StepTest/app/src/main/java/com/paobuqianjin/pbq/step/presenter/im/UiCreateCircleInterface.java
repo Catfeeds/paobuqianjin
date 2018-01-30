@@ -18,4 +18,6 @@ public interface UiCreateCircleInterface extends CallBackInterface {
     public void response(CircleTagResponse circleTagResponse);
 
     public void response(CreateCircleResponse createCircleResponse);
+
+    public void response(Object error);
 }

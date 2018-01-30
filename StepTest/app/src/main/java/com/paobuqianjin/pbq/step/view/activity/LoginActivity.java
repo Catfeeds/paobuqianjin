@@ -31,7 +31,6 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.utils.Log;
 import com.umeng.socialize.utils.SocializeUtils;
 
 import java.util.Map;
@@ -298,7 +297,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
             Toast.makeText(LoginActivity.this, "成功：", Toast.LENGTH_LONG).show();
             String temp = "";
             if (share_media.ordinal() == SHARE_MEDIA.WEIXIN.ordinal()) {
-                thirdPartyLoginParam.setAction("wx ");
+                thirdPartyLoginParam.setAction("wx");
                 for (String key : map.keySet()) {
                     temp = temp + key + ":" + map.get(key) + "\n";
                     switch (key) {
@@ -330,7 +329,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                 }
 
             }
-            Presenter.getInstance(LoginActivity.this).PostThirdPartyLogin(thirdPartyLoginParam);
+            Presenter.getInstance(LoginActivity.this).postThirdPartyLogin(thirdPartyLoginParam);
             LocalLog.d(TAG, temp);
         }
 

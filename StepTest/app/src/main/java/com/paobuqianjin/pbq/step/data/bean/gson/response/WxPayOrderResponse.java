@@ -15,7 +15,7 @@ public class WxPayOrderResponse {
     /**
      * error : 0
      * message : success
-     * data : {"appid":"wx1ed4ccc9a2226a73","partnerid":"1495263342","prepayid":"wx20180127173318775b9c7c1c0038751991","package":"Sign=WXPay","noncestr":"UPOUMTqSJnHlhscE","timestamp":1517045598,"sign":"15E17FBA97F8EB92D8EA387D7AA6BBD0"}
+     * data : {"appid":"wx1ed4ccc9a2226a73","partnerid":"1495263342","prepayid":"wx20180127173318775b9c7c1c0038751991","money_wallet":"Sign=WXPay","noncestr":"UPOUMTqSJnHlhscE","timestamp":1517045598,"sign":"15E17FBA97F8EB92D8EA387D7AA6BBD0"}
      */
 
     private int error;
@@ -60,7 +60,7 @@ public class WxPayOrderResponse {
          * appid : wx1ed4ccc9a2226a73
          * partnerid : 1495263342
          * prepayid : wx20180127173318775b9c7c1c0038751991
-         * package : Sign=WXPay
+         * money_wallet : Sign=WXPay
          * noncestr : UPOUMTqSJnHlhscE
          * timestamp : 1517045598
          * sign : 15E17FBA97F8EB92D8EA387D7AA6BBD0
@@ -69,7 +69,7 @@ public class WxPayOrderResponse {
         private String appid;
         private String partnerid;
         private String prepayid;
-        @SerializedName("package")
+        @SerializedName("money_wallet")
         private String packageX;
         private String noncestr;
         private int timestamp;

@@ -21,11 +21,11 @@ total_fee	充值金额	true	float	*/
     private int userid;
     private int circleid;
     private int total_fee;
-    private Map<String, String> param;
+    private Map<String, String> params;
 
     public CircleOrderParam() {
-        if (param == null) {
-            param = new LinkedHashMap<>();
+        if (params == null) {
+            params = new LinkedHashMap<>();
         }
     }
 
@@ -35,7 +35,7 @@ total_fee	充值金额	true	float	*/
 
     public CircleOrderParam setTypeid(int typeid) {
         this.typeid = typeid;
-        param.put("typeid", String.valueOf(typeid));
+        params.put("typeid", String.valueOf(typeid));
         return this;
     }
 
@@ -45,7 +45,7 @@ total_fee	充值金额	true	float	*/
 
     public CircleOrderParam setUserid(int userid) {
         this.userid = userid;
-        param.put("userid", String.valueOf(userid));
+        params.put("userid", String.valueOf(userid));
         return this;
     }
 
@@ -55,7 +55,7 @@ total_fee	充值金额	true	float	*/
 
     public CircleOrderParam setCircleid(int circleid) {
         this.circleid = circleid;
-        param.put("circleid", String.valueOf(circleid));
+        params.put("circleid", String.valueOf(circleid));
         return this;
     }
 
@@ -70,21 +70,29 @@ total_fee	充值金额	true	float	*/
                 ", userid=" + userid +
                 ", circleid=" + circleid +
                 ", total_fee=" + total_fee +
-                ", param=" + param +
+                ", params=" + params +
                 '}';
     }
 
-    public Map<String, String> getParam() {
-        return param;
+    public Map<String, String> getParams() {
+        return params;
     }
 
-    public void setParam(Map<String, String> param) {
-        this.param = param;
+    public void setParams(Map<String, String> params) {
+        this.params = params;
     }
 
     public CircleOrderParam setTotal_fee(int total_fee) {
         this.total_fee = total_fee;
-        param.put("total_fee", String.valueOf(total_fee));
+        params.put("total_fee", String.valueOf(total_fee));
         return this;
+    }
+
+    public String paramString() {
+        String temp = "";
+        for (String key : params.keySet()) {
+            temp = temp + key + ":" + params.get(key) + "\n";
+        }
+        return temp;
     }
 }

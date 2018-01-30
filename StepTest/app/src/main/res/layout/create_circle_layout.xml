@@ -12,63 +12,64 @@
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bar_create_circle"
-        android:fitsSystemWindows="true">
+        android:layout_below="@+id/bar_create_circle">
 
         <RelativeLayout
+            android:fitsSystemWindows="true"
+            android:layout_marginTop="-24dp"
             android:id="@+id/container_create_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:id="@+id/style_circle_pan"
-                android:layout_width="match_parent"
-                android:layout_height="49dp">
+            <!--        <RelativeLayout
+                        android:id="@+id/style_circle_pan"
+                        android:layout_width="match_parent"
+                        android:layout_height="49dp">
 
-                <TextView
-                    android:id="@+id/circle_style_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="圈子类型"
-                    android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                        <TextView
+                            android:id="@+id/circle_style_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="14dp"
+                            android:text="圈子类型"
+                            android:textColor="@color/color_161727"
+                            android:textSize="14sp" />
 
-                <ImageView
-                    android:id="@+id/switch_style"
-                    android:layout_width="13dp"
-                    android:layout_height="7dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:src="@drawable/menu_age" />
+                        <ImageView
+                            android:id="@+id/switch_style"
+                            android:layout_width="13dp"
+                            android:layout_height="7dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="14dp"
+                            android:src="@drawable/menu_age" />
 
-                <TextView
-                    android:id="@+id/cir_cle_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:layout_toLeftOf="@+id/switch_style"
-                    android:text="个人圈子"
-                    android:textColor="@color/color_161727"
-                    android:textSize="12sp" />
+                        <TextView
+                            android:id="@+id/cir_cle_style"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="14dp"
+                            android:layout_toLeftOf="@+id/switch_style"
+                            android:text="个人圈子"
+                            android:textColor="@color/color_161727"
+                            android:textSize="12sp" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/circle_style_text"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/color_ebebed" />
-            </RelativeLayout>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="1dp"
+                            android:layout_alignLeft="@+id/circle_style_text"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentEnd="true"
+                            android:background="@color/color_ebebed" />
+                    </RelativeLayout>-->
 
             <RelativeLayout
                 android:id="@+id/name_circle_span"
                 android:layout_width="wrap_content"
                 android:layout_height="49dp"
-                android:layout_below="@+id/style_circle_pan"
+                android:layout_alignParentTop="true"
                 android:focusable="true"
                 android:focusableInTouchMode="true">
 
@@ -92,7 +93,7 @@
                     android:background="@null"
                     android:focusable="true"
                     android:gravity="right"
-                    android:hint="输入群名"
+                    android:hint="输入圈子名称"
                     android:lines="1"
                     android:maxLength="20"
                     android:textSize="12sp" />
@@ -180,7 +181,7 @@
                     android:focusable="true"
                     android:gravity="right"
                     android:hint="必填"
-                    android:inputType="number|phone"
+                    android:inputType="phone"
                     android:lines="1"
                     android:maxLength="14"
                     android:textColor="@color/color_161727"
@@ -256,7 +257,7 @@
                     android:background="@null"
                     android:focusable="true"
                     android:gravity="right"
-                    android:hint="请输入每日红包总金额"
+                    android:hint="请输入充值金额"
                     android:inputType="number"
                     android:textColor="@color/color_161727"
                     android:textSize="12sp" />
@@ -466,7 +467,7 @@
                     android:focusable="true"
                     android:gravity="right"
                     android:hint="请输入6位密码"
-                    android:inputType="number"
+                    android:inputType="textPassword"
                     android:lines="1"
                     android:maxLength="6"
                     android:textColor="@color/color_161727"
@@ -481,76 +482,77 @@
                     android:background="@color/color_ebebed" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/circle_theme_pan"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_below="@+id/password_pan">
+            <!--            <RelativeLayout
+                            android:id="@+id/circle_theme_pan"
+                            android:layout_width="match_parent"
+                            android:layout_height="49dp"
+                            android:layout_below="@+id/password_pan">
 
-                <TextView
-                    android:id="@+id/circle_theme_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="添加标签"
-                    android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                            <TextView
+                                android:id="@+id/circle_theme_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="14dp"
+                                android:text="添加标签"
+                                android:textColor="@color/color_161727"
+                                android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/flag_a0"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginRight="14dp"
-                    android:layout_marginEnd="14dp"
-                    android:background="@drawable/tag_back_ground_unselect"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="13dp"
-                    android:paddingRight="13dp"
-                    android:paddingTop="2dp"
-                    android:text="爱运动"
-                    android:textColor="@color/color_6c71c4"
-                    android:textSize="12sp"
-                    android:visibility="gone"/>
+                            <TextView
+                                android:id="@+id/flag_a0"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="14dp"
+                                android:layout_marginRight="14dp"
+                                android:layout_marginEnd="14dp"
+                                android:background="@drawable/tag_back_ground_unselect"
+                                android:paddingBottom="2dp"
+                                android:paddingLeft="13dp"
+                                android:paddingRight="13dp"
+                                android:paddingTop="2dp"
+                                android:text="爱运动"
+                                android:textColor="@color/color_6c71c4"
+                                android:textSize="12sp"
+                                android:visibility="gone"/>
 
-                <TextView
-                    android:id="@+id/flag_a1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/flag_a0"
-                    android:background="@drawable/tag_back_ground_unselect"
-                    android:paddingBottom="2dp"
-                    android:layout_marginRight="14dp"
-                    android:paddingLeft="13dp"
-                    android:paddingRight="13dp"
-                    android:paddingTop="2dp"
-                    android:text="马猴烧酒"
-                    android:textColor="@color/color_6c71c4"
-                    android:textSize="12sp"
-                    android:visibility="gone"/>
+                            <TextView
+                                android:id="@+id/flag_a1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toLeftOf="@+id/flag_a0"
+                                android:background="@drawable/tag_back_ground_unselect"
+                                android:paddingBottom="2dp"
+                                android:layout_marginRight="14dp"
+                                android:paddingLeft="13dp"
+                                android:paddingRight="13dp"
+                                android:paddingTop="2dp"
+                                android:text="马猴烧酒"
+                                android:textColor="@color/color_6c71c4"
+                                android:textSize="12sp"
+                                android:visibility="gone"/>
 
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/circle_theme_text"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/color_ebebed" />
-            </RelativeLayout>
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="1dp"
+                                android:layout_alignLeft="@+id/circle_theme_text"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentEnd="true"
+                                android:background="@color/color_ebebed" />
+                        </RelativeLayout>-->
 
             <ImageView
                 android:id="@+id/circle_theme_phone_line"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
-                android:layout_below="@+id/circle_theme_pan"
+                android:layout_below="@+id/password_pan"
                 android:background="@color/color_f6f6f6" />
 
             <RelativeLayout
+                android:id="@+id/edit_circle_desc"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:layout_below="@+id/circle_theme_phone_line">
@@ -585,7 +587,6 @@
                     android:text="0/400字" />
 
             </RelativeLayout>
-
 
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>

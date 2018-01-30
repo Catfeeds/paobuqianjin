@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.data.netcallback;
 
+import android.widget.Toast;
+
 import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.NearByPeopleResponse;
@@ -62,7 +64,89 @@ public class NetStringCallBack extends StringCallback {
         e.printStackTrace();
         if (response != null) {
             LocalLog.d(TAG, "onError() enter" + response.toString());
+            if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface) {
 
+                if (command == Engine.COMMAND_LOGIN_IN_BY_PHONE) {
+
+                }
+                if (command == Engine.COMMAND_LOGIN_BY_THIRD) {
+
+                }
+                if (command == Engine.COMMAND_REG_BY_PHONE) {
+
+                }
+
+                if (command == Engine.COMMAND_NEARBY_PEOPLE) {
+
+                }
+            } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {
+
+            } else if (callBackInterface != null && callBackInterface instanceof SignCodeCallBackInterface) {
+
+            } else if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface
+                    && command == Engine.COMMAND_REFRESH_PASSWORD) {
+
+            } else if (callBackInterface != null && callBackInterface instanceof UiHotCircleInterface
+                    && command == Engine.COMMAND_GET_MY_CREATE_CIRCLE) {
+
+            } else if (callBackInterface != null && callBackInterface instanceof UiHotCircleInterface
+                    && command == Engine.COMMAND_GET_CHOICE_CIRCLE) {
+
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof UiHotCircleInterface
+                    && command == Engine.COMMAND_GET_MY_JOIN_CIRCLE) {
+
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof UiCreateCircleInterface
+                    && command == Engine.COMMAND_CIRCLE_TYPE) {
+
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof UiStepAndLoveRankInterface
+                    && command == Engine.COMMAND_RECHARGE_RANK) {
+
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof UiStepAndLoveRankInterface
+                    && command == Engine.COMMAND_STEP_RANK) {
+
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof UiStepAndLoveRankInterface
+                    && command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
+
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof TagFragInterface
+                    && command == Engine.COMMAND_GET_TAG) {
+
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof UiCreateCircleInterface
+                    && command == Engine.COMMAND_CREATE_CIRCLE) {
+                    ((UiCreateCircleInterface) callBackInterface).response(response);
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof UiCreateCircleInterface
+                    && command == Engine.COMMAND_GET_CIRCLE_TARGET) {
+
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof ReflashMyCircleInterface
+                    && command == Engine.COMMAND_REFLASH_CIRCLE) {
+
+            } else if (callBackInterface != null &&
+                    callBackInterface instanceof DynamicIndexUiInterface
+                    && command == Engine.COMMAND_GET_DYNAMIC_INDEX) {
+
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof DynamicCommentUiInterface
+                    && command == Engine.COMMAND_DYNAMIC_CONTENTS) {
+
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof OwnerUiInterface
+                    && command == Engine.COMMAND_OWNER_USER_INFO) {
+
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof PayInterface
+                    && command == Engine.COMMAND_CIRCLE_ORDER_POST) {
+
+            } else {
+                LocalLog.e(TAG, " dispatch not match");
+            }
         }
     }
 

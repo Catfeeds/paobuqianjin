@@ -30,7 +30,6 @@ public class CreateCircleBodyParam {
     total_amount	圈子总金额	true	float	0
     * */
     private int userid;
-    private int typeid;
     private String name;
     private int targetid;
     private String mobile;
@@ -41,11 +40,21 @@ public class CreateCircleBodyParam {
     private int coverid;
     private int is_pwd;
     private String password;
-    private String tags;
     private String description;
     private String city;
     private float longitude;
     private float latitude;
+
+    public float getTotal_amount() {
+        return total_amount;
+    }
+
+    public CreateCircleBodyParam setTotal_amount(float total_amount) {
+        this.total_amount = total_amount;
+        params.put("total_amount", String.valueOf(total_amount));
+        return this;
+    }
+
     private float total_amount;
 
     public Map<String, String> getParams() {
@@ -58,16 +67,6 @@ public class CreateCircleBodyParam {
         if (params == null) {
             params = new LinkedHashMap<>();
         }
-    }
-
-    public int getTypeid() {
-        return typeid;
-    }
-
-    public CreateCircleBodyParam setTypeid(int typeid) {
-        this.typeid = typeid;
-        params.put("typeid", String.valueOf(typeid));
-        return this;
     }
 
     public String getName() {
@@ -170,16 +169,6 @@ public class CreateCircleBodyParam {
         return this;
     }
 
-    public String getTags() {
-        return tags;
-    }
-
-    public CreateCircleBodyParam setTags(String tags) {
-        this.tags = tags;
-        params.put("tags", tags);
-        return this;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -220,34 +209,20 @@ public class CreateCircleBodyParam {
         return this;
     }
 
-    public float getTotal_amount() {
-        return total_amount;
-
-    }
-
-    public CreateCircleBodyParam setTotal_amount(float total_amount) {
-        this.total_amount = total_amount;
-        params.put("total_amount", String.valueOf(total_amount));
-        return this;
-    }
-
     @Override
     public String toString() {
         return "CreateCircleBodyParam{" +
                 "userid=" + userid +
-                ", typeid=" + typeid +
                 ", name='" + name + '\'' +
                 ", targetid=" + targetid +
                 ", mobile='" + mobile + '\'' +
                 ", is_recharge=" + is_recharge +
                 ", red_packet_amount=" + red_packet_amount +
-                ", total_amount=" + total_amount +
                 ", red_packet=" + red_packet +
                 ", logo='" + logo + '\'' +
                 ", coverid=" + coverid +
                 ", is_pwd=" + is_pwd +
                 ", password='" + password + '\'' +
-                ", tags='" + tags + '\'' +
                 ", description='" + description + '\'' +
                 ", city='" + city + '\'' +
                 ", longitude=" + longitude +
@@ -276,4 +251,11 @@ public class CreateCircleBodyParam {
         return is_pwd;
     }
 
+    public String paramString() {
+        String temp = "";
+        for (String key : params.keySet()) {
+            temp = temp + key + ":" + params.get(key) + "\n";
+        }
+        return temp;
+    }
 }

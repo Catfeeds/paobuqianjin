@@ -117,11 +117,13 @@
             android:name=".view.activity.CreateDynamicActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <activity android:name=".view.activity.PayActivity">
+        <activity
+            android:name=".view.activity.PaoBuPayActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.PAY" />
+                <action android:name="android.intent.action.QRCODE" />
             </intent-filter>
         </activity>
         <!--忘记密码-->

@@ -78,6 +78,7 @@ public class LocalBaiduService extends Service {
                  * 时间也可以使用systemClock.elapsedRealtime()方法 获取的是自从开机以来，每次回调的时间；
                  * location.getTime() 是指服务端出本次结果的时间，如果位置不发生变化，则时间不变
                  */
+
                 sb.append(location.getTime());
                 sb.append("\nlocType : ");// 定位类型
                 sb.append(location.getLocType());
@@ -93,6 +94,8 @@ public class LocalBaiduService extends Service {
                 sb.append(location.getCountryCode());
                 sb.append("\nCountry : ");// 国家名称
                 sb.append(location.getCountry());
+                sb.append("\nprovince:");//省份
+                sb.append(location.getProvince());
                 sb.append("\ncitycode : ");// 城市编码
                 sb.append(location.getCityCode());
                 sb.append("\ncity : ");// 城市

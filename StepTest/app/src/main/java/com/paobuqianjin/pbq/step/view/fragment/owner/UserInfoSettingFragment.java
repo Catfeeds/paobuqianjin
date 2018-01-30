@@ -316,7 +316,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
         String path = getContext().getExternalCacheDir() + "/head_logo.png";
         LocalLog.d(TAG, "path = " + path);
         FileOutputStream fos = new FileOutputStream(path);
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        //bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
 
     }
 

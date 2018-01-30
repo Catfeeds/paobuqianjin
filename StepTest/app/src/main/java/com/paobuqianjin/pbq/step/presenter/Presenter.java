@@ -205,15 +205,11 @@ public final class Presenter {
 
     //TODO 圈子订单
     public void postCircleOrder(CircleOrderParam circleOrderParam) {
-        circleOrderParam.setTypeid(2)
-                .setUserid(56)
-                .setCircleid(100000)
-                .setTotal_fee(2);
         engine.postCircleOrder(circleOrderParam);
     }
 
     //TODO 三方登录
-    public void PostThirdPartyLogin(ThirdPartyLoginParam thirdPartyLoginParam) {
+    public void postThirdPartyLogin(ThirdPartyLoginParam thirdPartyLoginParam) {
         engine.PostThirdPartyLogin(thirdPartyLoginParam);
     }
 

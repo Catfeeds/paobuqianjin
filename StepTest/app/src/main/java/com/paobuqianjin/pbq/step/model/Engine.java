@@ -31,7 +31,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
-import com.paobuqianjin.pbq.step.data.netcallback.OkhttpDownLoader;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
@@ -47,7 +46,6 @@ import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
-import com.paobuqianjin.pbq.step.view.activity.PayActivity;
 import com.squareup.picasso.Cache;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -727,7 +725,7 @@ public final class Engine {
 
 
     public void createCircle(CreateCircleBodyParam createCircleBodyParam) {
-        LocalLog.d(TAG, "  创建圈子createCircle() enter" + createCircleBodyParam.toString());
+        LocalLog.d(TAG, "  创建圈子createCircle() enter " + createCircleBodyParam.paramString());
         OkHttpUtils
                 .post()
                 .url(NetApi.urlCircle)
@@ -998,13 +996,13 @@ public final class Engine {
 
     //TODO 圈子订单
     public void postCircleOrder(CircleOrderParam circleOrderParam) {
-        LocalLog.d(TAG, circleOrderParam.toString());
+        LocalLog.d(TAG, circleOrderParam.paramString());
         OkHttpUtils
                 .post()
                 .url(NetApi.urlCircleOrder)
-                .params(circleOrderParam.getParam())
+                .params(circleOrderParam.getParams())
                 .build()
-                .execute(new NetStringCallBack(payInterface,COMMAND_CIRCLE_ORDER_POST ));
+                .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST));
     }
 
     //TODO 三方登录
