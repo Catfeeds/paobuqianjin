@@ -7,15 +7,27 @@
         android:id="@+id/owner_circle_bar"
         layout="@layout/bar_return_a_style"></include>
 
+    <ImageView
+        android:id="@+id/qr_bg"
+        android:layout_width="match_parent"
+        android:layout_height="443dp"
+        android:layout_below="@+id/owner_circle_bar"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/qrcode_bg" />
+
     <RelativeLayout
         android:id="@+id/circle_simple_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/qr_bg"
         android:layout_below="@+id/owner_circle_bar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/circle_logo"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -26,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_marginLeft="13dp"
             android:layout_toEndOf="@+id/circle_logo"
             android:includeFontPadding="false"
             android:text="跑步钱进"
@@ -37,7 +50,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/circle_name"
-            android:layout_marginTop="7dp"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="5dp"
             android:layout_toEndOf="@+id/circle_logo"
             android:includeFontPadding="false"
             android:text="ID:156678"
@@ -50,7 +64,8 @@
         android:layout_height="175dp"
         android:layout_below="@+id/circle_simple_info"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="38dp" />
+        android:layout_marginTop="38dp"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/desc_qr_code"
@@ -76,9 +91,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_share_text"
+        android:layout_alignLeft="@+id/qr_bg"
+        android:layout_alignRight="@+id/qr_bg"
         android:layout_marginTop="20dp">
 
         <TextView
+            android:id="@+id/weixin_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -91,6 +109,7 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/weixin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -102,10 +121,12 @@
             android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/qq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginRight="30dp"
+            android:drawablePadding="5dp"
             android:drawableTop="@drawable/qq_ico"
             android:gravity="center"
             android:text="QQ"

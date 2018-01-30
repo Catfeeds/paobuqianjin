@@ -110,7 +110,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
 
     @Override
     protected String title() {
-        return "圈子支付";
+        return "支付";
     }
 
     @Override
