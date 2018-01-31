@@ -105,6 +105,6 @@ public class NetApi {
 
     //TODO 三方登录
     public final static String urlThirdLogin = "http://119.29.10.64/v1/user/thirdPartyLogin";
-    //TODO 圈子订单接口
-    public final static String urlCircleOrder = "http://119.29.10.64/v1/CircleOrder";
+    //TODO 微信支付接口
+    public final static String urlWxPayOrder = "http://119.29.10.64/v1/WxPay/createOrder";
 }

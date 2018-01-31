@@ -1,29 +1,14 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.CircleOrderParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
-import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.fragment.circle.CirclePayFragment;
 import com.paobuqianjin.pbq.step.view.fragment.qrcode.QrCodeFragment;
-import com.tencent.mm.opensdk.modelpay.PayReq;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/1/27.

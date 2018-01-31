@@ -4,8 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.widget.ImageView;
 
-import com.baidu.mapapi.cloud.CloudEvent;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.CircleOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.WxPayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
@@ -204,8 +203,8 @@ public final class Presenter {
     }
 
     //TODO 圈子订单
-    public void postCircleOrder(CircleOrderParam circleOrderParam) {
-        engine.postCircleOrder(circleOrderParam);
+    public void postCircleOrder(WxPayOrderParam wxPayOrderParam) {
+        engine.postWxPayOrder(wxPayOrderParam);
     }
 
     //TODO 三方登录

@@ -7,35 +7,49 @@ import java.util.Map;
  * Created by pbq on 2018/1/27.
  */
 /*
-@className :CircleOrderParam
+@className :WxPayOrderParam
 *@date 2018/1/27
 *@author
-*@description  圈子订单参数
+*@description  微信支付订单参数
 */
-public class CircleOrderParam {
-    /*typeid	订单类型 1钱包 2微信 3支付宝 4银行卡	true	int
-userid	用户ID	true	int
-circleid	圈子ID	true	int
-total_fee	充值金额	true	float	*/
-    private int typeid;
+public class WxPayOrderParam {
+    public String getAction() {
+        return action;
+    }
+
+    public WxPayOrderParam setAction(String action) {
+        this.action = action;
+        params.put("action", action);
+        return this;
+    }
+
+    /*
+        * action	circle圈子订单 | user用户订单 | task任务订单	true	string
+     userid	用户ID	true	int
+     total_fee	充值金额	true	float
+     circleid	圈子ID	false	int
+     taskid	任务ID	false	int
+     */
+    private String action;
+    private int taskid;
     private int userid;
     private int circleid;
     private int total_fee;
     private Map<String, String> params;
 
-    public CircleOrderParam() {
+    public WxPayOrderParam() {
         if (params == null) {
             params = new LinkedHashMap<>();
         }
     }
 
-    public int getTypeid() {
-        return typeid;
+    public int getTaskid() {
+        return taskid;
     }
 
-    public CircleOrderParam setTypeid(int typeid) {
-        this.typeid = typeid;
-        params.put("typeid", String.valueOf(typeid));
+    public WxPayOrderParam setTaskid(int taskid) {
+        this.taskid = taskid;
+        params.put("taskid", String.valueOf(taskid));
         return this;
     }
 
@@ -43,7 +57,7 @@ total_fee	充值金额	true	float	*/
         return userid;
     }
 
-    public CircleOrderParam setUserid(int userid) {
+    public WxPayOrderParam setUserid(int userid) {
         this.userid = userid;
         params.put("userid", String.valueOf(userid));
         return this;
@@ -53,7 +67,7 @@ total_fee	充值金额	true	float	*/
         return circleid;
     }
 
-    public CircleOrderParam setCircleid(int circleid) {
+    public WxPayOrderParam setCircleid(int circleid) {
         this.circleid = circleid;
         params.put("circleid", String.valueOf(circleid));
         return this;
@@ -65,12 +79,12 @@ total_fee	充值金额	true	float	*/
 
     @Override
     public String toString() {
-        return "CircleOrderParam{" +
-                "typeid=" + typeid +
+        return "WxPayOrderParam{" +
+                "action='" + action + '\'' +
+                ", taskid=" + taskid +
                 ", userid=" + userid +
                 ", circleid=" + circleid +
                 ", total_fee=" + total_fee +
-                ", params=" + params +
                 '}';
     }
 
@@ -82,7 +96,7 @@ total_fee	充值金额	true	float	*/
         this.params = params;
     }
 
-    public CircleOrderParam setTotal_fee(int total_fee) {
+    public WxPayOrderParam setTotal_fee(int total_fee) {
         this.total_fee = total_fee;
         params.put("total_fee", String.valueOf(total_fee));
         return this;

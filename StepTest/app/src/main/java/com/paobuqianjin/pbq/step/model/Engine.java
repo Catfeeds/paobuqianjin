@@ -19,7 +19,7 @@ import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.paobuqianjin.pbq.step.data.Weather;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddFollowParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.CircleOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.WxPayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicParam;
@@ -995,12 +995,12 @@ public final class Engine {
     }
 
     //TODO 圈子订单
-    public void postCircleOrder(CircleOrderParam circleOrderParam) {
-        LocalLog.d(TAG, circleOrderParam.paramString());
+    public void postWxPayOrder(WxPayOrderParam wxPayOrderParam) {
+        LocalLog.d(TAG, wxPayOrderParam.paramString());
         OkHttpUtils
                 .post()
-                .url(NetApi.urlCircleOrder)
-                .params(circleOrderParam.getParams())
+                .url(NetApi.urlWxPayOrder)
+                .params(wxPayOrderParam.getParams())
                 .build()
                 .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST));
     }

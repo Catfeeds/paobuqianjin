@@ -197,6 +197,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     private final static String CIRCLE_NAME = "name";
     private final static String CIRCLE_LOGO = "logo";
     private final static String CIRCLE_RECHARGE = "pay";
+    private final static String PAY_FOR_STYLE = "pay_for_style";
     private final static String PAY_ACTION = "android.intent.action.PAY";
     private final static String QRCODE_ACTION = "android.intent.action.QRCODE";
 /*
@@ -326,6 +327,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 bundle.putString(CIRCLE_LOGO, createCircleResponses.getData().getLogo());
                 if (is_recharge) {
                     LocalLog.d(TAG, "创建成功,跳转支付");
+                    bundle.putString(PAY_FOR_STYLE, "circle");
                     bundle.putString(CIRCLE_RECHARGE, circleMoneyNumEditor.getText().toString());
                     startActivity(PaoBuPayActivity.class, bundle, true, PAY_ACTION);
                 } else {
@@ -419,7 +421,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 String selectString = selectSettingAdapter.getSelectContent();
                 desView.setText(selectString);
            /*     if (desView == cirCleStyle) {
-                    createCircleBodyParam.setTypeid(Integer.parseInt(selectA.get(selectString)));
+                    createCircleBodyParam.setTaskid(Integer.parseInt(selectA.get(selectString)));
                 } else */
                 if (desView == circleStandNum) {
                     createCircleBodyParam.setTargetid(Integer.parseInt(selectB.get(selectString)));

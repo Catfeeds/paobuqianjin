@@ -12,10 +12,11 @@ import com.google.gson.annotations.SerializedName;
 *@description 微信支付订单返回
 */
 public class WxPayOrderResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"appid":"wx1ed4ccc9a2226a73","partnerid":"1495263342","prepayid":"wx20180127173318775b9c7c1c0038751991","money_wallet":"Sign=WXPay","noncestr":"UPOUMTqSJnHlhscE","timestamp":1517045598,"sign":"15E17FBA97F8EB92D8EA387D7AA6BBD0"}
+     * data : {"appid":"wx1ed4ccc9a2226a73","partnerid":"1495263342","prepayid":"wx20180131110055637048e43d0611728350","package":"Sign=WXPay","noncestr":"7QdaNZIvwQ505PZk","timestamp":1517367655,"sign":"0A3047A4CBB7C41163BB738131528FEC"}
      */
 
     private int error;
@@ -59,17 +60,17 @@ public class WxPayOrderResponse {
         /**
          * appid : wx1ed4ccc9a2226a73
          * partnerid : 1495263342
-         * prepayid : wx20180127173318775b9c7c1c0038751991
-         * money_wallet : Sign=WXPay
-         * noncestr : UPOUMTqSJnHlhscE
-         * timestamp : 1517045598
-         * sign : 15E17FBA97F8EB92D8EA387D7AA6BBD0
+         * prepayid : wx20180131110055637048e43d0611728350
+         * package : Sign=WXPay
+         * noncestr : 7QdaNZIvwQ505PZk
+         * timestamp : 1517367655
+         * sign : 0A3047A4CBB7C41163BB738131528FEC
          */
 
         private String appid;
         private String partnerid;
         private String prepayid;
-        @SerializedName("money_wallet")
+        @SerializedName("package")
         private String packageX;
         private String noncestr;
         private int timestamp;
