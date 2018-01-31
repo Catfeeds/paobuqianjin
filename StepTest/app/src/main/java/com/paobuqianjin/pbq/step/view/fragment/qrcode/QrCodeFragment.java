@@ -190,7 +190,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
 
     public Bitmap getFragmentBitmap(Fragment fragment) {
         LocalLog.d(TAG, "fragment 截图");
-        View v = fragment.getView();
+        View v = fragment.getView().findViewById(R.id.desc_qr_span);
         v.buildDrawingCache(false);
         return v.getDrawingCache();
     }

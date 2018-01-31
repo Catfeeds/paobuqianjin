@@ -7,6 +7,7 @@
         android:id="@+id/owner_circle_bar"
         layout="@layout/bar_return_a_style"></include>
 
+
     <ImageView
         android:id="@+id/qr_bg"
         android:layout_width="match_parent"
@@ -19,69 +20,79 @@
         android:src="@drawable/qrcode_bg" />
 
     <RelativeLayout
-        android:id="@+id/circle_simple_info"
+        android:id="@+id/desc_qr_span"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/qr_bg"
+        android:background="@color/color_f8"
         android:layout_below="@+id/owner_circle_bar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/circle_logo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/logo" />
+        <RelativeLayout
+            android:layout_centerHorizontal="true"
+            android:id="@+id/circle_simple_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circle_logo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:id="@+id/circle_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="13dp"
+                android:layout_toEndOf="@+id/circle_logo"
+                android:includeFontPadding="false"
+                android:text="跑步钱进"
+                android:textColor="@color/color_161727"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/circle_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/circle_name"
+                android:layout_marginLeft="13dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/circle_logo"
+                android:includeFontPadding="false"
+                android:text="ID:156678"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/qrcode_img"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
+            android:layout_below="@+id/circle_simple_info"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="38dp"
+            android:scaleType="centerCrop" />
 
         <TextView
-            android:id="@+id/circle_name"
+            android:id="@+id/desc_qr_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="13dp"
-            android:layout_toEndOf="@+id/circle_logo"
-            android:includeFontPadding="false"
-            android:text="跑步钱进"
-            android:textColor="@color/color_161727"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/circle_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/circle_name"
-            android:layout_marginLeft="13dp"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/circle_logo"
-            android:includeFontPadding="false"
-            android:text="ID:156678"
+            android:layout_below="@+id/qrcode_img"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="14dp"
+            android:text="用“跑步钱进”APP扫描二维码加入团队"
             android:textSize="12sp" />
+
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/qrcode_img"
-        android:layout_width="175dp"
-        android:layout_height="175dp"
-        android:layout_below="@+id/circle_simple_info"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="38dp"
-        android:scaleType="centerCrop" />
-
-    <TextView
-        android:id="@+id/desc_qr_code"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/qrcode_img"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
-        android:text="用“跑步钱进”APP扫描二维码加入团队"
-        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/text_share_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/desc_qr_code"
+        android:layout_below="@+id/desc_qr_span"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="点击分享至"
@@ -90,9 +101,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_share_text"
         android:layout_alignLeft="@+id/qr_bg"
         android:layout_alignRight="@+id/qr_bg"
+        android:layout_below="@+id/text_share_text"
         android:layout_marginTop="20dp">
 
         <TextView
