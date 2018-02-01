@@ -34,6 +34,15 @@ public class PutObjectSample {
         this.qServiceCfg = qServiceCfg;
     }
 
+    public static String getPicNameFromPath(String picturePath) {
+        String temp[] = picturePath.replace("\\\\", "/").split("/");
+        String fileName = "";
+        if (temp.length > 1) {
+            fileName = temp[temp.length - 1];
+        }
+        return fileName;
+    }
+
     public ResultHelper start(String filePath) {
         ResultHelper resultHelper = new ResultHelper();
         qServiceCfg.setUploadFileUrl(filePath);
@@ -41,7 +50,9 @@ public class PutObjectSample {
         //String cosPath = qServiceCfg.getUploadCosPath();
         String srcPath = qServiceCfg.getUploadFileUrl();
         LocalLog.d(TAG, "srcPath =  " + srcPath);
-        String cosPath = "/head_logo.jpg";
+
+        String cosPath = "/" + getPicNameFromPath(srcPath);
+        LocalLog.d(TAG, "cosPath = " + cosPath);
         putObjectRequest = new PutObjectRequest(bucket, cosPath,
                 srcPath);
 

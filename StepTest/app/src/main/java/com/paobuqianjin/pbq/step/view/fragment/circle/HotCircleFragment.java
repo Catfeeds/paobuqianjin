@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.ChoiceBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.MyCreateCircleBundleData;
@@ -29,7 +28,6 @@ import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
-import com.paobuqianjin.pbq.step.view.activity.LoveRankActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -229,7 +227,7 @@ public class HotCircleFragment extends BaseFragment {
                 setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
                         myHotCircleResponse.getData().getData().get(0).getLogo(),
                         true);
-                circleIdA = myHotCircleResponse.getData().getData().get(0).getCircleid();
+                circleIdA = myHotCircleResponse.getData().getData().get(0).getId();
                 circleNumA = myHotCircleResponse.getData().getData().get(0).getMember_number();
             } else if (size >= 2) {
                 setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
@@ -239,10 +237,10 @@ public class HotCircleFragment extends BaseFragment {
                         myHotCircleResponse.getData().getData().get(1).getLogo(),
                         true);
 
-                circleIdA = myHotCircleResponse.getData().getData().get(0).getCircleid();
+                circleIdA = myHotCircleResponse.getData().getData().get(0).getId();
                 circleNumA = myHotCircleResponse.getData().getData().get(0).getMember_number();
 
-                circleIdB = myHotCircleResponse.getData().getData().get(1).getCircleid();
+                circleIdB = myHotCircleResponse.getData().getData().get(1).getId();
                 circleNumB = myHotCircleResponse.getData().getData().get(1).getMember_number();
             }
             pageCounts[1] = myHotCircleResponse.getData().getPagenation().getTotalPage();

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -63,7 +64,7 @@ public class PayFailedFragment extends BaseBarStyleTextViewFragment {
         @Override
         public void clickRight() {
             LocalLog.d(TAG, "确定");
-            getActivity().finish();
+            ((PaoBuPayActivity) getActivity()).showQrCodeFragment(PayFailedFragment.this);
         }
     };
 
@@ -90,5 +91,6 @@ public class PayFailedFragment extends BaseBarStyleTextViewFragment {
     @OnClick(R.id.repay_button)
     public void onClick() {
         LocalLog.d(TAG, "重新支付!");
+        ((PaoBuPayActivity) getActivity()).showRePayFragment(PayFailedFragment.this);
     }
 }

@@ -1,6 +1,8 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +10,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -50,6 +53,7 @@ import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
+import com.umeng.socialize.utils.SocializeUtils;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -173,10 +177,11 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     EditText passwordNumEditor;
     @Bind(R.id.password_pan)
     RelativeLayout passwordPan;
-/*    @Bind(R.id.flag_a0)
-    TextView flagA0;
-    @Bind(R.id.flag_a1)
-    TextView flagA1;*/
+    /*    @Bind(R.id.flag_a0)
+        TextView flagA0;
+        @Bind(R.id.flag_a1)
+        TextView flagA1;*/
+    private ProgressDialog dialog;
 
     private ArrayList<String> circleTypeList;
     private PopupWindow popupCircleTypeWindow;
@@ -192,7 +197,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     private HashMap<String, String> selectA = new HashMap<>();
     private HashMap<String, String> selectB = new HashMap<>();
     private final static int CAMERA_PIC = 0;
-    QServiceCfg qServiceCfg;
+    private QServiceCfg qServiceCfg;
     private final static String CIRCLE_ID = "id";
     private final static String CIRCLE_NAME = "name";
     private final static String CIRCLE_LOGO = "logo";
@@ -251,6 +256,8 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         qServiceCfg = QServiceCfg.instance(this);
         createCircleBodyParam.setIs_pwd(0);
         createCircleBodyParam.setIs_recharge(0);
+
+        dialog = new ProgressDialog(this);
     }
 
 
@@ -609,8 +616,43 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         }
         createCircleBodyParam.setDescription(circleDescOfYour.getText().toString());
         createCircleBodyParam.setCoverid(1);
-        createCircleBodyParam.setLogo("http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg");
+        //createCircleBodyParam.setLogo("http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg");
         return true;
+    }
+
+    public class LogoUpTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            SocializeUtils.safeShowDialog(dialog);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String url = null;
+            for (String path : strings) {
+                LocalLog.d(TAG, "path = " + path);
+                ResultHelper result = null;
+                PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
+                result = putObjectSample.start(path);
+                LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
+                url = result.cosXmlResult.accessUrl;
+                LocalLog.d(TAG, "url = " + url);
+
+            }
+            return url;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            LocalLog.d(TAG,"onPostExecute() enter");
+            super.onPostExecute(s);
+            if (s != null && !"".equals(s)) {
+                createCircleBodyParam.setLogo(s);
+            }
+            //SocializeUtils.safeCloseDialog(dialog);
+        }
     }
 
     @Override
@@ -627,21 +669,20 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 final String pathResult = getPath(selectedImage);
                 LocalLog.d(TAG, "pathResult = " + pathResult);
                 Bitmap docodeFile = BitmapFactory.decodeFile(pathResult);
-                try {
-                    //TODO 线程中上传保存
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ResultHelper result = null;
-                            PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                            result = putObjectSample.start(pathResult);
-                            LocalLog.d(TAG, "result = " + result.showMessage());
-                        }
-                    }).start();
-                    saveImage(docodeFile);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
+                logoCirclePic.setImageBitmap(docodeFile);
+                //TODO 线程中上传保存
+
+                LogoUpTask logoUpTask = new LogoUpTask();
+                logoUpTask.execute(pathResult);
+          /*      new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ResultHelper result = null;
+                        PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
+                        result = putObjectSample.start(pathResult);
+                        LocalLog.d(TAG, "result = " + result.showMessage());
+                    }
+                }).start();*/
             }
 /*        if (requestCode == REQUEST_CODE_TAG) {
                 if (data != null) {

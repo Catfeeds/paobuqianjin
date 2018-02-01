@@ -11,6 +11,8 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.fragment.circle.CirclePayFragment;
 import com.paobuqianjin.pbq.step.view.fragment.pay.PayFailedFragment;
 import com.paobuqianjin.pbq.step.view.fragment.pay.PaySuccessFragment;
@@ -27,6 +29,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
     private SharedPreferences sharedPreferences;
     private final static String PAY_RESULT_ACTION = "android.intent.action.paobuqianjin.PAY_RESULT";
     private CirclePayFragment circlePayFragment = new CirclePayFragment();
+    private QrCodeFragment qrCodeFragment = new QrCodeFragment();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +58,6 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
                     .commit();
         } else if (intent.getAction() != null && intent.getAction().equals(QRCODE_ACTION)) {
             LocalLog.d(TAG, "显示圈子二维码");
-            QrCodeFragment qrCodeFragment = new QrCodeFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.pay_container, qrCodeFragment)
                     .show(qrCodeFragment)
@@ -106,6 +108,24 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
     @Override
     public void response(Object error) {
 
+    }
+
+    public void showRePayFragment(BaseFragment hideFragment) {
+        LocalLog.d(TAG, "重新支付");
+        getSupportFragmentManager().beginTransaction()
+                .hide(hideFragment)
+                .add(R.id.pay_container, circlePayFragment)
+                .show(circlePayFragment)
+                .commit();
+    }
+
+    public void showQrCodeFragment(BaseFragment hideFragment) {
+        LocalLog.d(TAG, "显示二维码分享界面");
+        getSupportFragmentManager().beginTransaction()
+                .hide(hideFragment)
+                .add(R.id.pay_container, qrCodeFragment)
+                .show(qrCodeFragment)
+                .commit();
     }
 
     @Override

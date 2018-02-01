@@ -150,6 +150,8 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
         memberNumDes.setText(sFinalMember);
         imageButton = (RelativeLayout) viewRoot.findViewById(R.id.image_button);
         imageButton.setOnClickListener(onClickListener);
+
+
     }
 
     @Override

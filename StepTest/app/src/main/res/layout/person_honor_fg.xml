@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -132,5 +132,5 @@
 
         </RelativeLayout>
 
-    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+    </ScrollView>
 </RelativeLayout>
