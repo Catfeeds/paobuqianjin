@@ -16,6 +16,7 @@
         android:textColor="@color/colorPrimary"/>
 
     <Button
+        android:stateListAnimator="@null"
         android:layout_below="@+id/back"
         android:id="@+id/GetService"
         android:layout_margin="30dp"

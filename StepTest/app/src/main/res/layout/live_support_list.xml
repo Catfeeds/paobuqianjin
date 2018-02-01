@@ -33,6 +33,7 @@
 
 
         <Button
+            android:stateListAnimator="@null"
             android:background="@drawable/button_join"
             android:id="@+id/love_number"
             android:layout_width="60dp"

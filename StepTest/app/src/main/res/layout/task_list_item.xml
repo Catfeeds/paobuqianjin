@@ -49,6 +49,7 @@
     </RelativeLayout>
 
     <Button
+        android:stateListAnimator="@null"
         android:textSize="14sp"
         android:id="@+id/release_details"
         android:layout_width="70dp"

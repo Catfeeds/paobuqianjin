@@ -25,6 +25,7 @@
         android:textColor="@color/color_33333"
         android:textSize="14dp" />
     <Button
+        android:stateListAnimator="@null"
         android:layout_below="@+id/add_circle_attention"
         android:layout_marginTop="60dp"
         android:background="@drawable/rect_angle_background"

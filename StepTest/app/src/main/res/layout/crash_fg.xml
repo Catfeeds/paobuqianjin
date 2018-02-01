@@ -214,6 +214,7 @@
 
 
     <Button
+        android:stateListAnimator="@null"
         android:id="@+id/confirm_crash"
         android:layout_width="match_parent"
         android:layout_height="45dp"

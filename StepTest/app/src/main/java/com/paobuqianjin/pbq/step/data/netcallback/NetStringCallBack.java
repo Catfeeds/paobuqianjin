@@ -23,6 +23,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
@@ -37,6 +38,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
+import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import okhttp3.Call;
@@ -119,7 +121,7 @@ public class NetStringCallBack extends StringCallback {
             } else if (callBackInterface != null
                     && callBackInterface instanceof UiCreateCircleInterface
                     && command == Engine.COMMAND_CREATE_CIRCLE) {
-                    ((UiCreateCircleInterface) callBackInterface).response(response);
+                ((UiCreateCircleInterface) callBackInterface).response(response);
             } else if (callBackInterface != null
                     && callBackInterface instanceof UiCreateCircleInterface
                     && command == Engine.COMMAND_GET_CIRCLE_TARGET) {
@@ -144,6 +146,9 @@ public class NetStringCallBack extends StringCallback {
                     && callBackInterface instanceof PayInterface
                     && command == Engine.COMMAND_CIRCLE_ORDER_POST) {
 
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof WxPayResultQueryInterface
+                    && command == Engine.COMMAND_PAY_RESULT_QUERY_WX) {
             } else {
                 LocalLog.e(TAG, " dispatch not match");
             }
@@ -273,6 +278,12 @@ public class NetStringCallBack extends StringCallback {
             LocalLog.d(TAG, "订单信息");
             WxPayOrderResponse wxPayOrderResponse = new Gson().fromJson(s, WxPayOrderResponse.class);
             ((PayInterface) callBackInterface).response(wxPayOrderResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof WxPayResultQueryInterface
+                && command == Engine.COMMAND_PAY_RESULT_QUERY_WX) {
+            LocalLog.d(TAG, "订单信息");
+            WxPayResultResponse wxPayResultResponse = new Gson().fromJson(s, WxPayResultResponse.class);
+            ((WxPayResultQueryInterface) callBackInterface).response(wxPayResultResponse);
         } else {
             LocalLog.d(TAG, " dispatch not match");
         }

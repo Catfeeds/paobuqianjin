@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.presenter;
 
 import android.app.Service;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.ImageView;
 
 import com.paobuqianjin.pbq.step.data.bean.gson.param.WxPayOrderParam;
@@ -54,12 +55,34 @@ public final class Presenter {
         engine.unbindStepService();
     }
 
+
+    public SharedPreferences getSharePreferences() {
+        return engine.getSharePreferences(mContext);
+    }
+
     public boolean getLogFlg() {
         return engine.getLogFlag(mContext);
     }
 
     public void steLogFlg(boolean isLogin) {
         engine.setLogFlag(mContext, isLogin);
+    }
+
+
+    public void setPayResultCode(int errorCode) {
+        engine.setPayResultCode(mContext, errorCode);
+    }
+
+    public int getPayResultCode() {
+        return engine.getPayResultCode(mContext);
+    }
+
+    public void setOutTradeNo(String outTradeNo) {
+        engine.setOutTradeNo(mContext, outTradeNo);
+    }
+
+    public String getOutTradeNo() {
+        return engine.getOutTradeNo(mContext);
     }
 
     public int getId() {
@@ -202,9 +225,14 @@ public final class Presenter {
         return engine.getNetworkPolicy();
     }
 
-    //TODO 圈子订单
+    //TODO 圈子订单WX
     public void postCircleOrder(WxPayOrderParam wxPayOrderParam) {
         engine.postWxPayOrder(wxPayOrderParam);
+    }
+
+    //TODO 获取订单详情 WX
+    public void getWxPayResultByOrderNo(String orderTradeNo) {
+        engine.getWxPayResultByOrderNo(orderTradeNo);
     }
 
     //TODO 三方登录

@@ -126,6 +126,14 @@
                 <action android:name="android.intent.action.QRCODE" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.activity.PayResultActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.paobuqianjin.PAY_RESULT" />
+            </intent-filter>
+        </activity>
         <!--忘记密码-->
         <activity android:name=".view.activity.LoginForgetPassActivity" />
         <!--任务发布-->

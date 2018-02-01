@@ -12,11 +12,10 @@ import com.google.gson.annotations.SerializedName;
 *@description 微信支付订单返回
 */
 public class WxPayOrderResponse {
-
     /**
      * error : 0
      * message : success
-     * data : {"appid":"wx1ed4ccc9a2226a73","partnerid":"1495263342","prepayid":"wx20180131110055637048e43d0611728350","package":"Sign=WXPay","noncestr":"7QdaNZIvwQ505PZk","timestamp":1517367655,"sign":"0A3047A4CBB7C41163BB738131528FEC"}
+     * data : {"out_trade_no":"1517384948282","appid":"wx1ed4ccc9a2226a73","partnerid":"1495263342","prepayid":"wx20180131154908ccd9850e5d0554443044","package":"Sign=WXPay","noncestr":"A3Dp0ouiGJK2Pn5z","timestamp":1517384948,"sign":"ED32354F8EDDA68F69C2B23D5506063E"}
      */
 
     private int error;
@@ -58,15 +57,17 @@ public class WxPayOrderResponse {
 
     public static class DataBean {
         /**
+         * out_trade_no : 1517384948282
          * appid : wx1ed4ccc9a2226a73
          * partnerid : 1495263342
-         * prepayid : wx20180131110055637048e43d0611728350
+         * prepayid : wx20180131154908ccd9850e5d0554443044
          * package : Sign=WXPay
-         * noncestr : 7QdaNZIvwQ505PZk
-         * timestamp : 1517367655
-         * sign : 0A3047A4CBB7C41163BB738131528FEC
+         * noncestr : A3Dp0ouiGJK2Pn5z
+         * timestamp : 1517384948
+         * sign : ED32354F8EDDA68F69C2B23D5506063E
          */
 
+        private String out_trade_no;
         private String appid;
         private String partnerid;
         private String prepayid;
@@ -75,6 +76,14 @@ public class WxPayOrderResponse {
         private String noncestr;
         private int timestamp;
         private String sign;
+
+        public String getOut_trade_no() {
+            return out_trade_no;
+        }
+
+        public void setOut_trade_no(String out_trade_no) {
+            this.out_trade_no = out_trade_no;
+        }
 
         public String getAppid() {
             return appid;
@@ -135,7 +144,8 @@ public class WxPayOrderResponse {
         @Override
         public String toString() {
             return "DataBean{" +
-                    "appid='" + appid + '\'' +
+                    "out_trade_no='" + out_trade_no + '\'' +
+                    ", appid='" + appid + '\'' +
                     ", partnerid='" + partnerid + '\'' +
                     ", prepayid='" + prepayid + '\'' +
                     ", packageX='" + packageX + '\'' +

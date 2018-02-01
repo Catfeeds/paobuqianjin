@@ -111,6 +111,7 @@
         </RelativeLayout>
 
         <Button
+            android:stateListAnimator="@null"
             android:id="@+id/join_in"
             android:layout_width="60dp"
             android:layout_height="30dp"

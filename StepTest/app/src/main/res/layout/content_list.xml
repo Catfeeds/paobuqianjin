@@ -46,6 +46,7 @@
         </RelativeLayout>
 
         <Button
+            android:stateListAnimator="@null"
             android:id="@+id/button_reply"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

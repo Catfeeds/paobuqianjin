@@ -183,6 +183,7 @@
         android:layout_alignParentBottom="true">
 
         <Button
+            android:stateListAnimator="@null"
             android:id="@+id/charge_bar"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -194,6 +195,7 @@
             android:textSize="18sp" />
 
         <Button
+            android:stateListAnimator="@null"
             android:id="@+id/crash"
             android:layout_width="0dp"
             android:layout_height="match_parent"

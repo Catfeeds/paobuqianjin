@@ -3,7 +3,9 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.PayResultActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -75,6 +78,8 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private final static String CIRCLE_LOGO = "logo";
     private final static String CIRCLE_RECHARGE = "pay";
     private final static String PAY_FOR_STYLE = "pay_for_style";
+    private final static String PAY_ERROR_CODE = "pay_error_code";
+    private final static String ORDER_TRADE_NO = "";
     @Bind(R.id.wechat_pay_select)
     ImageView wechatPaySelect;
     @Bind(R.id.wallet_pay_select)
@@ -90,6 +95,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private boolean[] selectPay = new boolean[2];
     private ImageView[] selectIcon = new ImageView[2];
     private IWXAPI msgApi;
+
 
     public enum PayStyles {
         WxPay,//微信支付
@@ -122,7 +128,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        LocalLog.d(TAG,"先注册一次");
+        LocalLog.d(TAG, "先注册一次");
         msgApi = WXAPIFactory.createWXAPI(context, null);
         msgApi.registerApp("wx1ed4ccc9a2226a73");//必须先register一次
     }
@@ -167,6 +173,11 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         super.onDestroyView();
         ButterKnife.unbind(this);
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     private void UpdateUnSelect(int i) {
@@ -252,6 +263,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         req.sign = wxPayOrderResponse.getData().getSign();
         req.timeStamp = String.valueOf(wxPayOrderResponse.getData().getTimestamp());
 
+        Presenter.getInstance(getContext()).setOutTradeNo(wxPayOrderResponse.getData().getOut_trade_no());
         msgApi.registerApp(req.appId);
         msgApi.sendReq(req);
     }

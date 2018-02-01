@@ -65,6 +65,7 @@
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 
     <Button
+        android:stateListAnimator="@null"
         android:id="@+id/delete_member_confim"
         android:layout_width="match_parent"
         android:layout_height="48dp"

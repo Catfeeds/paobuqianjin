@@ -19,6 +19,7 @@
         android:background="@drawable/rectangle_four_dp">
 
         <Button
+            android:stateListAnimator="@null"
             android:id="@+id/task_all"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -29,6 +30,7 @@
             android:textSize="16sp" />
 
         <Button
+            android:stateListAnimator="@null"
             android:id="@+id/task_un_finish"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -39,6 +41,7 @@
             android:textSize="16sp" />
 
         <Button
+            android:stateListAnimator="@null"
             android:id="@+id/task_finished"
             android:layout_width="0dp"
             android:layout_height="match_parent"

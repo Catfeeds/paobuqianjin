@@ -26,6 +26,7 @@
                 android:src="@drawable/logo" />
 
             <Button
+                android:stateListAnimator="@null"
                 android:id="@+id/bnt_like"
                 android:layout_width="80dp"
                 android:layout_height="30dp"

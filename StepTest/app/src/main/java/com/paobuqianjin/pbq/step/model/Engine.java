@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,6 +45,7 @@ import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
+import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.squareup.picasso.Cache;
@@ -64,6 +66,7 @@ import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlRegisterPhone;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlThirdLogin;
+import static com.umeng.socialize.utils.DeviceConfig.context;
 
 /**
  * Created by pbq on 2017/11/29.
@@ -88,6 +91,7 @@ public final class Engine {
     private DynamicCommentUiInterface dynamicCommentUiInterface;
     private OwnerUiInterface ownerUiInterface;
     private PayInterface payInterface;
+    private WxPayResultQueryInterface payWxResultQueryInterface;
     private Picasso picasso = null;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
@@ -115,6 +119,7 @@ public final class Engine {
     public final static int COMMAND_OWNER_USER_INFO = 22;
     public final static int COMMAND_LOGIN_BY_THIRD = 23;
     public final static int COMMAND_CIRCLE_ORDER_POST = 24;
+    public final static int COMMAND_PAY_RESULT_QUERY_WX = 25;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -210,6 +215,25 @@ public final class Engine {
 
     }
 
+    public SharedPreferences getSharePreferences(Context context) {
+        return FlagPreference.getSharedPreferences(context);
+    }
+
+    public int getPayResultCode(Context context) {
+        return FlagPreference.getPayResultCode(context);
+    }
+
+    public void setPayResultCode(Context context, int errorCode) {
+        FlagPreference.setPayResultCode(context, errorCode);
+    }
+
+    public String getOutTradeNo(Context context) {
+        return FlagPreference.getOutTradeNo(context);
+    }
+
+    public void setOutTradeNo(Context context, String outTradeNO) {
+        FlagPreference.setOutTradeNo(context, outTradeNO);
+    }
 
     public boolean getLogFlag(Context context) {
         return FlagPreference.getLoginFlag(context);
@@ -994,7 +1018,7 @@ public final class Engine {
                 });*/
     }
 
-    //TODO 圈子订单
+    //TODO 圈子订单 WX
     public void postWxPayOrder(WxPayOrderParam wxPayOrderParam) {
         LocalLog.d(TAG, wxPayOrderParam.paramString());
         OkHttpUtils
@@ -1003,6 +1027,18 @@ public final class Engine {
                 .params(wxPayOrderParam.getParams())
                 .build()
                 .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST));
+    }
+
+    //TODO 订单详情 WX
+    public void getWxPayResultByOrderNo(String orderTradeNo) {
+        String url = NetApi.urlPayResultOrderNo + orderTradeNo;
+        LocalLog.d(TAG, "getWxPayResultByOrderNo() url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(payWxResultQueryInterface, COMMAND_PAY_RESULT_QUERY_WX));
+
     }
 
     //TODO 三方登录
@@ -1061,6 +1097,8 @@ public final class Engine {
             ownerUiInterface = (OwnerUiInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof PayInterface) {
             payInterface = (PayInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof WxPayResultQueryInterface) {
+            payWxResultQueryInterface = (WxPayResultQueryInterface) uiCallBackInterface;
         }
 
     }
@@ -1087,6 +1125,8 @@ public final class Engine {
             ownerUiInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof PayInterface) {
             payInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof WxPayResultQueryInterface) {
+            payWxResultQueryInterface = null;
         }
 
     }

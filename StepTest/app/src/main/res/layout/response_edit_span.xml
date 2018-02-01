@@ -36,6 +36,7 @@
     </RelativeLayout>
 
     <Button
+        android:stateListAnimator="@null"
         android:id="@+id/send_content"
         android:layout_width="47dp"
         android:layout_height="28dp"

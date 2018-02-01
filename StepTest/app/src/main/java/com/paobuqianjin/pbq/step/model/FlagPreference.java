@@ -3,6 +3,8 @@ package com.paobuqianjin.pbq.step.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.paobuqianjin.pbq.step.utils.LocalLog;
+
 /**
  * Created by pbq on 2017/12/6.
  */
@@ -13,7 +15,43 @@ import android.content.SharedPreferences;
 *@description
 */
 public final class FlagPreference {
+    private final static String TAG = FlagPreference.class.getSimpleName();
     private final static String SHARE_PREF_NAME = "com.paobuqianjin.pbq.step.login";
+
+
+    public static SharedPreferences getSharedPreferences(Context context) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        return flagPreference;
+    }
+
+    public static void setPayResultCode(Context context, int errorCode) {
+        LocalLog.d(TAG, "保存当前支付errorCode");
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putInt("errorCode", errorCode);
+        editor.commit();
+    }
+
+    public static int getPayResultCode(Context context) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        int errorCode = flagPreference.getInt("errorCode", -3);
+        return errorCode;
+    }
+
+    public static void setOutTradeNo(Context context, String outTradeNo) {
+        LocalLog.d(TAG, "setOutTradeNo() 保存最新订单号");
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putString("out_trade_no", outTradeNo);
+        editor.commit();
+    }
+
+    public static String getOutTradeNo(Context context) {
+        LocalLog.d(TAG, "getOutTradeNo() 获取最新订单号");
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        String outTradeNo = flagPreference.getString("out_trade_no", "");
+        return outTradeNo;
+    }
 
     public static void setUid(Context context, int id) {
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);

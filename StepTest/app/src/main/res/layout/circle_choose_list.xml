@@ -101,6 +101,7 @@
         android:layout_toEndOf="@+id/circle_log">
 
         <Button
+            android:stateListAnimator="@null"
             android:id="@+id/circle_join"
             android:layout_width="50dp"
             android:layout_height="25dp"
