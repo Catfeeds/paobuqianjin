@@ -130,10 +130,8 @@ public class HotCircleFragment extends BaseFragment {
 
 
     private void loadingData() {
-        Presenter.getInstance(mContext).getMyJoinCircle();
         Presenter.getInstance(mContext).getCircleChoice();
-        Presenter.getInstance(mContext).getMyCreateCirlce(1);
-        //Presenter.getInstance(mContext).getCirCleType();
+        Presenter.getInstance(mContext).getMyHotCircle(1,2);
     }
 
     /*@desc  返回Fragment标签
@@ -172,15 +170,15 @@ public class HotCircleFragment extends BaseFragment {
                     startActivity(intent2);
                     break;
                 case R.id.find_more_my_circle:
-                    LocalLog.d(TAG, "我的圈子");
+                    LocalLog.d(TAG, "查看更多我的圈子");
                     MyCreateCircleBundleData myCreateCircleBundleData = new MyCreateCircleBundleData(myCreateCircle);
                     MyJoinCreateCircleBudleData myJoinCreateCircleBudleData = new MyJoinCreateCircleBudleData(myJoinCirCle);
                     Intent intentCircle = new Intent();
                     intentCircle.setClass(getActivity(), OwnerCircleActivity.class);
-                    intentCircle.putExtra(getActivity().getPackageName() + "my_create", myCreateCircleBundleData);
+/*                    intentCircle.putExtra(getActivity().getPackageName() + "my_create", myCreateCircleBundleData);
                     intentCircle.putExtra(getActivity().getPackageName() + "my_join", myJoinCreateCircleBudleData);
                     intentCircle.putExtra(getActivity().getPackageName() + "my_create_total_page", pageCounts[0]);
-                    intentCircle.putExtra(getActivity().getPackageName() + "my_join_total_page", pageCounts[1]);
+                    intentCircle.putExtra(getActivity().getPackageName() + "my_join_total_page", pageCounts[1]);*/
                     getActivity().startActivity(intentCircle);
                     break;
                 case R.id.live_choose_good_module:
@@ -222,6 +220,35 @@ public class HotCircleFragment extends BaseFragment {
 
     private UiHotCircleInterface uiHotCircleInterface = new UiHotCircleInterface() {
         @Override
+        public void response(MyHotCircleResponse myHotCircleResponse) {
+            LocalLog.d(TAG, "myHotCircleResponse ");
+            int size = myHotCircleResponse.getData().getData().size();
+            LocalLog.d(TAG, "myHotCircleResponse() size =" + size);
+            if (size == 1) {
+
+                setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
+                        myHotCircleResponse.getData().getData().get(0).getLogo(),
+                        true);
+                circleIdA = myHotCircleResponse.getData().getData().get(0).getCircleid();
+                circleNumA = myHotCircleResponse.getData().getData().get(0).getMember_number();
+            } else if (size >= 2) {
+                setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
+                        myHotCircleResponse.getData().getData().get(0).getLogo(),
+                        true);
+                setMyHotLb(myHotCircleResponse.getData().getData().get(1).getName(),
+                        myHotCircleResponse.getData().getData().get(1).getLogo(),
+                        true);
+
+                circleIdA = myHotCircleResponse.getData().getData().get(0).getCircleid();
+                circleNumA = myHotCircleResponse.getData().getData().get(0).getMember_number();
+
+                circleIdB = myHotCircleResponse.getData().getData().get(1).getCircleid();
+                circleNumB = myHotCircleResponse.getData().getData().get(1).getMember_number();
+            }
+            pageCounts[1] = myHotCircleResponse.getData().getPagenation().getTotalPage();
+        }
+
+        @Override
         public void response(CircleTypeResponse circleTypeResponse) {
             LocalLog.d(TAG, "CircleTypeResponse() ");
             int size = circleTypeResponse.getData().size();
@@ -232,7 +259,7 @@ public class HotCircleFragment extends BaseFragment {
 
         @Override
         public void response(MyJoinCircleResponse myJoinCircleResponse) {
-            LocalLog.d(TAG, "myJoinCircleResponse ");
+            /*LocalLog.d(TAG, "myJoinCircleResponse ");
             myJoinCirCle = (ArrayList<MyJoinCircleResponse.DataBeanX.DataBean>) myJoinCircleResponse.getData().getData();
             int size = myJoinCircleResponse.getData().getData().size();
             LocalLog.d(TAG, "myHotCircleResponse() size =" + size);
@@ -241,7 +268,7 @@ public class HotCircleFragment extends BaseFragment {
                 setMyHotLa(myJoinCircleResponse.getData().getData().get(0).getName(),
                         myJoinCircleResponse.getData().getData().get(0).getLogo(),
                         true);
-                circleIdA = myJoinCircleResponse.getData().getData().get(0).getCircleid();
+                circleIdA = myJoinCircleResponse.getData().getData().get(0).getId();
                 circleNumA = myJoinCircleResponse.getData().getData().get(0).getMember_number();
             } else if (size >= 2) {
                 setMyHotLa(myJoinCircleResponse.getData().getData().get(0).getName(),
@@ -251,20 +278,20 @@ public class HotCircleFragment extends BaseFragment {
                         myJoinCircleResponse.getData().getData().get(1).getLogo(),
                         true);
 
-                circleIdA = myJoinCircleResponse.getData().getData().get(0).getCircleid();
+                circleIdA = myJoinCircleResponse.getData().getData().get(0).getId();
                 circleNumA = myJoinCircleResponse.getData().getData().get(0).getMember_number();
 
-                circleIdB = myJoinCircleResponse.getData().getData().get(1).getCircleid();
+                circleIdB = myJoinCircleResponse.getData().getData().get(1).getId();
                 circleNumB = myJoinCircleResponse.getData().getData().get(1).getMember_number();
             }
-            pageCounts[1] = myJoinCircleResponse.getData().getPagenation().getTotalPage();
+            pageCounts[1] = myJoinCircleResponse.getData().getPagenation().getTotalPage();*/
         }
 
         @Override
         public void response(MyCreateCircleResponse myCreateCircleResponse) {
-            LocalLog.d(TAG, "myCreateCircleResponse  ");
+          /*  LocalLog.d(TAG, "myCreateCircleResponse  ");
             myCreateCircle = (ArrayList<MyCreateCircleResponse.DataBeanX.DataBean>) myCreateCircleResponse.getData().getData();
-            pageCounts[0] = myCreateCircleResponse.getData().getPagenation().getTotalPage();
+            pageCounts[0] = myCreateCircleResponse.getData().getPagenation().getTotalPage();*/
         }
 
         @Override

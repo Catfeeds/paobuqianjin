@@ -36,6 +36,8 @@ import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
@@ -85,6 +87,8 @@ public final class Engine {
     private UiCreateCircleInterface uiCreateCircleInterface;
     private TagFragInterface tagFragInterface;
     private UiHotCircleInterface uiHotCircleInterface;
+    private MyJoinCircleInterface myJoinCircleInterface;
+    private MyCreatCircleInterface myCreatCircleInterface;
     private ReflashMyCircleInterface reflashMyCircleInterface;
     private UiStepAndLoveRankInterface uiStepAndLoveRankInterface;
     private DynamicIndexUiInterface dynamicIndexUiInterface;
@@ -120,6 +124,7 @@ public final class Engine {
     public final static int COMMAND_LOGIN_BY_THIRD = 23;
     public final static int COMMAND_CIRCLE_ORDER_POST = 24;
     public final static int COMMAND_PAY_RESULT_QUERY_WX = 25;
+    public final static int COMMAND_GET_MY_HOT = 26;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -709,7 +714,7 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_MY_JOIN_CIRCLE));
+                .execute(new NetStringCallBack(myJoinCircleInterface, COMMAND_GET_MY_JOIN_CIRCLE));
     }
 
 
@@ -732,9 +737,20 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_MY_CREATE_CIRCLE));
+                .execute(new NetStringCallBack(myCreatCircleInterface, COMMAND_GET_MY_CREATE_CIRCLE));
     }
 
+    //TODO 获取我的圈子
+    public void getMyHotCircle(int page, int pagesize) {
+        LocalLog.d(TAG, "获取我的圈子getMyHotCircle()");
+        String url = NetApi.urlCircle + "?action=my" + "&userid=" + String.valueOf(engine.getId(mContext))
+                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_MY_HOT));
+    }
 
     public void getCircleChoice(int userid, int page, int pagesize) {
         LocalLog.d(TAG, "精选圈子：getCircleChoice() enter");
@@ -1099,6 +1115,10 @@ public final class Engine {
             payInterface = (PayInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof WxPayResultQueryInterface) {
             payWxResultQueryInterface = (WxPayResultQueryInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyJoinCircleInterface) {
+            myJoinCircleInterface = (MyJoinCircleInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyCreatCircleInterface) {
+            myCreatCircleInterface = (MyCreatCircleInterface) uiCallBackInterface;
         }
 
     }
@@ -1127,6 +1147,10 @@ public final class Engine {
             payInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof WxPayResultQueryInterface) {
             payWxResultQueryInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyJoinCircleInterface) {
+            myJoinCircleInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyCreatCircleInterface) {
+            myCreatCircleInterface = null;
         }
 
     }

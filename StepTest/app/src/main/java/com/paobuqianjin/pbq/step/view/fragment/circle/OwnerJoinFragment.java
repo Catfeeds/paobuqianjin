@@ -12,6 +12,8 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.OwnerCreateAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -32,15 +34,6 @@ public class OwnerJoinFragment extends BaseFragment {
     private Context mContext;
     private ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> ownerCircleData;
 
-    public void setOwnerCircleData(ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> ownerCircleData) {
-        this.ownerCircleData = ownerCircleData;
-        if (ownerCircleData == null) {
-            //重新获取
-            return;
-        }
-        LocalLog.d(TAG, "");
-    }
-
     @Override
     protected int getLayoutResId() {
         return R.layout.owner_join_circle_fg;
@@ -50,6 +43,8 @@ public class OwnerJoinFragment extends BaseFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        Presenter.getInstance(context).attachUiInterface(myJoinCircleInterface);
+        Presenter.getInstance(context).getMyJoinCircle();
     }
 
     @Override
@@ -67,9 +62,16 @@ public class OwnerJoinFragment extends BaseFragment {
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         ownerJoinCircleLists.setLayoutManager(layoutManager);
-        ownerJoinCircleLists.setAdapter(new OwnerCreateAdapter(getContext(), ownerCircleData));
-
     }
+
+    private MyJoinCircleInterface myJoinCircleInterface = new MyJoinCircleInterface() {
+        @Override
+        public void response(MyJoinCircleResponse myJoinCircleResponse) {
+            ownerJoinCircleLists.setAdapter(new OwnerCreateAdapter(getContext(),
+                    (ArrayList<MyJoinCircleResponse.DataBeanX.DataBean>) myJoinCircleResponse.getData().getData()));
+        }
+    };
+
 
     public String getTabLabel() {
         return "我加入的";
@@ -78,5 +80,6 @@ public class OwnerJoinFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Presenter.getInstance(getContext()).dispatchUiInterface(myJoinCircleInterface);
     }
 }

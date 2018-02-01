@@ -31,7 +31,7 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
     public SelectSettingAdapter(Context context, ArrayList<String> data) {
         this.context = context;
         this.data = data;
-    }
+}
 
     @Override
     @TargetApi(23)
@@ -84,6 +84,7 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
     @Override
     public int getItemCount() {
         if (data != null && data.size() > 0) {
+            LocalLog.d(TAG, "data size = " + data.size());
             return data.size();
         } else {
             return 0;

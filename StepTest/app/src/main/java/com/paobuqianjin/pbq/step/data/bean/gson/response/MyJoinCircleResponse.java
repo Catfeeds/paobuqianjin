@@ -11,7 +11,7 @@ public class MyJoinCircleResponse {
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":4},"data":[{"circleid":100003,"name":"测试圈子4","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞市","member_number":4},{"circleid":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","member_number":20},{"circleid":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","member_number":20},{"circleid":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","member_number":20}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":4},"data":[{"id":100003,"name":"测试圈子4","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞市","member_number":4},{"id":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","member_number":20},{"id":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","member_number":20},{"id":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","member_number":20}]}
      */
 
     private int error;
@@ -54,7 +54,7 @@ public class MyJoinCircleResponse {
     public static class DataBeanX {
         /**
          * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":4}
-         * data : [{"circleid":100003,"name":"测试圈子4","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞市","member_number":4},{"circleid":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","member_number":20},{"circleid":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","member_number":20},{"circleid":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","member_number":20}]
+         * data : [{"id":100003,"name":"测试圈子4","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞市","member_number":4},{"id":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","member_number":20},{"id":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","member_number":20},{"id":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","member_number":20}]
          */
 
         private PagenationBean pagenation;
@@ -132,25 +132,25 @@ public class MyJoinCircleResponse {
 
         public static class DataBean implements Serializable {
             /**
-             * circleid : 100003
+             * id : 100003
              * name : 测试圈子4
              * logo : http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg
              * city : 东莞市
              * member_number : 4
              */
 
-            private int circleid;
+            private int id;
             private String name;
             private String logo;
             private String city;
             private int member_number;
 
-            public int getCircleid() {
-                return circleid;
+            public int getId() {
+                return id;
             }
 
-            public void setCircleid(int circleid) {
-                this.circleid = circleid;
+            public void setId(int id) {
+                this.id = id;
             }
 
             public String getName() {
@@ -188,7 +188,7 @@ public class MyJoinCircleResponse {
             @Override
             public String toString() {
                 return "DataBean{" +
-                        "circleid=" + circleid +
+                        "id=" + id +
                         ", name='" + name + '\'' +
                         ", logo='" + logo + '\'' +
                         ", city='" + city + '\'' +

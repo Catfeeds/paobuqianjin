@@ -4,18 +4,18 @@
     android:layout_height="match_parent">
     <!--我的圈子-->
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
-        android:scrollbars="none"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <RelativeLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:id="@+id/my_circles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true">
+            android:layout_alignParentTop="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <TextView
                 android:id="@+id/my_circle_string"
@@ -75,18 +75,18 @@
 
                 <RelativeLayout
                     android:id="@+id/circle_hot_a_span"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="58dp"
+                    android:layout_height="58dp"
                     android:layout_alignBottom="@+id/create_circle_lab"
                     android:layout_alignTop="@+id/create_circle_lab"
                     android:layout_centerInParent="true"
                     android:visibility="gone">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/circle_hot_a_img"
                         android:layout_width="58dp"
-                        android:layout_height="58dp" />
+                        android:layout_height="58dp"
+                        android:src="@drawable/default_head_ico" />
 
                     <TextView
                         android:id="@+id/circle_hot_a_name"
@@ -103,17 +103,18 @@
 
                 <RelativeLayout
                     android:id="@+id/hot_circle_b"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="58dp"
+                    android:layout_height="58dp"
                     android:layout_alignBottom="@+id/create_circle_lab"
                     android:layout_alignParentEnd="true"
                     android:layout_alignTop="@+id/create_circle_lab"
                     android:visibility="gone">
 
-                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/circle_hot_b_img"
                         android:layout_width="58dp"
-                        android:layout_height="58dp"/>
+                        android:layout_height="58dp"
+                        android:src="@drawable/default_head_ico" />
 
                     <TextView
                         android:id="@+id/circle_hot_b_name"

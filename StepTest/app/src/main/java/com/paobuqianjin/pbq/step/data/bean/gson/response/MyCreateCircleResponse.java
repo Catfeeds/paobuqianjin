@@ -11,7 +11,7 @@ public class MyCreateCircleResponse {
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":2,"totalCount":14},"data":[{"circleid":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","is_pwd":1,"member_number":20,"order_no":"wx0000000000000000","is_recharge":1},{"circleid":100001,"name":"测试圈子2","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"深圳市","is_pwd":0,"member_number":5,"is_recharge":0},{"circleid":100012,"name":"Test圈","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100014,"name":"Test圈圈","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100016,"name":"Test圈圈圈","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100019,"name":"测试不同","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100020,"name":"测试不同之处","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100027,"name":"测试不同之处啊","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100028,"name":"Hello World","logo":"ddddddddd","city":"深圳","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100030,"name":"Hello","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"深圳","is_pwd":1,"member_number":1,"is_recharge":0}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":2,"totalCount":14},"data":[{"id":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","is_pwd":1,"member_number":20,"order_no":"wx0000000000000000","is_recharge":1},{"id":100001,"name":"测试圈子2","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"深圳市","is_pwd":0,"member_number":5,"is_recharge":0},{"id":100012,"name":"Test圈","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100014,"name":"Test圈圈","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100016,"name":"Test圈圈圈","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100019,"name":"测试不同","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100020,"name":"测试不同之处","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100027,"name":"测试不同之处啊","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100028,"name":"Hello World","logo":"ddddddddd","city":"深圳","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100030,"name":"Hello","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"深圳","is_pwd":1,"member_number":1,"is_recharge":0}]}
      */
 
     private int error;
@@ -54,7 +54,7 @@ public class MyCreateCircleResponse {
     public static class DataBeanX {
         /**
          * pagenation : {"page":1,"pageSize":10,"totalPage":2,"totalCount":14}
-         * data : [{"circleid":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","is_pwd":1,"member_number":20,"order_no":"wx0000000000000000","is_recharge":1},{"circleid":100001,"name":"测试圈子2","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"深圳市","is_pwd":0,"member_number":5,"is_recharge":0},{"circleid":100012,"name":"Test圈","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100014,"name":"Test圈圈","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100016,"name":"Test圈圈圈","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100019,"name":"测试不同","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100020,"name":"测试不同之处","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100027,"name":"测试不同之处啊","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100028,"name":"Hello World","logo":"ddddddddd","city":"深圳","is_pwd":1,"member_number":1,"is_recharge":0},{"circleid":100030,"name":"Hello","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"深圳","is_pwd":1,"member_number":1,"is_recharge":0}]
+         * data : [{"id":100000,"name":"烦死了","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"东莞","is_pwd":1,"member_number":20,"order_no":"wx0000000000000000","is_recharge":1},{"id":100001,"name":"测试圈子2","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"深圳市","is_pwd":0,"member_number":5,"is_recharge":0},{"id":100012,"name":"Test圈","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100014,"name":"Test圈圈","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100016,"name":"Test圈圈圈","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100019,"name":"测试不同","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100020,"name":"测试不同之处","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100027,"name":"测试不同之处啊","logo":"http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg","city":"广州","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100028,"name":"Hello World","logo":"ddddddddd","city":"深圳","is_pwd":1,"member_number":1,"is_recharge":0},{"id":100030,"name":"Hello","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","city":"深圳","is_pwd":1,"member_number":1,"is_recharge":0}]
          */
 
         private PagenationBean pagenation;
@@ -132,7 +132,7 @@ public class MyCreateCircleResponse {
 
         public static class DataBean implements Serializable {
             /**
-             * circleid : 100000
+             * id : 100000
              * name : 烦死了
              * logo : http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg
              * city : 东莞
@@ -142,7 +142,7 @@ public class MyCreateCircleResponse {
              * is_recharge : 1
              */
 
-            private int circleid;
+            private int id;
             private String name;
             private String logo;
             private String city;
@@ -151,12 +151,12 @@ public class MyCreateCircleResponse {
             private String order_no;
             private int is_recharge;
 
-            public int getCircleid() {
-                return circleid;
+            public int getId() {
+                return id;
             }
 
-            public void setCircleid(int circleid) {
-                this.circleid = circleid;
+            public void setId(int id) {
+                this.id = id;
             }
 
             public String getName() {
@@ -218,7 +218,7 @@ public class MyCreateCircleResponse {
             @Override
             public String toString() {
                 return "DataBean{" +
-                        "circleid=" + circleid +
+                        "id=" + id +
                         ", name='" + name + '\'' +
                         ", logo='" + logo + '\'' +
                         ", city='" + city + '\'' +

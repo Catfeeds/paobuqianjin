@@ -183,10 +183,10 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     private View popupCircleTypeView;
     private TranslateAnimation animationCircleType;
     private Handler mHandler;
-    private static ArrayList<String> targetDefaults = new ArrayList<>();
+    private ArrayList<String> targetDefaults = new ArrayList<>();
     private boolean is_recharge = false;
     private boolean is_pwd = false;
-    private static ArrayList<String> circleTypeDefaults = new ArrayList<>();
+    private ArrayList<String> circleTypeDefaults = new ArrayList<>();
     private final static int REQUEST_CODE_TAG = 0;
     private CreateCircleBodyParam createCircleBodyParam = new CreateCircleBodyParam();
     private HashMap<String, String> selectA = new HashMap<>();
@@ -289,7 +289,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                     targetDefaults.add(String.valueOf(targetResponse.getData().get(i).getTarget()));
                 }
                 circleStandNum.setText(String.valueOf(targetResponse.getData().get(0).getTarget()));
-                createCircleBodyParam.setTargetid(targetResponse.getData().get(0).getTarget());
+                createCircleBodyParam.setTargetid(targetResponse.getData().get(0).getId());
             }
         }
 

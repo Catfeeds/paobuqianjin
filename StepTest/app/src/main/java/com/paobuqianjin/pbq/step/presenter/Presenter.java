@@ -178,6 +178,11 @@ public final class Presenter {
         engine.reflashMyCreateCircle(pageIndex, 10);
     }
 
+    //TODO 我的圈子
+    public void getMyHotCircle(int page,int pagesize) {
+        engine.getMyHotCircle(page,pagesize);
+    }
+
     //TODO 我加入的圈子
     public void getMyJoinCircle() {
         engine.getMyJoinCircle(1, 10);

@@ -14,6 +14,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
@@ -29,6 +30,8 @@ import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
@@ -88,14 +91,14 @@ public class NetStringCallBack extends StringCallback {
             } else if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface
                     && command == Engine.COMMAND_REFRESH_PASSWORD) {
 
-            } else if (callBackInterface != null && callBackInterface instanceof UiHotCircleInterface
+            } else if (callBackInterface != null && callBackInterface instanceof MyCreateCircleResponse
                     && command == Engine.COMMAND_GET_MY_CREATE_CIRCLE) {
 
             } else if (callBackInterface != null && callBackInterface instanceof UiHotCircleInterface
                     && command == Engine.COMMAND_GET_CHOICE_CIRCLE) {
 
             } else if (callBackInterface != null
-                    && callBackInterface instanceof UiHotCircleInterface
+                    && callBackInterface instanceof MyJoinCircleInterface
                     && command == Engine.COMMAND_GET_MY_JOIN_CIRCLE) {
 
             } else if (callBackInterface != null
@@ -191,21 +194,26 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface
                 && command == Engine.COMMAND_REFRESH_PASSWORD) {
             LocalLog.d(TAG, s);
-        } else if (callBackInterface != null && callBackInterface instanceof UiHotCircleInterface
+        } else if (callBackInterface != null && callBackInterface instanceof MyCreatCircleInterface
                 && command == Engine.COMMAND_GET_MY_CREATE_CIRCLE) {
             LocalLog.d(TAG, "获取我创建的圈子");
             MyCreateCircleResponse myCreateCircleResponse = new Gson().fromJson(s, MyCreateCircleResponse.class);
-            ((UiHotCircleInterface) callBackInterface).response(myCreateCircleResponse);
+            ((MyCreatCircleInterface) callBackInterface).response(myCreateCircleResponse);
         } else if (callBackInterface != null && callBackInterface instanceof UiHotCircleInterface
                 && command == Engine.COMMAND_GET_CHOICE_CIRCLE) {
             ChoiceCircleResponse choiceCircleResponse = new Gson().fromJson(s, ChoiceCircleResponse.class);
             ((UiHotCircleInterface) callBackInterface).response(choiceCircleResponse);
         } else if (callBackInterface != null
-                && callBackInterface instanceof UiHotCircleInterface
+                && callBackInterface instanceof MyJoinCircleInterface
                 && command == Engine.COMMAND_GET_MY_JOIN_CIRCLE) {
             LocalLog.d(TAG, "我加入的圈子");
             MyJoinCircleResponse myJoinCircleResponse = new Gson().fromJson(s, MyJoinCircleResponse.class);
-            ((UiHotCircleInterface) callBackInterface).response(myJoinCircleResponse);
+            ((MyJoinCircleInterface) callBackInterface).response(myJoinCircleResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof UiHotCircleInterface
+                && command == Engine.COMMAND_GET_MY_HOT) {
+            MyHotCircleResponse myHotCircleResponse = new Gson().fromJson(s, MyHotCircleResponse.class);
+            ((UiHotCircleInterface) callBackInterface).response(myHotCircleResponse);
         } else if (callBackInterface != null
                 && callBackInterface instanceof UiCreateCircleInterface
                 && command == Engine.COMMAND_CIRCLE_TYPE) {

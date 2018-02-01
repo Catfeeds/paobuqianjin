@@ -19,6 +19,9 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.CirclePageAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
@@ -38,16 +41,8 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
     ViewPager ownerCreateJoinPager;
 
     private android.support.design.widget.TabLayout createOrJoin;
-    private ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> ownerCreateCircleData;
-    private ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> ownerJoinCircleData;
-
-    public void setOwnerCreateCircleData(ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> ownerCreateCircleData,
-                                         ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> ownerJoinCircleData) {
-        this.ownerCreateCircleData = ownerCreateCircleData;
-        this.ownerJoinCircleData = ownerJoinCircleData;
-
-        LocalLog.d(TAG, "setOwnerCreateCircleData() enter" + ownerCreateCircleData.toString());
-    }
+    private OwnerCreateFragment ownerCreateFragment = new OwnerCreateFragment();
+    private OwnerJoinFragment ownerJoinFragment = new OwnerJoinFragment();
 
     @Override
     protected int getLayoutResId() {
@@ -67,10 +62,6 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        OwnerCreateFragment ownerCreateFragment = new OwnerCreateFragment();
-        ownerCreateFragment.setOwnerCreateCircleData(ownerCreateCircleData);
-        OwnerJoinFragment ownerJoinFragment = new OwnerJoinFragment();
-        ownerJoinFragment.setOwnerCircleData(ownerJoinCircleData);
         String[] title = {"我创建的", "我加入的"};
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(ownerCreateFragment);
@@ -133,6 +124,7 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
     }
 
     @Override
+
     public void onDestroyView() {
         super.onDestroyView();
     }

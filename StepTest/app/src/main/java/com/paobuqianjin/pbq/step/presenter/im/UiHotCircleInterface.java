@@ -13,6 +13,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 public interface UiHotCircleInterface extends CallBackInterface {
     //圈子活动回调
     public void response(CircleTypeResponse circleTypeResponse);
+
     //精选圈子回调
     public void response(ChoiceCircleResponse choiceCircleResponse);
 
@@ -21,4 +22,6 @@ public interface UiHotCircleInterface extends CallBackInterface {
 
     //我加入的圈子
     public void response(MyJoinCircleResponse myJoinCircleResponse);
+
+    public void response(MyHotCircleResponse myHotCircleResponse);
 }

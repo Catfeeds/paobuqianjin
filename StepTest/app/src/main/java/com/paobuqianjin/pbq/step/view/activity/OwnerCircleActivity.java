@@ -32,7 +32,7 @@ public class OwnerCircleActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         LocalLog.d(TAG, "initView() enter");
-        Intent intent = getIntent();
+       /* Intent intent = getIntent();
         MyCreateCircleBundleData myCreateCircleBundleData = null;
         MyJoinCreateCircleBudleData myJoinCreateCircleBudleData = null;
         if (intent != null && intent.getParcelableExtra(getPackageName() + "my_create") != null) {
@@ -44,7 +44,7 @@ public class OwnerCircleActivity extends BaseActivity {
         //TODO 区分ACTION
         if (myCreateCircleBundleData != null && myJoinCreateCircleBudleData != null) {
             ownerCircleFragment.setOwnerCreateCircleData(myCreateCircleBundleData.getMyCreateCircleData(), myJoinCreateCircleBudleData.getMyJoinCircleData());
-        }
+        }*/
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.owner_circle_container, ownerCircleFragment)
                 .show(ownerCircleFragment).commit();

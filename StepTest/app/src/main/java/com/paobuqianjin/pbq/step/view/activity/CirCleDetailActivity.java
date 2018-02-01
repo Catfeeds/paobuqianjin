@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.fragment.circle.CircleDetailFragment;
 
@@ -13,6 +14,7 @@ import com.paobuqianjin.pbq.step.view.fragment.circle.CircleDetailFragment;
  */
 
 public class CirCleDetailActivity extends BaseActivity {
+    private final static String TAG = CirCleDetailActivity.class.getSimpleName();
     private CircleDetailFragment circleDetailFragment = new CircleDetailFragment();
 
     @Override
@@ -28,6 +30,7 @@ public class CirCleDetailActivity extends BaseActivity {
         if (intent != null) {
             int circleId = intent.getIntExtra(getPackageName() + "circleid", -1);
             int memberNum = intent.getIntExtra(getPackageName() + "membernum", -1);
+            LocalLog.d(TAG, "circleId = " + circleId + " membernum = " + memberNum);
             if (circleId != -1 && memberNum > 0) {
                 circleDetailFragment.setCircleId(this, circleId, memberNum);
             }

@@ -89,6 +89,10 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        Presenter.getInstance(getContext()).attachUiInterface(uiStepAndLoveRankInterface);
+        Presenter.getInstance(getContext()).getCircleRechargeRand(circleId);
+        Presenter.getInstance(getContext()).getCircleStepRank(circleId);
+        Presenter.getInstance(getContext()).getCircleDetail(circleId);
     }
 
 
@@ -124,10 +128,6 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).attachUiInterface(uiStepAndLoveRankInterface);
-        Presenter.getInstance(getContext()).getCircleRechargeRand(circleId);
-        Presenter.getInstance(getContext()).getCircleStepRank(circleId);
-        Presenter.getInstance(getContext()).getCircleDetail(circleId);
         return rootView;
     }
 

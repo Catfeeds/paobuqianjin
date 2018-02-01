@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.bundle.MyJoinCreateCircleBudleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -80,7 +79,7 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
                 holder.joinIn.setText("充值");
                 holder.is_recharge = false;
             }
-            holder.setCircleid(tmpData.getCircleid());
+            holder.setCircleid(tmpData.getId());
             holder.setCircle_member_num(tmpData.getMember_number());
         } else if (data.get(position) instanceof MyJoinCircleResponse.DataBeanX.DataBean) {
             tmpData1 = (MyJoinCircleResponse.DataBeanX.DataBean) data.get(position);
@@ -95,7 +94,7 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
             holder.searchCircleDesListNum.setText(sFinalMember);
             holder.joinIn.setVisibility(View.GONE);
             holder.setCircle_member_num(tmpData1.getMember_number());
-            holder.setCircleid(tmpData1.getCircleid());
+            holder.setCircleid(tmpData1.getId());
         }
     }
 
