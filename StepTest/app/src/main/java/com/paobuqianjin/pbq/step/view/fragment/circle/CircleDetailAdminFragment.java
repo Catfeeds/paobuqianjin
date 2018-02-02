@@ -28,6 +28,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.AddFriendAddressActivity;
 import com.paobuqianjin.pbq.step.view.activity.LoveRankActivity;
+import com.paobuqianjin.pbq.step.view.activity.MemberManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.RankAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.RechargeRankSimpleAdapter;
@@ -101,7 +102,7 @@ public class CircleDetailAdminFragment extends BaseBarStyleTextViewFragment {
     private final static String CIRCLE_NAME = "name";
     private final static String CIRCLE_LOGO = "logo";
     private final static String QRCODE_ACTION = "android.intent.action.QRCODE";
-
+    private final static String MEMBER_MANANGER_ACTION = "android.intent.action.MAMBER_MANAGER_ACTION";
 
     /*
         public void setCircleId(Context context, int circleId, int circleNum, String targetStr, float total_money, float red_pack_money) {
@@ -251,7 +252,10 @@ public class CircleDetailAdminFragment extends BaseBarStyleTextViewFragment {
                     LocalLog.d(TAG, "编辑");
                     break;
                 case R.id.mananger_text:
-                    LocalLog.d(TAG, "管理");
+                    LocalLog.d(TAG, "成员管理");
+                    Bundle bundle = new Bundle();
+                    bundle.putString(CIRCLE_ID, String.valueOf(circleDetailResponse.getData().getId()));
+                    startActivity(MemberManagerActivity.class, bundle, false, MEMBER_MANANGER_ACTION);
                     break;
                 case R.id.cancle_text:
                     LocalLog.d(TAG, "解散");

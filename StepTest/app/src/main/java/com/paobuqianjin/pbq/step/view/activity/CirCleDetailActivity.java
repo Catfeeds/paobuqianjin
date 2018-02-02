@@ -49,19 +49,17 @@ public class CirCleDetailActivity extends BaseActivity implements CircleDetailIn
     public void response(CircleDetailResponse circleDetailResponse) {
 
         LocalLog.d(TAG, "CircleDetailResponse() ");
-        String sAgeFormat = getResources().getString(R.string.target_step);
-        String sFinalMember = String.format(sAgeFormat, circleDetailResponse.getData().getTarget());
         userIdCircleAdminMain = circleDetailResponse.getData().getUserid();
         if (Presenter.getInstance(this).getId() == userIdCircleAdminMain) {
             LocalLog.d(TAG, "当前用户为圈创建者");
-            circleDetailAdminFragment.setCircleDetail(circleDetailResponse,memberNum);
+            circleDetailAdminFragment.setCircleDetail(circleDetailResponse, memberNum);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.circle_detail_container, circleDetailAdminFragment)
                     .show(circleDetailAdminFragment)
                     .commit();
         } else {
             LocalLog.d(TAG, "当前用户普通");
-            circleDetailNoAdminMainFragment.setCircleDetail(circleDetailResponse,memberNum);
+            circleDetailNoAdminMainFragment.setCircleDetail(circleDetailResponse, memberNum);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.circle_detail_container, circleDetailNoAdminMainFragment)
                     .show(circleDetailNoAdminMainFragment)
