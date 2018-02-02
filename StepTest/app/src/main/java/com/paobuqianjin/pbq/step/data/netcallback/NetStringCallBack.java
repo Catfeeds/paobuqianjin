@@ -19,6 +19,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
@@ -40,6 +41,7 @@ import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
+import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
@@ -301,6 +303,11 @@ public class NetStringCallBack extends StringCallback {
             LocalLog.d(TAG, "获取圈子成员");
             CircleMemberResponse circleMemberResponse = new Gson().fromJson(s, CircleMemberResponse.class);
             ((CircleMemberManagerInterface) callBackInterface).response(circleMemberResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof TaskReleaseInterface
+                && command == Engine.COMMAND_TASK_RELEASE) {
+            TaskReleaseResponse taskReleaseResponse = new Gson().fromJson(s, TaskReleaseResponse.class);
+            ((TaskReleaseInterface) callBackInterface).response(taskReleaseResponse);
         } else {
             LocalLog.d(TAG, " dispatch not match");
         }

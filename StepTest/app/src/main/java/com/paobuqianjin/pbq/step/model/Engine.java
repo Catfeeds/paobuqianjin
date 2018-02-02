@@ -20,6 +20,7 @@ import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.paobuqianjin.pbq.step.data.Weather;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddFollowParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.WxPayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicContentParam;
@@ -46,6 +47,7 @@ import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
+import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
@@ -100,6 +102,7 @@ public final class Engine {
     private PayInterface payInterface;
     private WxPayResultQueryInterface payWxResultQueryInterface;
     private CircleMemberManagerInterface circleMemberManagerInterface;
+    private TaskReleaseInterface taskReleaseInterface;
     private Picasso picasso = null;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
@@ -130,6 +133,7 @@ public final class Engine {
     public final static int COMMAND_PAY_RESULT_QUERY_WX = 25;
     public final static int COMMAND_GET_MY_HOT = 26;
     public final static int COMMAND_GET_MEMBER = 27;
+    public final static int COMMAND_TASK_RELEASE = 28;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1073,6 +1077,18 @@ public final class Engine {
                 .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_LOGIN_BY_THIRD));
     }
 
+    //TODO 任务接口
+    public void taskRelease(TaskReleaseParam taskReleaseParam) {
+        LocalLog.d(TAG, taskReleaseParam.paramString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlTask)
+                .params(taskReleaseParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(taskReleaseInterface,COMMAND_TASK_RELEASE));
+
+    }
+
     public void getTest() {
         LocalLog.d(TAG, "############################测试所有接口#####################");
 
@@ -1128,6 +1144,8 @@ public final class Engine {
             circleDetailInterface = (CircleDetailInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CircleMemberManagerInterface) {
             circleMemberManagerInterface = (CircleMemberManagerInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskReleaseInterface) {
+            taskReleaseInterface = (TaskReleaseInterface) uiCallBackInterface;
         }
 
     }
@@ -1164,6 +1182,8 @@ public final class Engine {
             circleDetailInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CircleMemberManagerInterface) {
             circleMemberManagerInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskReleaseInterface) {
+            taskReleaseInterface = null;
         }
     }
 }

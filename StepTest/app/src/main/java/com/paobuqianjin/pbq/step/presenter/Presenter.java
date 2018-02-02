@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.ImageView;
 
+import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.WxPayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicParam;
@@ -248,6 +249,11 @@ public final class Presenter {
     //TODO 三方登录
     public void postThirdPartyLogin(ThirdPartyLoginParam thirdPartyLoginParam) {
         engine.PostThirdPartyLogin(thirdPartyLoginParam);
+    }
+
+    //TODO 任务接口
+    public void taskRelease(TaskReleaseParam taskReleaseParam) {
+        engine.taskRelease(taskReleaseParam);
     }
 
     public void getWeather() {

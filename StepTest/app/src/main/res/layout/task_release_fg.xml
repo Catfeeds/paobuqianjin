@@ -243,4 +243,16 @@
             android:textColor="@color/color_8a8a8a"
             android:textSize="12sp" />
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/create_button"
+        android:stateListAnimator="@null"
+        android:text="确认"
+        android:textColor="@color/color_fefefe"
+        android:textSize="16sp" />
 </RelativeLayout>

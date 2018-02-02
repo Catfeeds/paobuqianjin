@@ -1,16 +1,22 @@
 package com.paobuqianjin.pbq.step.view.fragment.task;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.SelectFriendForTaskActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -80,6 +86,9 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
     ImageView addIco;
     @Bind(R.id.attention)
     TextView attention;
+    @Bind(R.id.confirm)
+    Button confirm;
+    private TaskReleaseParam taskReleaseParam = new TaskReleaseParam();
 
     @Override
     protected String title() {
@@ -89,6 +98,12 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
     @Override
     protected int getLayoutResId() {
         return R.layout.task_release_fg;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Presenter.getInstance(context).attachUiInterface(taskReleaseInterface);
     }
 
     @Override
@@ -103,9 +118,18 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(taskReleaseInterface);
     }
 
-    @OnClick({R.id.target_task_span, R.id.add_task_friend, R.id.add_ico})
+    private TaskReleaseInterface taskReleaseInterface = new TaskReleaseInterface() {
+        @Override
+        public void response(TaskReleaseResponse taskReleaseResponse) {
+            LocalLog.d(TAG, "TaskReleaseResponse() enter");
+
+        }
+    };
+
+    @OnClick({R.id.target_task_span, R.id.add_task_friend, R.id.add_ico, R.id.confirm})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.target_task_span:
@@ -113,13 +137,18 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
                 break;
             case R.id.add_task_friend:
                 LocalLog.d(TAG, "添加任务好友");
-                startActivity(SelectFriendForTaskActivity.class,null);
+                startActivity(SelectFriendForTaskActivity.class, null);
                 break;
             case R.id.add_ico:
                 LocalLog.d(TAG, "查看所有接入任务的好友");
+                break;
+            case R.id.confirm:
+                LocalLog.d(TAG, "发布任务");
+                Presenter.getInstance(getContext()).taskRelease(taskReleaseParam);
                 break;
             default:
                 break;
         }
     }
+
 }
