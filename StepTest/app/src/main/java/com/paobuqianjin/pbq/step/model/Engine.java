@@ -33,6 +33,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
@@ -91,6 +92,7 @@ public final class Engine {
     private MyCreatCircleInterface myCreatCircleInterface;
     private ReflashMyCircleInterface reflashMyCircleInterface;
     private UiStepAndLoveRankInterface uiStepAndLoveRankInterface;
+    private CircleDetailInterface circleDetailInterface;
     private DynamicIndexUiInterface dynamicIndexUiInterface;
     private DynamicCommentUiInterface dynamicCommentUiInterface;
     private OwnerUiInterface ownerUiInterface;
@@ -781,7 +783,7 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(uiStepAndLoveRankInterface, COMMAND_GET_CIRCLE_DETAIL));
+                .execute(new NetStringCallBack(circleDetailInterface, COMMAND_GET_CIRCLE_DETAIL));
     }
 
     public void putCircle(CreateCircleBodyParam createCircleBodyParam, int circleId) {
@@ -1119,6 +1121,8 @@ public final class Engine {
             myJoinCircleInterface = (MyJoinCircleInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyCreatCircleInterface) {
             myCreatCircleInterface = (MyCreatCircleInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CircleDetailInterface) {
+            circleDetailInterface = (CircleDetailInterface) uiCallBackInterface;
         }
 
     }
@@ -1151,6 +1155,8 @@ public final class Engine {
             myJoinCircleInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyCreatCircleInterface) {
             myCreatCircleInterface = null;
+        }else if (uiCallBackInterface != null && uiCallBackInterface instanceof CircleDetailInterface) {
+            circleDetailInterface = null;
         }
 
     }

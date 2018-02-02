@@ -9,7 +9,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
  */
 
 public interface UiStepAndLoveRankInterface extends CallBackInterface {
-    public void response(CircleDetailResponse circleDetailResponse);
 
     public void response(ReChargeRankResponse reChargeRankResponse);
 

@@ -1,16 +1,16 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
-import java.util.List;
-
 /**圈子详情应答
  * Created by pbq on 2017/12/23.
+ * 2018/2/2
  */
 
 public class CircleDetailResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"userid":1,"id":100000,"typeid":2,"name":"烦死了","cover":"http://www.paobu.com/img/bg01.png","target":40000,"mobile":"18276810054","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","is_pwd":1,"password":"123456","tags":[{"id":3,"name":"90后"},{"id":4,"name":"爱运动"},{"id":5,"name":"美少女"}],"description":"表表表表表表","city":"东莞","longitude":"0.9999999999","latitude":"0.9999999999","total_amount":"562.82","red_packet_amount":"100","red_packet":10,"creattime":1514601774}
+     * data : {"id":100110,"userid":1,"name":"一样可以想像","cover":"http://www.paobu.com/img/bg04.png","target":5000,"mobile":"13922895735","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/62529131-E1E3-4B70-AB6A-7C606AC3D8CE.jpg","is_pwd":0,"description":"在线教育家办学的确很","city":"深圳市","longitude":"0.9999999999","latitude":"0.9999999999","total_amount":"1.00","is_recharge":1,"red_packet_amount":"1","red_packet":1,"create_time":1517018768}
      */
 
     private int error;
@@ -52,54 +52,42 @@ public class CircleDetailResponse {
 
     public static class DataBean {
         /**
+         * id : 100110
          * userid : 1
-         * id : 100000
-         * typeid : 2
-         * name : 烦死了
-         * cover : http://www.paobu.com/img/bg01.png
-         * target : 40000
-         * mobile : 18276810054
-         * logo : http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg
-         * is_pwd : 1
-         * password : 123456
-         * tags : [{"id":3,"name":"90后"},{"id":4,"name":"爱运动"},{"id":5,"name":"美少女"}]
-         * description : 表表表表表表
-         * city : 东莞
+         * name : 一样可以想像
+         * cover : http://www.paobu.com/img/bg04.png
+         * target : 5000
+         * mobile : 13922895735
+         * logo : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/62529131-E1E3-4B70-AB6A-7C606AC3D8CE.jpg
+         * is_pwd : 0
+         * description : 在线教育家办学的确很
+         * city : 深圳市
          * longitude : 0.9999999999
          * latitude : 0.9999999999
-         * total_amount : 562.82
-         * red_packet_amount : 100
-         * red_packet : 10
-         * creattime : 1514601774
+         * total_amount : 1.00
+         * is_recharge : 1
+         * red_packet_amount : 1
+         * red_packet : 1
+         * create_time : 1517018768
          */
 
-        private int userid;
         private int id;
-        private int typeid;
+        private int userid;
         private String name;
         private String cover;
         private int target;
         private String mobile;
         private String logo;
         private int is_pwd;
-        private String password;
         private String description;
         private String city;
         private String longitude;
         private String latitude;
         private String total_amount;
+        private int is_recharge;
         private String red_packet_amount;
         private int red_packet;
-        private int creattime;
-        private List<TagsBean> tags;
-
-        public int getUserid() {
-            return userid;
-        }
-
-        public void setUserid(int userid) {
-            this.userid = userid;
-        }
+        private int create_time;
 
         public int getId() {
             return id;
@@ -109,12 +97,12 @@ public class CircleDetailResponse {
             this.id = id;
         }
 
-        public int getTypeid() {
-            return typeid;
+        public int getUserid() {
+            return userid;
         }
 
-        public void setTypeid(int typeid) {
-            this.typeid = typeid;
+        public void setUserid(int userid) {
+            this.userid = userid;
         }
 
         public String getName() {
@@ -165,14 +153,6 @@ public class CircleDetailResponse {
             this.is_pwd = is_pwd;
         }
 
-        public String getPassword() {
-            return password;
-        }
-
-        public void setPassword(String password) {
-            this.password = password;
-        }
-
         public String getDescription() {
             return description;
         }
@@ -213,6 +193,14 @@ public class CircleDetailResponse {
             this.total_amount = total_amount;
         }
 
+        public int getIs_recharge() {
+            return is_recharge;
+        }
+
+        public void setIs_recharge(int is_recharge) {
+            this.is_recharge = is_recharge;
+        }
+
         public String getRed_packet_amount() {
             return red_packet_amount;
         }
@@ -229,79 +217,35 @@ public class CircleDetailResponse {
             this.red_packet = red_packet;
         }
 
-        public int getCreattime() {
-            return creattime;
+        public int getCreate_time() {
+            return create_time;
         }
 
-        public void setCreattime(int creattime) {
-            this.creattime = creattime;
-        }
-
-        public List<TagsBean> getTags() {
-            return tags;
-        }
-
-        public void setTags(List<TagsBean> tags) {
-            this.tags = tags;
+        public void setCreate_time(int create_time) {
+            this.create_time = create_time;
         }
 
         @Override
         public String toString() {
             return "DataBean{" +
-                    "userid=" + userid +
-                    ", id=" + id +
-                    ", typeid=" + typeid +
+                    "id=" + id +
+                    ", userid=" + userid +
                     ", name='" + name + '\'' +
                     ", cover='" + cover + '\'' +
                     ", target=" + target +
                     ", mobile='" + mobile + '\'' +
                     ", logo='" + logo + '\'' +
                     ", is_pwd=" + is_pwd +
-                    ", password='" + password + '\'' +
                     ", description='" + description + '\'' +
                     ", city='" + city + '\'' +
                     ", longitude='" + longitude + '\'' +
                     ", latitude='" + latitude + '\'' +
                     ", total_amount='" + total_amount + '\'' +
+                    ", is_recharge=" + is_recharge +
                     ", red_packet_amount='" + red_packet_amount + '\'' +
                     ", red_packet=" + red_packet +
-                    ", creattime=" + creattime +
-                    ", tags=" + tags +
+                    ", create_time=" + create_time +
                     '}';
-        }
-
-        public static class TagsBean {
-            /**
-             * id : 3
-             * name : 90后
-             */
-
-            private int id;
-            private String name;
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
-
-            public String getName() {
-                return name;
-            }
-
-            public void setName(String name) {
-                this.name = name;
-            }
-
-            @Override
-            public String toString() {
-                return "TagsBean{" +
-                        "id=" + id +
-                        ", name='" + name + '\'' +
-                        '}';
-            }
         }
     }
 }

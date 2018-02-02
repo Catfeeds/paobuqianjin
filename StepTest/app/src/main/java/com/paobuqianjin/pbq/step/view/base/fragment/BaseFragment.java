@@ -62,6 +62,18 @@ public abstract class BaseFragment extends Fragment {
         }
     }
 
+    public void startActivity(Class<? extends Activity> target, Bundle bundle, boolean finish, String action) {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), target);
+        intent.setAction(action);
+        if (bundle != null) {
+            intent.putExtra(getActivity().getPackageName(), bundle);
+        }
+        startActivity(intent);
+        if (finish)
+            getActivity().finish();
+    }
+
     protected void initView(View viewRoot) {
 
     }

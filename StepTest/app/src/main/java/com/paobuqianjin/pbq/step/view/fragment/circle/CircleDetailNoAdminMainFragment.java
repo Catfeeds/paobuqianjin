@@ -35,8 +35,8 @@ import butterknife.ButterKnife;
  * Created by pbq on 2017/12/29.
  */
 
-public class CircleDetailFragment extends BaseBarImageViewFragment {
-    private final static String TAG = CircleDetailFragment.class.getSimpleName();
+public class CircleDetailNoAdminMainFragment extends BaseBarImageViewFragment {
+    private final static String TAG = CircleDetailNoAdminMainFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -75,15 +75,35 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
     private LinearLayoutManager reChargeLayoutManager;
     private LinearLayoutManager stepLayoutManager;
     private RechargeRankBundleData rechargeRankBundleData;
+    private boolean isMainAdmin;
+    private String target;
+    private CircleDetailResponse circleDetailResponse = null;
+    private final static String CIRCLE_ID = "id";
+    private final static String CIRCLE_NAME = "name";
+    private final static String CIRCLE_LOGO = "logo";
+    private final static String QRCODE_ACTION = "android.intent.action.QRCODE";
+
 
     public int getCircleId() {
         return circleId;
     }
 
-    public void setCircleId(Context context, int circleId, int circleNum) {
+/*    public void setCircleId(Context context, int circleId, int circleNum, String targetStr, boolean isMainAdmin) {
         this.circleId = circleId;
         this.circleNum = circleNum;
+        this.isMainAdmin = isMainAdmin;
+        target = targetStr;
+
+    }*/
+
+    public void setCircleDetail(CircleDetailResponse circleDetailResponse, int circleNum) {
+        this.circleDetailResponse = circleDetailResponse;
+        if (circleDetailResponse != null) {
+            circleId = circleDetailResponse.getData().getId();
+            this.circleNum = circleNum;
+        }
     }
+
 
     @Override
     public void onAttach(Context context) {
@@ -92,7 +112,6 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
         Presenter.getInstance(getContext()).attachUiInterface(uiStepAndLoveRankInterface);
         Presenter.getInstance(getContext()).getCircleRechargeRand(circleId);
         Presenter.getInstance(getContext()).getCircleStepRank(circleId);
-        Presenter.getInstance(getContext()).getCircleDetail(circleId);
     }
 
 
@@ -103,12 +122,13 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.circle_detail_fg_normal;
+        return R.layout.circle_detail_fg_admin_main;
     }
 
     @Override
     public Object right() {
         return getDrawableResource(R.drawable.exit);
+
     }
 
     private ToolBarListener toolBarListener = new ToolBarListener() {
@@ -119,7 +139,7 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
 
         @Override
         public void clickRight() {
-
+            LocalLog.d(TAG, "普通用户点击");
         }
     };
 
@@ -150,8 +170,13 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
         memberNumDes.setText(sFinalMember);
         imageButton = (RelativeLayout) viewRoot.findViewById(R.id.image_button);
         imageButton.setOnClickListener(onClickListener);
+        setToolBarListener(toolBarListener);
 
-
+        if (circleDetailResponse != null) {
+            String targetFormat = getResources().getString(R.string.target_step);
+            target = String.format(targetFormat, circleDetailResponse.getData().getTarget());
+            circleObjDes.setText(target);
+        }
     }
 
     @Override
@@ -177,13 +202,20 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
     };
 
     private UiStepAndLoveRankInterface uiStepAndLoveRankInterface = new UiStepAndLoveRankInterface() {
-        @Override
+ /*       @Override
         public void response(CircleDetailResponse circleDetailResponse) {
             LocalLog.d(TAG, "CircleDetailResponse() ");
             String sAgeFormat = mContext.getResources().getString(R.string.target_step);
             String sFinalMember = String.format(sAgeFormat, circleDetailResponse.getData().getTarget());
             circleObjDes.setText(sFinalMember);
-        }
+            userIdCircleAdminMain = circleDetailResponse.getData().getUserid();
+            if (Presenter.getInstance(getContext()).getId() == userIdCircleAdminMain) {
+                LocalLog.d(TAG, "当前用户为圈创建者");
+
+            } else {
+                LocalLog.d(TAG, "当前用户普通");
+            }
+        }*/
 
         @Override
         public void response(ReChargeRankResponse reChargeRankResponse) {

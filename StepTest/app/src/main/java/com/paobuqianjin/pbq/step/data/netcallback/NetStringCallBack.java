@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
@@ -114,7 +115,7 @@ public class NetStringCallBack extends StringCallback {
                     && command == Engine.COMMAND_STEP_RANK) {
 
             } else if (callBackInterface != null
-                    && callBackInterface instanceof UiStepAndLoveRankInterface
+                    && callBackInterface instanceof CircleDetailInterface
                     && command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
 
             } else if (callBackInterface != null
@@ -233,11 +234,11 @@ public class NetStringCallBack extends StringCallback {
             StepRankResponse stepRankResponse = new Gson().fromJson(s, StepRankResponse.class);
             ((UiStepAndLoveRankInterface) callBackInterface).response(stepRankResponse);
         } else if (callBackInterface != null
-                && callBackInterface instanceof UiStepAndLoveRankInterface
+                && callBackInterface instanceof CircleDetailInterface
                 && command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
             LocalLog.d(TAG, "圈子详情");
             CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
-            ((UiStepAndLoveRankInterface) callBackInterface).response(circleDetailResponse);
+            ((CircleDetailInterface) callBackInterface).response(circleDetailResponse);
         } else if (callBackInterface != null
                 && callBackInterface instanceof TagFragInterface
                 && command == Engine.COMMAND_GET_TAG) {
