@@ -18,14 +18,15 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<RecyclerView.View
     private Context mContext;
     private int defaultValue = 10;
     private int spanType = 0;
-    private final static int TYPE_ADMIN_SPAN = 1;
-    private final static int TYPE_NORMAL_SPAN = 0;
-    //主管理员Item
+
+    //普通用户
     private final static int TYPE_MAIN_ADMIN = 0;
-    //普通管理员Item
+    //管理员
     private final static int TYPE_OTHER_ADMIN = 1;
-    //普通成员item
+    //主管理员
     private final static int TYPE_NORMAL_MEM = 2;
+
+    private final static int TYPE_NORMAL_MEM_DEFAULT = 3;
 
     public MemberManagerAdapter(Context context) {
         mContext = context;
@@ -62,6 +63,8 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<RecyclerView.View
                 LocalLog.d(TAG, "加载普通成员描述");
                 holder = new MemberNoAdminViewHolder(LayoutInflater.from(mContext).inflate(R.layout.circle_member_manager_list_c,
                         null, false));
+                break;
+            case TYPE_NORMAL_MEM_DEFAULT:
                 break;
             default:
                 holder = null;

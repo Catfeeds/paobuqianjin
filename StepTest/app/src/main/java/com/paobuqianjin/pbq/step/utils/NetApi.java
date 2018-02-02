@@ -16,7 +16,7 @@ public class NetApi {
     public final static String urlCircleType = "http://119.29.10.64/v1/CircleType";
     //圈子目标接口
     public final static String urlTarget = "http://119.29.10.64/v1/CircleTarget";
-    //圈子成员接口
+    //TODO 获取所有圈子成员
     public final static String urlCircleMember = "http://119.29.10.64/v1/CircleMember";
     //圈子订单类型接口
     public final static String urlCircleOrderType = "http://119.29.10.64/v1/CircleOrderType";

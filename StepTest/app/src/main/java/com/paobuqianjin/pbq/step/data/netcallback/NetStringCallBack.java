@@ -7,6 +7,7 @@ import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.NearByPeopleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
@@ -28,6 +29,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
+import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
@@ -293,6 +295,12 @@ public class NetStringCallBack extends StringCallback {
             LocalLog.d(TAG, "订单信息");
             WxPayResultResponse wxPayResultResponse = new Gson().fromJson(s, WxPayResultResponse.class);
             ((WxPayResultQueryInterface) callBackInterface).response(wxPayResultResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof CircleMemberManagerInterface
+                && command == Engine.COMMAND_GET_MEMBER) {
+            LocalLog.d(TAG, "获取圈子成员");
+            CircleMemberResponse circleMemberResponse = new Gson().fromJson(s, CircleMemberResponse.class);
+            ((CircleMemberManagerInterface) callBackInterface).response(circleMemberResponse);
         } else {
             LocalLog.d(TAG, " dispatch not match");
         }

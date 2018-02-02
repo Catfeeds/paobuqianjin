@@ -17,6 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.MemberManagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
@@ -72,14 +75,17 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Presenter.getInstance(context).attachUiInterface(circleMemberManagerInterface);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             if (MEMBER_MANANGER_ACTION.equals(intent.getAction())) {
                 Bundle bundle = intent.getBundleExtra(getContext().getPackageName());
                 id = bundle.getString(CIRCLE_ID, "");
                 LocalLog.d(TAG, "成员管理 circleid = " + id);
+                Presenter.getInstance(context).getCircleMemberAll(Integer.parseInt(id), 1, 10);
             }
         }
+
     }
 
     @Override
@@ -119,10 +125,18 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment {
         return "成员管理";
     }
 
+    private CircleMemberManagerInterface circleMemberManagerInterface = new CircleMemberManagerInterface() {
+        @Override
+        public void response(CircleMemberResponse circleMemberResponse) {
+            LocalLog.d(TAG, "circleMemberResponse() enter" + circleMemberResponse.toString());
+
+        }
+    };
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(circleMemberManagerInterface);
     }
 }

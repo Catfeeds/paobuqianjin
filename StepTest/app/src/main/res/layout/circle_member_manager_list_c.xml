@@ -5,31 +5,24 @@
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:id="@+id/member_info_desc_scroll"
-        android:scrollbars="none"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 
         <RelativeLayout
-            android:layout_marginLeft="14dp"
             android:layout_width="wrap_content"
-            android:layout_height="80dp">
+            android:layout_height="80dp"
+            android:layout_marginLeft="14dp">
 
-            <FrameLayout
+
+            <ImageView
                 android:id="@+id/select_user_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true">
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/circle_outline"
+                android:src="@drawable/selected_icon" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/circle_outline" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/selected_icon" />
-            </FrameLayout>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -57,24 +50,24 @@
                     android:textSize="15sp" />
 
                 <Button
-                    android:stateListAnimator="@null"
                     android:id="@+id/btn_modify_dear"
                     android:layout_width="75dp"
                     android:layout_height="80dp"
                     android:layout_marginLeft="121dp"
                     android:layout_toEndOf="@+id/member_name_in_circle"
                     android:background="@color/color_6c71c4"
+                    android:stateListAnimator="@null"
                     android:text="修改昵称"
                     android:textColor="@color/color_f8"
                     android:textSize="14sp" />
 
                 <Button
-                    android:stateListAnimator="@null"
                     android:id="@+id/bt_delete_admin"
                     android:layout_width="108dp"
                     android:layout_height="80dp"
                     android:layout_toEndOf="@+id/btn_modify_dear"
                     android:background="@color/color_e1e3fc"
+                    android:stateListAnimator="@null"
                     android:text=" 设为管理员"
                     android:textColor="@color/color_161727" />
             </RelativeLayout>

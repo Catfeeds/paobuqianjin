@@ -34,6 +34,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
+import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
@@ -98,6 +99,7 @@ public final class Engine {
     private OwnerUiInterface ownerUiInterface;
     private PayInterface payInterface;
     private WxPayResultQueryInterface payWxResultQueryInterface;
+    private CircleMemberManagerInterface circleMemberManagerInterface;
     private Picasso picasso = null;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
@@ -127,6 +129,7 @@ public final class Engine {
     public final static int COMMAND_CIRCLE_ORDER_POST = 24;
     public final static int COMMAND_PAY_RESULT_QUERY_WX = 25;
     public final static int COMMAND_GET_MY_HOT = 26;
+    public final static int COMMAND_GET_MEMBER = 27;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -562,7 +565,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //获取所有圈子成员
+    //TODO 获取所有圈子成员
     public void getCircleMemberAll(int circleid, int page, int pagesize) {
         LocalLog.d(TAG, "getCircleMemberAll() enter");
         String url = NetApi.urlCircleMember + "/" + String.valueOf(circleid)
@@ -571,7 +574,7 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(null, -1));
+                .execute(new NetStringCallBack(circleMemberManagerInterface, COMMAND_GET_MEMBER));
     }
 
     //关于我们类型 http://119.29.10.64/v1/abouttype
@@ -1123,6 +1126,8 @@ public final class Engine {
             myCreatCircleInterface = (MyCreatCircleInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CircleDetailInterface) {
             circleDetailInterface = (CircleDetailInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CircleMemberManagerInterface) {
+            circleMemberManagerInterface = (CircleMemberManagerInterface) uiCallBackInterface;
         }
 
     }
@@ -1155,9 +1160,10 @@ public final class Engine {
             myJoinCircleInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyCreatCircleInterface) {
             myCreatCircleInterface = null;
-        }else if (uiCallBackInterface != null && uiCallBackInterface instanceof CircleDetailInterface) {
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CircleDetailInterface) {
             circleDetailInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CircleMemberManagerInterface) {
+            circleMemberManagerInterface = null;
         }
-
     }
 }

@@ -179,8 +179,8 @@ public final class Presenter {
     }
 
     //TODO 我的圈子
-    public void getMyHotCircle(int page,int pagesize) {
-        engine.getMyHotCircle(page,pagesize);
+    public void getMyHotCircle(int page, int pagesize) {
+        engine.getMyHotCircle(page, pagesize);
     }
 
     //TODO 我加入的圈子
@@ -228,6 +228,11 @@ public final class Presenter {
 
     public NetworkPolicy getNetworkPolicy() {
         return engine.getNetworkPolicy();
+    }
+
+    //TODO 获取圈子成员
+    public void getCircleMemberAll(int circleId, int pageInex, int pageSize) {
+        engine.getCircleMemberAll(circleId, pageInex, pageSize);
     }
 
     //TODO 圈子订单WX
