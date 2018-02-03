@@ -1085,8 +1085,20 @@ public final class Engine {
                 .url(NetApi.urlTask)
                 .params(taskReleaseParam.getParams())
                 .build()
-                .execute(new NetStringCallBack(taskReleaseInterface,COMMAND_TASK_RELEASE));
+                .execute(new NetStringCallBack(taskReleaseInterface, COMMAND_TASK_RELEASE));
 
+    }
+
+    //TODO GET index 获取我的任务列表  http://119.29.10.64/v1/TaskRecord?action=all&userid=8
+    public void taskListAll() {
+        LocalLog.d(TAG, "taskListAll() enter");
+        String url = NetApi.urlTaskRecord + "?action=all&" + "userid=" + getId(mContext);
+        LocalLog.d(TAG, "url = " + url);
+/*        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute();*/
     }
 
     public void getTest() {
