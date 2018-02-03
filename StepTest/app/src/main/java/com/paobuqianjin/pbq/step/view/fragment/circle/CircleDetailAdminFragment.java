@@ -310,6 +310,10 @@ public class CircleDetailAdminFragment extends BaseBarStyleTextViewFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        if (popupOpWindow != null) {
+            popupOpWindow.dismiss();
+            popupOpWindow = null;
+        }
     }
 
     @OnClick(R.id.money_ret)

@@ -128,7 +128,6 @@ public class CircleDetailNoAdminMainFragment extends BaseBarImageViewFragment {
     @Override
     public Object right() {
         return getDrawableResource(R.drawable.exit);
-
     }
 
     private ToolBarListener toolBarListener = new ToolBarListener() {

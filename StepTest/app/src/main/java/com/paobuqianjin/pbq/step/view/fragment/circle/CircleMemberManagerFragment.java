@@ -26,6 +26,9 @@ import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -110,14 +113,6 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment {
         adminRecyclerView.setLayoutManager(adminManager);
         normalRecyclerView.setLayoutManager(normalManager);
 
-        MemberManagerAdapter adminAdapter = new MemberManagerAdapter(getContext());
-        adminAdapter.setDefaultValue(2, 0);
-        adminRecyclerView.setAdapter(adminAdapter);
-
-        MemberManagerAdapter normalAdapter = new MemberManagerAdapter(getContext());
-        normalAdapter.setDefaultValue(5, 1);
-        normalRecyclerView.setAdapter(normalAdapter);
-
     }
 
     @Override
@@ -125,11 +120,40 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment {
         return "成员管理";
     }
 
+    private ArrayList<CircleMemberResponse.DataBeanX.DataBean>[] getAdminList(CircleMemberResponse circleMemberResponse) {
+        LocalLog.d(TAG, "getAdminList() enter");
+        ArrayList<CircleMemberResponse.DataBeanX.DataBean>[] data = new ArrayList[3];
+        data[0] = new ArrayList<>();
+        data[1] = new ArrayList<>();
+        data[2] = new ArrayList<>();
+        for (int i = 0; i < circleMemberResponse.getData().getData().size(); i++) {
+            if (circleMemberResponse.getData().getData().get(i).getIs_admin() == 2) {
+                LocalLog.d(TAG, "主管理员");
+
+                data[0].add(circleMemberResponse.getData().getData().get(i));
+            } else if (circleMemberResponse.getData().getData().get(i).getIs_admin() == 1) {
+                LocalLog.d(TAG, "普通管理员");
+
+                data[1].add(circleMemberResponse.getData().getData().get(i));
+            } else if (circleMemberResponse.getData().getData().get(i).getIs_admin() == 0) {
+                LocalLog.d(TAG, "普通成员");
+                data[2].add(circleMemberResponse.getData().getData().get(i));
+            }
+        }
+        return data;
+    }
+
     private CircleMemberManagerInterface circleMemberManagerInterface = new CircleMemberManagerInterface() {
         @Override
         public void response(CircleMemberResponse circleMemberResponse) {
             LocalLog.d(TAG, "circleMemberResponse() enter" + circleMemberResponse.toString());
+            ArrayList<CircleMemberResponse.DataBeanX.DataBean>[] data = getAdminList(circleMemberResponse);
+            MemberManagerAdapter adminAdapter = new MemberManagerAdapter(getContext(), data[0], data[1]);
 
+            adminRecyclerView.setAdapter(adminAdapter);
+
+            MemberManagerAdapter normalAdapter = new MemberManagerAdapter(getContext(), data[2]);
+            normalRecyclerView.setAdapter(normalAdapter);
         }
     };
 

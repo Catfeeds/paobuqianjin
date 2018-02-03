@@ -11,8 +11,7 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:layout_marginLeft="14dp">
+            android:layout_height="80dp">
 
 
             <ImageView
@@ -20,8 +19,10 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
                 android:background="@drawable/circle_outline"
-                android:src="@drawable/selected_icon" />
+                android:src="@drawable/selected_icon"
+                android:visibility="gone" />
 
 
             <RelativeLayout
@@ -59,7 +60,8 @@
                     android:stateListAnimator="@null"
                     android:text="修改昵称"
                     android:textColor="@color/color_f8"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/bt_delete_admin"
@@ -69,7 +71,8 @@
                     android:background="@color/color_e1e3fc"
                     android:stateListAnimator="@null"
                     android:text=" 设为管理员"
-                    android:textColor="@color/color_161727" />
+                    android:textColor="@color/color_161727"
+                    android:visibility="gone" />
             </RelativeLayout>
 
         </RelativeLayout>
