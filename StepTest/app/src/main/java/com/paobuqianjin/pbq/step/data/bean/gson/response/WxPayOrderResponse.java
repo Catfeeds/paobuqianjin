@@ -15,7 +15,7 @@ public class WxPayOrderResponse {
     /**
      * error : 0
      * message : success
-     * data : {"out_trade_no":"1517384948282","appid":"wx1ed4ccc9a2226a73","partnerid":"1495263342","prepayid":"wx20180131154908ccd9850e5d0554443044","package":"Sign=WXPay","noncestr":"A3Dp0ouiGJK2Pn5z","timestamp":1517384948,"sign":"ED32354F8EDDA68F69C2B23D5506063E"}
+     * data : {"appid":"wx1ed4ccc9a2226a73","partnerid":"1495263342","prepayid":"wx2018020314154474759cf71c0986846128","package":"Sign=WXPay","noncestr":"t86603068o5jaq9escojzb8h82bdbj0z","timestamp":1517638544,"sign":"EE66CEA452A2BEE4AF90AD5D9A066E59","order_no":"1517638544829"}
      */
 
     private int error;
@@ -46,28 +46,18 @@ public class WxPayOrderResponse {
         this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return "WxPayOrderResponse{" +
-                "error=" + error +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
-    }
-
     public static class DataBean {
         /**
-         * out_trade_no : 1517384948282
          * appid : wx1ed4ccc9a2226a73
          * partnerid : 1495263342
-         * prepayid : wx20180131154908ccd9850e5d0554443044
+         * prepayid : wx2018020314154474759cf71c0986846128
          * package : Sign=WXPay
-         * noncestr : A3Dp0ouiGJK2Pn5z
-         * timestamp : 1517384948
-         * sign : ED32354F8EDDA68F69C2B23D5506063E
+         * noncestr : t86603068o5jaq9escojzb8h82bdbj0z
+         * timestamp : 1517638544
+         * sign : EE66CEA452A2BEE4AF90AD5D9A066E59
+         * order_no : 1517638544829
          */
 
-        private String out_trade_no;
         private String appid;
         private String partnerid;
         private String prepayid;
@@ -76,14 +66,7 @@ public class WxPayOrderResponse {
         private String noncestr;
         private int timestamp;
         private String sign;
-
-        public String getOut_trade_no() {
-            return out_trade_no;
-        }
-
-        public void setOut_trade_no(String out_trade_no) {
-            this.out_trade_no = out_trade_no;
-        }
+        private String order_no;
 
         public String getAppid() {
             return appid;
@@ -141,17 +124,25 @@ public class WxPayOrderResponse {
             this.sign = sign;
         }
 
+        public String getOrder_no() {
+            return order_no;
+        }
+
+        public void setOrder_no(String order_no) {
+            this.order_no = order_no;
+        }
+
         @Override
         public String toString() {
             return "DataBean{" +
-                    "out_trade_no='" + out_trade_no + '\'' +
-                    ", appid='" + appid + '\'' +
+                    "appid='" + appid + '\'' +
                     ", partnerid='" + partnerid + '\'' +
                     ", prepayid='" + prepayid + '\'' +
                     ", packageX='" + packageX + '\'' +
                     ", noncestr='" + noncestr + '\'' +
                     ", timestamp=" + timestamp +
                     ", sign='" + sign + '\'' +
+                    ", order_no='" + order_no + '\'' +
                     '}';
         }
     }

@@ -105,10 +105,12 @@ public class NetApi {
 
     //TODO 三方登录
     public final static String urlThirdLogin = "http://119.29.10.64/v1/user/thirdPartyLogin";
-    //TODO 微信支付接口
-    public final static String urlWxPayOrder = "http://119.29.10.64/v1/WxPay/createOrder";
+    //TODO 通用支付接口
+    public final static String urlPay = "http://119.29.10.64/v1/Pay";
+    //TODO 创建充值订单
+    public final static String urlPayOrder = "http://119.29.10.64/v1/Pay/createOrder";
     //TODO WX 订单查询
-    public final static String urlPayResultOrderNo = "http://119.29.10.64/v1/WxPay/";
+    public final static String urlPayResultOrderNo = "http://119.29.10.64/v1/Pay/orderQuery";
 
     //TODO 任务接口
     public final static String urlTask = "http://119.29.10.64/v1/Task";

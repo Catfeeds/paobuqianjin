@@ -636,7 +636,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 ResultHelper result = null;
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
                 result = putObjectSample.start(path);
-                LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
+                //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
                 url = result.cosXmlResult.accessUrl;
                 LocalLog.d(TAG, "url = " + url);
 

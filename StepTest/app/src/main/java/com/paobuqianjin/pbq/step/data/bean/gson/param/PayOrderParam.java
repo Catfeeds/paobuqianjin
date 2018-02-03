@@ -7,19 +7,19 @@ import java.util.Map;
  * Created by pbq on 2018/1/27.
  */
 /*
-@className :WxPayOrderParam
+@className :PayOrderParam
 *@date 2018/1/27
 *@author
 *@description  微信支付订单参数
 */
-public class WxPayOrderParam {
-    public String getAction() {
-        return action;
+public class PayOrderParam {
+    public String getPayment_type() {
+        return payment_type;
     }
 
-    public WxPayOrderParam setAction(String action) {
-        this.action = action;
-        params.put("action", action);
+    public PayOrderParam setPayment_type(String payment_type) {
+        this.payment_type = payment_type;
+        params.put("payment_type", payment_type);
         return this;
     }
 
@@ -29,15 +29,35 @@ public class WxPayOrderParam {
      total_fee	充值金额	true	float
      circleid	圈子ID	false	int
      taskid	任务ID	false	int
+
+     payment_type	支付类型 wx微信支付 | ali支付宝支付	true	int
+order_type	circle圈子订单 | user用户订单 | task任务订单	true	string
+userid	用户ID	true	int
+total_fee	充值金额	true	float
+circleid	圈子ID	false	int
+taskid	任务ID	false	int
      */
-    private String action;
+    private String payment_type;
     private int taskid;
     private int userid;
     private int circleid;
-    private int total_fee;
+    private float total_fee;
+
+    public String getOrder_type() {
+        return order_type;
+    }
+
+    public PayOrderParam setOrder_type(String order_type) {
+        this.order_type = order_type;
+        params.put("order_type", order_type);
+        return this;
+    }
+
+    private String order_type;
     private Map<String, String> params;
 
-    public WxPayOrderParam() {
+
+    public PayOrderParam() {
         if (params == null) {
             params = new LinkedHashMap<>();
         }
@@ -47,7 +67,7 @@ public class WxPayOrderParam {
         return taskid;
     }
 
-    public WxPayOrderParam setTaskid(int taskid) {
+    public PayOrderParam setTaskid(int taskid) {
         this.taskid = taskid;
         params.put("taskid", String.valueOf(taskid));
         return this;
@@ -57,7 +77,7 @@ public class WxPayOrderParam {
         return userid;
     }
 
-    public WxPayOrderParam setUserid(int userid) {
+    public PayOrderParam setUserid(int userid) {
         this.userid = userid;
         params.put("userid", String.valueOf(userid));
         return this;
@@ -67,7 +87,7 @@ public class WxPayOrderParam {
         return circleid;
     }
 
-    public WxPayOrderParam setCircleid(int circleid) {
+    public PayOrderParam setCircleid(int circleid) {
         this.circleid = circleid;
         params.put("circleid", String.valueOf(circleid));
         return this;
@@ -79,12 +99,14 @@ public class WxPayOrderParam {
 
     @Override
     public String toString() {
-        return "WxPayOrderParam{" +
-                "action='" + action + '\'' +
+        return "PayOrderParam{" +
+                "payment_type='" + payment_type + '\'' +
                 ", taskid=" + taskid +
                 ", userid=" + userid +
                 ", circleid=" + circleid +
                 ", total_fee=" + total_fee +
+                ", order_type='" + order_type + '\'' +
+                ", params=" + params +
                 '}';
     }
 
@@ -96,7 +118,7 @@ public class WxPayOrderParam {
         this.params = params;
     }
 
-    public WxPayOrderParam setTotal_fee(int total_fee) {
+    public PayOrderParam setTotal_fee(float total_fee) {
         this.total_fee = total_fee;
         params.put("total_fee", String.valueOf(total_fee));
         return this;

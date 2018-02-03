@@ -5,8 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.widget.ImageView;
 
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.WxPayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
@@ -237,13 +237,13 @@ public final class Presenter {
     }
 
     //TODO 圈子订单WX
-    public void postCircleOrder(WxPayOrderParam wxPayOrderParam) {
+    public void postCircleOrder(PayOrderParam wxPayOrderParam) {
         engine.postWxPayOrder(wxPayOrderParam);
     }
 
     //TODO 获取订单详情 WX
-    public void getWxPayResultByOrderNo(String orderTradeNo) {
-        engine.getWxPayResultByOrderNo(orderTradeNo);
+    public void getWxPayResultByOrderNo(String orderTradeNo, String payment_type) {
+        engine.getWxPayResultByOrderNo(orderTradeNo, payment_type);
     }
 
     //TODO 三方登录

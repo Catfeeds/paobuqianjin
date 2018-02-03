@@ -20,8 +20,8 @@ import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.paobuqianjin.pbq.step.data.Weather;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddFollowParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.WxPayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicParam;
@@ -33,6 +33,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
+import com.paobuqianjin.pbq.step.presenter.im.AllPayOrderInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
@@ -72,7 +73,6 @@ import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlRegisterPhone;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlThirdLogin;
-import static com.umeng.socialize.utils.DeviceConfig.context;
 
 /**
  * Created by pbq on 2017/11/29.
@@ -103,6 +103,7 @@ public final class Engine {
     private WxPayResultQueryInterface payWxResultQueryInterface;
     private CircleMemberManagerInterface circleMemberManagerInterface;
     private TaskReleaseInterface taskReleaseInterface;
+    private AllPayOrderInterface allPayOrderInterface;
     private Picasso picasso = null;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
@@ -134,6 +135,7 @@ public final class Engine {
     public final static int COMMAND_GET_MY_HOT = 26;
     public final static int COMMAND_GET_MEMBER = 27;
     public final static int COMMAND_TASK_RELEASE = 28;
+    private final static int COMMAND_ALL_PAY_ORDER = 29;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1044,19 +1046,30 @@ public final class Engine {
     }
 
     //TODO 圈子订单 WX
-    public void postWxPayOrder(WxPayOrderParam wxPayOrderParam) {
+    public void postWxPayOrder(PayOrderParam wxPayOrderParam) {
         LocalLog.d(TAG, wxPayOrderParam.paramString());
         OkHttpUtils
                 .post()
-                .url(NetApi.urlWxPayOrder)
+                .url(NetApi.urlPayOrder)
                 .params(wxPayOrderParam.getParams())
                 .build()
                 .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST));
     }
 
-    //TODO 订单详情 WX
-    public void getWxPayResultByOrderNo(String orderTradeNo) {
-        String url = NetApi.urlPayResultOrderNo + orderTradeNo;
+    //TODO 获取我的订单 http://119.29.10.64/v1/Pay?userid=1
+    public void getMyPayOrders() {
+        String url = NetApi.urlPay + "?userid=" + String.valueOf(getId(mContext));
+        LocalLog.d(TAG, "getMyPayOrders() " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(allPayOrderInterface, COMMAND_ALL_PAY_ORDER));
+    }
+
+    //TODO 订单详情 http://119.29.10.64/v1/Pay/orderQuery?order_no=1517535057897&payment_type=wx
+    public void getWxPayResultByOrderNo(String orderTradeNo, String payment_type) {
+        String url = NetApi.urlPayResultOrderNo + "?order_no=" + orderTradeNo + "&payment_type=" + payment_type;
         LocalLog.d(TAG, "getWxPayResultByOrderNo() url = " + url);
         OkHttpUtils
                 .get()
@@ -1089,7 +1102,7 @@ public final class Engine {
 
     }
 
-    //TODO GET index 获取我的任务列表  http://119.29.10.64/v1/TaskRecord?action=all&userid=8
+
     public void taskListAll() {
         LocalLog.d(TAG, "taskListAll() enter");
         String url = NetApi.urlTaskRecord + "?action=all&" + "userid=" + getId(mContext);

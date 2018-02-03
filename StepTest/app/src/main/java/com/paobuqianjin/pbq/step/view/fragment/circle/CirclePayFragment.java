@@ -3,9 +3,7 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.WxPayOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.PayResultActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -154,7 +151,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         pay = bundle.getString(CIRCLE_RECHARGE, "");
         payAction = bundle.getString(PAY_FOR_STYLE, "");
         LocalLog.d(TAG, "id = " + id + " name = "
-                + name + " logo= " + logo + " pay= " + pay);
+                + name + " logo= " + logo + " pay= " + pay + " payAction = " + payAction);
         wechatPaySelect = (ImageView) viewRoot.findViewById(R.id.wechat_pay_select);
         walletPaySelect = (ImageView) viewRoot.findViewById(R.id.wallet_pay_select);
         moneyNum = (TextView) viewRoot.findViewById(R.id.money_num);
@@ -235,10 +232,11 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                 if (style == 0) {
                     dialog = ProgressDialog.show(getContext(), "提示" + "支付方式" + String.valueOf(style),
                             "正在提交订单");
-                    WxPayOrderParam wxPayOrderParam = new WxPayOrderParam();
+                    PayOrderParam wxPayOrderParam = new PayOrderParam();
                     wxPayOrderParam.setCircleid(Integer.parseInt(id))
-                            .setAction(payAction)
-                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(Integer.parseInt(pay));
+                            .setPayment_type("wx")
+                            .setOrder_type(payAction)
+                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(0.01f);
                     Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
                 } else {
                     Toast.makeText(getContext(), "其他支付方式暂时未开通,请选择微信", Toast.LENGTH_SHORT).show();
@@ -263,7 +261,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         req.sign = wxPayOrderResponse.getData().getSign();
         req.timeStamp = String.valueOf(wxPayOrderResponse.getData().getTimestamp());
 
-        Presenter.getInstance(getContext()).setOutTradeNo(wxPayOrderResponse.getData().getOut_trade_no());
+        Presenter.getInstance(getContext()).setOutTradeNo(wxPayOrderResponse.getData().getOrder_no());
         msgApi.registerApp(req.appId);
         msgApi.sendReq(req);
     }

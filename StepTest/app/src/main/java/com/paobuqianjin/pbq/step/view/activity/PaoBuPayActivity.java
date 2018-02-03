@@ -88,7 +88,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
                             .show(paySuccessFragment)
                             .commit();*/
                     LocalLog.d(TAG, "查询订单");
-                    Presenter.getInstance(this).getWxPayResultByOrderNo(outTradeNo);
+                    Presenter.getInstance(this).getWxPayResultByOrderNo(outTradeNo,"wx" );
                 } else if (resultCode == -1) {
     /*                LocalLog.d(TAG, "支付失败!");
                     PayFailedFragment payFailedFragment = new PayFailedFragment();
