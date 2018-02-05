@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.presenter;
 
 import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.ImageView;
 
@@ -116,8 +117,8 @@ public final class Presenter {
         engine.getMsg(phone);
     }
 
-    public void getNearByPeople() {
-        engine.getNearByPeople();
+    public void getNearByPeople(double latitude, double longitude) {
+        engine.getNearByPeople(latitude, longitude);
     }
 
     public void registerByPhoneNumber(String[] userInfo) {
@@ -140,8 +141,12 @@ public final class Presenter {
         engine.getUserRecord(userId);
     }
 
-    public void getUserStep(int id) {
-        engine.getUserStep(id);
+    public void getUserStep() {
+        engine.getUserStep();
+    }
+
+    public void postUserStep(int step_num) {
+        engine.postUserStep(step_num);
     }
 
     //TODO 获取动态列表
@@ -222,13 +227,18 @@ public final class Presenter {
         engine.joinCircle(circleId, password);
     }
 
-    // 获取标签列表
+    // TODO 获取标签列表
     public void getCircleTag() {
         engine.getCircleTag();
     }
 
     public NetworkPolicy getNetworkPolicy() {
         return engine.getNetworkPolicy();
+    }
+
+    //TODO 广播处理
+    public void handBroadcast(Intent intent) {
+        engine.handBroadcast(intent);
     }
 
     //TODO 获取圈子成员

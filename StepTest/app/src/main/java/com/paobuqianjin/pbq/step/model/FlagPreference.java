@@ -125,4 +125,19 @@ public final class FlagPreference {
         editor.putString("start_service_time", startServiceTime);
         editor.commit();
     }
+
+    public static int getUnEffectStep(Context context) {
+        //获取登录时已经积累的步数
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        int unEffectStep = flagPreference.getInt("un_effect_step", -1);
+        return unEffectStep;
+    }
+
+    public static void setUnEffectStep(Context context, int unEffectStep) {
+        //获取登录时已经积累的步数
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putInt("un_effect_step", unEffectStep);
+        editor.commit();
+    }
 }

@@ -5,7 +5,7 @@
 
     <include
         android:id="@+id/title_bar"
-        layout="@layout/bar_return_a_style"></include>
+        layout="@layout/bar_return_b_style"></include>
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"

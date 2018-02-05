@@ -14,6 +14,7 @@ import com.paobuqianjin.pbq.step.view.base.PaoBuApplication;
 public class LocalBaiduService extends Service {
     private final static String TAG = LocalBaiduService.class.getSimpleName();
     private LocationService locationService;
+    private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
 
     public LocalBaiduService() {
     }
@@ -26,7 +27,7 @@ public class LocalBaiduService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        LocalLog.d(TAG,"onStartCommand()   发起百度定位！");
+        LocalLog.d(TAG, "onStartCommand()   发起百度定位!");
         handleLocationIntent();
         return START_STICKY;
     }
@@ -35,6 +36,7 @@ public class LocalBaiduService extends Service {
     public void onDestroy() {
         super.onDestroy();
         unlinkBaiDuMap();
+        LocalLog.d(TAG, "onDestroy() enter");
     }
 
     private void unlinkBaiDuMap() {
@@ -60,6 +62,7 @@ public class LocalBaiduService extends Service {
             return false;
         }
     }
+
 
     /*****
      *
@@ -154,6 +157,11 @@ public class LocalBaiduService extends Service {
                     sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
                 }
                 LocalLog.d(TAG, sb.toString());
+                Intent intent = new Intent(LOCATION_ACTION);
+                intent.putExtra("city", location.getCity());
+                intent.putExtra("latitude", location.getLatitude());
+                intent.putExtra("longitude", location.getLongitude());
+                sendBroadcast(intent);
             }
         }
 

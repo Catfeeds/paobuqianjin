@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_near_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="14dp"
+        android:src="@drawable/default_head_ico" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@+id/user_near_icon">
+
+        <TextView
+            android:id="@+id/dear_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="喵喵"
+            android:textColor="@color/color_161727"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/step_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dear_name"
+            android:layout_marginTop="13dp"
+            android:text="当天健步12步"
+            android:textColor="@color/color_646464"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/step_desc"
+            android:layout_alignTop="@+id/step_desc"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/step_desc"
+            android:text="90m"
+            android:textColor="@color/color_646464"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/bt_follow"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="14dp"
+        android:background="@drawable/has_not_fllow_nearby"
+        android:text="关注"
+        android:textColor="@color/color_6c71c4"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@+id/user_near_icon"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_646464" />
+</RelativeLayout>

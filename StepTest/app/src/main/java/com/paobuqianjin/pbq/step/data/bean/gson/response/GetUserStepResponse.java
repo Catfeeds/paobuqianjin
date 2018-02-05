@@ -8,7 +8,7 @@ public class GetUserStepResponse {
     /**
      * error : 0
      * message : success
-     * data : {"id":23,"userid":1,"step_number":999999999,"updatetime":1513586717,"creattime":1513580177}
+     * data : {"id":41,"userid":56,"step_number":700,"update_time":1517824876,"create_time":1517824403}
      */
 
     private int error;
@@ -39,20 +39,29 @@ public class GetUserStepResponse {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "GetUserStepResponse{" +
+                "error=" + error +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public static class DataBean {
         /**
-         * id : 23
-         * userid : 1
-         * step_number : 999999999
-         * updatetime : 1513586717
-         * creattime : 1513580177
+         * id : 41
+         * userid : 56
+         * step_number : 700
+         * update_time : 1517824876
+         * create_time : 1517824403
          */
 
         private int id;
         private int userid;
         private int step_number;
-        private long updatetime;
-        private long creattime;
+        private int update_time;
+        private int create_time;
 
         public int getId() {
             return id;
@@ -78,20 +87,31 @@ public class GetUserStepResponse {
             this.step_number = step_number;
         }
 
-        public long getUpdatetime() {
-            return updatetime;
+        public int getUpdate_time() {
+            return update_time;
         }
 
-        public void setUpdatetime(int updatetime) {
-            this.updatetime = updatetime;
+        public void setUpdate_time(int update_time) {
+            this.update_time = update_time;
         }
 
-        public long getCreattime() {
-            return creattime;
+        public int getCreate_time() {
+            return create_time;
         }
 
-        public void setCreattime(int creattime) {
-            this.creattime = creattime;
+        public void setCreate_time(int create_time) {
+            this.create_time = create_time;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "id=" + id +
+                    ", userid=" + userid +
+                    ", step_number=" + step_number +
+                    ", update_time=" + update_time +
+                    ", create_time=" + create_time +
+                    '}';
         }
     }
 }

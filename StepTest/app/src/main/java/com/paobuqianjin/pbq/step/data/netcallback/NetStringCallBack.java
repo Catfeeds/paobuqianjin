@@ -1,10 +1,7 @@
 package com.paobuqianjin.pbq.step.data.netcallback;
 
-import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.NearByPeopleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
@@ -17,6 +14,8 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
@@ -33,9 +32,11 @@ import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
@@ -83,10 +84,6 @@ public class NetStringCallBack extends StringCallback {
 
                 }
                 if (command == Engine.COMMAND_REG_BY_PHONE) {
-
-                }
-
-                if (command == Engine.COMMAND_NEARBY_PEOPLE) {
 
                 }
             } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {
@@ -186,10 +183,6 @@ public class NetStringCallBack extends StringCallback {
                 ((LoginSignCallbackInterface) callBackInterface).registerByPhoneCallBack(signUserResponse);
             }
 
-            if (command == Engine.COMMAND_NEARBY_PEOPLE) {
-                NearByPeopleResponse nearByPeopleResponse = new Gson().fromJson(s, NearByPeopleResponse.class);
-                LocalLog.d(TAG, nearByPeopleResponse.toString());
-            }
         } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {
             UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
             ((UserInfoInterface) callBackInterface).update(userInfoResponse);
@@ -308,6 +301,17 @@ public class NetStringCallBack extends StringCallback {
                 && command == Engine.COMMAND_TASK_RELEASE) {
             TaskReleaseResponse taskReleaseResponse = new Gson().fromJson(s, TaskReleaseResponse.class);
             ((TaskReleaseInterface) callBackInterface).response(taskReleaseResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof HomePageInterface
+                && command == Engine.COMMAND_POST_USER_STEP) {
+            PostUserStepResponse postUserStepResponse = new Gson().fromJson(s, PostUserStepResponse.class);
+            ((HomePageInterface) callBackInterface).response(postUserStepResponse);
+        } else if (callBackInterface != null
+                && callBackInterface instanceof NearByInterface
+                && command == Engine.COMMAND_NEARBY_PEOPLE) {
+            LocalLog.d(TAG, "附近的人");
+            NearByResponse nearByResponse = new Gson().fromJson(s, NearByResponse.class);
+            ((NearByInterface) callBackInterface).response(nearByResponse);
         } else {
             LocalLog.d(TAG, " dispatch not match");
         }

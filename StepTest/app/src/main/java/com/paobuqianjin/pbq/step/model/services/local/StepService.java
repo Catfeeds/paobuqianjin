@@ -18,14 +18,19 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.renderscript.RenderScript;
+import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 
+import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.utils.DateUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.MainActivity;
+import com.paobuqianjin.pbq.step.view.base.adapter.MemberManagerAdapter;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -55,7 +60,7 @@ public class StepService extends Service implements SharedPreferences.OnSharedPr
     private int mTempStep;
     private final static int TYPE_SENSOR_COUNT = 0;
     private final static int TYPE_SENSOR_DETECTOR = 1;
-    private Messenger messenger = new Messenger(new MessengerHandler());
+    private Messenger messenger = new Messenger(new MessengerHandler(this));
     private final static int MSG_SEND_DATA_TO_SETP_SERVICE = 0;
     private final static int MSG_SEND_DATA_TO_ENGINE = 1;
     //数据更新时间戳
@@ -63,6 +68,9 @@ public class StepService extends Service implements SharedPreferences.OnSharedPr
     private String currentTime;
     private TickTimer tickTimer;
     private long FLUSH_RATE = 3000;
+    //无效步数
+    private int unEffectStep;
+    private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
 
     public StepService() {
     }
@@ -79,8 +87,12 @@ public class StepService extends Service implements SharedPreferences.OnSharedPr
         super.onCreate();
         LocalLog.d(TAG, "onCreate() enter");
         init();
+        unEffectStep = Engine.getEngine(this).getUnEffectStep(this);
         boolean isSuccess = registerStepSensor();
-        LocalLog.d(TAG, "注册计步Sensor " + isSuccess);
+        if (!isSuccess) {
+            LocalLog.d(TAG, "注册计步Sensor 失败" + isSuccess);
+            return;
+        }
         setForeGroundNotify();
         setStartServiceTime();
         startTick();
@@ -163,9 +175,16 @@ public class StepService extends Service implements SharedPreferences.OnSharedPr
     }
 
     private static class MessengerHandler extends Handler {
+        StepService stepService;
+        WeakReference<StepService> weakReference = new WeakReference<StepService>(stepService);
+
+        public MessengerHandler(StepService stepService) {
+            this.stepService = stepService;
+        }
+
         @Override
         public void handleMessage(Message msg) {
-
+            StepService stepService = weakReference.get();
             switch (msg.what) {
                 case MSG_SEND_DATA_TO_SETP_SERVICE:
                     LocalLog.d(TAG, "handleMessage() enter Engine -> send " + msg.getData().getString("Engine"));
@@ -175,13 +194,13 @@ public class StepService extends Service implements SharedPreferences.OnSharedPr
                     bundle.putString("StepService", "StepService -> Engine");
                     message.setData(bundle);
                     try {
+                        LocalLog.d(TAG, "reply() to");
                         msg.replyTo.send(message);
                     } catch (RemoteException e) {
                         LocalLog.e(TAG, "failed!");
                     } finally {
 
                     }
-
                     //TODO
                     break;
 
@@ -224,8 +243,25 @@ public class StepService extends Service implements SharedPreferences.OnSharedPr
         public void onSensorChanged(SensorEvent sensorEvent) {
             if (mSensorType == TYPE_SENSOR_COUNT) {
                 mTotalStep = (int) sensorEvent.values[0];
-                mCurDayStep = mTotalStep - mTempStep;
                 LocalLog.d(TAG, "mTotalStep =  " + mTotalStep);
+                if (unEffectStep == -1) {
+                    mCurDayStep = mTotalStep - unEffectStep;
+                    Engine.getEngine(StepService.this).setUnEffectStep(StepService.this, mTotalStep);
+                    LocalLog.d(TAG, "onSensorChanged() unEffectStep == -1");
+                } else {
+                    mCurDayStep = mTotalStep - unEffectStep;
+                    if (mCurDayStep < 0) {
+                        LocalLog.d(TAG, "机器重启过");
+                        Engine.getEngine(StepService.this).setUnEffectStep(StepService.this, mTotalStep);
+                        unEffectStep = 0;
+                    }
+                    LocalLog.d(TAG, "onSensorChanged() unEffectStep =" + unEffectStep);
+                }
+                Intent intent = new Intent(STEP_ACTION);
+                intent.putExtra("today_step", mCurDayStep);
+                StepService.this.sendBroadcast(intent);
+
+
             } else if (mSensorType == TYPE_SENSOR_DETECTOR) {
                 //TODO  Now No USE
             } else {

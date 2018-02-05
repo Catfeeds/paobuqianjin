@@ -134,61 +134,61 @@
                 <action android:name="android.intent.action.paobuqianjin.PAY_RESULT" />
             </intent-filter>
         </activity>
-        <!--忘记密码-->
+        <!-- 忘记密码 -->
         <activity android:name=".view.activity.LoginForgetPassActivity" />
-        <!--任务发布-->
+        <!-- 任务发布 -->
         <activity
             android:name=".view.activity.TaskReleaseActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--选择任务发布对象-->
+        <!-- 选择任务发布对象 -->
         <activity
             android:name=".view.activity.SelectFriendForTaskActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--任务详情-->
+        <!-- 任务详情 -->
         <activity
             android:name=".view.activity.TaskDetailActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--个人榜单-->
+        <!-- 个人榜单 -->
         <activity
             android:name=".view.activity.FriendStepDanActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--圈子榜单-->
+        <!-- 圈子榜单 -->
         <activity android:name=".view.activity.CircleStepDanActivity" />
-        <!--我的钱包-->
+        <!-- 我的钱包 -->
         <activity
             android:name=".view.activity.MyWalletActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme"></activity>
-        <!--商家详情-->
+            android:theme="@style/ImageTranslucentTheme" />
+        <!-- 商家详情 -->
         <activity
             android:name=".view.activity.SponsorDetailActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--商品图片详情-->
+        <!-- 商品图片详情 -->
         <activity
             android:name=".view.activity.SponsorGoodsPicLookActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme"></activity>
-        <!--系统消息-->
+            android:theme="@style/ImageTranslucentTheme" />
+        <!-- 系统消息 -->
         <activity
             android:name=".view.activity.SystemMsgActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--查看评论-->
+        <!-- 查看评论 -->
         <activity
             android:name=".view.activity.UserCenterContentActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme"></activity>
-        <!--提现-->
+            android:theme="@style/ImageTranslucentTheme" />
+        <!-- 提现 -->
         <activity
             android:name=".view.activity.CrashActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--邀请有礼-->
+        <!-- 邀请有礼 -->
         <activity
             android:name=".view.activity.InviteActivity"
             android:launchMode="singleTask"
@@ -197,53 +197,53 @@
             android:name=".view.activity.StepDollarActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--我的好友-->
+        <!-- 我的好友 -->
         <activity
             android:name=".view.activity.MyFriendActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--通讯录好友-->
+        <!-- 通讯录好友 -->
         <activity
             android:name=".view.activity.FriendAddressActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--添加好友-->
+        <!-- 添加好友 -->
         <activity
             android:name=".view.activity.AddFriendAddressActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--修改资料-->
+        <!-- 修改资料 -->
         <activity
             android:name=".view.activity.UserInfoSettingActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--我的动态-->
+        <!-- 我的动态 -->
         <activity
             android:name=".view.activity.MyDynamicActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--我的关注-->
+        <!-- 我的关注 -->
         <activity
             android:name=".view.activity.MyLikeFriendActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--消息-->
+        <!-- 消息 -->
         <activity
             android:name=".view.activity.MessageActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--意见反馈-->
+        <!-- 意见反馈 -->
         <activity
             android:name=".view.activity.SuggestionActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--关于我们-->
+        <!-- 关于我们 -->
         <activity
             android:name=".view.activity.AboutActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!--  -->
-        <!--我的段位-->
+        <!-- 我的段位 -->
         <activity
             android:name=".view.activity.DanActivity"
             android:launchMode="singleTask"
@@ -255,7 +255,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -301,9 +300,7 @@
         <activity
             android:name=".view.activity.UitetsActivity"
             android:label="@string/title_activity_uitets"
-            android:theme="@style/ImageTranslucentTheme">
-
-        </activity>
+            android:theme="@style/ImageTranslucentTheme"></activity>
 
         <service
             android:name=".model.services.local.LocalBaiduService"
@@ -312,7 +309,16 @@
 
         <receiver android:name=".model.broadcast.NetStateReceiver">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"></action>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".model.broadcast.StepLocationReciver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.paobuqianjian.intent.ACTION_STEP" />
+                <action android:name="com.paobuqianjin.intent.ACTION_LOCATION" />
             </intent-filter>
         </receiver>
     </application>

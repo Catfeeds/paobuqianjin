@@ -19,7 +19,7 @@ import com.paobuqianjin.pbq.step.view.fragment.circle.CircleDetailNoAdminMainFra
 
 public class CirCleDetailActivity extends BaseActivity implements CircleDetailInterface {
     private final static String TAG = CirCleDetailActivity.class.getSimpleName();
-    private CircleDetailNoAdminMainFragment circleDetailNoAdminMainFragment = new CircleDetailNoAdminMainFragment();
+    /*    private CircleDetailNoAdminMainFragment circleDetailNoAdminMainFragment = new CircleDetailNoAdminMainFragment();*/
     private CircleDetailAdminFragment circleDetailAdminFragment = new CircleDetailAdminFragment();
     private int userIdCircleAdminMain = -1;
     private int circleId = -1;
@@ -50,21 +50,11 @@ public class CirCleDetailActivity extends BaseActivity implements CircleDetailIn
 
         LocalLog.d(TAG, "CircleDetailResponse() ");
         userIdCircleAdminMain = circleDetailResponse.getData().getUserid();
-        if (Presenter.getInstance(this).getId() == userIdCircleAdminMain) {
-            LocalLog.d(TAG, "当前用户为圈创建者");
-            circleDetailAdminFragment.setCircleDetail(circleDetailResponse, memberNum);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.circle_detail_container, circleDetailAdminFragment)
-                    .show(circleDetailAdminFragment)
-                    .commit();
-        } else {
-            LocalLog.d(TAG, "当前用户普通");
-            circleDetailNoAdminMainFragment.setCircleDetail(circleDetailResponse, memberNum);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.circle_detail_container, circleDetailNoAdminMainFragment)
-                    .show(circleDetailNoAdminMainFragment)
-                    .commit();
-        }
+        circleDetailAdminFragment.setCircleDetail(circleDetailResponse, memberNum);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.circle_detail_container, circleDetailAdminFragment)
+                .show(circleDetailAdminFragment)
+                .commit();
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.paobuqianjin.pbq.step.data.Weather;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddFollowParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostUserStepParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicContentParam;
@@ -39,9 +40,11 @@ import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
@@ -69,6 +72,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
 
+import static com.paobuqianjin.pbq.step.utils.NetApi.urlCircleMember;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlRegisterPhone;
@@ -83,7 +87,7 @@ public final class Engine {
     private static Engine engine;
     private static Context mContext;
     private StepServerConnection connection = new StepServerConnection();
-    private Messenger messenger;
+    private Messenger messengerStep;
     private Messenger serviceMessenger = new Messenger(new ServiceHandler());
     private final static int MSG_SEND_DATA_TO_SETP_SERVICE = 0;
     private final static int MSG_SEND_DATA_TO_ENGINE = 1;
@@ -104,6 +108,10 @@ public final class Engine {
     private CircleMemberManagerInterface circleMemberManagerInterface;
     private TaskReleaseInterface taskReleaseInterface;
     private AllPayOrderInterface allPayOrderInterface;
+    private HomePageInterface homePageInterface;
+    private NearByInterface nearByInterface;
+    private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
+    private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
@@ -135,7 +143,8 @@ public final class Engine {
     public final static int COMMAND_GET_MY_HOT = 26;
     public final static int COMMAND_GET_MEMBER = 27;
     public final static int COMMAND_TASK_RELEASE = 28;
-    private final static int COMMAND_ALL_PAY_ORDER = 29;
+    public final static int COMMAND_ALL_PAY_ORDER = 29;
+    public final static int COMMAND_POST_USER_STEP = 30;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -194,13 +203,33 @@ public final class Engine {
         mContext.unbindService(connection);
     }
 
+    private class LocationServerConnection implements ServiceConnection {
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            LocalLog.d(TAG, "LocationServerConnection onServiceDisconnected() enter");
+
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            LocalLog.d(TAG, "LocationServerConnection onServiceConnected() enter");
+            if (iBinder != null) {
+                messengerStep = new Messenger(iBinder);
+
+            }
+
+        }
+    }
+
     private class StepServerConnection implements ServiceConnection {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             LocalLog.d(TAG, "onServiceConnected() = " + componentName);
             if (iBinder != null) {
-                messenger = new Messenger(iBinder);
+                messengerStep = new Messenger(iBinder);
                 sendToService(new Bundle(), MSG_SEND_DATA_TO_SETP_SERVICE);
+            } else {
+                LocalLog.d(TAG, "iBinder is null");
             }
 
         }
@@ -213,14 +242,14 @@ public final class Engine {
 
     public void sendToService(Bundle bundle, int what) {
         LocalLog.d(TAG, "sendBundleToService() enter");
-        if (messenger != null) {
+        if (messengerStep != null) {
             Message msg = Message.obtain();
             msg.what = what;
             bundle.putString("Engine", "Engine -> StepService");
             msg.setData(bundle);
             msg.replyTo = serviceMessenger;
             try {
-                messenger.send(msg);
+                messengerStep.send(msg);
             } catch (RemoteException e) {
                 LocalLog.d(TAG, "sendToService() failed");
                 e.printStackTrace();
@@ -275,8 +304,15 @@ public final class Engine {
         FlagPreference.setStartServiceTime(context, startServiceTime);
     }
 
+    public int getUnEffectStep(Context context) {
+        return FlagPreference.getUnEffectStep(context);
+    }
+
+    public void setUnEffectStep(Context context, int step) {
+        FlagPreference.setUnEffectStep(context, step);
+    }
+
     public void getUserInfo(final int userId) {
-        LocalLog.d(TAG, "getUserInfo() enter");
         String url = NetApi.urlUser + String.valueOf(userId);
         LocalLog.d(TAG, "getUserInfo() url = " + url);
         OkHttpUtils
@@ -337,14 +373,15 @@ public final class Engine {
                 .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_REG_BY_PHONE));
     }
 
-    //获取附近的人
-    public void getNearByPeople() {
-        LocalLog.d(TAG, "urlNearByPeople() enter");
+    //TODO 获取附近的人http://119.29.10.64/v1/user/getNearbyPeople?userid=1&longitude=86.26000&latitude=35.17000
+    public void getNearByPeople(double latitude, double longitude) {
+        String url = urlNearByPeople + "userid=1" + "&longitude=" + String.valueOf(longitude) + "&latitude=" + String.valueOf(latitude);
+        LocalLog.d(TAG, "url = " + url);
         OkHttpUtils
                 .get()
-                .url(urlNearByPeople)
+                .url(url)
                 .build()
-                .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_NEARBY_PEOPLE));
+                .execute(new NetStringCallBack(nearByInterface, COMMAND_NEARBY_PEOPLE));
     }
 
     //获取验证码
@@ -640,14 +677,19 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //修改备注名称和设为管理员
+    //TODO 修改备注名称和设为管理员
     public void markAdminReset() {
         LocalLog.d(TAG, "markAdminReset() enter");
         String url = NetApi.urlCircleMember;
     }
 
+    //
+    public void loginOutCircle() {
+        LocalLog.d(TAG, "loginOutCircle() ");
+        String url = urlCircleMember + "/" + String.valueOf(getId(mContext));
+    }
 
-    //加入圈子
+    //TODO 加入圈子
     public void joinCircle(int circleid) {
         LocalLog.d(TAG, "joinCircle() enter");
         OkHttpUtils
@@ -659,6 +701,9 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, COMMAND_JOIN_CIRCLE));
     }
 
+    //TODO 退出圈子 和 批量删除成员
+
+    //TODO 加入有密码的圈子
     public void joinCircle(int circleid, String password) {
         LocalLog.d(TAG, "joinCircle() password");
         OkHttpUtils
@@ -845,10 +890,10 @@ public final class Engine {
 
     }
 
-    //请求方式get，地址：http://pb.com/v1/userstep/1 参数：用户id
-    public void getUserStep(int id) {
-        LocalLog.d(TAG, "getUserStep() enter");
-        String url = NetApi.urlUserStep + String.valueOf(id);
+    //TODO 请求方式get，地址：http://pb.com/v1/userstep/1 参数：用户id
+    public void getUserStep() {
+        String url = NetApi.urlUserStep + "/" + getId(mContext);
+        LocalLog.d(TAG, "getUserStep() enter url = " + url);
         OkHttpUtils
                 .get()
                 .url(url)
@@ -856,16 +901,19 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //请求方式：put，地址：http://pb.com/v1/userstep/1，参数：用户id，用户最新行走步数：step_number
-    public void putUserStep(int id, int todayStep) {
-        LocalLog.d(TAG, "putUserStep() enter");
-        String url = NetApi.urlUserStep + String.valueOf(id);
+    /*TODO 请求方式：POST
+    地址：http://119.29.10.64/v1/UserStep/updateStep*/
+    public void postUserStep(int step_num) {
+        PostUserStepParam postUserStepParam = new PostUserStepParam();
+        postUserStepParam.setUserid(String.valueOf(getId(mContext))).setStep_number(String.valueOf(step_num));
+        String url = NetApi.urlUserStep + "/updateStep";
+        LocalLog.d(TAG, "putUserStep() enter url =" + url + postUserStepParam.paramString());
         OkHttpUtils
-                .put()
-                /*.requestBody("application/x-www-form-urlencoded")*/
-                .param("step_number", String.valueOf(todayStep))
+                .post()
+                .params(postUserStepParam.getParams())
+                .url(url)
                 .build()
-                .execute(new NetStringCallBack(null, -1));
+                .execute(new NetStringCallBack(homePageInterface, COMMAND_POST_USER_STEP));
     }
 
     //获取昨日收益，当月收益，总收益，请求方式：get，地址：http://pb.com/v1/income/?id=1&action=yesterday，参数：用户id、action=all（总收益）、action=month（当月收益）、action=yesterday（昨日收益）
@@ -1119,11 +1167,6 @@ public final class Engine {
 
     }
 
-    //TODO get Weather
-    public void getWeather() {
-        Weather.getWeather(22.548335d, 114.02133d);
-    }
-
     private static class ServiceHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
@@ -1136,6 +1179,52 @@ public final class Engine {
         }
     }
 
+    //TODO HOME Page
+    public void getStepToday() {
+        LocalLog.d(TAG, "getStepToday() enter");
+    }
+
+    public void getTargetStep() {
+        LocalLog.d(TAG, "getTargetStep() enter");
+    }
+
+    public void getLocation() {
+        LocalLog.d(TAG, "getLocation() enter");
+    }
+
+    public void getIncomeToday() {
+        LocalLog.d(TAG, "getIncomeToday() enter");
+    }
+
+    public void getIncomeMonth() {
+        LocalLog.d(TAG, "getIncomeMonth() enter");
+    }
+
+    //TODO get Weather
+    public void getWeather() {
+        Weather.getWeather(22.548335d, 114.02133d);
+    }
+
+    //TODO 处理广播信息
+    public void handBroadcast(Intent intent) {
+        if (intent != null) {
+            if (STEP_ACTION.equals(intent.getAction())) {
+                LocalLog.d(TAG, "步数信息:");
+                if (homePageInterface != null) {
+                    int step = intent.getIntExtra("today_step", 0);
+                    homePageInterface.responseStepToday(step);
+                }
+            } else if (LOCATION_ACTION.equals(intent.getAction())) {
+                LocalLog.d(TAG, "定位信息");
+                if (homePageInterface != null) {
+                    String city = intent.getStringExtra("city");
+                    double la = intent.getDoubleExtra("latitude", 0d);
+                    double lb = intent.getDoubleExtra("longitude", 0d);
+                    homePageInterface.responseLocation(city, la, lb);
+                }
+            }
+        }
+    }
 
     //call onResume
     public void attachUiInterface(CallBackInterface uiCallBackInterface) {
@@ -1171,6 +1260,10 @@ public final class Engine {
             circleMemberManagerInterface = (CircleMemberManagerInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskReleaseInterface) {
             taskReleaseInterface = (TaskReleaseInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof HomePageInterface) {
+            homePageInterface = (HomePageInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof NearByInterface) {
+            nearByInterface = (NearByInterface) uiCallBackInterface;
         }
 
     }
@@ -1209,6 +1302,10 @@ public final class Engine {
             circleMemberManagerInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskReleaseInterface) {
             taskReleaseInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof HomePageInterface) {
+            homePageInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof NearByInterface) {
+            nearByInterface = null;
         }
     }
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,14 +25,12 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.AddFriendAddressActivity;
 import com.paobuqianjin.pbq.step.view.activity.LoveRankActivity;
 import com.paobuqianjin.pbq.step.view.activity.MemberManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.RankAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.RechargeRankSimpleAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import java.util.ArrayList;
 
@@ -45,7 +42,7 @@ import butterknife.OnClick;
  * Created by pbq on 2018/2/2.
  */
 
-public class CircleDetailAdminFragment extends BaseBarStyleTextViewFragment {
+public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
     private final static String TAG = CircleDetailAdminFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -54,7 +51,7 @@ public class CircleDetailAdminFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.bar_title)
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
-    TextView barTvRight;
+    ImageView barTvRight;
     @Bind(R.id.circle_obj_des)
     TextView circleObjDes;
     @Bind(R.id.circle_message)
@@ -133,7 +130,7 @@ public class CircleDetailAdminFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     public Object right() {
-        return "管理";
+        return getDrawableResource(R.drawable.exit);
     }
 
     @Override
@@ -154,12 +151,47 @@ public class CircleDetailAdminFragment extends BaseBarStyleTextViewFragment {
 
         @Override
         public void clickRight() {
-            LocalLog.d(TAG, "管理员界面");
-            popSelect();
+
+            if (circleDetailResponse.getData().getUserid() == Presenter.getInstance(getContext()).getId()) {
+                LocalLog.d(TAG, "管理员界面");
+                popAdminSelect();
+            } else {
+                popNoAdminSelect();
+            }
+
         }
     };
 
-    private void popSelect() {
+    private void popNoAdminSelect() {
+        LocalLog.d(TAG, "popNoAdminSelect() enter");
+        popCircleOpBar = View.inflate(getContext(), R.layout.top_share_no_admin, null);
+        popupOpWindow = new PopupWindow(popCircleOpBar,
+                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popCircleOpBar.findViewById(R.id.share_text).setOnClickListener(onClickListener);
+        popCircleOpBar.findViewById(R.id.exit_text).setOnClickListener(onClickListener);
+        popupOpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popWindow dismiss() ");
+                popupOpWindow = null;
+            }
+        });
+
+        popupOpWindow.setFocusable(true);
+        popupOpWindow.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupOpWindow.showAsDropDown(barTvRight, 20, -10);
+        popCircleOpBar.startAnimation(animationCircleType);
+    }
+
+    private void popAdminSelect() {
         popCircleOpBar = View.inflate(getContext(), R.layout.top_share_span, null);
         popupOpWindow = new PopupWindow(popCircleOpBar,
                 WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
@@ -259,6 +291,10 @@ public class CircleDetailAdminFragment extends BaseBarStyleTextViewFragment {
                     break;
                 case R.id.cancle_text:
                     LocalLog.d(TAG, "解散");
+                    break;
+                case R.id.exit_text:
+                    LocalLog.d(TAG, "退出");
+
                     break;
                 default:
                     break;
