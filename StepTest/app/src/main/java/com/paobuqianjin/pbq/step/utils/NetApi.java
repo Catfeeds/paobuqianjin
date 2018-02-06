@@ -31,7 +31,7 @@ public class NetApi {
     //TODO 发送验证码接口 请求方式 get,地址：http://pb.com/v1/user/sendmsg 参数：mobile 状态：0成功 -1失败
     public final static String urlSendMsg = "http://119.29.10.64/v1/user/sendMsg/?mobile=";
     //TODO 获取附近的人接口，请求方式：get 地址：http://pb.com/v1/user/?latitude=35.17000&longitude=86.26000，暂定10万米之内
-    public final static String urlNearByPeople = "http://119.29.10.64/v1/user/?";
+    public final static String urlNearByPeople = "http://119.29.10.64/v1/user/getNearbyPeople";
     //TODO 手机号注册账号 请求方式post 地址：http://pb.com/v1/user 参数：mobile、password、code
     public final static String urlRegisterPhone = "http://119.29.10.64/v1/user/";
     //TODO 请求类型put 地址：http://pb.com/v1/user/18276810055 参数：code和password加在put中

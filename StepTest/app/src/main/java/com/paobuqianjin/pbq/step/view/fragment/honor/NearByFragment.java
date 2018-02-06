@@ -38,6 +38,7 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
     public void onAttach(Context context) {
         super.onAttach(context);
         Presenter.getInstance(context).attachUiInterface(this);
+        Presenter.getInstance(context).getNearByPeople(0,0);
     }
 
     @Override

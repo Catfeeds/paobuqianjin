@@ -67,7 +67,7 @@ public class NearByResponse {
         private String longitude;
         private String latitude;
         private int login_time;
-        private int distance;
+        private double distance;
         private int user_step;
         private int is_follow;
 
@@ -127,7 +127,7 @@ public class NearByResponse {
             this.login_time = login_time;
         }
 
-        public int getDistance() {
+        public double getDistance() {
             return distance;
         }
 
