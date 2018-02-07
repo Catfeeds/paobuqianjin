@@ -136,7 +136,11 @@
         </activity>
         <!-- 忘记密码 -->
         <activity android:name=".view.activity.LoginForgetPassActivity" />
-
+        <!--选择提现账号-->
+        <activity
+            android:name=".view.activity.UserBindBankListActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
         <!--提现绑定微信-->
         <activity
             android:name=".view.activity.BindWeChatActivity"

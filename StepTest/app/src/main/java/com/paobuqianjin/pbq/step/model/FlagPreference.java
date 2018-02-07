@@ -60,6 +60,20 @@ public final class FlagPreference {
         editor.commit();
     }
 
+    public static String getMobile(Context context) {
+        LocalLog.d(TAG, "getOutTradeNo() 获取最新订单号");
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        String mobile = flagPreference.getString("mobile", "");
+        return mobile;
+    }
+
+    public static void setMobile(Context context, String mobile) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putString("mobile", mobile);
+        editor.commit();
+    }
+
     public static int getUid(Context context) {
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
 

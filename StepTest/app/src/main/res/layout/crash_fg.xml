@@ -54,7 +54,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
                 android:layout_toStartOf="@+id/go_to_wx"
-                android:text="用户昵称"
                 android:textColor="@color/color_cbcacf"
                 android:textSize="17sp" />
 

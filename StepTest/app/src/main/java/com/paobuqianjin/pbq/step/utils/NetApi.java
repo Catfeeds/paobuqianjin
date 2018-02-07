@@ -29,7 +29,7 @@ public class NetApi {
     //TODO 手机号登陆、微信登陆、微博登陆统一接口 请求方式post 地址：http://pb.com/v1/user/login 参数：mobile、password
     public final static String urlUserLogin = "http://119.29.10.64/v1/user/login";
     //TODO 发送验证码接口 请求方式 get,地址：http://pb.com/v1/user/sendmsg 参数：mobile 状态：0成功 -1失败
-    public final static String urlSendMsg = "http://119.29.10.64/v1/user/sendMsg/?mobile=";
+    public final static String urlSendMsg = "http://119.29.10.64/v1/ThirdParty/sendMsg/?mobile=";
     //TODO 获取附近的人接口，请求方式：get 地址：http://pb.com/v1/user/?latitude=35.17000&longitude=86.26000，暂定10万米之内
     public final static String urlNearByPeople = "http://119.29.10.64/v1/user/getNearbyPeople";
     //TODO 手机号注册账号 请求方式post 地址：http://pb.com/v1/user 参数：mobile、password、code
@@ -115,4 +115,7 @@ public class NetApi {
     //TODO 用户步数接口
     //TODO 获取用户当前步数信息 http://119.29.10.64/v1/userstep
     public final static String urlUserStep = "http://119.29.10.64/v1/userstep";
+    //TODO 提现账户接口
+    public final static String urlUserBankCard = "http://119.29.10.64/v1/UserBankCard";
+
 }

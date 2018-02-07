@@ -95,6 +95,14 @@ public final class Presenter {
         engine.setId(mContext, id);
     }
 
+    public void setMobile(Context context, String mobile) {
+        engine.setMobile(context,mobile);
+    }
+
+    public String getMobile(Context context){
+        return engine.getMobile(context);
+    }
+
     public Context getAppContext() {
         Context appContext = null;
         if (mContext != null) {
@@ -269,6 +277,11 @@ public final class Presenter {
     //TODO 任务接口
     public void taskRelease(TaskReleaseParam taskReleaseParam) {
         engine.taskRelease(taskReleaseParam);
+    }
+
+    //TODO
+    public void getUserBankCard() {
+        engine.getUserBankCard();
     }
 
     public void getWeather() {

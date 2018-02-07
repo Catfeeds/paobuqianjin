@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.data.netcallback;
 import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
@@ -32,6 +33,7 @@ import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
+import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
@@ -328,6 +330,12 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_INCOME_ALL) {
                 AllIncomeResponse allIncomeResponse = new Gson().fromJson(s, AllIncomeResponse.class);
                 ((UserIncomInterface) callBackInterface).responseAll(allIncomeResponse);
+            }
+        } else if (callBackInterface != null && callBackInterface instanceof CrashInterface) {
+            if (command == Engine.COMMAND_CRASH_BANK_CARD_LIST) {
+                LocalLog.d(TAG, "获取绑定列表");
+                BindCardListResponse bindCardListResponse = new Gson().fromJson(s, BindCardListResponse.class);
+                ((CrashInterface) callBackInterface).response(bindCardListResponse);
             }
         } else {
             LocalLog.d(TAG, " dispatch not match");

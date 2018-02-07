@@ -193,8 +193,10 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     public void responseAll(AllIncomeResponse allIncomeResponse) {
         LocalLog.d(TAG, " 所有收益 responseAll() enter" + allIncomeResponse.toString());
         String moneyFormat = getContext().getResources().getString(R.string.total_income);
-        String moneyStr = String.format(moneyFormat, allIncomeResponse.getData().getPagenation().getTotalCount());
-        incomeMoney.setText(moneyStr);
+        if (allIncomeResponse.getData().getPagenation() != null) {
+            String moneyStr = String.format(moneyFormat, allIncomeResponse.getData().getPagenation().getTotalCount());
+            incomeMoney.setText(moneyStr);
+        }
     }
 
     @Override

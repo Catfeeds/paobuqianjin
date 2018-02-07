@@ -169,7 +169,10 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                             removeMessages(MSG_UPDATE_STEP);
                         }
                         //ava.lang.NullPointerException: Attempt to invoke virtual method 'android.content.Context android.content.Context.getApplicationContext()' on a null obje
-                        Presenter.getInstance(homePageFragment.getContext()).postUserStep(msg.arg1);
+
+                        if (homePageFragment.getContext() != null) {
+                            Presenter.getInstance(homePageFragment.getContext()).postUserStep(msg.arg1);
+                        }
                         break;
                     default:
                         break;

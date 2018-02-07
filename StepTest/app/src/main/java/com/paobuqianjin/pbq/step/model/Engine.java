@@ -33,12 +33,12 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWithDrawParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
-import com.paobuqianjin.pbq.step.data.bean.table.User;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.AllPayOrderInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
+import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
@@ -113,6 +113,7 @@ public final class Engine {
     private HomePageInterface homePageInterface;
     private NearByInterface nearByInterface;
     private UserIncomInterface userIncomInterface;
+    private CrashInterface crashInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -152,6 +153,7 @@ public final class Engine {
     public final static int COMMAND_INCOME_TODAY = 32;
     public final static int COMMAND_INCOME_MONTH = 33;
     public final static int COMMAND_INCOME_ALL = 34;
+    public final static int COMMAND_CRASH_BANK_CARD_LIST = 35;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -301,6 +303,14 @@ public final class Engine {
 
     public void setId(Context context, int id) {
         FlagPreference.setUid(context, id);
+    }
+
+    public String getMobile(Context context) {
+        return FlagPreference.getMobile(context);
+    }
+
+    public void setMobile(Context context, String mobile) {
+        FlagPreference.setMobile(context,mobile);
     }
 
     public String getStartSportTime(Context context) {
@@ -1234,6 +1244,15 @@ public final class Engine {
         Weather.getWeather(22.548335d, 114.02133d);
     }
 
+    //TODO 获取账户列表 http://119.29.10.64/v1/UserBankCard?userid=1
+    public void getUserBankCard() {
+        String url = NetApi.urlUserBankCard + "?userid=" + String.valueOf(getId(mContext));
+        LocalLog.d(TAG, "getUserBankCard() enter url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(crashInterface, COMMAND_CRASH_BANK_CARD_LIST));
     //TODO 处理广播信息
     public void handBroadcast(Intent intent) {
         if (intent != null) {
@@ -1339,6 +1358,8 @@ public final class Engine {
             nearByInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserIncomInterface) {
             userIncomInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CrashInterface) {
+            crashInterface = null;
         }
     }
 }
