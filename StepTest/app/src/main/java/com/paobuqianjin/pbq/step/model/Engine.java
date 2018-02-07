@@ -1253,6 +1253,8 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(crashInterface, COMMAND_CRASH_BANK_CARD_LIST));
+    }
+
     //TODO 处理广播信息
     public void handBroadcast(Intent intent) {
         if (intent != null) {
@@ -1314,6 +1316,8 @@ public final class Engine {
             nearByInterface = (NearByInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserIncomInterface) {
             userIncomInterface = (UserIncomInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CrashInterface) {
+            crashInterface = (CrashInterface) uiCallBackInterface;
         }
 
     }
