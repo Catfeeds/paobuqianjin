@@ -40,6 +40,7 @@
     <string name="circle_total">圈子余额:%.2f元</string>
     <string name="near_by_step">当天健步%1d步</string>
     <string name="near_by_distance">%fm</string>
+    <string name="total_income">总金额%.2f元</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."

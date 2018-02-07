@@ -14,10 +14,10 @@
         android:layout_below="@+id/bar_wallet_detail">
 
         <RelativeLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <RelativeLayout
                 android:id="@+id/income_rel"
@@ -31,31 +31,31 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="14dp"
-                    android:text="当前收益(元)"
                     android:includeFontPadding="false"
+                    android:text="当前收益(元)"
                     android:textColor="@color/color_ccfffffff"
                     android:textSize="12sp" />
 
                 <TextView
-                    android:includeFontPadding="false"
                     android:id="@+id/income_des"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/all_income"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="18dp"
+                    android:includeFontPadding="false"
                     android:text="暂无收益"
                     android:textColor="@color/color_f8"
                     android:textSize="36sp" />
 
                 <TextView
-                    android:includeFontPadding="false"
                     android:id="@+id/income_money"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/income_des"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="27dp"
+                    android:includeFontPadding="false"
                     android:text="总金额0.11元"
                     android:textColor="@color/color_f8"
                     android:textSize="15sp" />
@@ -81,9 +81,9 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:text="当月收益(元)"
-                            android:textStyle="bold"
                             android:textColor="@color/color_f8"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/month_income_num"
@@ -112,9 +112,9 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:text="昨日收益(元)"
-                            android:textStyle="bold"
                             android:textColor="@color/color_f8"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/yesterday_income_num"
@@ -144,9 +144,9 @@
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:text="累计收益(元)"
-                            android:textStyle="bold"
                             android:textColor="@color/color_f8"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/total_income_num"
@@ -164,13 +164,20 @@
                 </RelativeLayout>
             </RelativeLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/income_recycler"
+            <RelativeLayout
+                android:id="@+id/income_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/income_rel">
 
-            </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
+            <!--            <android.support.v7.widget.RecyclerView
+                            android:id="@+id/income_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/income_rel">
+
+                        </android.support.v7.widget.RecyclerView>-->
 
         </RelativeLayout>
 
@@ -183,25 +190,25 @@
         android:layout_alignParentBottom="true">
 
         <Button
-            android:stateListAnimator="@null"
             android:id="@+id/charge_bar"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@drawable/wallet_recharge_bg"
             android:gravity="center"
+            android:stateListAnimator="@null"
             android:text="充值"
             android:textColor="@color/color_161727"
             android:textSize="18sp" />
 
         <Button
-            android:stateListAnimator="@null"
             android:id="@+id/crash"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/color_6d72c4"
             android:gravity="center"
+            android:stateListAnimator="@null"
             android:text="提现"
             android:textColor="@color/color_f8"
             android:textSize="18sp" />

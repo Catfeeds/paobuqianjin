@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.data.netcallback;
 
 import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
@@ -11,6 +12,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
@@ -46,6 +48,7 @@ import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -312,6 +315,20 @@ public class NetStringCallBack extends StringCallback {
             LocalLog.d(TAG, "附近的人");
             NearByResponse nearByResponse = new Gson().fromJson(s, NearByResponse.class);
             ((NearByInterface) callBackInterface).response(nearByResponse);
+        } else if (callBackInterface != null && callBackInterface instanceof UserIncomInterface) {
+            if (command == Engine.COMMAND_INCOME_YESTERDAY) {
+                IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
+                ((UserIncomInterface) callBackInterface).responseYesterday(incomeResponse);
+            } else if (command == Engine.COMMAND_INCOME_TODAY) {
+                IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
+                ((UserIncomInterface) callBackInterface).responseToday(incomeResponse);
+            } else if (command == Engine.COMMAND_INCOME_MONTH) {
+                IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
+                ((UserIncomInterface) callBackInterface).responseMonth(incomeResponse);
+            } else if (command == Engine.COMMAND_INCOME_ALL) {
+                AllIncomeResponse allIncomeResponse = new Gson().fromJson(s, AllIncomeResponse.class);
+                ((UserIncomInterface) callBackInterface).responseAll(allIncomeResponse);
+            }
         } else {
             LocalLog.d(TAG, " dispatch not match");
         }

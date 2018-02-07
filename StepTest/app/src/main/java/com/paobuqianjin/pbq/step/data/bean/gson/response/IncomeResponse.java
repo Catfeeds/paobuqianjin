@@ -6,16 +6,16 @@ import java.util.List;
  * Created by pbq on 2017/12/25.
  */
 /*
-@className :AllIncomeResponse
+@className :IncomeResponse
 *@date 2018/2/6
 *@author
-*@description 总收益
+*@description 昨日收益接口返回
 */
-public class AllIncomeResponse {
+public class IncomeResponse {
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":2,"totalCount":20},"data":[{"id":1,"amount":"0.50","name":"圈子红包","create_time":1517818067},{"id":2,"amount":"0.80","name":"圈子红包","create_time":1517818067},{"id":3,"amount":"0.15","name":"圈子红包","create_time":1517818067},{"id":4,"amount":"0.28","name":"圈子红包","create_time":1517818067},{"id":5,"amount":"1.28","name":"圈子红包","create_time":1517818067},{"id":6,"amount":"6.66","name":"圈子红包","create_time":1517673605},{"id":7,"amount":"8.88","name":"邀请红包","create_time":1517673605},{"id":8,"amount":"8.88","name":"圈子红包","create_time":1517673605},{"id":9,"amount":"99.99","name":"邀请红包","create_time":1517673605},{"id":58,"amount":"1.59","name":"商户广告","create_time":1515394608},{"id":73,"amount":"4.55","name":"商户广告","create_time":1515480276},{"id":74,"amount":"4.55","name":"商户广告","create_time":1515480744},{"id":75,"amount":"4.55","name":"商户广告","create_time":1515481027},{"id":77,"amount":"5.76","name":"商户广告","create_time":1515482311},{"id":80,"amount":"4.55","name":"商户广告","create_time":1515482693},{"id":81,"amount":"4.55","name":"商户广告","create_time":1515482740},{"id":82,"amount":"7.45","name":"商户广告","create_time":1515737786},{"id":83,"amount":"22.29","name":"商户广告","create_time":0},{"id":85,"amount":"14.94","name":"商户广告","create_time":0},{"id":86,"amount":"2.07","name":"商户广告","create_time":0}],"total_amount":204.27}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":5},"data":[{"id":1,"amount":"0.50","name":"圈子红包","create_time":1517818067},{"id":2,"amount":"0.80","name":"圈子红包","create_time":1517818067},{"id":3,"amount":"0.15","name":"圈子红包","create_time":1517818067},{"id":4,"amount":"0.28","name":"圈子红包","create_time":1517818067},{"id":5,"amount":"1.28","name":"圈子红包","create_time":1517818067}],"total_amount":3.01}
      */
 
     private int error;
@@ -48,7 +48,7 @@ public class AllIncomeResponse {
 
     @Override
     public String toString() {
-        return "AllIncomeResponse{" +
+        return "IncomeResponse{" +
                 "error=" + error +
                 ", message='" + message + '\'' +
                 ", data=" + data +
@@ -57,9 +57,9 @@ public class AllIncomeResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":2,"totalCount":20}
-         * data : [{"id":1,"amount":"0.50","name":"圈子红包","create_time":1517818067},{"id":2,"amount":"0.80","name":"圈子红包","create_time":1517818067},{"id":3,"amount":"0.15","name":"圈子红包","create_time":1517818067},{"id":4,"amount":"0.28","name":"圈子红包","create_time":1517818067},{"id":5,"amount":"1.28","name":"圈子红包","create_time":1517818067},{"id":6,"amount":"6.66","name":"圈子红包","create_time":1517673605},{"id":7,"amount":"8.88","name":"邀请红包","create_time":1517673605},{"id":8,"amount":"8.88","name":"圈子红包","create_time":1517673605},{"id":9,"amount":"99.99","name":"邀请红包","create_time":1517673605},{"id":58,"amount":"1.59","name":"商户广告","create_time":1515394608},{"id":73,"amount":"4.55","name":"商户广告","create_time":1515480276},{"id":74,"amount":"4.55","name":"商户广告","create_time":1515480744},{"id":75,"amount":"4.55","name":"商户广告","create_time":1515481027},{"id":77,"amount":"5.76","name":"商户广告","create_time":1515482311},{"id":80,"amount":"4.55","name":"商户广告","create_time":1515482693},{"id":81,"amount":"4.55","name":"商户广告","create_time":1515482740},{"id":82,"amount":"7.45","name":"商户广告","create_time":1515737786},{"id":83,"amount":"22.29","name":"商户广告","create_time":0},{"id":85,"amount":"14.94","name":"商户广告","create_time":0},{"id":86,"amount":"2.07","name":"商户广告","create_time":0}]
-         * total_amount : 204.27
+         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":5}
+         * data : [{"id":1,"amount":"0.50","name":"圈子红包","create_time":1517818067},{"id":2,"amount":"0.80","name":"圈子红包","create_time":1517818067},{"id":3,"amount":"0.15","name":"圈子红包","create_time":1517818067},{"id":4,"amount":"0.28","name":"圈子红包","create_time":1517818067},{"id":5,"amount":"1.28","name":"圈子红包","create_time":1517818067}]
+         * total_amount : 3.01
          */
 
         private PagenationBean pagenation;
@@ -103,14 +103,14 @@ public class AllIncomeResponse {
             /**
              * page : 1
              * pageSize : 10
-             * totalPage : 2
-             * totalCount : 20
+             * totalPage : 1
+             * totalCount : 5
              */
 
             private int page;
             private int pageSize;
             private int totalPage;
-            private double totalCount;
+            private float totalCount;
 
             public int getPage() {
                 return page;
@@ -136,11 +136,11 @@ public class AllIncomeResponse {
                 this.totalPage = totalPage;
             }
 
-            public double getTotalCount() {
+            public float getTotalCount() {
                 return totalCount;
             }
 
-            public void setTotalCount(double totalCount) {
+            public void setTotalCount(float totalCount) {
                 this.totalCount = totalCount;
             }
 
@@ -164,7 +164,7 @@ public class AllIncomeResponse {
              */
 
             private int id;
-            private String amount;
+            private float amount;
             private String name;
             private int create_time;
 
@@ -176,11 +176,11 @@ public class AllIncomeResponse {
                 this.id = id;
             }
 
-            public String getAmount() {
+            public float getAmount() {
                 return amount;
             }
 
-            public void setAmount(String amount) {
+            public void setAmount(float amount) {
                 this.amount = amount;
             }
 

@@ -47,112 +47,131 @@
                 android:textColor="@color/color_161727"
                 android:textSize="17sp" />
 
-            <ImageView
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="14dp"
-                android:background="@drawable/circle_outline"
-                android:src="@drawable/selected_icon" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignLeft="@+id/wechat_pay_icon"
-                android:layout_alignParentBottom="true"
-                android:background="@color/color_ebebed" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/aipp_pay"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_below="@+id/wechat_pay"
-            android:background="@color/color_f8">
-
-            <ImageView
-                android:id="@+id/aipp_pay_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="14dp"
-                android:src="@drawable/alipay" />
-
             <TextView
+                android:id="@+id/wx_dear_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="14dp"
-                android:layout_toRightOf="@+id/aipp_pay_icon"
-                android:text="支付宝"
-                android:textColor="@color/color_161727"
+                android:layout_marginRight="8dp"
+                android:layout_toStartOf="@+id/go_to_wx"
+                android:text="用户昵称"
+                android:textColor="@color/color_cbcacf"
                 android:textSize="17sp" />
 
             <ImageView
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_alignParentEnd="true"
+                android:id="@+id/go_to_wx"
+                android:layout_width="7dp"
+                android:layout_height="14dp"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="14dp"
-                android:background="@drawable/circle_outline"
-                android:src="@drawable/selected_icon" />
+                android:src="@drawable/go_to" />
+            <!--            <ImageView
+                            android:layout_width="21dp"
+                            android:layout_height="21dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="14dp"
+                            android:background="@drawable/circle_outline"
+                            android:src="@drawable/selected_icon" />-->
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignLeft="@+id/aipp_pay_icon"
-                android:layout_alignParentBottom="true"
-                android:background="@color/color_ebebed" />
+            <!--            <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_alignLeft="@+id/wechat_pay_icon"
+                            android:layout_alignParentBottom="true"
+                            android:background="@color/color_ebebed" />-->
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/bank_pay"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_below="@+id/aipp_pay"
-            android:background="@color/color_f8">
+        <!--        <RelativeLayout
+                    android:id="@+id/aipp_pay"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_below="@+id/wechat_pay"
+                    android:background="@color/color_f8">
 
-            <ImageView
-                android:id="@+id/bank_icon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="14dp"
-                android:src="@drawable/bank_icon" />
+                    <ImageView
+                        android:id="@+id/aipp_pay_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:src="@drawable/alipay" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="14dp"
-                android:layout_toRightOf="@+id/bank_icon"
-                android:text="银行卡"
-                android:textColor="@color/color_161727"
-                android:textSize="17sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:layout_toRightOf="@+id/aipp_pay_icon"
+                        android:text="支付宝"
+                        android:textColor="@color/color_161727"
+                        android:textSize="17sp" />
 
-            <ImageView
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="14dp"
-                android:background="@drawable/circle_outline"
-                android:src="@drawable/selected_icon" />
+                    <ImageView
+                        android:layout_width="21dp"
+                        android:layout_height="21dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:background="@drawable/circle_outline"
+                        android:src="@drawable/selected_icon" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_alignLeft="@+id/bank_icon"
-                android:layout_alignParentBottom="true"
-                android:background="@color/color_ebebed" />
-        </RelativeLayout>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/aipp_pay_icon"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/color_ebebed" />
+                </RelativeLayout>-->
+
+        <!--       <RelativeLayout
+                   android:id="@+id/bank_pay"
+                   android:layout_width="match_parent"
+                   android:layout_height="60dp"
+                   android:layout_below="@+id/aipp_pay"
+                   android:background="@color/color_f8">
+
+                   <ImageView
+                       android:id="@+id/bank_icon"
+                       android:layout_width="30dp"
+                       android:layout_height="30dp"
+                       android:layout_centerVertical="true"
+                       android:layout_marginLeft="14dp"
+                       android:src="@drawable/bank_icon" />
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_centerVertical="true"
+                       android:layout_marginLeft="14dp"
+                       android:layout_toRightOf="@+id/bank_icon"
+                       android:text="银行卡"
+                       android:textColor="@color/color_161727"
+                       android:textSize="17sp" />
+
+                   <ImageView
+                       android:layout_width="21dp"
+                       android:layout_height="21dp"
+                       android:layout_alignParentEnd="true"
+                       android:layout_centerVertical="true"
+                       android:layout_marginRight="14dp"
+                       android:background="@drawable/circle_outline"
+                       android:src="@drawable/selected_icon" />
+
+                   <ImageView
+                       android:layout_width="match_parent"
+                       android:layout_height="1dp"
+                       android:layout_alignLeft="@+id/bank_icon"
+                       android:layout_alignParentBottom="true"
+                       android:background="@color/color_ebebed" />
+               </RelativeLayout>-->
 
         <RelativeLayout
             android:id="@+id/crash_span"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/bank_pay"
+            android:layout_below="@+id/wechat_pay"
             android:layout_marginTop="20dp"
             android:background="@color/color_f8">
 
@@ -214,13 +233,13 @@
 
 
     <Button
-        android:stateListAnimator="@null"
         android:id="@+id/confirm_crash"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:background="@color/color_6c71c4"
         android:gravity="center"
+        android:stateListAnimator="@null"
         android:text="确认转出"
         android:textColor="@color/color_f8"
         android:textSize="18sp" />

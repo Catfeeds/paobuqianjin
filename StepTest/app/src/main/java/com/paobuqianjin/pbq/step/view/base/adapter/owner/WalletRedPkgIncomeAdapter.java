@@ -5,10 +5,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.List;
+
+import butterknife.Bind;
 
 /**
  * Created by pbq on 2018/1/18.
@@ -18,11 +24,13 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
     private final static String TAG = WalletRedPkgIncomeAdapter.class.getSimpleName();
     private final static int defaultCount = 8;
     private Context mContext;
+    private List<IncomeResponse.DataBeanX.DataBean> mData;
 
     //TODO adapter data
-    public WalletRedPkgIncomeAdapter(Context context) {
+    public WalletRedPkgIncomeAdapter(Context context, List<IncomeResponse.DataBeanX.DataBean> data) {
         super();
         mContext = context;
+        mData = data;
     }
 
     @Override
@@ -32,7 +40,14 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
 
     @Override
     public void onBindViewHolder(WalletRedPkgIncomeListViewHolder holder, int position) {
+        updateListItem(holder, position);
+    }
 
+    private void updateListItem(WalletRedPkgIncomeListViewHolder holder, int position) {
+        LocalLog.d(TAG,"updateListItem() enter");
+        holder.date.setText(String.valueOf(mData.get(position).getCreate_time()));
+        holder.addIncome.setText(String.valueOf(mData.get(position).getAmount()));
+        holder.incomeFrom.setText(String.valueOf(mData.get(position).getName()));
     }
 
     @Override
@@ -48,17 +63,32 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
 
     @Override
     public int getItemCount() {
-        return defaultCount;
+        if (mData != null) {
+            return mData.size();
+        } else {
+            return 0;
+        }
     }
 
     public class WalletRedPkgIncomeListViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.date)
+        TextView date;
+        @Bind(R.id.income_from)
+        TextView incomeFrom;
+        @Bind(R.id.add_income)
+        TextView addIncome;
+        @Bind(R.id.income_list_item)
+        RelativeLayout incomeListItem;
+
         public WalletRedPkgIncomeListViewHolder(View view) {
             super(view);
             initView(view);
         }
 
         private void initView(View view) {
-
+            date = (TextView) view.findViewById(R.id.date);
+            incomeFrom = (TextView) view.findViewById(R.id.income_from);
+            addIncome = (TextView) view.findViewById(R.id.add_income);
         }
     }
 }

@@ -149,6 +149,11 @@ public final class Presenter {
         engine.postUserStep(step_num);
     }
 
+    //TODO 获取收益
+    public void getIncome(String action, int page, int pageSize) {
+        engine.getIncome(action, page, pageSize);
+    }
+
     //TODO 获取动态列表
     public void getDynamicIndex(int page, int pagesize) {
         engine.getDynamicIndex(page, pagesize);

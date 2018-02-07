@@ -33,6 +33,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWithDrawParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
+import com.paobuqianjin.pbq.step.data.bean.table.User;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.AllPayOrderInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
@@ -55,6 +56,7 @@ import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
@@ -110,6 +112,7 @@ public final class Engine {
     private AllPayOrderInterface allPayOrderInterface;
     private HomePageInterface homePageInterface;
     private NearByInterface nearByInterface;
+    private UserIncomInterface userIncomInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -145,6 +148,10 @@ public final class Engine {
     public final static int COMMAND_TASK_RELEASE = 28;
     public final static int COMMAND_ALL_PAY_ORDER = 29;
     public final static int COMMAND_POST_USER_STEP = 30;
+    public final static int COMMAND_INCOME_YESTERDAY = 31;
+    public final static int COMMAND_INCOME_TODAY = 32;
+    public final static int COMMAND_INCOME_MONTH = 33;
+    public final static int COMMAND_INCOME_ALL = 34;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -907,7 +914,7 @@ public final class Engine {
         PostUserStepParam postUserStepParam = new PostUserStepParam();
         postUserStepParam.setUserid(String.valueOf(getId(mContext))).setStep_number(String.valueOf(step_num));
         String url = NetApi.urlUserStep + "/updateStep";
-        LocalLog.d(TAG, "putUserStep() enter url =" + url + postUserStepParam.paramString());
+        LocalLog.d(TAG, "putUserStep() enter url =" + url + "\n" + postUserStepParam.paramString());
         OkHttpUtils
                 .post()
                 .params(postUserStepParam.getParams())
@@ -916,14 +923,36 @@ public final class Engine {
                 .execute(new NetStringCallBack(homePageInterface, COMMAND_POST_USER_STEP));
     }
 
-    //获取昨日收益，当月收益，总收益，请求方式：get，地址：http://pb.com/v1/income/?id=1&action=yesterday，参数：用户id、action=all（总收益）、action=month（当月收益）、action=yesterday（昨日收益）
-    public void getIncome(int id, String yesterday) {
-        String url;
-        OkHttpUtils
-                .get()
-                .url(NetApi.urlIncome)
-                .build()
-                .execute(new NetStringCallBack(null, -1));
+    //TODO http://119.29.10.64/v1/income?userid=1&action=yesterday
+    public void getIncome(String action, int page, int pageSize) {
+        String url = NetApi.urlIncome + "?userid=" + String.valueOf(getId(mContext)) + "&action=" + action + "&page=" + String.valueOf(page)
+                + "&pagesize=" + String.valueOf(pageSize);
+        LocalLog.d(TAG, "getIncome() enter url = " + url);
+        if ("month".equals(action)) {
+            OkHttpUtils
+                    .get()
+                    .url(url)
+                    .build()
+                    .execute(new NetStringCallBack(userIncomInterface, COMMAND_INCOME_MONTH));
+        } else if ("yesterday".equals(action)) {
+            OkHttpUtils
+                    .get()
+                    .url(url)
+                    .build()
+                    .execute(new NetStringCallBack(userIncomInterface, COMMAND_INCOME_YESTERDAY));
+        } else if ("all".equals(action)) {
+            OkHttpUtils
+                    .get()
+                    .url(url)
+                    .build()
+                    .execute(new NetStringCallBack(userIncomInterface, COMMAND_INCOME_ALL));
+        } else if ("today".equals(action)) {
+            OkHttpUtils
+                    .get()
+                    .url(url)
+                    .build()
+                    .execute(new NetStringCallBack(userIncomInterface, COMMAND_INCOME_TODAY));
+        }
     }
 
     //请求方式post，地址：http://pb.com/v1/income，参数：userid（用户id）、typeid（收益类型）、circleid（圈子id）、amount（收益金额）
@@ -931,7 +960,7 @@ public final class Engine {
         String url;
         OkHttpUtils
                 .post()
-                .url(NetApi.urlIncomePost)
+                .url(NetApi.urlIncome)
                 .params(param.getParam())
                 .build()
                 .execute(new NetStringCallBack(null, -1));
@@ -1264,6 +1293,8 @@ public final class Engine {
             homePageInterface = (HomePageInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof NearByInterface) {
             nearByInterface = (NearByInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserIncomInterface) {
+            userIncomInterface = (UserIncomInterface) uiCallBackInterface;
         }
 
     }
@@ -1306,6 +1337,8 @@ public final class Engine {
             homePageInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof NearByInterface) {
             nearByInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserIncomInterface) {
+            userIncomInterface = null;
         }
     }
 }

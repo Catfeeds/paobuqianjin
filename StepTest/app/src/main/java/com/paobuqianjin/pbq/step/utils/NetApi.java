@@ -47,10 +47,9 @@ public class NetApi {
     public final static String urlUserRecordPost = "http://119.29.10.64/v1/userrecord";
 
     //TODO 用户收益接口
-    //TODO 获取昨日收益，当月收益，总收益，请求方式：get，地址：http://pb.com/v1/income/?id=1&action=yesterday，参数：用户id、action=all（总收益）、action=month（当月收益）、action=yesterday（昨日收益）
-    public final static String urlIncome = "http://119.29.10.64/v1/income/?id=1&action=yesterday";
-    //TODO 请求方式post，地址：http://pb.com/v1/income，参数：userid（用户id）、typeid（收益类型）、circleid（圈子id）、amount（收益金额）
-    public final static String urlIncomePost = "http://119.29.10.64/v1/income";
+    //请求方式：GET
+    //请求示例：http://119.29.10.64/v1/income?userid=1&action=yesterday
+    public final static String urlIncome = "http://119.29.10.64/v1/income";
 
     //TODO 用户身份认证接口
     //TODO 用户认证，请求方式：post，地址：http://api.runmoneyin.com/v1/userauthentication，参数：id（用户id）、idcard（身份证号）、realname（真实名字）

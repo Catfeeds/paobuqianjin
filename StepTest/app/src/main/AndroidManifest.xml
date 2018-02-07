@@ -136,6 +136,12 @@
         </activity>
         <!-- 忘记密码 -->
         <activity android:name=".view.activity.LoginForgetPassActivity" />
+
+        <!--提现绑定微信-->
+        <activity
+            android:name=".view.activity.BindWeChatActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme"></activity>
         <!-- 任务发布 -->
         <activity
             android:name=".view.activity.TaskReleaseActivity"
@@ -195,6 +201,11 @@
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.StepDollarActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+        <!--充值到钱包-->
+        <activity
+            android:name=".view.activity.MyWalletPayActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 我的好友 -->
