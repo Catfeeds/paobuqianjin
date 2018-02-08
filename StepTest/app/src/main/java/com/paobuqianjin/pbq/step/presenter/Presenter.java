@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.ImageView;
 
+import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
@@ -96,12 +99,13 @@ public final class Presenter {
     }
 
     public void setMobile(Context context, String mobile) {
-        engine.setMobile(context,mobile);
+        engine.setMobile(context, mobile);
     }
 
-    public String getMobile(Context context){
+    public String getMobile(Context context) {
         return engine.getMobile(context);
     }
+
 
     public Context getAppContext() {
         Context appContext = null;
@@ -119,6 +123,15 @@ public final class Presenter {
 
     public void userLoginByPhoneNumber(String[] userInfo) {
         engine.userLoginByPhoneNumber(userInfo);
+    }
+
+    //TODO 获取验证码
+    public void getSignCode(String phone) {
+        engine.getSignCode(phone);
+    }
+
+    public void checkSignCode(CheckSignCodeParam checkSignCodeParam) {
+        engine.checkSignCode(checkSignCodeParam);
     }
 
     public void getMsg(String phone) {
@@ -282,6 +295,16 @@ public final class Presenter {
     //TODO
     public void getUserBankCard() {
         engine.getUserBankCard();
+    }
+
+    //TODO 用户提现
+    public void postCrashTo(CrashToParam crashToParam) {
+        engine.postCrashTo(crashToParam);
+    }
+
+    //TODO 绑定提现账户
+    public void bindCrashAccount(BindCardPostParam bindCardPostParam) {
+        engine.bindCrashAccount(bindCardPostParam);
     }
 
     public void getWeather() {

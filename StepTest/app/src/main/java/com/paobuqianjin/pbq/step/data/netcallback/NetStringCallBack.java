@@ -3,7 +3,9 @@ package com.paobuqianjin.pbq.step.data.netcallback;
 import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.BindAccountResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
@@ -13,6 +15,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
@@ -45,6 +48,7 @@ import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
@@ -336,6 +340,19 @@ public class NetStringCallBack extends StringCallback {
                 LocalLog.d(TAG, "获取绑定列表");
                 BindCardListResponse bindCardListResponse = new Gson().fromJson(s, BindCardListResponse.class);
                 ((CrashInterface) callBackInterface).response(bindCardListResponse);
+            } else if (command == Engine.COMMAND_CRASH_TO) {
+                
+            }
+        } else if (callBackInterface != null
+                && callBackInterface instanceof SignCodeInterface) {
+            if (command == Engine.COMMAND_GET_SIGN_CODE) {
+                GetSignCodeResponse getSignCodeResponse = new Gson().fromJson(s, GetSignCodeResponse.class);
+                ((SignCodeInterface) callBackInterface).response(getSignCodeResponse);
+            } else if (command == Engine.COMMAND_CHECK_SIGN_CODE) {
+                CheckSignCodeResponse checkSignCodeResponse = new Gson().fromJson(s, CheckSignCodeResponse.class);
+                ((SignCodeInterface) callBackInterface).response(checkSignCodeResponse);
+            } else if (command == Engine.COMMAND_BIND_CRASH_ACCOUNT) {
+                LocalLog.d(TAG, "绑定结果...");
             }
         } else {
             LocalLog.d(TAG, " dispatch not match");

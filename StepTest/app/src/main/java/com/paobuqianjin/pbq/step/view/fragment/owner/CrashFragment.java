@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
@@ -19,6 +21,9 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.BindWeChatActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserBindBankListActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.umeng.socialize.Config;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareConfig;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -61,6 +66,8 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     @Bind(R.id.confirm_crash)
     Button confirmCrash;
 
+    private int selectBankId;
+
     @Override
     protected String title() {
         return "提现";
@@ -75,6 +82,7 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     public void onAttach(Context context) {
         super.onAttach(context);
         Presenter.getInstance(context).attachUiInterface(this);
+        Presenter.getInstance(getContext()).getUserBankCard();
     }
 
     @Override
@@ -101,6 +109,9 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                 break;
             case R.id.confirm_crash:
                 LocalLog.d(TAG, "确认转出");
+                CrashToParam crashToParam = new CrashToParam();
+                crashToParam.setAmount(String.valueOf(1.0f)).setId(selectBankId);
+                Presenter.getInstance(getContext()).postCrashTo(crashToParam);
                 break;
         }
     }
@@ -108,6 +119,8 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     @Override
     public void response(BindCardListResponse bindCardListResponse) {
         LocalLog.d(TAG, "BindCardListResponse() enter " + bindCardListResponse.toString());
+        selectBankId = bindCardListResponse.getData().get(0).getId();
+
     }
 
     @Override

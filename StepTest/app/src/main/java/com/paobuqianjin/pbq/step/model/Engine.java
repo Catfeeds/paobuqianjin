@@ -20,6 +20,9 @@ import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.paobuqianjin.pbq.step.data.Weather;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddFollowParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostUserStepParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
@@ -51,6 +54,7 @@ import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
@@ -114,6 +118,7 @@ public final class Engine {
     private NearByInterface nearByInterface;
     private UserIncomInterface userIncomInterface;
     private CrashInterface crashInterface;
+    private SignCodeInterface signCodeInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -154,6 +159,10 @@ public final class Engine {
     public final static int COMMAND_INCOME_MONTH = 33;
     public final static int COMMAND_INCOME_ALL = 34;
     public final static int COMMAND_CRASH_BANK_CARD_LIST = 35;
+    public final static int COMMAND_GET_SIGN_CODE = 36;
+    public final static int COMMAND_CHECK_SIGN_CODE = 37;
+    public final static int COMMAND_BIND_CRASH_ACCOUNT = 38;
+    public final static int COMMAND_CRASH_TO = 39;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -310,7 +319,7 @@ public final class Engine {
     }
 
     public void setMobile(Context context, String mobile) {
-        FlagPreference.setMobile(context,mobile);
+        FlagPreference.setMobile(context, mobile);
     }
 
     public String getStartSportTime(Context context) {
@@ -399,6 +408,39 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(nearByInterface, COMMAND_NEARBY_PEOPLE));
+    }
+
+    //TODO 获取验证码 http://119.29.10.64/v1/ThirdParty/sendMsg/?mobile=13424156029
+    public void getSignCode(String phone) {
+        String url = NetApi.urlSignCode + "/?mobile=" + phone;
+        LocalLog.d(TAG, "getSignCode() enter url  = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(signCodeInterface, COMMAND_GET_SIGN_CODE));
+    }
+
+    //TODO 校验验证码
+    public void checkSignCode(CheckSignCodeParam checkSignCodeParam) {
+        LocalLog.d(TAG, checkSignCodeParam.paramString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlSignCodeCheck)
+                .params(checkSignCodeParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(signCodeInterface, COMMAND_CHECK_SIGN_CODE));
+    }
+
+    //TODO 用户提现
+    public void postCrashTo(CrashToParam crashToParam) {
+        LocalLog.d(TAG, crashToParam.paramString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlCrashTo)
+                .params(crashToParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(crashInterface, COMMAND_CRASH_TO));
     }
 
     //获取验证码
@@ -1255,6 +1297,18 @@ public final class Engine {
                 .execute(new NetStringCallBack(crashInterface, COMMAND_CRASH_BANK_CARD_LIST));
     }
 
+    //TODO 绑定提现账号
+    public void bindCrashAccount(BindCardPostParam bindCardPostParam) {
+        bindCardPostParam.setUserid(getId(mContext));
+        LocalLog.d(TAG, "bindCrashAccount() enter" + bindCardPostParam.paramString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlUserBankCard)
+                .params(bindCardPostParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(signCodeInterface, COMMAND_BIND_CRASH_ACCOUNT));
+    }
+
     //TODO 处理广播信息
     public void handBroadcast(Intent intent) {
         if (intent != null) {
@@ -1318,6 +1372,8 @@ public final class Engine {
             userIncomInterface = (UserIncomInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CrashInterface) {
             crashInterface = (CrashInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SignCodeInterface) {
+            signCodeInterface = (SignCodeInterface) uiCallBackInterface;
         }
 
     }
@@ -1364,6 +1420,8 @@ public final class Engine {
             userIncomInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CrashInterface) {
             crashInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SignCodeInterface) {
+            signCodeInterface = null;
         }
     }
 }

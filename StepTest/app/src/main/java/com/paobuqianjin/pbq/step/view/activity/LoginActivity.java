@@ -290,7 +290,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
         @Override
         public void onStart(SHARE_MEDIA share_media) {
             LocalLog.d(TAG, "授权开始callback:" + share_media.toString());
-            SocializeUtils.safeCloseDialog(dialog);
+            SocializeUtils.safeShowDialog(dialog);
         }
 
         @Override

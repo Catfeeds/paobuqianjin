@@ -117,5 +117,10 @@ public class NetApi {
     public final static String urlUserStep = "http://119.29.10.64/v1/userstep";
     //TODO 提现账户接口
     public final static String urlUserBankCard = "http://119.29.10.64/v1/UserBankCard";
-
+    //TODO 验证码发送校验
+    public final static String urlSignCode = "http://119.29.10.64/v1/ThirdParty/sendMsg";
+    //TODO 校验验证码
+    public final static String urlSignCodeCheck = "http://119.29.10.64/v1/UserBankCard/checkCode";
+    //TODO 提现接口
+    public final static String urlCrashTo = "http://119.29.10.64/v1/withdraw";
 }
