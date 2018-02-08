@@ -219,6 +219,170 @@
             android:layout_marginTop="-60dp"
             android:scaleType="centerCrop"
             android:src="@drawable/bg_major" />
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/major_bg"
+            android:layout_alignLeft="@+id/major_bg"
+            android:layout_alignRight="@+id/major_bg"
+            android:layout_alignTop="@+id/major_bg"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/ve_line"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/ho_line">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:id="@+id/out_red_pkg_image"
+                        android:layout_width="29dp"
+                        android:layout_height="32dp"
+                        android:layout_centerHorizontal="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/out_red_pkg" />
+
+                    <TextView
+                        android:id="@+id/out_red_package"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/out_red_pkg_image"
+                        android:layout_marginTop="10dp"
+                        android:text="发红包"
+                        android:textColor="@color/color_9999"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/ve_line"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/ho_line">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:id="@+id/create_circle_image"
+                        android:layout_width="29dp"
+                        android:layout_height="32dp"
+                        android:layout_centerHorizontal="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/create_circle" />
+
+                    <TextView
+                        android:id="@+id/create_circle_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/create_circle_image"
+                        android:layout_marginTop="10dp"
+                        android:text="谁的圈子谁的红包压岁钱多哟"
+                        android:textColor="@color/color_9999"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@id/ve_line"
+                android:layout_below="@+id/ve_line"
+                android:layout_toStartOf="@+id/ho_line">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:id="@+id/income_red_pkg_image"
+                        android:layout_width="29dp"
+                        android:layout_height="32dp"
+                        android:layout_centerHorizontal="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/income_red_pkg" />
+
+                    <TextView
+                        android:id="@+id/income_red_package"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/income_red_pkg_image"
+                        android:layout_marginTop="10dp"
+                        android:text="发红包"
+                        android:textColor="@color/color_9999"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/ve_line"
+                android:layout_below="@+id/ve_line"
+                android:layout_toEndOf="@+id/ho_line">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:id="@+id/add_friend_image"
+                        android:layout_width="29dp"
+                        android:layout_height="32dp"
+                        android:layout_centerHorizontal="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/invite_friend" />
+
+                    <TextView
+                        android:id="@+id/add_friend_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/add_friend_image"
+                        android:layout_marginTop="10dp"
+                        android:text="谁的圈子谁的红包压岁钱多哟"
+                        android:textColor="@color/color_9999"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/ho_line"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="@color/color_9999" />
+
+            <ImageView
+                android:id="@+id/ve_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:background="@color/color_9999" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <TextView
