@@ -108,7 +108,7 @@ public class NetApi {
     //TODO WX 订单查询
     public final static String urlPayResultOrderNo = "http://119.29.10.64/v1/Pay/orderQuery";
 
-    //TODO 任务接口
+    //TODO 发布任务接口
     public final static String urlTask = "http://119.29.10.64/v1/Task";
     //TODO 我的任务列表
     public final static String urlTaskRecord = "http://119.29.10.64/v1/TaskRecord";
