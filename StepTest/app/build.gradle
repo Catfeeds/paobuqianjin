@@ -7,7 +7,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -84,4 +84,5 @@ dependencies {
     implementation files('libs/wechat-sdk-android-with-mta-1.1.6.jar')
     compile 'liji.library.dev:citypickerview:3.0.1'
     compile 'org.jsoup:jsoup:1.9.2'
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
 }

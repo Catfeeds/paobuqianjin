@@ -116,9 +116,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public void responseStepToday(int stepToday) {
         LocalLog.d(TAG, "responseStepToday() enter");
-        if (toayStep != null) {
-            toayStep.setText(String.valueOf(stepToday));
-        }
+        //if (toayStep != null) {
+        toayStep.setText(String.valueOf(stepToday));
+        //}
         Presenter.getInstance(getContext()).postUserStep(stepToday);
         Message message = Message.obtain();
         message.what = MSG_UPDATE_STEP;
@@ -170,9 +170,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         }
                         //ava.lang.NullPointerException: Attempt to invoke virtual method 'android.content.Context android.content.Context.getApplicationContext()' on a null obje
 
-                        if (homePageFragment.getContext() != null) {
-                            Presenter.getInstance(homePageFragment.getContext()).postUserStep(msg.arg1);
-                        }
+                        //if (homePageFragment.getContext() != null) {
+                        Presenter.getInstance(homePageFragment.getContext()).postUserStep(msg.arg1);
+                        //}
                         break;
                     default:
                         break;

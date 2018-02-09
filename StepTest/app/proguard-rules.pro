@@ -106,4 +106,8 @@
 
 -keep class com.lljjcoder.**{
 	*;
+#避免混淆Bugly，在Proguard混淆文件中增加以下配置
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+-keep class android.support.**{*;}
 }

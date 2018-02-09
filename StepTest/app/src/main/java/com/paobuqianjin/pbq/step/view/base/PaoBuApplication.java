@@ -20,6 +20,8 @@ import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -53,8 +55,14 @@ public class PaoBuApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initTencentBugly();
         initHttpOk();
         initSDKService();
+    }
+
+    private void initTencentBugly() {
+        LocalLog.d(TAG, "initTencentBugly() enter");
+        Bugly.init(getApplicationContext(), "db0094a50c", true);
     }
 
     private boolean initBaiDuSDK(Context context) {
