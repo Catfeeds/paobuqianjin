@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 
 import java.util.Map;
 
@@ -13,7 +14,7 @@ public interface HomePageInterface extends CallBackInterface {
 
     public void responseTarget(int personTarget);
 
-    public void responseWeather();
+    public void responseWeather(WeatherResponse weatherResponse);
 
     public void responseTodayIncome();
 

@@ -307,8 +307,8 @@ public final class Presenter {
         engine.bindCrashAccount(bindCardPostParam);
     }
 
-    public void getWeather() {
-        engine.getWeather();
+    public void getWeather(double latitude,double longitude) {
+        engine.getWeather(latitude,longitude);
     }
 
     public void setNetworkPolicy(NetworkPolicy networkPolicy) {

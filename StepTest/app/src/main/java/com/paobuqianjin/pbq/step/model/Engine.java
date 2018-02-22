@@ -83,6 +83,7 @@ import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlRegisterPhone;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlThirdLogin;
+import static com.paobuqianjin.pbq.step.utils.NetApi.urlWeather;
 
 /**
  * Created by pbq on 2017/11/29.
@@ -163,6 +164,7 @@ public final class Engine {
     public final static int COMMAND_CHECK_SIGN_CODE = 37;
     public final static int COMMAND_BIND_CRASH_ACCOUNT = 38;
     public final static int COMMAND_CRASH_TO = 39;
+    public final static int COMMAND_WEATHER = 40;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1282,8 +1284,16 @@ public final class Engine {
     }
 
     //TODO get Weather
-    public void getWeather() {
-        Weather.getWeather(22.548335d, 114.02133d);
+    public void getWeather(double latitude,double longitude) {
+        //Weather.getWeather(22.548335d, 114.02133d);
+        String url  = NetApi.urlWeather + "?latitude="+String.valueOf(latitude) +
+                "&longitude="+String.valueOf(longitude);
+        LocalLog.d(TAG,"url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(homePageInterface,COMMAND_WEATHER));
     }
 
     //TODO 获取账户列表 http://119.29.10.64/v1/UserBankCard?userid=1

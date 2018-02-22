@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,19 +16,25 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
+import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.StepProcessDrawable;
 import com.paobuqianjin.pbq.step.view.base.view.WaveView;
 
 import java.lang.ref.WeakReference;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2017/12/1.
@@ -59,11 +64,109 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     TextView homeTitle;
     @Bind(R.id.home_page)
     RelativeLayout homePage;
+    @Bind(R.id.income_today)
+    TextView incomeToday;
+    @Bind(R.id.today_income_span)
+    RelativeLayout todayIncomeSpan;
+    @Bind(R.id.line)
+    ImageView line;
+    @Bind(R.id.income_month)
+    TextView incomeMonth;
+    @Bind(R.id.moth_income_ico)
+    ImageView mothIncomeIco;
+    @Bind(R.id.month_income_home)
+    TextView monthIncomeHome;
+    @Bind(R.id.month_income_span)
+    RelativeLayout monthIncomeSpan;
+    @Bind(R.id.income_out_look)
+    RelativeLayout incomeOutLook;
+    @Bind(R.id.out_red_pkg_image)
+    ImageView outRedPkgImage;
+    @Bind(R.id.out_red_package)
+    TextView outRedPackage;
+    @Bind(R.id.create_circle_image)
+    ImageView createCircleImage;
+    @Bind(R.id.create_circle_des)
+    TextView createCircleDes;
+    @Bind(R.id.income_red_pkg_image)
+    ImageView incomeRedPkgImage;
+    @Bind(R.id.income_red_package)
+    TextView incomeRedPackage;
+    @Bind(R.id.add_friend_image)
+    ImageView addFriendImage;
+    @Bind(R.id.add_friend_des)
+    TextView addFriendDes;
+    @Bind(R.id.ho_line)
+    ImageView hoLine;
+    @Bind(R.id.ve_line)
+    ImageView veLine;
+    @Bind(R.id.weather_icon)
+    ImageView weatherIcon;
+    @Bind(R.id.wendu)
+    TextView wendu;
+    @Bind(R.id.weather_span)
+    RelativeLayout weatherSpan;
+    @Bind(R.id.city_name)
+    TextView cityName;
+    @Bind(R.id.create_circle)
+    TextView createCircle;
+    @Bind(R.id.red_pkg_num)
+    TextView redPkgNum;
+    @Bind(R.id.invite_friend)
+    TextView inviteFriend;
     private StepLocationReciver stepLocationReciver = new StepLocationReciver();
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private final static int MSG_UPDATE_STEP = 0;
     private UpdateHandler updateHandler = new UpdateHandler(this);
+
+    private static Map<String, Integer> weatherMap = new LinkedHashMap<>();
+
+    static {
+        weatherMap.put("0", R.drawable.weather_0);
+        weatherMap.put("1", R.drawable.weather_1);
+        weatherMap.put("2", R.drawable.weather_2);
+        weatherMap.put("3", R.drawable.weather_3);
+        weatherMap.put("4", R.drawable.weather_4);
+        weatherMap.put("5", R.drawable.weather_5);
+        weatherMap.put("6", R.drawable.weather_6);
+        weatherMap.put("7", R.drawable.weather_7);
+        weatherMap.put("8", R.drawable.weather_8);
+        weatherMap.put("9", R.drawable.weather_9);
+        weatherMap.put("10", R.drawable.weather_10);
+        weatherMap.put("11", R.drawable.weather_11);
+        weatherMap.put("12", R.drawable.weather_12);
+        weatherMap.put("13", R.drawable.weather_13);
+        weatherMap.put("14", R.drawable.weather_14);
+        weatherMap.put("15", R.drawable.weather_15);
+        weatherMap.put("16", R.drawable.weather_17);
+        weatherMap.put("18", R.drawable.weather_18);
+        weatherMap.put("19", R.drawable.weather_19);
+        weatherMap.put("20", R.drawable.weather_20);
+        weatherMap.put("21", R.drawable.weather_21);
+        weatherMap.put("22", R.drawable.weather_22);
+        weatherMap.put("23", R.drawable.weather_23);
+        weatherMap.put("24", R.drawable.weather_24);
+        weatherMap.put("25", R.drawable.weather_25);
+        weatherMap.put("26", R.drawable.weather_26);
+        weatherMap.put("27", R.drawable.weather_27);
+        weatherMap.put("28", R.drawable.weather_28);
+        weatherMap.put("29", R.drawable.weather_29);
+        weatherMap.put("30", R.drawable.weather_30);
+        weatherMap.put("31", R.drawable.weather_31);
+        weatherMap.put("32", R.drawable.weather_32);
+        weatherMap.put("49", R.drawable.weather_49);
+        weatherMap.put("53", R.drawable.weather_53);
+        weatherMap.put("54", R.drawable.weather_54);
+        weatherMap.put("55", R.drawable.weather_55);
+        weatherMap.put("56", R.drawable.weather_56);
+        weatherMap.put("57", R.drawable.weather_57);
+        weatherMap.put("58", R.drawable.weather_58);
+        weatherMap.put("99", R.drawable.weather_99);
+        weatherMap.put("301", R.drawable.weather_301);
+        weatherMap.put("302", R.drawable.weather_302);
+
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -93,6 +196,17 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         processStepNow = (View) viewRoot.findViewById(R.id.process_step_now);
         processStepNow.setBackground(new StepProcessDrawable(getContext()).setmAngle(90));
         toayStep = (TextView) viewRoot.findViewById(R.id.toay_step);
+        cityName = (TextView) viewRoot.findViewById(R.id.city_name);
+        wendu = (TextView) viewRoot.findViewById(R.id.wendu);
+        weatherIcon = (ImageView) viewRoot.findViewById(R.id.weather_icon);
+        outRedPkgImage = (ImageView) viewRoot.findViewById(R.id.out_red_pkg_image);
+        outRedPkgImage.setOnClickListener(onClickListener);
+        incomeRedPkgImage = (ImageView) viewRoot.findViewById(R.id.income_red_pkg_image);
+        incomeRedPkgImage.setOnClickListener(onClickListener);
+        createCircleImage = (ImageView) viewRoot.findViewById(R.id.create_circle_image);
+        createCircleImage.setOnClickListener(onClickListener);
+        addFriendImage = (ImageView) viewRoot.findViewById(R.id.add_friend_image);
+        addFriendImage.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -106,6 +220,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     public void responseLocation(String city, double latitude, double longitude) {
         LocalLog.d(TAG, "responseLocation() enter city =" + city + " ,latitude = " + latitude
                 + ",longitude= " + longitude);
+        cityName.setText(city);
+        Presenter.getInstance(getContext()).getWeather(latitude, longitude);
+
     }
 
     @Override
@@ -116,9 +233,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public void responseStepToday(int stepToday) {
         LocalLog.d(TAG, "responseStepToday() enter");
-        //if (toayStep != null) {
-        toayStep.setText(String.valueOf(stepToday));
-        //}
+        if (toayStep != null) {
+            toayStep.setText(String.valueOf(stepToday));
+        }
         Presenter.getInstance(getContext()).postUserStep(stepToday);
         Message message = Message.obtain();
         message.what = MSG_UPDATE_STEP;
@@ -137,8 +254,11 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     }
 
     @Override
-    public void responseWeather() {
-        LocalLog.d(TAG, "responseWeather() enter");
+    public void responseWeather(WeatherResponse weatherResponse) {
+        LocalLog.d(TAG, "responseWeather() enter" + weatherResponse.toString());
+        wendu.setText(weatherResponse.getData().getTemp()+ "°");
+        weatherIcon.setImageResource(weatherMap.get(weatherResponse.getData().getImg()));
+
     }
 
     @Override
@@ -151,6 +271,29 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         super.onDestroy();
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.out_red_pkg_image:
+                    LocalLog.d(TAG, "发红包");
+                    startActivity(TaskReleaseActivity.class, null);
+                    break;
+                case R.id.create_circle_image:
+                    LocalLog.d(TAG, "创建圈子");
+                    startActivity(CreateCircleActivity.class, null);
+                    break;
+                case R.id.income_red_pkg_image:
+                    LocalLog.d(TAG, "领红包");
+                    break;
+                case R.id.add_friend_image:
+                    LocalLog.d(TAG, "邀请好友");
+                    startActivity(InviteActivity.class, null);
+                    break;
+            }
+        }
+    };
 
     private static class UpdateHandler extends Handler {
         WeakReference<HomePageFragment> weakReference;
@@ -170,9 +313,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         }
                         //ava.lang.NullPointerException: Attempt to invoke virtual method 'android.content.Context android.content.Context.getApplicationContext()' on a null obje
 
-                        //if (homePageFragment.getContext() != null) {
-                        Presenter.getInstance(homePageFragment.getContext()).postUserStep(msg.arg1);
-                        //}
+                        if (homePageFragment.getContext() != null) {
+                            Presenter.getInstance(homePageFragment.getContext()).postUserStep(msg.arg1);
+                        }
                         break;
                     default:
                         break;

@@ -502,7 +502,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     @TargetApi(21)
     @OnClick({/*R.id.switch_style,*/
             R.id.logo_circle_pan,
-            R.id.switch_stand, R.id.switch_circle_money_add_off, R.id.logo_circle_pic, R.id.password_circle_switch,
+            R.id.stand_circle_pan, R.id.switch_circle_money_add_off, R.id.logo_circle_pic, R.id.password_circle_switch,
             R.id.create_circle_confim,
             /*R.id.circle_theme_text*/})
     public void onClick(View view) {
@@ -511,7 +511,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 LocalLog.d(TAG, " 圈子类型选择");
                 selectType(circleTypeDefaults, cirCleStyle);
                 break;*/
-            case R.id.switch_stand:
+            case R.id.stand_circle_pan:
                 LocalLog.d(TAG, "设定目标距离");
                 selectType(targetDefaults, circleStandNum);
                 break;

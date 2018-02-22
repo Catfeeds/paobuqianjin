@@ -30,6 +30,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
@@ -311,10 +312,14 @@ public class NetStringCallBack extends StringCallback {
             TaskReleaseResponse taskReleaseResponse = new Gson().fromJson(s, TaskReleaseResponse.class);
             ((TaskReleaseInterface) callBackInterface).response(taskReleaseResponse);
         } else if (callBackInterface != null
-                && callBackInterface instanceof HomePageInterface
-                && command == Engine.COMMAND_POST_USER_STEP) {
-            PostUserStepResponse postUserStepResponse = new Gson().fromJson(s, PostUserStepResponse.class);
-            ((HomePageInterface) callBackInterface).response(postUserStepResponse);
+                && callBackInterface instanceof HomePageInterface) {
+            if (command == Engine.COMMAND_POST_USER_STEP) {
+                PostUserStepResponse postUserStepResponse = new Gson().fromJson(s, PostUserStepResponse.class);
+                ((HomePageInterface) callBackInterface).response(postUserStepResponse);
+            } else if (command == Engine.COMMAND_WEATHER) {
+                WeatherResponse weatherResponse = new Gson().fromJson(s, WeatherResponse.class);
+                ((HomePageInterface) callBackInterface).responseWeather(weatherResponse);
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof NearByInterface
                 && command == Engine.COMMAND_NEARBY_PEOPLE) {
@@ -341,7 +346,7 @@ public class NetStringCallBack extends StringCallback {
                 BindCardListResponse bindCardListResponse = new Gson().fromJson(s, BindCardListResponse.class);
                 ((CrashInterface) callBackInterface).response(bindCardListResponse);
             } else if (command == Engine.COMMAND_CRASH_TO) {
-                
+
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof SignCodeInterface) {

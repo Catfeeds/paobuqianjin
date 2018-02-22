@@ -123,4 +123,7 @@ public class NetApi {
     public final static String urlSignCodeCheck = "http://119.29.10.64/v1/UserBankCard/checkCode";
     //TODO 提现接口
     public final static String urlCrashTo = "http://119.29.10.64/v1/withdraw";
+
+    //TODO 天气查询接口
+    public final static String urlWeather = "http://119.29.10.64/v1/ThirdParty/getWeather";
 }
