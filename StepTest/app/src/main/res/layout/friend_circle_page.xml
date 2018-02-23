@@ -56,7 +56,7 @@
             android:layout_weight="1">
 
             <ImageView
-                android:id="@+id/scan_qr"
+                android:id="@+id/add_scan_release_dynamic"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_alignParentBottom="true"
@@ -64,9 +64,9 @@
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="14dp"
                 android:layout_marginEnd="14dp"
-                android:src="@drawable/scan" />
+                android:src="@drawable/add_select" />
 
-            <ImageView
+<!--            <ImageView
                 android:id="@+id/camema"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
@@ -76,7 +76,7 @@
                 android:layout_marginBottom="14dp"
                 android:layout_marginEnd="14dp"
                 android:src="@drawable/camera"
-                android:visibility="gone" />
+                android:visibility="gone" />-->
         </RelativeLayout>
     </LinearLayout>
 

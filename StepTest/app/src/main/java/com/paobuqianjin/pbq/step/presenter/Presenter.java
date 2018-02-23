@@ -171,6 +171,11 @@ public final class Presenter {
     }
 
     //TODO 获取收益
+    public void getHomePageIncome(String action, int page, int pageSize) {
+        engine.getHomePageIncome(action, page, pageSize);
+    }
+
+    //TODO 获取收益
     public void getIncome(String action, int page, int pageSize) {
         engine.getIncome(action, page, pageSize);
     }

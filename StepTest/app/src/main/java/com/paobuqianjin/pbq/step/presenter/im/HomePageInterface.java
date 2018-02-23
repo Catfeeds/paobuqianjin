@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
+import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 
@@ -16,9 +17,9 @@ public interface HomePageInterface extends CallBackInterface {
 
     public void responseWeather(WeatherResponse weatherResponse);
 
-    public void responseTodayIncome();
+    public void responseTodayIncome(IncomeResponse incomeResponse);
 
-    public void responseMonthIncome();
+    public void responseMonthIncome(IncomeResponse incomeResponse);
 
     public void responseLocation(String city, double latitude, double longitude);
 

@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
@@ -34,7 +35,6 @@ import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.StepProcessDrawable;
 import com.paobuqianjin.pbq.step.view.base.view.WaveView;
-import com.paobuqianjin.pbq.step.view.fragment.task.TaskFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.LinkedHashMap;
@@ -122,6 +122,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     TextView redPkgNum;
     @Bind(R.id.invite_friend)
     TextView inviteFriend;
+    @Bind(R.id.today_income_num)
+    TextView todayIncomeNum;
     private View popRedPkgView;
     private PopupWindow popupRedPkgWindow;
     private TranslateAnimation animationCircleType;
@@ -193,6 +195,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         intentFilter.addAction(LOCATION_ACTION);
         getContext().registerReceiver(stepLocationReciver, intentFilter);
         Presenter.getInstance(getContext()).attachUiInterface(this);
+        Presenter.getInstance(getContext()).getHomePageIncome("today", 1, 10);
+        Presenter.getInstance(getContext()).getHomePageIncome("month", 1, 10);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -208,6 +212,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         processStepNow.setBackground(new StepProcessDrawable(getContext()).setmAngle(90));
         toayStep = (TextView) viewRoot.findViewById(R.id.toay_step);
         cityName = (TextView) viewRoot.findViewById(R.id.city_name);
+        todayIncomeNum = (TextView) viewRoot.findViewById(R.id.today_income_num);
         wendu = (TextView) viewRoot.findViewById(R.id.wendu);
         weatherIcon = (ImageView) viewRoot.findViewById(R.id.weather_icon);
         outRedPkgImage = (ImageView) viewRoot.findViewById(R.id.out_red_pkg_image);
@@ -219,6 +224,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         addFriendImage = (ImageView) viewRoot.findViewById(R.id.add_friend_image);
         addFriendImage.setOnClickListener(onClickListener);
         homeTitle = (TextView) viewRoot.findViewById(R.id.home_title);
+        monthIncomeHome = (TextView)viewRoot.findViewById(R.id.month_income_home);
         updateHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -269,8 +275,12 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     }
 
     @Override
-    public void responseMonthIncome() {
-        LocalLog.d(TAG, "responseMonthIncome() enter");
+    public void responseMonthIncome(IncomeResponse incomeResponse) {
+        LocalLog.d(TAG, "responseMonthIncome() enter " + incomeResponse.toString());
+        String moneyFormat = getContext().getResources().getString(R.string.month_income);
+        String moneyStr = String.format(moneyFormat, incomeResponse.getData().getTotal_amount());
+        LocalLog.d(TAG,"responseMonthIncome() " + moneyStr);
+        monthIncomeHome.setText(moneyStr);
     }
 
     @Override
@@ -292,8 +302,11 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     }
 
     @Override
-    public void responseTodayIncome() {
-        LocalLog.d(TAG, "responseTodayIncome() enter");
+    public void responseTodayIncome(IncomeResponse incomeResponse) {
+        LocalLog.d(TAG, "responseTodayIncome() enter " + incomeResponse.toString());
+        String moneyFormat = getContext().getResources().getString(R.string.today_income);
+        String moneyStr = String.format(moneyFormat, incomeResponse.getData().getTotal_amount());
+        todayIncomeNum.setText(moneyStr);
     }
 
     @Override
@@ -338,6 +351,10 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             }
         }
     };
+
+    @OnClick(R.id.today_income_num)
+    public void onClick() {
+    }
 
     private static class UpdateHandler extends Handler {
         WeakReference<HomePageFragment> weakReference;

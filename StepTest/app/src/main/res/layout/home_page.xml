@@ -123,6 +123,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/today_income_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/income_today"
@@ -176,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_toEndOf="@+id/moth_income_ico"
-                    android:text="88元"
+                    android:text=""
                     android:textColor="@color/color_f8"
                     android:textSize="18sp" />
             </RelativeLayout>

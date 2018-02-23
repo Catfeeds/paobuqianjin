@@ -322,6 +322,12 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_WEATHER) {
                 WeatherResponse weatherResponse = new Gson().fromJson(s, WeatherResponse.class);
                 ((HomePageInterface) callBackInterface).responseWeather(weatherResponse);
+            }else if (command == Engine.COMMAND_INCOME_TODAY) {
+                IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
+                ((HomePageInterface) callBackInterface).responseTodayIncome(incomeResponse);
+            } else if (command == Engine.COMMAND_INCOME_MONTH) {
+                IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
+                ((HomePageInterface) callBackInterface).responseMonthIncome(incomeResponse);
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof NearByInterface

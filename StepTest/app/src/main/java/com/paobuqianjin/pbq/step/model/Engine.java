@@ -981,6 +981,26 @@ public final class Engine {
                 .execute(new NetStringCallBack(homePageInterface, COMMAND_POST_USER_STEP));
     }
 
+    //TODO
+    public void getHomePageIncome(String action, int page, int pageSize) {
+        String url = NetApi.urlIncome + "?userid=" + String.valueOf(getId(mContext)) + "&action=" + action + "&page=" + String.valueOf(page)
+                + "&pagesize=" + String.valueOf(pageSize);
+        LocalLog.d(TAG, "getIncome() enter url = " + url);
+        if ("month".equals(action)) {
+            OkHttpUtils
+                    .get()
+                    .url(url)
+                    .build()
+                    .execute(new NetStringCallBack(homePageInterface, COMMAND_INCOME_MONTH));
+        } else if ("today".equals(action)) {
+            OkHttpUtils
+                    .get()
+                    .url(url)
+                    .build()
+                    .execute(new NetStringCallBack(homePageInterface, COMMAND_INCOME_TODAY));
+        }
+    }
+
     //TODO http://119.29.10.64/v1/income?userid=1&action=yesterday
     public void getIncome(String action, int page, int pageSize) {
         String url = NetApi.urlIncome + "?userid=" + String.valueOf(getId(mContext)) + "&action=" + action + "&page=" + String.valueOf(page)
