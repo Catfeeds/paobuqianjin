@@ -6,11 +6,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -23,10 +29,12 @@ import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
+import com.paobuqianjin.pbq.step.view.activity.MainActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.StepProcessDrawable;
 import com.paobuqianjin.pbq.step.view.base.view.WaveView;
+import com.paobuqianjin.pbq.step.view.fragment.task.TaskFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.LinkedHashMap;
@@ -114,6 +122,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     TextView redPkgNum;
     @Bind(R.id.invite_friend)
     TextView inviteFriend;
+    private View popRedPkgView;
+    private PopupWindow popupRedPkgWindow;
+    private TranslateAnimation animationCircleType;
     private StepLocationReciver stepLocationReciver = new StepLocationReciver();
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
@@ -207,6 +218,13 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         createCircleImage.setOnClickListener(onClickListener);
         addFriendImage = (ImageView) viewRoot.findViewById(R.id.add_friend_image);
         addFriendImage.setOnClickListener(onClickListener);
+        homeTitle = (TextView)viewRoot.findViewById(R.id.home_title);
+        updateHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                popRedPkg();
+            }
+        },2000);
     }
 
     @Override
@@ -214,6 +232,31 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         super.onDestroyView();
         ButterKnife.unbind(this);
         getContext().unregisterReceiver(stepLocationReciver);
+    }
+
+    public void popRedPkg() {
+        LocalLog.d(TAG, "popRedPkg() enter");
+        popRedPkgView = View.inflate(getContext(), R.layout.red_pkg_pop_window, null);
+        popupRedPkgWindow = new PopupWindow(popRedPkgView,
+                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupRedPkgWindow = null;
+            }
+        });
+
+        popupRedPkgWindow.setFocusable(true);
+        popupRedPkgWindow.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+        popupRedPkgWindow.showAtLocation(this.getView(),Gravity.CENTER,0,0);
+        popRedPkgView.startAnimation(animationCircleType);
     }
 
     @Override
@@ -256,7 +299,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public void responseWeather(WeatherResponse weatherResponse) {
         LocalLog.d(TAG, "responseWeather() enter" + weatherResponse.toString());
-        wendu.setText(weatherResponse.getData().getTemp()+ "°");
+        wendu.setText(weatherResponse.getData().getTemp() + "°");
         weatherIcon.setImageResource(weatherMap.get(weatherResponse.getData().getImg()));
 
     }
@@ -286,6 +329,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     break;
                 case R.id.income_red_pkg_image:
                     LocalLog.d(TAG, "领红包");
+                    ((MainActivity) getActivity()).tabToTask();
                     break;
                 case R.id.add_friend_image:
                     LocalLog.d(TAG, "邀请好友");

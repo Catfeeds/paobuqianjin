@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity {
     private HomePageFragment mHomePageFragment;
     private HonorFragment mHonorFragment;
     private FriendCircleFragment mFriendCircleFragment;
-    private TaskFragment taskFragment;
+    public static TaskFragment taskFragment;
     private OwnerFragment mOwnerFragment;
     private Fragment[] mFragments;
     private int mIndex = 0;
@@ -155,6 +155,12 @@ public class MainActivity extends BaseActivity {
             }
             onTabIndex(mIndex);
         }
+    }
+
+    public void tabToTask() {
+        LocalLog.d(TAG, "tabToTask() enter");
+        mIndex = 2;
+        onTabIndex(mIndex);
     }
 
     private void updateDrawableFalse(int index) {
