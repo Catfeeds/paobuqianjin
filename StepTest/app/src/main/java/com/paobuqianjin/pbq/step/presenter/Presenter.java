@@ -292,6 +292,11 @@ public final class Presenter {
         engine.taskRelease(taskReleaseParam);
     }
 
+    //TODO 用户好友接口
+    public void getUserFiends() {
+        engine.getUserFriends();
+    }
+
     //TODO
     public void getUserBankCard() {
         engine.getUserBankCard();
@@ -307,8 +312,8 @@ public final class Presenter {
         engine.bindCrashAccount(bindCardPostParam);
     }
 
-    public void getWeather(double latitude,double longitude) {
-        engine.getWeather(latitude,longitude);
+    public void getWeather(double latitude, double longitude) {
+        engine.getWeather(latitude, longitude);
     }
 
     public void setNetworkPolicy(NetworkPolicy networkPolicy) {

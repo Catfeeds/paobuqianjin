@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.task;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendSearchResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.SelectTaskFriendAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -21,7 +27,8 @@ import butterknife.ButterKnife;
  * Created by pbq on 2018/1/26.
  */
 
-public class SelectTaskFriendFragment extends BaseFragment {
+public class SelectTaskFriendFragment extends BaseFragment implements SelectUserFriendInterface {
+    private final static String TAG = SelectTaskFriendFragment.class.getSimpleName();
     @Bind(R.id.bar_return_left)
     TextView barReturnLeft;
     @Bind(R.id.bar_title)
@@ -36,7 +43,7 @@ public class SelectTaskFriendFragment extends BaseFragment {
     EditText searchCircleText;
     @Bind(R.id.friend_recycler)
     RecyclerView friendRecycler;
-
+    SelectTaskFriendAdapter selectTaskFriendAdapter = null;
     private LinearLayoutManager layoutManager;
 
     @Override
@@ -45,10 +52,17 @@ public class SelectTaskFriendFragment extends BaseFragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Presenter.getInstance(getContext()).attachUiInterface(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
+        Presenter.getInstance(getContext()).getUserFiends();
         return rootView;
     }
 
@@ -61,16 +75,50 @@ public class SelectTaskFriendFragment extends BaseFragment {
         barReturnLeft.setText("取消");
         barTitle.setText("选择好友");
         barTvRight.setText("确认");
+        barReturnLeft.setOnClickListener(onClickListener);
+        barTvRight.setOnClickListener(onClickListener);
         friendRecycler = (RecyclerView) viewRoot.findViewById(R.id.friend_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         friendRecycler.setLayoutManager(layoutManager);
-        friendRecycler.setAdapter(new SelectTaskFriendAdapter(getContext()));
 
     }
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.bar_return_left:
+                    LocalLog.d(TAG, "取消");
+                    getActivity().finish();
+                    break;
+                case R.id.bar_tv_right:
+                    LocalLog.d(TAG, "确定");
+                    if (selectTaskFriendAdapter != null) {
+                        //反馈选中结果到上一个Activity
+                        selectTaskFriendAdapter.getResultData();
+                        LocalLog.d(TAG,selectTaskFriendAdapter.getResultData().toString());
+                    }
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
+    }
+
+    @Override
+    public void response(UserFriendResponse userFriendResponse) {
+        LocalLog.d(TAG, "UserFriendResponse() enter " + userFriendResponse.toString());
+        selectTaskFriendAdapter = new SelectTaskFriendAdapter(getContext(), userFriendResponse.getData().getData());
+        friendRecycler.setAdapter(selectTaskFriendAdapter);
+    }
+
+    @Override
+    public void response(UserFriendSearchResponse userFriendSearchResponse) {
+        LocalLog.d(TAG, "UserFriendSearchResponse() enter");
     }
 }

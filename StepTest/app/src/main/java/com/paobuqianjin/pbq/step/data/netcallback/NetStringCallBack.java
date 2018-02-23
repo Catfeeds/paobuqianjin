@@ -26,6 +26,8 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendSearchResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
@@ -48,6 +50,7 @@ import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
@@ -358,6 +361,12 @@ public class NetStringCallBack extends StringCallback {
                 ((SignCodeInterface) callBackInterface).response(checkSignCodeResponse);
             } else if (command == Engine.COMMAND_BIND_CRASH_ACCOUNT) {
                 LocalLog.d(TAG, "绑定结果...");
+            }
+        } else if (callBackInterface != null
+                && callBackInterface instanceof SelectUserFriendInterface) {
+            if (command == Engine.COMMAND_USER_FRIEND) {
+                UserFriendResponse userFriendResponse = new Gson().fromJson(s, UserFriendResponse.class);
+                ((SelectUserFriendInterface) callBackInterface).response(userFriendResponse);
             }
         } else {
             LocalLog.d(TAG, " dispatch not match");

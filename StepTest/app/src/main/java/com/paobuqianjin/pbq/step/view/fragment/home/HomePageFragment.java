@@ -182,17 +182,17 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Presenter.getInstance(getContext()).attachUiInterface(this);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(STEP_ACTION);
-        intentFilter.addAction(LOCATION_ACTION);
-        getContext().registerReceiver(stepLocationReciver, intentFilter);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, super.onCreateView(inflater, container, savedInstanceState));
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(STEP_ACTION);
+        intentFilter.addAction(LOCATION_ACTION);
+        getContext().registerReceiver(stepLocationReciver, intentFilter);
+        Presenter.getInstance(getContext()).attachUiInterface(this);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -218,13 +218,13 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         createCircleImage.setOnClickListener(onClickListener);
         addFriendImage = (ImageView) viewRoot.findViewById(R.id.add_friend_image);
         addFriendImage.setOnClickListener(onClickListener);
-        homeTitle = (TextView)viewRoot.findViewById(R.id.home_title);
+        homeTitle = (TextView) viewRoot.findViewById(R.id.home_title);
         updateHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 popRedPkg();
             }
-        },2000);
+        }, 2000);
     }
 
     @Override
@@ -255,7 +255,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         animationCircleType.setInterpolator(new AccelerateInterpolator());
         animationCircleType.setDuration(200);
 
-        popupRedPkgWindow.showAtLocation(this.getView(),Gravity.CENTER,0,0);
+        popupRedPkgWindow.showAtLocation(this.getView(), Gravity.CENTER, 0, 0);
         popRedPkgView.startAnimation(animationCircleType);
     }
 

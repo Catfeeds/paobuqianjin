@@ -9,6 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendSearchResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -17,28 +24,43 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by pbq on 2018/1/26.
  */
 
-public class SelectTaskFriendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFriendAdapter.SelectTaskFriendViewHolder> {
     private final static String TAG = SelectTaskFriendAdapter.class.getSimpleName();
     private final static int defaultCount = 7;
     private Context context;
+    private List<UserFriendResponse.DataBeanX.DataBean> mData;
+    private List<UserFriendResponse.DataBeanX.DataBean> resultData = new ArrayList<>();
 
-    public SelectTaskFriendAdapter(Context context) {
+    public List<UserFriendResponse.DataBeanX.DataBean> getResultData() {
+        return resultData;
+    }
+
+    public SelectTaskFriendAdapter(Context context, List<UserFriendResponse.DataBeanX.DataBean> data) {
         super();
         this.context = context;
+        mData = data;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
+    public void onBindViewHolder(SelectTaskFriendAdapter.SelectTaskFriendViewHolder holder, int position) {
+        if (mData.get(position) instanceof UserFriendResponse.DataBeanX.DataBean) {
+            Presenter.getInstance(context).getImage(holder.dearIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
+            holder.dearName.setText(((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
+            holder.position = position;
+        }
     }
 
     @Override
     public int getItemCount() {
-        return defaultCount;
+        if (mData != null) {
+            return mData.size();
+        } else {
+            return 0;
+        }
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SelectTaskFriendAdapter.SelectTaskFriendViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new SelectTaskFriendViewHolder(LayoutInflater.from(context).inflate(R.layout.select_friend_list_item,
                 parent, false));
     }
@@ -50,6 +72,8 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<RecyclerView.V
         CircleImageView dearIcon;
         //@Bind(R.id.dear_name)
         TextView dearName;
+        boolean isSelected = false;
+        int position = -1;
 
         public SelectTaskFriendViewHolder(View view) {
             super(view);
@@ -57,7 +81,31 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
         private void initView(View view) {
+            selectIcon = (ImageView) view.findViewById(R.id.select_icon);
+            selectIcon.setOnClickListener(onClickListener);
+            dearIcon = (CircleImageView) view.findViewById(R.id.dear_icon);
+            dearName = (TextView) view.findViewById(R.id.dear_name);
         }
 
+        private View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.select_icon:
+                        if (isSelected) {
+                            selectIcon.setImageDrawable(null);
+                            isSelected = false;
+                            LocalLog.d(TAG, "选中状态变为非选中");
+                            resultData.remove(mData.get(position));
+                        } else {
+                            selectIcon.setImageResource(R.drawable.selected_icon);
+                            isSelected = true;
+                            LocalLog.d(TAG, "非选中状态变为选中");
+                            resultData.add(mData.get(position));
+                        }
+                        break;
+                }
+            }
+        };
     }
 }

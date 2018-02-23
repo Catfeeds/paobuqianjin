@@ -32,24 +32,28 @@
             android:textColor="@color/color_161727"
             android:textSize="15sp" />
 
-        <ImageView
+        <TextView
             android:id="@+id/go_to_target_step"
-            android:layout_width="7dp"
-            android:layout_height="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
-            android:src="@drawable/go_to" />
+            android:text="步"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
 
-        <TextView
+        <EditText
             android:id="@+id/target_task_step_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="6dp"
             android:layout_toLeftOf="@+id/go_to_target_step"
-            android:text="8000步"
-            android:textColor="@color/color_161727" />
+            android:background="@null"
+            android:hint="输入目标步数"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -76,13 +80,25 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/target_task_money_num"
+            android:id="@+id/task_pay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
-            android:text="200元"
+            android:text="元"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/target_task_money_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:layout_toLeftOf="@+id/task_pay"
+            android:background="@null"
+            android:hint="输入奖励金额"
             android:textColor="@color/color_161727"
             android:textSize="15sp" />
 
@@ -110,15 +126,26 @@
             android:textColor="@color/color_161727"
             android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/target_task_day_num"
+        <TextView
+            android:id="@+id/task_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
+            android:text="天"
+            android:textColor="@color/color_161727"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/target_task_day_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="6dp"
+            android:layout_toLeftOf="@+id/task_day"
             android:background="@null"
-            android:hint="请输入任务天数"
+            android:hint="输入任务天数"
             android:inputType="number"
             android:maxLength="3"
             android:maxLines="1"
@@ -239,7 +266,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="14dp"
             android:layout_toEndOf="@+id/attention"
-            android:text="派发给好友的任务未完成，则不能重复派发任务;\n总金额=奖励金额*任务天数*领取总人数"
+            android:text="派发给好友的任务未完成，则不能重复派发任务;\n单日单个人最高奖励金额不能高于200元;\n总金额=奖励金额*任务天数"
             android:textColor="@color/color_8a8a8a"
             android:textSize="12sp" />
     </RelativeLayout>

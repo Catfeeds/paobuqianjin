@@ -9,8 +9,7 @@
         android:layout_height="20dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="14dp"
-        android:background="@drawable/circle_outline"
-        android:src="@drawable/selected_icon" />
+        android:background="@drawable/circle_outline" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/dear_icon"

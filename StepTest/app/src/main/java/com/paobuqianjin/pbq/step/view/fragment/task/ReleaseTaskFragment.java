@@ -49,19 +49,23 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.target_step_des)
     TextView targetStepDes;
     @Bind(R.id.go_to_target_step)
-    ImageView goToTargetStep;
+    TextView goToTargetStep;
     @Bind(R.id.target_task_step_num)
-    TextView targetTaskStepNum;
+    EditText targetTaskStepNum;
     @Bind(R.id.target_task_span)
     RelativeLayout targetTaskSpan;
     @Bind(R.id.target_money_des)
     TextView targetMoneyDes;
+    @Bind(R.id.task_pay)
+    TextView taskPay;
     @Bind(R.id.target_task_money_num)
-    TextView targetTaskMoneyNum;
+    EditText targetTaskMoneyNum;
     @Bind(R.id.money_task_span)
     RelativeLayout moneyTaskSpan;
     @Bind(R.id.target_day_des)
     TextView targetDayDes;
+    @Bind(R.id.task_day)
+    TextView taskDay;
     @Bind(R.id.target_task_day_num)
     EditText targetTaskDayNum;
     @Bind(R.id.day_task_span)
@@ -88,6 +92,7 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
     TextView attention;
     @Bind(R.id.confirm)
     Button confirm;
+
     private TaskReleaseParam taskReleaseParam = new TaskReleaseParam();
 
     @Override

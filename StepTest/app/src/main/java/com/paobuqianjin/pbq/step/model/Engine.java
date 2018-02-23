@@ -52,6 +52,7 @@ import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
@@ -120,6 +121,7 @@ public final class Engine {
     private UserIncomInterface userIncomInterface;
     private CrashInterface crashInterface;
     private SignCodeInterface signCodeInterface;
+    private SelectUserFriendInterface selectUserFriendInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -165,6 +167,8 @@ public final class Engine {
     public final static int COMMAND_BIND_CRASH_ACCOUNT = 38;
     public final static int COMMAND_CRASH_TO = 39;
     public final static int COMMAND_WEATHER = 40;
+    public final static int COMMAND_USER_FRIEND = 41;
+    public final static int COMMAND_USER_FRIEND_SEARCH = 42;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1262,6 +1266,17 @@ public final class Engine {
         }
     }
 
+    //TODO 获取用户好友列表
+    public void getUserFriends() {
+        String url = NetApi.urlUserFriends + "/?userid=" + getId(mContext);
+        LocalLog.d(TAG, "getUserFriends() url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(selectUserFriendInterface, COMMAND_USER_FRIEND));
+    }
+
     //TODO HOME Page
     public void getStepToday() {
         LocalLog.d(TAG, "getStepToday() enter");
@@ -1284,16 +1299,16 @@ public final class Engine {
     }
 
     //TODO get Weather
-    public void getWeather(double latitude,double longitude) {
+    public void getWeather(double latitude, double longitude) {
         //Weather.getWeather(22.548335d, 114.02133d);
-        String url  = NetApi.urlWeather + "?latitude="+String.valueOf(latitude) +
-                "&longitude="+String.valueOf(longitude);
-        LocalLog.d(TAG,"url = " + url);
+        String url = NetApi.urlWeather + "?latitude=" + String.valueOf(latitude) +
+                "&longitude=" + String.valueOf(longitude);
+        LocalLog.d(TAG, "url = " + url);
         OkHttpUtils
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(homePageInterface,COMMAND_WEATHER));
+                .execute(new NetStringCallBack(homePageInterface, COMMAND_WEATHER));
     }
 
     //TODO 获取账户列表 http://119.29.10.64/v1/UserBankCard?userid=1
@@ -1384,6 +1399,8 @@ public final class Engine {
             crashInterface = (CrashInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SignCodeInterface) {
             signCodeInterface = (SignCodeInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SelectUserFriendInterface) {
+            selectUserFriendInterface = (SelectUserFriendInterface) uiCallBackInterface;
         }
 
     }
@@ -1432,6 +1449,8 @@ public final class Engine {
             crashInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SignCodeInterface) {
             signCodeInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SelectUserFriendInterface) {
+            selectUserFriendInterface = null;
         }
     }
 }

@@ -126,4 +126,6 @@ public class NetApi {
 
     //TODO 天气查询接口
     public final static String urlWeather = "http://119.29.10.64/v1/ThirdParty/getWeather";
+    //TODO 用户好友接口
+    public final static String urlUserFriends = "http://119.29.10.64/v1/UserFriends";
 }

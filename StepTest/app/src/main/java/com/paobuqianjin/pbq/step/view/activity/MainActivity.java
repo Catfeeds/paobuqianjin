@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity {
     private HomePageFragment mHomePageFragment;
     private HonorFragment mHonorFragment;
     private FriendCircleFragment mFriendCircleFragment;
-    public static TaskFragment taskFragment;
+    public  TaskFragment taskFragment;
     private OwnerFragment mOwnerFragment;
     private Fragment[] mFragments;
     private int mIndex = 0;
