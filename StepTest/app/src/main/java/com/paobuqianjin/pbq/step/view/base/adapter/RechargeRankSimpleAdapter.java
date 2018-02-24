@@ -61,6 +61,7 @@ public class RechargeRankSimpleAdapter extends RecyclerView.Adapter<RechargeRank
 
     private void updateList(RechargeRankSimpleViewHolder holder, int position) {
         holder.moneyNumDes.setText(mData.get(position).getAmount() + "元");
+        holder.userid = mData.get(position).getUserid();
         Presenter.getInstance(context).getImage(holder.userIconMoney, mData.get(position).getAvatar());
     }
 
@@ -76,6 +77,7 @@ public class RechargeRankSimpleAdapter extends RecyclerView.Adapter<RechargeRank
         CircleImageView userIconMoney;
         @Bind(R.id.money_num_des)
         TextView moneyNumDes;
+        int userid;
 
         public RechargeRankSimpleViewHolder(View view) {
             super(view);
@@ -89,6 +91,7 @@ public class RechargeRankSimpleAdapter extends RecyclerView.Adapter<RechargeRank
                     case R.id.user_icon_money:
                         LocalLog.d(TAG, "点击个人用户头像");
                         Intent intent = new Intent();
+                        intent.putExtra("userid", userid);
                         intent.setClass(context, UserCenterActivity.class);
                         context.startActivity(intent);
                         break;

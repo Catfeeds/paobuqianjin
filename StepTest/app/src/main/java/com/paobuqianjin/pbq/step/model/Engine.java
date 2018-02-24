@@ -47,6 +47,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
@@ -61,6 +62,7 @@ import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -122,6 +124,8 @@ public final class Engine {
     private CrashInterface crashInterface;
     private SignCodeInterface signCodeInterface;
     private SelectUserFriendInterface selectUserFriendInterface;
+    private UserHomeInterface userHomeInterface;
+    private MyDynamicInterface myDynamicInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -169,6 +173,8 @@ public final class Engine {
     public final static int COMMAND_WEATHER = 40;
     public final static int COMMAND_USER_FRIEND = 41;
     public final static int COMMAND_USER_FRIEND_SEARCH = 42;
+    public final static int COMMAND_GET_USER_DYNAMIC = 43;
+    public final static int COMMAND_GET_USER_INFO = 44;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -581,6 +587,41 @@ public final class Engine {
                 .execute(new NetStringCallBack(dynamicIndexUiInterface, Engine.COMMAND_GET_DYNAMIC_INDEX));
     }
 
+    //TODO 获取个人动态列表
+    public void getUserDynamic(String userid) {
+        String url = NetApi.urlDynamic + "/getUserDynamic?userid=" + userid;
+        LocalLog.d(TAG, "getUserDynamic() enter url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(userHomeInterface, COMMAND_GET_USER_DYNAMIC));
+
+    }
+
+    //TODO 获取当前用户的个人动态
+    public void getMyDynamic(int page,int pagesize) {
+        String url = NetApi.urlDynamic + "/getUserDynamic?userid=" + String.valueOf(getId(mContext)) +"&page="+
+                String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        LocalLog.d(TAG, "getMyDynamic() enter");
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(myDynamicInterface, COMMAND_GET_USER_DYNAMIC));
+    }
+
+    //TODO 获取个人用户信息【非本人】
+    public void getUserInfo(final String userid) {
+        String url = NetApi.urlUser + userid;
+        LocalLog.d(TAG, "getUserInfo() url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(userHomeInterface, COMMAND_GET_USER_INFO));
+    }
+
     //TODO 发表动态
     public void postDynamic(DynamicParam dynamicParam) {
         LocalLog.d(TAG, "postDynamic() enter");
@@ -615,7 +656,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(dynamicCommentUiInterface, COMMAND_DYNAMIC_CONTENTS));
     }
 
-    //获取单条评论
+    //TODO 获取单条评论
     public void getDynamicById(int id) {
         LocalLog.d(TAG, "getDynamicById() enter");
         String url = NetApi.urlDynamicComment + "/" + String.valueOf(id);
@@ -1426,6 +1467,10 @@ public final class Engine {
             signCodeInterface = (SignCodeInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SelectUserFriendInterface) {
             selectUserFriendInterface = (SelectUserFriendInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserHomeInterface) {
+            userHomeInterface = (UserHomeInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyDynamicInterface) {
+            myDynamicInterface = (MyDynamicInterface) uiCallBackInterface;
         }
 
     }
@@ -1476,6 +1521,10 @@ public final class Engine {
             signCodeInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SelectUserFriendInterface) {
             selectUserFriendInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserHomeInterface) {
+            userHomeInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyDynamicInterface) {
+            myDynamicInterface = null;
         }
     }
 }

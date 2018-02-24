@@ -19,21 +19,19 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/step_dollar_icon"
-                android:layout_width="105dp"
-                android:layout_height="105dp"
+                android:id="@+id/step_dollar_bg"
+                android:layout_width="match_parent"
+                android:layout_height="199dp"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="30dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/step_dollar_bg" />
+                android:src="@drawable/wallet_bg" />
 
             <RelativeLayout
                 android:id="@+id/dollar_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true">
+                android:layout_marginTop="36dp">
 
                 <TextView
                     android:id="@+id/step_dollars"
@@ -46,6 +44,8 @@
                     android:textSize="14dp" />
 
                 <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_centerHorizontal="true"
                     android:id="@+id/step_dollar_nums"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -54,16 +54,28 @@
                     android:text="36"
                     android:textColor="@color/color_f8"
                     android:textSize="36dp" />
+
+                <Button
+                    android:layout_marginTop="10dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/step_dollar_nums"
+                    android:background="@drawable/crash_step_dol_bg"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp"
+                    android:id="@+id/crash_step_dol"
+                    android:layout_width="90dp"
+                    android:layout_height="28dp"
+                    android:text="兑换步币" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/step_dollar_span"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/step_dollar_icon"
+                android:layout_below="@+id/dollar_total"
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="40dp"
-                android:layout_marginTop="30dp">
+                android:layout_marginTop="15dp">
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/step_dollar_tab"

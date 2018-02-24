@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,6 +34,8 @@ import butterknife.ButterKnife;
 
 public class StepDollarFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = StepDollarFragment.class.getSimpleName();
+
+    String[] titles = {"步币明细", "兑换记录"};
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -41,21 +44,22 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment {
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
-    @Bind(R.id.step_dollar_icon)
-    ImageView stepDollarIcon;
+    @Bind(R.id.step_dollar_bg)
+    ImageView stepDollarBg;
     @Bind(R.id.step_dollars)
     TextView stepDollars;
     @Bind(R.id.step_dollar_nums)
     TextView stepDollarNums;
+    @Bind(R.id.crash_step_dol)
+    Button crashStepDol;
     @Bind(R.id.dollar_total)
     RelativeLayout dollarTotal;
     @Bind(R.id.step_dollar_tab)
     TabLayout stepDollarTab;
-    @Bind(R.id.step_dollar_span)
-    RelativeLayout stepDollarSpan;
     @Bind(R.id.step_dollar_viewpager)
     ViewPager stepDollarViewpager;
-    String[] titles = {"步币明细", "兑换记录"};
+    @Bind(R.id.step_dollar_span)
+    RelativeLayout stepDollarSpan;
 
     @Override
     protected String title() {
@@ -138,7 +142,7 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment {
     }
 
     private View getTabView(int position) {
-        RelativeLayout view =(RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.ico_text_tab, null);
+        RelativeLayout view = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.ico_text_tab, null);
         ImageView iconView = (ImageView) view.findViewById(R.id.icon);
         TextView textView = (TextView) view.findViewById(R.id.tab_text);
         if (position == 0) {

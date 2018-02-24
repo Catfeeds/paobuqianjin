@@ -198,6 +198,7 @@ public final class OwnerFragment extends BaseFragment {
                 break;
             case R.id.user_span:
                 LocalLog.d(TAG, "设置头像");
+                intent.putExtra("userid", Presenter.getInstance(getContext()).getId());
                 intent.setClass(getContext(), UserCenterActivity.class);
                 startActivity(intent);
                 break;
@@ -260,7 +261,7 @@ public final class OwnerFragment extends BaseFragment {
             LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
             Presenter.getInstance(getContext()).getImage(headIcon, userInfoResponse.getData().getAvatar());
             userName.setText(userInfoResponse.getData().getNickname());
-            userId.setText("ID:"+String.valueOf(userInfoResponse.getData().getId()));
+            userId.setText("ID:" + String.valueOf(userInfoResponse.getData().getId()));
             circle.setText(String.valueOf(userInfoResponse.getData().getCircleCount()));
             friends.setText(String.valueOf(userInfoResponse.getData().getFollowCount()));
             if (userInfoResponse.getData().getSex() == 0) {

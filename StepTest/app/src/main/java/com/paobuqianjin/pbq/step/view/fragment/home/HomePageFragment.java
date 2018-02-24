@@ -224,7 +224,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         addFriendImage = (ImageView) viewRoot.findViewById(R.id.add_friend_image);
         addFriendImage.setOnClickListener(onClickListener);
         homeTitle = (TextView) viewRoot.findViewById(R.id.home_title);
-        monthIncomeHome = (TextView)viewRoot.findViewById(R.id.month_income_home);
+        monthIncomeHome = (TextView) viewRoot.findViewById(R.id.month_income_home);
         updateHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -279,7 +279,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         LocalLog.d(TAG, "responseMonthIncome() enter " + incomeResponse.toString());
         String moneyFormat = getContext().getResources().getString(R.string.month_income);
         String moneyStr = String.format(moneyFormat, incomeResponse.getData().getTotal_amount());
-        LocalLog.d(TAG,"responseMonthIncome() " + moneyStr);
+        LocalLog.d(TAG, "responseMonthIncome() " + moneyStr);
         monthIncomeHome.setText(moneyStr);
     }
 
@@ -326,6 +326,10 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     public void onDestroy() {
         super.onDestroy();
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
+        if (popupRedPkgWindow != null) {
+            popupRedPkgWindow.dismiss();
+            popupRedPkgWindow = null;
+        }
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {

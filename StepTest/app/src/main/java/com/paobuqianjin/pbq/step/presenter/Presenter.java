@@ -185,6 +185,18 @@ public final class Presenter {
         engine.getDynamicIndex(page, pagesize);
     }
 
+    //TODO  获取用户动态
+    public void getUserDynamic(String userid) {
+        engine.getUserDynamic(userid);
+    }
+
+    public void getMyDynamic(int pageIndex,int pageSize){
+        engine.getMyDynamic(pageIndex, pageSize);
+    }
+    public void getUserInfo(String userid){
+        engine.getUserInfo(userid);
+    }
+
     //TODO 获取评论列表
     public void getDynamicCommentList(int dynamicid, int page, int pagesize) {
         engine.getDynamicCommentList(dynamicid, page, pagesize);

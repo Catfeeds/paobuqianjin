@@ -59,12 +59,14 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, dataBean.getAvatar());
             holder.searchCircleDesListName.setText(dataBean.getNickname());
             holder.loveNumber.setText(dataBean.getAmount() + "元");
+            holder.userid = ((ReChargeRankResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
 
         } else if (mData.get(position) instanceof StepRankResponse.DataBeanX.DataBean) {
             StepRankResponse.DataBeanX.DataBean dataBean = (StepRankResponse.DataBeanX.DataBean) mData.get(position);
             Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, dataBean.getAvatar());
             holder.searchCircleDesListName.setText(dataBean.getNickname());
             holder.loveNumber.setText(dataBean.getStep_number() + "步");
+            holder.userid = ((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getId();
         }
     }
 
@@ -95,6 +97,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
         CircleImageView circleLogoSearch;
         TextView searchCircleDesListName;
         TextView loveNumber;
+        int userid;
 
         public RankViewHolder(View view, int viewType) {
             super(view);
@@ -116,8 +119,9 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.circle_logo_search:
-                        LocalLog.d(TAG,"点击个人头像");
+                        LocalLog.d(TAG, "点击个人头像");
                         Intent intent = new Intent();
+                        intent.putExtra("userid", userid);
                         intent.setClass(mContext, UserCenterActivity.class);
                         mContext.startActivity(intent);
                         break;

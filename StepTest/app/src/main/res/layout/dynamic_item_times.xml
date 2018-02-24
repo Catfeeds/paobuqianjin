@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/dynamic_release_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="2dp"
+        android:text="10:26"
+        android:textColor="@color/color_161727"
+        android:textSize="12dp" />
+
+    <ImageView
+        android:id="@+id/dot"
+        android:layout_width="5dp"
+        android:layout_height="5dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/dot_dynamic"></ImageView>
+
+    <TextView
+        android:id="@+id/dynamic_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/dot"
+        android:text="泡沫轴使用篇"
+        android:textColor="@color/color_161727"
+        android:textSize="15dp" />
+
+    <RelativeLayout
+        android:layout_alignLeft="@+id/dynamic_des"
+        android:id="@+id/pic_viewpager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dynamic_des"
+        android:layout_marginTop="15dp"
+        android:visibility="visible">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/image_viewpager"
+            android:layout_width="200dp"
+            android:layout_height="200dp">
+
+        </android.support.v4.view.ViewPager>
+
+        <LinearLayout
+            android:id="@+id/dot_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/image_viewpager"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/dot_1"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/image_viewpager_dot_selected"></View>
+
+            <View
+                android:id="@+id/dot_2"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/image_viewpager_dot_unselected"></View>
+
+            <View
+                android:id="@+id/dot_3"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/image_viewpager_dot_unselected"></View>
+
+            <View
+                android:id="@+id/dot_4"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/image_viewpager_dot_unselected"></View>
+        </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_alignLeft="@+id/dynamic_des"
+        android:id="@+id/location_support_rel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pic_viewpager"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/content_numbers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="9dp"
+            android:layout_toRightOf="@+id/content_number_icon"
+            android:text="16"
+            android:textColor="@color/color_161727"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:id="@+id/content_number_icon"
+            android:layout_width="16dp"
+            android:layout_height="15dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/content_supports"
+            android:background="@drawable/comment_dynimic" />
+
+        <TextView
+            android:id="@+id/content_supports"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="9dp"
+            android:layout_toRightOf="@+id/like_num_icon"
+            android:text="44"
+            android:textColor="@color/color_161727"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:id="@+id/like_num_icon"
+            android:layout_width="17dp"
+            android:layout_height="14dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/fabulous_s" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

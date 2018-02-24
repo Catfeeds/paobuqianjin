@@ -5,17 +5,19 @@
 
     <ImageView
         android:id="@+id/icon"
+        android:layout_centerVertical="true"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:scaleType="centerCrop"
         android:src="@drawable/step_dollar" />
 
     <TextView
+        android:layout_centerVertical="true"
         android:id="@+id/tab_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@+id/icon"
-        android:textColor="@color/color_161727"
+        android:textColor="@color/color_f8"
         android:textSize="15dp" />
 </RelativeLayout>

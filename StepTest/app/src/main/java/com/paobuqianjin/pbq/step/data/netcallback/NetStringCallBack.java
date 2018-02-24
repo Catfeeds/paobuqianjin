@@ -15,6 +15,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
@@ -45,6 +46,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
@@ -58,6 +60,7 @@ import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
@@ -322,7 +325,7 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_WEATHER) {
                 WeatherResponse weatherResponse = new Gson().fromJson(s, WeatherResponse.class);
                 ((HomePageInterface) callBackInterface).responseWeather(weatherResponse);
-            }else if (command == Engine.COMMAND_INCOME_TODAY) {
+            } else if (command == Engine.COMMAND_INCOME_TODAY) {
                 IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
                 ((HomePageInterface) callBackInterface).responseTodayIncome(incomeResponse);
             } else if (command == Engine.COMMAND_INCOME_MONTH) {
@@ -374,8 +377,23 @@ public class NetStringCallBack extends StringCallback {
                 UserFriendResponse userFriendResponse = new Gson().fromJson(s, UserFriendResponse.class);
                 ((SelectUserFriendInterface) callBackInterface).response(userFriendResponse);
             }
+        } else if (callBackInterface != null
+                && callBackInterface instanceof UserHomeInterface) {
+            if (command == Engine.COMMAND_GET_USER_INFO) {
+                UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
+                ((UserHomeInterface) callBackInterface).response(userInfoResponse);
+            } else if (command == Engine.COMMAND_GET_USER_DYNAMIC) {
+                DynamicPersonResponse dynamicPersonResponse = new Gson().fromJson(s, DynamicPersonResponse.class);
+                ((UserHomeInterface) callBackInterface).response(dynamicPersonResponse);
+            }
+        } else if (callBackInterface != null
+                && callBackInterface instanceof MyDynamicInterface) {
+            if (command == Engine.COMMAND_GET_USER_DYNAMIC) {
+                DynamicPersonResponse dynamicPersonResponse = new Gson().fromJson(s, DynamicPersonResponse.class);
+                ((MyDynamicInterface) callBackInterface).response(dynamicPersonResponse);
+            }
         } else {
-            LocalLog.d(TAG, " dispatch not match");
+            LocalLog.e(TAG, " dispatch not match");
         }
     }
 }
