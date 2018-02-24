@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/crash_success_bar"
+        layout="@layout/bar_return_a_style"></include>
+
+    <ImageView
+        android:id="@+id/crash_success_ico"
+        android:layout_width="102dp"
+        android:layout_height="102dp"
+        android:layout_below="@+id/crash_success_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="51dp"
+        android:src="@drawable/crash_success" />
+
+    <TextView
+        android:id="@+id/crash_success_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/crash_success_ico"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text="提现成功"
+        android:textColor="@color/color_161727"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/crash_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/crash_success_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:text="我们将在三个工作日内处理您的提现申请"
+        android:textColor="@color/color_8a8a8a"
+        android:textSize="14dp" />
+
+    <Button
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/crash_desc"
+        android:id="@+id/finish"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:text="完成"
+        android:background="@drawable/rect_angle_background"
+        android:textColor="@color/color_f8"
+        android:textSize="18dp" />
+</RelativeLayout>

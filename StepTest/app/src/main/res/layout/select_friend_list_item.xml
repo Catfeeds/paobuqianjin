@@ -29,7 +29,7 @@
         android:layout_toRightOf="@+id/dear_icon"
         android:text="用户昵称"
         android:textColor="@color/color_161727"
-        android:textSize="15sp" />
+        android:textSize="15dp" />
 
     <ImageView
         android:layout_width="match_parent"

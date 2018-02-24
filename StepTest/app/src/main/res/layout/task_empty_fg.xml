@@ -20,7 +20,7 @@
         android:layout_marginTop="27dp"
         android:text="暂时没有任务哦，要不给好友派发一个任务吧！"
         android:textColor="@color/color_9999"
-        android:textSize="14sp" />
+        android:textSize="14dp" />
 
     <TextView
         android:id="@+id/go_to_release"
@@ -34,5 +34,5 @@
         android:gravity="center"
         android:text="发布任务"
         android:textColor="@color/color_f8"
-        android:textSize="18sp" />
+        android:textSize="18dp" />
 </RelativeLayout>

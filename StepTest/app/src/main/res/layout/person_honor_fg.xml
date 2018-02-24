@@ -45,7 +45,7 @@
                         android:includeFontPadding="true"
                         android:text="15"
                         android:textColor="@color/color_f8"
-                        android:textSize="36sp" />
+                        android:textSize="36dp" />
 
                     <TextView
                         android:id="@+id/rank_des"
@@ -57,7 +57,7 @@
                         android:includeFontPadding="false"
                         android:text="名次"
                         android:textColor="@color/color_f8"
-                        android:textSize="12sp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -73,7 +73,7 @@
                         android:layout_height="wrap_content"
                         android:text="10086"
                         android:textColor="@color/color_f8"
-                        android:textSize="36sp" />
+                        android:textSize="36dp" />
 
                     <TextView
                         android:id="@+id/step_des"
@@ -85,7 +85,7 @@
                         android:includeFontPadding="false"
                         android:text="步数"
                         android:textColor="@color/color_f8"
-                        android:textSize="12sp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -119,7 +119,7 @@
                     android:layout_centerVertical="true"
                     android:text="排行榜详情"
                     android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <ImageView
                     android:layout_width="8dp"

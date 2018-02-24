@@ -8,7 +8,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
 
         <RelativeLayout
             android:id="@+id/button_return_bar"
@@ -42,14 +43,14 @@
             android:textSize="18dp" />
 
         <TextView
-            android:textSize="15dp"
-            android:textColor="@color/color_f8"
             android:id="@+id/bar_tv_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
-            android:includeFontPadding="true" />
+            android:includeFontPadding="true"
+            android:textColor="@color/color_f8"
+            android:textSize="15dp" />
     </RelativeLayout>
 </RelativeLayout>

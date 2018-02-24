@@ -24,7 +24,7 @@
                 android:layout_marginTop="15dp"
                 android:text="跑步钱进健康跑"
                 android:textColor="@color/color_161727"
-                android:textSize="18sp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/live_start_time"
@@ -35,7 +35,7 @@
                 android:layout_marginTop="15dp"
                 android:text="2018-01-10"
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="14sp" />
+                android:textSize="14dp" />
             <TextView
                 android:text="商户昵称"
                 android:layout_marginLeft="20dp"
@@ -46,7 +46,7 @@
                 android:layout_alignBottom="@+id/live_start_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"/>
+                android:textSize="14dp"/>
             <ImageView
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"

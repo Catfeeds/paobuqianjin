@@ -1286,6 +1286,11 @@ public final class Engine {
         }
     }
 
+    //TODO 段位
+    public void getSportLevel() {
+        LocalLog.d(TAG, "getSportLevel() enter");
+    }
+
     //TODO 获取用户好友列表
     public void getUserFriends() {
         String url = NetApi.urlUserFriends + "/?userid=" + getId(mContext);

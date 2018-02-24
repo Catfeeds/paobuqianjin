@@ -31,7 +31,7 @@
                     android:gravity="left"
                     android:hint="这一刻的想法..."
                     android:textColorHint="@color/color_8a8a8a"
-                    android:textSize="15sp" />
+                    android:textSize="15dp" />
 
                 <LinearLayout
                     android:id="@+id/pic_span"
@@ -108,7 +108,7 @@
                     android:layout_marginRight="20dp"
                     android:text="深圳"
                     android:textColor="@color/color_161727"
-                    android:textSize="15sp" />
+                    android:textSize="15dp" />
             </RelativeLayout>
 
             <ImageView
@@ -140,7 +140,7 @@
                     android:layout_toEndOf="@+id/at"
                     android:text="提醒谁看"
                     android:textColor="@color/color_161727"
-                    android:textSize="15sp" />
+                    android:textSize="15dp" />
 
                 <ImageView
                     android:layout_width="7dp"

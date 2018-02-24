@@ -40,7 +40,7 @@
                     android:includeFontPadding="false"
                     android:text="跑步有钱进福田"
                     android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <ImageView
                     android:id="@+id/lock"
@@ -65,7 +65,7 @@
                     android:background="@drawable/chong_zhi_bg"
                     android:text="充值失败"
                     android:textColor="@color/color_f8"
-                    android:textSize="10sp"
+                    android:textSize="10dp"
                     android:visibility="gone" />
             </RelativeLayout>
 
@@ -83,7 +83,7 @@
                     android:includeFontPadding="false"
                     android:text="成员500人"
                     android:textColor="@color/color_8a8a8a"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <ImageView
                     android:id="@+id/line1"
@@ -105,7 +105,7 @@
                     android:includeFontPadding="false"
                     android:text="深圳福田"
                     android:textColor="@color/color_8a8a8a"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
             </RelativeLayout>
 
         </RelativeLayout>
@@ -121,7 +121,7 @@
             android:background="@drawable/button_join"
             android:text="加入"
             android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <ImageView
             android:layout_width="match_parent"

@@ -13,7 +13,7 @@
         android:layout_marginTop="100dp"
         android:text="@string/app_name"
         android:textColor="@color/color_f8"
-        android:textSize="20sp" />
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/reg_login_des"
@@ -24,7 +24,7 @@
         android:layout_marginTop="13dp"
         android:text="@string/desc_login"
         android:textColor="@color/color_ccfffffff"
-        android:textSize="12sp" />
+        android:textSize="12dp" />
 
     <RelativeLayout
         android:id="@+id/login_pan"
@@ -55,7 +55,7 @@
                     android:paddingBottom="10dp"
                     android:text="@string/action_sign_in_short"
                     android:textColor="@color/color_f8"
-                    android:textSize="15sp" />
+                    android:textSize="15dp" />
             </RelativeLayout>
 
 
@@ -74,7 +74,7 @@
                     android:paddingBottom="10dp"
                     android:text="@string/action_sign_in_reg"
                     android:textColor="@color/color_f8"
-                    android:textSize="15sp" />
+                    android:textSize="15dp" />
             </RelativeLayout>
 
 
@@ -150,7 +150,7 @@
             android:paddingBottom="0dp"
             android:text="@string/other_login_style"
             android:textColor="@color/color_f8"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
 
         <ImageView
             android:layout_width="0dp"

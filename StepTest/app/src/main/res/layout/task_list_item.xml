@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:text="五公里挑战赛"
             android:textColor="@color/color_161727"
-            android:textSize="16sp" />
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/task_invite"
@@ -35,7 +35,7 @@
             android:layout_marginTop="13dp"
             android:text="派发人:微微"
             android:textColor="@color/color_8a8a8a"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/task_gift"
@@ -45,12 +45,12 @@
             android:layout_marginTop="13dp"
             android:text="奖金: ￥10.00"
             android:textColor="@color/color_8a8a8a"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
     </RelativeLayout>
 
     <Button
         android:stateListAnimator="@null"
-        android:textSize="14sp"
+        android:textSize="14dp"
         android:id="@+id/release_details"
         android:layout_width="70dp"
         android:layout_height="28dp"

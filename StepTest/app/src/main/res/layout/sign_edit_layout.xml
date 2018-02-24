@@ -35,7 +35,7 @@
                     android:singleLine="true"
                     android:textColor="@color/color_f8"
                     android:textColorHint="@color/color_ccfffffff"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <EditText
                     android:id="@+id/sign_code"
@@ -54,7 +54,7 @@
                     android:singleLine="true"
                     android:textColor="@color/color_f8"
                     android:textColorHint="@color/color_ccfffffff"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <TextView
                     android:onClick="onTabLogin"
@@ -90,7 +90,7 @@
                     android:paddingTop="8dp"
                     android:singleLine="true"
                     android:textColorHint="@color/color_ccfffffff"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <ImageView
                     android:onClick="onTabLogin"
@@ -133,7 +133,7 @@
                         android:onClick="onTabLogSign"
                         android:text="@string/action_sign_in_reg"
                         android:textColor="@color/color_f8"
-                        android:textSize="12sp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -148,7 +148,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="12dp"
         android:textColor="@color/color_ccfffffff"
-        android:textSize="10sp" />
+        android:textSize="10dp" />
 
     <!--    <LinearLayout
             android:id="@+id/text_reminder"

@@ -30,7 +30,7 @@
             android:gravity="center"
             android:text="张三"
             android:textColor="@color/color_161727"
-            android:textSize="17sp" />
+            android:textSize="17dp" />
 
         <RelativeLayout
             android:id="@+id/choice_ico_span"

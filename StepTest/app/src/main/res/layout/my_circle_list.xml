@@ -18,5 +18,5 @@
         android:includeFontPadding="true"
         android:text="圈子名称"
         android:textColor="@color/color_161727"
-        android:textSize="12sp" />
+        android:textSize="12dp" />
 </RelativeLayout>

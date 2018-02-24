@@ -40,11 +40,11 @@
                 android:layout_toRightOf="@+id/distance_finish"
                 android:text="累计里程达到70000步"
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="15sp" />
+                android:textSize="15dp" />
         </RelativeLayout>
 
         <TextView
-            android:textSize="14sp"
+            android:textSize="14dp"
             android:layout_alignLeft="@+id/dan_level_rel"
             android:id="@+id/dan_des"
             android:layout_width="wrap_content"

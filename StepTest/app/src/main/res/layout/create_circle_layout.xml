@@ -96,7 +96,7 @@
                     android:hint="输入圈子名称"
                     android:lines="1"
                     android:maxLength="20"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -122,7 +122,7 @@
                     android:layout_marginLeft="14dp"
                     android:text="圈子目标"
                     android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <ImageView
                     android:id="@+id/switch_stand"
@@ -142,7 +142,7 @@
                     android:layout_toLeftOf="@+id/switch_stand"
                     android:text="6000"
                     android:textColor="@color/color_161727"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
             </RelativeLayout>
 
             <ImageView
@@ -168,7 +168,7 @@
                     android:layout_marginLeft="14dp"
                     android:text="圈主联系电话"
                     android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <EditText
                     android:id="@+id/circle_phone_num_editor"
@@ -185,7 +185,7 @@
                     android:lines="1"
                     android:maxLength="14"
                     android:textColor="@color/color_161727"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -210,7 +210,7 @@
                     android:layout_marginLeft="14dp"
                     android:text="是否充值金额"
                     android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <ImageView
                     android:id="@+id/switch_circle_money_add_off"
@@ -260,7 +260,7 @@
                     android:hint="请输入充值金额"
                     android:inputType="number"
                     android:textColor="@color/color_161727"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -299,7 +299,7 @@
                     android:hint="请输入每日红包总金额"
                     android:inputType="number"
                     android:textColor="@color/color_161727"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -338,7 +338,7 @@
                     android:hint="请输入每日红包总个数"
                     android:inputType="number"
                     android:textColor="@color/color_161727"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -367,7 +367,7 @@
                     android:gravity="right"
                     android:text="所充值金额将全部用于运动达标成员发红包"
                     android:textColor="@color/color_161727"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -385,7 +385,7 @@
                     android:layout_marginLeft="14dp"
                     android:text="圈子logo"
                     android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/logo_circle_pic"
@@ -420,7 +420,7 @@
                     android:layout_marginLeft="14dp"
                     android:text="是否需要密码"
                     android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <ImageView
                     android:id="@+id/password_circle_switch"
@@ -471,7 +471,7 @@
                     android:lines="1"
                     android:maxLength="6"
                     android:textColor="@color/color_161727"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -573,7 +573,7 @@
                         android:gravity="left|top"
                         android:hint="请对你的圈子进行描述"
                         android:textColor="@color/color_8a8a8a"
-                        android:textSize="14sp" />
+                        android:textSize="14dp" />
                 </FrameLayout>
 
                 <TextView
@@ -618,7 +618,7 @@
             android:background="@drawable/create_button"
             android:text="创建"
             android:textColor="@color/color_fefefe"
-            android:textSize="16sp" />
+            android:textSize="16dp" />
     </RelativeLayout>
 
 </RelativeLayout>

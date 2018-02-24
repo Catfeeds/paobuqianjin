@@ -39,7 +39,7 @@
             android:text="用户昵称"
             android:layout_marginLeft="15dp"
             android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+            android:textSize="15dp" />
 
 
         <TextView
@@ -52,7 +52,7 @@
             android:gravity="right"
             android:text="1000元"
             android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <ImageView
             android:layout_width="match_parent"

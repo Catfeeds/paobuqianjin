@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:text="昵称"
             android:textColor="@color/color_8a8a8a"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/invite_num_des"
@@ -33,7 +33,7 @@
             android:layout_below="@+id/dear_name"
             android:layout_marginTop="7dp"
             android:text="邀请了59个好友"
-            android:textSize="10sp" />
+            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/income_read_pkg"
@@ -43,7 +43,7 @@
             android:layout_marginTop="7dp"
             android:text="收获红包6.90元"
             android:textColor="@color/color_ff3961"
-            android:textSize="15sp" />
+            android:textSize="15dp" />
 
         <TextView
             android:id="@+id/invite_rank"

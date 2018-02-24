@@ -39,7 +39,7 @@
                         android:layout_height="wrap_content"
                         android:text="8000步达标赛"
                         android:textColor="@color/color_f8"
-                        android:textSize="24sp" />
+                        android:textSize="24dp" />
 
                     <TextView
                         android:id="@+id/target_money"
@@ -81,7 +81,7 @@
                             android:layout_height="wrap_content"
                             android:text="用户昵称"
                             android:textColor="@color/color_f8"
-                            android:textSize="14sp" />
+                            android:textSize="14dp" />
 
                         <TextView
                             android:id="@+id/dear_id"
@@ -91,7 +91,7 @@
                             android:layout_marginTop="8dp"
                             android:text="ID:10000"
                             android:textColor="@color/color_f8"
-                            android:textSize="14sp" />
+                            android:textSize="14dp" />
                     </RelativeLayout>
                 </RelativeLayout>
             </RelativeLayout>
@@ -107,7 +107,7 @@
                 android:gravity="center"
                 android:text="01"
                 android:textColor="@color/color_161727"
-                android:textSize="16sp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/current_step"
@@ -120,7 +120,7 @@
                 android:gravity="center"
                 android:text="当前步数"
                 android:textColor="@color/color_161727"
-                android:textSize="16sp" />
+                android:textSize="16dp" />
 
             <ImageView
                 android:id="@+id/man_run_ico"
@@ -164,7 +164,7 @@
                 android:gravity="center"
                 android:text="02"
                 android:textColor="@color/color_161727"
-                android:textSize="16sp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/task_tells"
@@ -177,7 +177,7 @@
                 android:gravity="center"
                 android:text="任务简介"
                 android:textColor="@color/color_161727"
-                android:textSize="16sp" />
+                android:textSize="16dp" />
 
             <TextView
                 android:id="@+id/step_target"
@@ -188,7 +188,7 @@
                 android:layout_marginTop="20dp"
                 android:text="开始时间: 2018/01/01 00:00:00"
                 android:textColor="@color/color_161727"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/target_moneys"
@@ -199,7 +199,7 @@
                 android:layout_marginTop="8dp"
                 android:text="结束时间: 2018/01/01 23:59:59"
                 android:textColor="@color/color_161727"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/try_days_des"
@@ -210,7 +210,7 @@
                 android:layout_marginTop="8dp"
                 android:text="目标步数: 10000 步"
                 android:textColor="@color/color_161727"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/try_target"
@@ -221,7 +221,7 @@
                 android:layout_marginTop="8dp"
                 android:text="奖励金额: 20 元"
                 android:textColor="@color/color_161727"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/task_rules"
@@ -232,7 +232,7 @@
                 android:layout_marginTop="8dp"
                 android:text="任务规则:达标即可获得红包奖励，未达标者无奖励"
                 android:textColor="@color/color_161727"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/task_desc"
@@ -243,7 +243,7 @@
                 android:layout_marginTop="8dp"
                 android:text="任务说明:"
                 android:textColor="@color/color_161727"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <RelativeLayout
                 android:id="@+id/num_1"
@@ -262,7 +262,7 @@
                     android:gravity="center"
                     android:text="1"
                     android:textColor="@color/color_161727"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -271,7 +271,7 @@
                     android:layout_toEndOf="@+id/flag_1"
                     android:text="任务每天晚上12点重置，未达标者的红包退回到账户;"
                     android:textColor="@color/color_161727"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -291,7 +291,7 @@
                     android:gravity="center"
                     android:text="2"
                     android:textColor="@color/color_161727"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -300,7 +300,7 @@
                     android:layout_toEndOf="@+id/flag_2"
                     android:text="运动数据以跑步钱进的数据为准"
                     android:textColor="@color/color_161727"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -321,5 +321,5 @@
         android:gravity="center"
         android:text="领取奖励"
         android:textColor="@color/color_f8"
-        android:textSize="36sp" />
+        android:textSize="36dp" />
 </RelativeLayout>

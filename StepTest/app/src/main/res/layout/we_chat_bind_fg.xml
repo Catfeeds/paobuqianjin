@@ -17,7 +17,7 @@
         android:layout_marginTop="15dp"
         android:text="提现账号"
         android:textColor="@color/color_666666"
-        android:textSize="15sp" />
+        android:textSize="15dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/accout_list"
@@ -55,7 +55,7 @@
             android:gravity="center"
             android:text="添加微信账号"
             android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+            android:textSize="15dp" />
 
         <ImageView
             android:id="@+id/go_to"
@@ -79,5 +79,5 @@
         android:background="@drawable/rect_angle_background"
         android:text="确定"
         android:textColor="@color/color_f8"
-        android:textSize="18sp" />
+        android:textSize="18dp" />
 </RelativeLayout>

@@ -54,7 +54,7 @@
                         android:includeFontPadding="false"
                         android:text="当前累计步数9856步"
                         android:textColor="@color/color_161727"
-                        android:textSize="18sp" />
+                        android:textSize="18dp" />
 
                     <TextView
                         android:id="@+id/dan_percent"
@@ -66,7 +66,7 @@
                         android:includeFontPadding="false"
                         android:text="打败了10%的用户"
                         android:textColor="@color/color_8a8a8a"
-                        android:textSize="14sp" />
+                        android:textSize="14dp" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -98,7 +98,7 @@
                         android:layout_toRightOf="@+id/flag_icon"
                         android:text="下一等级"
                         android:textColor="@color/color_161727"
-                        android:textSize="18sp" />
+                        android:textSize="18dp" />
                 </RelativeLayout>
 
 
@@ -134,7 +134,7 @@
                             android:layout_toRightOf="@+id/distance_finish"
                             android:text="累计里程达到70000步"
                             android:textColor="@color/color_8a8a8a"
-                            android:textSize="15sp" />
+                            android:textSize="15dp" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -162,7 +162,7 @@
                             android:layout_marginRight="10dp"
                             android:text="100%"
                             android:textColor="@color/color_8a8a8a"
-                            android:textSize="12sp" />
+                            android:textSize="12dp" />
                     </RelativeLayout>
 
 
@@ -174,7 +174,7 @@
                         android:layout_below="@+id/process_bar_rel"
                         android:layout_marginTop="17dp"
                         android:text="77888人已完成"
-                        android:textSize="14sp" />
+                        android:textSize="14dp" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -201,7 +201,7 @@
                     android:layout_toRightOf="@+id/dan_step_flag_icon"
                     android:text="等级阶梯"
                     android:textColor="@color/color_161727"
-                    android:textSize="18sp" />
+                    android:textSize="18dp" />
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/back"
         android:text="返回"
-        android:textSize="20sp"
+        android:textSize="20dp"
         android:textColor="@color/colorPrimary"/>
     <ScrollView
         android:layout_below="@+id/back"

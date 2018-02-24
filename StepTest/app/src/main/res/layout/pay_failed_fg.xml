@@ -33,7 +33,7 @@
         android:layout_marginTop="15dp"
         android:text="支付失败"
         android:textColor="@color/color_353132"
-        android:textSize="15sp" />
+        android:textSize="15dp" />
 
     <Button
         android:stateListAnimator="@null"
@@ -48,5 +48,5 @@
         android:gravity="center"
         android:text="重新支付"
         android:textColor="@color/color_fefefe"
-        android:textSize="16sp" />
+        android:textSize="16dp" />
 </RelativeLayout>

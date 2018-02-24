@@ -27,7 +27,7 @@
             android:background="@drawable/rectangle_four_full_r_selected"
             android:text="全部"
             android:textColor="@color/color_f8"
-            android:textSize="16sp" />
+            android:textSize="16dp" />
 
         <Button
             android:stateListAnimator="@null"
@@ -38,7 +38,7 @@
             android:background="@drawable/rectangle_four_fill_outline_unselected"
             android:text="未完成"
             android:textColor="@color/color_161727"
-            android:textSize="16sp" />
+            android:textSize="16dp" />
 
         <Button
             android:stateListAnimator="@null"
@@ -49,7 +49,7 @@
             android:background="@drawable/rectangle_four_full_left_unselect"
             android:text="已完成"
             android:textColor="@color/color_161727"
-            android:textSize="16sp" />
+            android:textSize="16dp" />
     </LinearLayout>
 
     <ImageView

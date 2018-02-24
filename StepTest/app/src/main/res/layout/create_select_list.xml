@@ -11,7 +11,7 @@
         android:layout_centerVertical="true"
         android:text="1000"
         android:textColor="@color/color_161727"
-        android:textSize="19sp" />
+        android:textSize="19dp" />
 
     <ImageView
         android:layout_alignParentBottom="true"

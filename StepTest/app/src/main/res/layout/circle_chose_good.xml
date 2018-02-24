@@ -32,7 +32,7 @@
         android:text="查看更多"
         android:layout_alignEnd="@+id/live_choose_good_module_rel"
         android:textColor="@color/color_8a8a8a"
-        android:textSize="12sp" />
+        android:textSize="12dp" />
 
     <RelativeLayout
         android:id="@+id/live_choose_good_module_rel"

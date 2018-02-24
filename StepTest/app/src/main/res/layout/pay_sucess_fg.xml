@@ -34,13 +34,13 @@
         android:layout_marginTop="15dp"
         android:text="你已成功付款200元"
         android:textColor="@color/color_353132"
-        android:textSize="15sp" />
+        android:textSize="15dp" />
 
     <Button
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         android:background="@drawable/rect_angle_background"
-        android:textSize="16sp"
+        android:textSize="16dp"
         android:textColor="@color/color_fefefe"
         android:text="确定"
         android:stateListAnimator="@null"

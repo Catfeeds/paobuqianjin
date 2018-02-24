@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:text="跑步钱进"
                     android:textColor="@color/color_8a8a8a"
-                    android:textSize="15sp" />
+                    android:textSize="15dp" />
 
                 <TextView
                     android:id="@+id/version"
@@ -50,7 +50,7 @@
                     android:layout_marginTop="8dp"
                     android:text="当前版本  1.0"
                     android:textColor="@color/color_8a8a8a"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -71,7 +71,7 @@
                 android:layout_marginLeft="14dp"
                 android:text="用户协议"
                 android:textColor="@color/color_161727"
-                android:textSize="15sp" />
+                android:textSize="15dp" />
 
             <ImageView
                 android:layout_width="8dp"
@@ -105,7 +105,7 @@
                 android:layout_marginLeft="14dp"
                 android:text="微信公众号"
                 android:textColor="@color/color_161727"
-                android:textSize="15sp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:layout_marginRight="8dp"
@@ -115,7 +115,7 @@
                 android:layout_toStartOf="@+id/go_to"
                 android:text="全民跑步钱进"
                 android:textColor="@color/color_161727"
-                android:textSize="14sp" />
+                android:textSize="14dp" />
 
             <ImageView
                 android:id="@+id/go_to"
@@ -141,7 +141,7 @@
             android:layout_centerHorizontal="true"
             android:text="跑步钱进公司 版权所有"
             android:textColor="@color/color_8a8a8a"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -151,6 +151,6 @@
             android:layout_marginTop="7dp"
             android:text="Copyright © 2018-2019 Runmoney.All Rights Reserved"
             android:textColor="@color/color_8a8a8a"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
     </RelativeLayout>
 </RelativeLayout>

@@ -75,5 +75,5 @@
         android:background="@drawable/create_button"
         android:text="删除"
         android:textColor="@color/color_fefefe"
-        android:textSize="16sp" />
+        android:textSize="16dp" />
 </RelativeLayout>

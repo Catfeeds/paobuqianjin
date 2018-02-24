@@ -62,7 +62,7 @@
                 android:includeFontPadding="false"
                 android:text="跑步钱进福田"
                 android:textColor="@color/color_161727"
-                android:textSize="17sp" />
+                android:textSize="17dp" />
 
             <ImageView
                 android:visibility="gone"
@@ -89,7 +89,7 @@
             android:includeFontPadding="false"
             android:text="成员500人"
             android:textColor="@color/color_161727"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
     </RelativeLayout>
 
     <RelativeLayout

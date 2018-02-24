@@ -39,7 +39,7 @@
                     android:layout_marginLeft="45dp"
                     android:layout_marginTop="30dp"
                     android:textColor="@color/color_ecf0f3"
-                    android:textSize="19sp" />
+                    android:textSize="19dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
                     android:layout_below="@+id/circle_obj_des"
                     android:text="达目标即可获取红包奖励"
                     android:textColor="@color/color_ecf0f3"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -71,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:text="本圈爱心排行榜"
                         android:textColor="@color/color_161727"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
                     <RelativeLayout
                         android:id="@+id/image_button"
@@ -134,7 +134,7 @@
                     android:layout_marginLeft="14dp"
                     android:text="步数排行榜"
                     android:textColor="@color/color_161727"
-                    android:textSize="15sp" />
+                    android:textSize="15dp" />
 
                 <TextView
                     android:id="@+id/member_num_des"
@@ -146,7 +146,7 @@
                     android:layout_toEndOf="@+id/textView"
                     android:text="共78人"
                     android:textColor="@color/color_161727"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/step_recycler"

@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:text="喵喵"
             android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/step_desc"
@@ -34,7 +34,7 @@
             android:layout_marginTop="13dp"
             android:text="当天健步12步"
             android:textColor="@color/color_646464"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/distance"
@@ -46,7 +46,7 @@
             android:layout_toEndOf="@+id/step_desc"
             android:text="90m"
             android:textColor="@color/color_646464"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
     </RelativeLayout>
 
     <Button
@@ -59,7 +59,7 @@
         android:background="@drawable/has_not_fllow_nearby"
         android:text="关注"
         android:textColor="@color/color_6c71c4"
-        android:textSize="14sp" />
+        android:textSize="14dp" />
 
     <ImageView
         android:layout_width="match_parent"

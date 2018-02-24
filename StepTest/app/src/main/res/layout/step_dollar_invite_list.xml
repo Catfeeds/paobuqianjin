@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="邀请好友"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/invite_time"
@@ -26,7 +26,7 @@
             android:layout_marginTop="8dp"
             android:text="2017-7-18"
             android:textColor="@color/color_8a8a8a"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
     </RelativeLayout>
 
     <TextView
@@ -38,7 +38,7 @@
         android:layout_marginRight="14dp"
         android:text="5步币"
         android:textColor="@color/color_ffc14c"
-        android:textSize="15sp" />
+        android:textSize="15dp" />
 
     <ImageView
         android:layout_width="match_parent"

@@ -21,7 +21,7 @@
             android:layout_marginTop="20dp"
             android:text="内容"
             android:textColor="@color/color_5c5c5c"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <RelativeLayout
             android:id="@+id/content_span"
@@ -68,7 +68,7 @@
             android:hint="选填，便于我们与你联系"
             android:paddingLeft="14dp"
             android:textColorHint="@color/color_cbcacf"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <Button
             android:id="@+id/suggetion_btn"
@@ -82,7 +82,7 @@
             android:gravity="center"
             android:text="提交"
             android:textColor="@color/color_f8"
-            android:textSize="36sp" />
+            android:textSize="36dp" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -99,7 +99,7 @@
                 android:layout_alignParentTop="true"
                 android:text="如需要帮助或获取更多信息，请关注或联系："
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -108,7 +108,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="微信公众号 跑步前进"
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
         </RelativeLayout>
 
     </RelativeLayout>

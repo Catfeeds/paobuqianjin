@@ -28,7 +28,7 @@
             android:includeFontPadding="false"
             android:text="用户昵称"
             android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+            android:textSize="15dp" />
 
 
         <TextView
@@ -41,7 +41,7 @@
             android:gravity="center"
             android:text="8888步"
             android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <ImageView
             android:layout_width="match_parent"

@@ -56,7 +56,7 @@
                     android:includeFontPadding="false"
                     android:text="3689"
                     android:textColor="@color/color_ffc14c"
-                    android:textSize="30sp" />
+                    android:textSize="30dp" />
 
                 <TextView
                     android:id="@+id/mu_biao_text"
@@ -67,7 +67,7 @@
                     android:includeFontPadding="false"
                     android:text="@string/mu_biao"
                     android:textColor="@color/color_ffc14c"
-                    android:textSize="18sp" />
+                    android:textSize="18dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -80,7 +80,7 @@
                     android:includeFontPadding="false"
                     android:text="10000步"
                     android:textColor="@color/color_ffc14c"
-                    android:textSize="18sp" />
+                    android:textSize="18dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -93,7 +93,7 @@
                     android:includeFontPadding="false"
                     android:text="步"
                     android:textColor="@color/color_ffc14c"
-                    android:textSize="20sp" />
+                    android:textSize="20dp" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:text="当天钱进"
                 android:textColor="@color/color_f8"
-                android:textSize="18sp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/today_income_num"
@@ -129,7 +129,7 @@
                 android:layout_below="@+id/income_today"
                 android:text="￥8.41元"
                 android:textColor="@color/color_f8"
-                android:textSize="18sp" />
+                android:textSize="18dp" />
         </RelativeLayout>
 
 
@@ -154,9 +154,9 @@
                 android:id="@+id/income_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="当月钱进"
+                android:text=" 累计钱进"
                 android:textColor="@color/color_f8"
-                android:textSize="18sp" />
+                android:textSize="18dp" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -179,7 +179,7 @@
                     android:layout_toEndOf="@+id/moth_income_ico"
                     android:text=""
                     android:textColor="@color/color_f8"
-                    android:textSize="18sp" />
+                    android:textSize="18dp" />
             </RelativeLayout>
 
         </RelativeLayout>
@@ -264,7 +264,7 @@
                         android:layout_marginTop="10dp"
                         android:text="发红包"
                         android:textColor="@color/color_161727"
-                        android:textSize="14sp" />
+                        android:textSize="14dp" />
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -301,7 +301,7 @@
                         android:layout_marginTop="8dp"
                         android:text="创建圈子"
                         android:textColor="@color/color_161727"
-                        android:textSize="14sp" />
+                        android:textSize="14dp" />
 
                     <TextView
                         android:id="@+id/create_circle_des"
@@ -311,7 +311,7 @@
                         android:layout_marginTop="7dp"
                         android:text="谁的圈子谁的红包压岁钱多哟"
                         android:textColor="@color/color_9999"
-                        android:textSize="12sp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -349,7 +349,7 @@
                         android:layout_marginTop="8dp"
                         android:text="领红包"
                         android:textColor="@color/color_161727"
-                        android:textSize="14sp" />
+                        android:textSize="14dp" />
 
                     <TextView
                         android:id="@+id/red_pkg_num"
@@ -359,7 +359,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="7dp"
                         android:text="未领红包2个"
-                        android:textSize="12sp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -396,7 +396,7 @@
                         android:layout_marginTop="8dp"
                         android:text="邀请好友"
                         android:textColor="@color/color_161727"
-                        android:textSize="14sp" />
+                        android:textSize="14dp" />
 
                     <TextView
                         android:id="@+id/add_friend_des"
@@ -406,7 +406,7 @@
                         android:layout_marginTop="7dp"
                         android:text="春节有大量红包抢哟"
                         android:textColor="@color/color_9999"
-                        android:textSize="12sp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -436,7 +436,7 @@
         android:layout_marginTop="32dp"
         android:text="跑步钱进"
         android:textColor="@color/color_d6d6d6"
-        android:textSize="23sp" />
+        android:textSize="23dp" />
 
     <RelativeLayout
         android:id="@+id/weather_span"
@@ -466,7 +466,7 @@
             android:gravity="center"
             android:text="25°"
             android:textColor="@color/color_f8"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
     </RelativeLayout>
 
     <TextView
@@ -480,5 +480,5 @@
         android:gravity="center"
         android:text="深圳"
         android:textColor="@color/color_f8"
-        android:textSize="14sp" />
+        android:textSize="14dp" />
 </RelativeLayout>

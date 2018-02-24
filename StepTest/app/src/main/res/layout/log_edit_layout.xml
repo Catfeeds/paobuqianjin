@@ -34,7 +34,7 @@
                     android:singleLine="true"
                     android:textColor="@color/color_f8"
                     android:textColorHint="@color/color_ccfffffff"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <EditText
                     android:id="@+id/login_user_password"
@@ -55,7 +55,7 @@
                     android:singleLine="true"
                     android:textColor="@color/color_f8"
                     android:textColorHint="@color/color_ccfffffff"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <ImageView
                     android:layout_alignParentEnd="true"
@@ -99,7 +99,7 @@
                         android:onClick="onTabLogSign"
                         android:text="@string/action_sign_in_short"
                         android:textColor="@color/color_f8"
-                        android:textSize="12sp" />
+                        android:textSize="12dp" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -116,7 +116,7 @@
         android:text="忘记密码？"
         android:onClick="onTabLogin"
         android:textColor="@color/color_ccfffffff"
-        android:textSize="12sp" />
+        android:textSize="12dp" />
 
     <!--  <LinearLayout
           android:id="@+id/text_reminder"

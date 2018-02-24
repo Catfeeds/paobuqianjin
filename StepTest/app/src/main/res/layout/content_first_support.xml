@@ -27,7 +27,7 @@
             android:gravity="left"
             android:text="阳阳"
             android:textColor="@color/color_161727"
-            android:textSize="18sp" />
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/user_content_ranka"
@@ -38,12 +38,12 @@
             android:gravity="left"
             android:text="今天尝试跑了三公里，朋友一起比赛没"
             android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+            android:textSize="15dp" />
 
         <TextView
             android:layout_marginTop="15dp"
             android:text="08-03"
-            android:textSize="12sp"
+            android:textSize="12dp"
             android:textColor="@color/color_8a8a8a"
             android:layout_below="@+id/user_content_ranka"
             android:id="@+id/time_content_a"
@@ -51,7 +51,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:textSize="12sp"
+            android:textSize="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

@@ -21,7 +21,7 @@
             android:layout_marginTop="20dp"
             android:text="支付方式"
             android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+            android:textSize="15dp" />
 
         <RelativeLayout
             android:id="@+id/wechat_pay_span"
@@ -51,7 +51,7 @@
                 android:gravity="center"
                 android:text="微信"
                 android:textColor="@color/color_161727"
-                android:textSize="17sp" />
+                android:textSize="17dp" />
 
             <RelativeLayout
                 android:id="@+id/choice_ico_span"
@@ -143,7 +143,7 @@
             android:paddingLeft="14dp"
             android:text="支付金额"
             android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+            android:textSize="15dp" />
 
         <ImageView
             android:id="@+id/line"
@@ -178,7 +178,7 @@
                 android:background="@null"
                 android:inputType="number"
                 android:textColor="@color/color_161727"
-                android:textSize="15sp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/yuan"
@@ -189,7 +189,7 @@
                 android:layout_marginRight="14dp"
                 android:text="元"
                 android:textColor="@color/color_161727"
-                android:textSize="15sp" />
+                android:textSize="15dp" />
         </RelativeLayout>
 
         <Button
@@ -202,6 +202,6 @@
             android:stateListAnimator="@null"
             android:text="支付"
             android:textColor="@color/color_f8"
-            android:textSize="18sp"></Button>
+            android:textSize="18dp"></Button>
     </RelativeLayout>
 </RelativeLayout>

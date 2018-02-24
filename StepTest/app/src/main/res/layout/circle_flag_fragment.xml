@@ -27,7 +27,7 @@
                 android:layout_marginTop="25dp"
                 android:text="热门标签"
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="15sp" />
+                android:textSize="15dp" />
 
             <RelativeLayout
                 android:id="@+id/hot_flags"
@@ -52,7 +52,7 @@
                         android:paddingRight="13dp"
                         android:text="爱运动"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:visibility="invisible"
@@ -66,7 +66,7 @@
                         android:paddingRight="13dp"
                         android:text="美少女"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
 
                     <TextView
@@ -81,7 +81,7 @@
                         android:paddingRight="13dp"
                         android:text="飞毛腿"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -101,7 +101,7 @@
                         android:paddingRight="13dp"
                         android:text="大长腿"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:visibility="invisible"
@@ -115,7 +115,7 @@
                         android:paddingRight="13dp"
                         android:text="高富帅"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
 
                     <TextView
@@ -130,7 +130,7 @@
                         android:paddingRight="13dp"
                         android:text="耳机族"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:visibility="invisible"
@@ -144,7 +144,7 @@
                         android:paddingRight="13dp"
                         android:text="背包族"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -161,7 +161,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="14dp"
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="15sp"
+                android:textSize="15dp"
                 android:text="全部标签"
                 android:layout_below="@+id/sep_line"
                 android:id="@+id/all_flags_text"
@@ -191,7 +191,7 @@
                         android:paddingRight="13dp"
                         android:text="爱运动"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:visibility="invisible"
@@ -205,7 +205,7 @@
                         android:paddingRight="13dp"
                         android:text="美少女"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
 
                     <TextView
@@ -220,7 +220,7 @@
                         android:paddingRight="13dp"
                         android:text="飞毛腿"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:visibility="invisible"
@@ -234,7 +234,7 @@
                         android:paddingRight="13dp"
                         android:text="女神"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -254,7 +254,7 @@
                         android:paddingRight="13dp"
                         android:text="大长腿"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:visibility="invisible"
@@ -268,7 +268,7 @@
                         android:paddingRight="13dp"
                         android:text="高富帅"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
 
                     <TextView
@@ -283,7 +283,7 @@
                         android:paddingRight="13dp"
                         android:text="耳机族"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:visibility="invisible"
@@ -297,7 +297,7 @@
                         android:paddingRight="13dp"
                         android:text="背包族"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -317,7 +317,7 @@
                         android:paddingRight="13dp"
                         android:text="精力充沛"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
                     <TextView
                         android:visibility="invisible"
@@ -331,7 +331,7 @@
                         android:paddingRight="13dp"
                         android:text="生活达人"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
 
                     <TextView
@@ -346,7 +346,7 @@
                         android:paddingRight="13dp"
                         android:text="魅力大叔"
                         android:textColor="@color/color_6c71c4"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
 
                 </RelativeLayout>
             </RelativeLayout>

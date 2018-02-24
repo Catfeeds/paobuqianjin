@@ -28,7 +28,7 @@
                 android:gravity="center"
                 android:text="马上邀请"
                 android:textColor="@color/color_f8"
-                android:textSize="36sp" />
+                android:textSize="36dp" />
 
             <ImageView
                 android:id="@+id/invite_line"
@@ -52,7 +52,7 @@
                     android:layout_marginLeft="14dp"
                     android:text="填写邀请码"
                     android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <ImageView
                     android:layout_width="7dp"
@@ -92,7 +92,7 @@
                         android:layout_height="wrap_content"
                         android:text="邀请红包达人榜"
                         android:textColor="@color/color_f8"
-                        android:textSize="15sp" />
+                        android:textSize="15dp" />
                 </FrameLayout>
 
 

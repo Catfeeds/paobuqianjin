@@ -46,7 +46,7 @@
                     android:layout_toEndOf="@id/member_head_icon_in_circle"
                     android:text="成员名称"
                     android:textColor="@color/color_161727"
-                    android:textSize="15sp" />
+                    android:textSize="15dp" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -69,7 +69,7 @@
                             android:layout_gravity="center"
                             android:text="主管理员"
                             android:textColor="@color/color_f8"
-                            android:textSize="12sp" />
+                            android:textSize="12dp" />
 
                     </FrameLayout>
 
@@ -82,7 +82,7 @@
                         android:stateListAnimator="@null"
                         android:text="修改昵称"
                         android:textColor="@color/color_f8"
-                        android:textSize="14sp"
+                        android:textSize="14dp"
                         android:visibility="gone" />
 
 

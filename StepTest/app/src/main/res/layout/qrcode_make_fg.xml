@@ -51,7 +51,7 @@
                 android:includeFontPadding="false"
                 android:text="跑步钱进"
                 android:textColor="@color/color_161727"
-                android:textSize="14sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/circle_id"
@@ -63,7 +63,7 @@
                 android:layout_toEndOf="@+id/circle_logo"
                 android:includeFontPadding="false"
                 android:text="ID:156678"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
         </RelativeLayout>
 
         <ImageView
@@ -83,7 +83,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="14dp"
             android:text="用“跑步钱进”APP扫描二维码加入团队"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
 
     </RelativeLayout>
 
@@ -117,7 +117,7 @@
             android:gravity="center"
             android:text="朋友圈"
             android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/weixin"
@@ -129,7 +129,7 @@
             android:gravity="center"
             android:text="微信"
             android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <TextView
             android:id="@+id/qq"
@@ -142,7 +142,7 @@
             android:gravity="center"
             android:text="QQ"
             android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
     </RelativeLayout>
 
 </RelativeLayout>

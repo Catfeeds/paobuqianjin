@@ -63,7 +63,7 @@
                             android:includeFontPadding="false"
                             android:text="1/5"
                             android:textColor="@color/color_f8"
-                            android:textSize="12sp" />
+                            android:textSize="12dp" />
                     </RelativeLayout>
 
                 </RelativeLayout>
@@ -101,7 +101,7 @@
                     android:layout_toEndOf="@+id/sponsor_tel_icon"
                     android:text="商家电话:"
                     android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -112,7 +112,7 @@
                     android:layout_toRightOf="@+id/sponsor_tel_num"
                     android:text="0755-8682 121"
                     android:textColor="@color/color_8a8a8a"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -146,7 +146,7 @@
                     android:layout_toEndOf="@+id/sponsor_time_icon"
                     android:text="营业时间:"
                     android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -157,7 +157,7 @@
                     android:layout_toRightOf="@+id/sponsor_time_num"
                     android:text="周一至周日 00:00 - 23:59"
                     android:textColor="@color/color_8a8a8a"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -191,7 +191,7 @@
                     android:layout_toEndOf="@+id/sponsor_location_icon"
                     android:text="商家地址:"
                     android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -203,7 +203,7 @@
                     android:maxLines="2"
                     android:text="福田八卦四路新阳大厦"
                     android:textColor="@color/color_8a8a8a"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
             </RelativeLayout>
 
             <ImageView
@@ -228,7 +228,7 @@
                     android:layout_height="wrap_content"
                     android:text="商品图片"
                     android:textColor="@color/color_161727"
-                    android:textSize="14sp" />
+                    android:textSize="14dp" />
 
                 <TextView
                     android:layout_width="wrap_content"

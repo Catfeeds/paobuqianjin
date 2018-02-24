@@ -39,7 +39,7 @@
                         android:layout_height="wrap_content"
                         android:text="8000步达标赛"
                         android:textColor="@color/color_f8"
-                        android:textSize="24sp" />
+                        android:textSize="24dp" />
 
                     <TextView
                         android:id="@+id/target_money"
@@ -63,7 +63,7 @@
                 android:layout_marginTop="15dp"
                 android:text="任务简介"
                 android:textColor="@color/color_161727"
-                android:textSize="14sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/release_target"
@@ -74,7 +74,7 @@
                 android:layout_marginTop="10dp"
                 android:text="目标步数:8000 步"
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/release_live_money"
@@ -85,7 +85,7 @@
                 android:layout_marginTop="10dp"
                 android:text="奖励总金额:200 元"
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/release_live_days"
@@ -96,7 +96,7 @@
                 android:layout_marginTop="10dp"
                 android:text="任务天数:10 元"
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/release_live_rules"
@@ -107,7 +107,7 @@
                 android:layout_marginTop="10dp"
                 android:text="任务规则:达标者获得红包奖励，未达标者无奖励"
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <TextView
                 android:id="@+id/release_live_desc"
@@ -118,7 +118,7 @@
                 android:layout_marginTop="10dp"
                 android:text="任务说明:"
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <RelativeLayout
                 android:id="@+id/num_1"
@@ -137,7 +137,7 @@
                     android:gravity="center"
                     android:text="1"
                     android:textColor="@color/color_8a8a8a"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -146,7 +146,7 @@
                     android:layout_toEndOf="@+id/flag_1"
                     android:text="AAAAAAAAAAAAAAAAAAAAAAA"
                     android:textColor="@color/color_8a8a8a"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -166,7 +166,7 @@
                     android:gravity="center"
                     android:text="2"
                     android:textColor="@color/color_8a8a8a"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -175,7 +175,7 @@
                     android:layout_toEndOf="@+id/flag_2"
                     android:text="AAAAAAAAAAAAAAAAAAAAAAA"
                     android:textColor="@color/color_8a8a8a"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -195,7 +195,7 @@
                     android:gravity="center"
                     android:text="3"
                     android:textColor="@color/color_8a8a8a"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -204,7 +204,7 @@
                     android:layout_toEndOf="@+id/flag_3"
                     android:text="AAAAAAAAAAAAAAAAAAAAAAA"
                     android:textColor="@color/color_8a8a8a"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
             </RelativeLayout>
 
@@ -217,7 +217,7 @@
                 android:layout_marginTop="15dp"
                 android:text="任务领取人"
                 android:textColor="@color/color_161727"
-                android:textSize="14sp" />
+                android:textSize="14dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -241,7 +241,7 @@
 
                 <TextView
                     android:layout_centerVertical="true"
-                    android:textSize="12sp"
+                    android:textSize="12dp"
                     android:layout_marginRight="5dp"
                     android:textColor="@color/color_8a8a8a"
                     android:layout_width="wrap_content"

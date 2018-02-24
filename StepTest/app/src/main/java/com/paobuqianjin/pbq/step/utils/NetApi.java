@@ -128,4 +128,6 @@ public class NetApi {
     public final static String urlWeather = "http://119.29.10.64/v1/ThirdParty/getWeather";
     //TODO 用户好友接口
     public final static String urlUserFriends = "http://119.29.10.64/v1/UserFriends";
+    //TODO 获取段位列表
+    public final static String urlUserLevel ="http://119.29.10.64/v1/userlevel";
 }

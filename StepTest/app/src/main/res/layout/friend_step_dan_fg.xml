@@ -60,7 +60,7 @@
                 android:layout_marginTop="10dp"
                 android:text="跑步钱进"
                 android:textColor="@color/color_f8"
-                android:textSize="16sp" />
+                android:textSize="16dp" />
 
             <RelativeLayout
                 android:id="@+id/your_dan_layer"
@@ -96,7 +96,7 @@
                     android:layout_toEndOf="@+id/head_icon_user"
                     android:text="跑步钱进"
                     android:textColor="@color/color_161727"
-                    android:textSize="16sp" />
+                    android:textSize="16dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
                     android:layout_marginRight="15dp"
                     android:text="15000"
                     android:textColor="@color/color_161727"
-                    android:textSize="15sp" />
+                    android:textSize="15dp" />
             </RelativeLayout>
 
             <ImageView

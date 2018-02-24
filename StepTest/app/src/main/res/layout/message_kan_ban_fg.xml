@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:text="评论"
                 android:textColor="@color/color_161727"
-                android:textSize="15sp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/content_des_msg"
@@ -44,7 +44,7 @@
                 android:layout_marginTop="8dp"
                 android:text="最近暂无此类消息"
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
         </RelativeLayout>
 
         <ImageView
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:text="赞"
                 android:textColor="@color/color_161727"
-                android:textSize="15sp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/like_des_msg"
@@ -93,7 +93,7 @@
                 android:layout_marginTop="8dp"
                 android:text="新消息来袭"
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
         </RelativeLayout>
 
         <ImageView
@@ -131,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:text="系统消息"
                 android:textColor="@color/color_161727"
-                android:textSize="15sp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/system_msg_des_msg"
@@ -141,7 +141,7 @@
                 android:layout_marginTop="8dp"
                 android:text=""
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
         </RelativeLayout>
 
         <ImageView
