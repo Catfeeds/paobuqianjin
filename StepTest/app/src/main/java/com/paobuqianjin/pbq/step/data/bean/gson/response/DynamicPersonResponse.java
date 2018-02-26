@@ -167,7 +167,7 @@ public class DynamicPersonResponse {
             private String city;
             private int vote;
             private int comment;
-            private int create_time;
+            private long create_time;
             private OneCommentBean one_comment;
             private List<String> images;
 
@@ -235,7 +235,7 @@ public class DynamicPersonResponse {
                 this.comment = comment;
             }
 
-            public int getCreate_time() {
+            public long getCreate_time() {
                 return create_time;
             }
 

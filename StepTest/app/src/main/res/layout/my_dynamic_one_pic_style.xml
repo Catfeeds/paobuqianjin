@@ -29,6 +29,7 @@
             android:textSize="18dp" />
 
         <TextView
+            android:id="@+id/create_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -54,8 +55,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:text="今天干哈？"
-            android:textColor="@color/color_161727"
             android:textSize="15dp" />
     </RelativeLayout>
 
@@ -64,8 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dynamic_owner_rel"
-        android:layout_marginTop="15dp"
-        android:visibility="visible">
+        android:layout_marginTop="15dp">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/image_viewpager"
@@ -85,6 +83,7 @@
             android:orientation="horizontal">
 
             <View
+                android:visibility="gone"
                 android:id="@+id/dot_1"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
@@ -93,6 +92,7 @@
                 android:background="@drawable/image_viewpager_dot_selected"></View>
 
             <View
+                android:visibility="gone"
                 android:id="@+id/dot_2"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
@@ -101,6 +101,7 @@
                 android:background="@drawable/image_viewpager_dot_unselected"></View>
 
             <View
+                android:visibility="gone"
                 android:id="@+id/dot_3"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
@@ -109,6 +110,7 @@
                 android:background="@drawable/image_viewpager_dot_unselected"></View>
 
             <View
+                android:visibility="gone"
                 android:id="@+id/dot_4"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
@@ -128,12 +130,13 @@
         android:layout_marginTop="20dp">
 
         <TextView
+            android:layout_centerVertical="true"
             android:id="@+id/content_numbers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="9dp"
             android:layout_toRightOf="@+id/content_number_icon"
-            android:text="16"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
@@ -147,12 +150,13 @@
             android:background="@drawable/comment_dynimic" />
 
         <TextView
+            android:layout_centerVertical="true"
             android:id="@+id/content_supports"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="9dp"
             android:layout_toRightOf="@+id/like_num_icon"
-            android:text="44"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
@@ -189,6 +193,7 @@
             android:background="@color/color_f6f6f7" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/first_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -196,7 +201,7 @@
             android:layout_below="@+id/line_content"
             android:layout_marginTop="15dp"
             android:gravity="left"
-            android:text="女侠请留言:向你学习"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="14dp" />
 

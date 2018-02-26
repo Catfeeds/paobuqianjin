@@ -19,7 +19,7 @@ import java.util.Date;
 *@description  日历工具类,最佳运动时间在早上5:30 ~ 21:00之间，统计之间的步数
 */
 public final class DateTimeUtil {
-
+    private final static String TAG = DateTimeUtil.class.getSimpleName();
     static SimpleDateFormat format;
 
     /**
@@ -67,6 +67,7 @@ public final class DateTimeUtil {
             return null;
         }
         long diff = new Date().getTime() - date.getTime();
+        LocalLog.d(TAG, "Date().getTime() = " + String.valueOf(new Date().getTime()) + " ,date.getTime() = " + String.valueOf(date.getTime()));
         long r = 0;
         if (diff > year) {
             r = (diff / year);
@@ -94,8 +95,7 @@ public final class DateTimeUtil {
     /**
      * 将日期以yyyy-MM-dd HH:mm:ss格式化
      *
-     * @param dateL
-     *            日期
+     * @param dateL 日期
      * @return
      */
     @SuppressLint("SimpleDateFormat")
@@ -108,8 +108,7 @@ public final class DateTimeUtil {
     /**
      * 将日期以yyyy-MM-dd HH:mm:ss格式化
      *
-     * @param dateL
-     *            日期
+     * @param dateL 日期
      * @return
      */
     @SuppressLint("SimpleDateFormat")
@@ -119,10 +118,10 @@ public final class DateTimeUtil {
     }
 
 
-
     /**
      * 将日期以yyyy-MM-dd HH:mm:ss格式化
-     * @param date 日期
+     *
+     * @param date     日期
      * @param formater
      * @return
      */
@@ -135,8 +134,7 @@ public final class DateTimeUtil {
     /**
      * 将日期字符串转成日期
      *
-     * @param strDate
-     *            字符串日期
+     * @param strDate 字符串日期
      * @return java.util.date日期类型
      */
     @SuppressLint("SimpleDateFormat")
@@ -164,10 +162,8 @@ public final class DateTimeUtil {
     /**
      * 验证日期是否比当前日期早
      *
-     * @param target1
-     *            比较时间1
-     * @param target2
-     *            比较时间2
+     * @param target1 比较时间1
+     * @param target2 比较时间2
      * @return true 则代表target1比target2晚或等于target2，否则比target2早
      */
     public static boolean compareDate(Date target1, Date target2) {
@@ -187,10 +183,8 @@ public final class DateTimeUtil {
     /**
      * 对日期进行增加操作
      *
-     * @param target
-     *            需要进行运算的日期
-     * @param hour
-     *            小时
+     * @param target 需要进行运算的日期
+     * @param hour   小时
      * @return
      */
     public static Date addDateTime(Date target, double hour) {
@@ -204,10 +198,8 @@ public final class DateTimeUtil {
     /**
      * 对日期进行相减操作
      *
-     * @param target
-     *            需要进行运算的日期
-     * @param hour
-     *            小时
+     * @param target 需要进行运算的日期
+     * @param hour   小时
      * @return
      */
     public static Date subDateTime(Date target, double hour) {
@@ -218,7 +210,9 @@ public final class DateTimeUtil {
         return new Date(target.getTime() - (long) (hour * 60 * 60 * 1000));
     }
 
-    /** 获取系统时间的方法:月/日 时:分:秒 */
+    /**
+     * 获取系统时间的方法:月/日 时:分:秒
+     */
     public static String getFormateDate() {
         Calendar calendar = Calendar.getInstance();
         int month = (calendar.get(Calendar.MONTH) + 1);
@@ -231,7 +225,9 @@ public final class DateTimeUtil {
         return systemTime;
     }
 
-    /** 获取系统时间的方法:时:分:秒 */
+    /**
+     * 获取系统时间的方法:时:分:秒
+     */
     public static String getHourAndMinute() {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -239,7 +235,9 @@ public final class DateTimeUtil {
         return (hour < 10 ? "0" + hour : hour) + ":" + (minute < 10 ? "0" + minute : minute);
     }
 
-    /** 获取系统时间的方法:时 */
+    /**
+     * 获取系统时间的方法:时
+     */
     public static String getHour() {
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -308,28 +306,36 @@ public final class DateTimeUtil {
         return dateString;
     }
 
-    /** 传入一个String转化为long */
+    /**
+     * 传入一个String转化为long
+     */
     @SuppressLint("SimpleDateFormat")
     public static Long stringParserLong(String param) throws ParseException {
         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.parse(param).getTime();
     }
 
-    /** 当前时间转换为long */
+    /**
+     * 当前时间转换为long
+     */
     @SuppressLint("SimpleDateFormat")
     public static Long currentDateParserLong() throws ParseException {
         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.parse(format.format(Calendar.getInstance().getTime())).getTime();
     }
 
-    /** 当前时间 如: 2013-04-22 10:37:00 */
+    /**
+     * 当前时间 如: 2013-04-22 10:37:00
+     */
     @SuppressLint("SimpleDateFormat")
     public static String getCurrentDate() {
         format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         return format.format(Calendar.getInstance().getTime());
     }
 
-    /** 当前时间 如: 10:37 */
+    /**
+     * 当前时间 如: 10:37
+     */
     @SuppressLint("SimpleDateFormat")
     public static String getCurrentDateHHMM() {
         format = new SimpleDateFormat("HH:mm");
@@ -347,14 +353,18 @@ public final class DateTimeUtil {
         return format.format(Calendar.getInstance().getTime());
     }
 
-    /** 当前时间 如: 20130422 */
+    /**
+     * 当前时间 如: 20130422
+     */
     @SuppressLint("SimpleDateFormat")
     public static String getCurrentDateString() {
         format = new SimpleDateFormat("yyyyMMddHHmm");
         return format.format(Calendar.getInstance().getTime());
     }
 
-    /** 当前时间 如: 2013-04-22 */
+    /**
+     * 当前时间 如: 2013-04-22
+     */
     @SuppressLint("SimpleDateFormat")
     public static String getCurrentTime() {
         format = new SimpleDateFormat("yyyy-MM-dd");
@@ -456,7 +466,6 @@ public final class DateTimeUtil {
     }
 
     /**
-     *
      * @param time
      * @return
      */
@@ -538,6 +547,7 @@ public final class DateTimeUtil {
 
     /**
      * 两个时间之差 求出一个long Time
+     *
      * @param date
      * @return
      */
@@ -559,6 +569,7 @@ public final class DateTimeUtil {
 
     /**
      * 日期转换成Java字符串
+     *
      * @param DATE1
      * @param DATE2
      * @return
@@ -585,10 +596,8 @@ public final class DateTimeUtil {
     /**
      * 传入时间 算出星期几
      *
-     * @param str
-     *            2014年1月3日
-     * @param days
-     *            1:2014年1月4日 类推
+     * @param str  2014年1月3日
+     * @param days 1:2014年1月4日 类推
      * @return
      */
     @SuppressLint("SimpleDateFormat")

@@ -61,7 +61,7 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getMyDynamic(1, 10);
+        Presenter.getInstance(getContext()).getMyDynamic(3, 10);
         return rootView;
     }
 
@@ -72,7 +72,7 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         myDynamicRecycler.setLayoutManager(layoutManager);
-        myDynamicRecycler.setAdapter(new MyDynamicAdapter(getContext()));
+        //myDynamicRecycler.setAdapter(new MyDynamicAdapter(getContext()));
     }
 
     @Override
@@ -85,5 +85,6 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
     @Override
     public void response(DynamicPersonResponse dynamicPersonResponse) {
         LocalLog.d(TAG, "DynamicPersonResponse() enter" + dynamicPersonResponse.toString());
+        myDynamicRecycler.setAdapter(new MyDynamicAdapter(getContext(),dynamicPersonResponse.getData().getData()));
     }
 }
