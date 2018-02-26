@@ -57,6 +57,7 @@ import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
+import com.paobuqianjin.pbq.step.presenter.im.StepDollarDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
@@ -126,6 +127,7 @@ public final class Engine {
     private SelectUserFriendInterface selectUserFriendInterface;
     private UserHomeInterface userHomeInterface;
     private MyDynamicInterface myDynamicInterface;
+    private StepDollarDetailInterface stepDollarDetailInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -175,6 +177,7 @@ public final class Engine {
     public final static int COMMAND_USER_FRIEND_SEARCH = 42;
     public final static int COMMAND_GET_USER_DYNAMIC = 43;
     public final static int COMMAND_GET_USER_INFO = 44;
+    public final static int COMMAND_GET_USER_STEP_DOLLAR_DETAIL = 45;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -600,8 +603,8 @@ public final class Engine {
     }
 
     //TODO 获取当前用户的个人动态
-    public void getMyDynamic(int page,int pagesize) {
-        String url = NetApi.urlDynamic + "/getUserDynamic?userid=" + String.valueOf(getId(mContext)) +"&page="+
+    public void getMyDynamic(int page, int pagesize) {
+        String url = NetApi.urlDynamic + "/getUserDynamic?userid=" + String.valueOf(getId(mContext)) + "&page=" +
                 String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         LocalLog.d(TAG, "getMyDynamic() enter");
         OkHttpUtils
@@ -1118,15 +1121,15 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //获取用户步币详细信息，请求方式：get，地址：http://api.runmoneyin.com/v1/usercredit/?id=5
-    public void getUserCredit(int id) {
-        LocalLog.d(TAG, "getUserCredit() enter");
-        String url = NetApi.urlCredit + String.valueOf(id);
+    //TODO 获取用户步币详细信息，请求方式：get，地址：http://119.29.10.64/v1/usercredit?userid=1
+    public void getUserCredit() {
+        String url = NetApi.urlCredit + "?userid=" + String.valueOf(getId(mContext));
+        LocalLog.d(TAG, "usercredit() enter url = " + url);
         OkHttpUtils
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(null, 0));
+                .execute(new NetStringCallBack(stepDollarDetailInterface, COMMAND_GET_USER_STEP_DOLLAR_DETAIL));
     }
 
     //获取用户提现信息记录，请求方式：get，地址：http://api.runmoneyin.com/v1/withdraw/2，参数：用户id
@@ -1471,6 +1474,8 @@ public final class Engine {
             userHomeInterface = (UserHomeInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyDynamicInterface) {
             myDynamicInterface = (MyDynamicInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof StepDollarDetailInterface) {
+            stepDollarDetailInterface = (StepDollarDetailInterface) uiCallBackInterface;
         }
 
     }
@@ -1525,6 +1530,8 @@ public final class Engine {
             userHomeInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyDynamicInterface) {
             myDynamicInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof StepDollarDetailInterface) {
+            stepDollarDetailInterface = null;
         }
     }
 }

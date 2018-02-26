@@ -63,7 +63,7 @@ public class NetApi {
 
     //TODO 获取用户步币详细信息
     //TODO 获取用户步币详细信息，请求方式：get，地址：http://api.runmoneyin.com/v1/usercredit/?id=5
-    public final static String urlCredit = "http://119.29.10.64/v1/usercredit/?id";
+    public final static String urlCredit = "http://119.29.10.64/v1/usercredit";
 
     //TODO  我的提现接口
     //TODO 获取用户提现信息记录，请求方式：get，地址：http://api.runmoneyin.com/v1/withdraw/2，参数：用户id

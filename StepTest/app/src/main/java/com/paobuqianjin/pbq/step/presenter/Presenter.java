@@ -190,10 +190,11 @@ public final class Presenter {
         engine.getUserDynamic(userid);
     }
 
-    public void getMyDynamic(int pageIndex,int pageSize){
+    public void getMyDynamic(int pageIndex, int pageSize) {
         engine.getMyDynamic(pageIndex, pageSize);
     }
-    public void getUserInfo(String userid){
+
+    public void getUserInfo(String userid) {
         engine.getUserInfo(userid);
     }
 
@@ -329,6 +330,12 @@ public final class Presenter {
         engine.bindCrashAccount(bindCardPostParam);
     }
 
+    //TODO 获取步币明细
+    public void getUserCredit() {
+        engine.getUserCredit();
+    }
+
+    //
     public void getWeather(double latitude, double longitude) {
         engine.getWeather(latitude, longitude);
     }

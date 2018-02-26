@@ -24,6 +24,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
@@ -55,6 +56,7 @@ import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
+import com.paobuqianjin.pbq.step.presenter.im.StepDollarDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
@@ -391,6 +393,13 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_GET_USER_DYNAMIC) {
                 DynamicPersonResponse dynamicPersonResponse = new Gson().fromJson(s, DynamicPersonResponse.class);
                 ((MyDynamicInterface) callBackInterface).response(dynamicPersonResponse);
+            }
+        } else if (callBackInterface != null
+                && callBackInterface instanceof StepDollarDetailInterface) {
+            if (command == Engine.COMMAND_GET_USER_STEP_DOLLAR_DETAIL) {
+                LocalLog.d(TAG, "步币明细");
+                StepDollarDetailResponse dollarDetailResponse = new Gson().fromJson(s, StepDollarDetailResponse.class);
+                ((StepDollarDetailInterface) callBackInterface).response(dollarDetailResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

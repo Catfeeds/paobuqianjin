@@ -44,6 +44,7 @@
     <string name="today_income">￥%.2f元</string>
     <string name="month_income">%.2f元</string>
     <string name="user_target">%1d步</string>
+    <string name="step_dollar">%ld步币</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."

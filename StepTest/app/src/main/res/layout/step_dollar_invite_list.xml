@@ -11,6 +11,7 @@
         android:layout_marginLeft="14dp">
 
         <TextView
+            android:textColor="@color/color_161727"
             android:id="@+id/invite_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +37,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="14dp"
-        android:text="5步币"
+        android:text=""
         android:textColor="@color/color_ffc14c"
         android:textSize="15dp" />
 

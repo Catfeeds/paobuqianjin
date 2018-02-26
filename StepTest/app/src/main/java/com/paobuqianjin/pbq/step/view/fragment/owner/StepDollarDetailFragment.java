@@ -1,12 +1,15 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.base.adapter.owner.StepDollarDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -17,8 +20,10 @@ import butterknife.ButterKnife;
  */
 
 public class StepDollarDetailFragment extends BaseFragment {
+    private final static String TAG = StepDollarDetailFragment.class.getSimpleName();
     @Bind(R.id.step_dollar_income_recycler)
     RecyclerView stepDollarIncomeRecycler;
+    LinearLayoutManager layoutManager;
 
     @Override
     protected int getLayoutResId() {
@@ -31,6 +36,21 @@ public class StepDollarDetailFragment extends BaseFragment {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+        LocalLog.d(TAG, "initView() enter");
+        stepDollarIncomeRecycler = (RecyclerView) viewRoot.findViewById(R.id.step_dollar_income_recycler);
+    }
+
+    public void setStepDollarDetailAdapter(StepDollarDetailAdapter stepDollarDetailAdapter) {
+        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        stepDollarIncomeRecycler.setLayoutManager(layoutManager);
+        stepDollarIncomeRecycler.setAdapter(stepDollarDetailAdapter);
+        LocalLog.d(TAG, "setStepDollarDetailAdapter() enter");
     }
 
     @Override
