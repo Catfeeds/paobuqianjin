@@ -25,6 +25,7 @@ import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.CirclePageAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
+import com.paobuqianjin.pbq.step.view.base.adapter.TabelOlderAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import java.lang.reflect.Field;
@@ -68,7 +69,7 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
         fragments.add(ownerJoinFragment);
         createOrJoin = (TabLayout) viewRoot.findViewById(R.id.create_or_join);
         ownerCreateJoinPager = (ViewPager) viewRoot.findViewById(R.id.owner_create_join_pager);
-        TabAdapter pageAdapter = new TabAdapter(getContext()
+        TabelOlderAdapter pageAdapter = new TabelOlderAdapter(getContext()
                 , getActivity().getSupportFragmentManager(), fragments, title);
         ownerCreateJoinPager.setAdapter(pageAdapter);
         createOrJoin.setupWithViewPager(ownerCreateJoinPager);

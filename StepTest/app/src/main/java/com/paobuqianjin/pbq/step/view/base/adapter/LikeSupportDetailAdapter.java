@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 /**
  * Created by pbq on 2017/12/31.
@@ -20,6 +21,7 @@ public class LikeSupportDetailAdapter extends RecyclerView.Adapter<RecyclerView.
     public LikeSupportDetailAdapter(Context context) {
         super();
         this.context = context;
+        LocalLog.d(TAG,"LikeSupportDetailAdapter() enter");
     }
 
     @Override

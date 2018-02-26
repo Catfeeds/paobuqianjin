@@ -25,6 +25,7 @@ public class StepDollarDetailAdapter extends RecyclerView.Adapter<StepDollarDeta
     private final static String TAG = StepDollarDetailAdapter.class.getSimpleName();
     private List<?> mData;
     private Context context;
+    private final static int defaultCount = 7;
 
     public StepDollarDetailAdapter(Context context, List<StepDollarDetailResponse.DataBeanX.DataBean> data) {
         super();
@@ -47,7 +48,8 @@ public class StepDollarDetailAdapter extends RecyclerView.Adapter<StepDollarDeta
         if (mData.get(position) instanceof StepDollarDetailResponse.DataBeanX.DataBean) {
             holder.inviteText.setText(((StepDollarDetailResponse.DataBeanX.DataBean) mData.get(position)).getSource());
             //转换为毫秒级
-            long createTime = ((StepDollarDetailResponse.DataBeanX.DataBean) mData.get(position)).getCreat_time() * 1000;
+            long createTime = ((StepDollarDetailResponse.DataBeanX.DataBean) mData.get(position)).getCreat_time();
+            LocalLog.d(TAG, "createTime = " + createTime);
             String dateStr = DateTimeUtil.formatDateTime(createTime, DateTimeUtil.DF_YYYY_MM_DD);
             LocalLog.d(TAG, "dateStr = " + dateStr);
             holder.inviteTime.setText(dateStr);

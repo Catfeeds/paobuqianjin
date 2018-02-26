@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
+import com.paobuqianjin.pbq.step.view.base.adapter.TabelOlderAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.UnScrollViewPager;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -68,7 +69,7 @@ public final class HonorFragment extends BaseFragment {
 
         personCircleNearby = (TabLayout) viewRoot.findViewById(R.id.person_circle_nearby);
         honorViewpage = (UnScrollViewPager) viewRoot.findViewById(R.id.honor_viewpage);
-        TabAdapter tabAdapter = new TabAdapter(getContext()
+        TabelOlderAdapter tabAdapter = new TabelOlderAdapter(getContext()
                 , getActivity().getSupportFragmentManager(), fragments, titles);
         honorViewpage.setAdapter(tabAdapter);
         personCircleNearby.setupWithViewPager(honorViewpage);

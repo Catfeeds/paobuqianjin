@@ -157,7 +157,7 @@ public class StepDollarDetailResponse {
             private int userid;
             private String source;
             private String credit;
-            private int creat_time;
+            private long creat_time;
 
             public int getId() {
                 return id;
@@ -191,7 +191,7 @@ public class StepDollarDetailResponse {
                 this.credit = credit;
             }
 
-            public int getCreat_time() {
+            public long getCreat_time() {
                 return creat_time;
             }
 

@@ -12,6 +12,7 @@
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fillViewport="true"
         android:layout_below="@+id/bar_step_dollar_detail">
 
         <RelativeLayout
@@ -86,12 +87,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/step_dollar_tab">
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/step_dollar_viewpager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <!--                <android.support.v4.view.ViewPager
+                                    android:id="@+id/step_dollar_viewpager"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
 
-                </android.support.v4.view.ViewPager>
+                                </android.support.v4.view.ViewPager>-->
             </RelativeLayout>
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>

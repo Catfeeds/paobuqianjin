@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -40,6 +41,7 @@ import butterknife.ButterKnife;
 public class StepDollarFragment extends BaseBarStyleTextViewFragment implements StepDollarDetailInterface {
     private final static String TAG = StepDollarFragment.class.getSimpleName();
     StepDollarDetailFragment stepDollarDetailFragment;
+    StepDollarDetailFragment stepDollarDetailFragment1;
     String[] titles = {"步币明细", "兑换记录"};
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -61,10 +63,12 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
     RelativeLayout dollarTotal;
     @Bind(R.id.step_dollar_tab)
     TabLayout stepDollarTab;
-    @Bind(R.id.step_dollar_viewpager)
-    ViewPager stepDollarViewpager;
+    /*    @Bind(R.id.step_dollar_viewpager)
+        ViewPager stepDollarViewpager;*/
     @Bind(R.id.step_dollar_span)
     RelativeLayout stepDollarSpan;
+    private int mIndex = 0;
+    Fragment[] fragments;
 
     @Override
     protected String title() {
@@ -95,20 +99,29 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         stepDollarDetailFragment = new StepDollarDetailFragment();
-        StepDollarDetailFragment stepDollarDetailFragment1 = new StepDollarDetailFragment();
-        List<Fragment> fragments = new ArrayList<>();
+        stepDollarDetailFragment1 = new StepDollarDetailFragment();
+        fragments = new Fragment[2];
 
-        fragments.add(stepDollarDetailFragment);
-        fragments.add(stepDollarDetailFragment1);
+        fragments[0] = stepDollarDetailFragment;
+        fragments[1] = stepDollarDetailFragment1;
         TabAdapter tabAdapter = new TabAdapter(getContext()
                 , getActivity().getSupportFragmentManager(), fragments, titles);
 
         stepDollarTab = (TabLayout) viewRoot.findViewById(R.id.step_dollar_tab);
+/*
         stepDollarViewpager = (ViewPager) viewRoot.findViewById(R.id.step_dollar_viewpager);
         stepDollarViewpager.setAdapter(tabAdapter);
+*/
 
-        stepDollarTab.setupWithViewPager(stepDollarViewpager);
+ /*       stepDollarTab.setupWithViewPager(stepDollarViewpager);*/
 
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.step_dollar_span, stepDollarDetailFragment)
+                .add(R.id.step_dollar_span, stepDollarDetailFragment1)
+                .show(stepDollarDetailFragment)
+                .hide(stepDollarDetailFragment1)
+                .commit();
         for (int i = 0; i < stepDollarTab.getTabCount(); i++) {
             LocalLog.d(TAG, "initView() i = " + i);
             stepDollarTab.getTabAt(i).setCustomView(getTabView(i));
@@ -120,8 +133,68 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
                 setIndicator(stepDollarTab, 10, 10);
             }
         });
+
+
+        stepDollarTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                LocalLog.d(TAG, "onTabSelected() enter" + tab.getPosition());
+                switch (tab.getPosition()) {
+                    case 0:
+                        /*if (iCamemaView.getVisibility() == View.VISIBLE) {
+                            iCamemaView.setVisibility(View.GONE);
+                        }
+                        if (iScanView.getVisibility() == View.GONE) {
+                            iScanView.setVisibility(View.VISIBLE);
+                        }*/
+                        if (mIndex == 0) {
+
+                        } else {
+                            onTabIndex(0);
+                        }
+                        mIndex = 0;
+                        break;
+                    case 1:
+                        /*if (iCamemaView.getVisibility() == View.GONE) {
+                            iCamemaView.setVisibility(View.VISIBLE);
+                        }
+                        if (iScanView.getVisibility() == View.VISIBLE) {
+                            iScanView.setVisibility(View.GONE);
+                        }*/
+                        if (mIndex == 1) {
+
+                        } else {
+                            onTabIndex(1);
+                        }
+
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
+    private void onTabIndex(int fragmentIndex) {
+        LocalLog.d(TAG, "onTabIndex() enter mIndex " + fragmentIndex);
+        if (mIndex != fragmentIndex) {
+            FragmentTransaction trx = getActivity().getSupportFragmentManager().beginTransaction();
+            trx.hide(fragments[mIndex]);
+            if (!fragments[fragmentIndex].isAdded()) {
+                trx.add(R.id.step_dollar_span, fragments[fragmentIndex]);
+            }
+            trx.show(fragments[fragmentIndex]).commit();
+        }
+        mIndex = fragmentIndex;
+    }
 
     public void setIndicator(TabLayout tab, int leftDip, int rightDip) {
         Class<?> tabLayout = tab.getClass();
@@ -172,7 +245,7 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void response(StepDollarDetailResponse stepDollarDetailResponse) {
         LocalLog.d(TAG, "StepDollarDetailResponse() enter " + stepDollarDetailResponse.toString());
-        stepDollarDetailFragment.setStepDollarDetailAdapter(new StepDollarDetailAdapter(getContext(),stepDollarDetailResponse.getData().getData()));
+        stepDollarDetailFragment.setStepDollarDetailAdapter(new StepDollarDetailAdapter(getContext(), stepDollarDetailResponse.getData().getData()));
     }
 
     @Override
