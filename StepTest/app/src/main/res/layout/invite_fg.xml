@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,42 +8,21 @@
         android:id="@+id/bar_invite_friend"
         layout="@layout/bar_return_a_style"></include>
 
-    <ScrollView
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bar_invite_friend">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:stateListAnimator="@null"
-                android:id="@+id/invite_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/rect_angle_background"
-                android:gravity="center"
-                android:text="马上邀请"
-                android:textColor="@color/color_f8"
-                android:textSize="36dp" />
-
-            <ImageView
-                android:id="@+id/invite_line"
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:layout_below="@+id/invite_btn"
-                android:layout_marginTop="15dp"
-                android:background="@color/color_f3f3f5" />
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <RelativeLayout
                 android:id="@+id/invite_code_span"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@+id/invite_line">
+                android:layout_height="45dp">
 
                 <TextView
                     android:id="@+id/invite_code_text"
@@ -52,7 +32,8 @@
                     android:layout_marginLeft="14dp"
                     android:text="填写邀请码"
                     android:textColor="@color/color_161727"
-                    android:textSize="14dp" />
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
 
                 <ImageView
                     android:layout_width="7dp"
@@ -66,57 +47,57 @@
             <RelativeLayout
                 android:id="@+id/invite_no_span"
                 android:layout_width="match_parent"
-                android:layout_height="105dp"
+                android:layout_height="65dp"
                 android:layout_below="@+id/invite_code_span">
 
                 <RelativeLayout
+                    android:id="@+id/line1"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="20dp"
                     android:background="@color/color_f3f3f5"></RelativeLayout>
 
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true">
-
-
-                    <ImageView
-                        android:layout_width="175dp"
-                        android:layout_height="38dp"
-                        android:layout_marginTop="17dp"
-                        android:src="@drawable/label_invite" />
-
-                    <TextView
-                        android:layout_gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="邀请红包达人榜"
-                        android:textColor="@color/color_f8"
-                        android:textSize="15dp" />
-                </FrameLayout>
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="14dp"
-                    android:text="2017年1月1日至今"
-                    android:textColor="@color/color_8a8a8a" />
-
-                <ImageView
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/invite_tab"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/step_dollar_bg"
                     android:layout_alignParentBottom="true"
-                    android:background="@color/color_f3f3f5" />
+                    android:layout_below="@+id/line1"
+                    android:layout_marginLeft="65dp"
+                    android:layout_marginRight="65dp"
+                    app:tabIndicatorColor="@color/color_ffc14c"
+                    app:tabIndicatorHeight="2dp"></android.support.design.widget.TabLayout>
+                <ImageView
+                    android:background="@color/color_f3f3f5"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp" />
             </RelativeLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/invite_recycler"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/invite_no_span"></android.support.v7.widget.RecyclerView>
+                android:layout_below="@+id/invite_no_span">
+
+                <com.paobuqianjin.pbq.step.view.base.view.CustomViewPager
+                    android:id="@+id/step_dollar_viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </com.paobuqianjin.pbq.step.view.base.view.CustomViewPager>
+            </RelativeLayout>
         </RelativeLayout>
-    </ScrollView>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+    <Button
+        android:id="@+id/invite_btn"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/rect_no_corner"
+        android:gravity="center"
+        android:stateListAnimator="@null"
+        android:text="邀请好友"
+        android:textColor="@color/color_f8"
+        android:textSize="18dp" />
 </RelativeLayout>
