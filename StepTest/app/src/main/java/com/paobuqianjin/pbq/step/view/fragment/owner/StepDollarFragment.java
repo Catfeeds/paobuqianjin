@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.StepDollarDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -94,6 +95,7 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         Presenter.getInstance(getContext()).getUserCredit();
+        Presenter.getInstance(getContext()).getUserDollarStep();
         return rootView;
     }
 
@@ -102,8 +104,8 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
         super.initView(viewRoot);
         stepDollarDetailFragment = new StepDollarDetailFragment();
         stepDollarDetailFragment1 = new StepDollarDetailFragment();
-
-        stepDollarScroll =(BounceScrollView)viewRoot.findViewById(R.id.step_dollar_scroll);
+        stepDollarNums = (TextView) viewRoot.findViewById(R.id.step_dollar_nums);
+        stepDollarScroll = (BounceScrollView) viewRoot.findViewById(R.id.step_dollar_scroll);
         List<Fragment> fragments = new ArrayList<>();
 
         fragments.add(stepDollarDetailFragment);
@@ -221,6 +223,11 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
     public void response(StepDollarDetailResponse stepDollarDetailResponse) {
         LocalLog.d(TAG, "StepDollarDetailResponse() enter " + stepDollarDetailResponse.toString());
         stepDollarDetailFragment.setStepDollarDetailAdapter(new StepDollarDetailAdapter(getContext(), stepDollarDetailResponse.getData().getData()));
+    }
+
+    @Override
+    public void response(UserInfoResponse userInfoResponse) {
+        stepDollarNums.setText(String.valueOf(userInfoResponse.getData().getCredit()));
     }
 
     @Override

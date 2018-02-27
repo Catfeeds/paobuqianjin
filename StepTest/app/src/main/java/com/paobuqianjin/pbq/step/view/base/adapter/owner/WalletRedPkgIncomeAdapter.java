@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.List;
@@ -45,7 +47,13 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
 
     private void updateListItem(WalletRedPkgIncomeListViewHolder holder, int position) {
         LocalLog.d(TAG,"updateListItem() enter");
-        holder.date.setText(String.valueOf(mData.get(position).getCreate_time()));
+
+        //转换为毫秒级
+        long createTime = mData.get(position).getCreate_time();
+        LocalLog.d(TAG, "createTime = " + createTime);
+        String dateStr = DateTimeUtil.formatDateTime(createTime*1000, DateTimeUtil.DF_YYYY_MM_DD);
+        LocalLog.d(TAG, "dateStr = " + dateStr);
+        holder.date.setText(dateStr);
         holder.addIncome.setText(String.valueOf(mData.get(position).getAmount()));
         holder.incomeFrom.setText(String.valueOf(mData.get(position).getName()));
     }

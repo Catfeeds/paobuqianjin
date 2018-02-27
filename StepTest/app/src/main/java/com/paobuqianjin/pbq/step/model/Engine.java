@@ -1132,6 +1132,16 @@ public final class Engine {
                 .execute(new NetStringCallBack(stepDollarDetailInterface, COMMAND_GET_USER_STEP_DOLLAR_DETAIL));
     }
 
+    public void getUserDollarStep() {
+        String url = NetApi.urlUser + String.valueOf(getId(mContext));
+        LocalLog.d(TAG, "getUserInfo() url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(stepDollarDetailInterface, COMMAND_GET_USER_INFO));
+    }
+
     //获取用户提现信息记录，请求方式：get，地址：http://api.runmoneyin.com/v1/withdraw/2，参数：用户id
     public void getWithDraw(int id) {
         LocalLog.d(TAG, "getWithDraw() enter");

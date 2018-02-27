@@ -335,6 +335,10 @@ public final class Presenter {
         engine.getUserCredit();
     }
 
+    public void getUserDollarStep() {
+        engine.getUserDollarStep();
+    }
+
     //
     public void getWeather(double latitude, double longitude) {
         engine.getWeather(latitude, longitude);

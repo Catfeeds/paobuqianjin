@@ -401,6 +401,10 @@ public class NetStringCallBack extends StringCallback {
                 StepDollarDetailResponse dollarDetailResponse = new Gson().fromJson(s, StepDollarDetailResponse.class);
                 ((StepDollarDetailInterface) callBackInterface).response(dollarDetailResponse);
             }
+            if (command == Engine.COMMAND_GET_USER_INFO) {
+                UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
+                ((StepDollarDetailInterface) callBackInterface).response(userInfoResponse);
+            }
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }
