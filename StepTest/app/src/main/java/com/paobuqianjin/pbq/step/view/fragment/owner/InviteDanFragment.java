@@ -1,12 +1,18 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
+import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.base.adapter.owner.InviteDanAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -19,6 +25,7 @@ import butterknife.ButterKnife;
 public class InviteDanFragment extends BaseFragment {
     @Bind(R.id.invite_dan_recycler)
     RecyclerView inviteDanRecycler;
+    LinearLayoutManager layoutManager;
 
     @Override
     protected int getLayoutResId() {
@@ -33,9 +40,23 @@ public class InviteDanFragment extends BaseFragment {
         return rootView;
     }
 
+    public void setDanAdapter(InviteDanAdapter inviteDanAdapter) {
+        inviteDanRecycler.setAdapter(inviteDanAdapter);
+    }
+
+    @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        inviteDanRecycler = (RecyclerView) viewRoot.findViewById(R.id.invite_dan_recycler);
+        inviteDanRecycler.setLayoutManager(layoutManager);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
 }

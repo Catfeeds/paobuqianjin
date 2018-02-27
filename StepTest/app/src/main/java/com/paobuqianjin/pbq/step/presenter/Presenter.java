@@ -330,6 +330,15 @@ public final class Presenter {
         engine.bindCrashAccount(bindCardPostParam);
     }
 
+    //TODO 邀请好友接口
+    public void getInviteDan(int page, int pagesize) {
+        engine.getInviteDan(page, pagesize);
+    }
+
+    public void getMyInviteMsg() {
+        engine.getMyInviteMsg();
+    }
+
     //TODO 获取步币明细
     public void getUserCredit() {
         engine.getUserCredit();

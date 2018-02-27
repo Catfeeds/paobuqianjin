@@ -70,12 +70,6 @@ public class NetApi {
     public final static String urlWithDraw = "http://119.29.10.64/v1/withdraw/";
     //TODO 添加用户提现记录，请求方式：post，地址：http://api.runmoneyin.com/v1/withdraw，参数：type提现类型、amount提现金额、userid用户id
 
-
-    //TODO 用户信息相关接口：邀请达人排行榜、获取我的邀请人数
-    //TODO 邀请排行榜，请求方式：get，地址：http://api.runmoneyin.com/v1/userinviter
-    public final static String urlUserInviter = "http://119.29.10.64/v1/userinviter";
-    //TODO 获取我邀请的人数，请求方式：get，地址：http://api.runmoneyin.com/v1/userinviter/1
-
     //TODO 用户关注接口
     //TODO 我的关注：get http://api.runmoneyin.com/v1/UserFollow?userid=5
     public final static String urlUserFollow = "http://119.29.10.64/v1/UserFollow";
@@ -130,4 +124,6 @@ public class NetApi {
     public final static String urlUserFriends = "http://119.29.10.64/v1/UserFriends";
     //TODO 获取段位列表
     public final static String urlUserLevel ="http://119.29.10.64/v1/userlevel";
+    //TODO 邀请好友接口
+    public final static String urlInvite="http://119.29.10.64/v1/userinviter";
 }

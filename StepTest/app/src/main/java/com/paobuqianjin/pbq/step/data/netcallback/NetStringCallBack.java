@@ -18,8 +18,10 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
@@ -45,6 +47,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
+import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
@@ -67,6 +70,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 
 import okhttp3.Call;
 
@@ -404,6 +408,15 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_GET_USER_INFO) {
                 UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
                 ((StepDollarDetailInterface) callBackInterface).response(userInfoResponse);
+            }
+        } else if (callBackInterface != null
+                && callBackInterface instanceof InviteInterface) {
+            if (command == Engine.COMMAND_GET_INVITE_DAN) {
+                InviteDanResponse inviteDanResponse = new Gson().fromJson(s, InviteDanResponse.class);
+                ((InviteInterface) callBackInterface).response(inviteDanResponse);
+            } else if (command == Engine.COMMAND_GET_MY_INVITE_MSG) {
+                MyInviteResponse myInviteResponse = new Gson().fromJson(s, MyInviteResponse.class);
+                ((InviteInterface) callBackInterface).response(myInviteResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

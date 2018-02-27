@@ -19,7 +19,6 @@
         android:layout_below="@+id/invite_pkg"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:text="成功邀请23人，获得步币2块"
         android:textColor="@color/color_161727"
         android:textSize="15dp" />
 
@@ -68,14 +67,16 @@
         android:layout_height="100dp"
         android:layout_below="@+id/go_rule_span"
         android:layout_marginTop="20dp"
+        android:layout_marginBottom="45dp"
         android:background="@color/color_f6f6f6">
 
         <TextView
+            android:id="@+id/invite_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="我的邀请码:1888888"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
     </RelativeLayout>

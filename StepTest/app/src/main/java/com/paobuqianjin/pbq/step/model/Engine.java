@@ -45,6 +45,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
+import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
@@ -128,6 +129,7 @@ public final class Engine {
     private UserHomeInterface userHomeInterface;
     private MyDynamicInterface myDynamicInterface;
     private StepDollarDetailInterface stepDollarDetailInterface;
+    private InviteInterface inviteInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -178,6 +180,8 @@ public final class Engine {
     public final static int COMMAND_GET_USER_DYNAMIC = 43;
     public final static int COMMAND_GET_USER_INFO = 44;
     public final static int COMMAND_GET_USER_STEP_DOLLAR_DETAIL = 45;
+    public final static int COMMAND_GET_INVITE_DAN = 46;
+    public final static int COMMAND_GET_MY_INVITE_MSG = 47;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1164,27 +1168,6 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //邀请排行榜，请求方式：get，地址：http://api.runmoneyin.com/v1/userinviter
-    public void getUserInviter() {
-        LocalLog.d(TAG, "getUserInviter() enter");
-        OkHttpUtils
-                .get()
-                .url(NetApi.urlUserInviter)
-                .build()
-                .execute(new NetStringCallBack(null, -1));
-    }
-
-    //获取我邀请的人数，请求方式：get，地址：http://api.runmoneyin.com/v1/userinviter/1
-    public void getUserInter(int id) {
-        LocalLog.d(TAG, "getUserInter(id) enter");
-        String url = NetApi.urlUserInviter + String.valueOf(id);
-        OkHttpUtils
-                .get()
-                .url(url)
-                .build()
-                .execute(new NetStringCallBack(null, -1));
-    }
-
     //我的关注
     public void getUserMeFollow(int id) {
         LocalLog.d(TAG, "getUserMeFollow( id ) enter");
@@ -1345,6 +1328,27 @@ public final class Engine {
         LocalLog.d(TAG, "getSportLevel() enter");
     }
 
+    //TODO 邀请达人排行榜
+    public void getInviteDan(int page, int pagesize) {
+        String url = NetApi.urlInvite + "?page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        LocalLog.d(TAG, "getInviteDan() enter url =" + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(inviteInterface, COMMAND_GET_INVITE_DAN));
+    }
+
+    public void getMyInviteMsg() {
+        String url = NetApi.urlInvite + "/" + String.valueOf(getId(mContext));
+        LocalLog.d(TAG, "getMyInviteMsg() enter url =  " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(inviteInterface, COMMAND_GET_MY_INVITE_MSG));
+    }
+
     //TODO 获取用户好友列表
     public void getUserFriends() {
         String url = NetApi.urlUserFriends + "/?userid=" + getId(mContext);
@@ -1486,6 +1490,8 @@ public final class Engine {
             myDynamicInterface = (MyDynamicInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof StepDollarDetailInterface) {
             stepDollarDetailInterface = (StepDollarDetailInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof InviteInterface) {
+            inviteInterface = (InviteInterface) uiCallBackInterface;
         }
 
     }
@@ -1542,6 +1548,8 @@ public final class Engine {
             myDynamicInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof StepDollarDetailInterface) {
             stepDollarDetailInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof InviteInterface) {
+            inviteInterface = null;
         }
     }
 }
