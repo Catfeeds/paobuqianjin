@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -16,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
@@ -26,6 +26,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.StepDollarDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -63,12 +64,13 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
     RelativeLayout dollarTotal;
     @Bind(R.id.step_dollar_tab)
     TabLayout stepDollarTab;
-    /*    @Bind(R.id.step_dollar_viewpager)
-        ViewPager stepDollarViewpager;*/
+    @Bind(R.id.step_dollar_viewpager)
+    ViewPager stepDollarViewpager;
     @Bind(R.id.step_dollar_span)
     RelativeLayout stepDollarSpan;
+    @Bind(R.id.step_dollar_scroll)
+    BounceScrollView stepDollarScroll;
     private int mIndex = 0;
-    Fragment[] fragments;
 
     @Override
     protected String title() {
@@ -100,28 +102,22 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
         super.initView(viewRoot);
         stepDollarDetailFragment = new StepDollarDetailFragment();
         stepDollarDetailFragment1 = new StepDollarDetailFragment();
-        fragments = new Fragment[2];
 
-        fragments[0] = stepDollarDetailFragment;
-        fragments[1] = stepDollarDetailFragment1;
+        stepDollarScroll =(BounceScrollView)viewRoot.findViewById(R.id.step_dollar_scroll);
+        List<Fragment> fragments = new ArrayList<>();
+
+        fragments.add(stepDollarDetailFragment);
+        fragments.add(stepDollarDetailFragment1);
         TabAdapter tabAdapter = new TabAdapter(getContext()
                 , getActivity().getSupportFragmentManager(), fragments, titles);
 
         stepDollarTab = (TabLayout) viewRoot.findViewById(R.id.step_dollar_tab);
-/*
         stepDollarViewpager = (ViewPager) viewRoot.findViewById(R.id.step_dollar_viewpager);
         stepDollarViewpager.setAdapter(tabAdapter);
-*/
 
- /*       stepDollarTab.setupWithViewPager(stepDollarViewpager);*/
 
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.step_dollar_span, stepDollarDetailFragment)
-                .add(R.id.step_dollar_span, stepDollarDetailFragment1)
-                .show(stepDollarDetailFragment)
-                .hide(stepDollarDetailFragment1)
-                .commit();
+        stepDollarTab.setupWithViewPager(stepDollarViewpager);
+
         for (int i = 0; i < stepDollarTab.getTabCount(); i++) {
             LocalLog.d(TAG, "initView() i = " + i);
             stepDollarTab.getTabAt(i).setCustomView(getTabView(i));
@@ -141,32 +137,24 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
                 LocalLog.d(TAG, "onTabSelected() enter" + tab.getPosition());
                 switch (tab.getPosition()) {
                     case 0:
-                        /*if (iCamemaView.getVisibility() == View.VISIBLE) {
-                            iCamemaView.setVisibility(View.GONE);
-                        }
-                        if (iScanView.getVisibility() == View.GONE) {
-                            iScanView.setVisibility(View.VISIBLE);
-                        }*/
-                        if (mIndex == 0) {
-
-                        } else {
-                            onTabIndex(0);
-                        }
-                        mIndex = 0;
+                        LocalLog.d(TAG, "tab 0");
+         /*               //scrollView滑动到顶端
+                        stepDollarScroll.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                stepDollarScroll.fullScroll(ScrollView.FOCUS_UP);
+                            }
+                        }, 0);*/
                         break;
                     case 1:
-                        /*if (iCamemaView.getVisibility() == View.GONE) {
-                            iCamemaView.setVisibility(View.VISIBLE);
-                        }
-                        if (iScanView.getVisibility() == View.VISIBLE) {
-                            iScanView.setVisibility(View.GONE);
-                        }*/
-                        if (mIndex == 1) {
-
-                        } else {
-                            onTabIndex(1);
-                        }
-
+                        LocalLog.d(TAG, "tab 1");
+/*                        //scrollView滑动到顶端
+                        stepDollarScroll.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                stepDollarScroll.fullScroll(ScrollView.FOCUS_UP);
+                            }
+                        }, 0);*/
                         break;
                 }
             }
@@ -181,19 +169,6 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
 
             }
         });
-    }
-
-    private void onTabIndex(int fragmentIndex) {
-        LocalLog.d(TAG, "onTabIndex() enter mIndex " + fragmentIndex);
-        if (mIndex != fragmentIndex) {
-            FragmentTransaction trx = getActivity().getSupportFragmentManager().beginTransaction();
-            trx.hide(fragments[mIndex]);
-            if (!fragments[fragmentIndex].isAdded()) {
-                trx.add(R.id.step_dollar_span, fragments[fragmentIndex]);
-            }
-            trx.show(fragments[fragmentIndex]).commit();
-        }
-        mIndex = fragmentIndex;
     }
 
     public void setIndicator(TabLayout tab, int leftDip, int rightDip) {

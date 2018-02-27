@@ -10,12 +10,15 @@
         layout="@layout/bar_return_a_style"></include>
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:id="@+id/step_dollar_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
         android:layout_below="@+id/bar_step_dollar_detail">
 
         <RelativeLayout
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -87,12 +90,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/step_dollar_tab">
 
-                <!--                <android.support.v4.view.ViewPager
-                                    android:id="@+id/step_dollar_viewpager"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                <com.paobuqianjin.pbq.step.view.base.view.CustomViewPager
+                    android:id="@+id/step_dollar_viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                                </android.support.v4.view.ViewPager>-->
+                </com.paobuqianjin.pbq.step.view.base.view.CustomViewPager>
             </RelativeLayout>
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>

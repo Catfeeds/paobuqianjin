@@ -5,19 +5,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-
 import java.util.List;
 
 /**
- * Created by pbq on 2017/12/29.
+ * Created by pbq on 2018/2/26.
  */
 
 public class TabAdapter extends FragmentPagerAdapter {
-    private Fragment[] fragments;
+    private List<Fragment> fragments;
     private Context context;
     private String[] tableTitle;
 
-    public TabAdapter(Context context, FragmentManager fm, Fragment[] fragments, String[] title) {
+    public TabAdapter(Context context, FragmentManager fm, List<Fragment> fragments, String[] title) {
         super(fm);
         this.context = context;
         this.fragments = fragments;
@@ -26,12 +25,12 @@ public class TabAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return fragments[position];
+        return fragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return fragments == null ? 0 : fragments.length;
+        return fragments == null ? 0 : fragments.size();
     }
 
     @Override

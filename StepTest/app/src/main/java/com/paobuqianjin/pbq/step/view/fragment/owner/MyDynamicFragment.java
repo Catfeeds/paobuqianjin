@@ -61,7 +61,7 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getMyDynamic(3, 10);
+        Presenter.getInstance(getContext()).getMyDynamic(2, 10);
         return rootView;
     }
 

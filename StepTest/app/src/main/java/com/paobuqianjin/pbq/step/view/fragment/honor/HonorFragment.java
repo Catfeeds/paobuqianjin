@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,6 @@ import android.widget.RelativeLayout;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
-import com.paobuqianjin.pbq.step.view.base.adapter.TabelOlderAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.UnScrollViewPager;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -69,7 +67,7 @@ public final class HonorFragment extends BaseFragment {
 
         personCircleNearby = (TabLayout) viewRoot.findViewById(R.id.person_circle_nearby);
         honorViewpage = (UnScrollViewPager) viewRoot.findViewById(R.id.honor_viewpage);
-        TabelOlderAdapter tabAdapter = new TabelOlderAdapter(getContext()
+        TabAdapter tabAdapter = new TabAdapter(getContext()
                 , getActivity().getSupportFragmentManager(), fragments, titles);
         honorViewpage.setAdapter(tabAdapter);
         personCircleNearby.setupWithViewPager(honorViewpage);

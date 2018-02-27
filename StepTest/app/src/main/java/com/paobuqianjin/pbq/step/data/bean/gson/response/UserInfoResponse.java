@@ -14,7 +14,7 @@ public class UserInfoResponse {
     /**
      * error : 0
      * message : success
-     * data : {"id":1,"openid":"","mobile":"18588278880","levelid":3,"sex":0,"birthyear":1992,"birthmonth":1,"birthday":30,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184235460.jpg","type":1,"nickname":"陈杰","province":"广东省","city":"深圳市","balance":"43.66","target_step":10000,"credit":"0.00","status":0,"creat_time":1512699325,"level":"第三段","followCount":9,"circleCount":44,"authentication_status":4,"messagesCount":1}
+     * data : {"id":1,"wx_openid":"","qq_openid":"","mobile":"18588278880","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D0922F24-15D6-451E-B432-9B1F123D2C9A.jpg","nickname":"嗯额咳咳","levelid":3,"sex":0,"birthyear":2018,"birthmonth":2,"birthday":26,"height":166,"type":1,"province":"广东省","city":"广州市","balance":"67.94","target_step":10000,"credit":60,"status":0,"is_perfect":1,"create_time":1512699325,"level":"第三段","followCount":5,"circleCount":95,"authentication_status":1,"messagesCount":5}
      */
 
     private int error;
@@ -57,48 +57,54 @@ public class UserInfoResponse {
     public static class DataBean {
         /**
          * id : 1
-         * openid :
+         * wx_openid :
+         * qq_openid :
          * mobile : 18588278880
+         * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D0922F24-15D6-451E-B432-9B1F123D2C9A.jpg
+         * nickname : 嗯额咳咳
          * levelid : 3
-         * sex : 0 0:男 1：女
-         * birthyear : 1992
-         * birthmonth : 1
-         * birthday : 30
-         * avatar : http://pic.qqtn.com/up/2017-12/2017120911184235460.jpg
+         * sex : 0
+         * birthyear : 2018
+         * birthmonth : 2
+         * birthday : 26
+         * height : 166
          * type : 1
-         * nickname : 陈杰
          * province : 广东省
-         * city : 深圳市
-         * balance : 43.66  余额
+         * city : 广州市
+         * balance : 67.94
          * target_step : 10000
-         * credit : 0.00  步币
-         * status : 0     是否被禁用
-         * creat_time : 1512699325
+         * credit : 60
+         * status : 0
+         * is_perfect : 1
+         * create_time : 1512699325
          * level : 第三段
-         * followCount : 9
-         * circleCount : 44
-         * authentication_status : 4  4，未认证
-         * messagesCount : 1
+         * followCount : 5
+         * circleCount : 95
+         * authentication_status : 1
+         * messagesCount : 5
          */
 
         private int id;
-        private String openid;
+        private String wx_openid;
+        private String qq_openid;
         private String mobile;
+        private String avatar;
+        private String nickname;
         private int levelid;
         private int sex;
         private int birthyear;
         private int birthmonth;
         private int birthday;
-        private String avatar;
+        private int height;
         private int type;
-        private String nickname;
         private String province;
         private String city;
         private String balance;
         private int target_step;
-        private String credit;
+        private int credit;
         private int status;
-        private int creat_time;
+        private int is_perfect;
+        private int create_time;
         private String level;
         private int followCount;
         private int circleCount;
@@ -113,12 +119,20 @@ public class UserInfoResponse {
             this.id = id;
         }
 
-        public String getOpenid() {
-            return openid;
+        public String getWx_openid() {
+            return wx_openid;
         }
 
-        public void setOpenid(String openid) {
-            this.openid = openid;
+        public void setWx_openid(String wx_openid) {
+            this.wx_openid = wx_openid;
+        }
+
+        public String getQq_openid() {
+            return qq_openid;
+        }
+
+        public void setQq_openid(String qq_openid) {
+            this.qq_openid = qq_openid;
         }
 
         public String getMobile() {
@@ -127,6 +141,22 @@ public class UserInfoResponse {
 
         public void setMobile(String mobile) {
             this.mobile = mobile;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
         }
 
         public int getLevelid() {
@@ -169,12 +199,12 @@ public class UserInfoResponse {
             this.birthday = birthday;
         }
 
-        public String getAvatar() {
-            return avatar;
+        public int getHeight() {
+            return height;
         }
 
-        public void setAvatar(String avatar) {
-            this.avatar = avatar;
+        public void setHeight(int height) {
+            this.height = height;
         }
 
         public int getType() {
@@ -183,14 +213,6 @@ public class UserInfoResponse {
 
         public void setType(int type) {
             this.type = type;
-        }
-
-        public String getNickname() {
-            return nickname;
-        }
-
-        public void setNickname(String nickname) {
-            this.nickname = nickname;
         }
 
         public String getProvince() {
@@ -225,11 +247,11 @@ public class UserInfoResponse {
             this.target_step = target_step;
         }
 
-        public String getCredit() {
+        public int getCredit() {
             return credit;
         }
 
-        public void setCredit(String credit) {
+        public void setCredit(int credit) {
             this.credit = credit;
         }
 
@@ -241,12 +263,20 @@ public class UserInfoResponse {
             this.status = status;
         }
 
-        public int getCreat_time() {
-            return creat_time;
+        public int getIs_perfect() {
+            return is_perfect;
         }
 
-        public void setCreat_time(int creat_time) {
-            this.creat_time = creat_time;
+        public void setIs_perfect(int is_perfect) {
+            this.is_perfect = is_perfect;
+        }
+
+        public int getCreate_time() {
+            return create_time;
+        }
+
+        public void setCreate_time(int create_time) {
+            this.create_time = create_time;
         }
 
         public String getLevel() {
@@ -293,23 +323,26 @@ public class UserInfoResponse {
         public String toString() {
             return "DataBean{" +
                     "id=" + id +
-                    ", openid='" + openid + '\'' +
+                    ", wx_openid='" + wx_openid + '\'' +
+                    ", qq_openid='" + qq_openid + '\'' +
                     ", mobile='" + mobile + '\'' +
+                    ", avatar='" + avatar + '\'' +
+                    ", nickname='" + nickname + '\'' +
                     ", levelid=" + levelid +
                     ", sex=" + sex +
                     ", birthyear=" + birthyear +
                     ", birthmonth=" + birthmonth +
                     ", birthday=" + birthday +
-                    ", avatar='" + avatar + '\'' +
+                    ", height=" + height +
                     ", type=" + type +
-                    ", nickname='" + nickname + '\'' +
                     ", province='" + province + '\'' +
                     ", city='" + city + '\'' +
                     ", balance='" + balance + '\'' +
                     ", target_step=" + target_step +
-                    ", credit='" + credit + '\'' +
+                    ", credit=" + credit +
                     ", status=" + status +
-                    ", creat_time=" + creat_time +
+                    ", is_perfect=" + is_perfect +
+                    ", create_time=" + create_time +
                     ", level='" + level + '\'' +
                     ", followCount=" + followCount +
                     ", circleCount=" + circleCount +
