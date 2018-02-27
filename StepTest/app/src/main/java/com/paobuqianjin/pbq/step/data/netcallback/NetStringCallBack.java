@@ -16,6 +16,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
@@ -24,6 +25,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PostInviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
@@ -55,6 +57,7 @@ import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
+import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
@@ -176,6 +179,12 @@ public class NetStringCallBack extends StringCallback {
             } else if (callBackInterface != null
                     && callBackInterface instanceof WxPayResultQueryInterface
                     && command == Engine.COMMAND_PAY_RESULT_QUERY_WX) {
+            } else if (callBackInterface != null
+                    && callBackInterface instanceof PostInviteCodeInterface) {
+                if (command == Engine.COMMAND_POST_INVITE_CODE) {
+                    ErrorCode errorCode = new Gson().fromJson(response.toString(), ErrorCode.class);
+                    ((PostInviteCodeInterface) callBackInterface).responseError(errorCode);
+                }
             } else {
                 LocalLog.e(TAG, " dispatch not match");
             }
@@ -417,6 +426,12 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_GET_MY_INVITE_MSG) {
                 MyInviteResponse myInviteResponse = new Gson().fromJson(s, MyInviteResponse.class);
                 ((InviteInterface) callBackInterface).response(myInviteResponse);
+            }
+        } else if (callBackInterface != null
+                && callBackInterface instanceof PostInviteCodeInterface) {
+            if (command == Engine.COMMAND_POST_INVITE_CODE) {
+                PostInviteCodeResponse postInviteCodeResponse = new Gson().fromJson(s, PostInviteCodeResponse.class);
+                ((PostInviteCodeInterface) callBackInterface).response(postInviteCodeResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

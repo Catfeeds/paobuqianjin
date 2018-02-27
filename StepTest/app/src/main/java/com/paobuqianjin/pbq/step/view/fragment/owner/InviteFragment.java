@@ -23,6 +23,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.FillInviteCodeActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.InviteDanAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -183,6 +184,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         switch (view.getId()) {
             case R.id.invite_code_span:
                 LocalLog.d(TAG, "填写邀请码");
+                startActivity(FillInviteCodeActivity.class, null);
                 break;
             case R.id.invite_btn:
                 LocalLog.d(TAG, "邀请好友");

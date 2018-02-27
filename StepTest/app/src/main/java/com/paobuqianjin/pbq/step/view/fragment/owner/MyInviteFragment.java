@@ -48,10 +48,14 @@ public class MyInviteFragment extends BaseFragment {
     }
 
     public void setMsg(int inviteNum, int stepDollar, String code) {
-        String inviteStrformat = getString(R.string.invite_msg);
-        String inviteStr = String.format(inviteStrformat, inviteNum, stepDollar);
-        inviteResult.setText(inviteStr);
-        inviteCode.setText("我的邀请码:" + code);
+        if (isDetached()) {
+            return;
+        } else {
+            String inviteStrformat = getString(R.string.invite_msg);
+            String inviteStr = String.format(inviteStrformat, inviteNum, stepDollar);
+            inviteResult.setText(inviteStr);
+            inviteCode.setText("我的邀请码:" + code);
+        }
     }
 
     @Override

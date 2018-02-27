@@ -24,6 +24,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostUserStepParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
@@ -53,6 +54,7 @@ import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
+import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
@@ -130,6 +132,7 @@ public final class Engine {
     private MyDynamicInterface myDynamicInterface;
     private StepDollarDetailInterface stepDollarDetailInterface;
     private InviteInterface inviteInterface;
+    private PostInviteCodeInterface postInviteCodeInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -182,6 +185,7 @@ public final class Engine {
     public final static int COMMAND_GET_USER_STEP_DOLLAR_DETAIL = 45;
     public final static int COMMAND_GET_INVITE_DAN = 46;
     public final static int COMMAND_GET_MY_INVITE_MSG = 47;
+    public final static int COMMAND_POST_INVITE_CODE = 48;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1349,6 +1353,16 @@ public final class Engine {
                 .execute(new NetStringCallBack(inviteInterface, COMMAND_GET_MY_INVITE_MSG));
     }
 
+    public void postInviteCode(PostInviteCodeParam postInviteCodeParam) {
+        LocalLog.d(TAG, "postInviteCode() enter " + postInviteCodeParam.paramString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlInvite)
+                .params(postInviteCodeParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(postInviteCodeInterface, COMMAND_POST_INVITE_CODE));
+    }
+
     //TODO 获取用户好友列表
     public void getUserFriends() {
         String url = NetApi.urlUserFriends + "/?userid=" + getId(mContext);
@@ -1492,6 +1506,8 @@ public final class Engine {
             stepDollarDetailInterface = (StepDollarDetailInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof InviteInterface) {
             inviteInterface = (InviteInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof PostInviteCodeInterface) {
+            postInviteCodeInterface = (PostInviteCodeInterface) uiCallBackInterface;
         }
 
     }
@@ -1550,6 +1566,8 @@ public final class Engine {
             stepDollarDetailInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof InviteInterface) {
             inviteInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof PostInviteCodeInterface) {
+            postInviteCodeInterface = null;
         }
     }
 }

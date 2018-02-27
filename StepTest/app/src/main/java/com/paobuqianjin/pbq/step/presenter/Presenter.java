@@ -10,6 +10,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicParam;
@@ -337,6 +338,10 @@ public final class Presenter {
 
     public void getMyInviteMsg() {
         engine.getMyInviteMsg();
+    }
+
+    public void postInviteCode(PostInviteCodeParam postInviteCodeParam) {
+        engine.postInviteCode(postInviteCodeParam);
     }
 
     //TODO 获取步币明细
