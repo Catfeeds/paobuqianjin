@@ -17,7 +17,7 @@ import com.paobuqianjin.pbq.step.view.fragment.owner.ReleaseFragment;
 *@description    发布任务的详情
 */
 public class MyReleaseDetailActivity extends BaseActivity {
-    private final static String TAG = MyReleaseActivity.class.getSimpleName();
+    private final static String TAG = MyReleaseDetailActivity.class.getSimpleName();
     private ReleaseFragment releaseFragment = new ReleaseFragment();
 
     @Override

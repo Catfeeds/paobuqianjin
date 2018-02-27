@@ -50,6 +50,7 @@
     <string name="invite_dan_msg">邀请了%d个好友</string>
     <string name="invite_red_pkg">收获红包%.2f元</string>
     <string name="invite_dan_rank">第%d名</string>
+    <string name="task_days">任务天数: %d天</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."

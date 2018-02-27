@@ -311,6 +311,10 @@ public final class Presenter {
         engine.taskRelease(taskReleaseParam);
     }
 
+    public void taskMyRelease() {
+        engine.taskMyRelease();
+    }
+
     //TODO 用户好友接口
     public void getUserFiends() {
         engine.getUserFriends();

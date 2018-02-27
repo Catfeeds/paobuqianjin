@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.data.netcallback;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindAccountResponse;
@@ -30,6 +31,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskMyReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
@@ -54,6 +56,7 @@ import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MyReleaseTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
@@ -100,93 +103,102 @@ public class NetStringCallBack extends StringCallback {
         e.printStackTrace();
         if (response != null) {
             LocalLog.d(TAG, "onError() enter" + response.toString());
-            if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface) {
+            try {
+                ErrorCode errorCode = new Gson().fromJson(response.toString(), ErrorCode.class);
+                if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface) {
 
-                if (command == Engine.COMMAND_LOGIN_IN_BY_PHONE) {
+                    if (command == Engine.COMMAND_LOGIN_IN_BY_PHONE) {
 
+                    }
+                    if (command == Engine.COMMAND_LOGIN_BY_THIRD) {
+
+                    }
+                    if (command == Engine.COMMAND_REG_BY_PHONE) {
+
+                    }
+                } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {
+
+                } else if (callBackInterface != null && callBackInterface instanceof SignCodeCallBackInterface) {
+
+                } else if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface
+                        && command == Engine.COMMAND_REFRESH_PASSWORD) {
+
+                } else if (callBackInterface != null && callBackInterface instanceof MyCreateCircleResponse
+                        && command == Engine.COMMAND_GET_MY_CREATE_CIRCLE) {
+
+                } else if (callBackInterface != null && callBackInterface instanceof UiHotCircleInterface
+                        && command == Engine.COMMAND_GET_CHOICE_CIRCLE) {
+
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof MyJoinCircleInterface
+                        && command == Engine.COMMAND_GET_MY_JOIN_CIRCLE) {
+
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof UiCreateCircleInterface
+                        && command == Engine.COMMAND_CIRCLE_TYPE) {
+
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof UiStepAndLoveRankInterface
+                        && command == Engine.COMMAND_RECHARGE_RANK) {
+
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof UiStepAndLoveRankInterface
+                        && command == Engine.COMMAND_STEP_RANK) {
+
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof CircleDetailInterface
+                        && command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
+
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof TagFragInterface
+                        && command == Engine.COMMAND_GET_TAG) {
+
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof UiCreateCircleInterface
+                        && command == Engine.COMMAND_CREATE_CIRCLE) {
+                    ((UiCreateCircleInterface) callBackInterface).response(response);
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof UiCreateCircleInterface
+                        && command == Engine.COMMAND_GET_CIRCLE_TARGET) {
+
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof ReflashMyCircleInterface
+                        && command == Engine.COMMAND_REFLASH_CIRCLE) {
+
+                } else if (callBackInterface != null &&
+                        callBackInterface instanceof DynamicIndexUiInterface
+                        && command == Engine.COMMAND_GET_DYNAMIC_INDEX) {
+
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof DynamicCommentUiInterface
+                        && command == Engine.COMMAND_DYNAMIC_CONTENTS) {
+
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof OwnerUiInterface
+                        && command == Engine.COMMAND_OWNER_USER_INFO) {
+
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof PayInterface
+                        && command == Engine.COMMAND_CIRCLE_ORDER_POST) {
+
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof WxPayResultQueryInterface
+                        && command == Engine.COMMAND_PAY_RESULT_QUERY_WX) {
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof PostInviteCodeInterface) {
+                    if (command == Engine.COMMAND_POST_INVITE_CODE) {
+                        ((PostInviteCodeInterface) callBackInterface).responseError(errorCode);
+                    }
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof MyReleaseTaskInterface) {
+                    if (command == Engine.COMMAND_GET_MY_RELEASE_TASK) {
+                        ((MyReleaseTaskInterface) callBackInterface).response(errorCode);
+                    }
+                } else {
+                    LocalLog.e(TAG, " dispatch not match");
                 }
-                if (command == Engine.COMMAND_LOGIN_BY_THIRD) {
-
-                }
-                if (command == Engine.COMMAND_REG_BY_PHONE) {
-
-                }
-            } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {
-
-            } else if (callBackInterface != null && callBackInterface instanceof SignCodeCallBackInterface) {
-
-            } else if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface
-                    && command == Engine.COMMAND_REFRESH_PASSWORD) {
-
-            } else if (callBackInterface != null && callBackInterface instanceof MyCreateCircleResponse
-                    && command == Engine.COMMAND_GET_MY_CREATE_CIRCLE) {
-
-            } else if (callBackInterface != null && callBackInterface instanceof UiHotCircleInterface
-                    && command == Engine.COMMAND_GET_CHOICE_CIRCLE) {
-
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof MyJoinCircleInterface
-                    && command == Engine.COMMAND_GET_MY_JOIN_CIRCLE) {
-
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof UiCreateCircleInterface
-                    && command == Engine.COMMAND_CIRCLE_TYPE) {
-
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof UiStepAndLoveRankInterface
-                    && command == Engine.COMMAND_RECHARGE_RANK) {
-
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof UiStepAndLoveRankInterface
-                    && command == Engine.COMMAND_STEP_RANK) {
-
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof CircleDetailInterface
-                    && command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
-
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof TagFragInterface
-                    && command == Engine.COMMAND_GET_TAG) {
-
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof UiCreateCircleInterface
-                    && command == Engine.COMMAND_CREATE_CIRCLE) {
-                ((UiCreateCircleInterface) callBackInterface).response(response);
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof UiCreateCircleInterface
-                    && command == Engine.COMMAND_GET_CIRCLE_TARGET) {
-
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof ReflashMyCircleInterface
-                    && command == Engine.COMMAND_REFLASH_CIRCLE) {
-
-            } else if (callBackInterface != null &&
-                    callBackInterface instanceof DynamicIndexUiInterface
-                    && command == Engine.COMMAND_GET_DYNAMIC_INDEX) {
-
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof DynamicCommentUiInterface
-                    && command == Engine.COMMAND_DYNAMIC_CONTENTS) {
-
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof OwnerUiInterface
-                    && command == Engine.COMMAND_OWNER_USER_INFO) {
-
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof PayInterface
-                    && command == Engine.COMMAND_CIRCLE_ORDER_POST) {
-
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof WxPayResultQueryInterface
-                    && command == Engine.COMMAND_PAY_RESULT_QUERY_WX) {
-            } else if (callBackInterface != null
-                    && callBackInterface instanceof PostInviteCodeInterface) {
-                if (command == Engine.COMMAND_POST_INVITE_CODE) {
-                    ErrorCode errorCode = new Gson().fromJson(response.toString(), ErrorCode.class);
-                    ((PostInviteCodeInterface) callBackInterface).responseError(errorCode);
-                }
-            } else {
-                LocalLog.e(TAG, " dispatch not match");
+            } catch (JsonSyntaxException j) {
+                LocalLog.e(TAG, "未知错误");
             }
         }
     }
@@ -432,6 +444,12 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_POST_INVITE_CODE) {
                 PostInviteCodeResponse postInviteCodeResponse = new Gson().fromJson(s, PostInviteCodeResponse.class);
                 ((PostInviteCodeInterface) callBackInterface).response(postInviteCodeResponse);
+            }
+        } else if (callBackInterface != null
+                && callBackInterface instanceof MyReleaseTaskInterface) {
+            if (command == Engine.COMMAND_GET_MY_RELEASE_TASK) {
+                TaskMyReleaseResponse taskMyReleaseResponse = new Gson().fromJson(s, TaskMyReleaseResponse.class);
+                ((MyReleaseTaskInterface) callBackInterface).response(taskMyReleaseResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

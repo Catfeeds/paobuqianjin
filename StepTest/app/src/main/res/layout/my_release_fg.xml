@@ -8,6 +8,7 @@
         layout="@layout/bar_return_a_style" />
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:id="@+id/my_release_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bar_release">
@@ -17,10 +18,51 @@
             android:layout_height="wrap_content">
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_release_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+    <RelativeLayout
+        android:id="@+id/no_release_record"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/no_record"
+            android:layout_width="105dp"
+            android:layout_height="101dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="96dp"
+            android:src="@drawable/task_norecord" />
+
+        <TextView
+            android:id="@+id/no_task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/no_record"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27dp"
+            android:text="暂时没有任务哦，要不给好友派发一个任务吧！"
+            android:textColor="@color/color_9999"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/go_to_release"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/no_task"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/rect_angle_background"
+            android:gravity="center"
+            android:text="发布任务"
+            android:textColor="@color/color_f8"
+            android:textSize="18dp" />
+    </RelativeLayout>
 </RelativeLayout>

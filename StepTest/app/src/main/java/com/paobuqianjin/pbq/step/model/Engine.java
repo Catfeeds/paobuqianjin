@@ -51,6 +51,7 @@ import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MyReleaseTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
@@ -133,6 +134,7 @@ public final class Engine {
     private StepDollarDetailInterface stepDollarDetailInterface;
     private InviteInterface inviteInterface;
     private PostInviteCodeInterface postInviteCodeInterface;
+    private MyReleaseTaskInterface myReleaseTaskInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -186,6 +188,7 @@ public final class Engine {
     public final static int COMMAND_GET_INVITE_DAN = 46;
     public final static int COMMAND_GET_MY_INVITE_MSG = 47;
     public final static int COMMAND_POST_INVITE_CODE = 48;
+    public final static int COMMAND_GET_MY_RELEASE_TASK = 49;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1299,15 +1302,14 @@ public final class Engine {
     }
 
 
-    public void taskListAll() {
-        LocalLog.d(TAG, "taskListAll() enter");
-        String url = NetApi.urlTaskRecord + "?action=all&" + "userid=" + getId(mContext);
-        LocalLog.d(TAG, "url = " + url);
-/*        OkHttpUtils
+    public void taskMyRelease() {
+        String url = NetApi.urlTask + "?action=release&" + "userid=" + String.valueOf(getId(mContext));
+        LocalLog.d(TAG, "taskMyRelease() enter url = " + url);
+        OkHttpUtils
                 .get()
                 .url(url)
                 .build()
-                .execute();*/
+                .execute(new NetStringCallBack(myReleaseTaskInterface, COMMAND_GET_MY_RELEASE_TASK));
     }
 
     public void getTest() {
@@ -1508,6 +1510,8 @@ public final class Engine {
             inviteInterface = (InviteInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof PostInviteCodeInterface) {
             postInviteCodeInterface = (PostInviteCodeInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyReleaseTaskInterface) {
+            myReleaseTaskInterface = (MyReleaseTaskInterface) uiCallBackInterface;
         }
 
     }
@@ -1568,6 +1572,8 @@ public final class Engine {
             inviteInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof PostInviteCodeInterface) {
             postInviteCodeInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyReleaseTaskInterface) {
+            myReleaseTaskInterface = null;
         }
     }
 }

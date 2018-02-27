@@ -22,6 +22,7 @@ import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
 import com.paobuqianjin.pbq.step.view.activity.MessageActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyDynamicActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyFriendActivity;
+import com.paobuqianjin.pbq.step.view.activity.MyReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
@@ -187,7 +188,7 @@ public final class OwnerFragment extends BaseFragment {
 
     @OnClick({R.id.bar_tv_right, R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span,
             R.id.dan_span, R.id.suggestion_span, R.id.friend_rel, R.id.circle_rel,
-            R.id.bar_return_drawable})
+            R.id.bar_return_drawable,R.id.task_release_span})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -246,6 +247,10 @@ public final class OwnerFragment extends BaseFragment {
                 LocalLog.d(TAG, "消息");
                 intent.setClass(getContext(), MessageActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.task_release_span:
+                LocalLog.d(TAG,"我的发布");
+                startActivity(MyReleaseActivity.class,null);
                 break;
             default:
                 break;
