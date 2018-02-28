@@ -24,6 +24,7 @@
                     android:src="@drawable/dan_bg" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/user_icon"
                     android:layout_width="59dp"
                     android:layout_height="59dp"
                     android:layout_centerHorizontal="true"

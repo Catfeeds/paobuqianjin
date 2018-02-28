@@ -43,6 +43,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
+import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
@@ -139,6 +140,7 @@ public final class Engine {
     private MyReleaseTaskInterface myReleaseTaskInterface;
     private MyReleaseTaskDetailInterface myReleaseTaskDetailInterface;
     private ReleaseRecordInterface releaseRecordInterface;
+    private DanInterface danInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -195,6 +197,8 @@ public final class Engine {
     public final static int COMMAND_GET_MY_RELEASE_TASK = 49;
     public final static int COMMAND_GET_MY_RELEASE_TASK_DETAIL = 50;
     public final static int COMMAND_GET_MY_RELEASE_RECORD = 51;
+    public final static int COMMAND_GET_DAN_LIST = 52;
+    public final static int COMMAND_GET_USER_DAN = 53;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1341,6 +1345,25 @@ public final class Engine {
                 .execute(new NetStringCallBack(releaseRecordInterface, COMMAND_GET_MY_RELEASE_RECORD));
     }
 
+    //TODO 获取段位列表
+    public void getDanList() {
+        OkHttpUtils
+                .get()
+                .url(NetApi.urlUserLevel)
+                .build()
+                .execute(new NetStringCallBack(danInterface, COMMAND_GET_DAN_LIST));
+    }
+
+    public void getUserDan() {
+        String url = NetApi.urlUserLevel + "/" + String.valueOf(getId(mContext));
+        LocalLog.d(TAG, "getUserDan()  enter");
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(danInterface, COMMAND_GET_USER_DAN));
+    }
+
     public void getTest() {
         LocalLog.d(TAG, "############################测试所有接口#####################");
 
@@ -1545,6 +1568,8 @@ public final class Engine {
             myReleaseTaskDetailInterface = (MyReleaseTaskDetailInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReleaseRecordInterface) {
             releaseRecordInterface = (ReleaseRecordInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DanInterface) {
+            danInterface = (DanInterface) uiCallBackInterface;
         }
 
     }
@@ -1611,6 +1636,8 @@ public final class Engine {
             myReleaseTaskDetailInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReleaseRecordInterface) {
             releaseRecordInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DanInterface) {
+            danInterface = null;
         }
     }
 }

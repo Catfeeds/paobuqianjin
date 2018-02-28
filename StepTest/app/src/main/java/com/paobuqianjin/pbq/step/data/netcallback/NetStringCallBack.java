@@ -14,6 +14,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DanListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
@@ -36,6 +37,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskMyReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserDanResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendSearchResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
@@ -50,6 +52,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
+import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
@@ -207,6 +210,13 @@ public class NetStringCallBack extends StringCallback {
                         && callBackInterface instanceof ReleaseRecordInterface) {
                     if (command == Engine.COMMAND_GET_MY_RELEASE_RECORD) {
                         ((ReleaseRecordInterface) callBackInterface).response(errorCode);
+                    }
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof DanInterface) {
+                    if (command == Engine.COMMAND_GET_DAN_LIST) {
+                        ((DanInterface) callBackInterface).response(errorCode);
+                    } else if (command == Engine.COMMAND_GET_USER_DAN) {
+                        ((DanInterface) callBackInterface).response(errorCode);
                     }
                 } else {
                     LocalLog.e(TAG, " dispatch not match");
@@ -476,6 +486,15 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_GET_MY_RELEASE_RECORD) {
                 ReleaseRecordResponse releaseRecordResponse = new Gson().fromJson(s, ReleaseRecordResponse.class);
                 ((ReleaseRecordInterface) callBackInterface).response(releaseRecordResponse);
+            }
+        } else if (callBackInterface != null
+                && callBackInterface instanceof DanInterface) {
+            if (command == Engine.COMMAND_GET_DAN_LIST) {
+                DanListResponse danListResponse = new Gson().fromJson(s, DanListResponse.class);
+                ((DanInterface) callBackInterface).response(danListResponse);
+            } else if (command == Engine.COMMAND_GET_USER_DAN) {
+                UserDanResponse userDanResponse = new Gson().fromJson(s, UserDanResponse.class);
+                ((DanInterface) callBackInterface).response(userDanResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

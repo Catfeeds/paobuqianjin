@@ -311,15 +311,25 @@ public final class Presenter {
         engine.taskRelease(taskReleaseParam);
     }
 
-    public void taskMyRelease(int page,int pagesize) {
-        engine.taskMyRelease(page,pagesize);
+    public void taskMyRelease(int page, int pagesize) {
+        engine.taskMyRelease(page, pagesize);
     }
 
-    public void getReleaseRecord(int page,int pagesize){
-        engine.getReleaseRecord(page,pagesize);
+    public void getReleaseRecord(int page, int pagesize) {
+        engine.getReleaseRecord(page, pagesize);
     }
-    public void getTaskDetail(int taskId){
+
+    public void getTaskDetail(int taskId) {
         engine.getTaskDetail(taskId);
+    }
+
+    //TODO 用户段位
+    public void getDanList() {
+        engine.getDanList();
+    }
+
+    public void getUserDan() {
+        engine.getUserDan();
     }
 
     //TODO 用户好友接口
