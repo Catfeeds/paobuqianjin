@@ -7,7 +7,8 @@
         android:id="@+id/bar_release_record"
         layout="@layout/bar_return_a_style" />
 
-    <ScrollView
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:id="@+id/record_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bar_release_record">
@@ -21,5 +22,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
         </RelativeLayout>
-    </ScrollView>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+    <RelativeLayout
+        android:id="@+id/empty_record_span"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/bar_release_record"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/empty_record"
+            android:layout_width="115dp"
+            android:layout_height="101dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:src="@drawable/task_norecord" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/empty_record"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27dp"
+            android:text="你还没发布过任务哦!"
+            android:textColor="@color/color_9999"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
 </RelativeLayout>

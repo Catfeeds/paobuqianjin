@@ -168,6 +168,15 @@
             android:name=".view.activity.MyReleaseActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
+        <activity
+            android:name=".view.activity.MyReleaseDetailActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+
+        <activity
+            android:name=".view.fragment.owner.ReleaseRecordActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
         <!-- 个人榜单 -->
         <activity
             android:name=".view.activity.FriendStepDanActivity"

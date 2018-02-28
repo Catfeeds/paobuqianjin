@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
-import com.paobuqianjin.pbq.step.view.fragment.owner.ReleaseFragment;
+import com.paobuqianjin.pbq.step.view.fragment.owner.MyReleaseDetailFragment;
 
 /**
  * Created by pbq on 2018/1/25.
@@ -18,7 +18,7 @@ import com.paobuqianjin.pbq.step.view.fragment.owner.ReleaseFragment;
 */
 public class MyReleaseDetailActivity extends BaseActivity {
     private final static String TAG = MyReleaseDetailActivity.class.getSimpleName();
-    private ReleaseFragment releaseFragment = new ReleaseFragment();
+    private MyReleaseDetailFragment releaseFragment = new MyReleaseDetailFragment();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

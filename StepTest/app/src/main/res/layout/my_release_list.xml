@@ -35,7 +35,6 @@
             android:layout_alignLeft="@+id/release_name"
             android:layout_below="@+id/release_friend"
             android:layout_marginTop="12dp"
-            android:text="任务天数：5天"
             android:textColor="@color/color_8a8a8a"
             android:textSize="12dp" />
 

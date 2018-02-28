@@ -51,12 +51,14 @@ import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MyReleaseTaskDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyReleaseTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ReleaseRecordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
@@ -135,6 +137,8 @@ public final class Engine {
     private InviteInterface inviteInterface;
     private PostInviteCodeInterface postInviteCodeInterface;
     private MyReleaseTaskInterface myReleaseTaskInterface;
+    private MyReleaseTaskDetailInterface myReleaseTaskDetailInterface;
+    private ReleaseRecordInterface releaseRecordInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -189,6 +193,8 @@ public final class Engine {
     public final static int COMMAND_GET_MY_INVITE_MSG = 47;
     public final static int COMMAND_POST_INVITE_CODE = 48;
     public final static int COMMAND_GET_MY_RELEASE_TASK = 49;
+    public final static int COMMAND_GET_MY_RELEASE_TASK_DETAIL = 50;
+    public final static int COMMAND_GET_MY_RELEASE_RECORD = 51;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1302,14 +1308,37 @@ public final class Engine {
     }
 
 
-    public void taskMyRelease() {
-        String url = NetApi.urlTask + "?action=release&" + "userid=" + String.valueOf(getId(mContext));
+    public void getTaskDetail(int taskId) {
+        String url = NetApi.urlTask + "/" + String.valueOf(taskId);
+        LocalLog.d(TAG, "getTaskDetail() url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(myReleaseTaskDetailInterface, COMMAND_GET_MY_RELEASE_TASK_DETAIL));
+
+    }
+
+    public void taskMyRelease(int page, int pagesize) {
+        String url = NetApi.urlTask + "?action=release&" + "userid=" + String.valueOf(getId(mContext)) + "&page=" + String.valueOf(page) + "&pagesize="
+                + String.valueOf(pagesize);
         LocalLog.d(TAG, "taskMyRelease() enter url = " + url);
         OkHttpUtils
                 .get()
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(myReleaseTaskInterface, COMMAND_GET_MY_RELEASE_TASK));
+    }
+
+    public void getReleaseRecord(int page, int pagesize) {
+        String url = NetApi.urlTask + "?action=record&" + "userid=" + String.valueOf(getId(mContext)) + "&page=" + String.valueOf(page) + "&pagesize="
+                + String.valueOf(pagesize);
+        LocalLog.d(TAG, "getReleaseRecord() enter url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(releaseRecordInterface, COMMAND_GET_MY_RELEASE_RECORD));
     }
 
     public void getTest() {
@@ -1512,6 +1541,10 @@ public final class Engine {
             postInviteCodeInterface = (PostInviteCodeInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyReleaseTaskInterface) {
             myReleaseTaskInterface = (MyReleaseTaskInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyReleaseTaskDetailInterface) {
+            myReleaseTaskDetailInterface = (MyReleaseTaskDetailInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReleaseRecordInterface) {
+            releaseRecordInterface = (ReleaseRecordInterface) uiCallBackInterface;
         }
 
     }
@@ -1574,6 +1607,10 @@ public final class Engine {
             postInviteCodeInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyReleaseTaskInterface) {
             myReleaseTaskInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MyReleaseTaskDetailInterface) {
+            myReleaseTaskDetailInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReleaseRecordInterface) {
+            releaseRecordInterface = null;
         }
     }
 }

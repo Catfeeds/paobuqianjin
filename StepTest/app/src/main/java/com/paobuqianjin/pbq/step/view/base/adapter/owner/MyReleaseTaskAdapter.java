@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskMyReleaseResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.MyReleaseDetailActivity;
 
 import org.w3c.dom.Text;
 
@@ -98,7 +99,8 @@ public class MyReleaseTaskAdapter extends RecyclerView.Adapter<MyReleaseTaskAdap
                         if (taskId != -1) {
                             Intent intent = new Intent();
                             intent.putExtra("taskid", taskId);
-
+                            intent.setClass(context, MyReleaseDetailActivity.class);
+                            context.startActivity(intent);
                         }
                         break;
                 }

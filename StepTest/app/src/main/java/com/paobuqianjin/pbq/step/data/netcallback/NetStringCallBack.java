@@ -25,10 +25,12 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyReleaseTaskDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostInviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskMyReleaseResponse;
@@ -56,12 +58,14 @@ import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MyReleaseTaskDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyReleaseTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ReleaseRecordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
@@ -193,6 +197,16 @@ public class NetStringCallBack extends StringCallback {
                         && callBackInterface instanceof MyReleaseTaskInterface) {
                     if (command == Engine.COMMAND_GET_MY_RELEASE_TASK) {
                         ((MyReleaseTaskInterface) callBackInterface).response(errorCode);
+                    }
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof MyReleaseTaskDetailInterface) {
+                    if (command == Engine.COMMAND_GET_MY_RELEASE_TASK_DETAIL) {
+                        ((MyReleaseTaskDetailInterface) callBackInterface).response(errorCode);
+                    }
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof ReleaseRecordInterface) {
+                    if (command == Engine.COMMAND_GET_MY_RELEASE_RECORD) {
+                        ((ReleaseRecordInterface) callBackInterface).response(errorCode);
                     }
                 } else {
                     LocalLog.e(TAG, " dispatch not match");
@@ -450,6 +464,18 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_GET_MY_RELEASE_TASK) {
                 TaskMyReleaseResponse taskMyReleaseResponse = new Gson().fromJson(s, TaskMyReleaseResponse.class);
                 ((MyReleaseTaskInterface) callBackInterface).response(taskMyReleaseResponse);
+            }
+        } else if (callBackInterface != null
+                && callBackInterface instanceof MyReleaseTaskDetailInterface) {
+            if (command == Engine.COMMAND_GET_MY_RELEASE_TASK_DETAIL) {
+                MyReleaseTaskDetailResponse myReleaseTaskDetailResponse = new Gson().fromJson(s, MyReleaseTaskDetailResponse.class);
+                ((MyReleaseTaskDetailInterface) callBackInterface).response(myReleaseTaskDetailResponse);
+            }
+        } else if (callBackInterface != null
+                && callBackInterface instanceof ReleaseRecordInterface) {
+            if (command == Engine.COMMAND_GET_MY_RELEASE_RECORD) {
+                ReleaseRecordResponse releaseRecordResponse = new Gson().fromJson(s, ReleaseRecordResponse.class);
+                ((ReleaseRecordInterface) callBackInterface).response(releaseRecordResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

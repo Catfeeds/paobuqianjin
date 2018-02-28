@@ -76,6 +76,7 @@ public class MyReleaseFragment extends BaseBarStyleTextViewFragment implements M
         @Override
         public void clickRight() {
             LocalLog.d(TAG, "点击查看记录");
+            startActivity(ReleaseRecordActivity.class, null);
         }
     };
 
@@ -90,7 +91,7 @@ public class MyReleaseFragment extends BaseBarStyleTextViewFragment implements M
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).taskMyRelease();
+        Presenter.getInstance(getContext()).taskMyRelease(1,10);
         return rootView;
     }
 

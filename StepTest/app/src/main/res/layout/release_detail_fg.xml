@@ -37,7 +37,6 @@
                         android:id="@+id/target_step"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="8000步达标赛"
                         android:textColor="@color/color_f8"
                         android:textSize="24dp" />
 
@@ -48,7 +47,6 @@
                         android:layout_below="@+id/target_step"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="18dp"
-                        android:text="奖励总金额: 200元"
                         android:textColor="@color/color_f8"
                         android:textSize="15dp" />
                 </RelativeLayout>
@@ -66,35 +64,32 @@
                 android:textSize="14dp" />
 
             <TextView
-                android:id="@+id/release_target"
+                android:id="@+id/release_target_days"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/release_sample_des"
                 android:layout_below="@+id/release_sample_des"
                 android:layout_marginTop="10dp"
-                android:text="目标步数:8000 步"
                 android:textColor="@color/color_8a8a8a"
                 android:textSize="12dp" />
 
             <TextView
-                android:id="@+id/release_live_money"
+                android:id="@+id/release_target"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/release_target_days"
+                android:layout_below="@+id/release_target_days"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/release_total_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/release_target"
                 android:layout_below="@+id/release_target"
                 android:layout_marginTop="10dp"
-                android:text="奖励总金额:200 元"
-                android:textColor="@color/color_8a8a8a"
-                android:textSize="12dp" />
-
-            <TextView
-                android:id="@+id/release_live_days"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/release_live_money"
-                android:layout_below="@+id/release_live_money"
-                android:layout_marginTop="10dp"
-                android:text="任务天数:10 元"
                 android:textColor="@color/color_8a8a8a"
                 android:textSize="12dp" />
 
@@ -102,10 +97,10 @@
                 android:id="@+id/release_live_rules"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/release_live_money"
-                android:layout_below="@+id/release_live_days"
+                android:layout_alignLeft="@+id/release_target_days"
+                android:layout_below="@+id/release_total_money"
                 android:layout_marginTop="10dp"
-                android:text="任务规则:达标者获得红包奖励，未达标者无奖励"
+                android:text=""
                 android:textColor="@color/color_8a8a8a"
                 android:textSize="12dp" />
 
@@ -113,142 +108,82 @@
                 android:id="@+id/release_live_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/release_live_money"
+                android:layout_alignLeft="@+id/release_target_days"
                 android:layout_below="@+id/release_live_rules"
                 android:layout_marginTop="10dp"
                 android:text="任务说明:"
                 android:textColor="@color/color_8a8a8a"
                 android:textSize="12dp" />
 
-            <RelativeLayout
+            <TextView
                 android:id="@+id/num_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/release_live_money"
+                android:layout_alignLeft="@+id/release_target_days"
                 android:layout_below="@+id/release_live_desc"
-                android:layout_marginTop="10dp">
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:lineSpacingExtra="5dp"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12dp" />
 
-                <TextView
-                    android:id="@+id/flag_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/num_circle"
-                    android:gravity="center"
-                    android:text="1"
-                    android:textColor="@color/color_8a8a8a"
-                    android:textSize="12dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/flag_1"
-                    android:text="AAAAAAAAAAAAAAAAAAAAAAA"
-                    android:textColor="@color/color_8a8a8a"
-                    android:textSize="12dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/num_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/release_live_money"
-                android:layout_below="@+id/num_1"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/flag_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/num_circle"
-                    android:gravity="center"
-                    android:text="2"
-                    android:textColor="@color/color_8a8a8a"
-                    android:textSize="12dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/flag_2"
-                    android:text="AAAAAAAAAAAAAAAAAAAAAAA"
-                    android:textColor="@color/color_8a8a8a"
-                    android:textSize="12dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/num_3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/release_live_money"
-                android:layout_below="@+id/num_2"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/flag_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/num_circle"
-                    android:gravity="center"
-                    android:text="3"
-                    android:textColor="@color/color_8a8a8a"
-                    android:textSize="12dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/flag_3"
-                    android:text="AAAAAAAAAAAAAAAAAAAAAAA"
-                    android:textColor="@color/color_8a8a8a"
-                    android:textSize="12dp" />
-
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/get_release"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/release_sample_des"
-                android:layout_below="@+id/num_3"
-                android:layout_marginTop="15dp"
-                android:text="任务领取人"
-                android:textColor="@color/color_161727"
-                android:textSize="14dp" />
-
-            <RelativeLayout
+            <!--            <TextView
+                            android:id="@+id/num_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@+id/release_sample_des"
+                            android:layout_below="@+id/num_1"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="10dp"
+                            android:text="A"
+                            android:textColor="@color/color_8a8a8a"
+                            android:textSize="12dp" />-->
+            <ImageView
+                android:id="@+id/line1"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_below="@+id/get_release">
+                android:layout_height="1dp"
+                android:layout_below="@+id/num_1"
+                android:layout_marginTop="15dp"
+                android:background="@color/color_f9f9f9" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp">
-
-                </android.support.v7.widget.RecyclerView>
-
-                <ImageView
-                    android:id="@+id/go_to"
-                    android:layout_width="7dp"
-                    android:layout_height="14dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:src="@drawable/go_to" />
+            <RelativeLayout
+                android:id="@+id/task_days_span"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignLeft="@+id/release_sample_des"
+                android:layout_below="@+id/line1">
 
                 <TextView
-                    android:layout_centerVertical="true"
-                    android:textSize="12dp"
-                    android:layout_marginRight="5dp"
-                    android:textColor="@color/color_8a8a8a"
+                    android:id="@+id/task_days"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/go_to"
-                    android:text="10人" />
+                    android:layout_centerVertical="true"
+                    android:text="任务日期"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/task_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/num_2"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:text="领取状态"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14dp" />
             </RelativeLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/task_detail_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/task_days_span">
+
+            </android.support.v7.widget.RecyclerView>
+
         </RelativeLayout>
 
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
