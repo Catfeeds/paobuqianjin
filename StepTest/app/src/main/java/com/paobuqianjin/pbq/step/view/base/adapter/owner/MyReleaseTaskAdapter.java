@@ -85,7 +85,7 @@ public class MyReleaseTaskAdapter extends RecyclerView.Adapter<MyReleaseTaskAdap
             releaseFriend = (TextView) view.findViewById(R.id.release_friend);
             releaseDays = (TextView) view.findViewById(R.id.release_days);
             releaseDetails = (Button) view.findViewById(R.id.release_details);
-            releaseDays.setOnClickListener(onClickListener);
+            releaseDetails.setOnClickListener(onClickListener);
 
         }
 
@@ -98,7 +98,7 @@ public class MyReleaseTaskAdapter extends RecyclerView.Adapter<MyReleaseTaskAdap
                         if (taskId != -1) {
                             Intent intent = new Intent();
                             intent.putExtra("taskid", taskId);
-                            
+
                         }
                         break;
                 }
