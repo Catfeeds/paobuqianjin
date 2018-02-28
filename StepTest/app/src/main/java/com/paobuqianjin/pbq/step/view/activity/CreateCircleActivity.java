@@ -646,7 +646,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
         @Override
         protected void onPostExecute(String s) {
-            LocalLog.d(TAG,"onPostExecute() enter");
+            LocalLog.d(TAG, "onPostExecute() enter");
             super.onPostExecute(s);
             if (s != null && !"".equals(s)) {
                 createCircleBodyParam.setLogo(s);
@@ -719,6 +719,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         int sdkVersion = Build.VERSION.SDK_INT;
         if (sdkVersion >= 19) {
             LocalLog.d(TAG, "uri auth:" + uri.getAuthority());
+
             if (isExternalStorageDocument(uri)) {
                 String docId = DocumentsContract.getDocumentId(uri);
                 String[] split = docId.split(":");
@@ -752,6 +753,13 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 actualimagecursor.moveToFirst();
                 return actualimagecursor.getString(actual_image_column_index);
+            } else if (isXiaoMi(uri)) {
+                LocalLog.d(TAG, "小米手机相册 enter()");
+                LocalLog.d(TAG, uri.toString());
+                if("content".equalsIgnoreCase(uri.getScheme())){
+                    return uri.getLastPathSegment();
+                }
+                return uri.getPath();
             }
         } else if ("content".equalsIgnoreCase(uri.getScheme())) {
             if (isGooglePhotos(uri)) {
@@ -801,6 +809,11 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
     public boolean isGooglePhotos(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    public boolean isXiaoMi(Uri uri) {
+        LocalLog.d(TAG, uri.getAuthority());
+        return "com.miui.gallery.open".equals(uri.getAuthority());
     }
 
     private void saveImage(Bitmap bitmap) throws FileNotFoundException {

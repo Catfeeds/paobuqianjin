@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DanListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -96,6 +98,15 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
     public void onAttach(Context context) {
         super.onAttach(context);
         Presenter.getInstance(getContext()).attachUiInterface(this);
+    }
+
+    @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+
+        }
     }
 
     @Override

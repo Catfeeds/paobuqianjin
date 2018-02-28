@@ -37,6 +37,6 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
-            android:src="@drawable/setting_ico" />
+            android:src="@drawable/scan" />
     </RelativeLayout>
 </RelativeLayout>

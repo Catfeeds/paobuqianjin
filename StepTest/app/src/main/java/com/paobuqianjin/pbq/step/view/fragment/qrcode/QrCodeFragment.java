@@ -79,6 +79,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
     private String name;
     private String logo;
     private String pay;
+    private String userid;
     private SHARE_MEDIA share_media;
     private ProgressDialog dialog;
     private UMImage imageCircleQr;
@@ -112,7 +113,9 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         name = bundle.getString(CIRCLE_NAME, "");
         logo = bundle.getString(CIRCLE_LOGO, "");
         pay = bundle.getString(CIRCLE_RECHARGE, "");
-        qrcodeImg.setImageBitmap(encodeBitmap(id));
+        userid = String.valueOf(Presenter.getInstance(getContext()).getId());
+        String codeInfo = "userid:" + userid + "circleid:" + id;
+        qrcodeImg.setImageBitmap(encodeBitmap(codeInfo));
         LocalLog.d(TAG, "id = " + id + " name = "
                 + name + " logo= " + logo + " pay= " + pay);
         weixinCircle = (TextView) viewRoot.findViewById(R.id.weixin_circle);

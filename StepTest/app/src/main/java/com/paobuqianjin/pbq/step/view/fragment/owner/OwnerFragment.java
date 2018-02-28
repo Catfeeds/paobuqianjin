@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -25,6 +26,7 @@ import com.paobuqianjin.pbq.step.view.activity.MyFriendActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
 import com.paobuqianjin.pbq.step.view.activity.SuggestionActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
@@ -144,6 +146,23 @@ public final class OwnerFragment extends BaseFragment {
     ImageView goToTask;
     @Bind(R.id.task_release_span)
     RelativeLayout taskReleaseSpan;
+    String urlIcon = "";
+    @Bind(R.id.line_4)
+    ImageView line4;
+    @Bind(R.id.setting_icon)
+    ImageView settingIcon;
+    @Bind(R.id.setting_desc)
+    TextView settingDesc;
+    @Bind(R.id.go_to_setting)
+    ImageView goToSetting;
+    @Bind(R.id.setting_span)
+    RelativeLayout settingSpan;
+    @Bind(R.id.qrcode)
+    ImageView qrcode;
+    @Bind(R.id.qrcode_rel)
+    RelativeLayout qrcodeRel;
+    @Bind(R.id.friend_scan)
+    RelativeLayout friendScan;
 
     @Nullable
     @Override
@@ -188,14 +207,16 @@ public final class OwnerFragment extends BaseFragment {
 
     @OnClick({R.id.bar_tv_right, R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span,
             R.id.dan_span, R.id.suggestion_span, R.id.friend_rel, R.id.circle_rel,
-            R.id.bar_return_drawable,R.id.task_release_span})
+            R.id.bar_return_drawable, R.id.task_release_span, R.id.setting_span, R.id.friend_scan})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.bar_tv_right:
-                LocalLog.d(TAG, "设置");
-                intent.setClass(getContext(), UserInfoSettingActivity.class);
-                startActivity(intent);
+                LocalLog.d(TAG, "扫码");
+                new IntentIntegrator(getActivity())
+                        .setOrientationLocked(false)
+                        .setCaptureActivity(QrCodeScanActivity.class)
+                        .initiateScan();
                 break;
             case R.id.user_span:
                 LocalLog.d(TAG, "设置头像");
@@ -225,6 +246,7 @@ public final class OwnerFragment extends BaseFragment {
                 break;
             case R.id.dan_span:
                 LocalLog.d(TAG, "我的段位");
+                intent.putExtra("usericon", urlIcon);
                 intent.setClass(getContext(), DanActivity.class);
                 startActivity(intent);
                 break;
@@ -249,8 +271,16 @@ public final class OwnerFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.task_release_span:
-                LocalLog.d(TAG,"我的发布");
-                startActivity(MyReleaseActivity.class,null);
+                LocalLog.d(TAG, "我的发布");
+                startActivity(MyReleaseActivity.class, null);
+                break;
+            case R.id.setting_span:
+                LocalLog.d(TAG, "设置");
+                intent.setClass(getContext(), UserInfoSettingActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.friend_scan:
+                LocalLog.d(TAG,"生成二维码");
                 break;
             default:
                 break;
@@ -269,6 +299,7 @@ public final class OwnerFragment extends BaseFragment {
             userId.setText("ID:" + String.valueOf(userInfoResponse.getData().getId()));
             circle.setText(String.valueOf(userInfoResponse.getData().getCircleCount()));
             friends.setText(String.valueOf(userInfoResponse.getData().getFollowCount()));
+            urlIcon = userInfoResponse.getData().getAvatar();
             if (userInfoResponse.getData().getSex() == 0) {
                 userIcon.setBackground(getContext().getDrawable(R.drawable.man_head_back));
                 manWoman.setVisibility(View.GONE);

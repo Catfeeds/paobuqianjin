@@ -102,68 +102,100 @@
                 android:background="@color/color_ebebed" />
 
             <RelativeLayout
-                android:id="@+id/circle_rel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/line_1"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="82dp"
-                android:layout_marginTop="12dp">
+                android:id="@+id/friend_scan"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_below="@+id/line_1">
 
-                <TextView
-                    android:id="@+id/circle"
+                <RelativeLayout
+                    android:id="@+id/circle_rel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="65dp">
+
+                    <TextView
+                        android:id="@+id/circle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:text="29"
+                        android:textColor="@color/color_161727"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/circle"
+                        android:layout_marginTop="10dp"
+                        android:text="圈子"
+                        android:textColor="@color/color_8a8a8a"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/friend_rel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:text="29"
-                    android:textColor="@color/color_161727"
-                    android:textSize="15dp" />
+                    android:layout_centerVertical="true">
 
-                <TextView
+                    <TextView
+                        android:id="@+id/friend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:text="29"
+                        android:textColor="@color/color_161727"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/friend"
+                        android:layout_marginTop="10dp"
+                        android:text="关注"
+                        android:textColor="@color/color_8a8a8a"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/qrcode_rel"
+                    android:layout_alignTop="@+id/friend_rel"
+                    android:layout_alignBottom="@+id/friend_rel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/circle"
-                    android:layout_marginTop="8dp"
-                    android:text="圈子"
-                    android:textColor="@color/color_8a8a8a"
-                    android:textSize="12dp" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="65dp">
+
+                    <ImageView
+                        android:layout_marginTop="4dp"
+                        android:id="@+id/qrcode"
+                        android:src="@drawable/qrcode_image"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_centerHorizontal="true" />
+
+                    <TextView
+                        android:layout_alignParentBottom="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/qrcode"
+                        android:layout_marginTop="10dp"
+                        android:text="二维码"
+                        android:gravity="bottom"
+                        android:textColor="@color/color_8a8a8a"
+                        android:textSize="12dp" />
+                </RelativeLayout>
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/friend_rel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/line_1"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="82dp"
-                android:layout_marginTop="12dp">
-
-                <TextView
-                    android:id="@+id/friend"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="29"
-                    android:textColor="@color/color_161727"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/friend"
-                    android:layout_marginTop="8dp"
-                    android:text="关注"
-                    android:textColor="@color/color_8a8a8a"
-                    android:textSize="12dp" />
-            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/line_2"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:layout_below="@+id/friend_rel"
-                android:layout_marginTop="12dp"
+                android:layout_below="@+id/friend_scan"
                 android:background="@color/color_f3f3f5" />
 
             <RelativeLayout
@@ -296,11 +328,11 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/bank_span"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_below="@+id/gitf_span">
+                android:layout_below="@+id/gitf_span"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/bank_icon"
@@ -512,6 +544,55 @@
                     android:src="@drawable/go_to" />
             </RelativeLayout>
 
+            <ImageView
+                android:id="@+id/line_4"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/suggestion_span"
+                android:background="@color/color_f3f3f5" />
+
+            <RelativeLayout
+                android:id="@+id/setting_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/line_4">
+
+                <ImageView
+                    android:id="@+id/setting_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:src="@drawable/setting_ico" />
+
+                <TextView
+                    android:id="@+id/setting_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toEndOf="@+id/setting_icon"
+                    android:includeFontPadding="false"
+                    android:text="设置"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:id="@+id/go_to_setting"
+                    android:layout_width="14dp"
+                    android:layout_height="17dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="14dp"
+                    android:src="@drawable/go_to" />
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/setting_span"
+                android:background="@color/color_f3f3f5" />
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 </RelativeLayout>
