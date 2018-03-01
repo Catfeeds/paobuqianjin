@@ -34,7 +34,7 @@ public class StepProcessDrawable extends Drawable {
 
     public StepProcessDrawable setmAngle(float mAngle) {
         this.mAngle = mAngle;
-        handler.sendEmptyMessage(REDRAW);
+
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStrokeWidth(8.0F);
@@ -43,6 +43,7 @@ public class StepProcessDrawable extends Drawable {
         // 设置画笔颜色
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setColor(0xffffc14c);
+        handler.sendEmptyMessage(REDRAW);
         return this;
     }
 

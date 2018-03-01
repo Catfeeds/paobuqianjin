@@ -2,7 +2,9 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,9 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserDanResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.base.adapter.owner.DanAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.ProcessDanDrawable;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -56,7 +60,7 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
     @Bind(R.id.dan_main_rel)
     RelativeLayout danMainRel;
     @Bind(R.id.process_bar)
-    RelativeLayout processBar;
+    ImageView processBar;
     @Bind(R.id.percent)
     TextView percent;
     @Bind(R.id.process_bar_rel)
@@ -83,6 +87,9 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
+    private long userStep;
+    LinearLayoutManager layoutManager;
+    RelativeLayout relativeLayout;
 
     @Override
     protected String title() {
@@ -103,10 +110,26 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+
+        userIcon = (CircleImageView) viewRoot.findViewById(R.id.user_icon);
+        danStepDes = (TextView) viewRoot.findViewById(R.id.dan_step_des);
+        danPercent = (TextView) viewRoot.findViewById(R.id.dan_percent);
+        processDan = (TextView) viewRoot.findViewById(R.id.process_dan);
+        percent = (TextView) viewRoot.findViewById(R.id.percent);
+        processDes = (TextView) viewRoot.findViewById(R.id.process_des);
+
+        processBar = (ImageView) viewRoot.findViewById(R.id.process_bar);
+        layoutManager = new LinearLayoutManager(getContext());
+        danRecycler = (RecyclerView) viewRoot.findViewById(R.id.dan_recycler);
+        danRecycler.setLayoutManager(layoutManager);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
-
+            String usrIcon = intent.getStringExtra("usericon");
+            if (usrIcon != null && !usrIcon.equals("")) {
+                Presenter.getInstance(getContext()).getImage(userIcon, usrIcon);
+            }
         }
+
     }
 
     @Override
@@ -114,7 +137,6 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getDanList();
         Presenter.getInstance(getContext()).getUserDan();
         return rootView;
     }
@@ -129,15 +151,53 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
     @Override
     public void response(ErrorCode errorCode) {
         LocalLog.d(TAG, "ErrorCode() enter " + errorCode.toString());
+        Presenter.getInstance(getContext()).getDanList();
     }
 
     @Override
     public void response(DanListResponse danListResponse) {
         LocalLog.d(TAG, "DanListResponse() enter " + danListResponse.toString());
+        for (int i = 0; i < danListResponse.getData().size(); i++) {
+            if (userStep > danListResponse.getData().get(i).getTarget()) {
+                danListResponse.getData().get(i).setFinished(true);
+            }
+        }
+
+        danRecycler.setAdapter(new DanAdapter(getContext(), danListResponse.getData()));
     }
 
     @Override
     public void response(UserDanResponse userDanResponse) {
         LocalLog.d(TAG, "UserDanResponse() enter " + userDanResponse.toString());
+
+        userStep = userDanResponse.getData().getTotal_step_number();
+        LocalLog.d(TAG, "用户当前步数");
+        String stepStrFormat = getString(R.string.total_step_dan);
+        String stepStr = String.format(stepStrFormat, userStep);
+        danStepDes.setText(stepStr);
+        String beatStrFormat = getString(R.string.beat_nums);
+        String beatStr = String.format(beatStrFormat, userDanResponse.getData().getBeat());
+        danPercent.setText(beatStr);
+        String processDanFormat = getString(R.string.steps_should_add_to);
+        String processDanStr = String.format(processDanFormat, userDanResponse.getData().getTarget());
+        processDan.setText(processDanStr);
+
+        final float percents = (float) userDanResponse.getData().getTotal_step_number() / userDanResponse.getData().getTarget();
+        processBar.post(new Runnable() {
+            @Override
+            public void run() {
+                int width = processBar.getWidth();
+                int height = processBar.getHeight();
+                LocalLog.d(TAG, "width = " + width + ",height = " + height);
+                processBar.setImageDrawable(new ProcessDanDrawable().setLength(width *percents,height));
+            }
+        });
+        String percentFormat = getString(R.string.percent);
+        String percentStr = String.format(percentFormat, percents * 100);
+        percent.setText(percentStr);
+        String peopleNumFormat = getString(R.string.people_finished);
+        String peopleNumStr = String.format(peopleNumFormat, userDanResponse.getData().getNumber());
+        processDes.setText(peopleNumStr);
+        Presenter.getInstance(getContext()).getDanList();
     }
 }

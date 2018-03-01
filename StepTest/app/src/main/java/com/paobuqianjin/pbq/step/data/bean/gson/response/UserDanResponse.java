@@ -61,7 +61,7 @@ public class UserDanResponse {
         private int id;
         private String level;
         private int target;
-        private int total_step_number;
+        private long total_step_number;
         private int number;
         private int beat;
 
@@ -89,11 +89,11 @@ public class UserDanResponse {
             this.target = target;
         }
 
-        public int getTotal_step_number() {
+        public long getTotal_step_number() {
             return total_step_number;
         }
 
-        public void setTotal_step_number(int total_step_number) {
+        public void setTotal_step_number(long total_step_number) {
             this.total_step_number = total_step_number;
         }
 

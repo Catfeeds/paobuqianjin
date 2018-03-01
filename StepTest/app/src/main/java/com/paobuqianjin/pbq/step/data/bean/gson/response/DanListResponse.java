@@ -63,6 +63,27 @@ public class DanListResponse {
         private int target;
         private int number;
 
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "id=" + id +
+                    ", level='" + level + '\'' +
+                    ", target=" + target +
+                    ", number=" + number +
+                    ", finished=" + finished +
+                    '}';
+        }
+
+        public boolean isFinished() {
+            return finished;
+        }
+
+        public void setFinished(boolean finished) {
+            this.finished = finished;
+        }
+
+        private boolean finished;
+
         public int getId() {
             return id;
         }
@@ -95,14 +116,5 @@ public class DanListResponse {
             this.number = number;
         }
 
-        @Override
-        public String toString() {
-            return "DataBean{" +
-                    "id=" + id +
-                    ", level='" + level + '\'' +
-                    ", target=" + target +
-                    ", number=" + number +
-                    '}';
-        }
     }
 }

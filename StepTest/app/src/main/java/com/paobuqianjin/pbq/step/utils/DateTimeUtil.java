@@ -71,15 +71,18 @@ public final class DateTimeUtil {
         long r = 0;
         if (diff > year) {
             r = (diff / year);
-            return r + "年前";
+            //return r + "年前";
+            return  formatDateTime(date,DF_YYYY_MM_DD);
         }
         if (diff > month) {
             r = (diff / month);
-            return r + "个月前";
+            //return r + "个月前";
+            return  formatDateTime(date,DF_YYYY_MM_DD);
         }
         if (diff > day) {
             r = (diff / day);
-            return r + "天前";
+            //return r + "天前";
+            return  formatDateTime(date,DF_YYYY_MM_DD);
         }
         if (diff > hour) {
             r = (diff / hour);
