@@ -26,6 +26,7 @@ import com.paobuqianjin.pbq.step.view.activity.MyFriendActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.QrCodeMakeActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
 import com.paobuqianjin.pbq.step.view.activity.SuggestionActivity;
@@ -272,7 +273,7 @@ public final class OwnerFragment extends BaseFragment {
                 break;
             case R.id.task_release_span:
                 LocalLog.d(TAG, "我的发布");
-                startActivity(MyReleaseActivity.class, null);
+                startActivity(MyReleaseActivity.class, new Bundle());
                 break;
             case R.id.setting_span:
                 LocalLog.d(TAG, "设置");
@@ -281,6 +282,7 @@ public final class OwnerFragment extends BaseFragment {
                 break;
             case R.id.friend_scan:
                 LocalLog.d(TAG,"生成二维码");
+                startActivity(QrCodeMakeActivity.class,null);
                 break;
             default:
                 break;

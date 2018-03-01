@@ -109,10 +109,12 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         qrcodeImg = (ImageView) viewRoot.findViewById(R.id.qrcode_img);
         Intent intent = getActivity().getIntent();
         Bundle bundle = intent.getBundleExtra(getContext().getPackageName());
-        id = bundle.getString(CIRCLE_ID, "");
-        name = bundle.getString(CIRCLE_NAME, "");
-        logo = bundle.getString(CIRCLE_LOGO, "");
-        pay = bundle.getString(CIRCLE_RECHARGE, "");
+        if (bundle != null) {
+            id = bundle.getString(CIRCLE_ID, "");
+            name = bundle.getString(CIRCLE_NAME, "");
+            logo = bundle.getString(CIRCLE_LOGO, "");
+            pay = bundle.getString(CIRCLE_RECHARGE, "");
+        }
         userid = String.valueOf(Presenter.getInstance(getContext()).getId());
         String codeInfo = "userid:" + userid + "circleid:" + id;
         qrcodeImg.setImageBitmap(encodeBitmap(codeInfo));
@@ -129,7 +131,9 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
             Presenter.getInstance(getContext()).getImage(circleLogo, logo);
         }
         circleName.setText(name);
-        circleId.setText("ID:" + id);
+        if (id != null) {
+            circleId.setText("ID:" + id);
+        }
 
         dialog = new ProgressDialog(getContext());
     }
