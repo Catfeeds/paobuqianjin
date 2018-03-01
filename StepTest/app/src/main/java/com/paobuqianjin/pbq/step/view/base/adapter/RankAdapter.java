@@ -66,7 +66,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, dataBean.getAvatar());
             holder.searchCircleDesListName.setText(dataBean.getNickname());
             holder.loveNumber.setText(dataBean.getStep_number() + "步");
-            holder.userid = ((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getId();
+            holder.userid = ((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
         }
     }
 

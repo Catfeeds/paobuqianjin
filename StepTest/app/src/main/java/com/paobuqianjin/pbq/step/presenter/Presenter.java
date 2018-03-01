@@ -332,6 +332,11 @@ public final class Presenter {
         engine.getUserDan();
     }
 
+    //TODO 用户关注接口
+    public void getFollows(String action, int page, int pagesize) {
+        engine.getFollows(action, page, pagesize);
+    }
+
     //TODO 用户好友接口
     public void getUserFiends() {
         engine.getUserFriends();

@@ -1,22 +1,21 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
-
 import java.util.List;
 
 /**
- * Created by pbq on 2017/12/25.
+ * Created by pbq on 2018/3/1.
  */
 /*
-@className :UserIdFollowResponse
+@className :UserFollowOtOResponse
 *@date 2018/3/1
 *@author
-*@description 用户关注的人
+*@description 互相关注
 */
-public class UserIdFollowResponse {
+public class UserFollowOtOResponse {
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":3},"data":[{"id":12,"userid":7,"avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg","nickname":"沉秋","sex":1},{"id":17,"userid":10,"avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","nickname":"孤君独战","sex":1},{"id":18,"userid":8,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","sex":0}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":2},"data":[{"userid":8,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","sex":0,"followid":8},{"userid":10,"avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","nickname":"孤君独战","sex":1,"followid":10}]}
      */
 
     private int error;
@@ -49,7 +48,7 @@ public class UserIdFollowResponse {
 
     @Override
     public String toString() {
-        return "UserIdFollowResponse{" +
+        return "UserFollowOtOResponse{" +
                 "error=" + error +
                 ", message='" + message + '\'' +
                 ", data=" + data +
@@ -58,8 +57,8 @@ public class UserIdFollowResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":3}
-         * data : [{"id":12,"userid":7,"avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg","nickname":"沉秋","sex":1},{"id":17,"userid":10,"avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","nickname":"孤君独战","sex":1},{"id":18,"userid":8,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","sex":0}]
+         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":2}
+         * data : [{"userid":8,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","sex":0,"followid":8},{"userid":10,"avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","nickname":"孤君独战","sex":1,"followid":10}]
          */
 
         private PagenationBean pagenation;
@@ -94,7 +93,7 @@ public class UserIdFollowResponse {
              * page : 1
              * pageSize : 10
              * totalPage : 1
-             * totalCount : 3
+             * totalCount : 2
              */
 
             private int page;
@@ -147,26 +146,18 @@ public class UserIdFollowResponse {
 
         public static class DataBean {
             /**
-             * id : 12
-             * userid : 7
-             * avatar : http://pic.qqtn.com/up/2017-12/15127898936485304.jpg
-             * nickname : 沉秋
-             * sex : 1
+             * userid : 8
+             * avatar : http://pic.qqtn.com/up/2017-12/15127898937460203.jpg
+             * nickname : 酒自斟
+             * sex : 0
+             * followid : 8
              */
 
-            private int id;
             private int userid;
             private String avatar;
             private String nickname;
             private int sex;
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
+            private int followid;
 
             public int getUserid() {
                 return userid;
@@ -200,14 +191,22 @@ public class UserIdFollowResponse {
                 this.sex = sex;
             }
 
+            public int getFollowid() {
+                return followid;
+            }
+
+            public void setFollowid(int followid) {
+                this.followid = followid;
+            }
+
             @Override
             public String toString() {
                 return "DataBean{" +
-                        "id=" + id +
-                        ", userid=" + userid +
+                        "userid=" + userid +
                         ", avatar='" + avatar + '\'' +
                         ", nickname='" + nickname + '\'' +
                         ", sex=" + sex +
+                        ", followid=" + followid +
                         '}';
             }
         }

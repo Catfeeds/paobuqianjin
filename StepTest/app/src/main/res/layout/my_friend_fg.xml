@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <include
         android:id="@+id/bar_my_friend"
-        layout="@layout/bar_return_b_style"></include>
+        layout="@layout/bar_return_a_style"></include>
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bar_my_friend">
@@ -16,20 +20,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <RelativeLayout
+                android:id="@+id/tab_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/follow_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/step_dollar_bg"
+                    android:layout_alignParentBottom="true"
+                    android:layout_below="@+id/line1"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginRight="36dp"
+                    app:tabIndicatorColor="@color/color_ffc14c"
+                    app:tabIndicatorHeight="2dp"></android.support.design.widget.TabLayout>
+            </RelativeLayout>
+
             <include
                 android:id="@+id/search_mem_bar"
                 layout="@layout/serch_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"></include>
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tab_span"></include>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/friend_recycler"
-                android:layout_width="wrap_content"
+            <com.paobuqianjin.pbq.step.view.base.view.CustomViewPager
+                android:id="@+id/friend_recycler_viewpager"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/search_mem_bar">
 
-            </android.support.v7.widget.RecyclerView>
+            </com.paobuqianjin.pbq.step.view.base.view.CustomViewPager>
         </RelativeLayout>
 
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>

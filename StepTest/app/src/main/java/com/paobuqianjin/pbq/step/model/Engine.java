@@ -70,6 +70,7 @@ import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UserFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
@@ -141,6 +142,7 @@ public final class Engine {
     private MyReleaseTaskDetailInterface myReleaseTaskDetailInterface;
     private ReleaseRecordInterface releaseRecordInterface;
     private DanInterface danInterface;
+    private UserFollowInterface userFollowInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -199,6 +201,9 @@ public final class Engine {
     public final static int COMMAND_GET_MY_RELEASE_RECORD = 51;
     public final static int COMMAND_GET_DAN_LIST = 52;
     public final static int COMMAND_GET_USER_DAN = 53;
+    public final static int COMMAND_MY_FOLLOW = 54;
+    public final static int COMMAND_FOLLOW_ME = 55;
+    public final static int COMMAND_FOLLOW_O_TO_O = 56;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1185,35 +1190,46 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //我的关注
-    public void getUserMeFollow(int id) {
-        LocalLog.d(TAG, "getUserMeFollow( id ) enter");
-        String url = NetApi.urlUserFollow + "?userid=" + String.valueOf(id);
-        OkHttpUtils
-                .get()
-                .url(url)
-                .build()
-                .execute(new NetStringCallBack(null, -1));
+    //TODO 关注接口
+    public void getFollows(String action, int page, int pagesize) {
+        String url = NetApi.urlUserFollow + "?action=" + action + "&userid=" + String.valueOf(getId(mContext))
+                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        LocalLog.d(TAG, "getFollows() enter url = " + url);
+        switch (action) {
+            case "my":
+                LocalLog.d(TAG, "获取我关注的");
+                OkHttpUtils
+                        .get()
+                        .url(url)
+                        .build()
+                        .execute(new NetStringCallBack(userFollowInterface, COMMAND_MY_FOLLOW));
+                break;
+            case "me":
+                LocalLog.d(TAG, "获取关注我的");
+                OkHttpUtils
+                        .get()
+                        .url(url)
+                        .build()
+                        .execute(new NetStringCallBack(userFollowInterface, COMMAND_FOLLOW_ME));
+                break;
+            case "mutual":
+                LocalLog.d(TAG, "获取互相关注");
+                OkHttpUtils
+                        .get()
+                        .url(url)
+                        .build()
+                        .execute(new NetStringCallBack(userFollowInterface, COMMAND_FOLLOW_O_TO_O));
+                break;
+        }
     }
 
-    //添加关注
+    //TODO 添加关注
     public void postAddUserFollow(AddFollowParam addFollowParam) {
         LocalLog.d(TAG, "postAddUserFollow()");
         OkHttpUtils
                 .get()
                 .url(NetApi.urlUserFollow)
                 .params(addFollowParam.getParam())
-                .build()
-                .execute(new NetStringCallBack(null, -1));
-    }
-
-    //关注我的： http://api.runmoneyin.com/v1/UserFollow/5
-    public void getUserFollowMe(int id) {
-        LocalLog.d(TAG, "getUserFollowMe() enter");
-        String url = NetApi.urlUserFollow + "/" + String.valueOf(id);
-        OkHttpUtils
-                .get()
-                .url(url)
                 .build()
                 .execute(new NetStringCallBack(null, -1));
     }
@@ -1570,6 +1586,8 @@ public final class Engine {
             releaseRecordInterface = (ReleaseRecordInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DanInterface) {
             danInterface = (DanInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserFollowInterface) {
+            userFollowInterface = (UserFollowInterface) uiCallBackInterface;
         }
 
     }
@@ -1638,6 +1656,8 @@ public final class Engine {
             releaseRecordInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DanInterface) {
             danInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserFollowInterface) {
+            userFollowInterface = null;
         }
     }
 }

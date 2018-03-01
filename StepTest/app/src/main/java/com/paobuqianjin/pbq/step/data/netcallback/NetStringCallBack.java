@@ -19,6 +19,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
@@ -38,8 +39,10 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskMyReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserDanResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendSearchResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
@@ -78,6 +81,7 @@ import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UserFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
@@ -495,6 +499,18 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_GET_USER_DAN) {
                 UserDanResponse userDanResponse = new Gson().fromJson(s, UserDanResponse.class);
                 ((DanInterface) callBackInterface).response(userDanResponse);
+            }
+        } else if (callBackInterface != null
+                && callBackInterface instanceof UserFollowInterface) {
+            if (command == Engine.COMMAND_MY_FOLLOW) {
+                UserIdFollowResponse userIdFollowResponse = new Gson().fromJson(s, UserIdFollowResponse.class);
+                ((UserFollowInterface) callBackInterface).response(userIdFollowResponse);
+            } else if (command == Engine.COMMAND_FOLLOW_ME) {
+                FollowUserResponse followUserResponse = new Gson().fromJson(s, FollowUserResponse.class);
+                ((UserFollowInterface) callBackInterface).response(followUserResponse);
+            } else if (command == Engine.COMMAND_FOLLOW_O_TO_O) {
+                UserFollowOtOResponse followOtOResponse = new Gson().fromJson(s, UserFollowOtOResponse.class);
+                ((UserFollowInterface) callBackInterface).response(followOtOResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

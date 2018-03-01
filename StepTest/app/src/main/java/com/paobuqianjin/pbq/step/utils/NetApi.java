@@ -71,9 +71,7 @@ public class NetApi {
     //TODO 添加用户提现记录，请求方式：post，地址：http://api.runmoneyin.com/v1/withdraw，参数：type提现类型、amount提现金额、userid用户id
 
     //TODO 用户关注接口
-    //TODO 我的关注：get http://api.runmoneyin.com/v1/UserFollow?userid=5
     public final static String urlUserFollow = "http://119.29.10.64/v1/UserFollow";
-    //TODO 添加关注 post 参数userid ,fllowid
 
     //TODO GET index 获取动态列表http://119.29.10.64/v1/Dynamic?page=1&pagesize=1
     public final static String urlDynamic = "http://119.29.10.64/v1/Dynamic";
@@ -123,7 +121,7 @@ public class NetApi {
     //TODO 用户好友接口
     public final static String urlUserFriends = "http://119.29.10.64/v1/UserFriends";
     //TODO 获取段位列表
-    public final static String urlUserLevel ="http://119.29.10.64/v1/userlevel";
+    public final static String urlUserLevel = "http://119.29.10.64/v1/userlevel";
     //TODO 邀请好友接口
-    public final static String urlInvite="http://119.29.10.64/v1/userinviter";
+    public final static String urlInvite = "http://119.29.10.64/v1/userinviter";
 }

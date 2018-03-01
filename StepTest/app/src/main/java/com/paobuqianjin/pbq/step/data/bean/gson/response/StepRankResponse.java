@@ -8,14 +8,25 @@ import java.util.List;
  */
 
 public class StepRankResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":5,"totalPage":4,"totalCount":20},"data":[{"id":12,"nickname":"惆怅旅客","avatar":"http://pic.qqtn.com/up/2017-12/15127898946203092.jpg","step_number":9795},{"id":11,"nickname":"青丝几渐","avatar":"http://pic.qqtn.com/up/2017-12/15127898937433836.jpg","step_number":9794},{"id":10,"nickname":"孤君独战","avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","step_number":9726},{"id":13,"nickname":"孤冢清风","avatar":"http://pic.qqtn.com/up/2017-12/15127898947765211.jpg","step_number":9591},{"id":2,"nickname":"李五","avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","step_number":8701}]}
+     * data : {"pagenation":{"page":1,"pageSize":5,"totalPage":1,"totalCount":1},"data":[{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":1936}]}
      */
 
     private int error;
     private String message;
+
+    @Override
+    public String toString() {
+        return "StepRankResponse{" +
+                "error=" + error +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     private DataBeanX data;
 
     public int getError() {
@@ -42,19 +53,18 @@ public class StepRankResponse {
         this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return "StepRankResponse{" +
-                "error=" + error +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
-    }
-
     public static class DataBeanX {
+        @Override
+        public String toString() {
+            return "DataBeanX{" +
+                    "pagenation=" + pagenation +
+                    ", data=" + data +
+                    '}';
+        }
+
         /**
-         * pagenation : {"page":1,"pageSize":5,"totalPage":4,"totalCount":20}
-         * data : [{"id":12,"nickname":"惆怅旅客","avatar":"http://pic.qqtn.com/up/2017-12/15127898946203092.jpg","step_number":9795},{"id":11,"nickname":"青丝几渐","avatar":"http://pic.qqtn.com/up/2017-12/15127898937433836.jpg","step_number":9794},{"id":10,"nickname":"孤君独战","avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","step_number":9726},{"id":13,"nickname":"孤冢清风","avatar":"http://pic.qqtn.com/up/2017-12/15127898947765211.jpg","step_number":9591},{"id":2,"nickname":"李五","avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","step_number":8701}]
+         * pagenation : {"page":1,"pageSize":5,"totalPage":1,"totalCount":1}
+         * data : [{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":1936}]
          */
 
         private PagenationBean pagenation;
@@ -76,20 +86,12 @@ public class StepRankResponse {
             this.data = data;
         }
 
-        @Override
-        public String toString() {
-            return "DataBeanX{" +
-                    "pagenation=" + pagenation +
-                    ", data=" + data +
-                    '}';
-        }
-
         public static class PagenationBean {
             /**
              * page : 1
              * pageSize : 5
-             * totalPage : 4
-             * totalCount : 20
+             * totalPage : 1
+             * totalCount : 1
              */
 
             private int page;
@@ -128,27 +130,37 @@ public class StepRankResponse {
             public void setTotalCount(int totalCount) {
                 this.totalCount = totalCount;
             }
+
+            @Override
+            public String toString() {
+                return "PagenationBean{" +
+                        "page=" + page +
+                        ", pageSize=" + pageSize +
+                        ", totalPage=" + totalPage +
+                        ", totalCount=" + totalCount +
+                        '}';
+            }
         }
 
         public static class DataBean {
             /**
-             * id : 12
-             * nickname : 惆怅旅客
-             * avatar : http://pic.qqtn.com/up/2017-12/15127898946203092.jpg
-             * step_number : 9795
+             * userid : 1
+             * nickname : 嗯额
+             * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg
+             * step_number : 1936
              */
 
-            private int id;
+            private int userid;
             private String nickname;
             private String avatar;
             private int step_number;
 
-            public int getId() {
-                return id;
+            public int getUserid() {
+                return userid;
             }
 
-            public void setId(int id) {
-                this.id = id;
+            public void setUserid(int userid) {
+                this.userid = userid;
             }
 
             public String getNickname() {
@@ -178,7 +190,7 @@ public class StepRankResponse {
             @Override
             public String toString() {
                 return "DataBean{" +
-                        "id=" + id +
+                        "userid=" + userid +
                         ", nickname='" + nickname + '\'' +
                         ", avatar='" + avatar + '\'' +
                         ", step_number=" + step_number +
