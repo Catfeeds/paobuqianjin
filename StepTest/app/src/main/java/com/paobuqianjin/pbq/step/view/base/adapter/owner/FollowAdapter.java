@@ -63,7 +63,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             holder.btFollow.setBackground(context.getDrawable(R.drawable.has_fllow_nearby));
             holder.btFollow.setTextColor(context.getColor(R.color.color_6c71c4));
             holder.stytle = 0;
-            holder.btFollow.setText("未关注");
+            holder.btFollow.setText("关注");
         } else if (mData.get(position) instanceof UserIdFollowResponse.DataBeanX.DataBean) {
             LocalLog.d(TAG, "我关注的");
             holder.dearName.setText(((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
@@ -79,8 +79,8 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             holder.userid = ((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
             Presenter.getInstance(context).getImage(holder.userNearIcon, ((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
             holder.btFollow.setText("互相关注");
-            holder.btFollow.setBackground(context.getDrawable(R.drawable.has_not_fllow_nearby));
-            holder.btFollow.setTextColor(context.getColor(R.color.color_646464));
+            holder.btFollow.setBackground(context.getDrawable(R.drawable.has_fllow_nearby));
+            holder.btFollow.setTextColor(context.getColor(R.color.color_6c71c4));
             holder.stytle = 2;
         } else {
             LocalLog.d(TAG, "not match");

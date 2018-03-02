@@ -53,7 +53,7 @@ public class AddFriendFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected String title() {
-        return "添加好友";
+        return "添加关注";
     }
 
     @Override
