@@ -67,7 +67,6 @@ public final class DateTimeUtil {
             return null;
         }
         long diff = new Date().getTime() - date.getTime();
-        LocalLog.d(TAG, "Date().getTime() = " + String.valueOf(new Date().getTime()) + " ,date.getTime() = " + String.valueOf(date.getTime()));
         long r = 0;
         if (diff > year) {
             r = (diff / year);

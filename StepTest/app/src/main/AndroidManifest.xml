@@ -46,7 +46,7 @@
 
         <activity
             android:name=".view.activity.MainActivity"
-            android:label="跑步前进"
+            android:label="跑步钱进"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>

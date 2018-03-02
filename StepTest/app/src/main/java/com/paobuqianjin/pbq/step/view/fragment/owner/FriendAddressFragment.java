@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.base.adapter.owner.LocalContactAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import java.util.ArrayList;
@@ -54,6 +56,7 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment {
 
     private ContentResolver cr;
     private List<Map<String, String>> mp = new ArrayList<>();
+    private LinearLayoutManager layoutManager;
 
     @Override
     protected int getLayoutResId() {
@@ -76,17 +79,21 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment {
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        getContacts();
 
+        layoutManager = new LinearLayoutManager(getContext());
+        unRegAppRecycler = (RecyclerView) viewRoot.findViewById(R.id.un_reg_app_recycler);
+        unRegAppRecycler.setLayoutManager(layoutManager);
+        unRegAppRecycler.setAdapter(new LocalContactAdapter(getContext(), getContacts()));
     }
 
-    public void getContacts() {
+    public List<Map<String, String>> getContacts() {
         Uri uri = Uri.parse("content://com.android.contacts/raw_contacts");
         cr = getContext().getContentResolver();
         Cursor cs = cr.query(uri, null, null, null, null);
         while (cs.moveToNext()) {
             int id = cs.getInt(cs.getColumnIndex("_id"));
             String name = cs.getString(cs.getColumnIndex("display_name"));
+            LocalLog.d(TAG, "name = " + name);
 
             Uri uri1 = Uri.parse("content://com.android.contacts/raw_contacts/" + String.valueOf(id) + "/data");
             Cursor cs2 = cr.query(uri1, null, null, null, null);
@@ -106,6 +113,8 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment {
             mp.add(maps);
         }
         cs.close();
+
+        return mp;
     }
 
     @Override

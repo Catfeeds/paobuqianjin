@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +18,18 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.base.adapter.owner.UserDynamicRecordAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -64,6 +73,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     TextView barTvRight;
     @Bind(R.id.targer_num)
     TextView targerNum;
+    LinearLayoutManager layoutManager;
 
     @Override
     protected String title() {
@@ -107,6 +117,10 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
         sexIcon = (ImageView) viewRoot.findViewById(R.id.sex_icon);
         targerNum = (TextView) viewRoot.findViewById(R.id.targer_num);
         locationCity = (TextView) viewRoot.findViewById(R.id.location_city);
+
+        layoutManager = new LinearLayoutManager(getContext());
+        dynamicRecordRecycler = (RecyclerView) viewRoot.findViewById(R.id.dynamic_record_recycler);
+        dynamicRecordRecycler.setLayoutManager(layoutManager);
     }
 
     @Override
@@ -129,7 +143,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
         String stepFormat = getContext().getResources().getString(R.string.user_target);
         String stepStr = String.format(stepFormat, userInfoResponse.getData().getTarget_step());
         targerNum.setText(stepStr);
-        Presenter.getInstance(getContext()).getImage(userHeadIco,userInfoResponse.getData().getAvatar());
+        Presenter.getInstance(getContext()).getImage(userHeadIco, userInfoResponse.getData().getAvatar());
         if (userInfoResponse.getData().getCity().equals(userInfoResponse.getData().getProvince())) {
             locationCity.setText(userInfoResponse.getData().getCity());
         } else {
@@ -140,6 +154,39 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void response(DynamicPersonResponse dynamicPersonResponse) {
         LocalLog.d(TAG, "DynamicPersonResponse() enter " + dynamicPersonResponse.toString());
+        Map<String, List> map = checkDaysDynamic(dynamicPersonResponse);
+        dynamicRecordRecycler.setAdapter(new UserDynamicRecordAdapter(getContext(),map));
+    }
 
+    private Map<String, List> checkDaysDynamic(DynamicPersonResponse dynamicPersonResponse) {
+        LocalLog.d(TAG, "当前记录条数 " + dynamicPersonResponse.getData().getData().size());
+        String tempDays = "";
+        Map<String, List> map = new HashMap<String, List>();
+        List<DynamicPersonResponse.DataBeanX.DataBean> list = new ArrayList<>();
+        for (int i = 0; i < dynamicPersonResponse.getData().getData().size(); i++) {
+            long create_time = dynamicPersonResponse.getData().getData().get(i).getCreate_time();
+            String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
+            LocalLog.d(TAG, "create_timeStr = " + create_timeStr + ", tempdays =" + tempDays);
+            if (i == 0) {
+                LocalLog.d(TAG, "记录第一条时间");
+                tempDays = create_timeStr;
+                list.add(dynamicPersonResponse.getData().getData().get(0));
+            } else {
+                if (create_timeStr.equals(tempDays)) {
+                    list.add(dynamicPersonResponse.getData().getData().get(i));
+                } else {
+                    LocalLog.d(TAG, tempDays + " 记录条数 " + list.size());
+                    map.put(tempDays, list);
+                    list = new ArrayList<>();
+                    list.add(dynamicPersonResponse.getData().getData().get(i));
+                    tempDays = create_timeStr;
+                }
+                if (i == dynamicPersonResponse.getData().getData().size() - 1) {
+                    LocalLog.d(TAG, tempDays + " 记录条数 " + list.size());
+                    map.put(tempDays, list);
+                }
+            }
+        }
+        return map;
     }
 }

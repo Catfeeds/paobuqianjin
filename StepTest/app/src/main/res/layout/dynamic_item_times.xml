@@ -32,69 +32,78 @@
         android:textSize="15dp" />
 
     <RelativeLayout
-        android:layout_alignLeft="@+id/dynamic_des"
         android:id="@+id/pic_viewpager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/dynamic_des"
         android:layout_below="@+id/dynamic_des"
         android:layout_marginTop="15dp"
         android:visibility="visible">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/image_viewpager"
+        <ImageView
+            android:id="@+id/image"
             android:layout_width="200dp"
-            android:layout_height="200dp">
+            android:layout_height="200dp"
+            android:scaleType="centerCrop">
 
-        </android.support.v4.view.ViewPager>
+        </ImageView>
+        <!--
+                 <android.support.v4.view.ViewPager
+                    android:id="@+id/image_viewpager"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp">
 
-        <LinearLayout
-            android:id="@+id/dot_line"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/image_viewpager"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
+                </android.support.v4.view.ViewPager>
+        -->
+        <!--        <LinearLayout
+                    android:id="@+id/dot_line"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/image_viewpager"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-            <View
-                android:id="@+id/dot_1"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/image_viewpager_dot_selected"></View>
+                    <View
+                        android:id="@+id/dot_1"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/image_viewpager_dot_selected"></View>
 
-            <View
-                android:id="@+id/dot_2"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/image_viewpager_dot_unselected"></View>
+                    <View
+                        android:id="@+id/dot_2"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/image_viewpager_dot_unselected"></View>
 
-            <View
-                android:id="@+id/dot_3"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/image_viewpager_dot_unselected"></View>
+                    <View
+                        android:id="@+id/dot_3"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/image_viewpager_dot_unselected"></View>
 
-            <View
-                android:id="@+id/dot_4"
-                android:layout_width="8dp"
-                android:layout_height="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/image_viewpager_dot_unselected"></View>
-        </LinearLayout>
+                    <View
+                        android:id="@+id/dot_4"
+                        android:layout_width="8dp"
+                        android:layout_height="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:background="@drawable/image_viewpager_dot_unselected"></View>
+                </LinearLayout>-->
     </RelativeLayout>
+
     <RelativeLayout
-        android:layout_alignLeft="@+id/dynamic_des"
         android:id="@+id/location_support_rel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/dynamic_des"
         android:layout_below="@+id/pic_viewpager"
         android:layout_marginTop="20dp">
 
