@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,8 +11,10 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,18 +32,17 @@ import butterknife.Bind;
 public class UserDynamicRecordAdapter extends RecyclerView.Adapter<UserDynamicRecordAdapter.UserDynamicRecordViewHolder> {
     private final static String TAG = UserDynamicRecordAdapter.class.getSimpleName();
     Context context;
-    List<?> mData;
-    Map<String, List> map;
+    List<List> mData;
 
-    public UserDynamicRecordAdapter(Context context, Map<String, List> map) {
+    public UserDynamicRecordAdapter(Context context, List<List> map) {
         this.context = context;
-        this.map = map;
+        this.mData = map;
     }
 
     @Override
     public int getItemCount() {
-        if (map != null) {
-            return map.size();
+        if (mData != null) {
+            return mData.size();
         } else {
             return 0;
         }
@@ -52,14 +54,19 @@ public class UserDynamicRecordAdapter extends RecyclerView.Adapter<UserDynamicRe
     }
 
     private void updateListItem(UserDynamicRecordViewHolder holder, int position) {
-        for (String key : map.keySet()) {
-            LocalLog.d(TAG, "key = " + key + ",当天记录条数 temp -> size = " + map.get(key).size());
-            List<?> list = map.get(key);
-            if (list.get(list.size() - 1) instanceof DynamicPersonResponse.DataBeanX.DataBean) {
-                holder.date.setText(key);
-                holder.dayDynamicRecycler.setAdapter(new UserDynamicRecordSecondAdapter(context, list));
+        LocalLog.d(TAG, "position = " + position);
+        int size = mData.get(position).size();
+        LocalLog.d(TAG, "当天日子条数 size");
+        if (size > 0) {
+            if (mData.get(position).get(0) instanceof DynamicPersonResponse.DataBeanX.DataBean) {
+                long create_time = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position).get(0)).getCreate_time();
+                String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
+                holder.date.setText(create_timeStr);
             }
         }
+        holder.dayDynamicRecycler.addItemDecoration(new UserDynamicRecordSecondAdapter.SpaceItemDecoration(30));
+        holder.dayDynamicRecycler.setAdapter(new UserDynamicRecordSecondAdapter(context, mData.get(position)));
+
     }
 
     @Override
@@ -84,6 +91,33 @@ public class UserDynamicRecordAdapter extends RecyclerView.Adapter<UserDynamicRe
             layoutManager = new LinearLayoutManager(context);
             dayDynamicRecycler = (RecyclerView) view.findViewById(R.id.day_dynamic_recycler);
             dayDynamicRecycler.setLayoutManager(layoutManager);
+        }
+    }
+
+    //设置RecyclerView item间距
+    public static class SpaceItemDecoration extends RecyclerView.ItemDecoration {
+        int mSpace;
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            if (parent.getChildAdapterPosition(view) == 0) {
+                outRect.top = 0;
+            } else {
+                //outRect.left = mSpace;
+                LocalLog.d(TAG, "mSpace = " + mSpace);
+                outRect.top = mSpace;
+            }
+            /*if (parent.getChildAdapterPosition(view) == UserDynamicRecordAdapter.this.mData.size() - 1) {
+                outRect.right = 0;
+                LocalLog.d(TAG, "getItemOffsets() last set");
+            } else {
+                outRect.right = mSpace;
+            }*/
+        }
+
+        public SpaceItemDecoration(int space) {
+            this.mSpace = space;
         }
     }
 }

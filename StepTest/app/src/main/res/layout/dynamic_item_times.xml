@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/item"
     android:layout_height="wrap_content">
 
     <TextView
@@ -9,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="14dp"
         android:layout_marginTop="2dp"
-        android:text="10:26"
+        android:text=""
         android:textColor="@color/color_161727"
         android:textSize="12dp" />
 

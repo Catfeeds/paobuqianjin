@@ -29,13 +29,6 @@ public class DynamicActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-        Intent intent = getIntent();
-        if (intent != null) {
-            int dynamicid = intent.getIntExtra(getPackageName() + "dynamicid", -1);
-            if (dynamicid != -1) {
-                dynamicDetailFragment.setDynamicid(dynamicid);
-            }
-        }
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container_dynamic_detail, dynamicDetailFragment)
                 .show(dynamicDetailFragment).commit();

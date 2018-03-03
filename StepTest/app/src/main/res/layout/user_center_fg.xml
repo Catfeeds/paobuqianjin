@@ -15,7 +15,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:layout_alignParentTop="true"
-                android:background="@color/color_232433"></RelativeLayout>
+                android:background="@drawable/user_page"></RelativeLayout>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/user_head_ico"
@@ -135,5 +135,5 @@
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 
-    <include layout="@layout/bar_return_a_style"></include>
+    <include layout="@layout/bar_return_null_bg_style"></include>
 </RelativeLayout>

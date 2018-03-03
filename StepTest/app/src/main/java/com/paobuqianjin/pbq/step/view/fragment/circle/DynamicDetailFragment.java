@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,6 +31,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
 /**
  * Created by pbq on 2017/12/29.
@@ -97,13 +101,6 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment {
     private LinearLayoutManager layoutManager;
     private LinearLayoutManager layoutManagerContent;
 
-    public int getDynamicid() {
-        return dynamicid;
-    }
-
-    public void setDynamicid(int dynamicid) {
-        this.dynamicid = dynamicid;
-    }
 
     private int dynamicid = -1;
     private int currentIndexPage = 1;
@@ -119,10 +116,14 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Presenter.getInstance(getContext()).attachUiInterface(dynamicCommentUiInterface);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.inflater = inflater;
-        Presenter.getInstance(getContext()).attachUiInterface(dynamicCommentUiInterface);
-        Presenter.getInstance(getContext()).getDynamicCommentList(dynamicid, currentIndexPage, 10);
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
@@ -171,6 +172,14 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment {
         layoutManagerContent = new LinearLayoutManager(getContext());
         contentDetailsListItem.setLayoutManager(layoutManagerContent);
         contentDetailsListItem.setAdapter(new TopLevelContentAdapter(getContext()));
+
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            int dynamicid = intent.getIntExtra(getPackageName() + "dynamicid", -1);
+            if (dynamicid != -1) {
+                Presenter.getInstance(getContext()).getDynamicCommentList(dynamicid, currentIndexPage, 10);
+            }
+        }
     }
 
     private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {

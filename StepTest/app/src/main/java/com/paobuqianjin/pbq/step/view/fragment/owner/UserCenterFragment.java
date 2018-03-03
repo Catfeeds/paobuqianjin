@@ -154,14 +154,15 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void response(DynamicPersonResponse dynamicPersonResponse) {
         LocalLog.d(TAG, "DynamicPersonResponse() enter " + dynamicPersonResponse.toString());
-        Map<String, List> map = checkDaysDynamic(dynamicPersonResponse);
-        dynamicRecordRecycler.setAdapter(new UserDynamicRecordAdapter(getContext(),map));
+        List<List> map = checkDaysDynamic(dynamicPersonResponse);
+        dynamicRecordRecycler.addItemDecoration(new UserDynamicRecordAdapter.SpaceItemDecoration(45));
+        dynamicRecordRecycler.setAdapter(new UserDynamicRecordAdapter(getContext(), map));
     }
 
-    private Map<String, List> checkDaysDynamic(DynamicPersonResponse dynamicPersonResponse) {
+    private List<List> checkDaysDynamic(DynamicPersonResponse dynamicPersonResponse) {
         LocalLog.d(TAG, "当前记录条数 " + dynamicPersonResponse.getData().getData().size());
         String tempDays = "";
-        Map<String, List> map = new HashMap<String, List>();
+        List<List> map = new ArrayList<>();
         List<DynamicPersonResponse.DataBeanX.DataBean> list = new ArrayList<>();
         for (int i = 0; i < dynamicPersonResponse.getData().getData().size(); i++) {
             long create_time = dynamicPersonResponse.getData().getData().get(i).getCreate_time();
@@ -176,14 +177,14 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
                     list.add(dynamicPersonResponse.getData().getData().get(i));
                 } else {
                     LocalLog.d(TAG, tempDays + " 记录条数 " + list.size());
-                    map.put(tempDays, list);
+                    map.add(list);
                     list = new ArrayList<>();
                     list.add(dynamicPersonResponse.getData().getData().get(i));
                     tempDays = create_timeStr;
                 }
                 if (i == dynamicPersonResponse.getData().getData().size() - 1) {
                     LocalLog.d(TAG, tempDays + " 记录条数 " + list.size());
-                    map.put(tempDays, list);
+                    map.add(list);
                 }
             }
         }
