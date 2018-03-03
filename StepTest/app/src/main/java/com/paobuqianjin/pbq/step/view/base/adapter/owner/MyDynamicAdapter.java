@@ -320,6 +320,10 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
             deleteDynamic = (ImageView) viewRoot.findViewById(R.id.delete_dynamic);
             deleteDynamic.setOnClickListener(onClickListener);
 
+
+            imageViewpager.setOnClickListener(onClickListener);
+            dynamicContentText.setOnClickListener(onClickListener);
+
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -327,6 +331,8 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.scan_more:
+                    case R.id.dynamic_content_text:
+                    case R.id.image_viewpager:
                         LocalLog.d(TAG, "点击查看更多评价");
                         LocalLog.d(TAG, "dynamicId = " + dynamicId + ",userId = " + userid);
                         Intent intent = new Intent();
