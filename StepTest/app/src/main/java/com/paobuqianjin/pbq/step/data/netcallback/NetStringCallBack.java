@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.BindAccountResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
@@ -16,7 +15,9 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DanListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicIdDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
@@ -41,7 +42,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserDanResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendSearchResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
@@ -56,7 +56,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
-import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
@@ -87,7 +87,6 @@ import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.utils.NetApi;
 
 import okhttp3.Call;
 
@@ -181,7 +180,7 @@ public class NetStringCallBack extends StringCallback {
                         && command == Engine.COMMAND_GET_DYNAMIC_INDEX) {
 
                 } else if (callBackInterface != null
-                        && callBackInterface instanceof DynamicCommentUiInterface
+                        && callBackInterface instanceof DynamicDetailInterface
                         && command == Engine.COMMAND_DYNAMIC_CONTENTS) {
 
                 } else if (callBackInterface != null
@@ -338,11 +337,21 @@ public class NetStringCallBack extends StringCallback {
             DynamicAllIndexResponse dynamicAllIndexResponse = new Gson().fromJson(s, DynamicAllIndexResponse.class);
             ((DynamicIndexUiInterface) callBackInterface).response(dynamicAllIndexResponse);
         } else if (callBackInterface != null
-                && callBackInterface instanceof DynamicCommentUiInterface
-                && command == Engine.COMMAND_DYNAMIC_CONTENTS) {
-            LocalLog.d(TAG, "评论列表");
-            DynamicCommentResponse dynamicCommentResponse = new Gson().fromJson(s, DynamicCommentResponse.class);
-            ((DynamicCommentUiInterface) callBackInterface).response(dynamicCommentResponse);
+                && callBackInterface instanceof DynamicDetailInterface) {
+            if (command == Engine.COMMAND_DYNAMIC_CONTENTS) {
+                LocalLog.d(TAG, "评论列表");
+                DynamicCommentListResponse dynamicCommentListResponse = new Gson().fromJson(s, DynamicCommentListResponse.class);
+                ((DynamicDetailInterface) callBackInterface).response(dynamicCommentListResponse);
+            } else if (command == Engine.COMMAND_GET_DYNAMIC_ID_DETAIL) {
+                LocalLog.d(TAG, "动态详情");
+                DynamicIdDetailResponse dynamicIdDetailResponse = new Gson().fromJson(s, DynamicIdDetailResponse.class);
+                ((DynamicDetailInterface) callBackInterface).response(dynamicIdDetailResponse);
+            } else if (command == Engine.COMMAND_GET_VOTE_LIST) {
+                LocalLog.d(TAG, "点赞列表");
+                DynamicLikeListResponse dynamicLikeListResponse = new Gson().fromJson(s, DynamicLikeListResponse.class);
+                ((DynamicDetailInterface) callBackInterface).response(dynamicLikeListResponse);
+            }
+
         } else if (callBackInterface != null
                 && callBackInterface instanceof OwnerUiInterface
                 && command == Engine.COMMAND_OWNER_USER_INFO) {

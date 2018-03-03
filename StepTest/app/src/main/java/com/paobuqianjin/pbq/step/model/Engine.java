@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
-import com.paobuqianjin.pbq.step.data.Weather;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddFollowParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
@@ -44,7 +43,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
-import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
@@ -95,7 +94,6 @@ import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlRegisterPhone;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlThirdLogin;
-import static com.paobuqianjin.pbq.step.utils.NetApi.urlWeather;
 
 /**
  * Created by pbq on 2017/11/29.
@@ -120,7 +118,7 @@ public final class Engine {
     private UiStepAndLoveRankInterface uiStepAndLoveRankInterface;
     private CircleDetailInterface circleDetailInterface;
     private DynamicIndexUiInterface dynamicIndexUiInterface;
-    private DynamicCommentUiInterface dynamicCommentUiInterface;
+    private DynamicDetailInterface dynamicDetailInterface;
     private OwnerUiInterface ownerUiInterface;
     private PayInterface payInterface;
     private WxPayResultQueryInterface payWxResultQueryInterface;
@@ -204,6 +202,9 @@ public final class Engine {
     public final static int COMMAND_MY_FOLLOW = 54;
     public final static int COMMAND_FOLLOW_ME = 55;
     public final static int COMMAND_FOLLOW_O_TO_O = 56;
+    public final static int COMMAND_GET_DYNAMIC_ID_DETAIL = 56;
+    public final static int COMMAND_GET_ID_COMMENT = 57;
+    public final static int COMMAND_GET_VOTE_LIST = 58;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -662,7 +663,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //TODO 动态详情 id
+    //TODO 动态详情
     public void getDynamicDetail(int id) {
         LocalLog.d(TAG, "getDynamicDetail() enter");
         String url = NetApi.urlDynamic + "/" + String.valueOf(id);
@@ -670,7 +671,7 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(null, -1));
+                .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_GET_DYNAMIC_ID_DETAIL));
     }
 
     //TODO 获取评论列表 http://119.29.10.64/v1/DynamicComment/?dynamicid=1
@@ -682,11 +683,23 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(dynamicCommentUiInterface, COMMAND_DYNAMIC_CONTENTS));
+                .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_DYNAMIC_CONTENTS));
+    }
+
+    //TODO 获取点赞列表
+    public void getDynamicVoteList(int dynamicid, int userid, int page, int pagesize) {
+        String url = NetApi.urlDynamicVote + "?dynamicid=" + String.valueOf(dynamicid) + "&userid=" + String.valueOf(userid)
+                + "&page=" + String.valueOf(page) + "&pagesie=" + String.valueOf(pagesize);
+        LocalLog.d(TAG, "getDynamicVoteList() enter url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_GET_VOTE_LIST));
     }
 
     //TODO 获取单条评论
-    public void getDynamicById(int id) {
+    public void getContentById(int id) {
         LocalLog.d(TAG, "getDynamicById() enter");
         String url = NetApi.urlDynamicComment + "/" + String.valueOf(id);
         OkHttpUtils
@@ -707,17 +720,6 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-
-    //获取点赞用户列表
-    public void getDynamicVoteList(int dynamicid, int page, int pagesize) {
-        LocalLog.d(TAG, "getDynamicVoteList() enter");
-        String url = NetApi.urlDynamicVote + "?dynamicid=" + dynamicid + "&page=" + page + "&pagesie=" + pagesize;
-        OkHttpUtils
-                .get()
-                .url(url)
-                .build()
-                .execute(new NetStringCallBack(null, -1));
-    }
 
     //获取反馈信息列表
     public void getFeedBackList(String name, String content, String mobile, String creattime) {
@@ -1538,8 +1540,8 @@ public final class Engine {
             reflashMyCircleInterface = (ReflashMyCircleInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicIndexUiInterface) {
             dynamicIndexUiInterface = (DynamicIndexUiInterface) uiCallBackInterface;
-        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicCommentUiInterface) {
-            dynamicCommentUiInterface = (DynamicCommentUiInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicDetailInterface) {
+            dynamicDetailInterface = (DynamicDetailInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof OwnerUiInterface) {
             ownerUiInterface = (OwnerUiInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof PayInterface) {
@@ -1608,8 +1610,8 @@ public final class Engine {
             reflashMyCircleInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicIndexUiInterface) {
             dynamicIndexUiInterface = null;
-        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicCommentUiInterface) {
-            dynamicCommentUiInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DynamicDetailInterface) {
+            dynamicDetailInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof OwnerUiInterface) {
             ownerUiInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof PayInterface) {

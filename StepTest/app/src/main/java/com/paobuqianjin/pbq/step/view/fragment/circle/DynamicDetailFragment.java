@@ -15,9 +15,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentIdDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicIdDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.presenter.im.DynamicCommentUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.LikeSupportActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
@@ -38,7 +42,7 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
  * Created by pbq on 2017/12/29.
  */
 
-public class DynamicDetailFragment extends BaseBarStyleTextViewFragment {
+public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implements DynamicDetailInterface {
     private final static String TAG = DynamicDetailFragment.class.getSimpleName();
     @Bind(R.id.dynamic_user_icon)
     CircleImageView dynamicUserIcon;
@@ -118,7 +122,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Presenter.getInstance(getContext()).attachUiInterface(dynamicCommentUiInterface);
+        Presenter.getInstance(getContext()).attachUiInterface(this);
     }
 
     @Override
@@ -175,9 +179,13 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment {
 
         Intent intent = getActivity().getIntent();
         if (intent != null) {
-            int dynamicid = intent.getIntExtra(getPackageName() + "dynamicid", -1);
+            int dynamicid = intent.getIntExtra(getContext().getPackageName() + "dynamicId", -1);
+            int userid = intent.getIntExtra(getContext().getPackageName() + "userId", -1);
+            LocalLog.d(TAG, "dynamicid= " + dynamicid + "userid = " + userid);
             if (dynamicid != -1) {
                 Presenter.getInstance(getContext()).getDynamicCommentList(dynamicid, currentIndexPage, 10);
+                Presenter.getInstance(getContext()).getDynamicDetail(dynamicid);
+                Presenter.getInstance(getContext()).getDynamicVoteList(dynamicid, userid, 1, 10);
             }
         }
     }
@@ -222,16 +230,28 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment {
     public void onDestroyView() {
         super.onDestroyView();
         imageViewpager.removeOnPageChangeListener(onPageChangeListener);
-        Presenter.getInstance(getContext()).dispatchUiInterface(dynamicCommentUiInterface);
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void response(ErrorCode errorCode) {
+        LocalLog.d(TAG, "ErrorCode() enter " + errorCode.toString());
+    }
 
-    private DynamicCommentUiInterface dynamicCommentUiInterface = new DynamicCommentUiInterface() {
-        @Override
-        public void response(DynamicCommentResponse dynamicCommentResponse) {
-            LocalLog.d(TAG, "DynamicCommentResponse() enter" + dynamicCommentResponse.toString());
+    @Override
+    public void response(DynamicCommentListResponse dynamicCommentListResponse) {
+        LocalLog.d(TAG, "DynamicCommentListResponse() enter " + dynamicCommentListResponse.toString());
+    }
 
-        }
-    };
+    @Override
+    public void response(DynamicIdDetailResponse dynamicIdDetailResponse) {
+        LocalLog.d(TAG, "DynamicIdDetailResponse() enter " + dynamicIdDetailResponse.toString());
+    }
+
+    @Override
+    public void response(DynamicLikeListResponse dynamicLikeListResponse) {
+        LocalLog.d(TAG, "DynamicIdDetailResponse() enter " + dynamicLikeListResponse.toString());
+    }
+
 }

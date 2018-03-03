@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +19,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 
 import java.util.List;
 
@@ -98,6 +100,7 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
             }
 
             holder.dynamicId = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getId();
+            holder.userid = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
         }
 
     }
@@ -128,6 +131,7 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
         RelativeLayout item;
 
         int dynamicId = -1;
+        int userid = -1;
 
         public UserDynamicRecordSecondViewHolder(View view) {
             super(view);
@@ -153,7 +157,12 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
                 switch (view.getId()) {
                     case R.id.dynamic_des:
                     case R.id.image:
-                        LocalLog.d(TAG,"dynamicId = " + dynamicId);
+                        LocalLog.d(TAG, "dynamicId = " + dynamicId + ",userId = " + userid);
+                        Intent intent = new Intent();
+                        intent.putExtra(context.getPackageName() + "dynamicId", dynamicId);
+                        intent.putExtra(context.getPackageName() + "userId", userid);
+                        intent.setClass(context, DynamicActivity.class);
+                        context.startActivity(intent);
                         break;
 
                 }

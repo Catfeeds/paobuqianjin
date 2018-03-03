@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -17,11 +16,13 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -110,9 +111,15 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @TargetApi(23)
     private void updateItem(RecyclerView.ViewHolder holder, int position) {
+        long create_time = data.get(position).getCreate_time();
+        //服务器保存到秒级别，本地处理为毫秒级别
+        LocalLog.d(TAG, "create_time = " + create_time);
+        String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
         if (holder instanceof OneOrZeroViewHodler) {
             ((OneOrZeroViewHodler) holder).dynamicid = data.get(position).getId();
+            ((OneOrZeroViewHodler) holder).userid = data.get(position).getUserid();
             if (((OneOrZeroViewHodler) holder).viewType == 1) {
+                ((OneOrZeroViewHodler) holder).timeStmp.setText(create_timeStr);
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicPicOne, data.get(position).getImages().get(0));
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar());
                 ((OneOrZeroViewHodler) holder).dynamicContentText.setText(data.get(position).getDynamic());
@@ -141,6 +148,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
 
             } else if (((OneOrZeroViewHodler) holder).viewType == 0) {
+                ((OneOrZeroViewHodler) holder).timeStmp.setText(create_timeStr);
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar());
                 ((OneOrZeroViewHodler) holder).dynamicContentText.setText(data.get(position).getDynamic());
                 ((OneOrZeroViewHodler) holder).dynamicUserName.setText(data.get(position).getNickname());
@@ -166,7 +174,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             }
         } else if (holder instanceof TwoPicViewHolder) {
+            ((TwoPicViewHolder) holder).timeStmp.setText(create_timeStr);
             ((TwoPicViewHolder) holder).dynamicid = data.get(position).getId();
+            ((TwoPicViewHolder) holder).userid = data.get(position).getUserid();
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0));
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1));
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar());
@@ -193,7 +203,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             }
         } else if (holder instanceof ThreePicViewHolder) {
+            ((ThreePicViewHolder) holder).timeStmp.setText(create_timeStr);
             ((ThreePicViewHolder) holder).dynamicid = data.get(position).getId();
+            ((ThreePicViewHolder) holder).userid = data.get(position).getUserid();
             ((ThreePicViewHolder) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
             Presenter.getInstance(mContext).getImage(((ThreePicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0));
             Presenter.getInstance(mContext).getImage(((ThreePicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1));
@@ -262,8 +274,10 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         TextView scanMore;
         //@Bind(R.id.like_num_icon)
         ImageView likeNumIcon;
-
+        @Bind(R.id.time_stmp)
+        TextView timeStmp;
         int dynamicid = -1;
+        int userid = -1;
 
         public OneOrZeroViewHodler(View view, int viewType) {
             super(view);
@@ -295,6 +309,10 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             contentSupports = (TextView) view.findViewById(R.id.content_supports);
             firstContent = (TextView) view.findViewById(R.id.first_content);
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
+            timeStmp = (TextView) view.findViewById(R.id.time_stmp);
+
+            dynamicPicOne.setOnClickListener(onClickListener);
+            dynamicContentText.setOnClickListener(onClickListener);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -303,10 +321,14 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
                     case R.id.scan_more:
+                    case R.id.dynamic_content_text:
+                    case R.id.dynamic_pic_one:
                         LocalLog.d(TAG, "点击查看更多评价");
+                        LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
                         Intent intent = new Intent();
-                        intent.setClass(mContext, DynamicActivity.class);
-                        intent.putExtra(mContext.getPackageName() + "dynamicid", dynamicid);
+                        intent.putExtra(mContext.getPackageName() + "dynamicId", dynamicid);
+                        intent.putExtra(mContext.getPackageName() + "userId", userid);
+                        intent.setClass(mContext,DynamicActivity.class);
                         mContext.startActivity(intent);
                         break;
                 }
@@ -354,8 +376,10 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         int viewType = -1;
         //@Bind(R.id.like_num_icon)
         ImageView likeNumIcon;
-
+        @Bind(R.id.time_stmp)
+        TextView timeStmp;
         int dynamicid = -1;
+        int userid = -1;
 
         public TwoPicViewHolder(View view, int viewType) {
             super(view);
@@ -377,6 +401,11 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             scanMore = (TextView) view.findViewById(R.id.scan_more);
             dynamicUserName = (TextView) view.findViewById(R.id.dynamic_user_name);
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
+            timeStmp = (TextView) view.findViewById(R.id.time_stmp);
+
+            dynamicPicOne.setOnClickListener(onClickListener);
+            dynamicPicTwo.setOnClickListener(onClickListener);
+            dynamicContentText.setOnClickListener(onClickListener);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -385,11 +414,15 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
                     case R.id.scan_more:
+                    case R.id.dynamic_content_text:
+                    case R.id.dynamic_pic_one:
+                    case R.id.dynamic_pic_two:
                         LocalLog.d(TAG, "点击查看更多评价");
-                        LocalLog.d(TAG, "点击查看更多评价");
+                        LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
                         Intent intent = new Intent();
+                        intent.putExtra(mContext.getPackageName() + "dynamicId", dynamicid);
+                        intent.putExtra(mContext.getPackageName() + "userId", userid);
                         intent.setClass(mContext, DynamicActivity.class);
-                        intent.putExtra(mContext.getPackageName() + "dynamicid", dynamicid);
                         mContext.startActivity(intent);
                         break;
                 }
@@ -434,12 +467,14 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ImageView lineContentList;
         //@Bind(R.id.like_num_icon)
         ImageView likeNumIcon;
-
+        @Bind(R.id.time_stmp)
+        TextView timeStmp;
         int viewType = -1;
         //@Bind(R.id.scan_more)
         TextView scanMore;
 
         int dynamicid = -1;
+        int userid = -1;
 
         public ThreePicViewHolder(View view, int viewType) {
             super(view);
@@ -463,6 +498,13 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             scanMore.setOnClickListener(onClickListener);
             dynamicUserName = (TextView) view.findViewById(R.id.dynamic_user_name);
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
+            timeStmp = (TextView) view.findViewById(R.id.time_stmp);
+
+
+            dynamicPicOne.setOnClickListener(onClickListener);
+            dynamicPicTwo.setOnClickListener(onClickListener);
+            dynamicPicThree.setOnClickListener(onClickListener);
+            dynamicContentText.setOnClickListener(onClickListener);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -471,11 +513,16 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
                     case R.id.scan_more:
+                    case R.id.dynamic_content_text:
+                    case R.id.dynamic_pic_one:
+                    case R.id.dynamic_pic_two:
+                    case R.id.dynamic_pic_three:
                         LocalLog.d(TAG, "点击查看更多评价");
-                        LocalLog.d(TAG, "点击查看更多评价");
+                        LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
                         Intent intent = new Intent();
-                        intent.setClass(mContext, DynamicActivity.class);
-                        intent.putExtra(mContext.getPackageName() + "dynamicid", dynamicid);
+                        intent.putExtra(mContext.getPackageName() + "dynamicId", dynamicid);
+                        intent.putExtra(mContext.getPackageName() + "userId", userid);
+                        intent.setClass(mContext,DynamicActivity.class);
                         mContext.startActivity(intent);
                         break;
                 }

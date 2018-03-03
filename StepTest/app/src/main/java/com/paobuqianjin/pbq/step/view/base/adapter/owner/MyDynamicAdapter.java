@@ -38,7 +38,7 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
  */
 
 public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDynamicViewHolder> {
-    private final static String TAG = MyDynamicViewHolder.class.getSimpleName();
+    private final static String TAG = MyDynamicAdapter.class.getSimpleName();
     private final static int defaultCount = 3;
     private Context mContext;
     private List<?> mData;
@@ -78,6 +78,8 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
             String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
             holder.createTime.setText(create_timeStr);
             int imageSize = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().size();
+            holder.dynamicId = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getId();
+            holder.userid = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
             LocalLog.d(TAG, "imageSize = " + imageSize);
             if (((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic().equals("")) {
                 LocalLog.d(TAG, "无内容");
@@ -272,6 +274,8 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
         int currentItem;
         View imageView0, imageView1, imageView2, imageView3;
         ImageViewPagerAdapter adapter;
+        int dynamicId = -1;
+        int userid = -1;
 
         public MyDynamicViewHolder(View view) {
             super(view);
@@ -324,7 +328,10 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 switch (view.getId()) {
                     case R.id.scan_more:
                         LocalLog.d(TAG, "点击查看更多评价");
+                        LocalLog.d(TAG, "dynamicId = " + dynamicId + ",userId = " + userid);
                         Intent intent = new Intent();
+                        intent.putExtra(mContext.getPackageName() + "dynamicId", dynamicId);
+                        intent.putExtra(mContext.getPackageName() + "userId", userid);
                         intent.setClass(mContext, DynamicActivity.class);
                         mContext.startActivity(intent);
                         break;
@@ -345,7 +352,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
 
             @Override
             public void onPageSelected(int position) {
-                LocalLog.d(TAG, "");
+                LocalLog.d(TAG, " ");
                 dots.get(oldPosition).setBackgroundResource(R.drawable.image_viewpager_dot_unselected);
                 dots.get(position).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
                 oldPosition = position;

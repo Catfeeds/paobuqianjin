@@ -15,7 +15,7 @@ public class DynamicAllIndexResponse {
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":3},"data":[{"nickname":"李五","avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","id":2,"userid":2,"dynamic":"我有个小小的愿望，下次如路人相遇的时候，人们都能大大方方的来打个招呼，而不是偷偷的举起相机。","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"惠州","vote":100,"comment":5,"creat_time":1513393712,"one_comment":{"id":10,"parent_id":0,"reply_userid":0,"userid":32,"dynamicid":2,"content":"哎呦","creat_time":0,"nickname":"rm_13424156025"}}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":2},"data":[{"id":8,"userid":8,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","dynamic":"易烊千玺登银十刊封面，天生超模脸，苏芒大赞：高级脸！","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"深圳","vote":100,"comment":1,"create_time":1513393712,"one_comment":{"id":22,"parent_id":0,"reply_userid":8,"userid":1,"dynamicid":8,"content":"wwwwwee","create_time":1520060313,"nickname":"嗯额"}},{"id":7,"userid":7,"avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg","nickname":"沉秋","dynamic":"赵丽颖被各卫视拒上跨年，现又被春晚拒绝，曝光的真相你能接受吗？","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"广州","vote":100,"comment":1,"create_time":1513393712,"one_comment":{"id":21,"parent_id":0,"reply_userid":7,"userid":1,"dynamicid":7,"content":"223333","create_time":1520060206,"nickname":"嗯额"}}]}
      */
 
     private int error;
@@ -57,8 +57,8 @@ public class DynamicAllIndexResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":3}
-         * data : [{"nickname":"李五","avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","id":2,"userid":2,"dynamic":"我有个小小的愿望，下次如路人相遇的时候，人们都能大大方方的来打个招呼，而不是偷偷的举起相机。","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"惠州","vote":100,"comment":5,"creat_time":1513393712,"one_comment":{"id":10,"parent_id":0,"reply_userid":0,"userid":32,"dynamicid":2,"content":"哎呦","creat_time":0,"nickname":"rm_13424156025"}}]
+         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":2}
+         * data : [{"id":8,"userid":8,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","dynamic":"易烊千玺登银十刊封面，天生超模脸，苏芒大赞：高级脸！","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"深圳","vote":100,"comment":1,"create_time":1513393712,"one_comment":{"id":22,"parent_id":0,"reply_userid":8,"userid":1,"dynamicid":8,"content":"wwwwwee","create_time":1520060313,"nickname":"嗯额"}},{"id":7,"userid":7,"avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg","nickname":"沉秋","dynamic":"赵丽颖被各卫视拒上跨年，现又被春晚拒绝，曝光的真相你能接受吗？","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"广州","vote":100,"comment":1,"create_time":1513393712,"one_comment":{"id":21,"parent_id":0,"reply_userid":7,"userid":1,"dynamicid":7,"content":"223333","create_time":1520060206,"nickname":"嗯额"}}]
          */
 
         private PagenationBean pagenation;
@@ -80,20 +80,12 @@ public class DynamicAllIndexResponse {
             this.data = data;
         }
 
-        @Override
-        public String toString() {
-            return "DataBeanX{" +
-                    "pagenation=" + pagenation +
-                    ", data=" + data +
-                    '}';
-        }
-
         public static class PagenationBean {
             /**
              * page : 1
              * pageSize : 10
              * totalPage : 1
-             * totalCount : 3
+             * totalCount : 2
              */
 
             private int page;
@@ -146,46 +138,30 @@ public class DynamicAllIndexResponse {
 
         public static class DataBean {
             /**
-             * nickname : 李五
-             * avatar : http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg
-             * id : 2
-             * userid : 2
-             * dynamic : 我有个小小的愿望，下次如路人相遇的时候，人们都能大大方方的来打个招呼，而不是偷偷的举起相机。
+             * id : 8
+             * userid : 8
+             * avatar : http://pic.qqtn.com/up/2017-12/15127898937460203.jpg
+             * nickname : 酒自斟
+             * dynamic : 易烊千玺登银十刊封面，天生超模脸，苏芒大赞：高级脸！
              * images : ["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"]
-             * city : 惠州
+             * city : 深圳
              * vote : 100
-             * comment : 5
-             * creat_time : 1513393712
-             * one_comment : {"id":10,"parent_id":0,"reply_userid":0,"userid":32,"dynamicid":2,"content":"哎呦","creat_time":0,"nickname":"rm_13424156025"}
+             * comment : 1
+             * create_time : 1513393712
+             * one_comment : {"id":22,"parent_id":0,"reply_userid":8,"userid":1,"dynamicid":8,"content":"wwwwwee","create_time":1520060313,"nickname":"嗯额"}
              */
 
-            private String nickname;
-            private String avatar;
             private int id;
             private int userid;
+            private String avatar;
+            private String nickname;
             private String dynamic;
             private String city;
             private int vote;
             private int comment;
-            private int creat_time;
+            private long create_time;
             private OneCommentBean one_comment;
             private List<String> images;
-
-            public String getNickname() {
-                return nickname;
-            }
-
-            public void setNickname(String nickname) {
-                this.nickname = nickname;
-            }
-
-            public String getAvatar() {
-                return avatar;
-            }
-
-            public void setAvatar(String avatar) {
-                this.avatar = avatar;
-            }
 
             public int getId() {
                 return id;
@@ -201,6 +177,22 @@ public class DynamicAllIndexResponse {
 
             public void setUserid(int userid) {
                 this.userid = userid;
+            }
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
+            }
+
+            public String getNickname() {
+                return nickname;
+            }
+
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
             }
 
             public String getDynamic() {
@@ -235,12 +227,12 @@ public class DynamicAllIndexResponse {
                 this.comment = comment;
             }
 
-            public int getCreat_time() {
-                return creat_time;
+            public long getCreate_time() {
+                return create_time;
             }
 
-            public void setCreat_time(int creat_time) {
-                this.creat_time = creat_time;
+            public void setCreate_time(long create_time) {
+                this.create_time = create_time;
             }
 
             public OneCommentBean getOne_comment() {
@@ -262,15 +254,15 @@ public class DynamicAllIndexResponse {
             @Override
             public String toString() {
                 return "DataBean{" +
-                        "nickname='" + nickname + '\'' +
-                        ", avatar='" + avatar + '\'' +
-                        ", id=" + id +
+                        "id=" + id +
                         ", userid=" + userid +
+                        ", avatar='" + avatar + '\'' +
+                        ", nickname='" + nickname + '\'' +
                         ", dynamic='" + dynamic + '\'' +
                         ", city='" + city + '\'' +
                         ", vote=" + vote +
                         ", comment=" + comment +
-                        ", creat_time=" + creat_time +
+                        ", create_time=" + create_time +
                         ", one_comment=" + one_comment +
                         ", images=" + images +
                         '}';
@@ -278,14 +270,14 @@ public class DynamicAllIndexResponse {
 
             public static class OneCommentBean {
                 /**
-                 * id : 10
+                 * id : 22
                  * parent_id : 0
-                 * reply_userid : 0
-                 * userid : 32
-                 * dynamicid : 2
-                 * content : 哎呦
-                 * creat_time : 0
-                 * nickname : rm_13424156025
+                 * reply_userid : 8
+                 * userid : 1
+                 * dynamicid : 8
+                 * content : wwwwwee
+                 * create_time : 1520060313
+                 * nickname : 嗯额
                  */
 
                 private int id;
@@ -294,7 +286,7 @@ public class DynamicAllIndexResponse {
                 private int userid;
                 private int dynamicid;
                 private String content;
-                private int creat_time;
+                private long create_time;
                 private String nickname;
 
                 public int getId() {
@@ -345,12 +337,12 @@ public class DynamicAllIndexResponse {
                     this.content = content;
                 }
 
-                public int getCreat_time() {
-                    return creat_time;
+                public long getCreate_time() {
+                    return create_time;
                 }
 
-                public void setCreat_time(int creat_time) {
-                    this.creat_time = creat_time;
+                public void setCreate_time(long create_time) {
+                    this.create_time = create_time;
                 }
 
                 public String getNickname() {
@@ -370,7 +362,7 @@ public class DynamicAllIndexResponse {
                             ", userid=" + userid +
                             ", dynamicid=" + dynamicid +
                             ", content='" + content + '\'' +
-                            ", creat_time=" + creat_time +
+                            ", create_time=" + create_time +
                             ", nickname='" + nickname + '\'' +
                             '}';
                 }

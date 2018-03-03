@@ -204,6 +204,14 @@ public final class Presenter {
         engine.getDynamicCommentList(dynamicid, page, pagesize);
     }
 
+    public void getDynamicDetail(int id) {
+        engine.getDynamicDetail(id);
+    }
+
+    public void getDynamicVoteList(int id, int userid, int page, int pagesize) {
+        engine.getDynamicVoteList(id, userid, page, pagesize);
+    }
+
     //TODO 发布动态
     public void postDynamic(DynamicParam dynamicParam) {
         engine.postDynamic(dynamicParam);
