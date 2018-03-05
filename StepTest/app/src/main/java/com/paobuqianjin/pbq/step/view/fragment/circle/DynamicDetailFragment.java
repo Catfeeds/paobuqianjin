@@ -187,7 +187,6 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         contentDetailsListItem = (RecyclerView) viewRoot.findViewById(R.id.content_details_list_item);
         layoutManagerContent = new LinearLayoutManager(getContext());
         contentDetailsListItem.setLayoutManager(layoutManagerContent);
-        contentDetailsListItem.setAdapter(new TopLevelContentAdapter(getContext()));
 
 
         dynamicUserIcon = (CircleImageView) viewRoot.findViewById(R.id.dynamic_user_icon);
@@ -268,7 +267,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(DynamicCommentListResponse dynamicCommentListResponse) {
         LocalLog.d(TAG, "DynamicCommentListResponse() enter " + dynamicCommentListResponse.toString());
-
+        contentDetailsListItem.setAdapter(new TopLevelContentAdapter(getContext(), dynamicCommentListResponse.getData().getData()));
     }
 
     @Override

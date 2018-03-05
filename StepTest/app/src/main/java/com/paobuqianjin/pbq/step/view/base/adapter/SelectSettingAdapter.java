@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -34,7 +35,6 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
 }
 
     @Override
-    @TargetApi(23)
     public void onBindViewHolder(SelectItemViewHolder holder, int position) {
  /*       if (selectPosition == position) {
             holder.selectContent.setTextColor(context.getColor(R.color.color_161727));
@@ -60,16 +60,16 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
         return data.get(selectPosition);
     }
 
-    @TargetApi(23)
+    @TargetApi(19)
     @Override
     public void onBindViewHolder(SelectItemViewHolder holder, int position, List<Object> payloads) {
         LocalLog.d(TAG, "onBindViewHolder() payloads position " + position + " selectPosition= " + selectPosition);
         if (selectPosition == position) {
-            holder.selectContent.setTextColor(context.getColor(R.color.color_161727));
+            holder.selectContent.setTextColor(ContextCompat.getColor(context,R.color.color_161727));
             holder.selectContent.setTextSize(19.0f);
             holder.selectContent.setText(data.get(position));
         } else {
-            holder.selectContent.setTextColor(context.getColor(R.color.color_8a8a8a));
+            holder.selectContent.setTextColor(ContextCompat.getColor(context,R.color.color_8a8a8a));
             holder.selectContent.setTextSize(18.0f);
             holder.selectContent.setText(data.get(position));
         }
@@ -103,7 +103,7 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
         @Bind(R.id.select_content)
         TextView selectContent;
 
-        @TargetApi(23)
+        @TargetApi(19)
         public SelectItemViewHolder(View view, int ViewType) {
             super(view);
             this.viewType = viewType;

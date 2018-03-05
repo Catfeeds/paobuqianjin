@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -292,7 +293,6 @@ public final class OwnerFragment extends BaseFragment {
 
     private OwnerUiInterface ownerUiInterface = new OwnerUiInterface() {
 
-        @TargetApi(21)
         @Override
         public void response(UserInfoResponse userInfoResponse) {
             LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
@@ -303,11 +303,11 @@ public final class OwnerFragment extends BaseFragment {
             friends.setText(String.valueOf(userInfoResponse.getData().getFollowCount()));
             urlIcon = userInfoResponse.getData().getAvatar();
             if (userInfoResponse.getData().getSex() == 0) {
-                userIcon.setBackground(getContext().getDrawable(R.drawable.man_head_back));
+                userIcon.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.man_head_back));
                 manWoman.setVisibility(View.GONE);
                 man.setVisibility(View.VISIBLE);
             } else if (userInfoResponse.getData().getSex() == 1) {
-                userIcon.setBackground(getContext().getDrawable(R.drawable.women_back));
+                userIcon.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.women_back));
                 manWoman.setVisibility(View.VISIBLE);
                 man.setVisibility(View.GONE);
             }

@@ -34,12 +34,6 @@ public final class StepCircleView extends View {
         initParam();
     }
 
-    @TargetApi(21)
-    public StepCircleView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        initParam();
-    }
-
     private void initParam() {
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.STROKE);

@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,13 +53,13 @@ public class DanAdapter extends RecyclerView.Adapter<DanAdapter.DanAdapterViewHo
         updateListItem(holder, position);
     }
 
-    @TargetApi(23)
+    @TargetApi(19)
     private void updateListItem(DanAdapterViewHolder holder, int position) {
         if (mData.get(position) instanceof DanListResponse.DataBean) {
             if (((DanListResponse.DataBean) mData.get(position)).isFinished()) {
                 holder.danIco1.setImageResource(R.drawable.dan_ico2);
                 holder.distanceFinish.setImageResource(R.drawable.selected_icon);
-                holder.distanceDan.setTextColor(context.getColor(R.color.color_161727));
+                holder.distanceDan.setTextColor(ContextCompat.getColor(context,R.color.color_161727));
             }
 
             holder.danRank.setText(String.valueOf(((DanListResponse.DataBean) mData.get(position)).getId()));

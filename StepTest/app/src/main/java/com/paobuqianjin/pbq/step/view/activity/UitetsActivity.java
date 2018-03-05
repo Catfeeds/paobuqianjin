@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.activity;
 import android.annotation.TargetApi;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -35,26 +36,26 @@ public class UitetsActivity extends AppCompatActivity implements View.OnClickLis
         return new String(Character.toChars(unicode));
     }
 
-    @TargetApi(21)
+    @TargetApi(19)
     @Override
     public void onClick(View view) {
 
         Drawable drawable = null;
         if (index % 5 == 0) {
-            drawable = getDrawable(layer[0]);
+            drawable = ContextCompat.getDrawable(getApplicationContext(),layer[0]);
 
         }
         if (index % 5 == 1) {
-            drawable = getDrawable(layer[1]);
+            drawable = ContextCompat.getDrawable(getApplicationContext(),layer[1]);
         }
         if (index % 5 == 2) {
-            drawable = getDrawable(layer[2]);
+            drawable = ContextCompat.getDrawable(getApplicationContext(),layer[2]);
         }
         if (index % 5 == 3) {
-            drawable = getDrawable(layer[3]);
+            drawable = ContextCompat.getDrawable(getApplicationContext(),layer[3]);
         }
         if (index % 5 == 4) {
-            drawable = getDrawable(layer[4]);
+            drawable = ContextCompat.getDrawable(getApplicationContext(),layer[4]);
         }
         layout.setBackground(drawable);
         index++;

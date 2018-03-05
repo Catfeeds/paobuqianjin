@@ -9,7 +9,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+
+import java.util.List;
 
 import butterknife.Bind;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -18,44 +23,67 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by pbq on 2017/12/31.
  */
 
-public class TopLevelContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContentAdapter.TopLevelViewHolder> {
     private final static String TAG = TopLevelContentAdapter.class.getSimpleName();
     private final static int defaultCount = 7;
-    @Bind(R.id.content_user_icon)
-    CircleImageView contentUserIcon;
-    @Bind(R.id.user_content_name)
-    TextView userContentName;
-    @Bind(R.id.user_content_ranka)
-    TextView userContentRanka;
-    @Bind(R.id.time_content_a)
-    TextView timeContentA;
-    @Bind(R.id.contend_all_recycler)
-    RecyclerView contendAllRecycler;
+    List<?> mData;
     private Context context;
 
-    public TopLevelContentAdapter(Context context) {
+    public TopLevelContentAdapter(Context context, List<?> data) {
         super();
         this.context = context;
+        mData = data;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TopLevelViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new TopLevelViewHolder(LayoutInflater.from(context).inflate(
                 R.layout.content_first_support, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(TopLevelViewHolder holder, int position) {
+        updateListItem(holder, position);
+    }
 
+    private void updateListItem(TopLevelViewHolder holder, int position) {
+        if (mData.get(position) instanceof DynamicCommentListResponse.DataBeanX.DataBean) {
+            Presenter.getInstance(context).getImage(holder.contentUserIcon, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
+            holder.userContentName.setText(((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
+            long create_time = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
+            LocalLog.d(TAG, "create_time = " + DateTimeUtil.formatDateTime(create_time * 1000));
+            holder.userContentRanka.setText(((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getContent());
+
+            if (((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild() != null) {
+                LocalLog.d(TAG, "有子评论");
+                holder.contendAllRecycler.setAdapter(new MiddleContentAdapter(context, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild()));
+            }
+        }
     }
 
     @Override
     public int getItemCount() {
-        return defaultCount;
+        if (mData != null) {
+            return mData.size();
+        } else {
+            return 0;
+        }
     }
 
     public class TopLevelViewHolder extends RecyclerView.ViewHolder {
         private LinearLayoutManager layoutManager;
+        @Bind(R.id.content_user_icon)
+        CircleImageView contentUserIcon;
+        @Bind(R.id.user_content_name)
+        TextView userContentName;
+        @Bind(R.id.user_content_ranka)
+        TextView userContentRanka;
+        @Bind(R.id.time_content_a)
+        TextView timeContentA;
+        @Bind(R.id.time_content_b)
+        TextView timeContentB;
+        @Bind(R.id.contend_all_recycler)
+        RecyclerView contendAllRecycler;
 
         public TopLevelViewHolder(View view) {
             super(view);
@@ -64,10 +92,15 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         private void initView(View view) {
             LocalLog.d(TAG, "");
+            contentUserIcon = (CircleImageView) view.findViewById(R.id.content_user_icon);
+            userContentName = (TextView) view.findViewById(R.id.user_content_name);
+            userContentRanka = (TextView) view.findViewById(R.id.user_content_ranka);
             contendAllRecycler = (RecyclerView) view.findViewById(R.id.contend_all_recycler);
+            timeContentA = (TextView) view.findViewById(R.id.time_content_a);
+            timeContentB = (TextView) view.findViewById(R.id.time_content_b);
             layoutManager = new LinearLayoutManager(context);
             contendAllRecycler.setLayoutManager(layoutManager);
-            contendAllRecycler.setAdapter(new MiddleContentAdapter(context));
+
         }
     }
 }

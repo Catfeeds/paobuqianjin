@@ -166,7 +166,7 @@ public class DynamicCommentListResponse {
             private int userid;
             private int dynamicid;
             private String content;
-            private int create_time;
+            private long create_time;
             private String nickname;
             private String avatar;
             private String reply_nickname;
@@ -220,11 +220,11 @@ public class DynamicCommentListResponse {
                 this.content = content;
             }
 
-            public int getCreate_time() {
+            public long getCreate_time() {
                 return create_time;
             }
 
-            public void setCreate_time(int create_time) {
+            public void setCreate_time(long create_time) {
                 this.create_time = create_time;
             }
 

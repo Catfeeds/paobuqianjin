@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,7 @@ public class MyTaskDetailStateAdapter extends RecyclerView.Adapter<MyTaskDetailS
         updateListItem(holder, position);
     }
 
-    @TargetApi(23)
+    @TargetApi(19)
     private void updateListItem(MyTaskDetailViewHolder holder, int position) {
         LocalLog.d(TAG, "updateListItem() enter");
         if (mData.get(position) instanceof MyReleaseTaskDetailResponse.DataBean.TaskRecordBean) {
@@ -59,10 +60,10 @@ public class MyTaskDetailStateAdapter extends RecyclerView.Adapter<MyTaskDetailS
             holder.timeStmap.setText(dateStr);
             if (((MyReleaseTaskDetailResponse.DataBean.TaskRecordBean) mData.get(position)).getIs_receive() == 0) {
                 holder.states.setText("未领取");
-                holder.states.setTextColor(context.getColor(R.color.color_161727));
+                holder.states.setTextColor(ContextCompat.getColor(context,R.color.color_161727));
             } else if (((MyReleaseTaskDetailResponse.DataBean.TaskRecordBean) mData.get(position)).getIs_receive() == 1) {
                 holder.states.setText("已领取");
-                holder.states.setTextColor(context.getColor(R.color.color_e4393c));
+                holder.states.setTextColor(ContextCompat.getColor(context,R.color.color_e4393c));
             }
         }
     }

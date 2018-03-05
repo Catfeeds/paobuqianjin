@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -65,10 +66,9 @@ public class StepProcessDrawable extends Drawable {
         }
     };
 
-    @TargetApi(21)
+    @TargetApi(19)
     public StepProcessDrawable(Context context) {
-        bitmap = ((BitmapDrawable) context.getResources().getDrawable(R.drawable.foot_ico, null))
-                .getBitmap();
+        bitmap = ((BitmapDrawable) ContextCompat.getDrawable(context,R.drawable.foot_ico)).getBitmap();
         oval = new RectF(30, 30, 390, 390);
     }
 

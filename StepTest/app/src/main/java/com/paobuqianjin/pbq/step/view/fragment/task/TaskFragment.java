@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,17 +127,17 @@ public class TaskFragment extends BaseFragment {
     *@param
     *@return 
     */
-    @TargetApi(23)
+    @TargetApi(19)
     private void setCurrentIndexStateUnSelect() {
         if (mCurrentIndex == 0) {
-            taskAll.setBackground(getContext().getDrawable(R.drawable.rectangele_four_full_r_unselected));
-            taskAll.setTextColor(getContext().getColor(R.color.color_161727));
+            taskAll.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.rectangele_four_full_r_unselected));
+            taskAll.setTextColor(ContextCompat.getColor(getContext(),R.color.color_161727));
         } else if (mCurrentIndex == 1) {
-            taskUnFinish.setBackground(getContext().getDrawable(R.drawable.rectangle_four_fill_outline_unselected));
-            taskUnFinish.setTextColor(getContext().getColor(R.color.color_161727));
+            taskUnFinish.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.rectangle_four_fill_outline_unselected));
+            taskUnFinish.setTextColor(ContextCompat.getColor(getContext(),R.color.color_161727));
         } else if (mCurrentIndex == 2) {
-            taskFinished.setBackground(getContext().getDrawable(R.drawable.rectangle_four_full_left_unselect));
-            taskFinished.setTextColor(getContext().getColor(R.color.color_161727));
+            taskFinished.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.rectangle_four_full_left_unselect));
+            taskFinished.setTextColor(ContextCompat.getColor(getContext(),R.color.color_161727));
         }
     }
 
@@ -145,17 +146,17 @@ public class TaskFragment extends BaseFragment {
     *@param
     *@return 
     */
-    @TargetApi(23)
+    @TargetApi(19)
     private void setCurrentIndexStateSelected() {
         if (mCurrentIndex == 0) {
-            taskAll.setBackground(getContext().getDrawable(R.drawable.rectangle_four_full_r_selected));
-            taskAll.setTextColor(getContext().getColor(R.color.color_f8));
+            taskAll.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.rectangle_four_full_r_selected));
+            taskAll.setTextColor(ContextCompat.getColor(getContext(),R.color.color_f8));
         } else if (mCurrentIndex == 1) {
-            taskUnFinish.setBackground(getContext().getDrawable(R.drawable.rectangle_four_fill_outline_selected));
-            taskUnFinish.setTextColor(getContext().getColor(R.color.color_f8));
+            taskUnFinish.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.rectangle_four_fill_outline_selected));
+            taskUnFinish.setTextColor(ContextCompat.getColor(getContext(),R.color.color_f8));
         } else if (mCurrentIndex == 2) {
-            taskFinished.setBackground(getContext().getDrawable(R.drawable.rectangle_four_full_left_select));
-            taskFinished.setTextColor(getContext().getColor(R.color.color_f8));
+            taskFinished.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.rectangle_four_full_left_select));
+            taskFinished.setTextColor(ContextCompat.getColor(getContext(),R.color.color_f8));
         }
     }
 

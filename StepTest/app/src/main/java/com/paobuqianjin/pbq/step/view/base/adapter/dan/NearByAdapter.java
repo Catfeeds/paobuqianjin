@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter.dan;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +45,7 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
         upDateListItem(holder, position);
     }
 
-    @TargetApi(23)
+    @TargetApi(19)
     private void upDateListItem(NearByAdapter.NearByViewHolder holder, int position) {
         LocalLog.d(TAG, "upDateListItem() enter");
         Presenter.getInstance(context).getImage(holder.userNearIcon, mData.get(position).getAvatar());
@@ -59,13 +60,13 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
 
         if (mData.get(position).getIs_follow() == 0) {
             LocalLog.d(TAG, "未关注");
-            holder.btFollow.setBackground(context.getDrawable(R.drawable.has_fllow_nearby));
-            holder.btFollow.setTextColor(context.getColor(R.color.color_6c71c4));
+            holder.btFollow.setBackground(ContextCompat.getDrawable(context,R.drawable.has_fllow_nearby));
+            holder.btFollow.setTextColor(ContextCompat.getColor(context,R.color.color_6c71c4));
             holder.btFollow.setText("关注");
         } else {
             LocalLog.d(TAG, "已关注");
-            holder.btFollow.setBackground(context.getDrawable(R.drawable.has_not_fllow_nearby));
-            holder.btFollow.setTextColor(context.getColor(R.color.color_646464));
+            holder.btFollow.setBackground(ContextCompat.getDrawable(context,R.drawable.has_not_fllow_nearby));
+            holder.btFollow.setTextColor(ContextCompat.getColor(context,R.color.color_646464));
             holder.btFollow.setText("已关注");
         }
     }
