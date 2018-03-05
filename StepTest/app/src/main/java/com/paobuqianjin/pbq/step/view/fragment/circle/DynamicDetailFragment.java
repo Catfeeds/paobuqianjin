@@ -15,13 +15,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentIdDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.bundle.LikeBundleData;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DanListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicIdDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.LikeSupportActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
@@ -30,13 +34,12 @@ import com.paobuqianjin.pbq.step.view.base.adapter.TopLevelContentAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
 /**
  * Created by pbq on 2017/12/29.
@@ -44,8 +47,18 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
 public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implements DynamicDetailInterface {
     private final static String TAG = DynamicDetailFragment.class.getSimpleName();
+    @Bind(R.id.bar_return_drawable)
+    ImageView barReturnDrawable;
+    @Bind(R.id.button_return_bar)
+    RelativeLayout buttonReturnBar;
+    @Bind(R.id.bar_title)
+    TextView barTitle;
+    @Bind(R.id.bar_tv_right)
+    TextView barTvRight;
     @Bind(R.id.dynamic_user_icon)
     CircleImageView dynamicUserIcon;
+    @Bind(R.id.dynamic_user_name)
+    TextView dynamicUserName;
     @Bind(R.id.dynamic_owner_rel)
     RelativeLayout dynamicOwnerRel;
     @Bind(R.id.dynamic_content_text)
@@ -74,6 +87,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     ImageView contentNumberIcon;
     @Bind(R.id.content_supports)
     TextView contentSupports;
+    @Bind(R.id.like_num_icon)
+    ImageView likeNumIcon;
     @Bind(R.id.location_support_rel)
     RelativeLayout locationSupportRel;
     @Bind(R.id.line_content_list)
@@ -83,17 +98,22 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Bind(R.id.support_peoples)
     TextView supportPeoples;
     @Bind(R.id.support_icon_recycler)
-    RecyclerView supportIcon;
+    RecyclerView supportIconRecycler;
     @Bind(R.id.share_icon)
     ImageView shareIcon;
     @Bind(R.id.support_pics)
     RelativeLayout supportPics;
     @Bind(R.id.support_rel)
     RelativeLayout supportRel;
+    @Bind(R.id.line_like_content)
+    ImageView lineLikeContent;
     @Bind(R.id.content_details_list_item)
     RecyclerView contentDetailsListItem;
     @Bind(R.id.content_details)
     RelativeLayout contentDetails;
+    @Bind(R.id.dynamic_time)
+    TextView dynamicTime;
+    private ArrayList<DynamicLikeListResponse.DataBeanX.DataBean> likeData;
 
     private List<View> Mview = new ArrayList<>();
     private List<View> dots;
@@ -106,7 +126,6 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     private LinearLayoutManager layoutManagerContent;
 
 
-    private int dynamicid = -1;
     private int currentIndexPage = 1;
 
     @Override
@@ -142,33 +161,26 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         dot2 = viewRoot.findViewById(R.id.dot_2);
         dot3 = viewRoot.findViewById(R.id.dot_3);
         dot4 = viewRoot.findViewById(R.id.dot_4);
-        dots.add(dot1);
-        dots.add(dot2);
-        dots.add(dot3);
-        dots.add(dot4);
+
         imageView0 = inflater.inflate(R.layout.image_view_pager, null);
         imageView1 = inflater.inflate(R.layout.image_view_pager, null);
         imageView2 = inflater.inflate(R.layout.image_view_pager, null);
         imageView3 = inflater.inflate(R.layout.image_view_pager, null);
 
-        Mview.add(imageView0);
-        Mview.add(imageView1);
-        Mview.add(imageView2);
-        Mview.add(imageView3);
+
         imageViewpager = (ViewPager) viewRoot.findViewById(R.id.image_viewpager);
         imageViewpager.addOnPageChangeListener(onPageChangeListener);
-        dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
 
         adapter = new ImageViewPagerAdapter(getContext(), Mview);
         imageViewpager.setAdapter(adapter);
 
-        supportIcon = (RecyclerView) viewRoot.findViewById(R.id.support_icon_recycler);
-        supportIcon.setNestedScrollingEnabled(false);
+        supportIconRecycler = (RecyclerView) viewRoot.findViewById(R.id.support_icon_recycler);
+        supportIconRecycler.setNestedScrollingEnabled(false);
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        supportIcon.setLayoutManager(layoutManager);
-        supportIcon.setAdapter(new LikeUserAdapter(getContext()));
-        supportIcon.addItemDecoration(new LikeUserAdapter.SpaceItemDecoration(10));
+        supportIconRecycler.setLayoutManager(layoutManager);
+
+        supportIconRecycler.addItemDecoration(new LikeUserAdapter.SpaceItemDecoration(10));
         shareIcon = (ImageView) viewRoot.findViewById(R.id.share_icon);
         shareIcon.setOnClickListener(onClickListener);
 
@@ -177,6 +189,19 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         contentDetailsListItem.setLayoutManager(layoutManagerContent);
         contentDetailsListItem.setAdapter(new TopLevelContentAdapter(getContext()));
 
+
+        dynamicUserIcon = (CircleImageView) viewRoot.findViewById(R.id.dynamic_user_icon);
+        dynamicUserName = (TextView) viewRoot.findViewById(R.id.dynamic_user_name);
+        dynamicContentText = (TextView) viewRoot.findViewById(R.id.dynamic_content_text);
+        dynamicTime = (TextView) viewRoot.findViewById(R.id.dynamic_time);
+        dynamicLocationCity = (TextView) viewRoot.findViewById(R.id.dynamic_location_city);
+        contentNumbers = (TextView) viewRoot.findViewById(R.id.content_numbers);
+        supportPeoples = (TextView) viewRoot.findViewById(R.id.support_peoples);
+        likeNumIcon = (ImageView) viewRoot.findViewById(R.id.like_num_icon);
+        contentSupports = (TextView) viewRoot.findViewById(R.id.content_supports);
+        contentNumberIcon = (ImageView) viewRoot.findViewById(R.id.content_number_icon);
+
+        supportPics = (RelativeLayout) viewRoot.findViewById(R.id.support_pics);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             int dynamicid = intent.getIntExtra(getContext().getPackageName() + "dynamicId", -1);
@@ -198,7 +223,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
         @Override
         public void onPageSelected(int position) {
-            LocalLog.d(TAG, "");
+            LocalLog.d(TAG, "onPageSelected");
             dots.get(oldPosition).setBackgroundResource(R.drawable.image_viewpager_dot_unselected);
             dots.get(position).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
             oldPosition = position;
@@ -218,7 +243,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             LocalLog.d(TAG, "onClick() enter 查看点赞");
             switch (view.getId()) {
                 case R.id.share_icon:
-                    startActivity(LikeSupportActivity.class, null);
+                    LikeBundleData likeBundleData = new LikeBundleData(likeData);
+                    startActivity(LikeSupportActivity.class, likeBundleData);
                     break;
                 default:
                     break;
@@ -242,16 +268,135 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(DynamicCommentListResponse dynamicCommentListResponse) {
         LocalLog.d(TAG, "DynamicCommentListResponse() enter " + dynamicCommentListResponse.toString());
+
     }
 
     @Override
     public void response(DynamicIdDetailResponse dynamicIdDetailResponse) {
         LocalLog.d(TAG, "DynamicIdDetailResponse() enter " + dynamicIdDetailResponse.toString());
+        Presenter.getInstance(getContext()).getImage(dynamicUserIcon, dynamicIdDetailResponse.getData().getAvatar());
+        dynamicUserName.setText(dynamicIdDetailResponse.getData().getNickname());
+        long create_time = dynamicIdDetailResponse.getData().getCreate_time();
+        //服务器保存到秒级别，本地处理为毫秒级别
+        LocalLog.d(TAG, "create_time = " + DateTimeUtil.formatDateTime(create_time * 1000));
+        String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
+        dynamicTime.setText(create_timeStr);
+        dynamicContentText.setText(dynamicIdDetailResponse.getData().getDynamic());
+        if (dynamicIdDetailResponse.getData().getCity() != null && !dynamicIdDetailResponse.getData().getCity().equals("")) {
+            dynamicLocationCity.setText(dynamicIdDetailResponse.getData().getCity());
+        }
+        contentNumbers.setText(String.valueOf(dynamicIdDetailResponse.getData().getComment()));
+        contentSupports.setText(String.valueOf(dynamicIdDetailResponse.getData().getVote()));
+
+        int likeNums = dynamicIdDetailResponse.getData().getVote();
+        if (likeNums == 0) {
+            supportPeoples.setText("还没有人点赞");
+            supportPics.setVisibility(View.GONE);
+        } else {
+            String likePeopleNumFormat = getContext().getString(R.string.like_people);
+            String peopleNumStr = String.format(likePeopleNumFormat, likeNums);
+            supportPeoples.setText(peopleNumStr);
+        }
+        int imageSize = dynamicIdDetailResponse.getData().getImages().size();
+
+        if (imageSize <= 0) {
+            LocalLog.d(TAG, "动态没有图片");
+            picViewpager.setVisibility(View.GONE);
+        } else if (imageSize == 1) {
+            if (dynamicIdDetailResponse.getData().getImages().get(0).equals("")) {
+                LocalLog.d(TAG, "动态没有图片");
+                picViewpager.setVisibility(View.GONE);
+            } else {
+                imageView0 = LayoutInflater.from(getContext()).inflate(R.layout.image_view_pager, null);
+                dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
+                dots.add(dot1);
+                Mview.add(imageView0);
+                ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
+                Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
+            }
+        } else if (imageSize == 2) {
+
+
+            dots.add(dot1);
+            dots.add(dot2);
+
+            dot1.setVisibility(View.VISIBLE);
+            dot2.setVisibility(View.VISIBLE);
+
+            Mview.add(imageView0);
+            Mview.add(imageView1);
+
+            ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
+            ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
+            dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
+            Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
+            Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
+
+        } else if (imageSize == 3) {
+            dots.add(dot1);
+            dots.add(dot2);
+            dots.add(dot3);
+            dot1.setVisibility(View.VISIBLE);
+            dot2.setVisibility(View.VISIBLE);
+            dot3.setVisibility(View.VISIBLE);
+
+
+            Mview.add(imageView0);
+            Mview.add(imageView1);
+            Mview.add(imageView2);
+            ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
+            ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
+            ImageView imageViewC = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
+            dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
+            Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
+            Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
+            Presenter.getInstance(getContext()).getImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
+
+        } else if (imageSize == 4) {
+
+            dots.add(dot1);
+            dots.add(dot2);
+            dots.add(dot3);
+            dots.add(dot4);
+
+            dot1.setVisibility(View.VISIBLE);
+            dot2.setVisibility(View.VISIBLE);
+            dot3.setVisibility(View.VISIBLE);
+            dot4.setVisibility(View.VISIBLE);
+
+
+            Mview.add(imageView0);
+            Mview.add(imageView1);
+            Mview.add(imageView2);
+            Mview.add(imageView3);
+            ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
+            ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
+            ImageView imageViewC = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
+            ImageView imageViewD = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
+            dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
+            Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
+            Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
+            Presenter.getInstance(getContext()).getImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
+            Presenter.getInstance(getContext()).getImage(imageViewD, dynamicIdDetailResponse.getData().getImages().get(3));
+
+        } else {
+            LocalLog.e(TAG, "图片数量超过5");
+        }
+
+        adapter = new ImageViewPagerAdapter(getContext(), Mview);
+        imageViewpager.setAdapter(adapter);
     }
 
     @Override
     public void response(DynamicLikeListResponse dynamicLikeListResponse) {
         LocalLog.d(TAG, "DynamicIdDetailResponse() enter " + dynamicLikeListResponse.toString());
+        if (supportPics.getVisibility() == View.GONE) {
+            supportPics.setVisibility(View.VISIBLE);
+        }
+
+        likeData = (ArrayList<DynamicLikeListResponse.DataBeanX.DataBean>) dynamicLikeListResponse.getData().getData();
+        supportIconRecycler.setAdapter(new LikeUserAdapter(getContext(), dynamicLikeListResponse.getData().getData()));
+
     }
 
 }

@@ -208,7 +208,7 @@ public final class OwnerFragment extends BaseFragment {
 
     @OnClick({R.id.bar_tv_right, R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span,
             R.id.dan_span, R.id.suggestion_span, R.id.friend_rel, R.id.circle_rel,
-            R.id.bar_return_drawable, R.id.task_release_span, R.id.setting_span, R.id.friend_scan})
+            R.id.bar_return_drawable, R.id.task_release_span, R.id.setting_span, R.id.qrcode_rel})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -280,7 +280,7 @@ public final class OwnerFragment extends BaseFragment {
                 intent.setClass(getContext(), UserInfoSettingActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.friend_scan:
+            case R.id.qrcode_rel:
                 LocalLog.d(TAG,"生成二维码");
                 startActivity(QrCodeMakeActivity.class,null);
                 break;

@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.bundle.ChoiceBundleData;
+import com.paobuqianjin.pbq.step.data.bean.bundle.LikeBundleData;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeSupportDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -47,8 +50,14 @@ public class LikeSupportFragment extends BaseBarStyleTextViewFragment {
         likeSupportRecycler = (RecyclerView) viewRoot.findViewById(R.id.like_support_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         likeSupportRecycler.setLayoutManager(layoutManager);
-        likeSupportRecycler.setAdapter(new LikeSupportDetailAdapter(getContext()));
 
+        Intent intent = getActivity().getIntent();
+        if (intent != null && intent.getParcelableExtra(getContext().getPackageName()) != null) {
+            LikeBundleData likeBundleData = (LikeBundleData) intent.getParcelableExtra(getActivity().getPackageName());
+            likeSupportRecycler.setAdapter(new LikeSupportDetailAdapter(getContext(),likeBundleData.getLikeData()));
+        } else {
+
+        }
     }
 
     @Override

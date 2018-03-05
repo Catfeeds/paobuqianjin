@@ -59,6 +59,7 @@
     <string name="steps_should_add_to">累计里程达到%d步</string>
     <string name="people_finished">%d人已完成</string>
     <string name="percent">%.0f%%</string>
+    <string name="like_people">%d人赞过</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
