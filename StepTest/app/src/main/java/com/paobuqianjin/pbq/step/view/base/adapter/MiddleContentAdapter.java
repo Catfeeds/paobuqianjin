@@ -1,13 +1,19 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.List;
 
@@ -17,7 +23,7 @@ import butterknife.Bind;
  * Created by pbq on 2017/12/31.
  */
 
-public class MiddleContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdapter.MiddleContentViewHolder> {
     private final static String TAG = MiddleContentAdapter.class.getSimpleName();
     private final static int defaultCount = 7;
 
@@ -31,33 +37,75 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MiddleContentAdapter.MiddleContentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new MiddleContentViewHolder(LayoutInflater.from(context).inflate(
                 R.layout.content_item, parent, false
         ));
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(MiddleContentAdapter.MiddleContentViewHolder holder, int position) {
+        updateListItem(holder, position);
+    }
 
+    private void updateListItem(MiddleContentAdapter.MiddleContentViewHolder holder, int position) {
+        if (mData.get(position) instanceof DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) {
+            LocalLog.d(TAG, ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).toString());
+            String nameA = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getNickname();
+            String nameB = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getReply_nickname();
+            String reply = "回复";
+            String content = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getContent();
+            SpannableStringBuilder style = new SpannableStringBuilder(nameA + reply + nameB + ":" + content);
+            style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), 0, nameA.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), nameA.length(), (nameA + reply).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), (nameA + reply).length(), (nameA + reply + nameB).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), (nameA + reply + nameB).length(), (nameA + reply + nameB + ":" + content).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            holder.itemContent.setText(style);
+
+            holder.parent_id = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getParent_id();
+            holder.reply_userid = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getReply_userid();
+            holder.userid = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getUserid();
+            holder.dynamicid = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getDynamicid();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return defaultCount;
+        if (mData != null) {
+            return mData.size();
+        } else {
+            return 0;
+        }
     }
 
     public class MiddleContentViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.item_content)
         TextView itemContent;
+        int parent_id = -1;
+        int reply_userid = -1;
+        int userid = -1;
+        int dynamicid = -1;
 
         public MiddleContentViewHolder(View view) {
             super(view);
             initView(view);
         }
 
+        private View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.item_content:
+                        LocalLog.d(TAG, "回复第二层 :parent_id = " + parent_id
+                                + ",reply_userid = " + reply_userid + ",userid= " + userid + ", dynamicid = " + dynamicid);
+                        break;
+                }
+            }
+        };
+
         private void initView(View view) {
             itemContent = (TextView) view.findViewById(R.id.item_content);
+            itemContent.setOnClickListener(onClickListener);
         }
     }
 }

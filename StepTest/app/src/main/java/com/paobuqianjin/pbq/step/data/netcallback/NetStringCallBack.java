@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.data.netcallback;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
@@ -30,8 +31,10 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyReleaseTaskDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostInviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
@@ -350,6 +353,12 @@ public class NetStringCallBack extends StringCallback {
                 LocalLog.d(TAG, "点赞列表");
                 DynamicLikeListResponse dynamicLikeListResponse = new Gson().fromJson(s, DynamicLikeListResponse.class);
                 ((DynamicDetailInterface) callBackInterface).response(dynamicLikeListResponse);
+            } else if (command == Engine.COMMAND_PUT_VOTE) {
+                PutVoteResponse putVoteResponse = new Gson().fromJson(s, PutVoteResponse.class);
+                ((DynamicDetailInterface) callBackInterface).response(putVoteResponse);
+            } else if (command == Engine.COMMAND_POST_DYNAMIC_COMMENT) {
+                PostDynamicContentResponse postDynamicContentResponse = new Gson().fromJson(s, PostDynamicContentResponse.class);
+                ((DynamicDetailInterface) callBackInterface).response(postDynamicContentResponse);
             }
 
         } else if (callBackInterface != null

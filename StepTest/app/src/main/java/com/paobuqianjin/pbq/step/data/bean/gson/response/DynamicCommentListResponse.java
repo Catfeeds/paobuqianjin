@@ -381,6 +381,22 @@ public class DynamicCommentListResponse {
                 public void setReply_nickname(String reply_nickname) {
                     this.reply_nickname = reply_nickname;
                 }
+
+                @Override
+                public String toString() {
+                    return "ChildBean{" +
+                            "id=" + id +
+                            ", parent_id=" + parent_id +
+                            ", reply_userid=" + reply_userid +
+                            ", userid=" + userid +
+                            ", dynamicid=" + dynamicid +
+                            ", content='" + content + '\'' +
+                            ", create_time=" + create_time +
+                            ", nickname='" + nickname + '\'' +
+                            ", avatar='" + avatar + '\'' +
+                            ", reply_nickname='" + reply_nickname + '\'' +
+                            '}';
+                }
             }
         }
     }

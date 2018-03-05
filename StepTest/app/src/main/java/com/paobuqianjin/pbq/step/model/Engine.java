@@ -23,8 +23,10 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostUserStepParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicContentParam;
@@ -205,6 +207,8 @@ public final class Engine {
     public final static int COMMAND_GET_DYNAMIC_ID_DETAIL = 56;
     public final static int COMMAND_GET_ID_COMMENT = 57;
     public final static int COMMAND_GET_VOTE_LIST = 58;
+    public final static int COMMAND_POST_DYNAMIC_COMMENT = 59;
+    public final static int COMMAND_PUT_VOTE = 60;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -696,6 +700,28 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_GET_VOTE_LIST));
+    }
+
+    //TODO 发表评论
+    public void postContent(PostDynamicContentParam postDynamicContentParam) {
+        LocalLog.d(TAG, "postContent() enter " + postDynamicContentParam.paramString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlDynamicComment)
+                .build()
+                .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_POST_DYNAMIC_COMMENT));
+    }
+
+    //TODO 点赞
+    public void putVote(PutVoteParam putVoteParam) {
+        LocalLog.d(TAG, "putVote() enter " + putVoteParam);
+        OkHttpUtils
+                .put()
+                .url(NetApi.urlDynamicVote)
+                .params(putVoteParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_PUT_VOTE));
+
     }
 
     //TODO 获取单条评论

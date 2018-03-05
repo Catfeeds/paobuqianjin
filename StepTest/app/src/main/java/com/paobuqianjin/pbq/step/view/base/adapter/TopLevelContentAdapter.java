@@ -48,6 +48,7 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
 
     private void updateListItem(TopLevelViewHolder holder, int position) {
         if (mData.get(position) instanceof DynamicCommentListResponse.DataBeanX.DataBean) {
+            LocalLog.d(TAG, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).toString());
             Presenter.getInstance(context).getImage(holder.contentUserIcon, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
             holder.userContentName.setText(((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             long create_time = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
@@ -55,9 +56,15 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
             holder.userContentRanka.setText(((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getContent());
 
             if (((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild() != null) {
-                LocalLog.d(TAG, "有子评论");
+                LocalLog.d(TAG, "有子评论" + ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild().size());
                 holder.contendAllRecycler.setAdapter(new MiddleContentAdapter(context, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild()));
             }
+
+            holder.parent_id = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getParent_id();
+            holder.reply_userid = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getReply_userid();
+            holder.userid = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
+            holder.dynamicid = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getDynamicid();
+
         }
     }
 
@@ -85,6 +92,11 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
         @Bind(R.id.contend_all_recycler)
         RecyclerView contendAllRecycler;
 
+        int parent_id = -1;
+        int reply_userid = -1;
+        int userid = -1;
+        int dynamicid = -1;
+
         public TopLevelViewHolder(View view) {
             super(view);
             initView(view);
@@ -100,7 +112,20 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
             timeContentB = (TextView) view.findViewById(R.id.time_content_b);
             layoutManager = new LinearLayoutManager(context);
             contendAllRecycler.setLayoutManager(layoutManager);
-
+            userContentRanka.setOnClickListener(onClickListener);
         }
+
+        private View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (view.getId()) {
+                    case R.id.user_content_ranka:
+                        LocalLog.d(TAG, "回复第一层 :parent_id = " + parent_id
+                                + ",reply_userid = " + reply_userid + ",userid= " + userid + ", dynamicid = " + dynamicid);
+
+                        break;
+                }
+            }
+        };
     }
 }

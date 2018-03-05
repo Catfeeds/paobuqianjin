@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.LikeBundleData;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DanListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
@@ -23,6 +25,8 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicIdDetailResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
@@ -124,6 +128,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     private LayoutInflater inflater;
     private LinearLayoutManager layoutManager;
     private LinearLayoutManager layoutManagerContent;
+    int dynamicid = -1;
+    int userid = -1;
 
 
     private int currentIndexPage = 1;
@@ -197,14 +203,15 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         contentNumbers = (TextView) viewRoot.findViewById(R.id.content_numbers);
         supportPeoples = (TextView) viewRoot.findViewById(R.id.support_peoples);
         likeNumIcon = (ImageView) viewRoot.findViewById(R.id.like_num_icon);
+        likeNumIcon.setOnClickListener(onClickListener);
         contentSupports = (TextView) viewRoot.findViewById(R.id.content_supports);
         contentNumberIcon = (ImageView) viewRoot.findViewById(R.id.content_number_icon);
 
         supportPics = (RelativeLayout) viewRoot.findViewById(R.id.support_pics);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
-            int dynamicid = intent.getIntExtra(getContext().getPackageName() + "dynamicId", -1);
-            int userid = intent.getIntExtra(getContext().getPackageName() + "userId", -1);
+            dynamicid = intent.getIntExtra(getContext().getPackageName() + "dynamicId", -1);
+            userid = intent.getIntExtra(getContext().getPackageName() + "userId", -1);
             LocalLog.d(TAG, "dynamicid= " + dynamicid + "userid = " + userid);
             if (dynamicid != -1) {
                 Presenter.getInstance(getContext()).getDynamicCommentList(dynamicid, currentIndexPage, 10);
@@ -213,6 +220,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             }
         }
     }
+
 
     private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
@@ -244,6 +252,16 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 case R.id.share_icon:
                     LikeBundleData likeBundleData = new LikeBundleData(likeData);
                     startActivity(LikeSupportActivity.class, likeBundleData);
+                    break;
+                case R.id.like_num_icon:
+                    LocalLog.d(TAG, "点赞或者取消点赞");
+                    PutVoteParam putVoteParam = new PutVoteParam();
+                    putVoteParam.setDynamicid(dynamicid).setUserid(Presenter.getInstance(getContext()).getId());
+                    Presenter.getInstance(getContext()).putVote(putVoteParam);
+                    break;
+                case R.id.content_number_icon:
+                    LocalLog.d(TAG, "弹出发表评论输入框");
+
                     break;
                 default:
                     break;
@@ -398,4 +416,18 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
     }
 
+    @Override
+    public void response(PostDynamicContentResponse postDynamicContentResponse) {
+        LocalLog.d(TAG, "PostDynamicContentResponse() enter " + postDynamicContentResponse.toString());
+    }
+
+    @Override
+    public void response(PutVoteResponse putVoteResponse) {
+        LocalLog.d(TAG, "PutVoteResponse() enter " + putVoteResponse.toString());
+    }
+
+    @Override
+    public void postDynamicAction(PostDynamicContentParam postDynamicContentParam) {
+        LocalLog.d(TAG, "PostDynamicContentParam() 弹出评论框");
+    }
 }

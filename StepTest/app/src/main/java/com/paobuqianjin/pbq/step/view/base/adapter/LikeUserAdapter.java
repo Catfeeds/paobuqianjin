@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.List;
@@ -26,12 +27,14 @@ public class LikeUserAdapter extends RecyclerView.Adapter<LikeUserAdapter.LikeUs
     private Context context;
     private final static int defaultValue = 7;
     List<?> mData;
+    DynamicDetailInterface dynamicDetailInterface;
 
     //TODO DATA
-    public LikeUserAdapter(Context context, List<?> data) {
+    public LikeUserAdapter(Context context, List<?> data, DynamicDetailInterface dynamicDetailInterface) {
         super();
         this.context = context;
         mData = data;
+        this.DynamicDetailInterface dynamicDetailInterface
     }
 
     @Override
