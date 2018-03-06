@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
+import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.List;
@@ -29,11 +31,13 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdap
 
     private Context context;
     List<?> mData;
+    DynamicDetailInterface dynamicDetailInterface;
 
-    public MiddleContentAdapter(Context context, List<?> data) {
+    public MiddleContentAdapter(Context context, List<?> data, DynamicDetailInterface dynamicDetailInterface) {
         super();
         this.context = context;
         mData = data;
+        this.dynamicDetailInterface = dynamicDetailInterface;
     }
 
     @Override
@@ -62,9 +66,8 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdap
             style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), (nameA + reply + nameB).length(), (nameA + reply + nameB + ":" + content).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             holder.itemContent.setText(style);
 
-            holder.parent_id = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getParent_id();
-            holder.reply_userid = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getReply_userid();
-            holder.userid = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getUserid();
+            holder.parent_id = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getId();
+            holder.reply_userid = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getUserid();
             holder.dynamicid = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getDynamicid();
         }
     }
@@ -98,6 +101,12 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdap
                     case R.id.item_content:
                         LocalLog.d(TAG, "回复第二层 :parent_id = " + parent_id
                                 + ",reply_userid = " + reply_userid + ",userid= " + userid + ", dynamicid = " + dynamicid);
+                        if (dynamicDetailInterface != null) {
+                            PostDynamicContentParam postDynamicContentParam = new PostDynamicContentParam()
+                                    .setParent_id(parent_id)
+                                    .setReply_userid(reply_userid).setDynamicid(dynamicid);
+                            dynamicDetailInterface.postDynamicAction(postDynamicContentParam);
+                        }
                         break;
                 }
             }

@@ -708,16 +708,28 @@ public final class Engine {
         OkHttpUtils
                 .post()
                 .url(NetApi.urlDynamicComment)
+                .params(postDynamicContentParam.getParams())
                 .build()
                 .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_POST_DYNAMIC_COMMENT));
     }
 
     //TODO 点赞
     public void putVote(PutVoteParam putVoteParam) {
-        LocalLog.d(TAG, "putVote() enter " + putVoteParam);
+        LocalLog.d(TAG, "putVote() enter " + putVoteParam.paramString());
         OkHttpUtils
                 .put()
-                .url(NetApi.urlDynamicVote)
+                .requestBody(new RequestBody() {
+                    @Override
+                    public MediaType contentType() {
+                        return MediaType.parse("application/x-www-form-urlencoded");
+                    }
+
+                    @Override
+                    public void writeTo(BufferedSink sink) throws IOException {
+
+                    }
+                })
+                .url(NetApi.urlDynamicVote + "/" +String.valueOf(putVoteParam.getDynamicid()))
                 .params(putVoteParam.getParams())
                 .build()
                 .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_PUT_VOTE));

@@ -27,14 +27,12 @@ public class LikeUserAdapter extends RecyclerView.Adapter<LikeUserAdapter.LikeUs
     private Context context;
     private final static int defaultValue = 7;
     List<?> mData;
-    DynamicDetailInterface dynamicDetailInterface;
 
     //TODO DATA
     public LikeUserAdapter(Context context, List<?> data, DynamicDetailInterface dynamicDetailInterface) {
         super();
         this.context = context;
         mData = data;
-        this.DynamicDetailInterface dynamicDetailInterface
     }
 
     @Override

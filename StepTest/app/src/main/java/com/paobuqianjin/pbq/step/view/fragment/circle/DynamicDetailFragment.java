@@ -2,17 +2,27 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.LikeBundleData;
@@ -131,6 +141,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     int dynamicid = -1;
     int userid = -1;
 
+    private View popRedPkgView;
+    private PopupWindow popupRedPkgWindow;
+    private TranslateAnimation animationCircleType;
 
     private int currentIndexPage = 1;
 
@@ -206,7 +219,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         likeNumIcon.setOnClickListener(onClickListener);
         contentSupports = (TextView) viewRoot.findViewById(R.id.content_supports);
         contentNumberIcon = (ImageView) viewRoot.findViewById(R.id.content_number_icon);
-
+        contentNumberIcon.setOnClickListener(onClickListener);
         supportPics = (RelativeLayout) viewRoot.findViewById(R.id.support_pics);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
@@ -261,7 +274,13 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                     break;
                 case R.id.content_number_icon:
                     LocalLog.d(TAG, "弹出发表评论输入框");
-
+                    PostDynamicContentParam postDynamicContentParam = new PostDynamicContentParam();
+                    postDynamicContentParam.
+                            setDynamicid(dynamicid)
+                            .setParent_id(0)
+                            .setUserid(Presenter.getInstance(getContext())
+                                    .getId()).setReply_userid(userid);
+                    postDynamicAction(postDynamicContentParam);
                     break;
                 default:
                     break;
@@ -275,6 +294,12 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         imageViewpager.removeOnPageChangeListener(onPageChangeListener);
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
         ButterKnife.unbind(this);
+        if (popupRedPkgWindow != null) {
+            if (popupRedPkgWindow.isShowing()) {
+                popupRedPkgWindow.dismiss();
+                popupRedPkgWindow = null;
+            }
+        }
     }
 
     @Override
@@ -285,7 +310,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(DynamicCommentListResponse dynamicCommentListResponse) {
         LocalLog.d(TAG, "DynamicCommentListResponse() enter " + dynamicCommentListResponse.toString());
-        contentDetailsListItem.setAdapter(new TopLevelContentAdapter(getContext(), dynamicCommentListResponse.getData().getData()));
+        contentDetailsListItem.setAdapter(new TopLevelContentAdapter(getContext(), dynamicCommentListResponse.getData().getData(), this));
     }
 
     @Override
@@ -325,9 +350,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 picViewpager.setVisibility(View.GONE);
             } else {
                 imageView0 = LayoutInflater.from(getContext()).inflate(R.layout.image_view_pager, null);
-                dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
                 dots.add(dot1);
                 Mview.add(imageView0);
+                dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
                 ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
                 Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
             }
@@ -412,22 +437,66 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         }
 
         likeData = (ArrayList<DynamicLikeListResponse.DataBeanX.DataBean>) dynamicLikeListResponse.getData().getData();
-        supportIconRecycler.setAdapter(new LikeUserAdapter(getContext(), dynamicLikeListResponse.getData().getData()));
+        supportIconRecycler.setAdapter(new LikeUserAdapter(getContext(), dynamicLikeListResponse.getData().getData(), this));
 
     }
 
     @Override
     public void response(PostDynamicContentResponse postDynamicContentResponse) {
         LocalLog.d(TAG, "PostDynamicContentResponse() enter " + postDynamicContentResponse.toString());
+        if (postDynamicContentResponse.getError() == 0) {
+            LocalLog.d(TAG, "评论成功");
+            popupRedPkgWindow.dismiss();
+        }
     }
 
     @Override
     public void response(PutVoteResponse putVoteResponse) {
         LocalLog.d(TAG, "PutVoteResponse() enter " + putVoteResponse.toString());
+        Toast.makeText(getContext(),putVoteResponse.getMessage(),Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void postDynamicAction(PostDynamicContentParam postDynamicContentParam) {
-        LocalLog.d(TAG, "PostDynamicContentParam() 弹出评论框");
+        LocalLog.d(TAG, "PostDynamicContentParam() 弹出评论框" + postDynamicContentParam.paramString());
+        popEdit(postDynamicContentParam);
+    }
+
+    private void popEdit(final PostDynamicContentParam postDynamicContentParam) {
+        LocalLog.d(TAG, "popRedPkg() enter");
+        popRedPkgView = View.inflate(getContext(), R.layout.response_edit_span, null);
+        popupRedPkgWindow = new PopupWindow(popRedPkgView,
+                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupRedPkgWindow = null;
+            }
+        });
+
+        final EditText editText = (EditText) popRedPkgView.findViewById(R.id.content_text);
+        Button button = (Button) popRedPkgView.findViewById(R.id.send_content);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String content = editText.getText().toString();
+                if (!content.equals("")) {
+                    postDynamicContentParam.setContent(content).setUserid(Presenter.getInstance(getContext()).getId());
+                    Presenter.getInstance(getContext()).postContent(postDynamicContentParam);
+                }
+            }
+        });
+
+        popupRedPkgWindow.setFocusable(true);
+        popupRedPkgWindow.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+        popupRedPkgWindow.showAtLocation(this.getView(), Gravity.BOTTOM, 0, 0);
+        popRedPkgView.startAnimation(animationCircleType);
     }
 }
