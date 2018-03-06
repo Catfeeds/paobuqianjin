@@ -30,7 +30,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicContentParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.FeedBackParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostIncomeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostMessageParam;
@@ -60,6 +60,7 @@ import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseRecordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
@@ -143,6 +144,7 @@ public final class Engine {
     private ReleaseRecordInterface releaseRecordInterface;
     private DanInterface danInterface;
     private UserFollowInterface userFollowInterface;
+    private ReleaseDynamicInterface releaseDynamicInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -209,6 +211,7 @@ public final class Engine {
     public final static int COMMAND_GET_VOTE_LIST = 58;
     public final static int COMMAND_POST_DYNAMIC_COMMENT = 59;
     public final static int COMMAND_PUT_VOTE = 60;
+    public final static int COMMAND_POST_DYNAMIC = 61;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -657,14 +660,14 @@ public final class Engine {
     }
 
     //TODO 发表动态
-    public void postDynamic(DynamicParam dynamicParam) {
+    public void postDynamic(PostDynamicParam postDynamicParam) {
         LocalLog.d(TAG, "postDynamic() enter");
         OkHttpUtils
                 .post()
                 .url(NetApi.urlDynamic)
-                .params(dynamicParam.getParam())
+                .params(postDynamicParam.getParams())
                 .build()
-                .execute(new NetStringCallBack(null, -1));
+                .execute(new NetStringCallBack(releaseDynamicInterface, COMMAND_POST_DYNAMIC));
     }
 
     //TODO 动态详情
@@ -729,8 +732,8 @@ public final class Engine {
 
                     }
                 })
-                .url(NetApi.urlDynamicVote + "/" +String.valueOf(putVoteParam.getDynamicid()))
-                .params(putVoteParam.getParams())
+                .url(NetApi.urlDynamicVote + "/" + String.valueOf(putVoteParam.getDynamicid()))
+                .param("userid", String.valueOf(putVoteParam.getUserid()))
                 .build()
                 .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_PUT_VOTE));
 
@@ -1628,8 +1631,9 @@ public final class Engine {
             danInterface = (DanInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserFollowInterface) {
             userFollowInterface = (UserFollowInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReleaseDynamicInterface) {
+            releaseDynamicInterface = (ReleaseDynamicInterface) uiCallBackInterface;
         }
-
     }
 
     //call onDestroy
@@ -1698,6 +1702,8 @@ public final class Engine {
             danInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserFollowInterface) {
             userFollowInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReleaseDynamicInterface) {
+            releaseDynamicInterface = null;
         }
     }
 }

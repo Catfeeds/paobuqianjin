@@ -277,13 +277,16 @@ public final class OwnerFragment extends BaseFragment {
                 startActivity(MyReleaseActivity.class, new Bundle());
                 break;
             case R.id.setting_span:
-                LocalLog.d(TAG, "设置");
-                intent.setClass(getContext(), UserInfoSettingActivity.class);
-                startActivity(intent);
+                LocalLog.d(TAG, "设置 临时退出");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                getActivity().finish();
+/*                intent.setClass(getContext(), UserInfoSettingActivity.class);
+                startActivity(intent);*/
                 break;
             case R.id.qrcode_rel:
-                LocalLog.d(TAG,"生成二维码");
-                startActivity(QrCodeMakeActivity.class,null);
+                LocalLog.d(TAG, "生成二维码");
+                startActivity(QrCodeMakeActivity.class, null);
                 break;
             default:
                 break;
@@ -303,11 +306,11 @@ public final class OwnerFragment extends BaseFragment {
             friends.setText(String.valueOf(userInfoResponse.getData().getFollowCount()));
             urlIcon = userInfoResponse.getData().getAvatar();
             if (userInfoResponse.getData().getSex() == 0) {
-                userIcon.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.man_head_back));
+                userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.man_head_back));
                 manWoman.setVisibility(View.GONE);
                 man.setVisibility(View.VISIBLE);
             } else if (userInfoResponse.getData().getSex() == 1) {
-                userIcon.setBackground(ContextCompat.getDrawable(getContext(),R.drawable.women_back));
+                userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.women_back));
                 manWoman.setVisibility(View.VISIBLE);
                 man.setVisibility(View.GONE);
             }

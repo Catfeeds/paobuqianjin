@@ -15,7 +15,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
@@ -223,8 +223,8 @@ public final class Presenter {
     }
 
     //TODO 发布动态
-    public void postDynamic(DynamicParam dynamicParam) {
-        engine.postDynamic(dynamicParam);
+    public void postDynamic(PostDynamicParam postDynamicParam) {
+        engine.postDynamic(postDynamicParam);
     }
 
     //TODO 获取圈子目标

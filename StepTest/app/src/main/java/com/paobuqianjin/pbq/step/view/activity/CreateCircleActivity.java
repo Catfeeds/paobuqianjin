@@ -520,12 +520,12 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             case R.id.switch_circle_money_add_off:
                 LocalLog.d(TAG, "是否充值!" + is_recharge);
                 if (!is_recharge) {
-                    switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.switch_bar_a));
+                    switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.switch_bar_a));
                     is_recharge = true;
                     enableMoneyEdit();
                     createCircleBodyParam.setIs_recharge(1);
                 } else {
-                    switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.switch_bar_a_pass));
+                    switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.switch_bar_a_pass));
                     is_recharge = false;
                     disableMoneyEdit();
                     createCircleBodyParam.setIs_recharge(0);
@@ -536,12 +536,12 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             case R.id.password_circle_switch:
                 LocalLog.d(TAG, "是否有密码!" + is_pwd);
                 if (!is_pwd) {
-                    passwordCircleSwitch.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.switch_bar_a));
+                    passwordCircleSwitch.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.switch_bar_a));
                     is_pwd = true;
                     enablePassEdit();
                     createCircleBodyParam.setIs_pwd(1);
                 } else {
-                    passwordCircleSwitch.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(),R.drawable.switch_bar_a_pass));
+                    passwordCircleSwitch.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.switch_bar_a_pass));
                     is_pwd = false;
                     disablePassEdit();
                     createCircleBodyParam.setIs_pwd(0);
@@ -758,7 +758,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             } else if (isXiaoMi(uri)) {
                 LocalLog.d(TAG, "小米手机相册 enter()");
                 LocalLog.d(TAG, uri.toString());
-                if("content".equalsIgnoreCase(uri.getScheme())){
+                if ("content".equalsIgnoreCase(uri.getScheme())) {
                     return uri.getLastPathSegment();
                 }
                 return uri.getPath();

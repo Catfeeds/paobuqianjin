@@ -15,11 +15,11 @@
         android:layout_below="@+id/bar_create_circle">
 
         <RelativeLayout
-            android:fitsSystemWindows="true"
-            android:layout_marginTop="-24dp"
             android:id="@+id/container_create_circle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-24dp"
+            android:fitsSystemWindows="true">
 
             <!--        <RelativeLayout
                         android:id="@+id/style_circle_pan"
@@ -258,7 +258,9 @@
                     android:focusable="true"
                     android:gravity="right"
                     android:hint="请输入充值金额"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
+                    android:maxLength="6"
+                    android:maxLines="1"
                     android:textColor="@color/color_161727"
                     android:textSize="12dp" />
 
@@ -297,7 +299,9 @@
                     android:background="@null"
                     android:gravity="right"
                     android:hint="请输入每日红包总金额"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
+                    android:maxLength="6"
+                    android:maxLines="1"
                     android:textColor="@color/color_161727"
                     android:textSize="12dp" />
 
@@ -609,13 +613,13 @@
             android:background="@color/color_fefefe" />
 
         <Button
-            android:stateListAnimator="@null"
             android:id="@+id/create_circle_confim"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:background="@drawable/create_button"
+            android:stateListAnimator="@null"
             android:text="创建"
             android:textColor="@color/color_fefefe"
             android:textSize="16dp" />

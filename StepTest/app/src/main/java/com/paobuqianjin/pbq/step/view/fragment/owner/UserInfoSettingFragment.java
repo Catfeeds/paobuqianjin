@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -40,6 +41,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
@@ -101,7 +103,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
     RelativeLayout changeCity;
     @Bind(R.id.line_change_city)
     ImageView lineChangeCity;
-
+    Button button;
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
     private TranslateAnimation animationCircleType;
@@ -137,6 +139,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
         changeCity = (RelativeLayout) viewRoot.findViewById(R.id.change_city);
         setOnClickListener();
 
+        button.setOnClickListener(onClickListener);
         qServiceCfg = QServiceCfg.instance(getContext());
     }
 
