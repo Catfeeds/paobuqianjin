@@ -66,7 +66,14 @@ public class AttentionCircleFragment extends BaseFragment {
         @Override
         public void response(DynamicAllIndexResponse dynamicAllIndexResponse) {
             LocalLog.d(TAG, "DynamicAllIndexResponse() enter" + dynamicAllIndexResponse.toString());
-            dynamicRecyclerView.setAdapter(new AttentionCircleAdapter(getContext(), dynamicAllIndexResponse.getData().getData()));
+            if (dynamicAllIndexResponse.getError() == 1) {
+                LocalLog.d(TAG, dynamicAllIndexResponse.getMessage());
+            } else if (dynamicAllIndexResponse.getError() == -1) {
+
+            } else if (dynamicAllIndexResponse.getError() == 0) {
+                dynamicRecyclerView.setAdapter(new AttentionCircleAdapter(getContext(), dynamicAllIndexResponse.getData().getData()));
+            }
+
         }
     };
 }

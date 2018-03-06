@@ -44,10 +44,10 @@ public class RechargeRankSimpleAdapter extends RecyclerView.Adapter<RechargeRank
     @Override
     public int getItemCount() {
         if (mData.size() > 0) {
-            if (mData.size() < 3) {
+            if (mData.size() < 7) {
                 return mData.size();
             } else {
-                return 3;
+                return 7;
             }
         } else {
             return 0;

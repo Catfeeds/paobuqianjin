@@ -10,7 +10,7 @@ public class CircleDetailResponse {
     /**
      * error : 0
      * message : success
-     * data : {"id":100110,"userid":1,"name":"一样可以想像","cover":"http://www.paobu.com/img/bg04.png","target":5000,"mobile":"13922895735","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/62529131-E1E3-4B70-AB6A-7C606AC3D8CE.jpg","is_pwd":0,"description":"在线教育家办学的确很","city":"深圳市","longitude":"0.9999999999","latitude":"0.9999999999","total_amount":"1.00","is_recharge":1,"red_packet_amount":"1","red_packet":1,"create_time":1517018768}
+     * data : {"id":100000,"userid":1,"name":"跑步跑步","cover":"http://www.paobu.com/img/bg01.png","target":10000,"mobile":"18276810054","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","is_pwd":1,"description":"表表表表表表","city":"东莞市","longitude":"0.9999999999","latitude":"0.9999999999","total_amount":"153.57","is_recharge":1,"red_packet_amount":"100.00","red_packet":10,"create_time":1514601774}
      */
 
     private int error;
@@ -52,23 +52,23 @@ public class CircleDetailResponse {
 
     public static class DataBean {
         /**
-         * id : 100110
+         * id : 100000
          * userid : 1
-         * name : 一样可以想像
-         * cover : http://www.paobu.com/img/bg04.png
-         * target : 5000
-         * mobile : 13922895735
-         * logo : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/62529131-E1E3-4B70-AB6A-7C606AC3D8CE.jpg
-         * is_pwd : 0
-         * description : 在线教育家办学的确很
-         * city : 深圳市
+         * name : 跑步跑步
+         * cover : http://www.paobu.com/img/bg01.png
+         * target : 10000
+         * mobile : 18276810054
+         * logo : http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg
+         * is_pwd : 1
+         * description : 表表表表表表
+         * city : 东莞市
          * longitude : 0.9999999999
          * latitude : 0.9999999999
-         * total_amount : 1.00
+         * total_amount : 153.57
          * is_recharge : 1
-         * red_packet_amount : 1
-         * red_packet : 1
-         * create_time : 1517018768
+         * red_packet_amount : 100.00
+         * red_packet : 10
+         * create_time : 1514601774
          */
 
         private int id;

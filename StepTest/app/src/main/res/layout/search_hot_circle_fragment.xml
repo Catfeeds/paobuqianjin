@@ -15,14 +15,15 @@
         android:layout_below="@+id/percent_bar"
         android:layout_marginTop="0dp"></include>
 
-    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+ <!--   <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/search_pan"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/search_pan">-->
 
-        <RelativeLayout
+        <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
+            android:layout_below="@+id/search_pan"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp">
 
@@ -30,8 +31,10 @@
                 android:id="@+id/search_choose_circle_recycler"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-        </RelativeLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
+<!--
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+-->
 
 
 </RelativeLayout>
