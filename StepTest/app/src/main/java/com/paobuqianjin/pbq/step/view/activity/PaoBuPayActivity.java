@@ -88,7 +88,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
                             .show(paySuccessFragment)
                             .commit();*/
                     LocalLog.d(TAG, "查询订单");
-                    Presenter.getInstance(this).getWxPayResultByOrderNo(outTradeNo,"wx" );
+                    Presenter.getInstance(this).getWxPayResultByOrderNo(outTradeNo, "wx");
                 } else if (resultCode == -1) {
     /*                LocalLog.d(TAG, "支付失败!");
                     PayFailedFragment payFailedFragment = new PayFailedFragment();
@@ -131,12 +131,16 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
     @Override
     public void response(WxPayResultResponse wxPayResultResponse) {
         LocalLog.d(TAG, wxPayResultResponse.toString());
-        PaySuccessFragment paySuccessFragment = new PaySuccessFragment();
-        paySuccessFragment.setPayNum(Float.parseFloat(wxPayResultResponse.getData().getTotal_fee()));
-        getSupportFragmentManager().beginTransaction()
-                .hide(circlePayFragment)
-                .add(R.id.pay_container, paySuccessFragment)
-                .show(paySuccessFragment)
-                .commit();
+        if (wxPayResultResponse.getError() == 0) {
+            PaySuccessFragment paySuccessFragment = new PaySuccessFragment();
+            paySuccessFragment.setPayNum(Float.parseFloat(wxPayResultResponse.getData().getTotal_fee()));
+            getSupportFragmentManager().beginTransaction()
+                    .hide(circlePayFragment)
+                    .add(R.id.pay_container, paySuccessFragment)
+                    .show(paySuccessFragment)
+                    .commit();
+        } else {
+            LocalLog.d(TAG, "error  ");
+        }
     }
 }

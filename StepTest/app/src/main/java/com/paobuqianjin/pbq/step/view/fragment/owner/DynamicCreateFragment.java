@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -77,9 +79,15 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Presenter.getInstance(getContext()).attachUiInterface(this);
+    }
+
+    @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-
+        dynamicContent = (EditText) viewRoot.findViewById(R.id.dynamic_content);
     }
 
     @Override
@@ -94,5 +102,6 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 }

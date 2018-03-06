@@ -91,7 +91,7 @@ public class MyReleaseFragment extends BaseBarStyleTextViewFragment implements M
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).taskMyRelease(1,10);
+        Presenter.getInstance(getContext()).taskMyRelease(1, 10);
         return rootView;
     }
 
@@ -118,10 +118,17 @@ public class MyReleaseFragment extends BaseBarStyleTextViewFragment implements M
     @Override
     public void response(TaskMyReleaseResponse taskMyReleaseResponse) {
         LocalLog.d(TAG, "TaskMyReleaseResponse() enter");
-        if (myReleaseScroll.getVisibility() != View.VISIBLE) {
-            myReleaseScroll.setVisibility(View.VISIBLE);
+        if (taskMyReleaseResponse.getError() == 1) {
+
+        } else if (taskMyReleaseResponse.getError() == -1) {
+
+        } else if (taskMyReleaseResponse.getError() == 0) {
+            if (myReleaseScroll.getVisibility() != View.VISIBLE) {
+                myReleaseScroll.setVisibility(View.VISIBLE);
+            }
+            myReleaseRecycler.setAdapter(new MyReleaseTaskAdapter(getContext(), taskMyReleaseResponse.getData().getData()));
         }
-        myReleaseRecycler.setAdapter(new MyReleaseTaskAdapter(getContext(), taskMyReleaseResponse.getData().getData()));
+
     }
 
     @Override

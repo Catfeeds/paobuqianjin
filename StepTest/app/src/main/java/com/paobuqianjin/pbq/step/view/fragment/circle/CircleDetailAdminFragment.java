@@ -321,16 +321,21 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
         @Override
         public void response(ReChargeRankResponse reChargeRankResponse) {
             LocalLog.d(TAG, "ReChargeRankResponse() ");
-            rankRecycler.setAdapter(new RechargeRankSimpleAdapter(getContext(), reChargeRankResponse.getData().getData()));
-            rechargeRankBundleData = new RechargeRankBundleData(
-                    (ArrayList<ReChargeRankResponse.DataBeanX.DataBean>)
-                            reChargeRankResponse.getData().getData());
+            if (reChargeRankResponse.getError() == 0) {
+                rankRecycler.setAdapter(new RechargeRankSimpleAdapter(getContext(), reChargeRankResponse.getData().getData()));
+                rechargeRankBundleData = new RechargeRankBundleData(
+                        (ArrayList<ReChargeRankResponse.DataBeanX.DataBean>)
+                                reChargeRankResponse.getData().getData());
+            }
         }
 
         @Override
         public void response(StepRankResponse stepRankResponse) {
             LocalLog.d(TAG, "StepRankResponse() ");
-            stepRecycler.setAdapter(new RankAdapter(getContext(), stepRankResponse.getData().getData()));
+            if(stepRankResponse.getError() == 0){
+                stepRecycler.setAdapter(new RankAdapter(getContext(), stepRankResponse.getData().getData()));
+            }
+
         }
     };
 

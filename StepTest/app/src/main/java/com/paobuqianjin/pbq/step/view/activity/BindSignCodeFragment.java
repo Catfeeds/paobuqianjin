@@ -118,12 +118,14 @@ public class BindSignCodeFragment extends BaseBarStyleTextViewFragment implement
     @Override
     public void response(CheckSignCodeResponse checkSignCodeResponse) {
         LocalLog.d(TAG, "CheckSignCodeResponse() enter 短信校验成功");
-        BindCardPostParam bindCardPostParam = new BindCardPostParam();
-        bindCardPostParam.setTypeid(1)
-                .setBank_card(openid)
-                .setRealname(screen_name);
+        if (checkSignCodeResponse.getError() == 0) {
+            BindCardPostParam bindCardPostParam = new BindCardPostParam();
+            bindCardPostParam.setTypeid(1)
+                    .setBank_card(openid)
+                    .setRealname(screen_name);
 
-        Presenter.getInstance(getContext()).bindCrashAccount(bindCardPostParam);
+            Presenter.getInstance(getContext()).bindCrashAccount(bindCardPostParam);
+        }
     }
 
     @Override

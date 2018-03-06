@@ -49,12 +49,14 @@ public class CirCleDetailActivity extends BaseActivity implements CircleDetailIn
     public void response(CircleDetailResponse circleDetailResponse) {
 
         LocalLog.d(TAG, "CircleDetailResponse() ");
-        userIdCircleAdminMain = circleDetailResponse.getData().getUserid();
-        circleDetailAdminFragment.setCircleDetail(circleDetailResponse, memberNum);
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.circle_detail_container, circleDetailAdminFragment)
-                .show(circleDetailAdminFragment)
-                .commit();
+        if (circleDetailResponse.getError() == 0) {
+            userIdCircleAdminMain = circleDetailResponse.getData().getUserid();
+            circleDetailAdminFragment.setCircleDetail(circleDetailResponse, memberNum);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.circle_detail_container, circleDetailAdminFragment)
+                    .show(circleDetailAdminFragment)
+                    .commit();
+        }
     }
 
     @Override
