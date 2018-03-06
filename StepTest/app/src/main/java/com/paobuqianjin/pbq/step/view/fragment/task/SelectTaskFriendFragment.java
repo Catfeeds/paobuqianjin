@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.task;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendSearchResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -19,6 +21,8 @@ import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.SelectTaskFriendAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -45,6 +49,7 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     RecyclerView friendRecycler;
     SelectTaskFriendAdapter selectTaskFriendAdapter = null;
     private LinearLayoutManager layoutManager;
+    private static final int SELECT_FRIENDS = 0;
 
     @Override
     protected int getLayoutResId() {
@@ -95,8 +100,12 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
                     LocalLog.d(TAG, "确定");
                     if (selectTaskFriendAdapter != null) {
                         //反馈选中结果到上一个Activity
-                        selectTaskFriendAdapter.getResultData();
-                        LocalLog.d(TAG,selectTaskFriendAdapter.getResultData().toString());
+                        FriendBundleData friendBundleData = new FriendBundleData((ArrayList<UserFriendResponse.DataBeanX.DataBean>) selectTaskFriendAdapter.getResultData());
+                        LocalLog.d(TAG, selectTaskFriendAdapter.getResultData().toString());
+                        Intent intent = new Intent();
+                        intent.putExtra(getActivity().getPackageName(), friendBundleData);
+                        getActivity().setResult(SELECT_FRIENDS, intent);
+                        getActivity().finish();
                     }
                     break;
             }

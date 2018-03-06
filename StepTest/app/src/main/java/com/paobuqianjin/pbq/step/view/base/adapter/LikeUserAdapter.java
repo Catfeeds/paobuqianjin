@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -29,7 +30,7 @@ public class LikeUserAdapter extends RecyclerView.Adapter<LikeUserAdapter.LikeUs
     List<?> mData;
 
     //TODO DATA
-    public LikeUserAdapter(Context context, List<?> data, DynamicDetailInterface dynamicDetailInterface) {
+    public LikeUserAdapter(Context context, List<?> data) {
         super();
         this.context = context;
         mData = data;
@@ -43,6 +44,8 @@ public class LikeUserAdapter extends RecyclerView.Adapter<LikeUserAdapter.LikeUs
     private void updateListItem(LikeUserViewHolder holder, int position) {
         if (mData.get(position) instanceof DynamicLikeListResponse.DataBeanX.DataBean) {
             Presenter.getInstance(context).getImage(holder.shareIcon, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
+        } else if (mData.get(position) instanceof UserFriendResponse.DataBeanX.DataBean) {
+            Presenter.getInstance(context).getImage(holder.shareIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
         }
     }
 

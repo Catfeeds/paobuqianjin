@@ -437,7 +437,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         }
 
         likeData = (ArrayList<DynamicLikeListResponse.DataBeanX.DataBean>) dynamicLikeListResponse.getData().getData();
-        supportIconRecycler.setAdapter(new LikeUserAdapter(getContext(), dynamicLikeListResponse.getData().getData(), this));
+        supportIconRecycler.setAdapter(new LikeUserAdapter(getContext(), dynamicLikeListResponse.getData().getData()));
 
     }
 

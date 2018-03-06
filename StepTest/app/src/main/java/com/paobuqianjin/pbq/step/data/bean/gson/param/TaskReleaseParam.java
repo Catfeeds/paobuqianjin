@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.param;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -36,6 +37,12 @@ task_days	任务天数	true	int
     protected Map<String, String> params;
 
 
+    public TaskReleaseParam() {
+        if (params == null) {
+            params = new LinkedHashMap<>();
+        }
+    }
+
     public int getUserid() {
         return userid;
     }
@@ -50,9 +57,9 @@ task_days	任务天数	true	int
         return to_userid;
     }
 
-    public TaskReleaseParam setTo_userid(int to_userid) {
+    public TaskReleaseParam setTo_userid(String userStrings) {
         this.to_userid = to_userid;
-        params.put("to_userid", String.valueOf(to_userid) + ',');
+        params.put("to_userid", userStrings);
         return this;
     }
 

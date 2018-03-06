@@ -146,6 +146,7 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
             image.setVisibility(View.GONE);
             image.setOnClickListener(onClickListener);
             contentNumbers = (TextView) view.findViewById(R.id.content_numbers);
+            likeNumIcon = (ImageView)view.findViewById(R.id.like_num_icon);
             contentNumberIcon = (ImageView) view.findViewById(R.id.content_number_icon);
             contentSupports = (TextView) view.findViewById(R.id.content_supports);
 

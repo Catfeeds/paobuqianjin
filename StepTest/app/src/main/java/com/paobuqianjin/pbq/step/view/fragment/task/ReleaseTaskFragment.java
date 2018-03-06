@@ -1,7 +1,9 @@
 package com.paobuqianjin.pbq.step.view.fragment.task;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +13,23 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
+import com.paobuqianjin.pbq.step.data.bean.bundle.LikeBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.SelectFriendForTaskActivity;
+import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -93,8 +103,11 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.confirm)
     Button confirm;
 
+    private static final int SELECT_FRIENDS = 0;
+    ArrayList<UserFriendResponse.DataBeanX.DataBean> dataBeans = null;
     private TaskReleaseParam taskReleaseParam = new TaskReleaseParam();
-
+    private String friends = "";
+    LinearLayoutManager layoutManager ;
     @Override
     protected String title() {
         return "发布任务";
@@ -126,6 +139,18 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
         Presenter.getInstance(getContext()).dispatchUiInterface(taskReleaseInterface);
     }
 
+    @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+        targetTaskStepNum = (EditText) viewRoot.findViewById(R.id.target_task_step_num);
+        targetTaskMoneyNum = (EditText) viewRoot.findViewById(R.id.target_task_money_num);
+        targetTaskDayNum = (EditText) viewRoot.findViewById(R.id.target_task_day_num);
+        recvRecycler = (RecyclerView) viewRoot.findViewById(R.id.recv_recycler);
+        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recvRecycler.setLayoutManager(layoutManager);
+    }
+
     private TaskReleaseInterface taskReleaseInterface = new TaskReleaseInterface() {
         @Override
         public void response(TaskReleaseResponse taskReleaseResponse) {
@@ -142,13 +167,23 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
                 break;
             case R.id.add_task_friend:
                 LocalLog.d(TAG, "添加任务好友");
-                startActivity(SelectFriendForTaskActivity.class, null);
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), SelectFriendForTaskActivity.class);
+                startActivityForResult(intent, SELECT_FRIENDS);
                 break;
             case R.id.add_ico:
                 LocalLog.d(TAG, "查看所有接入任务的好友");
                 break;
             case R.id.confirm:
                 LocalLog.d(TAG, "发布任务");
+                if (checkReleaseParams()) {
+                    taskReleaseParam
+                            .setTask_days(Integer.parseInt(targetTaskDayNum.getText().toString()))
+                            .setReward_amount(Float.parseFloat(targetTaskMoneyNum.getText().toString()))
+                            .setTarget_step(Integer.parseInt(targetTaskStepNum.getText().toString()))
+                            .setTo_userid(friends)
+                            .setUserid(Presenter.getInstance(getContext()).getId());
+                }
                 Presenter.getInstance(getContext()).taskRelease(taskReleaseParam);
                 break;
             default:
@@ -156,4 +191,45 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
         }
     }
 
+    private boolean checkReleaseParams() {
+        if (targetTaskStepNum.getText() == null || targetTaskStepNum.getText().toString().equals("")) {
+            Toast.makeText(getContext(), "请输入目标步数", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (targetTaskMoneyNum.getText() == null || targetTaskMoneyNum.getText().toString().equals("")) {
+            Toast.makeText(getContext(), "请输入奖励金额", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (targetTaskDayNum.getText() == null || targetTaskDayNum.getText().toString().equals("")) {
+            Toast.makeText(getContext(), "请输入任务天数", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (friends.equals("")) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LocalLog.d(TAG, "onActivityResult() enter");
+        switch (requestCode) {
+            case SELECT_FRIENDS:
+                LocalLog.d(TAG, "添加数据成功");
+                if (data != null) {
+                    FriendBundleData friendBundleData = (FriendBundleData) data.getParcelableExtra(getActivity().getPackageName());
+                    dataBeans = friendBundleData.getFriendData();
+                    recvRecycler.setAdapter(new LikeUserAdapter(getContext(),dataBeans));
+                    recvRecycler.addItemDecoration(new LikeUserAdapter.SpaceItemDecoration(10));
+                    for (int i = 0; i < dataBeans.size(); i++) {
+                        friends += String.valueOf(dataBeans.get(i).getId()) +",";
+                    }
+                    LocalLog.d(TAG, friends);
+                }
+                break;
+        }
+    }
 }

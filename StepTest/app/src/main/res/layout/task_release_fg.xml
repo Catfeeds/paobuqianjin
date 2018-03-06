@@ -52,6 +52,9 @@
             android:layout_toLeftOf="@+id/go_to_target_step"
             android:background="@null"
             android:hint="输入目标步数"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:inputType="number"
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
@@ -99,6 +102,9 @@
             android:layout_toLeftOf="@+id/task_pay"
             android:background="@null"
             android:hint="输入奖励金额"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:inputType="numberDecimal"
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
