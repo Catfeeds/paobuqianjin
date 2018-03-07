@@ -83,40 +83,40 @@
             android:orientation="horizontal">
 
             <View
-                android:visibility="gone"
                 android:id="@+id/dot_1"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:background="@drawable/image_viewpager_dot_selected"></View>
+                android:background="@drawable/image_viewpager_dot_selected"
+                android:visibility="gone"></View>
 
             <View
-                android:visibility="gone"
                 android:id="@+id/dot_2"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:background="@drawable/image_viewpager_dot_unselected"></View>
+                android:background="@drawable/image_viewpager_dot_unselected"
+                android:visibility="gone"></View>
 
             <View
-                android:visibility="gone"
                 android:id="@+id/dot_3"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:background="@drawable/image_viewpager_dot_unselected"></View>
+                android:background="@drawable/image_viewpager_dot_unselected"
+                android:visibility="gone"></View>
 
             <View
-                android:visibility="gone"
                 android:id="@+id/dot_4"
                 android:layout_width="8dp"
                 android:layout_height="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:background="@drawable/image_viewpager_dot_unselected"></View>
+                android:background="@drawable/image_viewpager_dot_unselected"
+                android:visibility="gone"></View>
         </LinearLayout>
     </RelativeLayout>
 
@@ -130,10 +130,10 @@
         android:layout_marginTop="20dp">
 
         <TextView
-            android:layout_centerVertical="true"
             android:id="@+id/content_numbers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="9dp"
             android:layout_toRightOf="@+id/content_number_icon"
             android:text=""
@@ -150,10 +150,10 @@
             android:background="@drawable/comment_dynimic" />
 
         <TextView
-            android:layout_centerVertical="true"
             android:id="@+id/content_supports"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="9dp"
             android:layout_toRightOf="@+id/like_num_icon"
             android:text=""
@@ -168,13 +168,14 @@
             android:background="@drawable/fabulous_s" />
 
         <ImageView
-            android:layout_centerVertical="true"
-            android:layout_marginRight="25dp"
-            android:layout_alignParentRight="true"
             android:id="@+id/delete_dynamic"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:src="@drawable/delete_dynamic_icon" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="25dp"
+            android:src="@drawable/delete_dynamic_icon"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -193,7 +194,6 @@
             android:background="@color/color_f6f6f7" />
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/first_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -203,7 +203,8 @@
             android:gravity="left"
             android:text=""
             android:textColor="@color/color_161727"
-            android:textSize="14dp" />
+            android:textSize="14dp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/scan_more"

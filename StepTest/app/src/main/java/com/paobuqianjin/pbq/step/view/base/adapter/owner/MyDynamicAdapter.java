@@ -210,6 +210,9 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
 
             holder.adapter = new ImageViewPagerAdapter(mContext, holder.Mview);
             holder.imageViewpager.setAdapter(holder.adapter);
+            if (Presenter.getInstance(mContext).getId() == ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getUserid()) {
+
+            }
         }
     }
 

@@ -103,6 +103,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
     private final static String QRCODE_ACTION = "android.intent.action.QRCODE";
     private final static String MEMBER_MANANGER_ACTION = "android.intent.action.MAMBER_MANAGER_ACTION";
 
+    String titleStr = "";
+
     /*
         public void setCircleId(Context context, int circleId, int circleNum, String targetStr, float total_money, float red_pack_money) {
             this.circleId = circleId;
@@ -127,7 +129,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
 
     @Override
     protected String title() {
-        return "圈子";
+        return titleStr;
     }
 
     @Override
@@ -154,7 +156,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
         @Override
         public void clickRight() {
 
-            if (circleDetailResponse.getData().getUserid() == Presenter.getInstance(getContext()).getId()) {
+            if (circleDetailResponse.getData().getIs_admin() == 1) {
                 LocalLog.d(TAG, "管理员界面");
                 popAdminSelect();
             } else {
@@ -236,6 +238,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
         rankRecycler.addItemDecoration(new RechargeRankSimpleAdapter.SpaceItemDecoration(30));
         stepRecycler.setLayoutManager(stepLayoutManager);
 
+
+        titleStr = circleDetailResponse.getData().getName();
         memberNumDes = (TextView) viewRoot.findViewById(R.id.member_num_des);
         String sAgeFormat = mContext.getResources().getString(R.string.member_total);
         String sFinalMember = String.format(sAgeFormat, circleNum);
@@ -247,7 +251,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
         String sMoneyFormat = mContext.getResources().getString(R.string.circle_total);
         String sMoney = String.format(sMoneyFormat, total_money);
         moneyRet = (TextView) viewRoot.findViewById(R.id.money_ret);
-        circleCover =(ImageView) viewRoot.findViewById(R.id.circle_cover);
+        circleCover = (ImageView) viewRoot.findViewById(R.id.circle_cover);
         if (circleDetailResponse != null) {
             String targetFormat = getResources().getString(R.string.target_step);
             target = String.format(targetFormat, circleDetailResponse.getData().getTarget());
@@ -258,7 +262,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
             LocalLog.d(TAG, "余额不足当天的红包");
 
         }
-        Presenter.getInstance(getContext()).getImage(circleCover,circleDetailResponse.getData().getLogo());
+        Presenter.getInstance(getContext()).getImage(circleCover, circleDetailResponse.getData().getLogo());
     }
 
 

@@ -1010,7 +1010,7 @@ public final class Engine {
 
     public void getCircleDetail(int circleId) {
         LocalLog.d(TAG, " 获取圈子详情 getCircleDetail() ");
-        String url = NetApi.urlCircle + "/" + String.valueOf(circleId);
+        String url = NetApi.urlCircle + "/" + String.valueOf(circleId) + "?userid=" + String.valueOf(getId(mContext));
         OkHttpUtils
                 .get()
                 .url(url)

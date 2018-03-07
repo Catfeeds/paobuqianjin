@@ -22,6 +22,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -666,25 +667,46 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         if (requestCode == CAMERA_PIC) {
             LocalLog.d(TAG, "PICTURE OK");
             if (data != null) {
+
+                //TODO 线程中上传保存*/
                 Uri selectedImage = data.getData();
 
                 final String pathResult = getPath(selectedImage);
                 LocalLog.d(TAG, "pathResult = " + pathResult);
-                Bitmap docodeFile = BitmapFactory.decodeFile(pathResult);
-                logoCirclePic.setImageBitmap(docodeFile);
-                //TODO 线程中上传保存
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                Bitmap docodeFile = BitmapFactory.decodeFile(pathResult, options);
 
+
+                // 获取到这个图片的原始宽度和高度
+                int picWidth = options.outWidth;
+                int picHeight = options.outHeight;
+                LocalLog.d(TAG, "options.outWidth = " + options.outWidth + "options.outHeight = " + options.outHeight);
+
+                // 获取屏的宽度和高度
+                WindowManager windowManager = getWindowManager();
+                Display display = windowManager.getDefaultDisplay();
+                int screenWidth = display.getWidth();
+                int screenHeight = display.getHeight();
+
+                LocalLog.d(TAG, "screenWidth =  " + screenWidth + ",screenHeight = " + screenHeight);
+                // isSampleSize是表示对图片的缩放程度，比如值为2图片的宽度和高度都变为以前的1/2
+                options.inSampleSize = 1;
+                // 根据屏的大小和图片大小计算出缩放比例
+                if (picWidth > picHeight) {
+                    if (picWidth > screenWidth)
+                        options.inSampleSize = picWidth / screenWidth;
+                } else {
+                    if (picHeight > screenHeight)
+                        options.inSampleSize = picHeight / screenHeight;
+                }
+
+                // 这次再真正地生成一个有像素的，经过缩放了的bitmap
+                options.inJustDecodeBounds = false;
+                docodeFile = BitmapFactory.decodeFile(pathResult, options);
+                logoCirclePic.setImageBitmap(docodeFile);
                 LogoUpTask logoUpTask = new LogoUpTask();
                 logoUpTask.execute(pathResult);
-          /*      new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ResultHelper result = null;
-                        PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                        result = putObjectSample.start(pathResult);
-                        LocalLog.d(TAG, "result = " + result.showMessage());
-                    }
-                }).start();*/
             }
 /*        if (requestCode == REQUEST_CODE_TAG) {
                 if (data != null) {

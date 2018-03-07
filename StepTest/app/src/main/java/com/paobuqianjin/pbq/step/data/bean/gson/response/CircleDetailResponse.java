@@ -6,11 +6,10 @@ package com.paobuqianjin.pbq.step.data.bean.gson.response;
  */
 
 public class CircleDetailResponse {
-
     /**
      * error : 0
      * message : success
-     * data : {"id":100000,"userid":1,"name":"跑步跑步","cover":"http://www.paobu.com/img/bg01.png","target":10000,"mobile":"18276810054","logo":"http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg","is_pwd":1,"description":"表表表表表表","city":"东莞市","longitude":"0.9999999999","latitude":"0.9999999999","total_amount":"153.57","is_recharge":1,"red_packet_amount":"100.00","red_packet":10,"create_time":1514601774}
+     * data : {"id":100233,"userid":30,"name":"原因1","cover":"http://www.paobu.com/img/bg01.png","target":8000,"mobile":"13424156029","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg","is_pwd":1,"description":"哟哟哟","city":"深圳福田","longitude":"0.9999999999","latitude":"0.9999999999","total_amount":"0.01","is_recharge":1,"red_packet_amount":"0.01","red_packet":10,"create_time":1520323430,"is_join":1,"is_admin":1,"is_red_packet":0}
      */
 
     private int error;
@@ -52,23 +51,26 @@ public class CircleDetailResponse {
 
     public static class DataBean {
         /**
-         * id : 100000
-         * userid : 1
-         * name : 跑步跑步
+         * id : 100233
+         * userid : 30
+         * name : 原因1
          * cover : http://www.paobu.com/img/bg01.png
-         * target : 10000
-         * mobile : 18276810054
-         * logo : http://pic.qqtn.com/up/2017-12/2017120912081833498.jpg
+         * target : 8000
+         * mobile : 13424156029
+         * logo : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg
          * is_pwd : 1
-         * description : 表表表表表表
-         * city : 东莞市
+         * description : 哟哟哟
+         * city : 深圳福田
          * longitude : 0.9999999999
          * latitude : 0.9999999999
-         * total_amount : 153.57
+         * total_amount : 0.01
          * is_recharge : 1
-         * red_packet_amount : 100.00
+         * red_packet_amount : 0.01
          * red_packet : 10
-         * create_time : 1514601774
+         * create_time : 1520323430
+         * is_join : 1
+         * is_admin : 1
+         * is_red_packet : 0
          */
 
         private int id;
@@ -88,6 +90,9 @@ public class CircleDetailResponse {
         private String red_packet_amount;
         private int red_packet;
         private int create_time;
+        private int is_join;
+        private int is_admin;
+        private int is_red_packet;
 
         public int getId() {
             return id;
@@ -225,6 +230,30 @@ public class CircleDetailResponse {
             this.create_time = create_time;
         }
 
+        public int getIs_join() {
+            return is_join;
+        }
+
+        public void setIs_join(int is_join) {
+            this.is_join = is_join;
+        }
+
+        public int getIs_admin() {
+            return is_admin;
+        }
+
+        public void setIs_admin(int is_admin) {
+            this.is_admin = is_admin;
+        }
+
+        public int getIs_red_packet() {
+            return is_red_packet;
+        }
+
+        public void setIs_red_packet(int is_red_packet) {
+            this.is_red_packet = is_red_packet;
+        }
+
         @Override
         public String toString() {
             return "DataBean{" +
@@ -245,6 +274,9 @@ public class CircleDetailResponse {
                     ", red_packet_amount='" + red_packet_amount + '\'' +
                     ", red_packet=" + red_packet +
                     ", create_time=" + create_time +
+                    ", is_join=" + is_join +
+                    ", is_admin=" + is_admin +
+                    ", is_red_packet=" + is_red_packet +
                     '}';
         }
     }

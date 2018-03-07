@@ -85,6 +85,8 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
     @Override
     public void response(DynamicPersonResponse dynamicPersonResponse) {
         LocalLog.d(TAG, "DynamicPersonResponse() enter" + dynamicPersonResponse.toString());
-        myDynamicRecycler.setAdapter(new MyDynamicAdapter(getContext(), dynamicPersonResponse.getData().getData()));
+        if (dynamicPersonResponse.getError() == 0) {
+            myDynamicRecycler.setAdapter(new MyDynamicAdapter(getContext(), dynamicPersonResponse.getData().getData()));
+        }
     }
 }

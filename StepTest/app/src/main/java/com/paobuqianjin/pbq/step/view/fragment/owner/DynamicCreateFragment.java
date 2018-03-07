@@ -280,11 +280,11 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                 // 这次再真正地生成一个有像素的，经过缩放了的bitmap
                 options.inJustDecodeBounds = false;
                 docodeFile = BitmapFactory.decodeFile(pathResult, options);
-                try {
+/*                try {
                     saveImage(docodeFile);
                 } catch (FileNotFoundException e) {
 
-                }
+                }*/
                 bitmaps.add(docodeFile);
                 picPath.add(pathResult);
                 int size = bitmaps.size();
