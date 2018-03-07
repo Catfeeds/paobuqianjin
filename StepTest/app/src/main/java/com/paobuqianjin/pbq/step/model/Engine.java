@@ -1555,11 +1555,14 @@ public final class Engine {
                 }
             } else if (LOCATION_ACTION.equals(intent.getAction())) {
                 LocalLog.d(TAG, "定位信息");
+                String city = intent.getStringExtra("city");
+                double la = intent.getDoubleExtra("latitude", 0d);
+                double lb = intent.getDoubleExtra("longitude", 0d);
                 if (homePageInterface != null) {
-                    String city = intent.getStringExtra("city");
-                    double la = intent.getDoubleExtra("latitude", 0d);
-                    double lb = intent.getDoubleExtra("longitude", 0d);
                     homePageInterface.responseLocation(city, la, lb);
+                }
+                if (releaseDynamicInterface != null) {
+                    releaseDynamicInterface.response(city, la, lb);
                 }
             }
         }

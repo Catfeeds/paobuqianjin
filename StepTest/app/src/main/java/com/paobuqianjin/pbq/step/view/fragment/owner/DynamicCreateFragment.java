@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,7 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.support.v4.app.FragmentActivity;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,17 +28,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
+import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
+import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.AddFriendAddressActivity;
-import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.umeng.socialize.utils.SocializeUtils;
@@ -94,12 +93,16 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     @Bind(R.id.at)
     ImageView at;
     private final static int CAMERA_PIC = 0;
+    @Bind(R.id.location_str)
+    TextView locationStr;
     private QServiceCfg qServiceCfg;
     List<Bitmap> bitmaps;
     List<String> picPath;
     List<String> netPath;
     private ProgressDialog dialog;
     PostDynamicParam postDynamicParam = new PostDynamicParam();
+    private StepLocationReciver stepLocationReciver = new StepLocationReciver();
+    private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
 
     @Override
     protected String title() {
@@ -128,6 +131,9 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     public void onAttach(Context context) {
         super.onAttach(context);
         Presenter.getInstance(getContext()).attachUiInterface(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(LOCATION_ACTION);
+        getContext().registerReceiver(stepLocationReciver, intentFilter);
     }
 
     private BaseBarImageViewFragment.ToolBarListener toolBarListener = new BaseBarImageViewFragment.ToolBarListener() {
@@ -162,11 +168,13 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         picB = (ImageView) viewRoot.findViewById(R.id.pic_b);
         picC = (ImageView) viewRoot.findViewById(R.id.pic_c);
         picD = (ImageView) viewRoot.findViewById(R.id.pic_d);
+        locationStr =(TextView)viewRoot.findViewById(R.id.location_str);
         bitmaps = new ArrayList<>();
         picPath = new ArrayList<>();
         netPath = new ArrayList<>();
         qServiceCfg = QServiceCfg.instance(getContext());
         dialog = new ProgressDialog(getContext());
+        Presenter.getInstance(getContext()).startService(null, LocalBaiduService.class);
     }
 
     @Override
@@ -182,6 +190,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         super.onDestroyView();
         ButterKnife.unbind(this);
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
+        getContext().unregisterReceiver(stepLocationReciver);
     }
 
     @OnClick({R.id.pic_a, R.id.pic_b, R.id.pic_c, R.id.pic_d, R.id.location_span})
@@ -332,7 +341,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
             }
             netPath = s;
             String content = dynamicContent.getText().toString();
-            postDynamicParam.setCity("深圳")
+            postDynamicParam.setCity(locationStr.getText().toString())
                     .setDynamic(content)
                     .setUserid(Presenter.getInstance(getContext()).getId())
                     .setImages(images);
@@ -447,5 +456,10 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         LocalLog.d(TAG, "path = " + path);
         FileOutputStream fos = new FileOutputStream(path);
         //bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+    }
+
+    @Override
+    public void response(String city, double latitude, double longitude) {
+        locationStr.setText(city);
     }
 }

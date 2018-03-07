@@ -49,6 +49,7 @@ public class LocalBaiduService extends Service {
             locationService.registerListener(mListener);
             locationService.setLocationOption(locationService.getDefaultLocationClientOption());
             locationService.start();
+            LocalLog.d(TAG, "启动定位");
         } else {
             LocalLog.d(TAG, "百度定位SDK还未初始化或者初始化失败！");
         }
@@ -162,6 +163,7 @@ public class LocalBaiduService extends Service {
                 intent.putExtra("latitude", location.getLatitude());
                 intent.putExtra("longitude", location.getLongitude());
                 sendBroadcast(intent);
+                stopSelf();
             }
         }
 

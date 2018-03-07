@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
+import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -198,6 +199,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         intentFilter.addAction(LOCATION_ACTION);
         getContext().registerReceiver(stepLocationReciver, intentFilter);
         Presenter.getInstance(getContext()).attachUiInterface(this);
+        Presenter.getInstance(getContext()).startService(null, LocalBaiduService.class);
         Presenter.getInstance(getContext()).getHomePageIncome("today", 1, 10);
         Presenter.getInstance(getContext()).getHomePageIncome("month", 1, 10);
         return super.onCreateView(inflater, container, savedInstanceState);

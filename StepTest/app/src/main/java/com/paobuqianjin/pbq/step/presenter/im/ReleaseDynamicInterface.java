@@ -8,4 +8,5 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
 
 public interface ReleaseDynamicInterface extends CallBackInterface {
     public void response(ReleaseDynamicResponse releaseDynamicResponse);
+    public void response(String city, double latitude, double longitude);
 }

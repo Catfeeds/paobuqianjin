@@ -88,6 +88,7 @@ public class PaoBuApplication extends Application {
             LocalLog.d(TAG, "isAsyncRun is " + isAsyncRun + " and run initSDKService()");
             new PaoBuApplication.DetectThread(this).start();
         }
+        initBaiDuSDK(this);
         isAsyncRun = true;
     }
 
@@ -106,8 +107,7 @@ public class PaoBuApplication extends Application {
                 UMShareAPI.get(app);
                 LocalLog.d(TAG, "DetectThread run() 初始化网络、计步服务、定位SDK、三方登陆注册、三方支付SDK等");
                 Presenter.getInstance(app).startService(StepService.START_STEP_ACTION, StepService.class);
-                app.initBaiDuSDK(app);
-                Presenter.getInstance(app).startService(null, LocalBaiduService.class);
+                //Presenter.getInstance(app).startService(null, LocalBaiduService.class);
                 app.initWXapi(app);
                 app.loadCitySelect(app);
             }
