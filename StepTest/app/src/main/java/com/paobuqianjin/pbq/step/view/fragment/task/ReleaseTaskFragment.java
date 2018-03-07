@@ -107,7 +107,8 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
     ArrayList<UserFriendResponse.DataBeanX.DataBean> dataBeans = null;
     private TaskReleaseParam taskReleaseParam = new TaskReleaseParam();
     private String friends = "";
-    LinearLayoutManager layoutManager ;
+    LinearLayoutManager layoutManager;
+
     @Override
     protected String title() {
         return "发布任务";
@@ -222,10 +223,15 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
                 if (data != null) {
                     FriendBundleData friendBundleData = (FriendBundleData) data.getParcelableExtra(getActivity().getPackageName());
                     dataBeans = friendBundleData.getFriendData();
-                    recvRecycler.setAdapter(new LikeUserAdapter(getContext(),dataBeans));
+                    recvRecycler.setAdapter(new LikeUserAdapter(getContext(), dataBeans));
                     recvRecycler.addItemDecoration(new LikeUserAdapter.SpaceItemDecoration(10));
                     for (int i = 0; i < dataBeans.size(); i++) {
-                        friends += String.valueOf(dataBeans.get(i).getId()) +",";
+                        if (i == dataBeans.size() - 1) {
+                            friends += String.valueOf(dataBeans.get(i).getId());
+                        }else {
+                            friends += String.valueOf(dataBeans.get(i).getId()) + ",";
+                        }
+
                     }
                     LocalLog.d(TAG, friends);
                 }

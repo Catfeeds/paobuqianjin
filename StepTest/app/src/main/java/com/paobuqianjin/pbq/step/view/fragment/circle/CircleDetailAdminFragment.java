@@ -82,6 +82,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
     TextView desc;
     @Bind(R.id.money_ret)
     TextView moneyRet;
+    @Bind(R.id.circle_cover)
+    ImageView circleCover;
     private Context mContext;
     private int circleId;
     private int circleNum;
@@ -143,7 +145,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
     }
 
 
-    private BaseBarImageViewFragment.ToolBarListener toolBarListener = new BaseBarImageViewFragment.ToolBarListener() {
+    private ToolBarListener toolBarListener = new ToolBarListener() {
         @Override
         public void clickLeft() {
 
@@ -245,7 +247,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
         String sMoneyFormat = mContext.getResources().getString(R.string.circle_total);
         String sMoney = String.format(sMoneyFormat, total_money);
         moneyRet = (TextView) viewRoot.findViewById(R.id.money_ret);
-
+        circleCover =(ImageView) viewRoot.findViewById(R.id.circle_cover);
         if (circleDetailResponse != null) {
             String targetFormat = getResources().getString(R.string.target_step);
             target = String.format(targetFormat, circleDetailResponse.getData().getTarget());
@@ -256,6 +258,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
             LocalLog.d(TAG, "余额不足当天的红包");
 
         }
+        Presenter.getInstance(getContext()).getImage(circleCover,circleDetailResponse.getData().getLogo());
     }
 
 
@@ -332,7 +335,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
         @Override
         public void response(StepRankResponse stepRankResponse) {
             LocalLog.d(TAG, "StepRankResponse() ");
-            if(stepRankResponse.getError() == 0){
+            if (stepRankResponse.getError() == 0) {
                 stepRecycler.setAdapter(new RankAdapter(getContext(), stepRankResponse.getData().getData()));
             }
 

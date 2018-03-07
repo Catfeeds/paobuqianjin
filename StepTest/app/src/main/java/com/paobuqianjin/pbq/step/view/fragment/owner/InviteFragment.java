@@ -195,13 +195,17 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     @Override
     public void response(MyInviteResponse myInviteResponse) {
         LocalLog.d(TAG, "MyInviteResponse() enter " + myInviteResponse.toString());
-        myInviteFragment.setMsg(myInviteResponse.getData().getNumber(), myInviteResponse.getData().getSum_credit(),
-                myInviteResponse.getData().getMobile());
+        if (myInviteResponse.getError() == 0) {
+            myInviteFragment.setMsg(myInviteResponse.getData().getNumber(), myInviteResponse.getData().getSum_credit(),
+                    myInviteResponse.getData().getMobile());
+        }
     }
 
     @Override
     public void response(InviteDanResponse inviteDanResponse) {
         LocalLog.d(TAG, "InviteDanResponse() enter " + inviteDanResponse.toString());
-        inviteDanFragment.setDanAdapter(new InviteDanAdapter(getContext(), inviteDanResponse.getData().getData()));
+        if (inviteDanResponse.getError() == 0) {
+            inviteDanFragment.setDanAdapter(new InviteDanAdapter(getContext(), inviteDanResponse.getData().getData()));
+        }
     }
 }

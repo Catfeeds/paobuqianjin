@@ -122,8 +122,10 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     @Override
     public void response(UserFriendResponse userFriendResponse) {
         LocalLog.d(TAG, "UserFriendResponse() enter " + userFriendResponse.toString());
-        selectTaskFriendAdapter = new SelectTaskFriendAdapter(getContext(), userFriendResponse.getData().getData());
-        friendRecycler.setAdapter(selectTaskFriendAdapter);
+        if (userFriendResponse.getError() == 0) {
+            selectTaskFriendAdapter = new SelectTaskFriendAdapter(getContext(), userFriendResponse.getData().getData());
+            friendRecycler.setAdapter(selectTaskFriendAdapter);
+        }
     }
 
     @Override

@@ -818,11 +818,11 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         return "com.miui.gallery.open".equals(uri.getAuthority());
     }
 
-    private void saveImage(Bitmap bitmap) throws FileNotFoundException {
+    private void saveImage(Bitmap bitmap, String sourcePath) throws FileNotFoundException {
         String path = this.getExternalCacheDir() + "/head_logo.png";
         LocalLog.d(TAG, "path = " + path);
         FileOutputStream fos = new FileOutputStream(path);
-        //bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
 
     }
 

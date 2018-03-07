@@ -66,10 +66,11 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
     EditText searchCircleText;
     @Bind(R.id.friend_recycler_viewpager)
     ViewPager friendRecyclerViewpager;
-    String[] titles = {"互相关注", "已关注","关注我的"};
+    String[] titles = {"互相关注", "已关注", "关注我的"};
     private FollowOtoFragment followOtoFragment;
     private MyFollowFragment myFollowFragment;
     private FollowMeFragment followMeFragment;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.my_friend_fg;
@@ -139,11 +140,10 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
         if (position == 0) {
             textView.setText(titles[0]);
             view.setGravity(Gravity.LEFT);
-        }else if(position == 1){
+        } else if (position == 1) {
             textView.setText(titles[1]);
             view.setGravity(Gravity.CENTER);
-        }
-        else if (position == 2) {
+        } else if (position == 2) {
             textView.setText(titles[2]);
             view.setGravity(Gravity.RIGHT);
         }
@@ -217,18 +217,31 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
     @Override
     public void response(FollowUserResponse followUserResponse) {
         LocalLog.d(TAG, "FollowUserResponse() enter " + followUserResponse.toString());
-        followMeFragment.setAdapter(new FollowAdapter(getContext(),followUserResponse.getData().getData()));
+        followMeFragment.setAdapter(new FollowAdapter(getContext(), followUserResponse.getData().getData()));
     }
 
     @Override
     public void response(UserIdFollowResponse userIdFollowResponse) {
         LocalLog.d(TAG, "UserIdFollowResponse() enter " + userIdFollowResponse.toString());
-        myFollowFragment.setAdapter(new FollowAdapter(getContext(), userIdFollowResponse.getData().getData()));
+        if (userIdFollowResponse.getError() == 0) {
+            if (userIdFollowResponse.getData() != null) {
+                myFollowFragment.setAdapter(new FollowAdapter(getContext(), userIdFollowResponse.getData().getData()));
+            }
+        } else if (userIdFollowResponse.getError() == 1) {
+            LocalLog.e(TAG, "没有数据");
+        } else if (userIdFollowResponse.getError() == -1) {
+            LocalLog.e(TAG, userIdFollowResponse.getMessage());
+        }
     }
 
     @Override
     public void response(UserFollowOtOResponse userFollowOtOResponse) {
         LocalLog.d(TAG, "UserFollowOtOResponse() enter " + userFollowOtOResponse.toString());
-        followOtoFragment.setAdapter(new FollowAdapter(getContext(), userFollowOtOResponse.getData().getData()));
+        if (userFollowOtOResponse.getError() == 0) {
+            if (userFollowOtOResponse.getData() != null) {
+                followOtoFragment.setAdapter(new FollowAdapter(getContext(), userFollowOtOResponse.getData().getData()));
+            }
+        }
+
     }
 }

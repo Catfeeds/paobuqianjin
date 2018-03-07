@@ -168,7 +168,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         picB = (ImageView) viewRoot.findViewById(R.id.pic_b);
         picC = (ImageView) viewRoot.findViewById(R.id.pic_c);
         picD = (ImageView) viewRoot.findViewById(R.id.pic_d);
-        locationStr =(TextView)viewRoot.findViewById(R.id.location_str);
+        locationStr = (TextView) viewRoot.findViewById(R.id.location_str);
         bitmaps = new ArrayList<>();
         picPath = new ArrayList<>();
         netPath = new ArrayList<>();
@@ -280,6 +280,11 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                 // 这次再真正地生成一个有像素的，经过缩放了的bitmap
                 options.inJustDecodeBounds = false;
                 docodeFile = BitmapFactory.decodeFile(pathResult, options);
+                try {
+                    saveImage(docodeFile);
+                } catch (FileNotFoundException e) {
+
+                }
                 bitmaps.add(docodeFile);
                 picPath.add(pathResult);
                 int size = bitmaps.size();

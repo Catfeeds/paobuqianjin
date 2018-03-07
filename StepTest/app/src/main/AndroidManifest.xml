@@ -332,10 +332,6 @@
             android:name=".view.activity.FillInviteCodeActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <activity
-            android:name=".view.activity.UitetsActivity"
-            android:label="@string/title_activity_uitets"
-            android:theme="@style/ImageTranslucentTheme"></activity>
 
         <!-- 声明service组件 -->
         <service

@@ -523,8 +523,8 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null
                 && callBackInterface instanceof UserFollowInterface) {
             if (command == Engine.COMMAND_MY_FOLLOW) {
-                UserIdFollowResponse userIdFollowResponse = new Gson().fromJson(s, UserIdFollowResponse.class);
-                ((UserFollowInterface) callBackInterface).response(userIdFollowResponse);
+               /* UserIdFollowResponse userIdFollowResponse = new Gson().fromJson(s, UserIdFollowResponse.class);
+                ((UserFollowInterface) callBackInterface).response(userIdFollowResponse);*/
             } else if (command == Engine.COMMAND_FOLLOW_ME) {
                 FollowUserResponse followUserResponse = new Gson().fromJson(s, FollowUserResponse.class);
                 ((UserFollowInterface) callBackInterface).response(followUserResponse);
