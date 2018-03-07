@@ -106,7 +106,7 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
     private static final int SELECT_FRIENDS = 0;
     ArrayList<UserFriendResponse.DataBeanX.DataBean> dataBeans = null;
     private TaskReleaseParam taskReleaseParam = new TaskReleaseParam();
-    private String friends = "";
+    private String friends;
     LinearLayoutManager layoutManager;
 
     @Override
@@ -150,12 +150,18 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recvRecycler.setLayoutManager(layoutManager);
+
+        addFriendDes = (TextView) viewRoot.findViewById(R.id.add_friend_des);
     }
 
     private TaskReleaseInterface taskReleaseInterface = new TaskReleaseInterface() {
         @Override
         public void response(TaskReleaseResponse taskReleaseResponse) {
             LocalLog.d(TAG, "TaskReleaseResponse() enter");
+            if (taskReleaseResponse.getError() == 0) {
+                LocalLog.d(TAG, "任务发布成功");
+                getActivity().finish();
+            }
 
         }
     };
@@ -225,14 +231,19 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
                     dataBeans = friendBundleData.getFriendData();
                     recvRecycler.setAdapter(new LikeUserAdapter(getContext(), dataBeans));
                     recvRecycler.addItemDecoration(new LikeUserAdapter.SpaceItemDecoration(10));
+                    String friends = "";
+                    String sFriendFormat = getContext().getResources().getString(R.string.add_friend);
+                    String sFriendNum = String.format(sFriendFormat, dataBeans.size());
+                    addFriendDes.setText(sFriendNum);
                     for (int i = 0; i < dataBeans.size(); i++) {
                         if (i == dataBeans.size() - 1) {
                             friends += String.valueOf(dataBeans.get(i).getId());
-                        }else {
+                        } else {
                             friends += String.valueOf(dataBeans.get(i).getId()) + ",";
                         }
 
                     }
+                    this.friends = friends;
                     LocalLog.d(TAG, friends);
                 }
                 break;

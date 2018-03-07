@@ -226,7 +226,7 @@
         android:layout_below="@+id/add_task_friend"
         android:layout_marginLeft="14dp"
         android:layout_marginTop="16dp"
-        android:text="已经添加2位好友" />
+        android:text="" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recv_recycler"
