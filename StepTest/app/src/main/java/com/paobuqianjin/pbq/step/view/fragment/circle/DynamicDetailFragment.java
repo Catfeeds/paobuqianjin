@@ -146,6 +146,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     private TranslateAnimation animationCircleType;
 
     private int currentIndexPage = 1;
+    private int likeNum, contentNum;
 
     @Override
     protected int getLayoutResId() {
@@ -310,7 +311,13 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(DynamicCommentListResponse dynamicCommentListResponse) {
         LocalLog.d(TAG, "DynamicCommentListResponse() enter " + dynamicCommentListResponse.toString());
-        contentDetailsListItem.setAdapter(new TopLevelContentAdapter(getContext(), dynamicCommentListResponse.getData().getData(), this));
+        if (dynamicCommentListResponse.getError() == 0) {
+            contentDetailsListItem.setAdapter(new TopLevelContentAdapter(getContext(), dynamicCommentListResponse.getData().getData(), this));
+        } else if (dynamicCommentListResponse.getError() == 1) {
+
+        } else if (dynamicCommentListResponse.getError() == -1) {
+            LocalLog.d(TAG, "");
+        }
     }
 
     @Override
@@ -327,8 +334,10 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         if (dynamicIdDetailResponse.getData().getCity() != null && !dynamicIdDetailResponse.getData().getCity().equals("")) {
             dynamicLocationCity.setText(dynamicIdDetailResponse.getData().getCity());
         }
-        contentNumbers.setText(String.valueOf(dynamicIdDetailResponse.getData().getComment()));
-        contentSupports.setText(String.valueOf(dynamicIdDetailResponse.getData().getVote()));
+        likeNum = dynamicIdDetailResponse.getData().getVote();
+        contentNum = dynamicIdDetailResponse.getData().getComment();
+        contentNumbers.setText(String.valueOf(contentNum));
+        contentSupports.setText(String.valueOf(likeNum));
 
         int likeNums = dynamicIdDetailResponse.getData().getVote();
         if (likeNums == 0) {
@@ -394,7 +403,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
             Presenter.getInstance(getContext()).getImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
 
-        } else if (imageSize == 4) {
+        } else if (imageSize >= 4) {
 
             dots.add(dot1);
             dots.add(dot2);
@@ -432,12 +441,14 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(DynamicLikeListResponse dynamicLikeListResponse) {
         LocalLog.d(TAG, "DynamicIdDetailResponse() enter " + dynamicLikeListResponse.toString());
-        if (supportPics.getVisibility() == View.GONE) {
-            supportPics.setVisibility(View.VISIBLE);
-        }
+        if (dynamicLikeListResponse.getError() == 0) {
+            if (supportPics.getVisibility() == View.GONE) {
+                supportPics.setVisibility(View.VISIBLE);
+            }
 
-        likeData = (ArrayList<DynamicLikeListResponse.DataBeanX.DataBean>) dynamicLikeListResponse.getData().getData();
-        supportIconRecycler.setAdapter(new LikeUserAdapter(getContext(), dynamicLikeListResponse.getData().getData()));
+            likeData = (ArrayList<DynamicLikeListResponse.DataBeanX.DataBean>) dynamicLikeListResponse.getData().getData();
+            supportIconRecycler.setAdapter(new LikeUserAdapter(getContext(), dynamicLikeListResponse.getData().getData()));
+        }
 
     }
 
@@ -453,7 +464,17 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(PutVoteResponse putVoteResponse) {
         LocalLog.d(TAG, "PutVoteResponse() enter " + putVoteResponse.toString());
-        Toast.makeText(getContext(),putVoteResponse.getMessage(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), putVoteResponse.getMessage(), Toast.LENGTH_SHORT).show();
+        if (putVoteResponse.getMessage().equals("点赞成功")) {
+            likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_s));
+            likeNum += 1;
+            contentSupports.setText(String.valueOf(likeNum));
+        } else {
+            likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_n));
+            likeNum -= 1;
+            contentSupports.setText(String.valueOf(likeNum));
+        }
+
     }
 
     @Override

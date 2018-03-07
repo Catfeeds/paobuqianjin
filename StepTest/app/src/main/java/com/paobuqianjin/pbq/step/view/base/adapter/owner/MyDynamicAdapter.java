@@ -172,7 +172,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 Presenter.getInstance(mContext).getImage(imageView2, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));
 
 
-            } else if (imageSize == 4) {
+            } else if (imageSize >= 4) {
 
                 holder.imageView0 = LayoutInflater.from(mContext).inflate(R.layout.image_view_pager, null);
                 holder.imageView1 = LayoutInflater.from(mContext).inflate(R.layout.image_view_pager, null);

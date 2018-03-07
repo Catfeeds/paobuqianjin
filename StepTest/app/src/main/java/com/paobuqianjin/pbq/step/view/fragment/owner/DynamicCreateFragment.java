@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
+import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.support.v4.app.FragmentActivity;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +25,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
@@ -91,6 +96,10 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     private final static int CAMERA_PIC = 0;
     private QServiceCfg qServiceCfg;
     List<Bitmap> bitmaps;
+    List<String> picPath;
+    List<String> netPath;
+    private ProgressDialog dialog;
+    PostDynamicParam postDynamicParam = new PostDynamicParam();
 
     @Override
     protected String title() {
@@ -109,7 +118,10 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
 
     @Override
     public void response(ReleaseDynamicResponse releaseDynamicResponse) {
-
+        LocalLog.d(TAG, "ReleaseDynamicResponse() enter" + releaseDynamicResponse.toString());
+        if (releaseDynamicResponse.getError() == 0) {
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -127,6 +139,17 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         @Override
         public void clickRight() {
             LocalLog.d(TAG, "发布");
+            String content = dynamicContent.getText().toString();
+            if (picPath.size() == 0) {
+                LocalLog.d(TAG, "没有图片");
+                if (content.equals("")) {
+                    Toast.makeText(getContext(), "没有内容", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } else {
+                LogoUpTask logoUpTask = new LogoUpTask();
+                logoUpTask.execute(picPath);
+            }
         }
     };
 
@@ -140,6 +163,10 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         picC = (ImageView) viewRoot.findViewById(R.id.pic_c);
         picD = (ImageView) viewRoot.findViewById(R.id.pic_d);
         bitmaps = new ArrayList<>();
+        picPath = new ArrayList<>();
+        netPath = new ArrayList<>();
+        qServiceCfg = QServiceCfg.instance(getContext());
+        dialog = new ProgressDialog(getContext());
     }
 
     @Override
@@ -220,6 +247,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                 // 获取到这个图片的原始宽度和高度
                 int picWidth = options.outWidth;
                 int picHeight = options.outHeight;
+                LocalLog.d(TAG, "options.outWidth = " + options.outWidth + "options.outHeight = " + options.outHeight);
 
                 // 获取屏的宽度和高度
                 WindowManager windowManager = getActivity().getWindowManager();
@@ -244,6 +272,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                 options.inJustDecodeBounds = false;
                 docodeFile = BitmapFactory.decodeFile(pathResult, options);
                 bitmaps.add(docodeFile);
+                picPath.add(pathResult);
                 int size = bitmaps.size();
                 if (size == 1) {
                     picA.setImageBitmap(bitmaps.get(0));
@@ -267,27 +296,48 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     }
 
 
-    public class LogoUpTask extends AsyncTask<String, Integer, String> {
+    public class LogoUpTask extends AsyncTask<List<String>, Integer, List<String>> {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            SocializeUtils.safeShowDialog(dialog);
         }
 
         @Override
-        protected String doInBackground(String... strings) {
-            String url = null;
-            for (String path : strings) {
-                LocalLog.d(TAG, "path = " + path);
-                ResultHelper result = null;
-                PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                result = putObjectSample.start(path);
-                //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
-                url = result.cosXmlResult.accessUrl;
-                LocalLog.d(TAG, "url = " + url);
-
+        protected List<String> doInBackground(List<String>[] lists) {
+            LocalLog.d(TAG, "length  =" + lists.length);
+            List<String> url = new ArrayList<>();
+            for (int i = 0; i < lists.length; i++) {
+                for (int j = 0; j < lists[i].size(); j++) {
+                    LocalLog.d(TAG, "path = " + lists[i].get(j));
+                    ResultHelper result = null;
+                    PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
+                    result = putObjectSample.start(lists[i].get(j));
+                    LocalLog.d(TAG, "result.cosXmlResult.accessUrl = " + result.cosXmlResult.accessUrl);
+                    url.add(result.cosXmlResult.accessUrl);
+                }
             }
             return url;
+        }
+
+        @Override
+        protected void onPostExecute(List<String> s) {
+            LocalLog.d(TAG, "onPostExecute() enter");
+            super.onPostExecute(s);
+            String images = "";
+            for (int i = 0; i < s.size(); i++) {
+                LocalLog.d(TAG, "s[" + i + "] =" + s.get(i));
+                images += s.get(i) + ",";
+            }
+            netPath = s;
+            String content = dynamicContent.getText().toString();
+            postDynamicParam.setCity("深圳")
+                    .setDynamic(content)
+                    .setUserid(Presenter.getInstance(getContext()).getId())
+                    .setImages(images);
+            Presenter.getInstance(getContext()).postDynamic(postDynamicParam);
+            SocializeUtils.safeCloseDialog(dialog);
         }
     }
 

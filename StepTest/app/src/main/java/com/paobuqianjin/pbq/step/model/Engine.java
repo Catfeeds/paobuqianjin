@@ -661,7 +661,7 @@ public final class Engine {
 
     //TODO 发表动态
     public void postDynamic(PostDynamicParam postDynamicParam) {
-        LocalLog.d(TAG, "postDynamic() enter");
+        LocalLog.d(TAG, "postDynamic() enter" + postDynamicParam.paramString());
         OkHttpUtils
                 .post()
                 .url(NetApi.urlDynamic)

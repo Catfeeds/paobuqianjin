@@ -36,6 +36,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.PostInviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
@@ -74,6 +75,7 @@ import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseRecordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
@@ -529,6 +531,11 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_FOLLOW_O_TO_O) {
                 UserFollowOtOResponse followOtOResponse = new Gson().fromJson(s, UserFollowOtOResponse.class);
                 ((UserFollowInterface) callBackInterface).response(followOtOResponse);
+            }
+        } else if (callBackInterface != null && callBackInterface instanceof ReleaseDynamicInterface) {
+            if (command == Engine.COMMAND_POST_DYNAMIC) {
+                ReleaseDynamicResponse releaseDynamicResponse = new Gson().fromJson(s, ReleaseDynamicResponse.class);
+                ((ReleaseDynamicInterface) callBackInterface).response(releaseDynamicResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");
