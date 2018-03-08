@@ -15,6 +15,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.MyReleaseDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskDetailActivity;
 
 import java.util.ArrayList;
@@ -119,9 +120,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 switch (view.getId()) {
                     case R.id.task_list_item:
                         LocalLog.d(TAG, "Item 被点击" + this.toString());
-                        Intent intent = new Intent();
-                        intent.setClass(context, TaskDetailActivity.class);
-                        context.startActivity(intent);
+                        if (taskId != -1) {
+                            Intent intent = new Intent();
+                            intent.putExtra("taskid", taskId);
+                            intent.setClass(context, TaskDetailActivity.class);
+                            context.startActivity(intent);
+                        }
                         break;
                     case R.id.release_details:
                         LocalLog.d(TAG, releaseDetails.getText().toString());

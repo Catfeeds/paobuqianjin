@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.task;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -97,6 +99,20 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            int taskId = intent.getIntExtra("taskid", -1);
+            if (taskId != -1) {
+                LocalLog.d(TAG, "获取 " + taskId + "任务详情");
+                Presenter.getInstance(getContext()).getTaskDetail(taskId);
+            }
+        }
     }
 
     @Override

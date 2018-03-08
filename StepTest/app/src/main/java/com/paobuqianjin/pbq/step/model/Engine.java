@@ -68,6 +68,7 @@ import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.StepDollarDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
+import com.paobuqianjin.pbq.step.presenter.im.TaskDetailRecInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
@@ -79,6 +80,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.view.activity.TaskDetailActivity;
 import com.squareup.picasso.Cache;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -147,6 +149,7 @@ public final class Engine {
     private UserFollowInterface userFollowInterface;
     private ReleaseDynamicInterface releaseDynamicInterface;
     private TaskMyRecInterface taskMyRecInterface;
+    private TaskDetailRecInterface taskDetailRecInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -215,6 +218,7 @@ public final class Engine {
     public final static int COMMAND_PUT_VOTE = 60;
     public final static int COMMAND_POST_DYNAMIC = 61;
     public final static int COMMAND_GET_MY_RCV_TASK_RECORD = 62;
+    public final static int COMMAND_GET_REC_TASK_DETAIL = 63;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1385,6 +1389,16 @@ public final class Engine {
 
     }
 
+    public void getTaskDetailRec(int taskId) {
+        String url = NetApi.urlTaskRecord + "/" + String.valueOf(taskId);
+        LocalLog.d(TAG, "getTaskDetailRec() enter url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(taskDetailRecInterface, COMMAND_GET_MY_RELEASE_TASK_DETAIL));
+    }
+
     public void taskMyRelease(int page, int pagesize) {
         String url = NetApi.urlTask + "?action=release&" + "userid=" + String.valueOf(getId(mContext)) + "&page=" + String.valueOf(page) + "&pagesize="
                 + String.valueOf(pagesize);
@@ -1653,6 +1667,8 @@ public final class Engine {
             releaseDynamicInterface = (ReleaseDynamicInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskMyRecInterface) {
             taskMyRecInterface = (TaskMyRecInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskMyRecInterface) {
+            taskDetailRecInterface = (TaskDetailRecInterface) uiCallBackInterface;
         }
     }
 
@@ -1726,6 +1742,8 @@ public final class Engine {
             releaseDynamicInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskMyRecInterface) {
             taskMyRecInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskMyRecInterface) {
+            taskDetailRecInterface = null;
         }
     }
 }

@@ -83,6 +83,7 @@ import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.StepDollarDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
+import com.paobuqianjin.pbq.step.presenter.im.TaskDetailRecInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
@@ -542,9 +543,11 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null && callBackInterface instanceof TaskMyRecInterface) {
             if (command == Engine.COMMAND_GET_MY_RCV_TASK_RECORD) {
                 LocalLog.d(TAG, "我领取的任务");
-                MyRecTaskRecordResponse myRecTaskRecordResponse = new Gson().fromJson(s,MyRecTaskRecordResponse.class);
+                MyRecTaskRecordResponse myRecTaskRecordResponse = new Gson().fromJson(s, MyRecTaskRecordResponse.class);
                 ((TaskMyRecInterface) callBackInterface).response(myRecTaskRecordResponse);
             }
+        } else if (callBackInterface != null && callBackInterface instanceof TaskDetailRecInterface) {
+
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }
