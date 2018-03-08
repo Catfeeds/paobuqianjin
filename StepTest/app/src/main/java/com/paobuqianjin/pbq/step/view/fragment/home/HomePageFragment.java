@@ -7,7 +7,9 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
@@ -36,12 +39,18 @@ import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
 import com.paobuqianjin.pbq.step.view.activity.MainActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
+import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.StepProcessDrawable;
 import com.paobuqianjin.pbq.step.view.base.view.WaveView;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.Rationale;
 
-import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -138,6 +147,10 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     private UpdateHandler updateHandler = new UpdateHandler(this);
 
     private static Map<String, Integer> weatherMap = new LinkedHashMap<>();
+    private Rationale mRationale;
+    private PermissionSetting mSetting;
+
+    private int PERMISSION_REQUEST = 100;
 
     static {
         weatherMap.put("0", R.drawable.weather_0);
@@ -188,6 +201,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mRationale = new DefaultRationale();
+        mSetting = new PermissionSetting(context);
     }
 
     @Nullable
@@ -199,10 +214,39 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         intentFilter.addAction(LOCATION_ACTION);
         getContext().registerReceiver(stepLocationReciver, intentFilter);
         Presenter.getInstance(getContext()).attachUiInterface(this);
-        Presenter.getInstance(getContext()).startService(null, LocalBaiduService.class);
+        requestPermission(Permission.Group.LOCATION);
         Presenter.getInstance(getContext()).getHomePageIncome("today", 1, 10);
         Presenter.getInstance(getContext()).getHomePageIncome("month", 1, 10);
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+
+    /*权限适配*/
+
+    private void requestPermission(String... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        toast(R.string.successfully);
+                        Presenter.getInstance(getContext()).startService(null, LocalBaiduService.class);
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                toast(R.string.failure);
+                if (AndPermission.hasAlwaysDeniedPermission(getActivity(), permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
+    }
+
+
+    protected void toast(@StringRes int message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

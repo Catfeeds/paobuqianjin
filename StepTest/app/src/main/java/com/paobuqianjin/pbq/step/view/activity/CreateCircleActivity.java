@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -49,19 +50,27 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
+import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
+import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
+import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 import com.umeng.socialize.utils.SocializeUtils;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.Rationale;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -185,6 +194,8 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         @Bind(R.id.flag_a1)
         TextView flagA1;*/
     private ProgressDialog dialog;
+    private Rationale mRationale;
+    private PermissionSetting mSetting;
 
     private ArrayList<String> circleTypeList;
     private PopupWindow popupCircleTypeWindow;
@@ -261,6 +272,9 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         createCircleBodyParam.setIs_recharge(0);
 
         dialog = new ProgressDialog(this);
+
+        mRationale = new DefaultRationale();
+        mSetting = new PermissionSetting(this);
     }
 
 
@@ -556,8 +570,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 break;
             case R.id.logo_circle_pan:
                 LocalLog.d(TAG, "上传圈子logo");
-                Intent picture = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(picture, CAMERA_PIC);
+                requestPermission(Permission.Group.STORAGE);
                 break;
            /* case R.id.circle_theme_text:
                 LocalLog.d(TAG, "添加标签!");
@@ -570,6 +583,36 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         }
     }
 
+
+    /*权限适配*/
+
+    private void requestPermission(String... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        toast(R.string.successfully);
+                        LocalLog.d(TAG, "获取权限成功");
+                        Intent picture = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(picture, CAMERA_PIC);
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                toast(R.string.failure);
+                if (AndPermission.hasAlwaysDeniedPermission(CreateCircleActivity.this, permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
+    }
+
+
+    protected void toast(@StringRes int message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 
     public boolean checkcreateCircleBodyParam() {
         createCircleBodyParam.setUserid(Presenter.getInstance(this).getId());

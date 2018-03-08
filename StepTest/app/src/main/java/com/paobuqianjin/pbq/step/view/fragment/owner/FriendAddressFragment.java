@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,11 +14,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.LocalContactAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
+import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.Rationale;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,6 +67,8 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment {
     private ContentResolver cr;
     private List<Map<String, String>> mp = new ArrayList<>();
     private LinearLayoutManager layoutManager;
+    private Rationale mRationale;
+    private PermissionSetting mSetting;
 
     @Override
     protected int getLayoutResId() {
@@ -80,10 +92,41 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment {
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
 
+        mRationale = new DefaultRationale();
+        mSetting = new PermissionSetting(getContext());
         layoutManager = new LinearLayoutManager(getContext());
         unRegAppRecycler = (RecyclerView) viewRoot.findViewById(R.id.un_reg_app_recycler);
         unRegAppRecycler.setLayoutManager(layoutManager);
-        unRegAppRecycler.setAdapter(new LocalContactAdapter(getContext(), getContacts()));
+        requestPermission(Permission.Group.CONTACTS);
+
+    }
+
+     /*权限适配*/
+
+    private void requestPermission(String... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        toast(R.string.successfully);
+                        unRegAppRecycler.setAdapter(new LocalContactAdapter(getContext(), getContacts()));
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                toast(R.string.failure);
+                if (AndPermission.hasAlwaysDeniedPermission(getActivity(), permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
+    }
+
+
+    protected void toast(@StringRes int message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     public List<Map<String, String>> getContacts() {
