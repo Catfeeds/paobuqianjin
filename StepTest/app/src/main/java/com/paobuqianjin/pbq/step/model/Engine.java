@@ -68,6 +68,7 @@ import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.StepDollarDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
+import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
@@ -145,6 +146,7 @@ public final class Engine {
     private DanInterface danInterface;
     private UserFollowInterface userFollowInterface;
     private ReleaseDynamicInterface releaseDynamicInterface;
+    private TaskMyRecInterface taskMyRecInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -212,6 +214,7 @@ public final class Engine {
     public final static int COMMAND_POST_DYNAMIC_COMMENT = 59;
     public final static int COMMAND_PUT_VOTE = 60;
     public final static int COMMAND_POST_DYNAMIC = 61;
+    public final static int COMMAND_GET_MY_RCV_TASK_RECORD = 62;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1476,15 +1479,27 @@ public final class Engine {
                 .execute(new NetStringCallBack(postInviteCodeInterface, COMMAND_POST_INVITE_CODE));
     }
 
-    //TODO 获取用户好友列表
+    //TODO 获取任务可选择好友
     public void getUserFriends() {
-        String url = NetApi.urlTaskRecord+"/getFriends?userid=" + getId(mContext);
+        String url = NetApi.urlTaskRecord + "/getFriends?userid=" + getId(mContext);
         LocalLog.d(TAG, "getUserFriends() url = " + url);
         OkHttpUtils
                 .get()
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(selectUserFriendInterface, COMMAND_USER_FRIEND));
+    }
+
+    //TODO 获取的我领取任务 http://119.29.10.64/v1/TaskRecord?action=all&userid=1
+    public void getAllMyRecTask() {
+        String url = NetApi.urlTaskRecord + "?action=all&userid=" + String.valueOf(getId(mContext));
+        LocalLog.d(TAG, "url  =  " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(taskMyRecInterface, COMMAND_GET_MY_RCV_TASK_RECORD));
+
     }
 
     //TODO HOME Page
@@ -1636,6 +1651,8 @@ public final class Engine {
             userFollowInterface = (UserFollowInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReleaseDynamicInterface) {
             releaseDynamicInterface = (ReleaseDynamicInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskMyRecInterface) {
+            taskMyRecInterface = (TaskMyRecInterface) uiCallBackInterface;
         }
     }
 
@@ -1707,6 +1724,8 @@ public final class Engine {
             userFollowInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReleaseDynamicInterface) {
             releaseDynamicInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskMyRecInterface) {
+            taskMyRecInterface = null;
         }
     }
 }

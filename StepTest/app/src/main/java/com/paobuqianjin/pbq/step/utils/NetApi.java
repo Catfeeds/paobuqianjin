@@ -102,11 +102,11 @@ public class NetApi {
 
     //TODO 发布任务接口
     public final static String urlTask = "http://119.29.10.64/v1/Task";
-    //TODO 我的任务列表
-    public final static String urlTaskRecord = "http://119.29.10.64/v1/TaskRecord";
     //TODO 用户步数接口
     //TODO 获取用户当前步数信息 http://119.29.10.64/v1/userstep
     public final static String urlUserStep = "http://119.29.10.64/v1/userstep";
+    //TODO 我的任务列表
+    public final static String urlTaskRecord = "http://119.29.10.64/v1/TaskRecord";
     //TODO 提现账户接口
     public final static String urlUserBankCard = "http://119.29.10.64/v1/UserBankCard";
     //TODO 验证码发送校验

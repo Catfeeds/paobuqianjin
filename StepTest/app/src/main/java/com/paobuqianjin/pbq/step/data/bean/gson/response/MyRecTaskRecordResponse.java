@@ -6,12 +6,12 @@ import java.util.List;
  * Created by pbq on 2018/2/8.
  */
 /*
-@className :MyRecvTaskRecord
+@className :MyRecTaskRecordResponse
 *@date 2018/2/8
 *@author
 *@description 我领取的任务列表  http://119.29.10.64/v1/TaskRecord?action=all&userid=8
 */
-public class MyRecvTaskRecord {
+public class MyRecTaskRecordResponse {
     /**
      * error : 0
      * message : success
@@ -48,7 +48,7 @@ public class MyRecvTaskRecord {
 
     @Override
     public String toString() {
-        return "MyRecvTaskRecord{" +
+        return "MyRecTaskRecordResponse{" +
                 "error=" + error +
                 ", message='" + message + '\'' +
                 ", data=" + data +

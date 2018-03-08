@@ -11,6 +11,8 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.TaskAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -22,7 +24,9 @@ public class FinishedTaskFragment extends BaseFragment {
     private final static String TAG = FinishedTaskFragment.class.getSimpleName();
     @Bind(R.id.finished_task_recycler)
     RecyclerView finishedTaskRecycler;
-    private LinearLayoutManager layoutManager ;
+    private LinearLayoutManager layoutManager;
+    private TaskAdapter adapter;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.task_finished_fg;
@@ -39,10 +43,17 @@ public class FinishedTaskFragment extends BaseFragment {
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        finishedTaskRecycler =(RecyclerView)viewRoot.findViewById(R.id.finished_task_recycler);
         layoutManager = new LinearLayoutManager(getContext());
+        finishedTaskRecycler = (RecyclerView) viewRoot.findViewById(R.id.finished_task_recycler);
         finishedTaskRecycler.setLayoutManager(layoutManager);
-        finishedTaskRecycler.setAdapter(new TaskAdapter(getContext()));
+        adapter = new TaskAdapter(getContext());
+        finishedTaskRecycler.setAdapter(adapter);
+    }
+
+    public void setData(List<?> data) {
+        if (finishedTaskRecycler != null) {
+            adapter.notifyDataSetChanged(data);
+        }
     }
 
     @Override

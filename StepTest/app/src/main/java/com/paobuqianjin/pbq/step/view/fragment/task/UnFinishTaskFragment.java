@@ -8,8 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.TaskAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,6 +26,7 @@ public class UnFinishTaskFragment extends BaseFragment {
     @Bind(R.id.task_unfinished_recycler)
     RecyclerView taskUnfinishedRecycler;
     LinearLayoutManager layoutManager;
+    private TaskAdapter adapter;
 
     @Override
     protected int getLayoutResId() {
@@ -43,8 +47,17 @@ public class UnFinishTaskFragment extends BaseFragment {
         layoutManager = new LinearLayoutManager(getContext());
         taskUnfinishedRecycler = (RecyclerView) viewRoot.findViewById(R.id.task_unfinished_recycler);
         taskUnfinishedRecycler.setLayoutManager(layoutManager);
-        taskUnfinishedRecycler.setAdapter(new TaskAdapter(getContext()));
+        adapter = new TaskAdapter(getContext());
+        taskUnfinishedRecycler.setAdapter(adapter);
 
+    }
+
+
+    public void setData(List<?> data) {
+        LocalLog.d(TAG,"setData() enter");
+        if (taskUnfinishedRecycler != null) {
+            adapter.notifyDataSetChanged(data);
+        }
     }
 
     @Override

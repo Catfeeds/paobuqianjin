@@ -29,6 +29,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyReleaseTaskDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentResponse;
@@ -82,6 +83,7 @@ import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.StepDollarDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
+import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
@@ -536,6 +538,12 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_POST_DYNAMIC) {
                 ReleaseDynamicResponse releaseDynamicResponse = new Gson().fromJson(s, ReleaseDynamicResponse.class);
                 ((ReleaseDynamicInterface) callBackInterface).response(releaseDynamicResponse);
+            }
+        } else if (callBackInterface != null && callBackInterface instanceof TaskMyRecInterface) {
+            if (command == Engine.COMMAND_GET_MY_RCV_TASK_RECORD) {
+                LocalLog.d(TAG, "我领取的任务");
+                MyRecTaskRecordResponse myRecTaskRecordResponse = new Gson().fromJson(s,MyRecTaskRecordResponse.class);
+                ((TaskMyRecInterface) callBackInterface).response(myRecTaskRecordResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

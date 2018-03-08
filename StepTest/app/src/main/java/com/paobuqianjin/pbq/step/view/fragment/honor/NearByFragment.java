@@ -38,7 +38,7 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
     public void onAttach(Context context) {
         super.onAttach(context);
         Presenter.getInstance(context).attachUiInterface(this);
-        Presenter.getInstance(context).getNearByPeople(0,0);
+        Presenter.getInstance(context).getNearByPeople(0, 0);
     }
 
     @Override
@@ -68,6 +68,6 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
     public void response(NearByResponse nearByResponse) {
         LocalLog.d(TAG, "NearByResponse() enter");
 
-        nearByRecycler.setAdapter(new NearByAdapter(getContext(),nearByResponse.getData()));
+        nearByRecycler.setAdapter(new NearByAdapter(getContext(), nearByResponse.getData()));
     }
 }

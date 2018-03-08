@@ -341,6 +341,10 @@ public final class Presenter {
         engine.getTaskDetail(taskId);
     }
 
+    public void getAllMyRecTask() {
+        engine.getAllMyRecTask();
+    }
+
     //TODO 用户段位
     public void getDanList() {
         engine.getDanList();

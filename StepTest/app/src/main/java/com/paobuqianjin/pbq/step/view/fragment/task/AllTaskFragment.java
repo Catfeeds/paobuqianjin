@@ -11,6 +11,8 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.TaskAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -22,6 +24,7 @@ public class AllTaskFragment extends BaseFragment {
     @Bind(R.id.all_task_recycler)
     RecyclerView allTaskRecycler;
     private LinearLayoutManager layoutManager;
+    private TaskAdapter adapter;
 
     @Override
     protected int getLayoutResId() {
@@ -42,8 +45,15 @@ public class AllTaskFragment extends BaseFragment {
         layoutManager = new LinearLayoutManager(getContext());
         allTaskRecycler = (RecyclerView) viewRoot.findViewById(R.id.all_task_recycler);
         allTaskRecycler.setLayoutManager(layoutManager);
-        allTaskRecycler.setAdapter(new TaskAdapter(getContext()));
+        adapter = new TaskAdapter(getContext());
+        allTaskRecycler.setAdapter(adapter);
 
+    }
+
+    public void setData(List<?> data) {
+        if (allTaskRecycler != null) {
+            adapter.notifyDataSetChanged(data);
+        }
     }
 
     @Override
