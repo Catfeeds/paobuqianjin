@@ -8,10 +8,11 @@ import java.util.List;
  */
 
 public class UserFriendResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":2,"totalCount":12},"data":[{"id":12,"nickname":"惆怅旅客","avatar":"http://pic.qqtn.com/up/2017-12/15127898946203092.jpg"},{"id":2,"nickname":"李五","avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg"},{"id":3,"nickname":"九卿臣","avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg"},{"id":4,"nickname":"团魂","avatar":"http://pic.qqtn.com/up/2017-12/2017120911184236664.jpg"},{"id":5,"nickname":"孤央","avatar":"http://pic.qqtn.com/up/2017-12/15127898935630842.jpg"},{"id":6,"nickname":"酒自斟","avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg"},{"id":7,"nickname":"沉秋","avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg"},{"id":8,"nickname":"酒自斟","avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg"},{"id":9,"nickname":"孤傲王者","avatar":"http://pic.qqtn.com/up/2017-12/15127898933628309.jpg"},{"id":10,"nickname":"孤君独战","avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg"}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":2,"totalCount":11},"data":[{"id":1,"avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额","is_distribute":1},{"id":2,"avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","nickname":"李五","is_distribute":1},{"id":3,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg","nickname":"九卿臣","is_distribute":0},{"id":4,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184236664.jpg","nickname":"团魂","is_distribute":0},{"id":5,"avatar":"http://pic.qqtn.com/up/2017-12/15127898935630842.jpg","nickname":"孤央","is_distribute":0},{"id":6,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","is_distribute":0},{"id":7,"avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg","nickname":"沉秋","is_distribute":0},{"id":8,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","is_distribute":1},{"id":9,"avatar":"http://pic.qqtn.com/up/2017-12/15127898933628309.jpg","nickname":"孤傲王者","is_distribute":0},{"id":10,"avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","nickname":"孤君独战","is_distribute":0},{"id":61,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/cKuFQO8UEyKesahdoW8hahuDr3FXuSKwVNv7lJHY7Y6gDlejf7TBbMhz866ZAX9iaibLmam2VAibCYY0gBMsFyBPw/132","nickname":"俊","is_distribute":1}]}
      */
 
     private int error;
@@ -53,8 +54,8 @@ public class UserFriendResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":2,"totalCount":12}
-         * data : [{"id":12,"nickname":"惆怅旅客","avatar":"http://pic.qqtn.com/up/2017-12/15127898946203092.jpg"},{"id":2,"nickname":"李五","avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg"},{"id":3,"nickname":"九卿臣","avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg"},{"id":4,"nickname":"团魂","avatar":"http://pic.qqtn.com/up/2017-12/2017120911184236664.jpg"},{"id":5,"nickname":"孤央","avatar":"http://pic.qqtn.com/up/2017-12/15127898935630842.jpg"},{"id":6,"nickname":"酒自斟","avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg"},{"id":7,"nickname":"沉秋","avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg"},{"id":8,"nickname":"酒自斟","avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg"},{"id":9,"nickname":"孤傲王者","avatar":"http://pic.qqtn.com/up/2017-12/15127898933628309.jpg"},{"id":10,"nickname":"孤君独战","avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg"}]
+         * pagenation : {"page":1,"pageSize":10,"totalPage":2,"totalCount":11}
+         * data : [{"id":1,"avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额","is_distribute":1},{"id":2,"avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","nickname":"李五","is_distribute":1},{"id":3,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg","nickname":"九卿臣","is_distribute":0},{"id":4,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184236664.jpg","nickname":"团魂","is_distribute":0},{"id":5,"avatar":"http://pic.qqtn.com/up/2017-12/15127898935630842.jpg","nickname":"孤央","is_distribute":0},{"id":6,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","is_distribute":0},{"id":7,"avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg","nickname":"沉秋","is_distribute":0},{"id":8,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","is_distribute":1},{"id":9,"avatar":"http://pic.qqtn.com/up/2017-12/15127898933628309.jpg","nickname":"孤傲王者","is_distribute":0},{"id":10,"avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","nickname":"孤君独战","is_distribute":0},{"id":61,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/cKuFQO8UEyKesahdoW8hahuDr3FXuSKwVNv7lJHY7Y6gDlejf7TBbMhz866ZAX9iaibLmam2VAibCYY0gBMsFyBPw/132","nickname":"俊","is_distribute":1}]
          */
 
         private PagenationBean pagenation;
@@ -89,7 +90,7 @@ public class UserFriendResponse {
              * page : 1
              * pageSize : 10
              * totalPage : 2
-             * totalCount : 12
+             * totalCount : 11
              */
 
             private int page;
@@ -142,14 +143,16 @@ public class UserFriendResponse {
 
         public static class DataBean implements Serializable {
             /**
-             * id : 12
-             * nickname : 惆怅旅客
-             * avatar : http://pic.qqtn.com/up/2017-12/15127898946203092.jpg
+             * id : 1
+             * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg
+             * nickname : 嗯额
+             * is_distribute : 1
              */
 
             private int id;
-            private String nickname;
             private String avatar;
+            private String nickname;
+            private int is_distribute;
 
             public int getId() {
                 return id;
@@ -157,14 +160,6 @@ public class UserFriendResponse {
 
             public void setId(int id) {
                 this.id = id;
-            }
-
-            public String getNickname() {
-                return nickname;
-            }
-
-            public void setNickname(String nickname) {
-                this.nickname = nickname;
             }
 
             public String getAvatar() {
@@ -175,12 +170,29 @@ public class UserFriendResponse {
                 this.avatar = avatar;
             }
 
+            public String getNickname() {
+                return nickname;
+            }
+
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
+            }
+
+            public int getIs_distribute() {
+                return is_distribute;
+            }
+
+            public void setIs_distribute(int is_distribute) {
+                this.is_distribute = is_distribute;
+            }
+
             @Override
             public String toString() {
                 return "DataBean{" +
                         "id=" + id +
-                        ", nickname='" + nickname + '\'' +
                         ", avatar='" + avatar + '\'' +
+                        ", nickname='" + nickname + '\'' +
+                        ", is_distribute=" + is_distribute +
                         '}';
             }
         }

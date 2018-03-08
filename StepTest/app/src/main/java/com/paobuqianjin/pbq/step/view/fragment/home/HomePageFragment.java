@@ -277,7 +277,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         updateHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                popRedPkg();
+                //popRedPkg();
             }
         }, 2000);
     }

@@ -124,4 +124,6 @@ public class NetApi {
     public final static String urlUserLevel = "http://119.29.10.64/v1/userlevel";
     //TODO 邀请好友接口
     public final static String urlInvite = "http://119.29.10.64/v1/userinviter";
+
+
 }

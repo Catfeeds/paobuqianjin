@@ -31,10 +31,15 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
     private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data;
     private ChoiceCircleResponse.DataBeanX.DataBean tmpData;
 
-    public SearchCircleAdapter(Context context, ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data) {
+    public SearchCircleAdapter(Context context) {
         super();
         mContext = context;
+    }
+
+
+    public void notifyDataSetChanged(ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data) {
         this.data = data;
+        super.notifyDataSetChanged();
     }
 
     @Override

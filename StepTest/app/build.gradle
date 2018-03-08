@@ -87,4 +87,5 @@ dependencies {
     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
     implementation 'com.yanzhenjie:permission:2.0.0-rc2'
     implementation 'com.yanzhenjie.alertdialog:alertdialog:1.0.1'
+    compile 'com.yanzhenjie:recyclerview-swipe:1.1.4'
 }
