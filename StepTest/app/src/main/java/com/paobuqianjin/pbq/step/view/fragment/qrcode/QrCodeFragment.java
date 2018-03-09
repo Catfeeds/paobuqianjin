@@ -126,7 +126,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
             codeInfo = "circleid:" + id;
         } else {
             userid = String.valueOf(Presenter.getInstance(getContext()).getId());
-            codeInfo = "userid" + userid;
+            codeInfo = "userid:" + userid;
         }
 
         qrcodeImg.setImageBitmap(encodeBitmap(codeInfo));

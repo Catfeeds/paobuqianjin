@@ -32,7 +32,7 @@ public class MainActivity extends BaseActivity {
     private HomePageFragment mHomePageFragment;
     private HonorFragment mHonorFragment;
     private FriendCircleFragment mFriendCircleFragment;
-    public  TaskFragment taskFragment;
+    public TaskFragment taskFragment;
     private OwnerFragment mOwnerFragment;
     private Fragment[] mFragments;
     private int mIndex = 0;
@@ -46,6 +46,7 @@ public class MainActivity extends BaseActivity {
     private int[][] icon = new int[][]{{R.drawable.home_n, R.drawable.home_s}, {R.drawable.circle_n, R.drawable.circle_s},
             {R.drawable.task_n, R.drawable.task_s},
             {R.drawable.list_n, R.drawable.list_s}, {R.drawable.me_n, R.drawable.me_s}};
+    private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.ACTION_SCAN_CIRCLE_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,6 +222,24 @@ public class MainActivity extends BaseActivity {
                 // ScanResult 为 获取到的字符串
                 String ScanResult = intentResult.getContents();
                 Toast.makeText(this, "扫描成功:" + ScanResult, Toast.LENGTH_LONG).show();
+                LocalLog.d(TAG, ScanResult);
+                if (ScanResult.startsWith("userid:")) {
+                    LocalLog.d(TAG, "扫描个人");
+                    String userid = ScanResult.substring("userid:".length(), ScanResult.length());
+                    LocalLog.d(TAG, "userid = " + userid);
+                    //TODO ACTION_SCAN_USERID
+                } else if (ScanResult.startsWith("circleid:")) {
+                    LocalLog.d(TAG, "扫描圈子");
+                    String circleid = ScanResult.substring("circleid:".length(), ScanResult.length());
+                    LocalLog.d(TAG, "circleid = " + circleid);
+                    //TODO ACTION_SCAND_CIRCLE_ID
+
+                    Intent intent = new Intent();
+                    intent.setClass(this, CirCleDetailActivity.class);
+                    intent.putExtra(getPackageName() + "circleid", Integer.parseInt(circleid));
+                    intent.setAction(ACTION_SCAN_CIRCLE_ID);
+                    startActivity(intent);
+                }
 
             }
         } else {

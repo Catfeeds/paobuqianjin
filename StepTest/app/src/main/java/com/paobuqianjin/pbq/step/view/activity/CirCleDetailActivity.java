@@ -24,25 +24,28 @@ public class CirCleDetailActivity extends BaseActivity implements CircleDetailIn
     private int userIdCircleAdminMain = -1;
     private int circleId = -1;
     private int memberNum = -1;
+    private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.ACTION_SCAN_CIRCLE_ID";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.circle_detail_activity_layout);
         Presenter.getInstance(this).attachUiInterface(this);
-        Intent intent = getIntent();
-        if (intent != null) {
-            circleId = intent.getIntExtra(getPackageName() + "circleid", -1);
-            memberNum = intent.getIntExtra(getPackageName() + "membernum", -1);
-            LocalLog.d(TAG, "circleId = " + circleId + " membernum = " + memberNum);
-            Presenter.getInstance(this).getCircleDetail(circleId);
-        }
+
     }
 
     @Override
     protected void initView() {
         super.initView();
-
+        Intent intent = getIntent();
+        if (intent != null && !ACTION_SCAN_CIRCLE_ID.equals(intent.getAction())) {
+            circleId = intent.getIntExtra(getPackageName() + "circleid", -1);
+            memberNum = intent.getIntExtra(getPackageName() + "membernum", -1);
+            LocalLog.d(TAG, "circleId = " + circleId + " membernum = " + memberNum);
+            Presenter.getInstance(this).getCircleDetail(circleId);
+        } else if (intent != null && ACTION_SCAN_CIRCLE_ID.equals(intent.getAction())) {
+            LocalLog.d(TAG, "扫码进入详情");
+        }
     }
 
     @Override
