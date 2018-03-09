@@ -165,6 +165,7 @@ public final class OwnerFragment extends BaseFragment {
     RelativeLayout qrcodeRel;
     @Bind(R.id.friend_scan)
     RelativeLayout friendScan;
+    private String userAvatar;
 
     @Nullable
     @Override
@@ -286,7 +287,11 @@ public final class OwnerFragment extends BaseFragment {
                 break;
             case R.id.qrcode_rel:
                 LocalLog.d(TAG, "生成二维码");
-                startActivity(QrCodeMakeActivity.class, null);
+                intent.putExtra("usericon", urlIcon);
+                intent.putExtra("username", userName.getText().toString());
+                intent.putExtra("userid", String.valueOf(Presenter.getInstance(getContext()).getId()));
+                intent.setClass(getContext(),QrCodeMakeActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;
@@ -299,6 +304,7 @@ public final class OwnerFragment extends BaseFragment {
         @Override
         public void response(UserInfoResponse userInfoResponse) {
             LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
+            userAvatar = userInfoResponse.getData().getAvatar();
             Presenter.getInstance(getContext()).getImage(headIcon, userInfoResponse.getData().getAvatar());
             userName.setText(userInfoResponse.getData().getNickname());
             userId.setText("ID:" + String.valueOf(userInfoResponse.getData().getId()));
