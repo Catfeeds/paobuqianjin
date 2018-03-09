@@ -66,7 +66,7 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
             LocalLog.d(TAG, "imageSize = " + imageSize);
             if (((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic().equals("")) {
                 LocalLog.d(TAG, "无内容");
-                holder.dynamicDes.setVisibility(View.GONE);
+                //holder.dynamicDes.setVisibility(View.GONE);
             } else {
                 holder.dynamicDes.setText(((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic());
             }

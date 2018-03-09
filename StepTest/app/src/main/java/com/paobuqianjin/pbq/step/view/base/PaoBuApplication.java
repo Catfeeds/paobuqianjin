@@ -20,6 +20,7 @@ import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.socialize.Config;
@@ -50,7 +51,7 @@ public class PaoBuApplication extends Application {
     private final static String TAG = PaoBuApplication.class.getSimpleName();
     public LocationService locationService;
     private static boolean isAsyncRun = false;
-    private static final long cacheSize = 1024 * 1024 * 60;
+    private static final long cacheSize = 1024 * 1024 * 200;
 
     @Override
     public void onCreate() {
@@ -121,11 +122,18 @@ public class PaoBuApplication extends Application {
             Response response = chain.proceed(request);
             LocalLog.d(TAG, "intercept() enter" + response.toString());
             /*在此处定义缓存策略，图片缓存，信息缓存，验证码缓存.....,按链接性质过滤*/
+            LocalLog.d(TAG, "String url =" + request.url());
+            long max_age = 3600;
+            if (request.url().toString().startsWith(NetApi.url)) {
+                LocalLog.d(TAG, "request.url().toString() = "+ request.url().toString());
+                max_age = 0;
+            }
+            LocalLog.d(TAG, "max_age = " + max_age);
             Response response1 = response.newBuilder()
                     .removeHeader("Pragma")
                     .removeHeader("Cache-Control")
                     //cache for 30 days
-                    .header("Cache-Control", "max-age=" + 60) //缓存60 秒，在60秒内不会重新访问网络只会访问缓存
+                    .header("Cache-Control", "max-age=" + String.valueOf(max_age)) //缓存60 秒，在60秒内不会重新访问网络只会访问缓存
                     .build();
             return response1;
         }

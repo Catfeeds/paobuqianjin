@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/dot"
-        android:text="泡沫轴使用篇"
+        android:text=""
         android:textColor="@color/color_161727"
         android:textSize="15dp" />
 

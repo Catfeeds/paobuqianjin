@@ -1310,7 +1310,7 @@ public final class Engine {
         picasso.setIndicatorsEnabled(true);
         //picasso.setLoggingEnabled(true);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        picasso.load(urlImage).config(Bitmap.Config.RGB_565).resize(70,70).networkPolicy(networkPolicy).into(imageView);
+        picasso.load(urlImage).config(Bitmap.Config.RGB_565).resize(200,200).networkPolicy(networkPolicy).into(imageView);
         //Picasso.with(mContext).load(urlImage).into(imageView);
 /*        OkHttpUtils
                 .get()
