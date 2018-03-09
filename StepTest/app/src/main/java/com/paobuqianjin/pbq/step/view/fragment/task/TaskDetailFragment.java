@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.task;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +12,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskRecDetailResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.TaskDetailRecInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -24,7 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by pbq on 2018/1/26.
  */
 
-public class TaskDetailFragment extends BaseBarStyleTextViewFragment {
+public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements TaskDetailRecInterface {
     private final static String TAG = TaskDetailFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -102,6 +105,12 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Presenter.getInstance(getContext()).attachUiInterface(this);
+    }
+
+    @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
 
@@ -110,7 +119,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment {
             int taskId = intent.getIntExtra("taskid", -1);
             if (taskId != -1) {
                 LocalLog.d(TAG, "获取 " + taskId + "任务详情");
-                Presenter.getInstance(getContext()).getTaskDetail(taskId);
+                Presenter.getInstance(getContext()).getTaskDetailRec(taskId);
             }
         }
     }
@@ -119,10 +128,16 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
     @OnClick(R.id.button_action)
     public void onClick() {
         LocalLog.d(TAG, "领取奖励");
+    }
+
+    @Override
+    public void response(TaskRecDetailResponse taskRecDetailResponse) {
+        LocalLog.d(TAG, "TaskRecDetailResponse() enter " + taskRecDetailResponse.toString());
     }
 }

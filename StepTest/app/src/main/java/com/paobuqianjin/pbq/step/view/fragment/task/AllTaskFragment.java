@@ -1,13 +1,19 @@
 package com.paobuqianjin.pbq.step.view.fragment.task;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.TaskAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -20,7 +26,8 @@ import butterknife.ButterKnife;
  * Created by pbq on 2018/1/25.
  */
 
-public class AllTaskFragment extends BaseFragment {
+public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterface {
+    private final static String TAG = AllTaskFragment.class.getSimpleName();
     @Bind(R.id.all_task_recycler)
     RecyclerView allTaskRecycler;
     private LinearLayoutManager layoutManager;
@@ -29,6 +36,12 @@ public class AllTaskFragment extends BaseFragment {
     @Override
     protected int getLayoutResId() {
         return R.layout.task_all_fg;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Presenter.getInstance(getContext()).attachUiInterface(this);
     }
 
     @Override
@@ -46,6 +59,7 @@ public class AllTaskFragment extends BaseFragment {
         allTaskRecycler = (RecyclerView) viewRoot.findViewById(R.id.all_task_recycler);
         allTaskRecycler.setLayoutManager(layoutManager);
         adapter = new TaskAdapter(getContext());
+        adapter.setReceiveTaskInterface(this);
         allTaskRecycler.setAdapter(adapter);
 
     }
@@ -60,5 +74,27 @@ public class AllTaskFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
+    }
+
+    @Override
+    public void response(ReceiveTaskResponse receiveTaskResponse) {
+        LocalLog.d(TAG, "ReceiveTaskResponse() enter " + receiveTaskResponse.toString());
+        if (receiveTaskResponse.getError() == 0) {
+
+        } else if (receiveTaskResponse.getError() == 1) {
+
+        } else if (receiveTaskResponse.getError() == -1) {
+            Toast.makeText(getContext(), receiveTaskResponse.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void receiveTask(int taskId) {
+        LocalLog.d(TAG, "领取任务 id = " + taskId);
+        if (taskId != -1) {
+            Presenter.getInstance(getContext()).putTask("receive_task", taskId);
+        }
+
     }
 }

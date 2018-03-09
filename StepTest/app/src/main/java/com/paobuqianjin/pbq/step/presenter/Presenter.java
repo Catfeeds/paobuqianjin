@@ -340,6 +340,13 @@ public final class Presenter {
     public void getTaskDetail(int taskId) {
         engine.getTaskDetail(taskId);
     }
+    public void getTaskDetailRec(int taskId){
+        engine.getTaskDetailRec(taskId);
+    }
+
+    public void putTask(String action,int taskId) {
+        engine.putTask(action,taskId);
+    }
 
     public void getAllMyRecTask() {
         engine.getAllMyRecTask();

@@ -59,6 +59,7 @@ import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseRecordInterface;
@@ -150,6 +151,7 @@ public final class Engine {
     private ReleaseDynamicInterface releaseDynamicInterface;
     private TaskMyRecInterface taskMyRecInterface;
     private TaskDetailRecInterface taskDetailRecInterface;
+    private ReceiveTaskInterface receiveTaskInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -219,6 +221,8 @@ public final class Engine {
     public final static int COMMAND_POST_DYNAMIC = 61;
     public final static int COMMAND_GET_MY_RCV_TASK_RECORD = 62;
     public final static int COMMAND_GET_REC_TASK_DETAIL = 63;
+    public final static int COMMAND_RECV_TASK = 64;
+    public final static int COMMAND_RECV_TASK_PAY = 65;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1389,6 +1393,33 @@ public final class Engine {
 
     }
 
+    //TODO 领取任务和奖励
+    public void putTask(String action, int taskId) {
+        String url = NetApi.urlTaskRecord + "/" + String.valueOf(taskId);
+        LocalLog.d(TAG, "url = " + url);
+        switch (action) {
+            case "receive_task":
+                OkHttpUtils
+                        .put()
+                        .url(url)
+                        .requestBody(new RequestBody() {
+                            @Override
+                            public MediaType contentType() {
+                                return MediaType.parse("application/x-www-form-urlencoded");
+                            }
+
+                            @Override
+                            public void writeTo(BufferedSink sink) throws IOException {
+
+                            }
+                        })
+                        .param("action", action)
+                        .build().execute(new NetStringCallBack(receiveTaskInterface,COMMAND_RECV_TASK));
+                break;
+        }
+
+    }
+
     public void getTaskDetailRec(int taskId) {
         String url = NetApi.urlTaskRecord + "/" + String.valueOf(taskId);
         LocalLog.d(TAG, "getTaskDetailRec() enter url = " + url);
@@ -1396,7 +1427,7 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(taskDetailRecInterface, COMMAND_GET_MY_RELEASE_TASK_DETAIL));
+                .execute(new NetStringCallBack(taskDetailRecInterface, COMMAND_GET_REC_TASK_DETAIL));
     }
 
     public void taskMyRelease(int page, int pagesize) {
@@ -1667,8 +1698,10 @@ public final class Engine {
             releaseDynamicInterface = (ReleaseDynamicInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskMyRecInterface) {
             taskMyRecInterface = (TaskMyRecInterface) uiCallBackInterface;
-        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskMyRecInterface) {
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskDetailRecInterface) {
             taskDetailRecInterface = (TaskDetailRecInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReceiveTaskInterface) {
+            receiveTaskInterface = (ReceiveTaskInterface) uiCallBackInterface;
         }
     }
 
@@ -1744,6 +1777,8 @@ public final class Engine {
             taskMyRecInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskMyRecInterface) {
             taskDetailRecInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReceiveTaskInterface) {
+            receiveTaskInterface = null;
         }
     }
 }

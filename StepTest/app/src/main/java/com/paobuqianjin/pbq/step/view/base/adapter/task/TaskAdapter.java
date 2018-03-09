@@ -13,7 +13,9 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.MyReleaseDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskDetailActivity;
@@ -34,6 +36,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     private Context context;
     private List<?> mData;
+    private ReceiveTaskInterface receiveTaskInterface;
 
     public TaskAdapter(Context context) {
         super();
@@ -43,6 +46,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public void notifyDataSetChanged(List<?> data) {
         mData = data;
         super.notifyDataSetChanged();
+    }
+
+    public void setReceiveTaskInterface(ReceiveTaskInterface receiveTaskInterface) {
+        this.receiveTaskInterface = receiveTaskInterface;
     }
 
     @Override
@@ -57,12 +64,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             holder.taskInvite.setText("派发人: " + ((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.taskGift.setText("奖金:" + String.valueOf(((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getReward_amount()));
             if (((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getIs_receive() == 0) {
-                holder.releaseDetails.setText("领取");
+                holder.releaseDetails.setText("领取任务");
             } else {
                 if (((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getIs_finished() == 0) {
                     holder.releaseDetails.setText("任务进行中");
                 } else {
-                    holder.releaseDetails.setText("任务已经完成");
+                    holder.releaseDetails.setText("任务已完成");
                 }
             }
 
@@ -129,6 +136,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                         break;
                     case R.id.release_details:
                         LocalLog.d(TAG, releaseDetails.getText().toString());
+                        switch (releaseDetails.getText().toString()) {
+                            case "领取任务":
+                                if (receiveTaskInterface != null){
+                                    receiveTaskInterface.receiveTask(taskId);
+                                }
+                                    break;
+
+                        }
                         break;
 
                 }

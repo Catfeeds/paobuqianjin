@@ -190,8 +190,8 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
                             .setTarget_step(Integer.parseInt(targetTaskStepNum.getText().toString()))
                             .setTo_userid(friends)
                             .setUserid(Presenter.getInstance(getContext()).getId());
+                    Presenter.getInstance(getContext()).taskRelease(taskReleaseParam);
                 }
-                Presenter.getInstance(getContext()).taskRelease(taskReleaseParam);
                 break;
             default:
                 break;
@@ -199,6 +199,7 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
     }
 
     private boolean checkReleaseParams() {
+
         if (targetTaskStepNum.getText() == null || targetTaskStepNum.getText().toString().equals("")) {
             Toast.makeText(getContext(), "请输入目标步数", Toast.LENGTH_SHORT).show();
             return false;

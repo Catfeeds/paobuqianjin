@@ -151,6 +151,11 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                 if (content.equals("")) {
                     Toast.makeText(getContext(), "没有内容", Toast.LENGTH_SHORT).show();
                     return;
+                } else {
+                    postDynamicParam.setCity(locationStr.getText().toString())
+                            .setDynamic(content)
+                            .setUserid(Presenter.getInstance(getContext()).getId());
+                    Presenter.getInstance(getContext()).postDynamic(postDynamicParam);
                 }
             } else {
                 LogoUpTask logoUpTask = new LogoUpTask();
