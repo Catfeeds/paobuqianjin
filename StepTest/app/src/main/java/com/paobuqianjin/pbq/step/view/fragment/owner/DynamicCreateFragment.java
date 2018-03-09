@@ -284,28 +284,25 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
 
                 // 这次再真正地生成一个有像素的，经过缩放了的bitmap
                 options.inJustDecodeBounds = false;
-                docodeFile = BitmapFactory.decodeFile(pathResult, options);
+                //docodeFile = BitmapFactory.decodeFile(pathResult, options);
 /*                try {
                     saveImage(docodeFile);
                 } catch (FileNotFoundException e) {
 
                 }*/
-                bitmaps.add(docodeFile);
                 picPath.add(pathResult);
-                int size = bitmaps.size();
+                int size = picPath.size();
                 if (size == 1) {
-                    picA.setImageBitmap(bitmaps.get(0));
-
+                    Presenter.getInstance(getContext()).getImage(picPath.get(0), picA);
                     picB.setVisibility(View.VISIBLE);
                 } else if (size == 2) {
-                    picB.setImageBitmap(bitmaps.get(1));
+                    Presenter.getInstance(getContext()).getImage(picPath.get(1), picB);
                     picC.setVisibility(View.VISIBLE);
                 } else if (size == 3) {
-                    picC.setImageBitmap(bitmaps.get(2));
+                    Presenter.getInstance(getContext()).getImage(picPath.get(2), picC);
                     picD.setVisibility(View.VISIBLE);
                 } else if (size == 4) {
-                    picD.setImageBitmap(bitmaps.get(3));
-
+                    Presenter.getInstance(getContext()).getImage(picPath.get(3), picD);
                 } else if (size >= 5) {
                     LocalLog.e(TAG, "图片过多");
                 }

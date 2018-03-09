@@ -66,6 +66,7 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -746,8 +747,9 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
                 // 这次再真正地生成一个有像素的，经过缩放了的bitmap
                 options.inJustDecodeBounds = false;
-                docodeFile = BitmapFactory.decodeFile(pathResult, options);
-                logoCirclePic.setImageBitmap(docodeFile);
+                //docodeFile = BitmapFactory.decodeFile(pathResult, options);
+                Presenter.getInstance(this).getImage(pathResult, logoCirclePic);
+                //logoCirclePic.setImageBitmap(docodeFile);
                 LogoUpTask logoUpTask = new LogoUpTask();
                 logoUpTask.execute(pathResult);
             }

@@ -87,6 +87,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1294,6 +1295,14 @@ public final class Engine {
 
     }
 
+
+    public void getImage(String fileUrl,final ImageView imageView) {
+        LocalLog.d(TAG,"getImage() local");
+        Picasso picasso = Picasso.with(mContext);
+        LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
+        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(79,79).networkPolicy(networkPolicy).into(imageView);
+    }
+
     //网络图片获取接口
     public void getImage(final ImageView imageView, String urlImage) {
         LocalLog.d(TAG, "getImage() enter");
@@ -1414,7 +1423,7 @@ public final class Engine {
                             }
                         })
                         .param("action", action)
-                        .build().execute(new NetStringCallBack(receiveTaskInterface,COMMAND_RECV_TASK));
+                        .build().execute(new NetStringCallBack(receiveTaskInterface, COMMAND_RECV_TASK));
                 break;
         }
 

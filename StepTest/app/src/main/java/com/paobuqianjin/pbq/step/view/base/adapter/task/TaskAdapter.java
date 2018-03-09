@@ -67,9 +67,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 holder.releaseDetails.setText("领取任务");
             } else {
                 if (((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getIs_finished() == 0) {
-                    holder.releaseDetails.setText("任务进行中");
+                    holder.releaseDetails.setText("进行中");
                 } else {
-                    holder.releaseDetails.setText("任务已完成");
+                    holder.releaseDetails.setText("领取奖励");
                 }
             }
 
@@ -138,10 +138,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                         LocalLog.d(TAG, releaseDetails.getText().toString());
                         switch (releaseDetails.getText().toString()) {
                             case "领取任务":
-                                if (receiveTaskInterface != null){
+                                if (receiveTaskInterface != null) {
                                     receiveTaskInterface.receiveTask(taskId);
                                 }
-                                    break;
+                                break;
 
                         }
                         break;

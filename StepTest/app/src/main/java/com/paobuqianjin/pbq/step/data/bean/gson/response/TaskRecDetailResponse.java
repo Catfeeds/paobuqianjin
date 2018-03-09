@@ -74,8 +74,8 @@ public class TaskRecDetailResponse {
         private int userid;
         private String avatar;
         private String nickname;
-        private int activity_start_time;
-        private int activity_end_time;
+        private long activity_start_time;
+        private long activity_end_time;
         private String task_rule;
         private String task_desc;
         private int user_step;
@@ -145,19 +145,19 @@ public class TaskRecDetailResponse {
             this.nickname = nickname;
         }
 
-        public int getActivity_start_time() {
+        public long getActivity_start_time() {
             return activity_start_time;
         }
 
-        public void setActivity_start_time(int activity_start_time) {
+        public void setActivity_start_time(long activity_start_time) {
             this.activity_start_time = activity_start_time;
         }
 
-        public int getActivity_end_time() {
+        public long getActivity_end_time() {
             return activity_end_time;
         }
 
-        public void setActivity_end_time(int activity_end_time) {
+        public void setActivity_end_time(long activity_end_time) {
             this.activity_end_time = activity_end_time;
         }
 

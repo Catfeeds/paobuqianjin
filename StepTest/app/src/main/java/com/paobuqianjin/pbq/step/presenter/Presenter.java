@@ -22,6 +22,8 @@ import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.squareup.picasso.NetworkPolicy;
 
+import java.io.File;
+
 
 /**
  * Created by pbq on 2017/11/29.
@@ -273,6 +275,12 @@ public final class Presenter {
         engine.getImage(view, urlImg);
     }
 
+    public void getImage(String fileUrl,final ImageView imageView){
+        if(fileUrl == null){
+            return ;
+        }
+        engine.getImage(fileUrl,imageView);
+    }
     //TODO 加入圈子
     public void joinCircle(int circleId) {
         engine.joinCircle(circleId);

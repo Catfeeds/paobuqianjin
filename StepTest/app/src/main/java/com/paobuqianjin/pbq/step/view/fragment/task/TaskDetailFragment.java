@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.fragment.task;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +13,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskRecDetailResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.TaskDetailRecInterface;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -85,6 +87,9 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
     RelativeLayout num2;
     @Bind(R.id.button_action)
     Button buttonAction;
+    @Bind(R.id.step_des_run)
+    TextView stepDesRun;
+    private int taskId = -1;
 
     @Override
     protected int getLayoutResId() {
@@ -114,14 +119,27 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
 
+
         Intent intent = getActivity().getIntent();
         if (intent != null) {
-            int taskId = intent.getIntExtra("taskid", -1);
+            taskId = intent.getIntExtra("taskid", -1);
             if (taskId != -1) {
                 LocalLog.d(TAG, "获取 " + taskId + "任务详情");
                 Presenter.getInstance(getContext()).getTaskDetailRec(taskId);
             }
         }
+        targetStep = (TextView) viewRoot.findViewById(R.id.target_step);
+        targetMoney = (TextView) viewRoot.findViewById(R.id.target_money);
+        releaseUseIco = (CircleImageView) viewRoot.findViewById(R.id.release_use_ico);
+        dearName = (TextView) viewRoot.findViewById(R.id.dear_name);
+        dearId = (TextView) viewRoot.findViewById(R.id.dear_id);
+        currentStep = (TextView) viewRoot.findViewById(R.id.current_step);
+        stepTarget = (TextView) viewRoot.findViewById(R.id.step_target);
+        targetMoneys = (TextView) viewRoot.findViewById(R.id.target_moneys);
+        tryDaysDes = (TextView) viewRoot.findViewById(R.id.try_days_des);
+        tryTarget = (TextView) viewRoot.findViewById(R.id.try_target);
+        buttonAction = (Button) viewRoot.findViewById(R.id.button_action);
+        stepDesRun = (TextView) viewRoot.findViewById(R.id.step_des_run);
     }
 
     @Override
@@ -131,13 +149,51 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
-    @OnClick(R.id.button_action)
-    public void onClick() {
-        LocalLog.d(TAG, "领取奖励");
-    }
-
     @Override
     public void response(TaskRecDetailResponse taskRecDetailResponse) {
         LocalLog.d(TAG, "TaskRecDetailResponse() enter " + taskRecDetailResponse.toString());
+        if (taskRecDetailResponse.getError() == 0) {
+            targetStep.setText(taskRecDetailResponse.getData().getTask_name());
+            targetMoney.setText("奖励金额: " + String.valueOf(taskRecDetailResponse.getData().getReward_amount()));
+            Presenter.getInstance(getContext()).getImage(releaseUseIco, taskRecDetailResponse.getData().getAvatar());
+            dearName.setText(taskRecDetailResponse.getData().getNickname());
+            dearId.setText(String.valueOf(taskRecDetailResponse.getData().getId()));
+            stepDesRun.setText(String.valueOf(taskRecDetailResponse.getData().getUser_step()) + "/" + String.valueOf(taskRecDetailResponse.getData().getTarget_step()));
+
+            long startTime = taskRecDetailResponse.getData().getActivity_start_time();
+            String start_timeStr = DateTimeUtil.formatDateTime(startTime * 1000);
+
+            long endTime = taskRecDetailResponse.getData().getActivity_end_time();
+            String end_timeStr = DateTimeUtil.formatDateTime(endTime * 1000);
+            String dateStartStr = end_timeStr.replace("-", "/");
+            String dateEndStr = end_timeStr.replace("-", "/");
+            stepTarget.setText("开始时间: " + dateStartStr);
+            targetMoneys.setText("结束时间:" + dateEndStr);
+            tryDaysDes.setText("目标步数: " + taskRecDetailResponse.getData().getTarget_step() + " 步");
+            tryTarget.setText("奖励金额: " + taskRecDetailResponse.getData().getReward_amount() + "元");
+            if (taskRecDetailResponse.getData().getIs_finished() == 1) {
+                buttonAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_e4393c));
+                buttonAction.setOnClickListener(onClickListener);
+            }
+        }
+    }
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.button_action:
+                    LocalLog.d(TAG, "领取奖励");
+                    if (taskId != -1) {
+                        Presenter.getInstance(getContext()).putTask("receive_reward", taskId);
+                    }
+                    break;
+            }
+        }
+    };
+
+    @Override
+    public void response(RecPayResponse recPayResponse) {
+        LocalLog.d(TAG, "RecPayResponse() enter " + recPayResponse.toString());
     }
 }
