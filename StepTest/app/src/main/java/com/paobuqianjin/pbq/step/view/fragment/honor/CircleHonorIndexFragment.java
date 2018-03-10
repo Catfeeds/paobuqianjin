@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.presenter.im.DanCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
  * Created by pbq on 2018/1/10.
  */
 
-public class CircleHonorIndexFragment extends BaseFragment {
+public class CircleHonorIndexFragment extends BaseFragment implements DanCircleInterface{
     private final static String TAG = CircleHonorFragment.class.getSimpleName();
     @Bind(R.id.index_pager)
     ViewPager indexPager;

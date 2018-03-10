@@ -34,7 +34,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.FeedBackParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostIncomeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostMessageParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWithDrawParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
@@ -43,6 +42,7 @@ import com.paobuqianjin.pbq.step.presenter.im.AllPayOrderInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
+import com.paobuqianjin.pbq.step.presenter.im.CrashRecordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
@@ -81,7 +81,6 @@ import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
-import com.paobuqianjin.pbq.step.view.activity.TaskDetailActivity;
 import com.squareup.picasso.Cache;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -153,6 +152,7 @@ public final class Engine {
     private TaskMyRecInterface taskMyRecInterface;
     private TaskDetailRecInterface taskDetailRecInterface;
     private ReceiveTaskInterface receiveTaskInterface;
+    private CrashRecordInterface crashRecordInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -224,6 +224,7 @@ public final class Engine {
     public final static int COMMAND_GET_REC_TASK_DETAIL = 63;
     public final static int COMMAND_RECV_TASK = 64;
     public final static int COMMAND_RECV_TASK_PAY = 65;
+    public final static int COMMAND_CRASH_RECORD = 66;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -502,6 +503,16 @@ public final class Engine {
                 .params(crashToParam.getParams())
                 .build()
                 .execute(new NetStringCallBack(crashInterface, COMMAND_CRASH_TO));
+    }
+
+    public void getCrashRecord() {
+        String url = NetApi.urlCrashTo + "?userid=" + String.valueOf(getId(mContext));
+        LocalLog.d(TAG, "getCrashRecord() url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(crashRecordInterface, COMMAND_CRASH_RECORD));
     }
 
     //获取验证码
@@ -1223,28 +1234,6 @@ public final class Engine {
                 .execute(new NetStringCallBack(stepDollarDetailInterface, COMMAND_GET_USER_INFO));
     }
 
-    //获取用户提现信息记录，请求方式：get，地址：http://api.runmoneyin.com/v1/withdraw/2，参数：用户id
-    public void getWithDraw(int id) {
-        LocalLog.d(TAG, "getWithDraw() enter");
-        String url = NetApi.urlWithDraw + String.valueOf(id);
-        OkHttpUtils
-                .get()
-                .url(url)
-                .build()
-                .execute(new NetStringCallBack(null, -1));
-    }
-
-    //添加用户提现记录，请求方式：post，地址：http://api.runmoneyin.com/v1/withdraw，参数：type提现类型、amount提现金额、userid用户id
-    public void postWithDraw(PostWithDrawParam postWithDrawParam) {
-        LocalLog.d(TAG, "postWithDraw() enter");
-        OkHttpUtils
-                .post()
-                .url(NetApi.urlWithDraw)
-                .params(postWithDrawParam.getParam())
-                .build()
-                .execute(new NetStringCallBack(null, -1));
-    }
-
     //TODO 关注接口
     public void getFollows(String action, int page, int pagesize) {
         String url = NetApi.urlUserFollow + "?action=" + action + "&userid=" + String.valueOf(getId(mContext))
@@ -1296,11 +1285,11 @@ public final class Engine {
     }
 
 
-    public void getImage(String fileUrl,final ImageView imageView) {
-        LocalLog.d(TAG,"getImage() local");
+    public void getImage(String fileUrl, final ImageView imageView) {
+        LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(79,79).networkPolicy(networkPolicy).into(imageView);
+        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(79, 79).networkPolicy(networkPolicy).into(imageView);
     }
 
     //网络图片获取接口
@@ -1310,7 +1299,7 @@ public final class Engine {
         picasso.setIndicatorsEnabled(true);
         //picasso.setLoggingEnabled(true);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        picasso.load(urlImage).config(Bitmap.Config.RGB_565).resize(200,200).networkPolicy(networkPolicy).into(imageView);
+        picasso.load(urlImage).config(Bitmap.Config.RGB_565).resize(200, 200).networkPolicy(networkPolicy).into(imageView);
         //Picasso.with(mContext).load(urlImage).into(imageView);
 /*        OkHttpUtils
                 .get()
@@ -1711,6 +1700,8 @@ public final class Engine {
             taskDetailRecInterface = (TaskDetailRecInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReceiveTaskInterface) {
             receiveTaskInterface = (ReceiveTaskInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CrashRecordInterface) {
+            crashRecordInterface = (CrashRecordInterface) uiCallBackInterface;
         }
     }
 
@@ -1788,6 +1779,8 @@ public final class Engine {
             taskDetailRecInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReceiveTaskInterface) {
             receiveTaskInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CrashRecordInterface) {
+            crashRecordInterface = null;
         }
     }
 }

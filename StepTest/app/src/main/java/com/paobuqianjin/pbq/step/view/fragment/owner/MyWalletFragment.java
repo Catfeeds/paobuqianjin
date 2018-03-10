@@ -20,7 +20,9 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
+import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyWalletPayActivity;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
@@ -113,9 +115,23 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         return rootView;
     }
 
+    private BaseBarImageViewFragment.ToolBarListener toolBarListener = new BaseBarImageViewFragment.ToolBarListener() {
+        @Override
+        public void clickLeft() {
+
+        }
+
+        @Override
+        public void clickRight() {
+            LocalLog.d(TAG, "查看明细");
+            startActivity(InoutcomDetailActivity.class, null);
+        }
+    };
+
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+        setToolBarListener(toolBarListener);
         crash = (Button) viewRoot.findViewById(R.id.crash);
         fragments = new Fragment[]{yesterDayIncomeFragment, monthIncomeFragment, allIncomeFragment};
         getActivity().getSupportFragmentManager().beginTransaction()

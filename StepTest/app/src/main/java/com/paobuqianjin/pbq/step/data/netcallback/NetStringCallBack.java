@@ -13,6 +13,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashListDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DanListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
@@ -63,6 +64,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
+import com.paobuqianjin.pbq.step.presenter.im.CrashRecordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
@@ -560,6 +562,9 @@ public class NetStringCallBack extends StringCallback {
                 ReceiveTaskResponse receiveTaskResponse = new Gson().fromJson(s, ReceiveTaskResponse.class);
                 ((ReceiveTaskInterface) callBackInterface).response(receiveTaskResponse);
             }
+        } else if (callBackInterface != null && callBackInterface instanceof CrashRecordInterface) {
+            CrashListDetailResponse crashListDetailResponse = new Gson().fromJson(s, CrashListDetailResponse.class);
+            ((CrashRecordInterface) callBackInterface).response(crashListDetailResponse);
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }

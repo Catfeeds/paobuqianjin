@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
@@ -142,7 +143,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                                     receiveTaskInterface.receiveTask(taskId);
                                 }
                                 break;
+                            case "领取奖励":
+                                break;
+                            case "进行中":
+                                LocalLog.d(TAG, "进行中");
+                                Toast.makeText(context, "任务进行中...", Toast.LENGTH_SHORT).show();
+                                break;
 
+                            default:
+                                break;
                         }
                         break;
 

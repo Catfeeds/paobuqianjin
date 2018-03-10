@@ -162,29 +162,29 @@
 
                 <RelativeLayout
                     android:id="@+id/qrcode_rel"
-                    android:layout_alignTop="@+id/friend_rel"
-                    android:layout_alignBottom="@+id/friend_rel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/friend_rel"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/friend_rel"
                     android:layout_marginEnd="65dp">
 
                     <ImageView
-                        android:layout_marginTop="4dp"
                         android:id="@+id/qrcode"
-                        android:src="@drawable/qrcode_image"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
-                        android:layout_centerHorizontal="true" />
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="4dp"
+                        android:src="@drawable/qrcode_image" />
 
                     <TextView
-                        android:layout_alignParentBottom="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
                         android:layout_below="@+id/qrcode"
                         android:layout_marginTop="10dp"
-                        android:text="二维码"
                         android:gravity="bottom"
+                        android:text="二维码"
                         android:textColor="@color/color_8a8a8a"
                         android:textSize="12dp" />
                 </RelativeLayout>
@@ -194,7 +194,7 @@
             <ImageView
                 android:id="@+id/line_2"
                 android:layout_width="match_parent"
-                android:layout_height="20dp"
+                android:layout_height="8dp"
                 android:layout_below="@+id/friend_scan"
                 android:background="@color/color_f3f3f5" />
 
@@ -231,7 +231,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="14dp"
-                    android:src="@drawable/go_to" />
+                    android:src="@drawable/more" />
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -274,7 +274,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="14dp"
-                    android:src="@drawable/go_to" />
+                    android:src="@drawable/more" />
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -317,14 +317,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="14dp"
-                    android:src="@drawable/go_to" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/gift_desc"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/color_ebebed" />
+                    android:src="@drawable/more" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -371,11 +364,18 @@
                     android:background="@color/color_ebebed" />
             </RelativeLayout>
 
+            <ImageView
+                android:id="@+id/line_3"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_below="@+id/gitf_span"
+                android:background="@color/color_f3f3f5" />
+
             <RelativeLayout
                 android:id="@+id/task_release_span"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_below="@+id/bank_span">
+                android:layout_below="@+id/line_3">
 
                 <ImageView
                     android:id="@+id/task_release_icon"
@@ -404,7 +404,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="14dp"
-                    android:src="@drawable/go_to" />
+                    android:src="@drawable/more" />
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -414,19 +414,11 @@
                     android:background="@color/color_ebebed" />
             </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/line_3"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_below="@+id/task_release_span"
-                android:background="@color/color_f3f3f5" />
-
-
             <RelativeLayout
                 android:id="@+id/dynamic_span"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_below="@+id/line_3">
+                android:layout_below="@+id/task_release_span">
 
                 <ImageView
                     android:id="@+id/dynamic_icon"
@@ -455,7 +447,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="14dp"
-                    android:src="@drawable/go_to" />
+                    android:src="@drawable/more" />
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -498,21 +490,21 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="14dp"
-                    android:src="@drawable/go_to" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/dan_desc"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/color_ebebed" />
+                    android:src="@drawable/more" />
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/line_4"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_below="@+id/dan_span"
+                android:background="@color/color_f3f3f5" />
 
             <RelativeLayout
                 android:id="@+id/suggestion_span"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_below="@+id/dan_span">
+                android:layout_below="@+id/line_4">
 
                 <ImageView
                     android:id="@+id/suggestion_icon"
@@ -541,21 +533,22 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="14dp"
-                    android:src="@drawable/go_to" />
-            </RelativeLayout>
+                    android:src="@drawable/more" />
 
-            <ImageView
-                android:id="@+id/line_4"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_below="@+id/suggestion_span"
-                android:background="@color/color_f3f3f5" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/suggestion_desc"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_ebebed" />
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/setting_span"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_below="@+id/line_4">
+                android:layout_below="@+id/suggestion_span">
 
                 <ImageView
                     android:id="@+id/setting_icon"
@@ -584,15 +577,9 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="14dp"
-                    android:src="@drawable/go_to" />
+                    android:src="@drawable/more" />
             </RelativeLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@+id/setting_span"
-                android:background="@color/color_f3f3f5" />
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 </RelativeLayout>

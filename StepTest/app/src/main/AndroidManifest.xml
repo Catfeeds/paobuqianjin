@@ -230,6 +230,10 @@
             android:theme="@style/ImageTranslucentTheme" />
         <!--充值到钱包-->
         <activity
+            android:name=".view.activity.InoutcomDetailActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
+        <activity
             android:name=".view.activity.MyWalletPayActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/income_detail_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="33dp"
+        android:text="微信充值"
+        android:textColor="@color/color_161727"
+        android:textSize="14dp" />
+
+    <RelativeLayout
+        android:id="@+id/span_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/income_detail_des"
+        android:layout_below="@+id/income_detail_des"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:id="@+id/income_detail_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/data"
+            android:layout_alignTop="@+id/data"
+            android:gravity="center"
+            android:text="2017/10/7 14:12"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="14dp"
+            android:text="￥:10.00元"
+            android:textColor="@color/color_161727"
+            android:textSize="14dp" />
+    </RelativeLayout>
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@+id/span_time"
+        android:layout_below="@+id/span_time"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/color_8a8a8a" />
+
+</RelativeLayout>

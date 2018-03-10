@@ -3,6 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignTop="@+id/main_bottom"
+        android:background="@color/color_8a8a8a" />
+
     <LinearLayout
         android:id="@+id/main_bottom"
         android:layout_width="match_parent"
@@ -22,6 +28,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
+                android:drawablePadding="0dp"
                 android:drawableTop="@drawable/home_s"
                 android:gravity="center"
                 android:onClick="onTabSelect"
@@ -29,7 +36,6 @@
                 android:paddingTop="7dip"
                 android:scaleType="matrix"
                 android:text="@string/home_page"
-                android:drawablePadding="0dp"
                 android:textSize="12dp" />
 
         </RelativeLayout>
@@ -43,6 +49,7 @@
                 android:id="@+id/btn_friend_circle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:drawablePadding="0dp"
                 android:drawableTop="@drawable/circle_n"
                 android:gravity="center"
                 android:onClick="onTabSelect"
@@ -50,7 +57,6 @@
                 android:paddingTop="7dip"
                 android:scaleType="matrix"
                 android:text="@string/friend_circle"
-                android:drawablePadding="0dp"
                 android:textSize="12dp" />
 
         </RelativeLayout>
@@ -77,6 +83,7 @@
                 android:textSize="12dp" />
 
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -109,6 +116,7 @@
                 android:id="@+id/btn_owner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:drawablePadding="0dp"
                 android:drawableTop="@drawable/me_n"
                 android:gravity="center"
                 android:onClick="onTabSelect"
@@ -116,7 +124,6 @@
                 android:paddingTop="7dip"
                 android:scaleType="matrix"
                 android:text="@string/owner_center"
-                android:drawablePadding="0dp"
                 android:textSize="12dp" />
 
         </RelativeLayout>

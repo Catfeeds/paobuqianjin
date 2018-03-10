@@ -275,12 +275,13 @@ public final class Presenter {
         engine.getImage(view, urlImg);
     }
 
-    public void getImage(String fileUrl,final ImageView imageView){
-        if(fileUrl == null){
-            return ;
+    public void getImage(String fileUrl, final ImageView imageView) {
+        if (fileUrl == null) {
+            return;
         }
-        engine.getImage(fileUrl,imageView);
+        engine.getImage(fileUrl, imageView);
     }
+
     //TODO 加入圈子
     public void joinCircle(int circleId) {
         engine.joinCircle(circleId);
@@ -348,12 +349,13 @@ public final class Presenter {
     public void getTaskDetail(int taskId) {
         engine.getTaskDetail(taskId);
     }
-    public void getTaskDetailRec(int taskId){
+
+    public void getTaskDetailRec(int taskId) {
         engine.getTaskDetailRec(taskId);
     }
 
-    public void putTask(String action,int taskId) {
-        engine.putTask(action,taskId);
+    public void putTask(String action, int taskId) {
+        engine.putTask(action, taskId);
     }
 
     public void getAllMyRecTask() {
@@ -387,6 +389,10 @@ public final class Presenter {
     //TODO 用户提现
     public void postCrashTo(CrashToParam crashToParam) {
         engine.postCrashTo(crashToParam);
+    }
+
+    public void getCrashRecord() {
+        engine.getCrashRecord();
     }
 
     //TODO 绑定提现账户
