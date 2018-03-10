@@ -24,7 +24,6 @@ public class CirCleDetailActivity extends BaseActivity implements CircleDetailIn
     private int userIdCircleAdminMain = -1;
     private int circleId = -1;
     private int memberNum = -1;
-    private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.ACTION_SCAN_CIRCLE_ID";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,15 +36,11 @@ public class CirCleDetailActivity extends BaseActivity implements CircleDetailIn
     @Override
     protected void initView() {
         super.initView();
-        Intent intent = getIntent();
-        if (intent != null && !ACTION_SCAN_CIRCLE_ID.equals(intent.getAction())) {
-            circleId = intent.getIntExtra(getPackageName() + "circleid", -1);
-            memberNum = intent.getIntExtra(getPackageName() + "membernum", -1);
-            LocalLog.d(TAG, "circleId = " + circleId + " membernum = " + memberNum);
-            Presenter.getInstance(this).getCircleDetail(circleId);
-        } else if (intent != null && ACTION_SCAN_CIRCLE_ID.equals(intent.getAction())) {
-            LocalLog.d(TAG, "扫码进入详情");
-        }
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.circle_detail_container, circleDetailAdminFragment)
+                .show(circleDetailAdminFragment)
+                .commit();
     }
 
     @Override
@@ -55,10 +50,6 @@ public class CirCleDetailActivity extends BaseActivity implements CircleDetailIn
         if (circleDetailResponse.getError() == 0) {
             userIdCircleAdminMain = circleDetailResponse.getData().getUserid();
             circleDetailAdminFragment.setCircleDetail(circleDetailResponse, memberNum);
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.circle_detail_container, circleDetailAdminFragment)
-                    .show(circleDetailAdminFragment)
-                    .commit();
         }
     }
 

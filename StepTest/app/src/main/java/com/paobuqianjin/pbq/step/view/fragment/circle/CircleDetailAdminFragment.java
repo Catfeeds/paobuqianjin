@@ -17,12 +17,14 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.RechargeRankBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.LoveRankActivity;
@@ -42,7 +44,7 @@ import butterknife.OnClick;
  * Created by pbq on 2018/2/2.
  */
 
-public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
+public class CircleDetailAdminFragment extends BaseBarImageViewFragment implements CircleDetailInterface {
     private final static String TAG = CircleDetailAdminFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -102,6 +104,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
     private final static String CIRCLE_LOGO = "logo";
     private final static String QRCODE_ACTION = "android.intent.action.QRCODE";
     private final static String MEMBER_MANANGER_ACTION = "android.intent.action.MAMBER_MANAGER_ACTION";
+    private final static String ACTION_ENTER_CIRCLE = "coma.paobuqian.pbq.step.ICON_ACTION";
+    private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.SCAN_ACTION";
 
     String titleStr = "";
 
@@ -116,10 +120,6 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
         }*/
     public void setCircleDetail(CircleDetailResponse circleDetailResponse, int circleNum) {
         this.circleDetailResponse = circleDetailResponse;
-        circleId = circleDetailResponse.getData().getId();
-        this.circleNum = circleNum;
-        total_money = Float.parseFloat(circleDetailResponse.getData().getTotal_amount());
-        red_pack_money = Float.parseFloat(circleDetailResponse.getData().getRed_packet_amount());
     }
 
     @Override
@@ -228,6 +228,15 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            if (ACTION_ENTER_CIRCLE.equals(intent.getAction())) {
+                LocalLog.d(TAG,"logo 进入");
+
+            } else if (ACTION_SCAN_CIRCLE_ID.equals(intent.getAction())) {
+                LocalLog.d(TAG,"扫码 进入");
+            }
+        }
         circleObjDes = (TextView) viewRoot.findViewById(R.id.circle_obj_des);
         rankRecycler = (RecyclerView) viewRoot.findViewById(R.id.rank_recycler);
         stepRecycler = (RecyclerView) viewRoot.findViewById(R.id.step_recycler);
@@ -366,5 +375,13 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment {
 
     @OnClick(R.id.money_ret)
     public void onClick() {
+    }
+
+    @Override
+    public void response(CircleDetailResponse circleDetailResponse) {
+        circleId = circleDetailResponse.getData().getId();
+        this.circleNum = circleNum;
+        total_money = Float.parseFloat(circleDetailResponse.getData().getTotal_amount());
+        red_pack_money = Float.parseFloat(circleDetailResponse.getData().getRed_packet_amount());
     }
 }

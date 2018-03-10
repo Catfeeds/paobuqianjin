@@ -30,6 +30,7 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
 
     private MyCreateCircleResponse.DataBeanX.DataBean tmpData;
     private MyJoinCircleResponse.DataBeanX.DataBean tmpData1;
+    private final static String ACTION_ENTER_ICON = "coma.paobuqian.pbq.step.ICON_ACTION";
 
     public OwnerCreateAdapter(Context context, ArrayList<?> data) {
         super();
@@ -167,8 +168,8 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
                         LocalLog.d(TAG, " 点击圈子头像进入圈子");
                         Intent intent = new Intent();
                         intent.setClass(mContext, CirCleDetailActivity.class);
+                        intent.setAction(ACTION_ENTER_ICON);
                         intent.putExtra(mContext.getPackageName() + "circleid", getCircleid());
-                        intent.putExtra(mContext.getPackageName() + "membernum", getCircle_member_num());
                         mContext.startActivity(intent);
                         break;
                     default:

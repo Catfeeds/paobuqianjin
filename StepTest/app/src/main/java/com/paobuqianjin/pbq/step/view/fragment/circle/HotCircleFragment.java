@@ -59,6 +59,7 @@ public class HotCircleFragment extends BaseFragment {
     private int circleIdA = -1, circleIdB = -1;
     private int circleNumA = -1, circleNumB = -1;
     private ArrayList<String> circleTypeList;
+    private final static String ACTION_ENTER_ICON = "coma.paobuqian.pbq.step.ICON_ACTION";
 
     @Override
 
@@ -129,7 +130,7 @@ public class HotCircleFragment extends BaseFragment {
 
     private void loadingData() {
         Presenter.getInstance(mContext).getCircleChoice();
-        Presenter.getInstance(mContext).getMyHotCircle(1,2);
+        Presenter.getInstance(mContext).getMyHotCircle(1, 2);
     }
 
     /*@desc  返回Fragment标签
@@ -153,19 +154,19 @@ public class HotCircleFragment extends BaseFragment {
                     break;
                 case R.id.circle_hot_a_img:
                     LocalLog.d(TAG, "onClick() 我的第一个圈子被点击");
-                    Intent intent1 = new Intent();
-                    intent1.setClass(getContext(), CirCleDetailActivity.class);
-                    intent1.putExtra(mContext.getPackageName() + "circleid", circleIdA);
-                    intent1.putExtra(mContext.getPackageName() + "membernum", circleNumA);
-                    startActivity(intent1);
+                    Intent intentA = new Intent();
+                    intentA.setClass(getContext(), CirCleDetailActivity.class);
+                    intentA.putExtra(mContext.getPackageName() + "circleid", circleIdA);
+                    intentA.setAction(ACTION_ENTER_ICON);
+                    startActivity(intentA);
                     break;
                 case R.id.circle_hot_b_img:
                     LocalLog.d(TAG, "onClick() 我的第二个圈子被点击");
-                    Intent intent2 = new Intent();
-                    intent2.setClass(getContext(), CirCleDetailActivity.class);
-                    intent2.putExtra(mContext.getPackageName() + "circleid", circleIdB);
-                    intent2.putExtra(mContext.getPackageName() + "membernum", circleNumB);
-                    startActivity(intent2);
+                    Intent intentB = new Intent();
+                    intentB.setClass(getContext(), CirCleDetailActivity.class);
+                    intentB.putExtra(mContext.getPackageName() + "circleid", circleIdB);
+                    intentB.setAction(ACTION_ENTER_ICON);
+                    startActivity(intentB);
                     break;
                 case R.id.find_more_my_circle:
                     LocalLog.d(TAG, "查看更多我的圈子");

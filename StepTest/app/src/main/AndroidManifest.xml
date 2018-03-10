@@ -109,7 +109,8 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
-                <action android:name="com.paobuqianjin.pbq.step.ACTION_SCAN_CIRCLE_ID"></action>
+                <action android:name="com.paobuqianjin.pbq.step.SCAN_ACTION"></action>
+                <action android:name="coma.paobuqian.pbq.step.ICON_ACTION"></action>
             </intent-filter>
         </activity>
         <activity
