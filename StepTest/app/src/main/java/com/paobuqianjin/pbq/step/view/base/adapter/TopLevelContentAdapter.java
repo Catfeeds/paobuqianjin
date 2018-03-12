@@ -13,6 +13,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
@@ -54,6 +55,7 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
         if (mData.get(position) instanceof DynamicCommentListResponse.DataBeanX.DataBean) {
             LocalLog.d(TAG, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).toString());
             Presenter.getInstance(context).getImage(holder.contentUserIcon, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
+            holder.dearName = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getNickname();
             holder.userContentName.setText(((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             long create_time = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
             LocalLog.d(TAG, "create_time = " + DateTimeUtil.formatDateTime(create_time * 1000));
@@ -61,7 +63,7 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
 
             if (((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild() != null) {
                 LocalLog.d(TAG, "有子评论" + ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild().size());
-                holder.contendAllRecycler.setAdapter(new MiddleContentAdapter(context, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild(),dynamicDetailInterface));
+                holder.contendAllRecycler.setAdapter(new MiddleContentAdapter(context, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild(), dynamicDetailInterface));
             }
 
             holder.parent_id = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getId();
@@ -94,11 +96,18 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
         TextView timeContentB;
         @Bind(R.id.contend_all_recycler)
         RecyclerView contendAllRecycler;
+        ReflashInterface reflashInterface = new ReflashInterface() {
+            @Override
+            public void notifyReflash() {
+                LocalLog.d(TAG, "刷新一级评论");
+            }
+        };
 
         int parent_id = -1;
         int reply_userid = -1;
         int userid = -1;
         int dynamicid = -1;
+        String dearName;
 
         public TopLevelViewHolder(View view) {
             super(view);
@@ -129,7 +138,7 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
                             PostDynamicContentParam postDynamicContentParam = new PostDynamicContentParam()
                                     .setParent_id(parent_id)
                                     .setReply_userid(reply_userid).setDynamicid(dynamicid);
-                            dynamicDetailInterface.postDynamicAction(postDynamicContentParam);
+                            dynamicDetailInterface.postDynamicAction(postDynamicContentParam, dearName,reflashInterface);
                         }
                         break;
                 }

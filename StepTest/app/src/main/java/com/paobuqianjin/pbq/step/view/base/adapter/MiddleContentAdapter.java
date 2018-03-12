@@ -15,6 +15,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.List;
@@ -55,7 +56,8 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdap
     private void updateListItem(MiddleContentAdapter.MiddleContentViewHolder holder, int position) {
         if (mData.get(position) instanceof DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) {
             LocalLog.d(TAG, ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).toString());
-            String nameA = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getNickname();
+            holder.dearName = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getNickname();
+            String nameA = holder.dearName;
             String nameB = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getReply_nickname();
             String reply = "回复";
             String content = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getContent();
@@ -88,6 +90,13 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdap
         int reply_userid = -1;
         int userid = -1;
         int dynamicid = -1;
+        String dearName;
+        ReflashInterface reflashInterface = new ReflashInterface() {
+            @Override
+            public void notifyReflash() {
+                LocalLog.d(TAG, "刷新二级评论");
+            }
+        };
 
         public MiddleContentViewHolder(View view) {
             super(view);
@@ -105,7 +114,7 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdap
                             PostDynamicContentParam postDynamicContentParam = new PostDynamicContentParam()
                                     .setParent_id(parent_id)
                                     .setReply_userid(reply_userid).setDynamicid(dynamicid);
-                            dynamicDetailInterface.postDynamicAction(postDynamicContentParam);
+                            dynamicDetailInterface.postDynamicAction(postDynamicContentParam, dearName, reflashInterface);
                         }
                         break;
                 }

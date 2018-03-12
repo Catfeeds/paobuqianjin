@@ -281,7 +281,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                             .setParent_id(0)
                             .setUserid(Presenter.getInstance(getContext())
                                     .getId()).setReply_userid(userid);
-                    postDynamicAction(postDynamicContentParam);
+                    postDynamicAction(postDynamicContentParam, dynamicUserName.getText().toString());
                     break;
                 default:
                     break;
@@ -457,6 +457,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         LocalLog.d(TAG, "PostDynamicContentResponse() enter " + postDynamicContentResponse.toString());
         if (postDynamicContentResponse.getError() == 0) {
             LocalLog.d(TAG, "评论成功");
+
             popupRedPkgWindow.dismiss();
         }
     }
@@ -478,16 +479,16 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     }
 
     @Override
-    public void postDynamicAction(PostDynamicContentParam postDynamicContentParam) {
+    public void postDynamicAction(PostDynamicContentParam postDynamicContentParam, String dearName) {
         LocalLog.d(TAG, "PostDynamicContentParam() 弹出评论框" + postDynamicContentParam.paramString());
-        popEdit(postDynamicContentParam);
+        popEdit(postDynamicContentParam, dearName);
     }
 
-    private void popEdit(final PostDynamicContentParam postDynamicContentParam) {
+    private void popEdit(final PostDynamicContentParam postDynamicContentParam, String dearName) {
         LocalLog.d(TAG, "popRedPkg() enter");
         popRedPkgView = View.inflate(getContext(), R.layout.response_edit_span, null);
         popupRedPkgWindow = new PopupWindow(popRedPkgView,
-                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -496,6 +497,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         });
 
         final EditText editText = (EditText) popRedPkgView.findViewById(R.id.content_text);
+        editText.setHint("回复:" + dearName);
         Button button = (Button) popRedPkgView.findViewById(R.id.send_content);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -517,7 +519,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         animationCircleType.setInterpolator(new AccelerateInterpolator());
         animationCircleType.setDuration(200);
 
-        popupRedPkgWindow.showAtLocation(this.getView(), Gravity.BOTTOM, 0, 0);
+        popupRedPkgWindow.showAtLocation(getActivity().findViewById(R.id.dynamic_id_detail), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         popRedPkgView.startAnimation(animationCircleType);
     }
 }

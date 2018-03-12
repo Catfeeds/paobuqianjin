@@ -26,5 +26,5 @@ public interface DynamicDetailInterface extends CallBackInterface {
 
     public void response(PutVoteResponse putVoteResponse);
 
-    public void postDynamicAction(PostDynamicContentParam postDynamicContentParam);
+    public void postDynamicAction(PostDynamicContentParam postDynamicContentParam,String dearName,ReflashInterface reflashInterface);
 }
