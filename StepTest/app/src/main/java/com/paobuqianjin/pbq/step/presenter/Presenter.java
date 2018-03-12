@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
@@ -283,8 +284,8 @@ public final class Presenter {
     }
 
     //TODO 加入圈子
-    public void joinCircle(int circleId) {
-        engine.joinCircle(circleId);
+    public void joinCircle(JoinCircleParam joinCircleParam) {
+        engine.joinCircle(joinCircleParam);
     }
 
     public void getCircleStepRank(int circleId) {

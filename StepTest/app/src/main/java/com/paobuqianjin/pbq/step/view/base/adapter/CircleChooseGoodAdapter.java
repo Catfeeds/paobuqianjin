@@ -139,9 +139,9 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
                         LocalLog.d(TAG, "点击加入");
                         if (is_pwd) {
                             //TODO 需要密码,获取密码再调用以下
-                            Presenter.getInstance(mContext).joinCircle(circleId, "123456");
+                            //Presenter.getInstance(mContext).joinCircle(circleId, "123456");
                         } else {
-                            Presenter.getInstance(mContext).joinCircle(circleId);
+                            //Presenter.getInstance(mContext).joinCircle(circleId);
                         }
                         break;
                 }

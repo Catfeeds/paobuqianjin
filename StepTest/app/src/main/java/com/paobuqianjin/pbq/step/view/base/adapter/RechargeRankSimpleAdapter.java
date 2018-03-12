@@ -60,7 +60,7 @@ public class RechargeRankSimpleAdapter extends RecyclerView.Adapter<RechargeRank
     }
 
     private void updateList(RechargeRankSimpleViewHolder holder, int position) {
-        holder.moneyNumDes.setText(mData.get(position).getAmount() + "元");
+        holder.moneyNumDes.setText(mData.get(position).getTotal_fee() + "元");
         holder.userid = mData.get(position).getUserid();
         Presenter.getInstance(context).getImage(holder.userIconMoney, mData.get(position).getAvatar());
     }

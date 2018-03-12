@@ -22,6 +22,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
@@ -49,6 +50,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
+import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
@@ -153,6 +155,7 @@ public final class Engine {
     private TaskDetailRecInterface taskDetailRecInterface;
     private ReceiveTaskInterface receiveTaskInterface;
     private CrashRecordInterface crashRecordInterface;
+    private JoinCircleInterface joinCircleInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -891,15 +894,15 @@ public final class Engine {
     }
 
     //TODO 加入圈子
-    public void joinCircle(int circleid) {
-        LocalLog.d(TAG, "joinCircle() enter");
+    public void joinCircle(JoinCircleParam joinCircleParam) {
+        joinCircleParam.setUserid(getId(mContext));
+        LocalLog.d(TAG, "joinCircle() enter" + joinCircleParam.paramString());
         OkHttpUtils
                 .post()
                 .url(NetApi.urlCircleMember)
-                .addParams("userid", String.valueOf(getId(mContext)))
-                .addParams("circleid", String.valueOf(circleid))
+                .params(joinCircleParam.getParams())
                 .build()
-                .execute(new NetStringCallBack(null, COMMAND_JOIN_CIRCLE));
+                .execute(new NetStringCallBack(joinCircleInterface, COMMAND_JOIN_CIRCLE));
     }
 
     //TODO 退出圈子 和 批量删除成员
@@ -914,7 +917,7 @@ public final class Engine {
                 .addParams("circleid", String.valueOf(circleid))
                 .addParams("password", password)
                 .build()
-                .execute(new NetStringCallBack(null, COMMAND_JOIN_CIRCLE));
+                .execute(new NetStringCallBack(joinCircleInterface, COMMAND_JOIN_CIRCLE));
     }
 
     //TODO 获取圈子目标列表
@@ -1702,6 +1705,8 @@ public final class Engine {
             receiveTaskInterface = (ReceiveTaskInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CrashRecordInterface) {
             crashRecordInterface = (CrashRecordInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof JoinCircleInterface) {
+            joinCircleInterface = (JoinCircleInterface) uiCallBackInterface;
         }
     }
 
@@ -1781,6 +1786,8 @@ public final class Engine {
             receiveTaskInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CrashRecordInterface) {
             crashRecordInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof JoinCircleInterface) {
+            joinCircleInterface = null;
         }
     }
 }

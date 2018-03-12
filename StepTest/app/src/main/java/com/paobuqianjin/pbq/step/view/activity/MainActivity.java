@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity {
     private int[][] icon = new int[][]{{R.drawable.home_n, R.drawable.home_s}, {R.drawable.circle_n, R.drawable.circle_s},
             {R.drawable.task_n, R.drawable.task_s},
             {R.drawable.list_n, R.drawable.list_s}, {R.drawable.me_n, R.drawable.me_s}};
-    private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.ACTION_SCAN_CIRCLE_ID";
+    private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.SCAN_ACTION";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

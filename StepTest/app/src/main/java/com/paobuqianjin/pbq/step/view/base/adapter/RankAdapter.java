@@ -58,7 +58,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             ReChargeRankResponse.DataBeanX.DataBean dataBean = (ReChargeRankResponse.DataBeanX.DataBean) mData.get(position);
             Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, dataBean.getAvatar());
             holder.searchCircleDesListName.setText(dataBean.getNickname());
-            holder.loveNumber.setText(dataBean.getAmount() + "元");
+            holder.loveNumber.setText(dataBean.getTotal_fee() + "元");
             holder.userid = ((ReChargeRankResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
 
         } else if (mData.get(position) instanceof StepRankResponse.DataBeanX.DataBean) {

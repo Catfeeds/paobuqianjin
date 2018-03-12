@@ -2,9 +2,12 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,28 +15,37 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.RechargeRankBundleData;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
+import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.LoveRankActivity;
 import com.paobuqianjin.pbq.step.view.activity.MemberManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.RankAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.RechargeRankSimpleAdapter;
+import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -86,9 +98,12 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     TextView moneyRet;
     @Bind(R.id.circle_cover)
     ImageView circleCover;
+    @Bind(R.id.join_in)
+    Button joinIn;
+
+    private JoinCircleParam joinCircleParam;
     private Context mContext;
-    private int circleId;
-    private int circleNum;
+    private int circleId = -1;
     private LinearLayoutManager reChargeLayoutManager;
     private LinearLayoutManager stepLayoutManager;
     private RechargeRankBundleData rechargeRankBundleData;
@@ -109,19 +124,6 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
 
     String titleStr = "";
 
-    /*
-        public void setCircleId(Context context, int circleId, int circleNum, String targetStr, float total_money, float red_pack_money) {
-            this.circleId = circleId;
-            target = targetStr;
-            this.circleNum = circleNum;
-            this.total_money = total_money;
-            this.red_pack_money = red_pack_money;
-            LocalLog.d(TAG, "红包余额: " + total_money + " 每日红包金额" + red_pack_money);
-        }*/
-    public void setCircleDetail(CircleDetailResponse circleDetailResponse, int circleNum) {
-        this.circleDetailResponse = circleDetailResponse;
-    }
-
     @Override
     protected int getLayoutResId() {
         return R.layout.circle_detail_fg_no_admin;
@@ -141,9 +143,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        Presenter.getInstance(context).attachUiInterface(this);
         Presenter.getInstance(getContext()).attachUiInterface(uiStepAndLoveRankInterface);
-        Presenter.getInstance(getContext()).getCircleRechargeRand(circleId);
-        Presenter.getInstance(getContext()).getCircleStepRank(circleId);
+        Presenter.getInstance(getContext()).attachUiInterface(joinCircleInterface);
     }
 
 
@@ -155,7 +157,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
 
         @Override
         public void clickRight() {
-
+            if (circleDetailResponse == null) {
+                return;
+            }
             if (circleDetailResponse.getData().getIs_admin() == 1) {
                 LocalLog.d(TAG, "管理员界面");
                 popAdminSelect();
@@ -195,6 +199,33 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         popCircleOpBar.startAnimation(animationCircleType);
     }
 
+
+    public void popPassWordEdit() {
+        LocalLog.d(TAG, "popPassWordEdit() enter 弹出密码输入框");
+        popCircleOpBar = View.inflate(getContext(), R.layout.pass_word_layout, null);
+        popupOpWindow = new PopupWindow(popCircleOpBar, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupOpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupOpWindow = null;
+            }
+        });
+
+        popupOpWindow.setFocusable(true);
+        popupOpWindow.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new
+
+                AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+        popupOpWindow.showAtLocation(getActivity().findViewById(R.id.circle_detail_fg), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        popCircleOpBar.startAnimation(animationCircleType);
+    }
+
     private void popAdminSelect() {
         popCircleOpBar = View.inflate(getContext(), R.layout.top_share_span, null);
         popupOpWindow = new PopupWindow(popCircleOpBar,
@@ -231,11 +262,17 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             if (ACTION_ENTER_CIRCLE.equals(intent.getAction())) {
-                LocalLog.d(TAG,"logo 进入");
+                LocalLog.d(TAG, "logo 进入");
+                circleId = intent.getIntExtra(getContext().getPackageName() + "circleid", -1);
 
             } else if (ACTION_SCAN_CIRCLE_ID.equals(intent.getAction())) {
-                LocalLog.d(TAG,"扫码 进入");
+                LocalLog.d(TAG, "扫码 进入");
+                circleId = intent.getIntExtra(getContext().getPackageName() + "circleid", -1);
             }
+        }
+
+        if (circleId != -1) {
+            Presenter.getInstance(getContext()).getCircleDetail(circleId);
         }
         circleObjDes = (TextView) viewRoot.findViewById(R.id.circle_obj_des);
         rankRecycler = (RecyclerView) viewRoot.findViewById(R.id.rank_recycler);
@@ -248,30 +285,16 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         stepRecycler.setLayoutManager(stepLayoutManager);
 
 
-        titleStr = circleDetailResponse.getData().getName();
         memberNumDes = (TextView) viewRoot.findViewById(R.id.member_num_des);
-        String sAgeFormat = mContext.getResources().getString(R.string.member_total);
-        String sFinalMember = String.format(sAgeFormat, circleNum);
-        memberNumDes.setText(sFinalMember);
         imageButton = (RelativeLayout) viewRoot.findViewById(R.id.image_button);
         imageButton.setOnClickListener(onClickListener);
 
         setToolBarListener(toolBarListener);
-        String sMoneyFormat = mContext.getResources().getString(R.string.circle_total);
-        String sMoney = String.format(sMoneyFormat, total_money);
         moneyRet = (TextView) viewRoot.findViewById(R.id.money_ret);
         circleCover = (ImageView) viewRoot.findViewById(R.id.circle_cover);
-        if (circleDetailResponse != null) {
-            String targetFormat = getResources().getString(R.string.target_step);
-            target = String.format(targetFormat, circleDetailResponse.getData().getTarget());
-        }
-        circleObjDes.setText(target);
-        moneyRet.setText(sMoney);
-        if (red_pack_money > total_money) {
-            LocalLog.d(TAG, "余额不足当天的红包");
 
-        }
-        Presenter.getInstance(getContext()).getImage(circleCover, circleDetailResponse.getData().getLogo());
+        joinIn = (Button) viewRoot.findViewById(R.id.join_in);
+
     }
 
 
@@ -312,28 +335,40 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     LocalLog.d(TAG, "退出");
 
                     break;
+                case R.id.join_in:
+                    LocalLog.d(TAG, "点击加入圈子");
+                    if (joinCircleParam == null) {
+                        joinCircleParam = new JoinCircleParam();
+                        joinCircleParam.setCircleid(circleId);
+                    }
+                    Presenter.getInstance(getContext()).joinCircle(joinCircleParam);
+                    break;
                 default:
                     break;
             }
         }
     };
 
-    private UiStepAndLoveRankInterface uiStepAndLoveRankInterface = new UiStepAndLoveRankInterface() {
- /*       @Override
-        public void response(CircleDetailResponse circleDetailResponse) {
-            LocalLog.d(TAG, "CircleDetailResponse() ");
-            String sAgeFormat = mContext.getResources().getString(R.string.target_step);
-            String sFinalMember = String.format(sAgeFormat, circleDetailResponse.getData().getTarget());
-            circleObjDes.setText(sFinalMember);
-            userIdCircleAdminMain = circleDetailResponse.getData().getUserid();
-            if (Presenter.getInstance(getContext()).getId() == userIdCircleAdminMain) {
-                LocalLog.d(TAG, "当前用户为圈创建者");
 
-            } else {
-                LocalLog.d(TAG, "当前用户普通");
+    private JoinCircleInterface joinCircleInterface = new JoinCircleInterface() {
+        @Override
+        public void response(JoinCircleResponse joinCircleResponse) {
+            if (joinCircleResponse.getError() == 0) {
+                LocalLog.d(TAG, "加入成功");
+                joinIn.setVisibility(View.GONE);
             }
-        }*/
+        }
 
+        @Override
+        public void response(ErrorCode errorCode) {
+            if (errorCode.getMessage().equals("请输入密码")) {
+                popPassWordEdit();
+            }
+        }
+    };
+
+
+    private UiStepAndLoveRankInterface uiStepAndLoveRankInterface = new UiStepAndLoveRankInterface() {
         @Override
         public void response(ReChargeRankResponse reChargeRankResponse) {
             LocalLog.d(TAG, "ReChargeRankResponse() ");
@@ -342,6 +377,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 rechargeRankBundleData = new RechargeRankBundleData(
                         (ArrayList<ReChargeRankResponse.DataBeanX.DataBean>)
                                 reChargeRankResponse.getData().getData());
+
             }
         }
 
@@ -350,6 +386,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             LocalLog.d(TAG, "StepRankResponse() ");
             if (stepRankResponse.getError() == 0) {
                 stepRecycler.setAdapter(new RankAdapter(getContext(), stepRankResponse.getData().getData()));
+                String sAgeFormat = mContext.getResources().getString(R.string.member_total);
+                String sFinalMember = String.format(sAgeFormat, stepRankResponse.getData().getPagenation().getTotalCount());
+                memberNumDes.setText(sFinalMember);
             }
 
         }
@@ -371,6 +410,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             popupOpWindow.dismiss();
             popupOpWindow = null;
         }
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(uiStepAndLoveRankInterface);
+        Presenter.getInstance(getContext()).dispatchUiInterface(joinCircleInterface);
     }
 
     @OnClick(R.id.money_ret)
@@ -379,9 +421,36 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
 
     @Override
     public void response(CircleDetailResponse circleDetailResponse) {
-        circleId = circleDetailResponse.getData().getId();
-        this.circleNum = circleNum;
-        total_money = Float.parseFloat(circleDetailResponse.getData().getTotal_amount());
-        red_pack_money = Float.parseFloat(circleDetailResponse.getData().getRed_packet_amount());
+        if (circleDetailResponse.getError() == 0) {
+            this.circleDetailResponse = circleDetailResponse;
+            if (circleDetailResponse.getData().getIs_join() == 0) {
+                LocalLog.d(TAG, "还没有加入圈子");
+                joinIn.setVisibility(View.VISIBLE);
+                joinIn.setOnClickListener(onClickListener);
+            }
+            total_money = Float.parseFloat(circleDetailResponse.getData().getTotal_amount());
+            red_pack_money = Float.parseFloat(circleDetailResponse.getData().getRed_packet_amount());
+
+            String sMoneyFormat = mContext.getResources().getString(R.string.circle_total);
+            String sMoney = String.format(sMoneyFormat, total_money);
+            if (circleDetailResponse != null) {
+                String targetFormat = getResources().getString(R.string.target_step);
+                target = String.format(targetFormat, circleDetailResponse.getData().getTarget());
+            }
+            circleObjDes.setText(target);
+            moneyRet.setText(sMoney);
+            if (red_pack_money > total_money) {
+                LocalLog.d(TAG, "余额不足当天的红包");
+
+            }
+            titleStr = circleDetailResponse.getData().getName();
+            Presenter.getInstance(getContext()).getImage(circleCover, circleDetailResponse.getData().getLogo());
+            Presenter.getInstance(getContext()).getCircleRechargeRand(circleId);
+            Presenter.getInstance(getContext()).getCircleStepRank(circleId);
+        } else if (circleDetailResponse.getError() == -1) {
+            Toast.makeText(getContext(), circleDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
+        } else if (circleDetailResponse.getError() == 1) {
+
+        }
     }
 }

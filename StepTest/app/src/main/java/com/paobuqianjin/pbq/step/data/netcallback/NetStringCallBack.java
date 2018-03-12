@@ -70,6 +70,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
+import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
@@ -235,6 +236,9 @@ public class NetStringCallBack extends StringCallback {
                     } else if (command == Engine.COMMAND_GET_USER_DAN) {
                         ((DanInterface) callBackInterface).response(errorCode);
                     }
+                } else if (callBackInterface != null && callBackInterface instanceof JoinCircleInterface) {
+                    LocalLog.d(TAG, "加入圈子错误");
+                    ((JoinCircleInterface) callBackInterface).response(errorCode);
                 } else {
                     LocalLog.e(TAG, " dispatch not match");
                 }
@@ -565,6 +569,8 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null && callBackInterface instanceof CrashRecordInterface) {
             CrashListDetailResponse crashListDetailResponse = new Gson().fromJson(s, CrashListDetailResponse.class);
             ((CrashRecordInterface) callBackInterface).response(crashListDetailResponse);
+        } else if (callBackInterface != null && callBackInterface instanceof JoinCircleInterface) {
+            LocalLog.d(TAG, "加入圈子");
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }
