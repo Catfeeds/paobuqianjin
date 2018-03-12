@@ -20,10 +20,13 @@ import com.paobuqianjin.pbq.step.data.bean.bundle.MyCreateCircleBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.MyJoinCreateCircleBudleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
@@ -59,6 +62,7 @@ public class HotCircleFragment extends BaseFragment {
     private int circleIdA = -1, circleIdB = -1;
     private int circleNumA = -1, circleNumB = -1;
     private ArrayList<String> circleTypeList;
+    CircleChooseGoodAdapter adapter;
     private final static String ACTION_ENTER_ICON = "coma.paobuqian.pbq.step.ICON_ACTION";
 
     @Override
@@ -295,11 +299,14 @@ public class HotCircleFragment extends BaseFragment {
 
         @Override
         public void response(ChoiceCircleResponse choiceCircleResponse) {
-            LocalLog.d(TAG, " response() 更新精选圈子 size = " + choiceCircleResponse.getData().getData().size());
-            choiceCircleData = (ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData();
-            choiceRecyclerView.setAdapter(new CircleChooseGoodAdapter(getContext(),
-                    choiceCircleData));
-            pageCounts[2] = choiceCircleResponse.getData().getPagenation().getTotalPage();
+            if (choiceCircleResponse.getError() == 0) {
+                LocalLog.d(TAG, " response() 更新精选圈子 size = " + choiceCircleResponse.getData().getData().size());
+                choiceCircleData = (ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData();
+                adapter = new CircleChooseGoodAdapter(getActivity(),getContext(),
+                        choiceCircleData);
+                choiceRecyclerView.setAdapter(adapter);
+                pageCounts[2] = choiceCircleResponse.getData().getPagenation().getTotalPage();
+            }
         }
     };
 }

@@ -102,6 +102,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     TextView confirmText;
     RelativeLayout partTwo;
 
+    private boolean is_password = false;
+
     private JoinCircleParam joinCircleParam;
     private Context mContext;
     private int circleId = -1;
@@ -348,7 +350,13 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     LocalLog.d(TAG, "点击加入圈子");
                     if (joinCircleParam == null) {
                         joinCircleParam = new JoinCircleParam();
-                        joinCircleParam.setCircleid(circleId);
+
+                    }
+                    joinCircleParam.setCircleid(circleId);
+                    if (is_password) {
+                        LocalLog.d(TAG, "需要密码");
+                        popPassWordEdit();
+                        return;
                     }
                     Presenter.getInstance(getContext()).joinCircle(joinCircleParam);
                     break;
@@ -465,6 +473,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             if (red_pack_money > total_money) {
                 LocalLog.d(TAG, "余额不足当天的红包");
 
+            }
+            if (circleDetailResponse.getData().getIs_pwd() == 1) {
+                is_password = true;
             }
             titleStr = circleDetailResponse.getData().getName();
             Presenter.getInstance(getContext()).getImage(circleCover, circleDetailResponse.getData().getLogo());

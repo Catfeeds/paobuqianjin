@@ -1,19 +1,32 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.ArrayList;
@@ -33,9 +46,20 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
     private final static int defaultCount = 3;
     private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data = new ArrayList<>();
     private ChoiceCircleResponse.DataBeanX.DataBean tmpData;
+    private View popCircleOpBar;
+    private PopupWindow popupOpWindow;
+    private TranslateAnimation animationCircleType;
+    private Activity activity;
+    EditText passEdit;
+    ImageView lineMid;
+    TextView cancelText;
+    TextView confirmText;
+    RelativeLayout partTwo;
+    private JoinCircleParam joinCircleParam;
 
-    public CircleChooseGoodAdapter(Context context, ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data) {
+    public CircleChooseGoodAdapter(final Activity activity, Context context, ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data) {
         super();
+        this.activity = activity;
         mContext = context;
         this.data = data;
     }
@@ -128,7 +152,72 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
             circleNumDesc = (TextView) view.findViewById(R.id.circle_num_desc);
             circleJoin = (Button) view.findViewById(R.id.circle_join);
             lock = (ImageView) view.findViewById(R.id.lock);
+            Presenter.getInstance(mContext).attachUiInterface(joinCircleInterface);
 
+        }
+
+
+        public void popPassWordEdit() {
+            LocalLog.d(TAG, "popPassWordEdit() enter 弹出密码输入框");
+            popCircleOpBar = View.inflate(mContext, R.layout.pass_word_layout, null);
+            popupOpWindow = new PopupWindow(popCircleOpBar, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            popupOpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    popupOpWindow = null;
+                }
+            });
+
+            passEdit = (EditText) popCircleOpBar.findViewById(R.id.pass_edit);
+            passEdit.setOnClickListener(onClickListener);
+            cancelText = (TextView) popCircleOpBar.findViewById(R.id.cancel_text);
+            cancelText.setOnClickListener(onClickListener);
+            confirmText = (TextView) popCircleOpBar.findViewById(R.id.confirm_text);
+            confirmText.setOnClickListener(onClickListener);
+
+
+            popupOpWindow.setFocusable(true);
+            popupOpWindow.setOutsideTouchable(true);
+
+            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleType.setInterpolator(new
+
+                    AccelerateInterpolator());
+            animationCircleType.setDuration(200);
+
+            popupOpWindow.showAtLocation(activity.findViewById(R.id.main_activity_layout), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+            popCircleOpBar.startAnimation(animationCircleType);
+        }
+
+        private JoinCircleInterface joinCircleInterface = new JoinCircleInterface() {
+            @Override
+            public void response(JoinCircleResponse joinCircleResponse) {
+                if (joinCircleResponse.getError() == 0) {
+                    LocalLog.d(TAG, "加入成功");
+                    circleJoin.setText("已加入");
+                } else if (joinCircleResponse.getError() == -1) {
+                    Toast.makeText(mContext, joinCircleResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void response(ErrorCode errorCode) {
+                if (errorCode.getMessage().equals("请输入密码")) {
+                    popPassWordEdit();
+                }else{
+                    Toast.makeText(mContext, errorCode.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
+
+        public JoinCircleInterface getJoinCircleInterface() {
+            return joinCircleInterface;
+        }
+
+        private void setJoinCircleInterface(JoinCircleInterface joinCircleInterface) {
+            this.joinCircleInterface = joinCircleInterface;
         }
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -136,13 +225,39 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.circle_join:
-                        LocalLog.d(TAG, "点击加入");
-                        if (is_pwd) {
-                            //TODO 需要密码,获取密码再调用以下
-                            //Presenter.getInstance(mContext).joinCircle(circleId, "123456");
-                        } else {
-                            //Presenter.getInstance(mContext).joinCircle(circleId);
+                        switch (circleJoin.getText().toString()) {
+                            case "加入":
+                                LocalLog.d(TAG, "点击加入+++");
+                                if (joinCircleParam == null) {
+                                    joinCircleParam = new JoinCircleParam();
+                                }
+                                joinCircleParam.setCircleid(circleId);
+                                if (is_pwd) {
+                                    LocalLog.d(TAG, "输入密码");
+                                    popPassWordEdit();
+                                    return;
+                                } else {
+
+                                }
+                                Presenter.getInstance(mContext).joinCircle(joinCircleParam);
+                                break;
                         }
+                        break;
+                    case R.id.confirm_text:
+                        LocalLog.d(TAG, "确定");
+                        if (popupOpWindow != null) {
+                            joinCircleParam.setPassword(passEdit.getText().toString());
+                            popupOpWindow.dismiss();
+                        }
+                        Presenter.getInstance(mContext).joinCircle(joinCircleParam);
+                        break;
+                    case R.id.cancel_text:
+                        LocalLog.d(TAG, "取消");
+                        if (popupOpWindow != null) {
+                            popupOpWindow.dismiss();
+                        }
+                        break;
+                    default:
                         break;
                 }
             }
