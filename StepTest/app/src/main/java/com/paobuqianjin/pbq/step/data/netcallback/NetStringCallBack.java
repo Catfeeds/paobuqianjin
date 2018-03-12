@@ -26,6 +26,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
@@ -571,6 +572,8 @@ public class NetStringCallBack extends StringCallback {
             ((CrashRecordInterface) callBackInterface).response(crashListDetailResponse);
         } else if (callBackInterface != null && callBackInterface instanceof JoinCircleInterface) {
             LocalLog.d(TAG, "加入圈子");
+            JoinCircleResponse joinCircleResponse = new Gson().fromJson(s, JoinCircleResponse.class);
+            ((JoinCircleInterface) callBackInterface).response(joinCircleResponse);
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }

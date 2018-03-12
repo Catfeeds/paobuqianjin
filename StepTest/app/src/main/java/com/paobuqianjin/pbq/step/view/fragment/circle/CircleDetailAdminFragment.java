@@ -2,8 +2,6 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +14,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -35,17 +34,13 @@ import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.LoveRankActivity;
 import com.paobuqianjin.pbq.step.view.activity.MemberManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.RankAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.RechargeRankSimpleAdapter;
-import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
-import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -100,6 +95,12 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     ImageView circleCover;
     @Bind(R.id.join_in)
     Button joinIn;
+
+    EditText passEdit;
+    ImageView lineMid;
+    TextView cancelText;
+    TextView confirmText;
+    RelativeLayout partTwo;
 
     private JoinCircleParam joinCircleParam;
     private Context mContext;
@@ -210,6 +211,14 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 popupOpWindow = null;
             }
         });
+
+        passEdit = (EditText) popCircleOpBar.findViewById(R.id.pass_edit);
+        passEdit.setOnClickListener(onClickListener);
+        cancelText = (TextView) popCircleOpBar.findViewById(R.id.cancel_text);
+        cancelText.setOnClickListener(onClickListener);
+        confirmText = (TextView) popCircleOpBar.findViewById(R.id.confirm_text);
+        confirmText.setOnClickListener(onClickListener);
+
 
         popupOpWindow.setFocusable(true);
         popupOpWindow.setOutsideTouchable(true);
@@ -342,6 +351,20 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                         joinCircleParam.setCircleid(circleId);
                     }
                     Presenter.getInstance(getContext()).joinCircle(joinCircleParam);
+                    break;
+                case R.id.confirm_text:
+                    LocalLog.d(TAG, "确定");
+                    if (popupOpWindow != null) {
+                        joinCircleParam.setPassword(passEdit.getText().toString());
+                        popupOpWindow.dismiss();
+                    }
+                    Presenter.getInstance(getContext()).joinCircle(joinCircleParam);
+                    break;
+                case R.id.cancel_text:
+                    LocalLog.d(TAG, "取消");
+                    if (popupOpWindow != null) {
+                        popupOpWindow.dismiss();
+                    }
                     break;
                 default:
                     break;
