@@ -64,6 +64,8 @@ public class HotCircleFragment extends BaseFragment {
     private ArrayList<String> circleTypeList;
     CircleChooseGoodAdapter adapter;
     private final static String ACTION_ENTER_ICON = "coma.paobuqian.pbq.step.ICON_ACTION";
+    private int PAGE_INDEX_DEFAULT = 1;
+    private int PAGE_DEFAULT_SIZE = 10;
 
     @Override
 
@@ -133,8 +135,8 @@ public class HotCircleFragment extends BaseFragment {
 
 
     private void loadingData() {
-        Presenter.getInstance(mContext).getCircleChoice();
-        Presenter.getInstance(mContext).getMyHotCircle(1, 2);
+        Presenter.getInstance(mContext).getCircleChoice(PAGE_INDEX_DEFAULT, PAGE_DEFAULT_SIZE);
+        Presenter.getInstance(mContext).getMyHotCircle(PAGE_INDEX_DEFAULT, 2);
     }
 
     /*@desc  返回Fragment标签
@@ -302,7 +304,7 @@ public class HotCircleFragment extends BaseFragment {
             if (choiceCircleResponse.getError() == 0) {
                 LocalLog.d(TAG, " response() 更新精选圈子 size = " + choiceCircleResponse.getData().getData().size());
                 choiceCircleData = (ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData();
-                adapter = new CircleChooseGoodAdapter(getActivity(),getContext(),
+                adapter = new CircleChooseGoodAdapter(getActivity(), getContext(),
                         choiceCircleData);
                 choiceRecyclerView.setAdapter(adapter);
                 pageCounts[2] = choiceCircleResponse.getData().getPagenation().getTotalPage();

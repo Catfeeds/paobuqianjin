@@ -1,18 +1,31 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.ArrayList;
@@ -30,10 +43,21 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
     private Context mContext;
     private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data;
     private ChoiceCircleResponse.DataBeanX.DataBean tmpData;
+    private JoinCircleParam joinCircleParam;
+    private View popCircleOpBar;
+    private PopupWindow popupOpWindow;
+    private TranslateAnimation animationCircleType;
+    private Activity activity;
+    EditText passEdit;
+    ImageView lineMid;
+    TextView cancelText;
+    TextView confirmText;
+    RelativeLayout partTwo;
 
-    public SearchCircleAdapter(Context context) {
+    public SearchCircleAdapter(Context context, final Activity activity) {
         super();
         mContext = context;
+        this.activity = activity;
     }
 
 
@@ -64,7 +88,6 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
 
     private void updateCircleList(SearchCirCleViewHolder holder, int position) {
         LocalLog.d(TAG, "updateCircleList() enter" + data.get(position).toString());
-
         tmpData = data.get(position);
         LocalLog.d(TAG, "city = " + tmpData.getCity() +
                 ", name =" + tmpData.getName() + "logo url = " + tmpData.getLogo() + " ,member_number ="
@@ -79,7 +102,18 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
             holder.lock.setVisibility(View.VISIBLE);
             holder.needPass = true;
         }
+        if (tmpData.getIs_join() == 0) {
+            holder.joinIn.setText("加入");
+        } else if (tmpData.getIs_join() == 1) {
+            holder.joinIn.setText("已加入");
+        }
+        holder.circleId = tmpData.getCircleid();
+
+        if (tmpData.getIs_pwd() == 1) {
+            holder.is_password = true;
+        }
     }
+
 
     class SearchCirCleViewHolder extends RecyclerView.ViewHolder {
         boolean needPass;
@@ -89,11 +123,37 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
         TextView searchCircleDesListNum;
         TextView locationDescSearchList;
         Button joinIn;
+        int circleId;
+        boolean is_password;
 
         public SearchCirCleViewHolder(View view) {
             super(view);
             init(view);
         }
+
+
+        private JoinCircleInterface joinCircleInterface = new JoinCircleInterface() {
+            @Override
+            public void response(JoinCircleResponse joinCircleResponse) {
+                if (joinCircleResponse.getError() == 0) {
+                    LocalLog.d(TAG, "加入成功");
+                    joinIn.setText("已加入");
+                } else if (joinCircleResponse.getError() == -1) {
+                    Toast.makeText(mContext, joinCircleResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                Presenter.getInstance(mContext).dispatchUiInterface(joinCircleInterface);
+            }
+
+            @Override
+            public void response(ErrorCode errorCode) {
+                if (errorCode.getMessage().equals("请输入密码")) {
+                    popPassWordEdit();
+                } else {
+                    Toast.makeText(mContext, errorCode.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
 
         private void init(View view) {
             circleLogoSearch = (ImageView) view.findViewById(R.id.circle_logo_search);
@@ -103,6 +163,7 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
             locationDescSearchList = (TextView) view.findViewById(R.id.location_desc_search_list);
             joinIn = (Button) view.findViewById(R.id.join_in);
             joinIn.setOnClickListener(onClickListener);
+            Presenter.getInstance(mContext).attachUiInterface(joinCircleInterface);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -110,14 +171,80 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.join_in:
-                        LocalLog.d(TAG, "  点击加入");
+                        switch (joinIn.getText().toString()) {
+                            case "加入":
+                                LocalLog.d(TAG, "加入圈子");
+                                if (joinCircleParam == null) {
+                                    joinCircleParam = new JoinCircleParam();
+
+                                }
+                                joinCircleParam.setCircleid(circleId);
+                                if (is_password) {
+                                    LocalLog.d(TAG, "需要密码");
+                                    popPassWordEdit();
+                                    return;
+                                }
+                                Presenter.getInstance(mContext).joinCircle(joinCircleParam);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    case R.id.confirm_text:
+                        LocalLog.d(TAG, "确定");
+                        if (popupOpWindow != null) {
+                            joinCircleParam.setPassword(passEdit.getText().toString());
+                            popupOpWindow.dismiss();
+                        }
+                        Presenter.getInstance(mContext).joinCircle(joinCircleParam);
+                        break;
+                    case R.id.cancel_text:
+                        LocalLog.d(TAG, "取消");
+                        if (popupOpWindow != null) {
+                            popupOpWindow.dismiss();
+                        }
                         break;
                     default:
                         break;
                 }
             }
         };
-    }
 
+
+        public void popPassWordEdit() {
+            LocalLog.d(TAG, "popPassWordEdit() enter 弹出密码输入框");
+            popCircleOpBar = View.inflate(mContext, R.layout.pass_word_layout, null);
+            popupOpWindow = new PopupWindow(popCircleOpBar, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            popupOpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    popupOpWindow = null;
+                }
+            });
+
+            passEdit = (EditText) popCircleOpBar.findViewById(R.id.pass_edit);
+            passEdit.setOnClickListener(onClickListener);
+            cancelText = (TextView) popCircleOpBar.findViewById(R.id.cancel_text);
+            cancelText.setOnClickListener(onClickListener);
+            confirmText = (TextView) popCircleOpBar.findViewById(R.id.confirm_text);
+            confirmText.setOnClickListener(onClickListener);
+
+
+            popupOpWindow.setFocusable(true);
+            popupOpWindow.setOutsideTouchable(true);
+
+            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleType.setInterpolator(new
+
+                    AccelerateInterpolator());
+            animationCircleType.setDuration(200);
+
+            popupOpWindow.showAtLocation(activity.findViewById(R.id.search_hot_circle), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+            popCircleOpBar.startAnimation(animationCircleType);
+        }
+
+    }
 
 }

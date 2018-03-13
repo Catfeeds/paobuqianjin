@@ -261,8 +261,11 @@ public final class Presenter {
     }
 
     //获取精选圈子
-    public void getCircleChoice() {
-        engine.getCircleChoice(engine.getId(mContext), 1, 10);
+    public void getCircleChoice(int page,int pageSize) {
+        engine.getCircleChoice( page, pageSize);
+    }
+    public void getMoreCircle(int page,int pageSize){
+        engine.getMoreCircle(page,pageSize);
     }
 
     private void getTest() {

@@ -7,6 +7,8 @@ import android.content.Context;
  */
 
 public class Utils {
+    public final static int PAGE_SIZE_DEFAULT = 10;
+
     public static Context getApplicationContext(Context context) {
         return context.getApplicationContext();
     }
@@ -26,4 +28,7 @@ public class Utils {
     }
 
 
+    public static String getEmojiStringByUnicode(int unicode) {
+        return new String(Character.toChars(unicode));
+    }
 }

@@ -20,7 +20,12 @@ import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SearchCircleResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.SearchCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.SearchCircleAdapter;
 import com.yanzhenjie.loading.LoadingView;
@@ -35,7 +40,7 @@ import java.util.List;
  * Created by pbq on 2017/12/15.
  */
 
-public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragment {
+public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragment implements SearchCircleInterface {
     private final static String TAG = SearchCircleStyleTextViewFragment.class.getSimpleName();
     private LinearLayoutManager layoutManager;
     private SwipeMenuRecyclerView recyclerView;
@@ -43,6 +48,8 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     private Context mContext;
     private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData;
     SearchCircleAdapter adapter;
+    int pageIndex = 1;
+    int pageCount = 0;
 
     public void setChoiceCircleData(ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData) {
         this.choiceCircleData = choiceCircleData;
@@ -101,9 +108,10 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         recyclerView.addFooterView(loadMoreView); // 添加为Footer。
         recyclerView.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         recyclerView.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
-        adapter = new SearchCircleAdapter(this.getContext());
+        adapter = new SearchCircleAdapter(this.getContext(),getActivity());
         recyclerView.setAdapter(adapter);
         loadData();
+        Presenter.getInstance(getContext()).attachUiInterface(this);
     }
 
 
@@ -122,9 +130,9 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     }
 
 
-    protected ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> createDataList(int start) {
+/*    protected ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> createDataList(int start, ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> newData) {
         ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data = new ArrayList<>();
-        for (int i = start; i < start + 20; i++) {
+        for (int i = start; i < start + newData.size(); i++) {
             ChoiceCircleResponse.DataBeanX.DataBean dataBean = new ChoiceCircleResponse.DataBeanX.DataBean();
             dataBean.setCircleid(1000);
             dataBean.setCity("南昌" + i);
@@ -135,7 +143,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
             data.add(dataBean);
         }
         return data;
-    }
+    }*/
 
     /**
      * 加载更多。
@@ -146,24 +154,41 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
             recyclerView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount());
-                    choiceCircleData.addAll(strings);
-                    // notifyItemRangeInserted()或者notifyDataSetChanged().
-                    adapter.notifyItemRangeInserted(choiceCircleData.size() - strings.size(), strings.size());
+                    LocalLog.d(TAG, "加载更多! pageIndex = " + pageIndex + "pageCount = " + pageCount);
+                    if (pageCount == 0) {
+                        LocalLog.d(TAG, "第一次刷新");
+                    } else {
+                        if (pageIndex > pageCount) {
+                            Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                            recyclerView.loadMoreFinish(false, true);
+                            return;
+                        }
+                    }
 
-                    // 数据完更多数据，一定要掉用这个方法。
-                    // 第一个参数：表示此次数据是否为空。
-                    // 第二个参数：表示是否还有更多数据。
-                    recyclerView.loadMoreFinish(false, true);
+                    Presenter.getInstance(getContext()).getMoreCircle(pageIndex, Utils.PAGE_SIZE_DEFAULT);
 
-                    // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
-                    // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
-                    // errorMessage是会显示到loadMoreView上的，用户可以看到。
-                    // mRecyclerView.loadMoreError(0, "请求网络失败");
                 }
             }, 1000);
         }
     };
+
+
+    private void loadMore(ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> newData) {
+        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        choiceCircleData.addAll(newData);
+        // notifyItemRangeInserted()或者notifyDataSetChanged().
+        adapter.notifyItemRangeInserted(choiceCircleData.size() - newData.size(), newData.size());
+
+        // 数据完更多数据，一定要掉用这个方法。
+        // 第一个参数：表示此次数据是否为空。
+        // 第二个参数：表示是否还有更多数据。
+        recyclerView.loadMoreFinish(false, true);
+
+        // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
+        // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
+        // errorMessage是会显示到loadMoreView上的，用户可以看到。
+        // mRecyclerView.loadMoreError(0, "请求网络失败");
+    }
 
     /**
      * 这是这个类的主角，如何自定义LoadMoreView。
@@ -278,7 +303,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     private SwipeItemClickListener mItemClickListener = new SwipeItemClickListener() {
         @Override
         public void onItemClick(View itemView, int position) {
-            Toast.makeText(getActivity(), "第" + position + "个", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), "第" + position + "个", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -301,5 +326,35 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     @Override
     protected String title() {
         return "精选圈子";
+    }
+
+    @Override
+    public void response(SearchCircleResponse searchCircleResponse) {
+
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        recyclerView.loadMoreFinish(false, true);
+    }
+
+    @Override
+    public void response(ChoiceCircleResponse choiceCircleResponse) {
+        if (choiceCircleResponse.getError() == 0) {
+            pageCount = choiceCircleResponse.getData().getPagenation().getTotalPage();
+            pageIndex++;
+            LocalLog.d(TAG, "加载到更多数据 pageCount = " + pageCount);
+            loadMore((ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData());
+        } else if (choiceCircleResponse.getError() == 1) {
+            recyclerView.loadMoreFinish(false, true);
+        } else if (choiceCircleResponse.getError() == -1) {
+            recyclerView.loadMoreFinish(false, true);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 }

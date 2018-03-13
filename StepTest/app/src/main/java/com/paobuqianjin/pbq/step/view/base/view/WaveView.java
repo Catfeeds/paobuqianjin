@@ -148,7 +148,7 @@ public class WaveView extends View {
 
         // 引发view重绘，一般可以考虑延迟20-30ms重绘，空出时间片
 
-        handler.sendEmptyMessageDelayed(0, 20);
+        handler.sendEmptyMessageDelayed(0, 1000/60);
     }
 
     private Handler handler = new Handler() {

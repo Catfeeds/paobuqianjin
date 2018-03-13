@@ -86,6 +86,7 @@ import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseRecordInterface;
+import com.paobuqianjin.pbq.step.presenter.im.SearchCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
@@ -574,6 +575,11 @@ public class NetStringCallBack extends StringCallback {
             LocalLog.d(TAG, "加入圈子");
             JoinCircleResponse joinCircleResponse = new Gson().fromJson(s, JoinCircleResponse.class);
             ((JoinCircleInterface) callBackInterface).response(joinCircleResponse);
+        } else if (callBackInterface != null && callBackInterface instanceof SearchCircleInterface) {
+            if (command == Engine.COMMAND_GET_CHOICE_CIRCLE) {
+                ChoiceCircleResponse choiceCircleResponse = new Gson().fromJson(s, ChoiceCircleResponse.class);
+                ((SearchCircleInterface) callBackInterface).response(choiceCircleResponse);
+            }
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }

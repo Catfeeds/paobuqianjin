@@ -119,7 +119,6 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:background="@drawable/button_join"
-            android:text="加入"
             android:textColor="@color/color_161727"
             android:textSize="14dp" />
 

@@ -65,6 +65,7 @@ import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseRecordInterface;
+import com.paobuqianjin.pbq.step.presenter.im.SearchCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
@@ -156,6 +157,7 @@ public final class Engine {
     private ReceiveTaskInterface receiveTaskInterface;
     private CrashRecordInterface crashRecordInterface;
     private JoinCircleInterface joinCircleInterface;
+    private SearchCircleInterface searchCircleInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -1012,10 +1014,11 @@ public final class Engine {
                 .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_MY_HOT));
     }
 
-    public void getCircleChoice(int userid, int page, int pagesize) {
-        LocalLog.d(TAG, "精选圈子：getCircleChoice() enter");
-        String url = NetApi.urlCircle + "?action=choice" + "&userid=" + String.valueOf(userid)
+    public void getCircleChoice(int page, int pagesize) {
+
+        String url = NetApi.urlCircle + "?action=choice" + "&userid=" + String.valueOf(getId(mContext))
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        LocalLog.d(TAG, "精选圈子：getCircleChoice() enter" + url);
         OkHttpUtils
                 .get()
                 .url(url)
@@ -1023,6 +1026,16 @@ public final class Engine {
                 .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_CHOICE_CIRCLE));
     }
 
+    public void getMoreCircle(int page, int pagesize) {
+        String url = NetApi.urlCircle + "?action=choice" + "&userid=" + String.valueOf(getId(mContext))
+                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        LocalLog.d(TAG, "精选圈子：getMoreCircle() enter" + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(searchCircleInterface, COMMAND_GET_CHOICE_CIRCLE));
+    }
 
     public void createCircle(CreateCircleBodyParam createCircleBodyParam) {
         LocalLog.d(TAG, "  创建圈子createCircle() enter " + createCircleBodyParam.paramString());
@@ -1707,6 +1720,8 @@ public final class Engine {
             crashRecordInterface = (CrashRecordInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof JoinCircleInterface) {
             joinCircleInterface = (JoinCircleInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SearchCircleInterface) {
+            searchCircleInterface = (SearchCircleInterface) uiCallBackInterface;
         }
     }
 
@@ -1788,6 +1803,8 @@ public final class Engine {
             crashRecordInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof JoinCircleInterface) {
             joinCircleInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SearchCircleInterface) {
+            searchCircleInterface = null;
         }
     }
 }
