@@ -128,9 +128,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getCity());
                 ((OneOrZeroViewHodler) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
                 ((OneOrZeroViewHodler) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
-                if (data.get(position).getVote() <= 0) {
-                    LocalLog.d(TAG, "updateItem() 无人点赞");
-                    ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.fabulous_n));
+                if (data.get(position).getIs_vote() == 1) {
+                    LocalLog.d(TAG, "赞过");
+                    ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
                 }
                 if (data.get(position).getComment() <= 0) {
                     LocalLog.d(TAG, "updateItem() 无人评论");
@@ -141,7 +141,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     if (data.get(position).getOne_comment().getNickname() != null) {
                         String replyStr = data.get(position).getOne_comment().getNickname() + ":" + data.get(position).getOne_comment().getContent();
                         SpannableString spannableString = new SpannableString(replyStr);
-                        ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext,R.color.color_6c71c4));
+                        ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                         spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length()
                                 , Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                         ((OneOrZeroViewHodler) holder).firstContent.setText(spannableString);
@@ -156,8 +156,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getCity());
                 ((OneOrZeroViewHodler) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
                 ((OneOrZeroViewHodler) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
-                if (data.get(position).getVote() <= 0) {
-                    ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.fabulous_n));
+                if (data.get(position).getIs_vote() == 1) {
+                    ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
                 }
                 if (data.get(position).getComment() <= 0) {
                     LocalLog.d(TAG, "updateItem() 无人评论");
@@ -167,7 +167,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     if (data.get(position).getOne_comment().getNickname() != null) {
                         String replyStr = data.get(position).getOne_comment().getNickname() + ":" + data.get(position).getOne_comment().getContent();
                         SpannableString spannableString = new SpannableString(replyStr);
-                        ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext,R.color.color_6c71c4));
+                        ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                         spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length()
                                 , Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                         ((OneOrZeroViewHodler) holder).firstContent.setText(spannableString);
@@ -186,8 +186,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((TwoPicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getCity());
             ((TwoPicViewHolder) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
             ((TwoPicViewHolder) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
-            if (data.get(position).getVote() <= 0) {
-                ((TwoPicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.fabulous_n));
+            if (data.get(position).getIs_vote() == 1) {
+                ((TwoPicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
             }
             if (data.get(position).getComment() <= 0) {
                 LocalLog.d(TAG, "updateItem() 无人评论");
@@ -197,7 +197,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 if (data.get(position).getOne_comment().getNickname() != null) {
                     String replyStr = data.get(position).getOne_comment().getNickname() + ":" + data.get(position).getOne_comment().getContent();
                     SpannableString spannableString = new SpannableString(replyStr);
-                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext,R.color.color_6c71c4));
+                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                     spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length()
                             , Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                     ((TwoPicViewHolder) holder).firstContent.setText(spannableString);
@@ -216,8 +216,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((ThreePicViewHolder) holder).dynamicUserName.setText(data.get(position).getNickname());
             ((ThreePicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getCity());
             ((ThreePicViewHolder) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
-            if (data.get(position).getVote() <= 0) {
-                ((ThreePicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.fabulous_n));
+            if (data.get(position).getIs_vote() == 1) {
+                ((ThreePicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
             }
             if (data.get(position).getComment() <= 0) {
                 LocalLog.d(TAG, "updateItem() 无人评论");
@@ -227,7 +227,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 if (data.get(position).getOne_comment().getNickname() != null) {
                     String replyStr = data.get(position).getOne_comment().getNickname() + ":" + data.get(position).getOne_comment().getContent();
                     SpannableString spannableString = new SpannableString(replyStr);
-                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext,R.color.color_6c71c4));
+                    ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                     spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length(),
                             Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                     ((ThreePicViewHolder) holder).firstContent.setText(spannableString);
@@ -329,7 +329,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         Intent intent = new Intent();
                         intent.putExtra(mContext.getPackageName() + "dynamicId", dynamicid);
                         intent.putExtra(mContext.getPackageName() + "userId", userid);
-                        intent.setClass(mContext,DynamicActivity.class);
+                        intent.setClass(mContext, DynamicActivity.class);
                         mContext.startActivity(intent);
                         break;
                 }
@@ -523,7 +523,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         Intent intent = new Intent();
                         intent.putExtra(mContext.getPackageName() + "dynamicId", dynamicid);
                         intent.putExtra(mContext.getPackageName() + "userId", userid);
-                        intent.setClass(mContext,DynamicActivity.class);
+                        intent.setClass(mContext, DynamicActivity.class);
                         mContext.startActivity(intent);
                         break;
                 }

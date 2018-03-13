@@ -58,7 +58,10 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
             holder.dearName = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getNickname();
             holder.userContentName.setText(((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             long create_time = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
-            LocalLog.d(TAG, "create_time = " + DateTimeUtil.formatDateTime(create_time * 1000));
+            String time_day_str = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_MM_DD_MM);
+            String time_min_str = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_HH_MM);
+            holder.timeContentA.setText(time_day_str);
+            holder.timeContentB.setText(time_min_str);
             holder.userContentRanka.setText(((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getContent());
 
             if (((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild() != null) {
@@ -138,7 +141,7 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
                             PostDynamicContentParam postDynamicContentParam = new PostDynamicContentParam()
                                     .setParent_id(parent_id)
                                     .setReply_userid(reply_userid).setDynamicid(dynamicid);
-                            dynamicDetailInterface.postDynamicAction(postDynamicContentParam, dearName,reflashInterface);
+                            dynamicDetailInterface.postDynamicAction(postDynamicContentParam, dearName, reflashInterface);
                         }
                         break;
                 }

@@ -46,6 +46,8 @@ public final class DateTimeUtil {
      **/
     public static final String DF_HH_MM = "HH:mm";
 
+    public static final String DF_MM_DD_MM = "MM-dd";
+
     private final static long minute = 60 * 1000;// 1分钟
     private final static long hour = 60 * minute;// 1小时
     private final static long day = 24 * hour;// 1天
@@ -71,17 +73,17 @@ public final class DateTimeUtil {
         if (diff > year) {
             r = (diff / year);
             //return r + "年前";
-            return  formatDateTime(date,DF_YYYY_MM_DD);
+            return formatDateTime(date, DF_YYYY_MM_DD);
         }
         if (diff > month) {
             r = (diff / month);
             //return r + "个月前";
-            return  formatDateTime(date,DF_YYYY_MM_DD);
+            return formatDateTime(date, DF_YYYY_MM_DD);
         }
         if (diff > day) {
             r = (diff / day);
             //return r + "天前";
-            return  formatDateTime(date,DF_YYYY_MM_DD);
+            return formatDateTime(date, DF_YYYY_MM_DD);
         }
         if (diff > hour) {
             r = (diff / hour);

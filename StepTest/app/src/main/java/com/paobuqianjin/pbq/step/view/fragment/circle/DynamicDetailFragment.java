@@ -39,6 +39,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentRespo
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.LikeSupportActivity;
@@ -147,6 +148,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
     private int currentIndexPage = 1;
     private int likeNum, contentNum;
+    private ReflashInterface reflashInterface;
 
     @Override
     protected int getLayoutResId() {
@@ -257,6 +259,12 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         }
     };
 
+    private ReflashInterface reflashTopInterface = new ReflashInterface() {
+        @Override
+        public void notifyReflash() {
+            LocalLog.d(TAG, "更新顶层动态UI");
+        }
+    };
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -281,7 +289,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                             .setParent_id(0)
                             .setUserid(Presenter.getInstance(getContext())
                                     .getId()).setReply_userid(userid);
-                    postDynamicAction(postDynamicContentParam, dynamicUserName.getText().toString());
+                    postDynamicAction(postDynamicContentParam, dynamicUserName.getText().toString(), reflashTopInterface);
                     break;
                 default:
                     break;
@@ -457,7 +465,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         LocalLog.d(TAG, "PostDynamicContentResponse() enter " + postDynamicContentResponse.toString());
         if (postDynamicContentResponse.getError() == 0) {
             LocalLog.d(TAG, "评论成功");
-
+            if (reflashInterface != null) {
+                reflashInterface.notifyReflash();
+            }
             popupRedPkgWindow.dismiss();
         }
     }
@@ -479,9 +489,10 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     }
 
     @Override
-    public void postDynamicAction(PostDynamicContentParam postDynamicContentParam, String dearName) {
+    public void postDynamicAction(PostDynamicContentParam postDynamicContentParam, String dearName, ReflashInterface reflashInterface) {
         LocalLog.d(TAG, "PostDynamicContentParam() 弹出评论框" + postDynamicContentParam.paramString());
         popEdit(postDynamicContentParam, dearName);
+        this.reflashInterface = reflashInterface;
     }
 
     private void popEdit(final PostDynamicContentParam postDynamicContentParam, String dearName) {
@@ -498,6 +509,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
         final EditText editText = (EditText) popRedPkgView.findViewById(R.id.content_text);
         editText.setHint("回复:" + dearName);
+
         Button button = (Button) popRedPkgView.findViewById(R.id.send_content);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

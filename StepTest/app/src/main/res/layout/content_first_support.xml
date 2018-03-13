@@ -42,7 +42,7 @@
 
         <TextView
             android:layout_marginTop="15dp"
-            android:text="08-03"
+            android:text=""
             android:textSize="12dp"
             android:textColor="@color/color_8a8a8a"
             android:layout_below="@+id/user_content_ranka"
@@ -59,7 +59,7 @@
             android:layout_alignBaseline="@+id/time_content_a"
             android:layout_alignBottom="@+id/time_content_a"
             android:layout_toEndOf="@+id/time_content_a"
-            android:text="18:14" />
+            android:text="" />
 
         <android.support.v7.widget.RecyclerView
             android:layout_marginTop="15dp"

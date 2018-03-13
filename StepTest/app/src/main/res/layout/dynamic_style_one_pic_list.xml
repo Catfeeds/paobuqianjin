@@ -122,7 +122,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:layout_toStartOf="@+id/content_supports"
-            android:background="@drawable/fabulous_s" />
+            android:background="@drawable/fabulous_n" />
     </RelativeLayout>
 
     <RelativeLayout
