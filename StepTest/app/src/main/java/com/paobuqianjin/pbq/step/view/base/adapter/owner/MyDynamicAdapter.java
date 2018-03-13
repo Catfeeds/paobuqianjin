@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
@@ -46,6 +47,11 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
     public MyDynamicAdapter(Context context, List<DynamicPersonResponse.DataBeanX.DataBean> data) {
         mContext = context;
         mData = data;
+    }
+
+    public void notifyDataSetChanged(List<DynamicPersonResponse.DataBeanX.DataBean> data) {
+        this.mData = data;
+        super.notifyDataSetChanged();
     }
 
     @Override

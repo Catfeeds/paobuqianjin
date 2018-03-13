@@ -892,7 +892,7 @@ public final class Engine {
     //
     public void loginOutCircle() {
         LocalLog.d(TAG, "loginOutCircle() ");
-        String url = urlCircleMember + "/" + String.valueOf(getId(mContext));
+        String url = urlCircleMember + "/signOutCirscle" + String.valueOf(getId(mContext));
     }
 
     //TODO 加入圈子

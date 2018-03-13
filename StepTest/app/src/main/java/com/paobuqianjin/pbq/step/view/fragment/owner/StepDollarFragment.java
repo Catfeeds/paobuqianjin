@@ -222,12 +222,24 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void response(StepDollarDetailResponse stepDollarDetailResponse) {
         LocalLog.d(TAG, "StepDollarDetailResponse() enter " + stepDollarDetailResponse.toString());
-        stepDollarDetailFragment.setStepDollarDetailAdapter(new StepDollarDetailAdapter(getContext(), stepDollarDetailResponse.getData().getData()));
+        if (stepDollarDetailResponse.getError() == 0) {
+            stepDollarDetailFragment.setStepDollarDetailAdapter(new StepDollarDetailAdapter(getContext(), stepDollarDetailResponse.getData().getData()));
+        } else if (stepDollarDetailResponse.getError() == 1) {
+
+        } else if (stepDollarDetailResponse.getError() == -1) {
+
+        }
     }
 
     @Override
     public void response(UserInfoResponse userInfoResponse) {
-        stepDollarNums.setText(String.valueOf(userInfoResponse.getData().getCredit()));
+        if (userInfoResponse.getError() == 0) {
+            stepDollarNums.setText(String.valueOf(userInfoResponse.getData().getCredit()));
+        } else if (userInfoResponse.getError() == 1) {
+
+        } else if (userInfoResponse.getError() == -1) {
+
+        }
     }
 
     @Override
