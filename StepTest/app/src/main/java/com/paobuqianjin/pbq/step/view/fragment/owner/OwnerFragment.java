@@ -290,7 +290,7 @@ public final class OwnerFragment extends BaseFragment {
                 intent.putExtra("usericon", urlIcon);
                 intent.putExtra("username", userName.getText().toString());
                 intent.putExtra("userid", String.valueOf(Presenter.getInstance(getContext()).getId()));
-                intent.setClass(getContext(),QrCodeMakeActivity.class);
+                intent.setClass(getContext(), QrCodeMakeActivity.class);
                 startActivity(intent);
                 break;
             default:
@@ -303,24 +303,29 @@ public final class OwnerFragment extends BaseFragment {
 
         @Override
         public void response(UserInfoResponse userInfoResponse) {
-            LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
-            userAvatar = userInfoResponse.getData().getAvatar();
-            Presenter.getInstance(getContext()).getImage(headIcon, userInfoResponse.getData().getAvatar());
-            userName.setText(userInfoResponse.getData().getNickname());
-            userId.setText("ID:" + String.valueOf(userInfoResponse.getData().getId()));
-            circle.setText(String.valueOf(userInfoResponse.getData().getCircleCount()));
-            friends.setText(String.valueOf(userInfoResponse.getData().getFollowCount()));
-            urlIcon = userInfoResponse.getData().getAvatar();
-            if (userInfoResponse.getData().getSex() == 0) {
-                userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.man_head_back));
-                manWoman.setVisibility(View.GONE);
-                man.setVisibility(View.VISIBLE);
-            } else if (userInfoResponse.getData().getSex() == 1) {
-                userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.women_back));
-                manWoman.setVisibility(View.VISIBLE);
-                man.setVisibility(View.GONE);
-            }
+            if (userInfoResponse.getError() == 0) {
+                LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
+                userAvatar = userInfoResponse.getData().getAvatar();
+                Presenter.getInstance(getContext()).getImage(headIcon, userInfoResponse.getData().getAvatar());
+                userName.setText(userInfoResponse.getData().getNickname());
+                userId.setText("ID:" + String.valueOf(userInfoResponse.getData().getId()));
+                circle.setText(String.valueOf(userInfoResponse.getData().getCircleCount()));
+                friends.setText(String.valueOf(userInfoResponse.getData().getFollowCount()));
+                urlIcon = userInfoResponse.getData().getAvatar();
+                if (userInfoResponse.getData().getSex() == 0) {
+                    userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.man_head_back));
+                    manWoman.setVisibility(View.GONE);
+                    man.setVisibility(View.VISIBLE);
+                } else if (userInfoResponse.getData().getSex() == 1) {
+                    userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.women_back));
+                    manWoman.setVisibility(View.VISIBLE);
+                    man.setVisibility(View.GONE);
+                }
+            } else if (userInfoResponse.getError() == 1) {
 
+            } else if (userInfoResponse.getError() == -1) {
+
+            }
         }
     };
 

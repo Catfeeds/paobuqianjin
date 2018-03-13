@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -23,6 +24,7 @@ import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +54,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         mContext = context;
         this.data = data;
     }
+
+    public void notifyDataSetChanged(List<DynamicAllIndexResponse.DataBeanX.DataBean> data) {
+        this.data = data;
+        super.notifyDataSetChanged();
+    }
+
 
     @Override
 

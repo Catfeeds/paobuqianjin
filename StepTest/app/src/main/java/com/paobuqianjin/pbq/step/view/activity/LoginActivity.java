@@ -69,6 +69,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     private RelativeLayout backGround;
     private String[] userInfo;
     private ProgressDialog dialog;
+    private ThirdPartyLoginParam thirdPartyLoginParam;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -274,6 +275,11 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
 
     @Override
     public void requestThirdLoginCallBack(ThirdPartyLoginResponse thirdPartyLoginResponse) {
+        if (thirdPartyLoginResponse.getData().getId() == 0) {
+            LocalLog.d(TAG, "首次登录,再次登录获取userid");
+            Presenter.getInstance(LoginActivity.this).postThirdPartyLogin(thirdPartyLoginParam);
+            return;
+        }
         Presenter.getInstance(this).steLogFlg(true);
         Presenter.getInstance(this).setId(thirdPartyLoginResponse.getData().getId());
         Presenter.getInstance(this).setMobile(this, thirdPartyLoginResponse.getData().getMobile());
@@ -295,7 +301,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
 
         @Override
         public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
-            ThirdPartyLoginParam thirdPartyLoginParam = new ThirdPartyLoginParam();
+            thirdPartyLoginParam = new ThirdPartyLoginParam();
             LocalLog.d(TAG, "授权成功callback:" + share_media.toString());
             Toast.makeText(LoginActivity.this, "成功：", Toast.LENGTH_LONG).show();
             String temp = "";

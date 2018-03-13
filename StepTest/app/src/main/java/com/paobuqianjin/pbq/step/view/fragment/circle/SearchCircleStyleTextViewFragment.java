@@ -130,21 +130,6 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     }
 
 
-/*    protected ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> createDataList(int start, ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> newData) {
-        ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data = new ArrayList<>();
-        for (int i = start; i < start + newData.size(); i++) {
-            ChoiceCircleResponse.DataBeanX.DataBean dataBean = new ChoiceCircleResponse.DataBeanX.DataBean();
-            dataBean.setCircleid(1000);
-            dataBean.setCity("南昌" + i);
-            dataBean.setIs_join(1);
-            dataBean.setIs_pwd(1);
-            dataBean.setLogo("http://pic.qqtn.com/up/2017-12/2017120912081855932.jpg");
-            dataBean.setMember_number(i);
-            data.add(dataBean);
-        }
-        return data;
-    }*/
-
     /**
      * 加载更多。
      */

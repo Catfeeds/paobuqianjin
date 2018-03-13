@@ -3,20 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/attention_swipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:id="@+id/dynamic_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:descendantFocusability="afterDescendants">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/dynamic_recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </android.support.v7.widget.RecyclerView>
-        </RelativeLayout>
-    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+        </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>
