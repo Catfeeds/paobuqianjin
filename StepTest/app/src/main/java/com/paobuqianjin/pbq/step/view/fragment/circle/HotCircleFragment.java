@@ -226,31 +226,33 @@ public class HotCircleFragment extends BaseFragment {
     private UiHotCircleInterface uiHotCircleInterface = new UiHotCircleInterface() {
         @Override
         public void response(MyHotCircleResponse myHotCircleResponse) {
-            LocalLog.d(TAG, "myHotCircleResponse ");
-            int size = myHotCircleResponse.getData().getData().size();
-            LocalLog.d(TAG, "myHotCircleResponse() size =" + size);
-            if (size == 1) {
+            if (myHotCircleResponse.getError() == 0) {
+                LocalLog.d(TAG, "myHotCircleResponse ");
+                int size = myHotCircleResponse.getData().getData().size();
+                LocalLog.d(TAG, "myHotCircleResponse() size =" + size);
+                if (size == 1) {
 
-                setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
-                        myHotCircleResponse.getData().getData().get(0).getLogo(),
-                        true);
-                circleIdA = myHotCircleResponse.getData().getData().get(0).getId();
-                circleNumA = myHotCircleResponse.getData().getData().get(0).getMember_number();
-            } else if (size >= 2) {
-                setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
-                        myHotCircleResponse.getData().getData().get(0).getLogo(),
-                        true);
-                setMyHotLb(myHotCircleResponse.getData().getData().get(1).getName(),
-                        myHotCircleResponse.getData().getData().get(1).getLogo(),
-                        true);
+                    setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
+                            myHotCircleResponse.getData().getData().get(0).getLogo(),
+                            true);
+                    circleIdA = myHotCircleResponse.getData().getData().get(0).getId();
+                    circleNumA = myHotCircleResponse.getData().getData().get(0).getMember_number();
+                } else if (size >= 2) {
+                    setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
+                            myHotCircleResponse.getData().getData().get(0).getLogo(),
+                            true);
+                    setMyHotLb(myHotCircleResponse.getData().getData().get(1).getName(),
+                            myHotCircleResponse.getData().getData().get(1).getLogo(),
+                            true);
 
-                circleIdA = myHotCircleResponse.getData().getData().get(0).getId();
-                circleNumA = myHotCircleResponse.getData().getData().get(0).getMember_number();
+                    circleIdA = myHotCircleResponse.getData().getData().get(0).getId();
+                    circleNumA = myHotCircleResponse.getData().getData().get(0).getMember_number();
 
-                circleIdB = myHotCircleResponse.getData().getData().get(1).getId();
-                circleNumB = myHotCircleResponse.getData().getData().get(1).getMember_number();
+                    circleIdB = myHotCircleResponse.getData().getData().get(1).getId();
+                    circleNumB = myHotCircleResponse.getData().getData().get(1).getMember_number();
+                }
+                pageCounts[1] = myHotCircleResponse.getData().getPagenation().getTotalPage();
             }
-            pageCounts[1] = myHotCircleResponse.getData().getPagenation().getTotalPage();
         }
 
         @Override

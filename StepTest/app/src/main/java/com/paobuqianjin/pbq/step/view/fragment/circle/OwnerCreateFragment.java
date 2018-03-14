@@ -89,8 +89,10 @@ public class OwnerCreateFragment extends BaseFragment {
     private MyCreatCircleInterface myCreatCircleInterface = new MyCreatCircleInterface() {
         @Override
         public void response(MyCreateCircleResponse myCreateCircleResponse) {
-            ownerCreateCircleLists.setAdapter(new OwnerCreateAdapter(getContext(),
-                    (ArrayList<MyCreateCircleResponse.DataBeanX.DataBean>) myCreateCircleResponse.getData().getData()));
+            if (myCreateCircleResponse.getError() == 0) {
+                ownerCreateCircleLists.setAdapter(new OwnerCreateAdapter(getContext(),
+                        (ArrayList<MyCreateCircleResponse.DataBeanX.DataBean>) myCreateCircleResponse.getData().getData()));
+            }
         }
     };
 

@@ -67,8 +67,10 @@ public class OwnerJoinFragment extends BaseFragment {
     private MyJoinCircleInterface myJoinCircleInterface = new MyJoinCircleInterface() {
         @Override
         public void response(MyJoinCircleResponse myJoinCircleResponse) {
-            ownerJoinCircleLists.setAdapter(new OwnerCreateAdapter(getContext(),
-                    (ArrayList<MyJoinCircleResponse.DataBeanX.DataBean>) myJoinCircleResponse.getData().getData()));
+            if (myJoinCircleResponse.getError() == 0) {
+                ownerJoinCircleLists.setAdapter(new OwnerCreateAdapter(getContext(),
+                        (ArrayList<MyJoinCircleResponse.DataBeanX.DataBean>) myJoinCircleResponse.getData().getData()));
+            }
         }
     };
 
