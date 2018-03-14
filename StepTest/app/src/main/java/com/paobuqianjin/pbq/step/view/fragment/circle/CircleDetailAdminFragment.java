@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -478,7 +479,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 is_password = true;
             }
             titleStr = circleDetailResponse.getData().getName();
-            Presenter.getInstance(getContext()).getImage(circleCover, circleDetailResponse.getData().getLogo());
+            Log.d(TAG,"titleStr = " + titleStr);
+            setTitle(titleStr);
+            /*Presenter.getInstance(getContext()).getImage(circleCover, circleDetailResponse.getData().getLogo());*/
             Presenter.getInstance(getContext()).getCircleRechargeRand(circleId);
             Presenter.getInstance(getContext()).getCircleStepRank(circleId);
         } else if (circleDetailResponse.getError() == -1) {

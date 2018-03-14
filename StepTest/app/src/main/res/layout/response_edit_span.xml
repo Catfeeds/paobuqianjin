@@ -5,6 +5,7 @@
     android:background="@color/color_ebebed">
 
     <RelativeLayout
+        android:id="@+id/edit_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -49,5 +50,12 @@
             android:textSize="12dp" />
     </RelativeLayout>
 
+    <GridView
+        android:id="@+id/grid_view"
+        android:numColumns="auto_fit"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_content"></GridView>
 
 </RelativeLayout>

@@ -15,12 +15,15 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -495,6 +498,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         this.reflashInterface = reflashInterface;
     }
 
+
     private void popEdit(final PostDynamicContentParam postDynamicContentParam, String dearName) {
         LocalLog.d(TAG, "popRedPkg() enter");
         popRedPkgView = View.inflate(getContext(), R.layout.response_edit_span, null);
@@ -506,10 +510,16 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 popupRedPkgWindow = null;
             }
         });
+        final ImageView emjImageView = (ImageView) popRedPkgView.findViewById(R.id.edit_expression);
+        final GridView emjGridView = (GridView) popRedPkgView.findViewById(R.id.grid_view);
+        emjImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
         final EditText editText = (EditText) popRedPkgView.findViewById(R.id.content_text);
         editText.setHint("回复:" + dearName);
-
         Button button = (Button) popRedPkgView.findViewById(R.id.send_content);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

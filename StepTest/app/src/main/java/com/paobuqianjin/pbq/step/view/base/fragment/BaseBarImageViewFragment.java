@@ -70,7 +70,7 @@ public abstract class BaseBarImageViewFragment extends BaseFragment {
         tv_right = getView(rootView, R.id.bar_tv_right);
         tv_left = getView(rootView, R.id.bar_return_drawable);
         tv_right.setImageDrawable((Drawable) right());
-        rv_left = getView(rootView,R.id.button_return_bar);
+        rv_left = getView(rootView, R.id.button_return_bar);
         rv_left.setOnClickListener(clickListener);
         setToolBarListener();
         tv_left.setOnClickListener(clickListener);
@@ -80,6 +80,12 @@ public abstract class BaseBarImageViewFragment extends BaseFragment {
 
     public void setToolBarListener(BaseBarImageViewFragment.ToolBarListener toolBarListener) {
         mToolBarListener = toolBarListener;
+    }
+
+    public void setTitle(String title) {
+        if (tv_title != null){
+            tv_title.setText(title);
+        }
     }
 
     View.OnClickListener clickListener = new View.OnClickListener() {
