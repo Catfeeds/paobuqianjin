@@ -15,6 +15,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
@@ -297,8 +298,9 @@ public final class Presenter {
     public void joinCircle(JoinCircleParam joinCircleParam) {
         engine.joinCircle(joinCircleParam);
     }
+
     //TODO 退出圈子
-    public void loginOutCircle(LoginOutParam loginOutParam){
+    public void loginOutCircle(LoginOutParam loginOutParam) {
         engine.loginOutCircle(loginOutParam);
     }
 
@@ -389,6 +391,10 @@ public final class Presenter {
     //TODO 用户关注接口
     public void getFollows(String action, int page, int pagesize) {
         engine.getFollows(action, page, pagesize);
+    }
+
+    public void postQueryFollowState(QueryFollowStateParam queryFollowStateParam) {
+        engine.postQueryFollowState(queryFollowStateParam);
     }
 
     //TODO 用户好友接口

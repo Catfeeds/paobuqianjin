@@ -39,6 +39,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentRespo
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostInviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.QueryFollowStateResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
@@ -481,6 +482,9 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_GET_USER_DYNAMIC) {
                 DynamicPersonResponse dynamicPersonResponse = new Gson().fromJson(s, DynamicPersonResponse.class);
                 ((UserHomeInterface) callBackInterface).response(dynamicPersonResponse);
+            } else if (command == Engine.COMMAND_QUERY_FOLLOW_STATE) {
+                QueryFollowStateResponse queryFollowStateResponse = new Gson().fromJson(s, QueryFollowStateResponse.class);
+                ((UserHomeInterface) callBackInterface).response(queryFollowStateResponse);
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof MyDynamicInterface) {

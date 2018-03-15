@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.QueryFollowStateResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 
 /**
@@ -16,4 +17,6 @@ public interface UserHomeInterface extends CallBackInterface {
     public void response(UserInfoResponse userInfoResponse);
 
     public void response(DynamicPersonResponse dynamicPersonResponse);
+
+    public void response(QueryFollowStateResponse queryFollowStateResponse);
 }

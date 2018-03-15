@@ -29,6 +29,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostUserStepParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicContentParam;
@@ -232,6 +233,7 @@ public final class Engine {
     public final static int COMMAND_RECV_TASK_PAY = 65;
     public final static int COMMAND_CRASH_RECORD = 66;
     public final static int COMMAND_QUIT_CIRCLE = 67;
+    public final static int COMMAND_QUERY_FOLLOW_STATE = 68;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -900,7 +902,7 @@ public final class Engine {
                 .url(NetApi.urlCircleMember + "/signOutCirscle")
                 .params(loginOutParam.getParams())
                 .build()
-                .execute(new NetStringCallBack(circleDetailInterface,COMMAND_QUIT_CIRCLE ));
+                .execute(new NetStringCallBack(circleDetailInterface, COMMAND_QUIT_CIRCLE));
 
     }
 
@@ -1301,6 +1303,18 @@ public final class Engine {
                 .params(addFollowParam.getParam())
                 .build()
                 .execute(new NetStringCallBack(null, -1));
+    }
+
+    //TODO 获取关注状态
+    public void postQueryFollowState(QueryFollowStateParam queryFollowStateParam) {
+        queryFollowStateParam.setUserid(getId(mContext));
+        LocalLog.d(TAG, "postQueryFollowState() enter " + queryFollowStateParam.paramString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlUserFollow + "/followStatus")
+                .params(queryFollowStateParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(userHomeInterface, COMMAND_QUERY_FOLLOW_STATE));
     }
 
     //取消关注 TODO

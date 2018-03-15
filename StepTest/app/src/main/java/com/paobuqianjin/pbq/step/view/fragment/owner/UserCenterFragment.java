@@ -14,7 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.QueryFollowStateResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
@@ -107,6 +109,10 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             int userid = intent.getIntExtra("userid", -1);
             if (userid != -1) {
                 LocalLog.d(TAG, "userid = " + userid);
+                QueryFollowStateParam queryFollowStateParam = new QueryFollowStateParam();
+                if (userid != Presenter.getInstance(getContext()).getId()) {
+                    Presenter.getInstance(getContext()).postQueryFollowState(queryFollowStateParam);
+                }
                 Presenter.getInstance(getContext()).getUserInfo(String.valueOf(userid));
                 Presenter.getInstance(getContext()).getUserDynamic(String.valueOf(userid));
             }
@@ -189,5 +195,39 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             }
         }
         return map;
+    }
+
+    @Override
+    public void response(QueryFollowStateResponse queryFollowStateResponse) {
+        LocalLog.d(TAG, "QueryFollowStateResponse() enter " + queryFollowStateResponse.toString());
+        if (queryFollowStateResponse.getError() == 0) {
+            if (queryFollowStateResponse.getData().getIs_follow() == 0) {
+                LocalLog.d(TAG, "关注");
+                bntLike.setText("关注");
+            } else if (queryFollowStateResponse.getData().getIs_follow() == 1) {
+                LocalLog.d(TAG, "已关注");
+                bntLike.setText("已关注");
+            }
+            bntLike.setVisibility(View.VISIBLE);
+            bntLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    switch (view.getId()) {
+                        case R.id.bnt_like:
+                            switch (bntLike.getText().toString()) {
+                                case "已关注":
+                                    LocalLog.d(TAG, "取消关注");
+                                    break;
+                                case "关注":
+                                    LocalLog.d(TAG, "去关注");
+                                    break;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+        }
     }
 }
