@@ -397,6 +397,10 @@ public final class Presenter {
         engine.postQueryFollowState(queryFollowStateParam);
     }
 
+    public void postAddUserFollow(QueryFollowStateParam queryFollowStateParam) {
+        engine.postAddUserFollow(queryFollowStateParam);
+    }
+
     //TODO 用户好友接口
     public void getUserFiends() {
         engine.getUserFriends();

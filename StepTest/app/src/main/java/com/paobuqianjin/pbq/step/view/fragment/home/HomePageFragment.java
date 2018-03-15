@@ -428,7 +428,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         //ava.lang.NullPointerException: Attempt to invoke virtual method 'android.content.Context android.content.Context.getApplicationContext()' on a null obje
 
                         if (homePageFragment.getContext() != null) {
-                            Presenter.getInstance(homePageFragment.getContext()).postUserStep(msg.arg1);
+                            if (msg.arg1 < 0) {
+                                Presenter.getInstance(homePageFragment.getContext()).postUserStep(msg.arg1);
+                            }
                         }
                         break;
                     default:

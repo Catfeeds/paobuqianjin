@@ -15,10 +15,12 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.QueryFollowStateResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -76,6 +78,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     @Bind(R.id.targer_num)
     TextView targerNum;
     LinearLayoutManager layoutManager;
+    QueryFollowStateParam queryFollowStateParam;
 
     @Override
     protected String title() {
@@ -91,6 +94,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     public void onAttach(Context context) {
         super.onAttach(context);
         Presenter.getInstance(getContext()).attachUiInterface(this);
+        Presenter.getInstance(getContext()).attachUiInterface(addDeleteFollowInterface);
     }
 
     @Override
@@ -109,8 +113,9 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             int userid = intent.getIntExtra("userid", -1);
             if (userid != -1) {
                 LocalLog.d(TAG, "userid = " + userid);
-                QueryFollowStateParam queryFollowStateParam = new QueryFollowStateParam();
+                queryFollowStateParam = new QueryFollowStateParam();
                 if (userid != Presenter.getInstance(getContext()).getId()) {
+                    queryFollowStateParam.setFollowid(userid);
                     Presenter.getInstance(getContext()).postQueryFollowState(queryFollowStateParam);
                 }
                 Presenter.getInstance(getContext()).getUserInfo(String.valueOf(userid));
@@ -134,6 +139,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
         super.onDestroyView();
         ButterKnife.unbind(this);
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(addDeleteFollowInterface);
     }
 
 
@@ -217,9 +223,11 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
                             switch (bntLike.getText().toString()) {
                                 case "已关注":
                                     LocalLog.d(TAG, "取消关注");
+                                    Presenter.getInstance(getContext()).postAddUserFollow(queryFollowStateParam);
                                     break;
                                 case "关注":
                                     LocalLog.d(TAG, "去关注");
+                                    Presenter.getInstance(getContext()).postAddUserFollow(queryFollowStateParam);
                                     break;
                             }
                             break;
@@ -230,4 +238,17 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             });
         }
     }
+
+    private AddDeleteFollowInterface addDeleteFollowInterface = new AddDeleteFollowInterface() {
+        @Override
+        public void response(AddDeleteFollowResponse addDeleteFollowResponse) {
+            if (addDeleteFollowResponse.getError() == 0) {
+                if (addDeleteFollowResponse.getMessage().equals("取消关注成功")) {
+                    bntLike.setText("关注");
+                }else{
+                    bntLike.setText("已关注");
+                }
+            }
+        }
+    };
 }

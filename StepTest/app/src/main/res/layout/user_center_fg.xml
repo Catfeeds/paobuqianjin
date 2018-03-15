@@ -34,10 +34,10 @@
                 android:layout_alignBottom="@+id/user_head_ico"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="14dp"
+                android:textColor="@color/color_f8"
                 android:background="@drawable/shape"
                 android:gravity="center"
                 android:stateListAnimator="@null"
-                android:text="关注"
                 android:visibility="gone" />
 
             <RelativeLayout

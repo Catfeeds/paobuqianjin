@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
@@ -63,6 +65,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
+import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
@@ -590,6 +593,11 @@ public class NetStringCallBack extends StringCallback {
                 ChoiceCircleResponse choiceCircleResponse = new Gson().fromJson(s, ChoiceCircleResponse.class);
                 ((SearchCircleInterface) callBackInterface).response(choiceCircleResponse);
             }
+        } else if (callBackInterface != null && callBackInterface instanceof AddDeleteFollowInterface
+                && command == Engine.COMMAND_ADD_DELETE_FOLLOW) {
+            LocalLog.d(TAG, "取消/关注");
+            AddDeleteFollowResponse addDeleteFollowResponse = new Gson().fromJson(s, AddDeleteFollowResponse.class);
+            ((AddDeleteFollowInterface) callBackInterface).response(addDeleteFollowResponse);
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }

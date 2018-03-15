@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.AddFollowParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
@@ -38,9 +37,11 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.FeedBackParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostIncomeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostMessageParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
+import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.AllPayOrderInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
@@ -101,7 +102,6 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
 
-import static com.paobuqianjin.pbq.step.utils.NetApi.urlCircleMember;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlRegisterPhone;
@@ -160,6 +160,7 @@ public final class Engine {
     private CrashRecordInterface crashRecordInterface;
     private JoinCircleInterface joinCircleInterface;
     private SearchCircleInterface searchCircleInterface;
+    private AddDeleteFollowInterface addDeleteFollowInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -234,6 +235,7 @@ public final class Engine {
     public final static int COMMAND_CRASH_RECORD = 66;
     public final static int COMMAND_QUIT_CIRCLE = 67;
     public final static int COMMAND_QUERY_FOLLOW_STATE = 68;
+    public final static int COMMAND_ADD_DELETE_FOLLOW = 69;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1294,15 +1296,15 @@ public final class Engine {
         }
     }
 
-    //TODO 添加关注
-    public void postAddUserFollow(AddFollowParam addFollowParam) {
+    //TODO 添加关注/去关注
+    public void postAddUserFollow(QueryFollowStateParam queryFollowStateParam) {
         LocalLog.d(TAG, "postAddUserFollow()");
         OkHttpUtils
-                .get()
+                .post()
                 .url(NetApi.urlUserFollow)
-                .params(addFollowParam.getParam())
+                .params(queryFollowStateParam.getParams())
                 .build()
-                .execute(new NetStringCallBack(null, -1));
+                .execute(new NetStringCallBack(addDeleteFollowInterface, COMMAND_ADD_DELETE_FOLLOW));
     }
 
     //TODO 获取关注状态
@@ -1745,6 +1747,8 @@ public final class Engine {
             joinCircleInterface = (JoinCircleInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SearchCircleInterface) {
             searchCircleInterface = (SearchCircleInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof AddDeleteFollowInterface) {
+            addDeleteFollowInterface = (AddDeleteFollowInterface) uiCallBackInterface;
         }
     }
 
@@ -1828,6 +1832,8 @@ public final class Engine {
             joinCircleInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SearchCircleInterface) {
             searchCircleInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof AddDeleteFollowInterface) {
+            addDeleteFollowInterface = null;
         }
     }
 }
