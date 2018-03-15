@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 import android.os.Looper;
+import android.widget.ImageView;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
@@ -21,6 +22,8 @@ import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.view.emoji.IImageLoader;
+import com.paobuqianjin.pbq.step.view.emoji.LQREmotionKit;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.socialize.Config;

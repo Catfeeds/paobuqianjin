@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +53,11 @@ import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.TopLevelContentAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.CustomEdit;
+import com.paobuqianjin.pbq.step.view.emoji.EmotionKeyboard;
+import com.paobuqianjin.pbq.step.view.emoji.EmotionLayout;
+import com.paobuqianjin.pbq.step.view.emoji.IEmotionExtClickListener;
+import com.paobuqianjin.pbq.step.view.emoji.IEmotionSelectedListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -58,6 +66,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.paobuqianjin.pbq.step.view.emoji.EmotionViewPagerAdapter.numToHex8;
 
 /**
  * Created by pbq on 2017/12/29.
@@ -132,7 +142,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Bind(R.id.dynamic_time)
     TextView dynamicTime;
     private ArrayList<DynamicLikeListResponse.DataBeanX.DataBean> likeData;
-
+    private EmotionKeyboard mEmotionKeyboard;
     private List<View> Mview = new ArrayList<>();
     private List<View> dots;
     private int oldPosition;
@@ -498,7 +508,6 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         this.reflashInterface = reflashInterface;
     }
 
-
     private void popEdit(final PostDynamicContentParam postDynamicContentParam, String dearName) {
         LocalLog.d(TAG, "popRedPkg() enter");
         popRedPkgView = View.inflate(getContext(), R.layout.response_edit_span, null);
@@ -510,31 +519,69 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 popupRedPkgWindow = null;
             }
         });
-        final ImageView emjImageView = (ImageView) popRedPkgView.findViewById(R.id.edit_expression);
-        final GridView emjGridView = (GridView) popRedPkgView.findViewById(R.id.grid_view);
-        emjImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
-        final EditText editText = (EditText) popRedPkgView.findViewById(R.id.content_text);
+        final CustomEdit editText = (CustomEdit) popRedPkgView.findViewById(R.id.content_text);
         editText.setHint("回复:" + dearName);
+        final EditTextChangeListener editTextChangeListener = new EditTextChangeListener();
+        editText.addTextChangedListener(editTextChangeListener);
+
         Button button = (Button) popRedPkgView.findViewById(R.id.send_content);
+        Button buttonIcon = (Button) popRedPkgView.findViewById(R.id.edit_expression);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String content = editText.getText().toString();
+                editText.removeTextChangedListener(editTextChangeListener);
+                LocalLog.d(TAG, "content = " + content);
+                int[] emj = getContext().getResources().getIntArray(R.array.emjio_list);
+                for (int i = 0; i < emj.length; i++) {
+                    content = content.replace(getEmojiStringByUnicode(emj[i]), "[0x" + numToHex8(emj[i]) + "]");
+                }
                 if (!content.equals("")) {
                     postDynamicContentParam.setContent(content).setUserid(Presenter.getInstance(getContext()).getId());
                     Presenter.getInstance(getContext()).postContent(postDynamicContentParam);
                 }
             }
         });
-
+        LinearLayout mLlContent = (LinearLayout) popRedPkgView.findViewById(R.id.edit_content);
+        EmotionLayout mElEmotion = (EmotionLayout) popRedPkgView.findViewById(R.id.elEmotion);
+        mEmotionKeyboard = EmotionKeyboard.with(getActivity());
+        mEmotionKeyboard.bindToContent(mLlContent);
+        mEmotionKeyboard.bindToEmotionButton(buttonIcon);
+        mEmotionKeyboard.bindToEditText(editText);
+        mEmotionKeyboard.setEmotionLayout(mElEmotion);
         popupRedPkgWindow.setFocusable(true);
         popupRedPkgWindow.setOutsideTouchable(true);
 
+
+        mElEmotion.attachEditText(editText);
+        mElEmotion.setEmotionAddVisiable(true);
+        mElEmotion.setEmotionSettingVisiable(true);
+        mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
+            @Override
+            public void onEmotionAddClick(View view) {
+                Toast.makeText(getContext(), "add", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onEmotionSettingClick(View view) {
+                Toast.makeText(getContext(), "setting", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        mElEmotion.setEmotionSelectedListener(new IEmotionSelectedListener() {
+            @Override
+            public void onEmojiSelected(String key) {
+                LocalLog.d(TAG, "onEmojiSelected() " + key);
+            }
+
+            @Override
+            public void onStickerSelected(String categoryName, String stickerName, String stickerBitmapPath) {
+                String stickerPath = stickerBitmapPath;
+                Toast.makeText(getContext(), stickerPath, Toast.LENGTH_SHORT).show();
+            }
+        });
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
                 1, Animation.RELATIVE_TO_PARENT, 0);
@@ -543,5 +590,26 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
         popupRedPkgWindow.showAtLocation(getActivity().findViewById(R.id.dynamic_id_detail), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         popRedPkgView.startAnimation(animationCircleType);
+    }
+
+    public static String getEmojiStringByUnicode(int unicode) {
+        return new String(Character.toChars(unicode));
+    }
+
+    public class EditTextChangeListener implements TextWatcher {
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            LocalLog.d(TAG, "onTextChanged() enter ");
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            LocalLog.d(TAG, "beforeTextChanged() enter ");
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            LocalLog.d(TAG, "afterTextChanged() enter ");
+        }
     }
 }

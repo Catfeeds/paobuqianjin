@@ -43,11 +43,15 @@ public final class Presenter {
     }
 
     public static synchronized Presenter getInstance(Context context) {
-        mContext = context.getApplicationContext();
-        if (instance == null) {
-            instance = new Presenter();
+        if (context != null) {
+            mContext = context.getApplicationContext();
+            if (instance == null) {
+                instance = new Presenter();
+            }
+            return instance;
+        } else {
+            return null;
         }
-        return instance;
     }
 
     public void startService(String action, Class<? extends Service> clazz) {
@@ -261,11 +265,12 @@ public final class Presenter {
     }
 
     //获取精选圈子
-    public void getCircleChoice(int page,int pageSize) {
-        engine.getCircleChoice( page, pageSize);
+    public void getCircleChoice(int page, int pageSize) {
+        engine.getCircleChoice(page, pageSize);
     }
-    public void getMoreCircle(int page,int pageSize){
-        engine.getMoreCircle(page,pageSize);
+
+    public void getMoreCircle(int page, int pageSize) {
+        engine.getMoreCircle(page, pageSize);
     }
 
     private void getTest() {
