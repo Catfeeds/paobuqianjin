@@ -22,6 +22,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.paobuqianjin.pbq.step.view.emoji.EmotionViewPagerAdapter.numToHex8;
 
 /**
  * Created by pbq on 2017/12/29.
@@ -124,6 +127,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         //服务器保存到秒级别，本地处理为毫秒级别
         LocalLog.d(TAG, "create_time = " + create_time);
         String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
+        int[] emj = mContext.getResources().getIntArray(R.array.emjio_list);//TODO 优化
         if (holder instanceof OneOrZeroViewHodler) {
             ((OneOrZeroViewHodler) holder).dynamicid = data.get(position).getId();
             ((OneOrZeroViewHodler) holder).userid = data.get(position).getUserid();
@@ -131,7 +135,13 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).timeStmp.setText(create_timeStr);
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicPicOne, data.get(position).getImages().get(0));
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar());
-                ((OneOrZeroViewHodler) holder).dynamicContentText.setText(data.get(position).getDynamic());
+
+                String content = data.get(position).getDynamic();
+                LocalLog.d(TAG, "content = " + content);
+                for (int i = 0; i < emj.length; i++) {
+                    content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                }
+                ((OneOrZeroViewHodler) holder).dynamicContentText.setText(content);
                 ((OneOrZeroViewHodler) holder).dynamicUserName.setText(data.get(position).getNickname());
                 ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getCity());
                 ((OneOrZeroViewHodler) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
@@ -147,7 +157,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                 if (data.get(position).getOne_comment() != null) {
                     if (data.get(position).getOne_comment().getNickname() != null) {
-                        String replyStr = data.get(position).getOne_comment().getNickname() + ":" + data.get(position).getOne_comment().getContent();
+                        String contentL = data.get(position).getOne_comment().getContent();
+                        LocalLog.d(TAG, "content = " + contentL);
+                        for (int i = 0; i < emj.length; i++) {
+                            content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                        }
+                        String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
                         SpannableString spannableString = new SpannableString(replyStr);
                         ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                         spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length()
@@ -159,7 +174,13 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else if (((OneOrZeroViewHodler) holder).viewType == 0) {
                 ((OneOrZeroViewHodler) holder).timeStmp.setText(create_timeStr);
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar());
-                ((OneOrZeroViewHodler) holder).dynamicContentText.setText(data.get(position).getDynamic());
+
+                String content = data.get(position).getDynamic();
+                LocalLog.d(TAG, "content = " + content);
+                for (int i = 0; i < emj.length; i++) {
+                    content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                }
+                ((OneOrZeroViewHodler) holder).dynamicContentText.setText(content);
                 ((OneOrZeroViewHodler) holder).dynamicUserName.setText(data.get(position).getNickname());
                 ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getCity());
                 ((OneOrZeroViewHodler) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
@@ -173,7 +194,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
                 if (data.get(position).getOne_comment() != null) {
                     if (data.get(position).getOne_comment().getNickname() != null) {
-                        String replyStr = data.get(position).getOne_comment().getNickname() + ":" + data.get(position).getOne_comment().getContent();
+                        String contentL = data.get(position).getOne_comment().getContent();
+                        LocalLog.d(TAG, "content = " + contentL);
+                        for (int i = 0; i < emj.length; i++) {
+                            content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                        }
+                        String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
                         SpannableString spannableString = new SpannableString(replyStr);
                         ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                         spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length()
@@ -189,7 +215,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0));
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1));
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar());
-            ((TwoPicViewHolder) holder).dynamicContentText.setText(data.get(position).getDynamic());
+            String content = data.get(position).getDynamic();
+            LocalLog.d(TAG, "content = " + content);
+            for (int i = 0; i < emj.length; i++) {
+                content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+            }
+            ((TwoPicViewHolder) holder).dynamicContentText.setText(content);
             ((TwoPicViewHolder) holder).dynamicUserName.setText(data.get(position).getNickname());
             ((TwoPicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getCity());
             ((TwoPicViewHolder) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
@@ -203,7 +234,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
             if (data.get(position).getOne_comment() != null) {
                 if (data.get(position).getOne_comment().getNickname() != null) {
-                    String replyStr = data.get(position).getOne_comment().getNickname() + ":" + data.get(position).getOne_comment().getContent();
+                    String contentL = data.get(position).getOne_comment().getContent();
+                    LocalLog.d(TAG, "content = " + contentL);
+                    for (int i = 0; i < emj.length; i++) {
+                        content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                    }
+                    String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
                     SpannableString spannableString = new SpannableString(replyStr);
                     ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                     spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length()

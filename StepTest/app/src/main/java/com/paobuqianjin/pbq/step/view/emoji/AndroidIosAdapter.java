@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.Utils;
 
 /**
  * Created by pbq on 2018/3/14.
@@ -75,7 +76,7 @@ public class AndroidIosAdapter extends BaseAdapter {
             emojiThumb.setText("取消");
         } else if (index < count) {
             Log.e("####", "index = " + index + ",Count = " + count);
-            emojiThumb.setText(getEmojiStringByUnicode(emjCode[index]));
+            emojiThumb.setText(Utils.getEmojiStringByUnicode(emjCode[index]));
         }
 
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);

@@ -48,6 +48,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.LikeSupportActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
@@ -343,120 +344,128 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
     @Override
     public void response(DynamicIdDetailResponse dynamicIdDetailResponse) {
-        LocalLog.d(TAG, "DynamicIdDetailResponse() enter " + dynamicIdDetailResponse.toString());
-        Presenter.getInstance(getContext()).getImage(dynamicUserIcon, dynamicIdDetailResponse.getData().getAvatar());
-        dynamicUserName.setText(dynamicIdDetailResponse.getData().getNickname());
-        long create_time = dynamicIdDetailResponse.getData().getCreate_time();
-        //服务器保存到秒级别，本地处理为毫秒级别
-        LocalLog.d(TAG, "create_time = " + DateTimeUtil.formatDateTime(create_time * 1000));
-        String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
-        dynamicTime.setText(create_timeStr);
-        dynamicContentText.setText(dynamicIdDetailResponse.getData().getDynamic());
-        if (dynamicIdDetailResponse.getData().getCity() != null && !dynamicIdDetailResponse.getData().getCity().equals("")) {
-            dynamicLocationCity.setText(dynamicIdDetailResponse.getData().getCity());
-        }
-        likeNum = dynamicIdDetailResponse.getData().getVote();
-        contentNum = dynamicIdDetailResponse.getData().getComment();
-        contentNumbers.setText(String.valueOf(contentNum));
-        contentSupports.setText(String.valueOf(likeNum));
+        if (dynamicIdDetailResponse.getError() == 0) {
+            LocalLog.d(TAG, "DynamicIdDetailResponse() enter " + dynamicIdDetailResponse.toString());
+            Presenter.getInstance(getContext()).getImage(dynamicUserIcon, dynamicIdDetailResponse.getData().getAvatar());
+            dynamicUserName.setText(dynamicIdDetailResponse.getData().getNickname());
+            long create_time = dynamicIdDetailResponse.getData().getCreate_time();
+            //服务器保存到秒级别，本地处理为毫秒级别
+            LocalLog.d(TAG, "create_time = " + DateTimeUtil.formatDateTime(create_time * 1000));
+            String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
+            dynamicTime.setText(create_timeStr);
 
-        int likeNums = dynamicIdDetailResponse.getData().getVote();
-        if (likeNums == 0) {
-            supportPeoples.setText("还没有人点赞");
-            supportPics.setVisibility(View.GONE);
-        } else {
-            String likePeopleNumFormat = getContext().getString(R.string.like_people);
-            String peopleNumStr = String.format(likePeopleNumFormat, likeNums);
-            supportPeoples.setText(peopleNumStr);
-        }
-        int imageSize = dynamicIdDetailResponse.getData().getImages().size();
+            int[] emj = getContext().getResources().getIntArray(R.array.emjio_list);
+            String content = dynamicIdDetailResponse.getData().getDynamic();
+            for (int i = 0; i < emj.length; i++) {
+                content = content.replace(Utils.getEmojiStringByUnicode(emj[i]), "[0x" + numToHex8(emj[i]) + "]");
+            }
+            dynamicContentText.setText(content);
+            if (dynamicIdDetailResponse.getData().getCity() != null && !dynamicIdDetailResponse.getData().getCity().equals("")) {
+                dynamicLocationCity.setText(dynamicIdDetailResponse.getData().getCity());
+            }
+            likeNum = dynamicIdDetailResponse.getData().getVote();
+            contentNum = dynamicIdDetailResponse.getData().getComment();
+            contentNumbers.setText(String.valueOf(contentNum));
+            contentSupports.setText(String.valueOf(likeNum));
 
-        if (imageSize <= 0) {
-            LocalLog.d(TAG, "动态没有图片");
-            picViewpager.setVisibility(View.GONE);
-        } else if (imageSize == 1) {
-            if (dynamicIdDetailResponse.getData().getImages().get(0).equals("")) {
+            int likeNums = dynamicIdDetailResponse.getData().getVote();
+            if (likeNums == 0) {
+                supportPeoples.setText("还没有人点赞");
+                supportPics.setVisibility(View.GONE);
+            } else {
+                String likePeopleNumFormat = getContext().getString(R.string.like_people);
+                String peopleNumStr = String.format(likePeopleNumFormat, likeNums);
+                supportPeoples.setText(peopleNumStr);
+            }
+            int imageSize = dynamicIdDetailResponse.getData().getImages().size();
+
+            if (imageSize <= 0) {
                 LocalLog.d(TAG, "动态没有图片");
                 picViewpager.setVisibility(View.GONE);
-            } else {
-                imageView0 = LayoutInflater.from(getContext()).inflate(R.layout.image_view_pager, null);
+            } else if (imageSize == 1) {
+                if (dynamicIdDetailResponse.getData().getImages().get(0).equals("")) {
+                    LocalLog.d(TAG, "动态没有图片");
+                    picViewpager.setVisibility(View.GONE);
+                } else {
+                    imageView0 = LayoutInflater.from(getContext()).inflate(R.layout.image_view_pager, null);
+                    dots.add(dot1);
+                    Mview.add(imageView0);
+                    dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
+                    ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
+                    Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
+                }
+            } else if (imageSize == 2) {
+
+
                 dots.add(dot1);
+                dots.add(dot2);
+
+                dot1.setVisibility(View.VISIBLE);
+                dot2.setVisibility(View.VISIBLE);
+
                 Mview.add(imageView0);
-                dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
+                Mview.add(imageView1);
+
                 ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
+                ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
+                dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
                 Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
+                Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
+
+            } else if (imageSize == 3) {
+                dots.add(dot1);
+                dots.add(dot2);
+                dots.add(dot3);
+                dot1.setVisibility(View.VISIBLE);
+                dot2.setVisibility(View.VISIBLE);
+                dot3.setVisibility(View.VISIBLE);
+
+
+                Mview.add(imageView0);
+                Mview.add(imageView1);
+                Mview.add(imageView2);
+                ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
+                ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
+                ImageView imageViewC = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
+                dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
+                Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
+                Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
+                Presenter.getInstance(getContext()).getImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
+
+            } else if (imageSize >= 4) {
+
+                dots.add(dot1);
+                dots.add(dot2);
+                dots.add(dot3);
+                dots.add(dot4);
+
+                dot1.setVisibility(View.VISIBLE);
+                dot2.setVisibility(View.VISIBLE);
+                dot3.setVisibility(View.VISIBLE);
+                dot4.setVisibility(View.VISIBLE);
+
+
+                Mview.add(imageView0);
+                Mview.add(imageView1);
+                Mview.add(imageView2);
+                Mview.add(imageView3);
+                ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
+                ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
+                ImageView imageViewC = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
+                ImageView imageViewD = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
+                dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
+                Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
+                Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
+                Presenter.getInstance(getContext()).getImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
+                Presenter.getInstance(getContext()).getImage(imageViewD, dynamicIdDetailResponse.getData().getImages().get(3));
+
+            } else {
+                LocalLog.e(TAG, "图片数量超过5");
             }
-        } else if (imageSize == 2) {
 
-
-            dots.add(dot1);
-            dots.add(dot2);
-
-            dot1.setVisibility(View.VISIBLE);
-            dot2.setVisibility(View.VISIBLE);
-
-            Mview.add(imageView0);
-            Mview.add(imageView1);
-
-            ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
-            ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
-            dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
-            Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
-            Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
-
-        } else if (imageSize == 3) {
-            dots.add(dot1);
-            dots.add(dot2);
-            dots.add(dot3);
-            dot1.setVisibility(View.VISIBLE);
-            dot2.setVisibility(View.VISIBLE);
-            dot3.setVisibility(View.VISIBLE);
-
-
-            Mview.add(imageView0);
-            Mview.add(imageView1);
-            Mview.add(imageView2);
-            ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
-            ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
-            ImageView imageViewC = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
-            dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
-            Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
-            Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
-            Presenter.getInstance(getContext()).getImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
-
-        } else if (imageSize >= 4) {
-
-            dots.add(dot1);
-            dots.add(dot2);
-            dots.add(dot3);
-            dots.add(dot4);
-
-            dot1.setVisibility(View.VISIBLE);
-            dot2.setVisibility(View.VISIBLE);
-            dot3.setVisibility(View.VISIBLE);
-            dot4.setVisibility(View.VISIBLE);
-
-
-            Mview.add(imageView0);
-            Mview.add(imageView1);
-            Mview.add(imageView2);
-            Mview.add(imageView3);
-            ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
-            ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
-            ImageView imageViewC = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
-            ImageView imageViewD = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
-            dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
-            Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
-            Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
-            Presenter.getInstance(getContext()).getImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
-            Presenter.getInstance(getContext()).getImage(imageViewD, dynamicIdDetailResponse.getData().getImages().get(3));
-
-        } else {
-            LocalLog.e(TAG, "图片数量超过5");
+            adapter = new ImageViewPagerAdapter(getContext(), Mview);
+            imageViewpager.setAdapter(adapter);
         }
-
-        adapter = new ImageViewPagerAdapter(getContext(), Mview);
-        imageViewpager.setAdapter(adapter);
     }
 
     @Override
@@ -535,7 +544,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 LocalLog.d(TAG, "content = " + content);
                 int[] emj = getContext().getResources().getIntArray(R.array.emjio_list);
                 for (int i = 0; i < emj.length; i++) {
-                    content = content.replace(getEmojiStringByUnicode(emj[i]), "[0x" + numToHex8(emj[i]) + "]");
+                    content = content.replace(Utils.getEmojiStringByUnicode(emj[i]), "[0x" + numToHex8(emj[i]) + "]");
                 }
                 if (!content.equals("")) {
                     postDynamicContentParam.setContent(content).setUserid(Presenter.getInstance(getContext()).getId());
@@ -592,9 +601,6 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         popRedPkgView.startAnimation(animationCircleType);
     }
 
-    public static String getEmojiStringByUnicode(int unicode) {
-        return new String(Character.toChars(unicode));
-    }
 
     public class EditTextChangeListener implements TextWatcher {
         @Override

@@ -16,11 +16,14 @@ import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 
 import java.util.List;
 
 import butterknife.Bind;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.paobuqianjin.pbq.step.view.emoji.EmotionViewPagerAdapter.numToHex8;
 
 /**
  * Created by pbq on 2017/12/31.
@@ -62,7 +65,14 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
             String time_min_str = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_HH_MM);
             holder.timeContentA.setText(time_day_str);
             holder.timeContentB.setText(time_min_str);
-            holder.userContentRanka.setText(((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getContent());
+
+            String content = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getContent();
+            LocalLog.d(TAG, "content = " + content);
+            int[] emj = context.getResources().getIntArray(R.array.emjio_list);
+            for (int i = 0; i < emj.length; i++) {
+                content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+            }
+            holder.userContentRanka.setText(content);
 
             if (((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild() != null) {
                 LocalLog.d(TAG, "有子评论" + ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild().size());

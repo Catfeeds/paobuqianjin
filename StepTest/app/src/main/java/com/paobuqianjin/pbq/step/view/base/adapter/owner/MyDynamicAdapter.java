@@ -22,6 +22,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 
@@ -32,6 +33,7 @@ import java.util.List;
 import butterknife.Bind;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.paobuqianjin.pbq.step.view.emoji.EmotionViewPagerAdapter.numToHex8;
 import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
 /**
@@ -76,6 +78,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
     private void upDataListItem(MyDynamicViewHolder holder, int position) {
         LocalLog.d(TAG, "upDataListItem() enter");
         if (mData.get(position) instanceof DynamicPersonResponse.DataBeanX.DataBean) {
+            int[] emj = mContext.getResources().getIntArray(R.array.emjio_list);
             Presenter.getInstance(mContext).getImage(holder.dynamicUserIcon, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
             holder.dynamicUserName.setText(((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             long create_time = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
@@ -91,7 +94,13 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 LocalLog.d(TAG, "无内容");
                 holder.dynamicContentText.setVisibility(View.GONE);
             } else {
-                holder.dynamicContentText.setText(((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic());
+                String content = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic();
+                LocalLog.d(TAG, "content = " + content);
+
+                for (int i = 0; i < emj.length; i++) {
+                    content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                }
+                holder.dynamicContentText.setText(content);
             }
             int likes = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getVote();
             int content = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getComment();
@@ -108,6 +117,12 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 holder.contentNumbers.setText(String.valueOf(content));
                 String firstContentDes = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getOne_comment().getNickname() + ":";
                 String firstContentText = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getOne_comment().getContent();
+
+                for (int i = 0; i < emj.length; i++) {
+                    firstContentText = firstContentText.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                }
+                LocalLog.d(TAG, "firstContentText = " + firstContentText);
+                holder.dynamicContentText.setText(firstContentText);
                 SpannableStringBuilder style = new SpannableStringBuilder(firstContentDes + firstContentText);
                 style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), 0, firstContentDes.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), firstContentDes.length(), (firstContentDes + firstContentText).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
