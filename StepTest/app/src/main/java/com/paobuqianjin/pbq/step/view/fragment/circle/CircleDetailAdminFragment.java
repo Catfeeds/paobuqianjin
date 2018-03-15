@@ -25,9 +25,11 @@ import android.widget.Toast;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.RechargeRankBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginOutResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -116,6 +118,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private float red_pack_money;
     private View popCircleOpBar;
     private PopupWindow popupOpWindow;
+    private PopupWindow popupOpWindowTop;
     private TranslateAnimation animationCircleType;
     private CircleDetailResponse circleDetailResponse = null;
     private final static String CIRCLE_ID = "id";
@@ -177,20 +180,20 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private void popNoAdminSelect() {
         LocalLog.d(TAG, "popNoAdminSelect() enter");
         popCircleOpBar = View.inflate(getContext(), R.layout.top_share_no_admin, null);
-        popupOpWindow = new PopupWindow(popCircleOpBar,
+        popupOpWindowTop = new PopupWindow(popCircleOpBar,
                 WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         popCircleOpBar.findViewById(R.id.share_text).setOnClickListener(onClickListener);
         popCircleOpBar.findViewById(R.id.exit_text).setOnClickListener(onClickListener);
-        popupOpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+        popupOpWindowTop.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 LocalLog.d(TAG, "popWindow dismiss() ");
-                popupOpWindow = null;
+                popupOpWindowTop = null;
             }
         });
 
-        popupOpWindow.setFocusable(true);
-        popupOpWindow.setOutsideTouchable(true);
+        popupOpWindowTop.setFocusable(true);
+        popupOpWindowTop.setOutsideTouchable(true);
 
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
@@ -199,12 +202,15 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         animationCircleType.setDuration(200);
 
 
-        popupOpWindow.showAsDropDown(barTvRight, 20, -10);
+        popupOpWindowTop.showAsDropDown(barTvRight, 20, -10);
         popCircleOpBar.startAnimation(animationCircleType);
     }
 
 
     public void popPassWordEdit() {
+        if (popupOpWindow != null) {
+            popupOpWindow = null;
+        }
         LocalLog.d(TAG, "popPassWordEdit() enter 弹出密码输入框");
         popCircleOpBar = View.inflate(getContext(), R.layout.pass_word_layout, null);
         popupOpWindow = new PopupWindow(popCircleOpBar, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
@@ -214,6 +220,15 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 popupOpWindow = null;
             }
         });
+
+        RelativeLayout relativeLayout = (RelativeLayout) popCircleOpBar.findViewById(R.id.pass_word_pop);
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+                                              @Override
+                                              public void onClick(View view) {
+                                                  LocalLog.d(TAG, "点击外围");
+                                              }
+                                          }
+        );
 
         passEdit = (EditText) popCircleOpBar.findViewById(R.id.pass_edit);
         passEdit.setOnClickListener(onClickListener);
@@ -238,14 +253,11 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         popCircleOpBar.startAnimation(animationCircleType);
     }
 
-    private void popAdminSelect() {
-        popCircleOpBar = View.inflate(getContext(), R.layout.top_share_span, null);
-        popupOpWindow = new PopupWindow(popCircleOpBar,
-                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        popCircleOpBar.findViewById(R.id.share_text).setOnClickListener(onClickListener);
-        popCircleOpBar.findViewById(R.id.editor_text).setOnClickListener(onClickListener);
-        popCircleOpBar.findViewById(R.id.mananger_text).setOnClickListener(onClickListener);
-        popCircleOpBar.findViewById(R.id.cancle_text).setOnClickListener(onClickListener);
+
+    private void popQuitConfirm() {
+        LocalLog.d(TAG, "popQuitConfirm() enter 退圈确认");
+        popCircleOpBar = View.inflate(getContext(), R.layout.quit_circle_confirm, null);
+        popupOpWindow = new PopupWindow(popCircleOpBar, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         popupOpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -253,8 +265,57 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             }
         });
 
+        cancelText = (TextView) popCircleOpBar.findViewById(R.id.cancel_quit_text);
+        cancelText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "取消退圈动作");
+                popupOpWindow.dismiss();
+            }
+        });
+        confirmText = (TextView) popCircleOpBar.findViewById(R.id.confirm_quit_text);
+        confirmText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginOutParam loginOutParam = new LoginOutParam();
+                loginOutParam.setCircleid(circleId);
+                Presenter.getInstance(getContext()).loginOutCircle(loginOutParam);
+            }
+        });
+
+
         popupOpWindow.setFocusable(true);
         popupOpWindow.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new
+
+                AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+        popupOpWindow.showAtLocation(getActivity().findViewById(R.id.circle_detail_fg), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        popCircleOpBar.startAnimation(animationCircleType);
+    }
+
+    private void popAdminSelect() {
+        popCircleOpBar = View.inflate(getContext(), R.layout.top_share_span, null);
+        popupOpWindowTop = new PopupWindow(popCircleOpBar,
+                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popCircleOpBar.findViewById(R.id.share_text).setOnClickListener(onClickListener);
+        popCircleOpBar.findViewById(R.id.editor_text).setOnClickListener(onClickListener);
+        popCircleOpBar.findViewById(R.id.mananger_text).setOnClickListener(onClickListener);
+        popCircleOpBar.findViewById(R.id.cancle_text).setOnClickListener(onClickListener);
+        popupOpWindowTop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupOpWindowTop = null;
+            }
+        });
+
+        popupOpWindowTop.setFocusable(true);
+        popupOpWindowTop.setOutsideTouchable(true);
 
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
@@ -263,7 +324,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         animationCircleType.setDuration(200);
 
 
-        popupOpWindow.showAsDropDown(barTvRight, 20, -10);
+        popupOpWindowTop.showAsDropDown(barTvRight, 20, -10);
         popCircleOpBar.startAnimation(animationCircleType);
 
     }
@@ -345,7 +406,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     break;
                 case R.id.exit_text:
                     LocalLog.d(TAG, "退出");
-
+                    popQuitConfirm();
                     break;
                 case R.id.join_in:
                     LocalLog.d(TAG, "点击加入圈子");
@@ -479,7 +540,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 is_password = true;
             }
             titleStr = circleDetailResponse.getData().getName();
-            Log.d(TAG,"titleStr = " + titleStr);
+            Log.d(TAG, "titleStr = " + titleStr);
             setTitle(titleStr);
             /*Presenter.getInstance(getContext()).getImage(circleCover, circleDetailResponse.getData().getLogo());*/
             Presenter.getInstance(getContext()).getCircleRechargeRand(circleId);
@@ -488,6 +549,21 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             Toast.makeText(getContext(), circleDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
         } else if (circleDetailResponse.getError() == 1) {
 
+        }
+    }
+
+
+    @Override
+    public void response(LoginOutResponse loginOutResponse) {
+        LocalLog.d(TAG, "LoginOutResponse()  enter");
+        if (loginOutResponse.getError() == 0) {
+            //TODO 刷新上一层界面
+            if (popupOpWindow != null) {
+                popupOpWindow.dismiss();
+                popupOpWindowTop.dismiss();
+                popupOpWindowTop = null;
+                getActivity().finish();
+            }
         }
     }
 }

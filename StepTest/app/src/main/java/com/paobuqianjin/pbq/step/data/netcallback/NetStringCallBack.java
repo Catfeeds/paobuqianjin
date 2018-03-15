@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginOutResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
@@ -321,11 +322,16 @@ public class NetStringCallBack extends StringCallback {
             StepRankResponse stepRankResponse = new Gson().fromJson(s, StepRankResponse.class);
             ((UiStepAndLoveRankInterface) callBackInterface).response(stepRankResponse);
         } else if (callBackInterface != null
-                && callBackInterface instanceof CircleDetailInterface
-                && command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
-            LocalLog.d(TAG, "圈子详情");
-            CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
-            ((CircleDetailInterface) callBackInterface).response(circleDetailResponse);
+                && callBackInterface instanceof CircleDetailInterface) {
+            if (command == Engine.COMMAND_QUIT_CIRCLE) {
+                LoginOutResponse loginOutResponse = new Gson().fromJson(s, LoginOutResponse.class);
+                ((CircleDetailInterface) callBackInterface).response(loginOutResponse);
+            } else if (command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
+                LocalLog.d(TAG, "圈子详情");
+                CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
+                ((CircleDetailInterface) callBackInterface).response(circleDetailResponse);
+            }
+
         } else if (callBackInterface != null
                 && callBackInterface instanceof TagFragInterface
                 && command == Engine.COMMAND_GET_TAG) {

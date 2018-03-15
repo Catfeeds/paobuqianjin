@@ -23,6 +23,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
@@ -230,6 +231,7 @@ public final class Engine {
     public final static int COMMAND_RECV_TASK = 64;
     public final static int COMMAND_RECV_TASK_PAY = 65;
     public final static int COMMAND_CRASH_RECORD = 66;
+    public final static int COMMAND_QUIT_CIRCLE = 67;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -890,9 +892,16 @@ public final class Engine {
     }
 
     //
-    public void loginOutCircle() {
-        LocalLog.d(TAG, "loginOutCircle() ");
-        String url = urlCircleMember + "/signOutCirscle" + String.valueOf(getId(mContext));
+    public void loginOutCircle(LoginOutParam loginOutParam) {
+        loginOutParam.setUserid(getId(mContext));
+        LocalLog.d(TAG, "loginOutCircle()  " + loginOutParam.paramString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlCircleMember + "/signOutCirscle")
+                .params(loginOutParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(circleDetailInterface,COMMAND_QUIT_CIRCLE ));
+
     }
 
     //TODO 加入圈子

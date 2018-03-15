@@ -197,7 +197,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         String contentL = data.get(position).getOne_comment().getContent();
                         LocalLog.d(TAG, "content = " + contentL);
                         for (int i = 0; i < emj.length; i++) {
-                            content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                            contentL = contentL.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
                         }
                         String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
                         SpannableString spannableString = new SpannableString(replyStr);
@@ -237,7 +237,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     String contentL = data.get(position).getOne_comment().getContent();
                     LocalLog.d(TAG, "content = " + contentL);
                     for (int i = 0; i < emj.length; i++) {
-                        content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                        contentL = contentL.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
                     }
                     String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
                     SpannableString spannableString = new SpannableString(replyStr);
@@ -269,7 +269,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
             if (data.get(position).getOne_comment() != null) {
                 if (data.get(position).getOne_comment().getNickname() != null) {
-                    String replyStr = data.get(position).getOne_comment().getNickname() + ":" + data.get(position).getOne_comment().getContent();
+                    String contentL = data.get(position).getOne_comment().getContent();
+                    LocalLog.d(TAG, "content = " + contentL);
+                    for (int i = 0; i < emj.length; i++) {
+                        contentL = contentL.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                    }
+                    String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
                     SpannableString spannableString = new SpannableString(replyStr);
                     ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                     spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length(),
