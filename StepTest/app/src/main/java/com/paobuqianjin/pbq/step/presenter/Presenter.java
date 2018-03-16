@@ -247,13 +247,14 @@ public final class Presenter {
         engine.getCircleDetail(circleId);
     }
 
-    public void getCircleIsRedPackage(int circleId){
+    public void getCircleIsRedPackage(int circleId) {
 
     }
+
     /*热门界面*/
     //TODO 我创建的圈子
-    public void getMyCreateCirlce(int pageIndex) {
-        engine.getMyCreateCirlce(pageIndex, 10);
+    public void getMyCreateCirlce(int pageIndex, int pagesize, String keyword) {
+        engine.getMyCreateCirlce(pageIndex, pagesize,keyword);
     }
 
     public void reflashMyCircle(int pageIndex) {
@@ -266,8 +267,8 @@ public final class Presenter {
     }
 
     //TODO 我加入的圈子
-    public void getMyJoinCircle() {
-        engine.getMyJoinCircle(1, 10);
+    public void getMyJoinCircle(int page, int pagesize, String keyWord) {
+        engine.getMyJoinCircle(page, pagesize,keyWord);
     }
 
     //获取精选圈子

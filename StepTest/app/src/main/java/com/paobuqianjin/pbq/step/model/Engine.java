@@ -983,10 +983,15 @@ public final class Engine {
                 .execute(new NetStringCallBack(uiStepAndLoveRankInterface, COMMAND_RECHARGE_RANK));
     }
 
-    public void getMyJoinCircle(int page, int pagesize) {
-        LocalLog.d(TAG, "我加入的圈子：getMyJoin() enter");
+    public void getMyJoinCircle(int page, int pagesize, String keyWord) {
+
         String url = NetApi.urlCircle + "?action=join" + "&userid=" + String.valueOf(getId(mContext))
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        if (!"".equals(keyWord)) {
+            url += "&keyword=" + keyWord;
+        }
+
+        LocalLog.d(TAG, "我加入的圈子：getMyJoin() enter" + url);
         OkHttpUtils
                 .get()
                 .url(url)
@@ -1006,10 +1011,14 @@ public final class Engine {
                 .execute(new NetStringCallBack(reflashMyCircleInterface, COMMAND_REFLASH_CIRCLE));
     }
 
-    public void getMyCreateCirlce(int page, int pagesize) {
-        LocalLog.d(TAG, " 我创建的圈子：getMyCreateCirlce() enter");
+    public void getMyCreateCirlce(int page, int pagesize, String keyWord) {
+
         String url = NetApi.urlCircle + "?action=create" + "&userid=" + String.valueOf(engine.getId(mContext))
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        if (!"".equals(keyWord)) {
+            url += "&keyword=" + keyWord;
+        }
+        LocalLog.d(TAG, "getMyCreateCirlce() url = " + url);
         OkHttpUtils
                 .get()
                 .url(url)

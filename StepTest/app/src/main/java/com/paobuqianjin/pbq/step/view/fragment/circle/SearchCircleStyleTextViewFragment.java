@@ -2,13 +2,11 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,7 +19,6 @@ import android.widget.Toast;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.SearchCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.SearchCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -31,10 +28,8 @@ import com.paobuqianjin.pbq.step.view.base.adapter.SearchCircleAdapter;
 import com.yanzhenjie.loading.LoadingView;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
-import com.yanzhenjie.recyclerview.swipe.widget.DefaultItemDecoration;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by pbq on 2017/12/15.
@@ -311,11 +306,6 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     @Override
     protected String title() {
         return "精选圈子";
-    }
-
-    @Override
-    public void response(SearchCircleResponse searchCircleResponse) {
-
     }
 
     @Override

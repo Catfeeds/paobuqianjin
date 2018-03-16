@@ -146,14 +146,16 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment {
     private CircleMemberManagerInterface circleMemberManagerInterface = new CircleMemberManagerInterface() {
         @Override
         public void response(CircleMemberResponse circleMemberResponse) {
-            LocalLog.d(TAG, "circleMemberResponse() enter" + circleMemberResponse.toString());
-            ArrayList<CircleMemberResponse.DataBeanX.DataBean>[] data = getAdminList(circleMemberResponse);
-            MemberManagerAdapter adminAdapter = new MemberManagerAdapter(getContext(), data[0], data[1]);
+            if (circleMemberResponse.getError() == 0) {
+                LocalLog.d(TAG, "circleMemberResponse() enter" + circleMemberResponse.toString());
+                ArrayList<CircleMemberResponse.DataBeanX.DataBean>[] data = getAdminList(circleMemberResponse);
+                MemberManagerAdapter adminAdapter = new MemberManagerAdapter(getContext(), data[0], data[1]);
 
-            adminRecyclerView.setAdapter(adminAdapter);
+                adminRecyclerView.setAdapter(adminAdapter);
 
-            MemberManagerAdapter normalAdapter = new MemberManagerAdapter(getContext(), data[2]);
-            normalRecyclerView.setAdapter(normalAdapter);
+                MemberManagerAdapter normalAdapter = new MemberManagerAdapter(getContext(), data[2]);
+                normalRecyclerView.setAdapter(normalAdapter);
+            }
         }
     };
 

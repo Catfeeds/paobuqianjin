@@ -44,7 +44,7 @@ public class OwnerJoinFragment extends BaseFragment {
         super.onAttach(context);
         mContext = context;
         Presenter.getInstance(context).attachUiInterface(myJoinCircleInterface);
-        Presenter.getInstance(context).getMyJoinCircle();
+        Presenter.getInstance(context).getMyJoinCircle(1, 10, "");
     }
 
     @Override
@@ -52,6 +52,10 @@ public class OwnerJoinFragment extends BaseFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         return rootView;
+    }
+
+    public void searchKeyWord(String keyWord) {
+        Presenter.getInstance(getContext()).getMyJoinCircle(1, 10, keyWord);
     }
 
     @Override

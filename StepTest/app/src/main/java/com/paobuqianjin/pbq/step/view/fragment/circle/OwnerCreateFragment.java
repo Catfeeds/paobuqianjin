@@ -40,7 +40,11 @@ public class OwnerCreateFragment extends BaseFragment {
         super.onAttach(context);
         Presenter.getInstance(context).attachUiInterface(myCreatCircleInterface);
         Presenter.getInstance(getContext()).attachUiInterface(reflashMyCircleInterface);
-        Presenter.getInstance(context).getMyCreateCirlce(1);
+        Presenter.getInstance(context).getMyCreateCirlce(1, 10, "");
+    }
+
+    public void searchKeyWord(String keyWord) {
+        Presenter.getInstance(getContext()).getMyCreateCirlce(1, 10, keyWord);
     }
 
     @Override
