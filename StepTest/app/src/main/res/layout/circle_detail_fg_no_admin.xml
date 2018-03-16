@@ -109,7 +109,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rank_recycler"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="75dp"
                     android:layout_below="@+id/love_money_list_rel"
                     android:layout_marginTop="20dp"
                     android:nestedScrollingEnabled="false">
@@ -117,6 +117,7 @@
                 </android.support.v7.widget.RecyclerView>
 
                 <Button
+                    android:id="@+id/re_charge_bt"
                     android:layout_width="120dp"
                     android:layout_height="40dp"
                     android:layout_below="@+id/rank_recycler"

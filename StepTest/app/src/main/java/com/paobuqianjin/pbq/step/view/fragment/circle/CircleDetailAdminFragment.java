@@ -104,6 +104,10 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     TextView cancelText;
     TextView confirmText;
     RelativeLayout partTwo;
+    @Bind(R.id.re_charge_bt)
+    Button reChargeBt;
+    @Bind(R.id.circle_detail_fg)
+    RelativeLayout circleDetailFg;
 
     private boolean is_password = false;
 
@@ -124,10 +128,13 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private final static String CIRCLE_ID = "id";
     private final static String CIRCLE_NAME = "name";
     private final static String CIRCLE_LOGO = "logo";
+    private final static String CIRCLE_RECHARGE = "pay";
+    private final static String PAY_FOR_STYLE = "pay_for_style";
     private final static String QRCODE_ACTION = "android.intent.action.QRCODE";
     private final static String MEMBER_MANANGER_ACTION = "android.intent.action.MAMBER_MANAGER_ACTION";
     private final static String ACTION_ENTER_CIRCLE = "coma.paobuqian.pbq.step.ICON_ACTION";
     private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.SCAN_ACTION";
+    private final static String PAY_ACTION = "android.intent.action.PAY";
 
     String titleStr = "";
 
@@ -367,6 +374,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         circleCover = (ImageView) viewRoot.findViewById(R.id.circle_cover);
 
         joinIn = (Button) viewRoot.findViewById(R.id.join_in);
+        reChargeBt = (Button) viewRoot.findViewById(R.id.re_charge_bt);
+        reChargeBt.setOnClickListener(onClickListener);
 
     }
 
@@ -434,6 +443,15 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     LocalLog.d(TAG, "取消");
                     if (popupOpWindow != null) {
                         popupOpWindow.dismiss();
+                    }
+                    break;
+                case R.id.re_charge_bt:
+                    LocalLog.d(TAG, "创建成功,跳转支付");
+                    if (circleId != -1) {
+                        Bundle bundlePay = new Bundle();
+                        bundlePay.putString(CIRCLE_ID, String.valueOf(circleId));
+                        bundlePay.putString(PAY_FOR_STYLE, "circle");
+                        startActivity(PaoBuPayActivity.class, bundlePay, true, PAY_ACTION);
                     }
                     break;
                 default:
