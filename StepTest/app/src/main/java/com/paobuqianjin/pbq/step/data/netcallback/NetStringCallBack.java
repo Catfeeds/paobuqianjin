@@ -43,6 +43,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.QueryFollowStateResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseRecordResponse;
@@ -576,6 +577,9 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_GET_REC_TASK_DETAIL) {
                 TaskRecDetailResponse taskRecDetailResponse = new Gson().fromJson(s, TaskRecDetailResponse.class);
                 ((TaskDetailRecInterface) callBackInterface).response(taskRecDetailResponse);
+            }else if(command == Engine.COMMAND_RECV_TASK_PAY){
+                RecPayResponse recPayResponse = new Gson().fromJson(s,RecPayResponse.class);
+                ((TaskDetailRecInterface) callBackInterface).response(recPayResponse);
             }
         } else if (callBackInterface != null && callBackInterface instanceof ReceiveTaskInterface) {
             if (command == Engine.COMMAND_RECV_TASK) {

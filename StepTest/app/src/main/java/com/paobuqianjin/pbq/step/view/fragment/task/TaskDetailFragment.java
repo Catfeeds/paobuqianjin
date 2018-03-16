@@ -14,8 +14,11 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskRecDetailResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskDetailRecInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -147,6 +150,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
         super.onDestroyView();
         ButterKnife.unbind(this);
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
     @Override
@@ -157,7 +161,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
             targetMoney.setText("奖励金额: " + String.valueOf(taskRecDetailResponse.getData().getReward_amount()));
             Presenter.getInstance(getContext()).getImage(releaseUseIco, taskRecDetailResponse.getData().getAvatar());
             dearName.setText(taskRecDetailResponse.getData().getNickname());
-            dearId.setText(String.valueOf(taskRecDetailResponse.getData().getId()));
+            dearId.setText(String.valueOf(taskRecDetailResponse.getData().getUserid()));
             stepDesRun.setText(String.valueOf(taskRecDetailResponse.getData().getUser_step()) + "/" + String.valueOf(taskRecDetailResponse.getData().getTarget_step()));
 
             long startTime = taskRecDetailResponse.getData().getActivity_start_time();
@@ -194,6 +198,9 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
 
     @Override
     public void response(RecPayResponse recPayResponse) {
-        LocalLog.d(TAG, "RecPayResponse() enter " + recPayResponse.toString());
+        LocalLog.d(TAG, "RecPayResponse() " + recPayResponse.toString());
+        if (recPayResponse.getError() == 0) {
+            buttonAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_b8bbbd));
+        }
     }
 }

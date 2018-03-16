@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 
 /**
@@ -9,5 +10,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 public interface ReceiveTaskInterface extends CallBackInterface {
     public void response(ReceiveTaskResponse receiveTaskResponse);
 
-    public void receiveTask(int taskId);
+    public void receiveTask(int taskId,ReflashInterface reflashInterface);
+
 }

@@ -17,6 +17,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.MyReleaseDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskDetailActivity;
@@ -106,6 +107,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         @Bind(R.id.task_list_item)
         RelativeLayout taskListItem;
         int taskId = -1;
+        ReflashInterface reflashInterface = new ReflashInterface() {
+            @Override
+            public void notifyReflash() {
+                LocalLog.d(TAG,"ID = " + taskId + "领取成功");
+            }
+        };
 
         public TaskViewHolder(View view) {
             super(view);
@@ -140,7 +147,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                         switch (releaseDetails.getText().toString()) {
                             case "领取任务":
                                 if (receiveTaskInterface != null) {
-                                    receiveTaskInterface.receiveTask(taskId);
+                                    receiveTaskInterface.receiveTask(taskId,reflashInterface);
                                 }
                                 break;
                             case "领取奖励":

@@ -1467,6 +1467,25 @@ public final class Engine {
                         .param("action", action)
                         .build().execute(new NetStringCallBack(receiveTaskInterface, COMMAND_RECV_TASK));
                 break;
+            case "receive_reward":
+                LocalLog.d(TAG, "领取奖励");
+                OkHttpUtils
+                        .put()
+                        .url(url)
+                        .requestBody(new RequestBody() {
+                            @Override
+                            public MediaType contentType() {
+                                return MediaType.parse("application/x-www-form-urlencoded");
+                            }
+
+                            @Override
+                            public void writeTo(BufferedSink sink) throws IOException {
+
+                            }
+                        })
+                        .param("action", action)
+                        .build().execute(new NetStringCallBack(taskDetailRecInterface, COMMAND_RECV_TASK_PAY));
+                break;
         }
 
     }

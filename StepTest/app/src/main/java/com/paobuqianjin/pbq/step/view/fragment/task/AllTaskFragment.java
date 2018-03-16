@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.TaskAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -32,6 +34,7 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
     RecyclerView allTaskRecycler;
     private LinearLayoutManager layoutManager;
     private TaskAdapter adapter;
+    ReflashInterface reflashInterface;
 
     @Override
     protected int getLayoutResId() {
@@ -81,7 +84,10 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
     public void response(ReceiveTaskResponse receiveTaskResponse) {
         LocalLog.d(TAG, "ReceiveTaskResponse() enter " + receiveTaskResponse.toString());
         if (receiveTaskResponse.getError() == 0) {
-
+            LocalLog.d(TAG, "领取任务成功");
+            if (this.reflashInterface != null) {
+                this.reflashInterface.notifyReflash();
+            }
         } else if (receiveTaskResponse.getError() == 1) {
 
         } else if (receiveTaskResponse.getError() == -1) {
@@ -90,8 +96,9 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
     }
 
     @Override
-    public void receiveTask(int taskId) {
+    public void receiveTask(int taskId, ReflashInterface reflashInterface) {
         LocalLog.d(TAG, "领取任务 id = " + taskId);
+        this.reflashInterface = reflashInterface;
         if (taskId != -1) {
             Presenter.getInstance(getContext()).putTask("receive_task", taskId);
         }
