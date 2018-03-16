@@ -987,7 +987,7 @@ public final class Engine {
 
         String url = NetApi.urlCircle + "?action=join" + "&userid=" + String.valueOf(getId(mContext))
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
-        if (!"".equals(keyWord)) {
+        if (keyWord != null && !"".equals(keyWord)) {
             url += "&keyword=" + keyWord;
         }
 
@@ -1015,7 +1015,7 @@ public final class Engine {
 
         String url = NetApi.urlCircle + "?action=create" + "&userid=" + String.valueOf(engine.getId(mContext))
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
-        if (!"".equals(keyWord)) {
+        if (keyWord != null && !"".equals(keyWord)) {
             url += "&keyword=" + keyWord;
         }
         LocalLog.d(TAG, "getMyCreateCirlce() url = " + url);
@@ -1042,6 +1042,7 @@ public final class Engine {
 
         String url = NetApi.urlCircle + "?action=choice" + "&userid=" + String.valueOf(getId(mContext))
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+
         LocalLog.d(TAG, "精选圈子：getCircleChoice() enter" + url);
         OkHttpUtils
                 .get()
@@ -1050,9 +1051,12 @@ public final class Engine {
                 .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_CHOICE_CIRCLE));
     }
 
-    public void getMoreCircle(int page, int pagesize) {
+    public void getMoreCircle(int page, int pagesize, String keyWord) {
         String url = NetApi.urlCircle + "?action=choice" + "&userid=" + String.valueOf(getId(mContext))
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        if (keyWord != null && !"".equals(keyWord)) {
+            url += "&keyword=" + keyWord;
+        }
         LocalLog.d(TAG, "精选圈子：getMoreCircle() enter" + url);
         OkHttpUtils
                 .get()

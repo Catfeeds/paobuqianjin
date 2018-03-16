@@ -254,7 +254,7 @@ public final class Presenter {
     /*热门界面*/
     //TODO 我创建的圈子
     public void getMyCreateCirlce(int pageIndex, int pagesize, String keyword) {
-        engine.getMyCreateCirlce(pageIndex, pagesize,keyword);
+        engine.getMyCreateCirlce(pageIndex, pagesize, keyword);
     }
 
     public void reflashMyCircle(int pageIndex) {
@@ -268,7 +268,7 @@ public final class Presenter {
 
     //TODO 我加入的圈子
     public void getMyJoinCircle(int page, int pagesize, String keyWord) {
-        engine.getMyJoinCircle(page, pagesize,keyWord);
+        engine.getMyJoinCircle(page, pagesize, keyWord);
     }
 
     //获取精选圈子
@@ -276,8 +276,8 @@ public final class Presenter {
         engine.getCircleChoice(page, pageSize);
     }
 
-    public void getMoreCircle(int page, int pageSize) {
-        engine.getMoreCircle(page, pageSize);
+    public void getMoreCircle(int page, int pageSize, String keyword) {
+        engine.getMoreCircle(page, pageSize,keyword);
     }
 
     private void getTest() {

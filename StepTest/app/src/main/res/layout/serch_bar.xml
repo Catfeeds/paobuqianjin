@@ -19,23 +19,18 @@
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
             android:background="@drawable/column">
-
-            <ImageView
+            <RelativeLayout
                 android:id="@+id/search_icon"
-                android:layout_width="19dp"
-                android:layout_height="19dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="12dp"
-                android:src="@drawable/search_circle" />
+                android:layout_width="40dp"
+                android:layout_height="40dp">
+                <ImageView
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:src="@drawable/search_circle" />
+            </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/search_cancel"
-                android:layout_width="19dp"
-                android:layout_height="19dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="12dp"
-                android:src="@drawable/cancel" />
 
             <EditText
                 android:id="@+id/search_circle_text"

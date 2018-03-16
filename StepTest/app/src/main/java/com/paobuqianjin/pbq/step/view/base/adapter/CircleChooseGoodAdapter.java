@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -28,6 +29,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 
 import java.util.ArrayList;
 
@@ -56,6 +58,7 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
     TextView confirmText;
     RelativeLayout partTwo;
     private JoinCircleParam joinCircleParam;
+    private final static String ACTION_ENTER_ICON = "coma.paobuqian.pbq.step.ICON_ACTION";
 
     public CircleChooseGoodAdapter(final Activity activity, Context context, ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data) {
         super();
@@ -97,11 +100,11 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
         if (tmpData.getIs_join() == 0) {
             LocalLog.d(TAG, "未在该圈可以加入");
             holder.circleJoin.setText("加入");
-            holder.setCircleId(tmpData.getCircleid());
             holder.circleJoin.setOnClickListener(holder.onClickListener);
         } else if (tmpData.getIs_join() == 1) {
             holder.circleJoin.setText("已加入");
         }
+        holder.setCircleId(tmpData.getCircleid());
     }
 
     @Override
@@ -120,6 +123,10 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
         }
 
         boolean is_pwd;
+
+        public int getCircleId() {
+            return circleId;
+        }
 
         int circleId;
 
@@ -143,6 +150,16 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
         public CircleChooseViewHolder(View view) {
             super(view);
             init(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent();
+                    intent.setClass(mContext, CirCleDetailActivity.class);
+                    intent.setAction(ACTION_ENTER_ICON);
+                    intent.putExtra(mContext.getPackageName() + "circleid",String.valueOf(getCircleId()));
+                    mContext.startActivity(intent);
+                }
+            });
         }
 
         private void init(View view) {
@@ -206,7 +223,7 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
             public void response(ErrorCode errorCode) {
                 if (errorCode.getMessage().equals("请输入密码")) {
                     popPassWordEdit();
-                }else{
+                } else {
                     Toast.makeText(mContext, errorCode.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }

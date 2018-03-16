@@ -46,6 +46,8 @@ import butterknife.ButterKnife;
 
 public class MyFriendFragment extends BaseBarStyleTextViewFragment implements UserFollowInterface {
     private final static String TAG = MyFriendFragment.class.getSimpleName();
+
+    String[] titles = {"互相关注", "已关注", "关注我的"};
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -59,14 +61,11 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
     @Bind(R.id.tab_span)
     RelativeLayout tabSpan;
     @Bind(R.id.search_icon)
-    ImageView searchIcon;
-    @Bind(R.id.search_cancel)
-    ImageView searchCancel;
+    RelativeLayout searchIcon;
     @Bind(R.id.search_circle_text)
     EditText searchCircleText;
     @Bind(R.id.friend_recycler_viewpager)
-    ViewPager friendRecyclerViewpager;
-    String[] titles = {"互相关注", "已关注", "关注我的"};
+    CustomViewPager friendRecyclerViewpager;
     private FollowOtoFragment followOtoFragment;
     private MyFollowFragment myFollowFragment;
     private FollowMeFragment followMeFragment;
@@ -103,7 +102,7 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
         super.initView(viewRoot);
         setToolBarListener(toolBarListener);
         followTab = (TabLayout) viewRoot.findViewById(R.id.follow_tab);
-        friendRecyclerViewpager = (ViewPager) viewRoot.findViewById(R.id.friend_recycler_viewpager);
+        friendRecyclerViewpager = (CustomViewPager) viewRoot.findViewById(R.id.friend_recycler_viewpager);
 
         followOtoFragment = new FollowOtoFragment();
         myFollowFragment = new MyFollowFragment();

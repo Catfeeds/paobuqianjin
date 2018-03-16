@@ -12,7 +12,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,13 +26,16 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.SearchCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.SearchCircleAdapter;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.yanzhenjie.loading.LoadingView;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by pbq on 2017/12/15.
@@ -37,6 +43,20 @@ import java.util.ArrayList;
 
 public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragment implements SearchCircleInterface {
     private final static String TAG = SearchCircleStyleTextViewFragment.class.getSimpleName();
+    @Bind(R.id.bar_return_drawable)
+    ImageView barReturnDrawable;
+    @Bind(R.id.button_return_bar)
+    RelativeLayout buttonReturnBar;
+    @Bind(R.id.bar_title)
+    TextView barTitle;
+    @Bind(R.id.bar_tv_right)
+    TextView barTvRight;
+    @Bind(R.id.search_icon)
+    RelativeLayout searchIcon;
+    @Bind(R.id.search_circle_text)
+    EditText searchCircleText;
+    @Bind(R.id.search_hot_circle)
+    RelativeLayout searchHotCircle;
     private LinearLayoutManager layoutManager;
     private SwipeMenuRecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -81,6 +101,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         LocalLog.d(TAG, "");
+        ButterKnife.bind(this, super.onCreateView(inflater, container, savedInstanceState));
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -103,10 +124,18 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         recyclerView.addFooterView(loadMoreView); // 添加为Footer。
         recyclerView.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         recyclerView.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
-        adapter = new SearchCircleAdapter(this.getContext(),getActivity());
+        adapter = new SearchCircleAdapter(this.getContext(), getActivity());
         recyclerView.setAdapter(adapter);
         loadData();
         Presenter.getInstance(getContext()).attachUiInterface(this);
+        searchIcon = (RelativeLayout) viewRoot.findViewById(R.id.search_icon);
+        searchCircleText = (EditText)viewRoot.findViewById(R.id.search_circle_text);
+        searchIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Presenter.getInstance(getContext()).getMoreCircle(1, Utils.PAGE_SIZE_DEFAULT,searchCircleText.getText().toString());
+            }
+        });
     }
 
 
@@ -145,7 +174,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
                         }
                     }
 
-                    Presenter.getInstance(getContext()).getMoreCircle(pageIndex, Utils.PAGE_SIZE_DEFAULT);
+                    Presenter.getInstance(getContext()).getMoreCircle(pageIndex, Utils.PAGE_SIZE_DEFAULT,"");
 
                 }
             }, 1000);
@@ -331,5 +360,6 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     public void onDestroyView() {
         super.onDestroyView();
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
+        ButterKnife.unbind(this);
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="347dp"
+    android:id="@+id/circle_choose_rel"
     android:layout_height="wrap_content"
     android:background="@color/color_f6f6f6">
 
