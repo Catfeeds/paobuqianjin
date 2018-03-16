@@ -20,4 +20,6 @@ public interface UiCreateCircleInterface extends CallBackInterface {
     public void response(CreateCircleResponse createCircleResponse);
 
     public void response(Object error);
+
+    public void responseLocation(String city, double latitude, double longitude);
 }

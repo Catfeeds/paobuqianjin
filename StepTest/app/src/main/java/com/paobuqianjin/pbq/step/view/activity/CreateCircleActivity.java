@@ -52,6 +52,7 @@ import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.CreateAndJoinCirclesInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
@@ -276,6 +277,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(this);
+        requestLocationPermission(Permission.Group.LOCATION);
     }
 
 
@@ -338,6 +340,13 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 /*cirCleStyle.setText(circleTypeResponse.getData().get(0).getName());*/
             }
 
+        }
+
+        @Override
+        public void responseLocation(String city, double latitude, double longitude) {
+            createCircleBodyParam.setCity(city);
+            createCircleBodyParam.setLongitude((float) longitude);
+            createCircleBodyParam.setLatitude((float) latitude);
         }
 
         @Override
@@ -611,6 +620,29 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     }
 
 
+        /*权限适配*/
+
+    private void requestLocationPermission(String... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        toast(R.string.successfully);
+                        Presenter.getInstance(CreateCircleActivity.this).startService(null, LocalBaiduService.class);
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                toast(R.string.failure);
+                if (AndPermission.hasAlwaysDeniedPermission(CreateCircleActivity.this, permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
+    }
+
     protected void toast(@StringRes int message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
@@ -628,8 +660,6 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             Toast.makeText(this, "请输入电话", Toast.LENGTH_SHORT).show();
             return false;
         }
-        createCircleBodyParam.setLongitude(22.0000f);
-        createCircleBodyParam.setLatitude(114.000f);
 
         LocalLog.d(TAG, "Is_recharge = " + createCircleBodyParam.isIs_recharge());
         if (createCircleBodyParam.isIs_recharge() == 0) {

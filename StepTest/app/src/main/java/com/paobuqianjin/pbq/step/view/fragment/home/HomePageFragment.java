@@ -320,7 +320,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 + ",longitude= " + longitude);
         cityName.setText(city);
         Presenter.getInstance(getContext()).getWeather(latitude, longitude);
-
     }
 
     @Override
