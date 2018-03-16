@@ -19,6 +19,7 @@ import com.paobuqianjin.pbq.step.data.bean.bundle.ChoiceBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.MyCreateCircleBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.MyJoinCreateCircleBudleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
@@ -27,6 +28,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.QueryRedPkgInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
@@ -90,6 +92,7 @@ public class HotCircleFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         Presenter.getInstance(mContext).dispatchUiInterface(uiHotCircleInterface);
+        Presenter.getInstance(mContext).dispatchUiInterface(queryRedPkgInterface);
     }
 
     @Override
@@ -130,6 +133,7 @@ public class HotCircleFragment extends BaseFragment {
         moreChoiceTV = (TextView) relativeLayout.findViewById(R.id.find_more_choice);
         moreChoiceTV.setOnClickListener(onClickListener);
         Presenter.getInstance(mContext).attachUiInterface(uiHotCircleInterface);
+        Presenter.getInstance(mContext).attachUiInterface(queryRedPkgInterface);
         loadingData();
     }
 
@@ -204,21 +208,16 @@ public class HotCircleFragment extends BaseFragment {
         return "热门";
     }
 
-    public void setMyHotLa(String name, String urlImage, boolean isRedShow) {
+    public void setMyHotLa(String name, String urlImage) {
         myHotCircleTV.setText(name);
-        if (isRedShow) {
-            readPackAIV.setVisibility(View.VISIBLE);
-        }
+
         Presenter.getInstance(mContext).getImage(myHotCircleIV, urlImage);
         myHotLa.setVisibility(View.VISIBLE);
 
     }
 
-    public void setMyHotLb(String name, String urlImage, boolean isRedShow) {
+    public void setMyHotLb(String name, String urlImage) {
         secondHotCircleTV.setText(name);
-        if (isRedShow) {
-            readPackBIV.setVisibility(View.VISIBLE);
-        }
         Presenter.getInstance(mContext).getImage(secondHotCircleIV, urlImage);
         myHotLb.setVisibility(View.VISIBLE);
     }
@@ -233,23 +232,23 @@ public class HotCircleFragment extends BaseFragment {
                 if (size == 1) {
 
                     setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
-                            myHotCircleResponse.getData().getData().get(0).getLogo(),
-                            true);
+                            myHotCircleResponse.getData().getData().get(0).getLogo());
                     circleIdA = myHotCircleResponse.getData().getData().get(0).getId();
                     circleNumA = myHotCircleResponse.getData().getData().get(0).getMember_number();
+                    Presenter.getInstance(getContext()).getCircleDetail(myHotCircleResponse.getData().getData().get(0).getId());
                 } else if (size >= 2) {
                     setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
-                            myHotCircleResponse.getData().getData().get(0).getLogo(),
-                            true);
+                            myHotCircleResponse.getData().getData().get(0).getLogo());
                     setMyHotLb(myHotCircleResponse.getData().getData().get(1).getName(),
-                            myHotCircleResponse.getData().getData().get(1).getLogo(),
-                            true);
+                            myHotCircleResponse.getData().getData().get(1).getLogo());
 
                     circleIdA = myHotCircleResponse.getData().getData().get(0).getId();
                     circleNumA = myHotCircleResponse.getData().getData().get(0).getMember_number();
 
                     circleIdB = myHotCircleResponse.getData().getData().get(1).getId();
                     circleNumB = myHotCircleResponse.getData().getData().get(1).getMember_number();
+                    Presenter.getInstance(getContext()).getCircleDetail(myHotCircleResponse.getData().getData().get(0).getId());
+                    Presenter.getInstance(getContext()).getCircleDetail(myHotCircleResponse.getData().getData().get(1).getId());
                 }
                 pageCounts[1] = myHotCircleResponse.getData().getPagenation().getTotalPage();
             }
@@ -310,6 +309,23 @@ public class HotCircleFragment extends BaseFragment {
                         choiceCircleData);
                 choiceRecyclerView.setAdapter(adapter);
                 pageCounts[2] = choiceCircleResponse.getData().getPagenation().getTotalPage();
+            }
+        }
+    };
+
+
+    private QueryRedPkgInterface queryRedPkgInterface = new QueryRedPkgInterface() {
+        @Override
+        public void response(CircleDetailResponse circleDetailResponse) {
+            LocalLog.d(TAG, "获取圈子详情");
+            if (circleDetailResponse.getError() == 0) {
+                if (circleDetailResponse.getData().getIs_red_packet() == 1) {
+                    if (circleIdA == circleDetailResponse.getData().getId()) {
+                        readPackAIV.setVisibility(View.VISIBLE);
+                    } else if (circleIdA == circleDetailResponse.getData().getId()) {
+                        readPackBIV.setVisibility(View.VISIBLE);
+                    }
+                }
             }
         }
     };

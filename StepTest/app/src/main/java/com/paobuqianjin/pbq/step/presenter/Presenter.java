@@ -247,6 +247,9 @@ public final class Presenter {
         engine.getCircleDetail(circleId);
     }
 
+    public void getCircleIsRedPackage(int circleId){
+
+    }
     /*热门界面*/
     //TODO 我创建的圈子
     public void getMyCreateCirlce(int pageIndex) {

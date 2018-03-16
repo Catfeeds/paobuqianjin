@@ -672,7 +672,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            SocializeUtils.safeShowDialog(dialog);
+            //SocializeUtils.safeShowDialog(dialog);
         }
 
         @Override

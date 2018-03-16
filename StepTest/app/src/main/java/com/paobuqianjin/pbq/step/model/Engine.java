@@ -64,6 +64,7 @@ import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
+import com.paobuqianjin.pbq.step.presenter.im.QueryRedPkgInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
@@ -161,6 +162,7 @@ public final class Engine {
     private JoinCircleInterface joinCircleInterface;
     private SearchCircleInterface searchCircleInterface;
     private AddDeleteFollowInterface addDeleteFollowInterface;
+    private QueryRedPkgInterface queryRedPkgInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -1070,6 +1072,16 @@ public final class Engine {
                 .execute(new NetStringCallBack(circleDetailInterface, COMMAND_GET_CIRCLE_DETAIL));
     }
 
+    public void getCircleIsRedPackage(int circleId) {
+        LocalLog.d(TAG, " 获取圈子详情 getCircleIsRedPackage() ");
+        String url = NetApi.urlCircle + "/" + String.valueOf(circleId) + "?userid=" + String.valueOf(getId(mContext));
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(queryRedPkgInterface, COMMAND_GET_CIRCLE_DETAIL));
+    }
+
     public void putCircle(CreateCircleBodyParam createCircleBodyParam, int circleId) {
         LocalLog.d(TAG, "编辑圈子 putCircle()");
         String url = NetApi.urlCircle + "/" + circleId;
@@ -1749,6 +1761,8 @@ public final class Engine {
             searchCircleInterface = (SearchCircleInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof AddDeleteFollowInterface) {
             addDeleteFollowInterface = (AddDeleteFollowInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof QueryRedPkgInterface) {
+            queryRedPkgInterface = (QueryRedPkgInterface) uiCallBackInterface;
         }
     }
 
@@ -1834,6 +1848,8 @@ public final class Engine {
             searchCircleInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof AddDeleteFollowInterface) {
             addDeleteFollowInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof QueryRedPkgInterface) {
+            queryRedPkgInterface = null;
         }
     }
 }

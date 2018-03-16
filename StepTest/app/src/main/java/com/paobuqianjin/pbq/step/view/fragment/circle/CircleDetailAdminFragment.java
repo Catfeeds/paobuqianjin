@@ -545,6 +545,10 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             /*Presenter.getInstance(getContext()).getImage(circleCover, circleDetailResponse.getData().getLogo());*/
             Presenter.getInstance(getContext()).getCircleRechargeRand(circleId);
             Presenter.getInstance(getContext()).getCircleStepRank(circleId);
+
+            if (circleDetailResponse.getData().getIs_red_packet() == 1) {
+                LocalLog.d(TAG, "弹出红包,用户可以点击领取");
+            }
         } else if (circleDetailResponse.getError() == -1) {
             Toast.makeText(getContext(), circleDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
         } else if (circleDetailResponse.getError() == 1) {

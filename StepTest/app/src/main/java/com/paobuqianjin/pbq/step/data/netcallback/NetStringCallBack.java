@@ -87,6 +87,7 @@ import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
+import com.paobuqianjin.pbq.step.presenter.im.QueryRedPkgInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
@@ -551,8 +552,8 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null
                 && callBackInterface instanceof UserFollowInterface) {
             if (command == Engine.COMMAND_MY_FOLLOW) {
-               /* UserIdFollowResponse userIdFollowResponse = new Gson().fromJson(s, UserIdFollowResponse.class);
-                ((UserFollowInterface) callBackInterface).response(userIdFollowResponse);*/
+                UserIdFollowResponse userIdFollowResponse = new Gson().fromJson(s, UserIdFollowResponse.class);
+                ((UserFollowInterface) callBackInterface).response(userIdFollowResponse);
             } else if (command == Engine.COMMAND_FOLLOW_ME) {
                 FollowUserResponse followUserResponse = new Gson().fromJson(s, FollowUserResponse.class);
                 ((UserFollowInterface) callBackInterface).response(followUserResponse);
@@ -598,6 +599,11 @@ public class NetStringCallBack extends StringCallback {
             LocalLog.d(TAG, "取消/关注");
             AddDeleteFollowResponse addDeleteFollowResponse = new Gson().fromJson(s, AddDeleteFollowResponse.class);
             ((AddDeleteFollowInterface) callBackInterface).response(addDeleteFollowResponse);
+        } else if (callBackInterface != null && callBackInterface instanceof QueryRedPkgInterface) {
+            if (command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
+                CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
+                ((QueryRedPkgInterface) callBackInterface).response(circleDetailResponse);
+            }
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }
