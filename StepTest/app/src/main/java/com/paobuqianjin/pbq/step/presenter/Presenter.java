@@ -277,7 +277,7 @@ public final class Presenter {
     }
 
     public void getMoreCircle(int page, int pageSize, String keyword) {
-        engine.getMoreCircle(page, pageSize,keyword);
+        engine.getMoreCircle(page, pageSize, keyword);
     }
 
     private void getTest() {
@@ -408,6 +408,10 @@ public final class Presenter {
     //TODO 用户好友接口
     public void getUserFiends() {
         engine.getUserFriends();
+    }
+
+    public void getFriendHonor(int page, int pagesize) {
+        engine.getFriendHonor(page, pagesize);
     }
 
     //TODO

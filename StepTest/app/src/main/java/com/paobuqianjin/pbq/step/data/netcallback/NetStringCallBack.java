@@ -25,6 +25,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
@@ -75,6 +76,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CrashRecordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
@@ -577,8 +579,8 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_GET_REC_TASK_DETAIL) {
                 TaskRecDetailResponse taskRecDetailResponse = new Gson().fromJson(s, TaskRecDetailResponse.class);
                 ((TaskDetailRecInterface) callBackInterface).response(taskRecDetailResponse);
-            }else if(command == Engine.COMMAND_RECV_TASK_PAY){
-                RecPayResponse recPayResponse = new Gson().fromJson(s,RecPayResponse.class);
+            } else if (command == Engine.COMMAND_RECV_TASK_PAY) {
+                RecPayResponse recPayResponse = new Gson().fromJson(s, RecPayResponse.class);
                 ((TaskDetailRecInterface) callBackInterface).response(recPayResponse);
             }
         } else if (callBackInterface != null && callBackInterface instanceof ReceiveTaskInterface) {
@@ -607,6 +609,11 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
                 CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
                 ((QueryRedPkgInterface) callBackInterface).response(circleDetailResponse);
+            }
+        } else if (callBackInterface != null && callBackInterface instanceof FriendHonorInterface) {
+            if (command == Engine.COMMAND_FRIEND_HONOR) {
+                FriendStepRankDayResponse friendStepRankDayResponse = new Gson().fromJson(s, FriendStepRankDayResponse.class);
+                ((FriendHonorInterface) callBackInterface).response(friendStepRankDayResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

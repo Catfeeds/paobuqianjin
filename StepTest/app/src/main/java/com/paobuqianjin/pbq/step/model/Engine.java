@@ -51,6 +51,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
@@ -163,6 +164,8 @@ public final class Engine {
     private SearchCircleInterface searchCircleInterface;
     private AddDeleteFollowInterface addDeleteFollowInterface;
     private QueryRedPkgInterface queryRedPkgInterface;
+    private FriendHonorInterface friendHonorInterface;
+
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -238,6 +241,7 @@ public final class Engine {
     public final static int COMMAND_QUIT_CIRCLE = 67;
     public final static int COMMAND_QUERY_FOLLOW_STATE = 68;
     public final static int COMMAND_ADD_DELETE_FOLLOW = 69;
+    public final static int COMMAND_FRIEND_HONOR = 70;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1344,10 +1348,17 @@ public final class Engine {
                 .execute(new NetStringCallBack(userHomeInterface, COMMAND_QUERY_FOLLOW_STATE));
     }
 
-    //取消关注 TODO
-    public void deleteMeFollow(int id) {
-        LocalLog.d(TAG, "deleteMeFollow() enter");
-
+    //TODO 获取个人和好友步数排行当日
+    //http://119.29.10.64/v1/UserFriends/?userid=1&action=step
+    public void getFriendHonor(int page, int pagesize) {
+        String url = NetApi.urlUserFriends + "/?userid=" + String.valueOf(getId(mContext)) +
+                "&action=step" + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        LocalLog.d(TAG, "getFriendHonor() enter url" + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(friendHonorInterface,COMMAND_FRIEND_HONOR));
     }
 
 
@@ -1801,6 +1812,8 @@ public final class Engine {
             addDeleteFollowInterface = (AddDeleteFollowInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof QueryRedPkgInterface) {
             queryRedPkgInterface = (QueryRedPkgInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof FriendHonorInterface) {
+            friendHonorInterface = (FriendHonorInterface) uiCallBackInterface;
         }
     }
 
@@ -1888,6 +1901,8 @@ public final class Engine {
             addDeleteFollowInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof QueryRedPkgInterface) {
             queryRedPkgInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof FriendHonorInterface) {
+            friendHonorInterface = (FriendHonorInterface) uiCallBackInterface;
         }
     }
 }

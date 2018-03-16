@@ -467,6 +467,10 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             if (joinCircleResponse.getError() == 0) {
                 LocalLog.d(TAG, "加入成功");
                 joinIn.setVisibility(View.GONE);
+                //TODO 通知源UI更新
+                if (circleId != -1) {
+                    Presenter.getInstance(getContext()).getCircleStepRank(circleId);
+                }
             }
         }
 

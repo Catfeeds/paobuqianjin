@@ -156,7 +156,7 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
                     Intent intent = new Intent();
                     intent.setClass(mContext, CirCleDetailActivity.class);
                     intent.setAction(ACTION_ENTER_ICON);
-                    intent.putExtra(mContext.getPackageName() + "circleid",String.valueOf(getCircleId()));
+                    intent.putExtra(mContext.getPackageName() + "circleid",getCircleId());
                     mContext.startActivity(intent);
                 }
             });

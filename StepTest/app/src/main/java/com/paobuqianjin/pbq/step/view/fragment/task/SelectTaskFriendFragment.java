@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
@@ -33,6 +33,8 @@ import butterknife.ButterKnife;
 
 public class SelectTaskFriendFragment extends BaseFragment implements SelectUserFriendInterface {
     private final static String TAG = SelectTaskFriendFragment.class.getSimpleName();
+    SelectTaskFriendAdapter selectTaskFriendAdapter = null;
+
     @Bind(R.id.bar_return_left)
     TextView barReturnLeft;
     @Bind(R.id.bar_title)
@@ -40,14 +42,11 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
     @Bind(R.id.search_icon)
-    ImageView searchIcon;
-    @Bind(R.id.search_cancel)
-    ImageView searchCancel;
+    RelativeLayout searchIcon;
     @Bind(R.id.search_circle_text)
     EditText searchCircleText;
     @Bind(R.id.friend_recycler)
     RecyclerView friendRecycler;
-    SelectTaskFriendAdapter selectTaskFriendAdapter = null;
     private LinearLayoutManager layoutManager;
     private static final int SELECT_FRIENDS = 0;
 
