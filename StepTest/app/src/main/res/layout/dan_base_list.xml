@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="70dp">
+    android:layout_height="70dp"
+    android:background="@color/color_f8">
 
     <ImageView
         android:id="@+id/rank_icon"
@@ -33,19 +34,19 @@
         android:textSize="16dp" />
 
     <TextView
+        android:id="@+id/step_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="15dp"
-        android:text="15000"
+        android:text=""
         android:textColor="@color/color_161727"
         android:textSize="15dp" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_alignLeft="@+id/rank_icon"
         android:layout_alignParentBottom="true"
         android:background="@color/color_ebebed" />
 </RelativeLayout>

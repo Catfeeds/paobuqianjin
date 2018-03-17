@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.honor;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,9 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -46,6 +49,9 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
     @Bind(R.id.rank_detail_des)
     TextView rankDetailDes;
     FriendStepRankDayResponse friendStepRankDayResponse;
+    @Bind(R.id.time_month_day)
+    TextView timeMonthDay;
+    LinearLayoutManager layoutManager;
 
     @Override
     public void onAttach(Context context) {
@@ -69,11 +75,15 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        rankHonor = (TextView)viewRoot.findViewById(R.id.rank_honor);
-        rankDes = (TextView)viewRoot.findViewById(R.id.rank_des);
-        stepNum = (TextView)viewRoot.findViewById(R.id.step_num);
-        stepDes = (TextView)viewRoot.findViewById(R.id.step_des);
-        rankRecyclerView = (RecyclerView)viewRoot.findViewById(R.id.rank_recycler_view);
+        rankHonor = (TextView) viewRoot.findViewById(R.id.rank_honor);
+        rankDes = (TextView) viewRoot.findViewById(R.id.rank_des);
+        stepNum = (TextView) viewRoot.findViewById(R.id.step_num);
+        stepDes = (TextView) viewRoot.findViewById(R.id.step_des);
+        rankRecyclerView = (RecyclerView) viewRoot.findViewById(R.id.rank_recycler_view);
+        timeMonthDay = (TextView) viewRoot.findViewById(R.id.time_month_day);
+        timeMonthDay.setText(DateTimeUtil.getLocalTime());
+        layoutManager = new LinearLayoutManager(getContext());
+        rankRecyclerView.setLayoutManager(layoutManager);
         Presenter.getInstance(getContext()).getFriendHonor(1, 10);
     }
 
@@ -86,10 +96,12 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
 
     @Override
     public void response(FriendStepRankDayResponse friendStepRankDayResponse) {
-        LocalLog.d(TAG, "FriendStepRankDayResponse() enter");
+        LocalLog.d(TAG, "FriendStepRankDayResponse() enter  " + friendStepRankDayResponse.toString() );
         if (friendStepRankDayResponse.getError() == 0) {
             this.friendStepRankDayResponse = friendStepRankDayResponse;
-
+            rankHonor.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getMyranking()));
+            stepNum.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
+            rankRecyclerView.setAdapter(new HonorAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember()));
         }
     }
 }

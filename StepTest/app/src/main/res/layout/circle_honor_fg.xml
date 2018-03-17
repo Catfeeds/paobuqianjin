@@ -166,9 +166,10 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:layout_marginBottom="5dp"
             android:layout_width="wrap_content"
             android:layout_height="45dp"
-            android:layout_below="@+id/rank_master_span"
+            android:layout_alignBottom="@+id/bg"
             android:layout_centerHorizontal="true">
 
             <TextView

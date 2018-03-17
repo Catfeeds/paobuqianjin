@@ -169,7 +169,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
 
             long endTime = taskRecDetailResponse.getData().getActivity_end_time();
             String end_timeStr = DateTimeUtil.formatDateTime(endTime * 1000);
-            String dateStartStr = end_timeStr.replace("-", "/");
+            String dateStartStr = start_timeStr.replace("-", "/");
             String dateEndStr = end_timeStr.replace("-", "/");
             stepTarget.setText("开始时间: " + dateStartStr);
             targetMoneys.setText("结束时间:" + dateEndStr);

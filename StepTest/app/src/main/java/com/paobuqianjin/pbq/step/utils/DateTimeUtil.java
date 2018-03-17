@@ -337,6 +337,17 @@ public final class DateTimeUtil {
         return format.format(Calendar.getInstance().getTime());
     }
 
+    @SuppressLint("SimpleDateFormat")
+    public static String getLocalTime() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(calendar.YEAR);
+        int month = (calendar.get(Calendar.MONTH) + 1);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        String systemTime = year + "年" + month + "月" + day + "日";
+        return systemTime;
+    }
+
     /**
      * 当前时间 如: 10:37
      */

@@ -96,7 +96,7 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
         mFragments = new Fragment[]{allTaskFragment, unFinishTaskFragment, finishedTaskFragment};
         getActivity().getSupportFragmentManager().beginTransaction()
                 .add(R.id.container_task, allTaskFragment)
-                .add(R.id.container_task,unFinishTaskFragment)
+                .add(R.id.container_task, unFinishTaskFragment)
                 .add(R.id.container_task, finishedTaskFragment)
                 .show(allTaskFragment)
                 .hide(unFinishTaskFragment)
@@ -198,6 +198,7 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
         if (myRecvTaskRecordResponse.getError() == 0) {
             for (int i = 0; i < myRecvTaskRecordResponse.getData().getData().size(); i++) {
                 if (myRecvTaskRecordResponse.getData().getData().get(i).getIs_receive() == 1) {
+                    LocalLog.d(TAG, "已接任务");
                     if (myRecvTaskRecordResponse.getData().getData().get(i).getIs_finished() == 0) {
                         if (doingTaskList == null) {
                             doingTaskList = new ArrayList<>();
@@ -212,6 +213,14 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
                         } else {
                             finishTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
                         }
+                    }
+                } else if (myRecvTaskRecordResponse.getData().getData().get(i).getIs_receive() == 0) {
+                    LocalLog.d(TAG, "未接任务");
+                    if (finishTaskList == null) {
+                        finishTaskList = new ArrayList<>();
+                        finishTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
+                    } else {
+                        finishTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
                     }
                 }
                 if (allTaskList == null) {

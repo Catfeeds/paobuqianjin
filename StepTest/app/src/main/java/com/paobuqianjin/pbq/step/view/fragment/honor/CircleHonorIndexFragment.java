@@ -27,7 +27,6 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
     private final static String TAG = CircleHonorFragment.class.getSimpleName();
     @Bind(R.id.index_pager)
     ViewPager indexPager;
-    ImageViewPagerAdapter adapter;
     List<View> mView = new ArrayList<>();
     private ViewGroup container;
 

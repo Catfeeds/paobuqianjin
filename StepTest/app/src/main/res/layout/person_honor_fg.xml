@@ -12,6 +12,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="56dp">
 
+            <TextView
+                android:id="@+id/time_month_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="2018年1月6日"
+                android:textColor="@color/color_f8"
+                android:textSize="14dp" />
+
             <FrameLayout
                 android:id="@+id/bg"
                 android:layout_width="328dp"
@@ -69,9 +79,8 @@
                     <TextView
                         android:id="@+id/step_num"
                         android:layout_width="wrap_content"
-
                         android:layout_height="wrap_content"
-                        android:text="10086"
+                        android:text=""
                         android:textColor="@color/color_f8"
                         android:textSize="36dp" />
 
@@ -109,7 +118,8 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
-                android:layout_below="@+id/rank_master_span"
+                android:layout_marginBottom="5dp"
+                android:layout_alignBottom="@+id/bg"
                 android:layout_centerHorizontal="true">
 
                 <TextView
