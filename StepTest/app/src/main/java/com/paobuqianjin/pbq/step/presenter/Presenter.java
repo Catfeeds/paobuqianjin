@@ -266,6 +266,10 @@ public final class Presenter {
         engine.getMyHotCircle(page, pagesize);
     }
 
+    public void getAllMyCircle(int page, int pagesize) {
+        engine.getAllMyCircle(page, pagesize);
+    }
+
     //TODO 我加入的圈子
     public void getMyJoinCircle(int page, int pagesize, String keyWord) {
         engine.getMyJoinCircle(page, pagesize, keyWord);
@@ -285,7 +289,7 @@ public final class Presenter {
     }
 
     public void getImage(ImageView view, String urlImg) {
-        if (urlImg.equals("")) {
+        if ("".equals(urlImg)) {
             return;
         }
         engine.getImage(view, urlImg);
@@ -310,6 +314,10 @@ public final class Presenter {
 
     public void getCircleStepRank(int circleId) {
         engine.getCircleStepRank(circleId, 1, 10);
+    }
+
+    public void getUserCircleRank(int circleId) {
+        engine.getUserCircleRank(circleId);
     }
 
     public void getCircleRechargeRand(int circleId) {

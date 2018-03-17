@@ -48,6 +48,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashRecordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
+import com.paobuqianjin.pbq.step.presenter.im.DanCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
@@ -165,6 +166,7 @@ public final class Engine {
     private AddDeleteFollowInterface addDeleteFollowInterface;
     private QueryRedPkgInterface queryRedPkgInterface;
     private FriendHonorInterface friendHonorInterface;
+    private DanCircleInterface danCircleInterface;
 
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
@@ -975,6 +977,15 @@ public final class Engine {
                 .execute(new NetStringCallBack(uiStepAndLoveRankInterface, COMMAND_STEP_RANK));
     }
 
+    public void getUserCircleRank(int circleId) {
+        String url = NetApi.urlUserCircleRank + String.valueOf(getId(mContext)) + "&circleid=" + String.valueOf(circleId);
+        LocalLog.d(TAG, "getUserCircleRank() enter  url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(danCircleInterface,COMMAND_STEP_RANK));
+    }
 
     public void getCircleRechargeRank(int circleId, int page, int pagesize) {
         LocalLog.d(TAG, "充值排行：getCircleRechargeRank() enter");
@@ -1040,6 +1051,18 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_MY_HOT));
+    }
+
+
+    public void getAllMyCircle(int page, int pagesize) {
+        String url = NetApi.urlCircle + "?action=my" + "&userid=" + String.valueOf(engine.getId(mContext))
+                + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        LocalLog.d(TAG, "getAllMyCircle() url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(danCircleInterface, COMMAND_GET_MY_HOT));
     }
 
     public void getCircleChoice(int page, int pagesize) {
@@ -1358,7 +1381,7 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(friendHonorInterface,COMMAND_FRIEND_HONOR));
+                .execute(new NetStringCallBack(friendHonorInterface, COMMAND_FRIEND_HONOR));
     }
 
 
@@ -1814,6 +1837,8 @@ public final class Engine {
             queryRedPkgInterface = (QueryRedPkgInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof FriendHonorInterface) {
             friendHonorInterface = (FriendHonorInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DanCircleInterface) {
+            danCircleInterface = (DanCircleInterface) uiCallBackInterface;
         }
     }
 
@@ -1903,6 +1928,8 @@ public final class Engine {
             queryRedPkgInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof FriendHonorInterface) {
             friendHonorInterface = (FriendHonorInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DanCircleInterface) {
+            danCircleInterface = null;
         }
     }
 }

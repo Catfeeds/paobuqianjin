@@ -65,9 +65,12 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdap
             String reply = "回复";
             String content = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getContent();
             int[] emj = context.getResources().getIntArray(R.array.emjio_list);
-            for (int i = 0; i < emj.length; i++) {
-                content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+            if(content != null){
+                for (int i = 0; i < emj.length; i++) {
+                    content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                }
             }
+
             SpannableStringBuilder style = new SpannableStringBuilder(nameA + reply + nameB + ":" + content);
             style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), 0, nameA.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), nameA.length(), (nameA + reply).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

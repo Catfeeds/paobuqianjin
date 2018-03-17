@@ -81,7 +81,9 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
         stepDes = (TextView) viewRoot.findViewById(R.id.step_des);
         rankRecyclerView = (RecyclerView) viewRoot.findViewById(R.id.rank_recycler_view);
         timeMonthDay = (TextView) viewRoot.findViewById(R.id.time_month_day);
-        timeMonthDay.setText(DateTimeUtil.getLocalTime());
+        String dateTime = DateTimeUtil.getLocalTime();
+        LocalLog.d(TAG, "dateTime = " + dateTime);
+        timeMonthDay.setText(dateTime);
         layoutManager = new LinearLayoutManager(getContext());
         rankRecyclerView.setLayoutManager(layoutManager);
         Presenter.getInstance(getContext()).getFriendHonor(1, 10);
@@ -96,12 +98,14 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
 
     @Override
     public void response(FriendStepRankDayResponse friendStepRankDayResponse) {
-        LocalLog.d(TAG, "FriendStepRankDayResponse() enter  " + friendStepRankDayResponse.toString() );
+        LocalLog.d(TAG, "FriendStepRankDayResponse() enter  " + friendStepRankDayResponse.toString());
         if (friendStepRankDayResponse.getError() == 0) {
             this.friendStepRankDayResponse = friendStepRankDayResponse;
-            rankHonor.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getMyranking()));
-            stepNum.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
-            rankRecyclerView.setAdapter(new HonorAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember()));
+            if (rankHonor != null && stepNum != null && rankRecyclerView != null) {
+                rankHonor.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getMyranking()));
+                stepNum.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
+                rankRecyclerView.setAdapter(new HonorAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember()));
+            }
         }
     }
 }

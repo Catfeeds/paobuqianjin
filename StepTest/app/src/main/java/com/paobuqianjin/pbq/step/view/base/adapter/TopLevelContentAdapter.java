@@ -69,9 +69,12 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
             String content = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getContent();
             LocalLog.d(TAG, "content = " + content);
             int[] emj = context.getResources().getIntArray(R.array.emjio_list);
-            for (int i = 0; i < emj.length; i++) {
-                content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+            if (content != null) {
+                for (int i = 0; i < emj.length; i++) {
+                    content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                }
             }
+
             holder.userContentRanka.setText(content);
 
             if (((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild() != null) {

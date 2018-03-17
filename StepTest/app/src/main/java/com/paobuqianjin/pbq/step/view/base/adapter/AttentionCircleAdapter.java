@@ -138,9 +138,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                 String content = data.get(position).getDynamic();
                 LocalLog.d(TAG, "content = " + content);
-                for (int i = 0; i < emj.length; i++) {
-                    content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                if (content != null) {
+                    for (int i = 0; i < emj.length; i++) {
+                        content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                    }
                 }
+
                 ((OneOrZeroViewHodler) holder).dynamicContentText.setText(content);
                 ((OneOrZeroViewHodler) holder).dynamicUserName.setText(data.get(position).getNickname());
                 ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getCity());
@@ -159,9 +162,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     if (data.get(position).getOne_comment().getNickname() != null) {
                         String contentL = data.get(position).getOne_comment().getContent();
                         LocalLog.d(TAG, "content = " + contentL);
-                        for (int i = 0; i < emj.length; i++) {
-                            content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                        if (contentL != null) {
+                            for (int i = 0; i < emj.length; i++) {
+                                content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                            }
                         }
+
                         String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
                         SpannableString spannableString = new SpannableString(replyStr);
                         ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
@@ -177,8 +183,10 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                 String content = data.get(position).getDynamic();
                 LocalLog.d(TAG, "content = " + content);
-                for (int i = 0; i < emj.length; i++) {
-                    content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                if (content != null) {
+                    for (int i = 0; i < emj.length; i++) {
+                        content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                    }
                 }
                 ((OneOrZeroViewHodler) holder).dynamicContentText.setText(content);
                 ((OneOrZeroViewHodler) holder).dynamicUserName.setText(data.get(position).getNickname());
@@ -196,9 +204,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     if (data.get(position).getOne_comment().getNickname() != null) {
                         String contentL = data.get(position).getOne_comment().getContent();
                         LocalLog.d(TAG, "content = " + contentL);
-                        for (int i = 0; i < emj.length; i++) {
-                            contentL = contentL.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                        if (contentL != null) {
+                            for (int i = 0; i < emj.length; i++) {
+                                contentL = contentL.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                            }
                         }
+
                         String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
                         SpannableString spannableString = new SpannableString(replyStr);
                         ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
@@ -217,9 +228,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar());
             String content = data.get(position).getDynamic();
             LocalLog.d(TAG, "content = " + content);
-            for (int i = 0; i < emj.length; i++) {
-                content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+            if (content != null) {
+                for (int i = 0; i < emj.length; i++) {
+                    content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                }
             }
+
             ((TwoPicViewHolder) holder).dynamicContentText.setText(content);
             ((TwoPicViewHolder) holder).dynamicUserName.setText(data.get(position).getNickname());
             ((TwoPicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getCity());
@@ -236,9 +250,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 if (data.get(position).getOne_comment().getNickname() != null) {
                     String contentL = data.get(position).getOne_comment().getContent();
                     LocalLog.d(TAG, "content = " + contentL);
-                    for (int i = 0; i < emj.length; i++) {
-                        contentL = contentL.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                    if (contentL != null) {
+                        for (int i = 0; i < emj.length; i++) {
+                            contentL = contentL.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                        }
                     }
+
                     String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
                     SpannableString spannableString = new SpannableString(replyStr);
                     ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
@@ -271,9 +288,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 if (data.get(position).getOne_comment().getNickname() != null) {
                     String contentL = data.get(position).getOne_comment().getContent();
                     LocalLog.d(TAG, "content = " + contentL);
-                    for (int i = 0; i < emj.length; i++) {
-                        contentL = contentL.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                    if (contentL != null) {
+                        for (int i = 0; i < emj.length; i++) {
+                            contentL = contentL.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                        }
                     }
+
                     String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
                     SpannableString spannableString = new SpannableString(replyStr);
                     ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));

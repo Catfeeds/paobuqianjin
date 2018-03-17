@@ -12,15 +12,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="56dp">
 
-            <TextView
-                android:id="@+id/time_month_day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="2018年1月6日"
-                android:textColor="@color/color_f8"
-                android:textSize="14dp" />
+
 
             <FrameLayout
                 android:id="@+id/bg"
@@ -34,7 +26,15 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/bg_honor" />
             </FrameLayout>
-
+            <TextView
+                android:id="@+id/time_month_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:text="2018年1月6日"
+                android:textColor="@color/color_f8"
+                android:textSize="14dp" />
             <RelativeLayout
                 android:id="@+id/rank_data_span"
                 android:layout_width="match_parent"

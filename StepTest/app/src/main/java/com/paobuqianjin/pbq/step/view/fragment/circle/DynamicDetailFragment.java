@@ -356,9 +356,13 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
             int[] emj = getContext().getResources().getIntArray(R.array.emjio_list);
             String content = dynamicIdDetailResponse.getData().getDynamic();
-            for (int i = 0; i < emj.length; i++) {
-                content = content.replace(Utils.getEmojiStringByUnicode(emj[i]), "[0x" + numToHex8(emj[i]) + "]");
+
+            if (content != null) {
+                for (int i = 0; i < emj.length; i++) {
+                    content = content.replace(Utils.getEmojiStringByUnicode(emj[i]), "[0x" + numToHex8(emj[i]) + "]");
+                }
             }
+
             dynamicContentText.setText(content);
             if (dynamicIdDetailResponse.getData().getCity() != null && !dynamicIdDetailResponse.getData().getCity().equals("")) {
                 dynamicLocationCity.setText(dynamicIdDetailResponse.getData().getCity());
@@ -543,10 +547,13 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 editText.removeTextChangedListener(editTextChangeListener);
                 LocalLog.d(TAG, "content = " + content);
                 int[] emj = getContext().getResources().getIntArray(R.array.emjio_list);
-                for (int i = 0; i < emj.length; i++) {
-                    content = content.replace(Utils.getEmojiStringByUnicode(emj[i]), "[0x" + numToHex8(emj[i]) + "]");
+                if (content != null) {
+                    for (int i = 0; i < emj.length; i++) {
+                        content = content.replace(Utils.getEmojiStringByUnicode(emj[i]), "[0x" + numToHex8(emj[i]) + "]");
+                    }
                 }
-                if (!content.equals("")) {
+
+                if (content != null && !content.equals("")) {
                     postDynamicContentParam.setContent(content).setUserid(Presenter.getInstance(getContext()).getId());
                     Presenter.getInstance(getContext()).postContent(postDynamicContentParam);
                 }

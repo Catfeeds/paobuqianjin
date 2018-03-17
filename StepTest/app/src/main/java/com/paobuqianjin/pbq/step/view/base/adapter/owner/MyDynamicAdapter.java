@@ -96,10 +96,12 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
             } else {
                 String content = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic();
                 LocalLog.d(TAG, "content = " + content);
-
-                for (int i = 0; i < emj.length; i++) {
-                    content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                if (content != null) {
+                    for (int i = 0; i < emj.length; i++) {
+                        content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                    }
                 }
+
                 holder.dynamicContentText.setText(content);
             }
             int likes = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getVote();
@@ -117,10 +119,12 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 holder.contentNumbers.setText(String.valueOf(content));
                 String firstContentDes = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getOne_comment().getNickname() + ":";
                 String firstContentText = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getOne_comment().getContent();
-
-                for (int i = 0; i < emj.length; i++) {
-                    firstContentText = firstContentText.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                if(firstContentText != null){
+                    for (int i = 0; i < emj.length; i++) {
+                        firstContentText = firstContentText.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                    }
                 }
+
                 LocalLog.d(TAG, "firstContentText = " + firstContentText);
                 holder.dynamicContentText.setText(firstContentText);
                 SpannableStringBuilder style = new SpannableStringBuilder(firstContentDes + firstContentText);

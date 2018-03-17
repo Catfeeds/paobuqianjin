@@ -12,6 +12,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
@@ -73,6 +74,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashRecordInterface;
+import com.paobuqianjin.pbq.step.presenter.im.DanCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
@@ -614,6 +616,14 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_FRIEND_HONOR) {
                 FriendStepRankDayResponse friendStepRankDayResponse = new Gson().fromJson(s, FriendStepRankDayResponse.class);
                 ((FriendHonorInterface) callBackInterface).response(friendStepRankDayResponse);
+            }
+        } else if (callBackInterface != null && callBackInterface instanceof DanCircleInterface) {
+            if (command == Engine.COMMAND_GET_MY_HOT) {
+                MyHotCircleResponse myHotCircleResponse = new Gson().fromJson(s, MyHotCircleResponse.class);
+                ((DanCircleInterface) callBackInterface).response(myHotCircleResponse);
+            } else if (command == Engine.COMMAND_STEP_RANK) {
+                CircleStepRankResponse circleStepRankResponse = new Gson().fromJson(s, CircleStepRankResponse.class);
+                ((DanCircleInterface) callBackInterface).response(circleStepRankResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

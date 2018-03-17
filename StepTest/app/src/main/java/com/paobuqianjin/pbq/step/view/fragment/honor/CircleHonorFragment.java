@@ -22,7 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by pbq on 2018/1/9.
  */
 
-public class CircleHonorFragment extends BaseFragment implements DanCircleInterface {
+public class CircleHonorFragment extends BaseFragment{
     @Bind(R.id.circle_bg)
     ImageView circleBg;
     @Bind(R.id.bg)

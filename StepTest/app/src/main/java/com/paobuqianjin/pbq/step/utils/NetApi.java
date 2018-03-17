@@ -10,7 +10,7 @@ public class NetApi {
     获取精选圈子--地址：http://119.29.10.64/v1/Circle/?action=choice&userid=1
     获取我加入的圈子--地址：http://119.29.10.64/v1/Circle/?action=join&userid=1
     获取我创建的圈子--地址：http://119.29.10.64/v1/Circle/?action=create&userid=1*/
-    public final static String url ="http://119.29.10.64/" ;
+    public final static String url = "http://119.29.10.64/";
     public final static String urlCircle = "http://119.29.10.64/v1/Circle";
     public final static String urlCircleRank = "http://119.29.10.64/v1/Circle/getRank";
     //TODO 圈子类型接口
@@ -122,6 +122,7 @@ public class NetApi {
     public final static String urlUserLevel = "http://119.29.10.64/v1/userlevel";
     //TODO 邀请好友接口
     public final static String urlInvite = "http://119.29.10.64/v1/userinviter";
-
+    //TODO 用户在圈子中的排名 http://119.29.10.64/v1/Circle/getUserCircleRank?userid=30&circleid=100302
+    public final static String urlUserCircleRank = "http://119.29.10.64/v1/Circle/getUserCircleRank?userid=";
 
 }

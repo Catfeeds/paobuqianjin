@@ -34,6 +34,17 @@
             android:textColor="@color/color_f8"
             android:textSize="14dp" />
 
+        <TextView
+            android:id="@+id/circle_index"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/rank_circle"
+            android:layout_alignTop="@+id/rank_circle"
+            android:layout_centerHorizontal="true"
+            android:text="2/20"
+            android:textColor="@color/color_f8"
+            android:textSize="14dp" />
+
         <RelativeLayout
             android:id="@+id/rank_data_span"
             android:layout_width="match_parent"
@@ -134,6 +145,7 @@
                         android:src="@drawable/default_head_ico" />
 
                     <TextView
+                        android:id="@+id/no_1_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/circle_logo"
@@ -166,11 +178,12 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_marginBottom="5dp"
+            android:id="@+id/more_span"
             android:layout_width="wrap_content"
             android:layout_height="45dp"
             android:layout_alignBottom="@+id/bg"
-            android:layout_centerHorizontal="true">
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp">
 
             <TextView
                 android:id="@+id/rank_detail_des"
