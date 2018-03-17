@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayResponse;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -20,7 +21,7 @@ import butterknife.OnClick;
  * Created by pbq on 2018/1/19.
  */
 
-public class FriendStepsDanFragment extends BaseFragment{
+public class FriendStepsDanFragment extends BaseFragment implements FriendHonorInterface{
 
     @Bind(R.id.bar_title)
     TextView barTitle;
@@ -50,4 +51,8 @@ public class FriendStepsDanFragment extends BaseFragment{
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void response(FriendStepRankDayResponse friendStepRankDayResponse) {
+
+    }
 }

@@ -7,10 +7,11 @@ import java.util.List;
  */
 
 public class CircleStepRankResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"id":1,"wx_openid":"","qq_openid":"","mobile":"18588278880","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额","levelid":3,"sex":0,"birthyear":2018,"birthmonth":2,"birthday":26,"height":166,"weight":120,"type":1,"province":"安徽省","city":"安庆市","balance":"68.07","target_step":10000,"credit":60,"status":0,"is_perfect":1,"create_time":1512699325,"delete_time":null,"circle":[{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":13357},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":9473},{"userid":61,"nickname":"俊","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","step_number":6000},{"userid":67,"nickname":"rm_13828873978","avatar":"","step_number":39}],"step_number":13357,"rank":1}
+     * data : {"id":1,"wx_openid":"","qq_openid":"","mobile":"18588278880","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额","levelid":3,"sex":0,"birthyear":2018,"birthmonth":2,"birthday":26,"height":166,"weight":120,"type":1,"province":"安徽省","city":"安庆市","balance":"68.07","target_step":10000,"credit":60,"status":0,"is_perfect":1,"create_time":1512699325,"delete_time":null,"circleid":100302,"circle":[{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":13360},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":9474},{"userid":61,"nickname":"俊","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","step_number":6000},{"userid":67,"nickname":"rm_13828873978","avatar":"","step_number":39}],"step_number":13360,"rank":1}
      */
 
     private int error;
@@ -75,8 +76,9 @@ public class CircleStepRankResponse {
          * is_perfect : 1
          * create_time : 1512699325
          * delete_time : null
-         * circle : [{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":13357},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":9473},{"userid":61,"nickname":"俊","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","step_number":6000},{"userid":67,"nickname":"rm_13828873978","avatar":"","step_number":39}]
-         * step_number : 13357
+         * circleid : 100302
+         * circle : [{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":13360},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":9474},{"userid":61,"nickname":"俊","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","step_number":6000},{"userid":67,"nickname":"rm_13828873978","avatar":"","step_number":39}]
+         * step_number : 13360
          * rank : 1
          */
 
@@ -103,6 +105,7 @@ public class CircleStepRankResponse {
         private int is_perfect;
         private int create_time;
         private Object delete_time;
+        private int circleid;
         private int step_number;
         private int rank;
         private List<CircleBean> circle;
@@ -291,6 +294,14 @@ public class CircleStepRankResponse {
             this.delete_time = delete_time;
         }
 
+        public int getCircleid() {
+            return circleid;
+        }
+
+        public void setCircleid(int circleid) {
+            this.circleid = circleid;
+        }
+
         public int getStep_number() {
             return step_number;
         }
@@ -341,6 +352,7 @@ public class CircleStepRankResponse {
                     ", is_perfect=" + is_perfect +
                     ", create_time=" + create_time +
                     ", delete_time=" + delete_time +
+                    ", circleid=" + circleid +
                     ", step_number=" + step_number +
                     ", rank=" + rank +
                     ", circle=" + circle +
@@ -352,7 +364,7 @@ public class CircleStepRankResponse {
              * userid : 30
              * nickname : 黄钦平
              * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
-             * step_number : 13357
+             * step_number : 13360
              */
 
             private int userid;

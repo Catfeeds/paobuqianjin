@@ -108,7 +108,7 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
     }
 
     private void load(CircleStepRankResponse circleStepRankResponse) {
-        View circle = LayoutInflater.from(getContext()).inflate(R.layout.circle_honor_fg, container, false);
+        final View circle = LayoutInflater.from(getContext()).inflate(R.layout.circle_honor_fg, container, false);
         TextView rankHonor = (TextView) circle.findViewById(R.id.rank_honor);
         rankHonor.setText(String.valueOf(circleStepRankResponse.getData().getRank()));
         TextView stepNum = (TextView) circle.findViewById(R.id.step_num);
@@ -123,11 +123,13 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
         rankRecyclerView.setAdapter(new HonorAdapter(getContext(), circleStepRankResponse.getData().getCircle()));
         RelativeLayout relativeLayout = (RelativeLayout) circle.findViewById(R.id.more_span);
         TextView circleIndex = (TextView) circle.findViewById(R.id.circle_index);
-
+        relativeLayout.setTag(circleStepRankResponse.getData().getCircleid());
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LocalLog.d(TAG, "排行榜详情");
+                int circleId = (int) view.getTag();
+                LocalLog.d(TAG, "排行榜详情 circleId = " + circleId);
+
             }
         });
         mView.add(circle);

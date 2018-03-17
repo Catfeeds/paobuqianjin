@@ -17,19 +17,20 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.FriendStepDanActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by pbq on 2018/1/9.
  */
 
 public class PersonHonorFragment extends BaseFragment implements FriendHonorInterface {
+    private final static String TAG = PersonHonorFragment.class.getSimpleName();
     @Bind(R.id.bg)
     FrameLayout bg;
     @Bind(R.id.rank_honor)
@@ -87,6 +88,13 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
         layoutManager = new LinearLayoutManager(getContext());
         rankRecyclerView.setLayoutManager(layoutManager);
         Presenter.getInstance(getContext()).getFriendHonor(1, 10);
+        rankMasterSpan = (RelativeLayout) viewRoot.findViewById(R.id.rank_master_span);
+        rankDataSpan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(FriendStepDanActivity.class, null);
+            }
+        });
     }
 
     @Override
