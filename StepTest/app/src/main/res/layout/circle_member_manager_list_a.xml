@@ -81,8 +81,7 @@
                         android:stateListAnimator="@null"
                         android:text="修改昵称"
                         android:textColor="@color/color_f8"
-                        android:textSize="14dp"
-                        android:visibility="gone" />
+                        android:textSize="14dp" />
 
 
                 </RelativeLayout>

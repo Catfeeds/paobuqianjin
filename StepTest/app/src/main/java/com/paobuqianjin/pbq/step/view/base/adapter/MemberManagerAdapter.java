@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,16 +10,20 @@ import android.view.ViewGroup;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.fragment.circle.CircleMemberManagerFragment;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import butterknife.Bind;
 
 /**
  * Created by pbq on 2017/12/18.
  */
 
-public class MemberManagerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MemberManagerAdapter extends RecyclerView.Adapter<MemberManagerAdapter.MemberViewHolder> {
     private final static String TAG = MemberManagerAdapter.class.getSimpleName();
+    @Bind(R.id.member_list_recycler)
+    RecyclerView memberListRecycler;
     private Context mContext;
     private int defaultValue = 10;
     private int spanType = 0;
@@ -34,6 +39,7 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<RecyclerView.View
     private final static int TYPE_NORMAL_MEM_DEFAULT = 3;
 
     private ArrayList<CircleMemberResponse.DataBeanX.DataBean> mData;
+    private  CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface;
 
     private ArrayList toOneList(ArrayList mainAdmin, ArrayList admin) {
         ArrayList adminList = new ArrayList();
@@ -50,15 +56,16 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<RecyclerView.View
         return adminList;
     }
 
-    public MemberManagerAdapter(Context context, ArrayList mainAdmin, ArrayList admin) {
+    public MemberManagerAdapter(Context context, ArrayList mainAdmin, ArrayList admin,CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
         mContext = context;
         mData = toOneList(mainAdmin, admin);
-
+        this.opCallBackInterface = opCallBackInterface;
     }
 
-    public MemberManagerAdapter(Context context, ArrayList memberNormal) {
+    public MemberManagerAdapter(Context context, ArrayList memberNormal,CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
         mContext = context;
         mData = memberNormal;
+        this.opCallBackInterface = opCallBackInterface;
     }
 
 /*    public void setDefaultValue(int defaultValue, int spanType) {
@@ -68,35 +75,20 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     //数据与界面进行绑定
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(MemberViewHolder holder, int position) {
+        updateListItem(holder, position);
+    }
 
+    private void updateListItem(MemberViewHolder holder, int position) {
+        holder.memberListRecycler.setLayoutManager(holder.layoutManager);
+/*        holder.layoutManager.scrollToPosition(1);
+        holder.layoutManager.setStackFromEnd(true);*/
+        holder.memberListRecycler.setAdapter(new CircleMemberBarAdapter(mContext, mData.get(position),opCallBackInterface));
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder holder = null;
-        switch (viewType) {
-            case TYPE_MAIN_MEM:
-                LocalLog.d(TAG, "加载主管理员描述！");
-                holder = new MemberMainAdminViewHolder(LayoutInflater.from(mContext).inflate(R.layout.circle_member_manager_list_a,
-                        null, false), viewType);
-                break;
-            case TYPE_OTHER_ADMIN:
-                LocalLog.d(TAG, "加载普通管理员描述");
-                holder = new MemberOtherAdminViewHolder(LayoutInflater.from(mContext).inflate(R.layout.circle_member_manager_list_b,
-                        null, false), viewType);
-                break;
-            case TYPE_NORMAL:
-                LocalLog.d(TAG, "加载普通成员描述");
-                holder = new MemberNoAdminViewHolder(LayoutInflater.from(mContext).inflate(R.layout.circle_member_manager_list_c,
-                        null, false), viewType);
-                break;
-            case TYPE_NORMAL_MEM_DEFAULT:
-                break;
-            default:
-                holder = null;
-        }
-        return holder;
+    public MemberViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new MemberViewHolder(LayoutInflater.from(mContext).inflate(R.layout.circle_member_manager_list_item, parent, false));
     }
 
     @Override
@@ -109,7 +101,24 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<RecyclerView.View
         return size;
     }
 
-    @Override
+    public class MemberViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.member_list_recycler)
+        RecyclerView memberListRecycler;
+        LinearLayoutManager layoutManager;
+
+        public MemberViewHolder(View view) {
+            super(view);
+            initView(view);
+        }
+
+        private void initView(View view) {
+            layoutManager = new LinearLayoutManager(mContext);
+            layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            memberListRecycler = (RecyclerView) view.findViewById(R.id.member_list_recycler);
+        }
+    }
+
+    /*@Override
     public int getItemViewType(int position) {
         LocalLog.d(TAG, "getItemViewType() enter position " + position);
         //TODO 根据[postion]对应的数据流判定数据类型
@@ -137,6 +146,10 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<RecyclerView.View
             super(view);
             this.viewType = viewType;
         }
+
+        private void initView() {
+            
+        }
     }
 
     class MemberOtherAdminViewHolder extends RecyclerView.ViewHolder {
@@ -145,6 +158,10 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<RecyclerView.View
         public MemberOtherAdminViewHolder(View view, int viewType) {
             super(view);
             this.viewType = viewType;
+        }
+
+        private void initView() {
+
         }
     }
 
@@ -155,5 +172,9 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<RecyclerView.View
             super(view);
             this.viewType = viewType;
         }
-    }
+
+        private void initView() {
+
+        }
+    }*/
 }

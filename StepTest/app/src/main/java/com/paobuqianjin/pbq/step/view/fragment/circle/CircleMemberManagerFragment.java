@@ -146,13 +146,31 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment {
             if (circleMemberResponse.getError() == 0) {
                 LocalLog.d(TAG, "circleMemberResponse() enter" + circleMemberResponse.toString());
                 ArrayList<CircleMemberResponse.DataBeanX.DataBean>[] data = getAdminList(circleMemberResponse);
-                MemberManagerAdapter adminAdapter = new MemberManagerAdapter(getContext(), data[0], data[1]);
+                MemberManagerAdapter adminAdapter = new MemberManagerAdapter(getContext(), data[0], data[1], opCallBackInterface);
 
                 adminRecyclerView.setAdapter(adminAdapter);
 
-                MemberManagerAdapter normalAdapter = new MemberManagerAdapter(getContext(), data[2]);
+                MemberManagerAdapter normalAdapter = new MemberManagerAdapter(getContext(), data[2], opCallBackInterface);
                 normalRecyclerView.setAdapter(normalAdapter);
             }
+        }
+    };
+
+    public interface OpCallBackInterface {
+        public void opMemberOutInto();
+
+        public void opMemberIntoOut();
+    }
+
+    private OpCallBackInterface opCallBackInterface = new OpCallBackInterface() {
+        @Override
+        public void opMemberOutInto() {
+            LocalLog.d(TAG, "opMemberOutInto() enter");
+        }
+
+        @Override
+        public void opMemberIntoOut() {
+            LocalLog.d(TAG, "opMemberIntoOut() enter");
         }
     };
 
