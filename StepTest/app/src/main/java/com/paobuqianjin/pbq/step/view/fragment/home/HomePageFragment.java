@@ -351,10 +351,13 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
     @Override
     public void responseTodayIncome(IncomeResponse incomeResponse) {
-        LocalLog.d(TAG, "responseTodayIncome() enter " + incomeResponse.toString());
-        String moneyFormat = getContext().getResources().getString(R.string.today_income);
-        String moneyStr = String.format(moneyFormat, incomeResponse.getData().getTotal_amount());
-        todayIncomeNum.setText(moneyStr);
+        if(incomeResponse.getError() == 0){
+            LocalLog.d(TAG, "responseTodayIncome() enter " + incomeResponse.toString());
+            String moneyFormat = getContext().getResources().getString(R.string.today_income);
+            String moneyStr = String.format(moneyFormat, incomeResponse.getData().getTotal_amount());
+            todayIncomeNum.setText(moneyStr);
+        }
+
     }
 
     @Override

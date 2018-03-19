@@ -121,7 +121,12 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
         TextView stepNum = (TextView) circle.findViewById(R.id.step_num);
         stepNum.setText(String.valueOf(circleStepRankResponse.getData().getStep_number()));
         CircleImageView circleLogo = (CircleImageView) circle.findViewById(R.id.circle_logo);
-        Presenter.getInstance(getContext()).getImage(circleLogo, circleStepRankResponse.getData().getCircle().get(0).getAvatar());
+
+        for (int i = 0; i < circleStepRankResponse.getData().getCircle().size(); i++) {
+            if(Presenter.getInstance(getContext()).getId() == circleStepRankResponse.getData().getCircle().get(i).getUserid()){
+                Presenter.getInstance(getContext()).getImage(circleLogo,circleStepRankResponse.getData().getCircle().get(i).getAvatar());
+            }
+        }
         RecyclerView rankRecyclerView = (RecyclerView) circle.findViewById(R.id.rank_recycler_view);
         TextView no1 = (TextView) circle.findViewById(R.id.no_1_name);
         no1.setText(circleStepRankResponse.getData().getCircle().get(0).getNickname());
