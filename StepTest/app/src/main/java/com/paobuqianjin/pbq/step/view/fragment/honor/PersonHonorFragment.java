@@ -31,8 +31,13 @@ import butterknife.ButterKnife;
 
 public class PersonHonorFragment extends BaseFragment implements FriendHonorInterface {
     private final static String TAG = PersonHonorFragment.class.getSimpleName();
+
+    FriendStepRankDayResponse friendStepRankDayResponse;
+    LinearLayoutManager layoutManager;
     @Bind(R.id.bg)
     FrameLayout bg;
+    @Bind(R.id.time_month_day)
+    TextView timeMonthDay;
     @Bind(R.id.rank_honor)
     TextView rankHonor;
     @Bind(R.id.rank_des)
@@ -45,14 +50,10 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
     RelativeLayout rankDataSpan;
     @Bind(R.id.rank_recycler_view)
     RecyclerView rankRecyclerView;
-    @Bind(R.id.rank_master_span)
-    RelativeLayout rankMasterSpan;
     @Bind(R.id.rank_detail_des)
     TextView rankDetailDes;
-    FriendStepRankDayResponse friendStepRankDayResponse;
-    @Bind(R.id.time_month_day)
-    TextView timeMonthDay;
-    LinearLayoutManager layoutManager;
+    @Bind(R.id.rank_master_span)
+    RelativeLayout rankMasterSpan;
 
     @Override
     public void onAttach(Context context) {
@@ -89,12 +90,14 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
         rankRecyclerView.setLayoutManager(layoutManager);
         Presenter.getInstance(getContext()).getFriendHonor(1, 10);
         rankMasterSpan = (RelativeLayout) viewRoot.findViewById(R.id.rank_master_span);
-        rankDataSpan.setOnClickListener(new View.OnClickListener() {
+
+        rankMasterSpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(FriendStepDanActivity.class, null);
             }
         });
+
     }
 
     @Override
@@ -110,7 +113,7 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
         if (friendStepRankDayResponse.getError() == 0) {
             this.friendStepRankDayResponse = friendStepRankDayResponse;
             if (rankHonor != null && stepNum != null && rankRecyclerView != null) {
-                rankHonor.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getMyranking()));
+                rankHonor.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getRanking()));
                 stepNum.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
                 rankRecyclerView.setAdapter(new HonorAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember()));
             }

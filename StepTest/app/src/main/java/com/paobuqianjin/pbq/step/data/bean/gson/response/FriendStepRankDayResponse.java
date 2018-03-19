@@ -10,7 +10,7 @@ public class FriendStepRankDayResponse {
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":4},"data":{"member":[{"userid":61,"nickname":"俊","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","step_number":6000},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":2456},{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":21},{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":21},{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":21}],"mydata":{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":21,"myranking":3}}}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":4},"data":{"member":[{"userid":61,"nickname":"俊","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","step_number":6000},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":2456},{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":21},{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":21},{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":21}],"mydata":{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":21,"rank":3}}}
      */
 
     private int error;
@@ -185,7 +185,7 @@ public class FriendStepRankDayResponse {
                 private String nickname;
                 private String avatar;
                 private int step_number;
-                private int myranking;
+                private int rank;
 
                 public int getUserid() {
                     return userid;
@@ -219,12 +219,12 @@ public class FriendStepRankDayResponse {
                     this.step_number = step_number;
                 }
 
-                public int getMyranking() {
-                    return myranking;
+                public int getRanking() {
+                    return rank;
                 }
 
-                public void setMyranking(int myranking) {
-                    this.myranking = myranking;
+                public void setRanking(int myranking) {
+                    this.rank = myranking;
                 }
 
                 @Override
@@ -234,7 +234,7 @@ public class FriendStepRankDayResponse {
                             ", nickname='" + nickname + '\'' +
                             ", avatar='" + avatar + '\'' +
                             ", step_number=" + step_number +
-                            ", myranking=" + myranking +
+                            ", rank=" + rank +
                             '}';
                 }
             }

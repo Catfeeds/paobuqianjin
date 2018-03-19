@@ -422,6 +422,10 @@ public final class Presenter {
         engine.getFriendHonor(page, pagesize);
     }
 
+    public void getFriendHonorDetail(int page, int pagesize) {
+        engine.getFriendHonorDetail(page, pagesize);
+    }
+
     //TODO
     public void getUserBankCard() {
         engine.getUserBankCard();

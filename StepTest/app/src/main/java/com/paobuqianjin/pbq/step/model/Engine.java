@@ -52,6 +52,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DanCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
@@ -166,6 +167,7 @@ public final class Engine {
     private AddDeleteFollowInterface addDeleteFollowInterface;
     private QueryRedPkgInterface queryRedPkgInterface;
     private FriendHonorInterface friendHonorInterface;
+    private FriendHonorDetailInterface friendHonorDetailInterface;
     private DanCircleInterface danCircleInterface;
 
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
@@ -984,7 +986,7 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(danCircleInterface,COMMAND_STEP_RANK));
+                .execute(new NetStringCallBack(danCircleInterface, COMMAND_STEP_RANK));
     }
 
     public void getCircleRechargeRank(int circleId, int page, int pagesize) {
@@ -1384,6 +1386,16 @@ public final class Engine {
                 .execute(new NetStringCallBack(friendHonorInterface, COMMAND_FRIEND_HONOR));
     }
 
+    public void getFriendHonorDetail(int page, int pagesize) {
+        String url = NetApi.urlUserFriends + "/?userid=" + String.valueOf(getId(mContext)) +
+                "&action=step" + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        LocalLog.d(TAG, "getFriendHonorDetail() enter url" + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(friendHonorDetailInterface, COMMAND_FRIEND_HONOR));
+    }
 
     public void getImage(String fileUrl, final ImageView imageView) {
         LocalLog.d(TAG, "getImage() local");
@@ -1839,6 +1851,8 @@ public final class Engine {
             friendHonorInterface = (FriendHonorInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DanCircleInterface) {
             danCircleInterface = (DanCircleInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof FriendHonorDetailInterface) {
+            friendHonorDetailInterface = (FriendHonorDetailInterface) uiCallBackInterface;
         }
     }
 
@@ -1930,6 +1944,8 @@ public final class Engine {
             friendHonorInterface = (FriendHonorInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DanCircleInterface) {
             danCircleInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DanCircleInterface) {
+            friendHonorDetailInterface = null;
         }
     }
 }

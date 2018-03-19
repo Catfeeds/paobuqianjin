@@ -85,7 +85,7 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
     @Override
     public void response(MyHotCircleResponse myHotCircleResponse) {
         if (myHotCircleResponse.getError() == 0) {
-            pageCount = myHotCircleResponse.getData().getPagenation().getPageSize();
+            pageCount = myHotCircleResponse.getData().getPagenation().getTotalPage();
             totalCircle = myHotCircleResponse.getData().getPagenation().getTotalCount();
             for (int i = 0; i < myHotCircleResponse.getData().getData().size(); i++) {
                 Presenter.getInstance(getContext()).getUserCircleRank(myHotCircleResponse.getData().getData().get(i).getId());

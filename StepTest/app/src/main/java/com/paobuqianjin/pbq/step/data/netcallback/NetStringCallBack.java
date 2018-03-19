@@ -78,6 +78,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DanCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
@@ -624,6 +625,11 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_STEP_RANK) {
                 CircleStepRankResponse circleStepRankResponse = new Gson().fromJson(s, CircleStepRankResponse.class);
                 ((DanCircleInterface) callBackInterface).response(circleStepRankResponse);
+            }
+        } else if (callBackInterface != null && callBackInterface instanceof FriendHonorDetailInterface) {
+            if (command == Engine.COMMAND_FRIEND_HONOR) {
+                FriendStepRankDayResponse friendStepRankDayResponse = new Gson().fromJson(s, FriendStepRankDayResponse.class);
+                ((FriendHonorDetailInterface) callBackInterface).response(friendStepRankDayResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");
