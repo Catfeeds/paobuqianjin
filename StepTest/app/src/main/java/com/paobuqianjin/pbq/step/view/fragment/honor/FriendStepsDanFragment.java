@@ -17,6 +17,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorAdapter;
+import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -118,7 +119,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                     getActivity().finish();
                     break;
                 case R.id.go_down_span:
-                    LocalLog.d(TAG,"弹出查看排行...选择");
+                    LocalLog.d(TAG, "弹出查看排行...选择");
                     break;
             }
         }
@@ -135,7 +136,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     public void response(FriendStepRankDayResponse friendStepRankDayResponse) {
         LocalLog.d(TAG, "FriendStepRankDayResponse() enter" + friendStepRankDayResponse.toString());
         if (friendStepRankDayResponse.getError() == 0) {
-            if (kingHeadIcon != null && kingName != null && yourDan != null && headIconUser != null && userNameRank != null && danDetailRecycler != null) {
+            if (kingHeadIcon != null) {
                 userNameRank.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getNickname()));
                 yourDan.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getRanking()));
                 stepNumMy.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
@@ -144,7 +145,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                     Presenter.getInstance(getContext()).getImage(kingHeadIcon, friendStepRankDayResponse.getData().getData().getMember().get(0).getAvatar());
                     kingName.setText(friendStepRankDayResponse.getData().getData().getMember().get(0).getNickname());
                 }
-                danDetailRecycler.setAdapter(new HonorAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember()));
+                danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember()));
             }
         }
     }

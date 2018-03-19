@@ -320,6 +320,10 @@ public final class Presenter {
         engine.getUserCircleRank(circleId);
     }
 
+    public void getUserCircleRankDetail(int circleId) {
+        engine.getUserCircleRankDetail(circleId);
+    }
+
     public void getCircleRechargeRand(int circleId) {
         engine.getCircleRechargeRank(circleId, 1, 10);
     }

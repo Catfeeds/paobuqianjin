@@ -44,26 +44,27 @@
                 android:textSize="16dp" />
 
             <RelativeLayout
-                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/king_name"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="14dp">
 
                 <TextView
                     android:id="@+id/num_des"
-                    android:text="成员: 12345"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="成员: 12345"
                     android:textColor="@color/color_f8"
                     android:textSize="12dp" />
 
                 <TextView
-                    android:layout_marginLeft="30dp"
-                    android:layout_toEndOf="@+id/num_des"
-                    android:text="人均步数: 30000"
+                    android:id="@+id/circle_target"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_toEndOf="@+id/num_des"
+                    android:text="目标步数: 30000"
                     android:textColor="@color/color_f8"
                     android:textSize="12dp" />
             </RelativeLayout>

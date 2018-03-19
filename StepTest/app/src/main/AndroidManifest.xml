@@ -187,9 +187,12 @@
         <activity
             android:name=".view.activity.FriendStepDanActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme" />
-        <!-- 圈子榜单 -->
-        <activity android:name=".view.activity.CircleStepDanActivity" />
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.ACTION_FRIEND_HONOR"></action>
+                <action android:name="com.paobuqianjin.pbq.ACTION_CIRCLE_HONOR"></action>
+            </intent-filter>
+        </activity>
         <!-- 我的钱包 -->
         <activity
             android:name=".view.activity.MyWalletActivity"

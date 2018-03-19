@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.honor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,6 +55,7 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
     TextView rankDetailDes;
     @Bind(R.id.rank_master_span)
     RelativeLayout rankMasterSpan;
+    private final static String ACTION_FRIEND_HONOR = "com.paobuqianjin.pbq.ACTION_FRIEND_HONOR";
 
     @Override
     public void onAttach(Context context) {
@@ -94,7 +96,10 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
         rankMasterSpan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(FriendStepDanActivity.class, null);
+                Intent intent = new Intent();
+                intent.setAction(ACTION_FRIEND_HONOR);
+                intent.setClass(getContext(), FriendStepDanActivity.class);
+                startActivity(intent);
             }
         });
 

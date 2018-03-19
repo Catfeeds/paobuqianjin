@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.honor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -20,6 +21,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DanCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.FriendStepDanActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -45,6 +47,7 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
     private int pageIndex = 1, pageCount = 0;
     private int totalCircle = 0;
     private PagerAdapter adapter;
+    private final static String ACTION_CIRCLE_HONOR = "com.paobuqianjin.pbq.ACTION_CIRCLE_HONOR";
 
     @Override
     protected int getLayoutResId() {
@@ -108,6 +111,10 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
     }
 
     private void load(CircleStepRankResponse circleStepRankResponse) {
+        //TODO 所有异步更新都要判断界面UI是否存在
+        if (getContext() == null) {
+            return;
+        }
         final View circle = LayoutInflater.from(getContext()).inflate(R.layout.circle_honor_fg, container, false);
         TextView rankHonor = (TextView) circle.findViewById(R.id.rank_honor);
         rankHonor.setText(String.valueOf(circleStepRankResponse.getData().getRank()));
@@ -129,6 +136,11 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
             public void onClick(View view) {
                 int circleId = (int) view.getTag();
                 LocalLog.d(TAG, "排行榜详情 circleId = " + circleId);
+                Intent intent = new Intent();
+                intent.setAction(ACTION_CIRCLE_HONOR);
+                intent.putExtra("circleid", circleId);
+                intent.setClass(getContext(), FriendStepDanActivity.class);
+                startActivity(intent);
 
             }
         });

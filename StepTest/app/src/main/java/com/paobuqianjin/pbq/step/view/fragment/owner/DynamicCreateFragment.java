@@ -235,6 +235,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                 break;
             case R.id.location_span:
                 LocalLog.d(TAG, "开启定位");
+
                 break;
         }
     }
@@ -344,8 +345,14 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
             String images = "";
             for (int i = 0; i < s.size(); i++) {
                 LocalLog.d(TAG, "s[" + i + "] =" + s.get(i));
-                images += s.get(i) + ",";
+                if (i == 0) {
+                    images += s.get(i);
+                } else {
+                    images += "," + s.get(i);
+                }
             }
+
+
             netPath = s;
             String content = dynamicContent.getText().toString();
             postDynamicParam.setCity(locationStr.getText().toString())

@@ -25,7 +25,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.HonorAdapterViewHolder> {
     Context context;
     List<?> mData;
-    private static int DEFAULT_COUNT = 3;
 
 
     public HonorDetailAdapter(Context context, List<?> data) {
@@ -46,12 +45,13 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                 holder.rankIcon.setImageResource(R.drawable.honor_second);
             } else if (position == 2) {
                 holder.rankIcon.setImageResource(R.drawable.honor_third);
-            }else {
+            } else {
                 holder.rankNum.setVisibility(View.VISIBLE);
                 holder.rankIcon.setVisibility(View.GONE);
             }
             Presenter.getInstance(context).getImage(holder.headIconUser, ((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar());
             holder.stepNum.setText(String.valueOf(((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getStep_number()));
+            holder.userNameRank.setText(((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getNickname());
         } else if (mData.get(position) instanceof CircleStepRankResponse.DataBean.CircleBean) {
             if (position == 0) {
                 holder.rankIcon.setImageResource(R.drawable.honor_master);
@@ -59,12 +59,13 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                 holder.rankIcon.setImageResource(R.drawable.honor_second);
             } else if (position == 2) {
                 holder.rankIcon.setImageResource(R.drawable.honor_third);
-            }else {
+            } else {
                 holder.rankNum.setVisibility(View.VISIBLE);
                 holder.rankIcon.setVisibility(View.GONE);
             }
             Presenter.getInstance(context).getImage(holder.headIconUser, ((CircleStepRankResponse.DataBean.CircleBean) mData.get(position)).getAvatar());
             holder.stepNum.setText(String.valueOf(((CircleStepRankResponse.DataBean.CircleBean) mData.get(position)).getStep_number()));
+            holder.userNameRank.setText(((CircleStepRankResponse.DataBean.CircleBean) mData.get(position)).getNickname());
         }
     }
 

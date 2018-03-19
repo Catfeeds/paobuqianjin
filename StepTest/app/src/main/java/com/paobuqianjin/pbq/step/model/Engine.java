@@ -46,6 +46,7 @@ import com.paobuqianjin.pbq.step.presenter.im.AllPayOrderInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
+import com.paobuqianjin.pbq.step.presenter.im.CircleStepDetailDanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashRecordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanCircleInterface;
@@ -169,6 +170,7 @@ public final class Engine {
     private FriendHonorInterface friendHonorInterface;
     private FriendHonorDetailInterface friendHonorDetailInterface;
     private DanCircleInterface danCircleInterface;
+    private CircleStepDetailDanInterface circleStepDetailDanInterface;
 
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
@@ -987,6 +989,16 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(danCircleInterface, COMMAND_STEP_RANK));
+    }
+
+    public void getUserCircleRankDetail(int circleId){
+        String url = NetApi.urlUserCircleRank + String.valueOf(getId(mContext)) + "&circleid=" + String.valueOf(circleId);
+        LocalLog.d(TAG, "getUserCircleRankDetail() enter  url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(circleStepDetailDanInterface, COMMAND_STEP_RANK));
     }
 
     public void getCircleRechargeRank(int circleId, int page, int pagesize) {
@@ -1853,6 +1865,8 @@ public final class Engine {
             danCircleInterface = (DanCircleInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof FriendHonorDetailInterface) {
             friendHonorDetailInterface = (FriendHonorDetailInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CircleStepDetailDanInterface) {
+            circleStepDetailDanInterface = (CircleStepDetailDanInterface) uiCallBackInterface;
         }
     }
 
@@ -1946,6 +1960,8 @@ public final class Engine {
             danCircleInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DanCircleInterface) {
             friendHonorDetailInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CircleStepDetailDanInterface) {
+            circleStepDetailDanInterface = null;
         }
     }
 }
