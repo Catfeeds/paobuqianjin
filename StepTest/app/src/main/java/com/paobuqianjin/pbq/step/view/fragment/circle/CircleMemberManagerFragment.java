@@ -23,11 +23,9 @@ import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.MemberManagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -47,9 +45,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment {
     @Bind(R.id.bar_tv_right)
     ImageView barTvRight;
     @Bind(R.id.search_icon)
-    ImageView searchIcon;
-    @Bind(R.id.search_cancel)
-    ImageView searchCancel;
+    RelativeLayout searchIcon;
     @Bind(R.id.search_circle_text)
     EditText searchCircleText;
     @Bind(R.id.admin_title_line)
@@ -64,6 +60,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment {
     BounceScrollView memberSpan;
     @Bind(R.id.delete_member_confim)
     Button deleteMemberConfim;
+
     private RecyclerView adminRecyclerView, normalRecyclerView;
     private LinearLayoutManager adminManager, normalManager;
     private final static String MEMBER_MANANGER_ACTION = "android.intent.action.MAMBER_MANAGER_ACTION";

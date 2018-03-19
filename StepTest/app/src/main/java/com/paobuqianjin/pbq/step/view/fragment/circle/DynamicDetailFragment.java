@@ -382,6 +382,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 supportPeoples.setText(peopleNumStr);
             }
             int imageSize = dynamicIdDetailResponse.getData().getImages().size();
+            LocalLog.d(TAG, "imageSize = " + imageSize);
 
             if (imageSize <= 0) {
                 LocalLog.d(TAG, "动态没有图片");
@@ -420,10 +421,10 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 dots.add(dot1);
                 dots.add(dot2);
                 dots.add(dot3);
+
                 dot1.setVisibility(View.VISIBLE);
                 dot2.setVisibility(View.VISIBLE);
                 dot3.setVisibility(View.VISIBLE);
-
 
                 Mview.add(imageView0);
                 Mview.add(imageView1);
@@ -456,7 +457,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
                 ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
                 ImageView imageViewC = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
-                ImageView imageViewD = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
+                ImageView imageViewD = (ImageView) imageView3.findViewById(R.id.dynamic_pic);
                 dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
                 Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
                 Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));

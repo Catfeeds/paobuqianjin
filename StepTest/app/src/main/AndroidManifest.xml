@@ -78,7 +78,11 @@
         <activity
             android:name=".view.activity.MemberManagerActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme" />
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAMBER_MANAGER_ACTION"></action>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.activity.OwnerCircleActivity"
             android:launchMode="singleTask"
