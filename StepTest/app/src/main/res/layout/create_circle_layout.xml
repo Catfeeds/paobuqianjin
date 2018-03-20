@@ -93,8 +93,8 @@
                     android:background="@null"
                     android:focusable="true"
                     android:gravity="right"
-                    android:inputType="text"
                     android:hint="输入圈子名称"
+                    android:inputType="text"
                     android:lines="1"
                     android:maxLength="32"
                     android:textSize="12dp" />
@@ -342,6 +342,8 @@
                     android:gravity="right"
                     android:hint="请输入每日红包总个数"
                     android:inputType="number"
+                    android:maxLength="8"
+                    android:maxLines="1"
                     android:textColor="@color/color_161727"
                     android:textSize="12dp" />
 

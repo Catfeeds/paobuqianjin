@@ -55,6 +55,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CreateAndJoinCirclesInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PhoneFormatCheckUtils;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
@@ -630,6 +631,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                     @Override
                     public void onAction(List<String> permissions) {
                         toast(R.string.successfully);
+                        LocalLog.d(TAG,"发起定位");
                         Presenter.getInstance(CreateCircleActivity.this).startService(null, LocalBaiduService.class);
                     }
                 }).onDenied(new Action() {
@@ -647,6 +649,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+
     public boolean checkcreateCircleBodyParam() {
         createCircleBodyParam.setUserid(Presenter.getInstance(this).getId());
         createCircleBodyParam.setCity("深圳福田");
@@ -657,7 +660,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         }
         createCircleBodyParam.setMobile(circlePhoneNumEditor.getText().toString());
         if (circlePhoneNumEditor.getText() == null || circlePhoneNumEditor.getText().toString().equals("")) {
-            Toast.makeText(this, "请输入电话", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "请输入正确手机号码", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -670,6 +673,8 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                     || circleMoneyNumEditor.getText().toString().equals("")) {
                 Toast.makeText(this, "请完善红包信息", Toast.LENGTH_SHORT).show();
                 return false;
+            } else {
+
             }
         }
 

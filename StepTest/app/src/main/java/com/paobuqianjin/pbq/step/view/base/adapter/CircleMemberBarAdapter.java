@@ -48,7 +48,11 @@ public class CircleMemberBarAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             Presenter.getInstance(context).getImage(((CircleMemberViewHolder) holder).memberHeadIconInCircle, mData.getAvatar());
             LocalLog.d(TAG, "" + mData.toString());
 
-            ((CircleMemberViewHolder) holder).memberNameInCircle.setText(mData.getNickname());
+            if ("".equals(mData.getCirclenickname())) {
+                ((CircleMemberViewHolder) holder).memberNameInCircle.setText(mData.getNickname());
+            }else {
+                ((CircleMemberViewHolder) holder).memberNameInCircle.setText(mData.getCirclenickname());
+            }
 
             if (mData.getIs_admin() == 2) {
                 ((CircleMemberViewHolder) holder).adminHead.setText("主管理员");
@@ -59,8 +63,8 @@ public class CircleMemberBarAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else if (mData.getIs_admin() == 0) {
             }
         } else if (position == 1) {
-            if(mData.getIs_admin() == 2){
-                
+            if (mData.getIs_admin() == 2) {
+
             }
         }
     }

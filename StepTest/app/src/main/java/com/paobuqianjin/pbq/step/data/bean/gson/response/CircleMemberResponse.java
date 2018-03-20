@@ -15,21 +15,11 @@ public class CircleMemberResponse {
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":2,"totalCount":19},"data":[{"id":6,"user_id":11,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937433836.jpg","nickname":"、干部","is_admin":1},{"id":9,"user_id":13,"avatar":"http://pic.qqtn.com/up/2017-12/15127898947765211.jpg","nickname":"中共中央总书记","is_admin":1},{"id":10,"user_id":14,"avatar":"http://pic.qqtn.com/up/2017-12/2017120910395447428.jpg","nickname":"国务院副总理张高丽","is_admin":2},{"id":11,"user_id":15,"avatar":"http://pic.qqtn.com/up/2017-12/2017120910395412309.jpg","nickname":"中共中央政治局常委栗战书","is_admin":2},{"id":20,"user_id":10,"avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","nickname":"栗战书","is_admin":1},{"id":21,"user_id":9,"avatar":"http://pic.qqtn.com/up/2017-12/15127898933628309.jpg","nickname":"张德江、俞正声、张高丽、栗战书","is_admin":0},{"id":27,"user_id":6,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"","is_admin":0},{"id":29,"user_id":2,"avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","nickname":"狗狗狗","is_admin":0},{"id":32,"user_id":17,"avatar":"http://pic.qqtn.com/up/2017-12/2017120910431781876.jpg","nickname":"","is_admin":0},{"id":33,"user_id":3,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg","nickname":"","is_admin":0}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":4},"data":[{"id":406,"user_id":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","circlenickname":"","is_admin":2},{"id":412,"user_id":61,"nickname":"俊","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","circlenickname":"","is_admin":0},{"id":413,"user_id":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","circlenickname":"","is_admin":0},{"id":465,"user_id":57,"nickname":"周周周","avatar":"https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxXJTVJvRmxPhfS0aNF0pOXn3EdZ96DabUIULlH1E9mUbEZCE98IPEzqTgwD7jtSqfqiaUFV0rIsQ/132","circlenickname":"","is_admin":0}]}
      */
 
     private int error;
     private String message;
-
-    @Override
-    public String toString() {
-        return "CircleMemberResponse{" +
-                "error=" + error +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
-    }
-
     private DataBeanX data;
 
     public int getError() {
@@ -56,10 +46,19 @@ public class CircleMemberResponse {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "CircleMemberResponse{" +
+                "error=" + error +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":2,"totalCount":19}
-         * data : [{"id":6,"user_id":11,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937433836.jpg","nickname":"、干部","is_admin":1},{"id":9,"user_id":13,"avatar":"http://pic.qqtn.com/up/2017-12/15127898947765211.jpg","nickname":"中共中央总书记","is_admin":1},{"id":10,"user_id":14,"avatar":"http://pic.qqtn.com/up/2017-12/2017120910395447428.jpg","nickname":"国务院副总理张高丽","is_admin":2},{"id":11,"user_id":15,"avatar":"http://pic.qqtn.com/up/2017-12/2017120910395412309.jpg","nickname":"中共中央政治局常委栗战书","is_admin":2},{"id":20,"user_id":10,"avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","nickname":"栗战书","is_admin":1},{"id":21,"user_id":9,"avatar":"http://pic.qqtn.com/up/2017-12/15127898933628309.jpg","nickname":"张德江、俞正声、张高丽、栗战书","is_admin":0},{"id":27,"user_id":6,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"","is_admin":0},{"id":29,"user_id":2,"avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","nickname":"狗狗狗","is_admin":0},{"id":32,"user_id":17,"avatar":"http://pic.qqtn.com/up/2017-12/2017120910431781876.jpg","nickname":"","is_admin":0},{"id":33,"user_id":3,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg","nickname":"","is_admin":0}]
+         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":4}
+         * data : [{"id":406,"user_id":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","circlenickname":"","is_admin":2},{"id":412,"user_id":61,"nickname":"俊","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","circlenickname":"","is_admin":0},{"id":413,"user_id":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","circlenickname":"","is_admin":0},{"id":465,"user_id":57,"nickname":"周周周","avatar":"https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxXJTVJvRmxPhfS0aNF0pOXn3EdZ96DabUIULlH1E9mUbEZCE98IPEzqTgwD7jtSqfqiaUFV0rIsQ/132","circlenickname":"","is_admin":0}]
          */
 
         private PagenationBean pagenation;
@@ -93,8 +92,8 @@ public class CircleMemberResponse {
             /**
              * page : 1
              * pageSize : 10
-             * totalPage : 2
-             * totalCount : 19
+             * totalPage : 1
+             * totalCount : 4
              */
 
             private int page;
@@ -147,17 +146,19 @@ public class CircleMemberResponse {
 
         public static class DataBean {
             /**
-             * id : 6
-             * user_id : 11
-             * avatar : http://pic.qqtn.com/up/2017-12/15127898937433836.jpg
-             * nickname : 、干部
-             * is_admin : 1
+             * id : 406
+             * user_id : 30
+             * nickname : 黄钦平
+             * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
+             * circlenickname :
+             * is_admin : 2
              */
 
             private int id;
             private int user_id;
-            private String avatar;
             private String nickname;
+            private String avatar;
+            private String circlenickname;
             private int is_admin;
 
             public int getId() {
@@ -176,6 +177,14 @@ public class CircleMemberResponse {
                 this.user_id = user_id;
             }
 
+            public String getNickname() {
+                return nickname;
+            }
+
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
+            }
+
             public String getAvatar() {
                 return avatar;
             }
@@ -184,12 +193,12 @@ public class CircleMemberResponse {
                 this.avatar = avatar;
             }
 
-            public String getNickname() {
-                return nickname;
+            public String getCirclenickname() {
+                return circlenickname;
             }
 
-            public void setNickname(String nickname) {
-                this.nickname = nickname;
+            public void setCirclenickname(String circlenickname) {
+                this.circlenickname = circlenickname;
             }
 
             public int getIs_admin() {
@@ -205,8 +214,9 @@ public class CircleMemberResponse {
                 return "DataBean{" +
                         "id=" + id +
                         ", user_id=" + user_id +
-                        ", avatar='" + avatar + '\'' +
                         ", nickname='" + nickname + '\'' +
+                        ", avatar='" + avatar + '\'' +
+                        ", circlenickname='" + circlenickname + '\'' +
                         ", is_admin=" + is_admin +
                         '}';
             }

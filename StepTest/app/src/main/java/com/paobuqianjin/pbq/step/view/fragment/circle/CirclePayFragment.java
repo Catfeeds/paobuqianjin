@@ -236,7 +236,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                     wxPayOrderParam.setCircleid(Integer.parseInt(id))
                             .setPayment_type("wx")
                             .setOrder_type(payAction)
-                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(0.01f);
+                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(Float.parseFloat(pay));
                     Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
                 } else {
                     Toast.makeText(getContext(), "其他支付方式暂时未开通,请选择微信", Toast.LENGTH_SHORT).show();

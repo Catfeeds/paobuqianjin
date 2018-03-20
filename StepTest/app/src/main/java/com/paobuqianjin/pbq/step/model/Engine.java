@@ -1759,13 +1759,14 @@ public final class Engine {
                 String city = intent.getStringExtra("city");
                 double la = intent.getDoubleExtra("latitude", 0d);
                 double lb = intent.getDoubleExtra("longitude", 0d);
-                if (releaseDynamicInterface != null) {
-                    releaseDynamicInterface.response(city, la, lb);
-                    return;
-                }
                 if (uiCreateCircleInterface != null) {
                     uiCreateCircleInterface.responseLocation(city, la, lb);
                     return;
+
+                }
+                if (releaseDynamicInterface != null) {
+                    releaseDynamicInterface.response(city, la, lb);
+                    return ;
                 }
                 if (homePageInterface != null) {
                     homePageInterface.responseLocation(city, la, lb);

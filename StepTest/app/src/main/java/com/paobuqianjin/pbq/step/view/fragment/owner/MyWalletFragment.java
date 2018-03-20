@@ -208,28 +208,38 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     @Override
     public void responseAll(AllIncomeResponse allIncomeResponse) {
         LocalLog.d(TAG, " 所有收益 responseAll() enter" + allIncomeResponse.toString());
-        String moneyFormat = getContext().getResources().getString(R.string.total_income);
-        if (allIncomeResponse.getData().getPagenation() != null) {
-            String moneyStr = String.format(moneyFormat, allIncomeResponse.getData().getPagenation().getTotalCount());
-            incomeMoney.setText(moneyStr);
+        if (allIncomeResponse.getError() == 0) {
+            String moneyFormat = getContext().getResources().getString(R.string.total_income);
+            if (allIncomeResponse.getData().getPagenation() != null) {
+                String moneyStr = String.format(moneyFormat, allIncomeResponse.getData().getPagenation().getTotalCount());
+                incomeMoney.setText(moneyStr);
+            }
         }
     }
 
     @Override
     public void responseMonth(IncomeResponse incomeResponse) {
         LocalLog.d(TAG, " 月收益 responseMonth() enter" + incomeResponse.toString());
-        monthIncomeFragment.setData(incomeResponse);
+        if (incomeResponse.getError() == 0) {
+            monthIncomeFragment.setData(incomeResponse);
+        }
+
     }
 
     @Override
     public void responseToday(IncomeResponse incomeResponse) {
         LocalLog.d(TAG, "今天收益 responseToday() enter" + incomeResponse.toString());
-        incomeDes.setText(String.valueOf(incomeResponse.getData().getTotal_amount()));
+        if (incomeResponse.getError() == 0) {
+            incomeDes.setText(String.valueOf(incomeResponse.getData().getTotal_amount()));
+        }
+
     }
 
     @Override
     public void responseYesterday(IncomeResponse yesterdayIncomeResponse) {
         LocalLog.d(TAG, "昨日收益 responseYesterday() enter" + yesterdayIncomeResponse.toString());
-        yesterDayIncomeFragment.setData(yesterdayIncomeResponse);
+        if (yesterdayIncomeResponse.getError() == 0) {
+            yesterDayIncomeFragment.setData(yesterdayIncomeResponse);
+        }
     }
 }
