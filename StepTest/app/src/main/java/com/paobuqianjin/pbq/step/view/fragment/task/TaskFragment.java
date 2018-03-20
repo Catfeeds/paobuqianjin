@@ -216,11 +216,11 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
                     }
                 } else if (myRecvTaskRecordResponse.getData().getData().get(i).getIs_receive() == 0) {
                     LocalLog.d(TAG, "未接任务");
-                    if (finishTaskList == null) {
-                        finishTaskList = new ArrayList<>();
-                        finishTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
+                    if (doingTaskList == null) {
+                        doingTaskList = new ArrayList<>();
+                        doingTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
                     } else {
-                        finishTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
+                        doingTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
                     }
                 }
                 if (allTaskList == null) {

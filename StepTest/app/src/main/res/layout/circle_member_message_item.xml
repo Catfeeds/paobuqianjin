@@ -24,26 +24,27 @@
         android:src="@drawable/logo" />
 
     <TextView
+        android:visibility="visible"
         android:id="@+id/member_name_in_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
         android:layout_toEndOf="@id/member_head_icon_in_circle"
-        android:text="成员名称"
+        android:text=""
         android:textColor="@color/color_161727"
         android:textSize="15dp" />
 
     <TextView
+        android:visibility="visible"
         android:id="@+id/admin_head"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginLeft="20dp"
         android:layout_toEndOf="@+id/member_name_in_circle"
         android:background="@color/color_6c71c4"
-        android:text="管理员"
+        android:text=""
         android:textColor="@color/color_f8"
         android:textSize="12dp" />
 

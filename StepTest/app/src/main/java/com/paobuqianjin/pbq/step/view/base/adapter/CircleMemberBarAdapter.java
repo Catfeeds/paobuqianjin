@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,15 +44,19 @@ public class CircleMemberBarAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     private void updateListItem(RecyclerView.ViewHolder holder, int position) {
-        if (position == 1) {
+        if (position == 0) {
             Presenter.getInstance(context).getImage(((CircleMemberViewHolder) holder).memberHeadIconInCircle, mData.getAvatar());
+            LocalLog.d(TAG, "" + mData.toString());
+
             ((CircleMemberViewHolder) holder).memberNameInCircle.setText(mData.getNickname());
+            
             if (mData.getIs_admin() == 2) {
-
+                ((CircleMemberViewHolder) holder).adminHead.setText("主管理员");
+                ((CircleMemberViewHolder) holder).adminHead.setBackgroundColor(ContextCompat.getColor(context, R.color.color_ffc400));
             } else if (mData.getIs_admin() == 1) {
-
+                ((CircleMemberViewHolder) holder).adminHead.setText("管理员");
+                ((CircleMemberViewHolder) holder).adminHead.setBackgroundColor(ContextCompat.getColor(context, R.color.color_6c71c4));
             } else if (mData.getIs_admin() == 0) {
-
             }
         }
     }
@@ -109,6 +114,7 @@ public class CircleMemberBarAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             memberNameInCircle = (TextView) view.findViewById(R.id.member_name_in_circle);
             circleManagerListId = (RelativeLayout) view.findViewById(R.id.circle_manager_list_id);
             circleManagerListId.setOnLongClickListener(onLongClickListener);
+            adminHead = (TextView) view.findViewById(R.id.admin_head);
         }
 
         View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
