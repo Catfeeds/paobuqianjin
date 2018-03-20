@@ -452,15 +452,19 @@ public class NetStringCallBack extends StringCallback {
             ((NearByInterface) callBackInterface).response(nearByResponse);
         } else if (callBackInterface != null && callBackInterface instanceof UserIncomInterface) {
             if (command == Engine.COMMAND_INCOME_YESTERDAY) {
+                LocalLog.d(TAG,"昨日收益");
                 IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
                 ((UserIncomInterface) callBackInterface).responseYesterday(incomeResponse);
             } else if (command == Engine.COMMAND_INCOME_TODAY) {
+                LocalLog.d(TAG,"今日收益");
                 IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
                 ((UserIncomInterface) callBackInterface).responseToday(incomeResponse);
             } else if (command == Engine.COMMAND_INCOME_MONTH) {
+                LocalLog.d(TAG,"月收益");
                 IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
                 ((UserIncomInterface) callBackInterface).responseMonth(incomeResponse);
             } else if (command == Engine.COMMAND_INCOME_ALL) {
+                LocalLog.d(TAG,"总收益");
                 AllIncomeResponse allIncomeResponse = new Gson().fromJson(s, AllIncomeResponse.class);
                 ((UserIncomInterface) callBackInterface).responseAll(allIncomeResponse);
             }

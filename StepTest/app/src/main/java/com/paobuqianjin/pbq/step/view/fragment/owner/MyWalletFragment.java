@@ -211,7 +211,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         if (allIncomeResponse.getError() == 0) {
             String moneyFormat = getContext().getResources().getString(R.string.total_income);
             if (allIncomeResponse.getData().getPagenation() != null) {
-                String moneyStr = String.format(moneyFormat, allIncomeResponse.getData().getPagenation().getTotalCount());
+                String moneyStr = String.format(moneyFormat, allIncomeResponse.getData().getTotal_amount());
                 incomeMoney.setText(moneyStr);
             }
         }
