@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_800000">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/red_pkg_bg"
+            android:layout_width="304dp"
+            android:layout_height="350dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/un_op_pkg" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignRight="@+id/red_pkg_bg"
+            android:layout_alignTop="@+id/red_pkg_bg"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/cacel" />
+
+        <TextView
+            android:id="@+id/message_red_a"
+            android:layout_alignTop="@+id/red_pkg_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="恭喜您获得"
+            android:textColor="@color/color_f8ce95"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/message_red_b"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/message_red_a"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:text="今日红包"
+            android:textColor="@color/color_f8ce95"
+            android:textSize="18dp" />
+
+        <ImageView
+            android:id="@+id/open_red_pkg"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/message_red_b"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="71dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/op_button" />
+
+        <TextView
+            android:id="@+id/pkg_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/red_pkg_bg"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:text="跑步钱进的红包"
+            android:textColor="@color/color_f8ce95"
+            android:textSize="14dp" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

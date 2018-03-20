@@ -652,7 +652,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
     public boolean checkcreateCircleBodyParam() {
         createCircleBodyParam.setUserid(Presenter.getInstance(this).getId());
-        createCircleBodyParam.setCity("深圳福田");
+        //createCircleBodyParam.setCity("深圳福田");
         createCircleBodyParam.setName(cirNameDesc.getText().toString());
         if (cirNameDesc.getText() == null || cirNameDesc.getText().toString().equals("")) {
             Toast.makeText(this, "请输入圈子名称", Toast.LENGTH_SHORT).show();

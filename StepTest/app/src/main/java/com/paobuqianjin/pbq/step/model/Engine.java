@@ -24,6 +24,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostUserStepParam;
@@ -248,6 +249,7 @@ public final class Engine {
     public final static int COMMAND_QUERY_FOLLOW_STATE = 68;
     public final static int COMMAND_ADD_DELETE_FOLLOW = 69;
     public final static int COMMAND_FRIEND_HONOR = 70;
+    public final static int COMMAND_POST_REV_RED_PKG = 71;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -991,7 +993,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(danCircleInterface, COMMAND_STEP_RANK));
     }
 
-    public void getUserCircleRankDetail(int circleId){
+    public void getUserCircleRankDetail(int circleId) {
         String url = NetApi.urlUserCircleRank + String.valueOf(getId(mContext)) + "&circleid=" + String.valueOf(circleId);
         LocalLog.d(TAG, "getUserCircleRankDetail() enter  url = " + url);
         OkHttpUtils
@@ -1147,6 +1149,18 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, COMMAND_EDIT_CIRCLE));
     }
 
+
+    public void postCircleRedPkg(PostCircleRedPkgParam postCircleRedPkgParam) {
+        String url = NetApi.urlCircle + "/sendRedBag";
+        postCircleRedPkgParam.setUserid(getId(mContext));
+        LocalLog.d(TAG, "postCircleRedPkg() enter url = " + url + " postCircleRedPkgParam = " + postCircleRedPkgParam.paramString());
+        OkHttpUtils
+                .post()
+                .url(url)
+                .params(postCircleRedPkgParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(circleDetailInterface,COMMAND_POST_REV_RED_PKG));
+    }
 
     public void deleteCircle(int circleId) {
         LocalLog.d(TAG, "删除圈子：deleteCircle() enter");
@@ -1766,7 +1780,7 @@ public final class Engine {
                 }
                 if (releaseDynamicInterface != null) {
                     releaseDynamicInterface.response(city, la, lb);
-                    return ;
+                    return;
                 }
                 if (homePageInterface != null) {
                     homePageInterface.responseLocation(city, la, lb);

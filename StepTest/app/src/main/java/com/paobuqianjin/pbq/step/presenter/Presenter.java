@@ -12,6 +12,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
@@ -247,6 +248,9 @@ public final class Presenter {
         engine.getCircleDetail(circleId);
     }
 
+    public void postCircleRedPkg(PostCircleRedPkgParam postCircleRedPkgParam){
+        engine.postCircleRedPkg(postCircleRedPkgParam);
+    }
     public void getCircleIsRedPackage(int circleId) {
 
     }

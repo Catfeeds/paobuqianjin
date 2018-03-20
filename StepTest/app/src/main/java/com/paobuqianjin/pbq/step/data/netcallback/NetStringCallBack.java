@@ -41,6 +41,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyReleaseTaskDetailResp
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostInviteCodeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PostRevRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.QueryFollowStateResponse;
@@ -342,6 +343,9 @@ public class NetStringCallBack extends StringCallback {
                 LocalLog.d(TAG, "圈子详情");
                 CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
                 ((CircleDetailInterface) callBackInterface).response(circleDetailResponse);
+            } else if (command == Engine.COMMAND_POST_REV_RED_PKG) {
+                PostRevRedPkgResponse postRevRedPkgResponse = new Gson().fromJson(s, PostRevRedPkgResponse.class);
+                ((CircleDetailInterface) callBackInterface).response(postRevRedPkgResponse);
             }
 
         } else if (callBackInterface != null

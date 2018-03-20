@@ -13,7 +13,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,10 +28,12 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.RechargeRankBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginOutResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PostRevRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -43,6 +47,7 @@ import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.RankAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.RechargeRankSimpleAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.Rotate3dAnimation;
 
 import java.util.ArrayList;
 
@@ -124,7 +129,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private PopupWindow popupOpWindow;
     private PopupWindow popupOpWindowTop;
     private PopupWindow popOpWindowRedButton;
+    private PopupWindow popCircleRedPkg;
     private TranslateAnimation animationCircleType;
+    private ImageView imageView;
     private CircleDetailResponse circleDetailResponse = null;
     private final static String CIRCLE_ID = "id";
     private final static String CIRCLE_NAME = "name";
@@ -215,6 +222,11 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     }
 
 
+    private void popCircleRedPkg() {
+        LocalLog.d(TAG, "popCircleRedPkg() enter");
+
+    }
+
     public void popPassWordEdit() {
         if (popupOpWindow != null) {
             popupOpWindow = null;
@@ -262,6 +274,54 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     }
 
 
+    private void popRedPkgPick() {
+        LocalLog.d(TAG, "popRedPkgPick() enter");
+        popCircleOpBar = View.inflate(getContext(), R.layout.circle_red_pkg_window, null);
+        popCircleRedPkg = new PopupWindow(popCircleOpBar, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popCircleRedPkg.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popCircleRedPkg = null;
+            }
+        });
+
+        popCircleRedPkg.setFocusable(true);
+        popCircleRedPkg.setOutsideTouchable(true);
+
+        imageView = (ImageView) popCircleOpBar.findViewById(R.id.open_red_pkg);
+
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "领取红包");
+                int[] location = new int[2];
+                LocalLog.d(TAG, " x = " + view.getWidth() + ",y = " + view.getHeight());
+                final Rotate3dAnimation animation = new Rotate3dAnimation(0, 359, view.getWidth() / 2f, view.getHeight() / 2f, 30, true);
+                animation.setDuration(500);
+                animation.setRepeatCount(Animation.INFINITE);
+                animation.setFillAfter(true);
+                view.setAnimation(animation);
+                view.startAnimation(animation);
+                PostCircleRedPkgParam postCircleRedPkgParam = new PostCircleRedPkgParam();
+                postCircleRedPkgParam.setCircleid(circleId);
+                Presenter.getInstance(getContext()).postCircleRedPkg(postCircleRedPkgParam);
+            }
+        });
+
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new
+
+                AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+        popCircleRedPkg.showAtLocation(getActivity().findViewById(R.id.circle_detail_fg), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        popCircleOpBar.startAnimation(animationCircleType);
+    }
+
     private void popQuitConfirm() {
         LocalLog.d(TAG, "popQuitConfirm() enter 退圈确认");
         popCircleOpBar = View.inflate(getContext(), R.layout.quit_circle_confirm, null);
@@ -308,7 +368,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     }
 
     public void popRedPkgButton() {
-        LocalLog.d(TAG,"popRedPkgButton() 弹出红包");
+        LocalLog.d(TAG, "popRedPkgButton() 弹出红包");
         popCircleOpBar = View.inflate(getContext(), R.layout.red_pkg_button_pop_window, null);
         popOpWindowRedButton = new PopupWindow(popCircleOpBar,
                 WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
@@ -331,7 +391,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         animationCircleType.setDuration(200);
 
 
-        popOpWindowRedButton.showAtLocation(getActivity().findViewById(R.id.circle_detail_fg), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        popOpWindowRedButton.showAtLocation(getActivity().findViewById(R.id.circle_detail_fg), Gravity.BOTTOM | Gravity.RIGHT, 0, 25);
         popCircleOpBar.startAnimation(animationCircleType);
     }
 
@@ -484,7 +544,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     }
                     break;
                 case R.id.red_pkg_button:
-                    LocalLog.d(TAG,"点击领取红包按钮");
+                    LocalLog.d(TAG, "点击领取红包按钮");
+                    popOpWindowRedButton.dismiss();
+                    popRedPkgPick();
                     break;
                 default:
                     break;
@@ -623,6 +685,18 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 popupOpWindowTop = null;
                 getActivity().finish();
             }
+        }
+    }
+
+    @Override
+    public void response(PostRevRedPkgResponse postRevRedPkgResponse) {
+        LocalLog.d(TAG, "PostRevRedPkgResponse() enter " + postRevRedPkgResponse.toString());
+        if (imageView != null) {
+            imageView.clearAnimation();
+            popCircleRedPkg.dismiss();
+        }
+        if (postRevRedPkgResponse.getError() == 0) {
+            Toast.makeText(getActivity(), postRevRedPkgResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }
