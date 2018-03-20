@@ -176,16 +176,32 @@
                 android:background="@null"
                 android:textColor="@color/color_161727"
                 android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/recharge_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_toEndOf="@+id/yuan_flag"
+                android:background="@null"
+                android:hint="0.00元"
+                android:inputType="numberDecimal"
+                android:maxLength="6"
+                android:maxLines="1"
+                android:textColor="@color/color_161727"
+                android:textSize="15dp"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <Button
-            android:stateListAnimator="@null"
             android:id="@+id/confirm_pay"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/rect_no_corner"
             android:gravity="center"
+            android:stateListAnimator="@null"
             android:text="确认支付"
             android:textColor="@color/color_f8"
             android:textSize="18dp"></Button>

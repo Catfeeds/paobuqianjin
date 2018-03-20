@@ -8,11 +8,10 @@ import java.util.List;
  */
 
 public class UserFriendResponse {
-
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":2,"totalCount":11},"data":[{"id":1,"avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额","is_distribute":1},{"id":2,"avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","nickname":"李五","is_distribute":1},{"id":3,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg","nickname":"九卿臣","is_distribute":0},{"id":4,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184236664.jpg","nickname":"团魂","is_distribute":0},{"id":5,"avatar":"http://pic.qqtn.com/up/2017-12/15127898935630842.jpg","nickname":"孤央","is_distribute":0},{"id":6,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","is_distribute":0},{"id":7,"avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg","nickname":"沉秋","is_distribute":0},{"id":8,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","is_distribute":1},{"id":9,"avatar":"http://pic.qqtn.com/up/2017-12/15127898933628309.jpg","nickname":"孤傲王者","is_distribute":0},{"id":10,"avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","nickname":"孤君独战","is_distribute":0},{"id":61,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/cKuFQO8UEyKesahdoW8hahuDr3FXuSKwVNv7lJHY7Y6gDlejf7TBbMhz866ZAX9iaibLmam2VAibCYY0gBMsFyBPw/132","nickname":"俊","is_distribute":1}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":9},"data":[{"id":2,"avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","nickname":"李五","followid":2,"is_distribute":0},{"id":3,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg","nickname":"九卿臣","followid":3,"is_distribute":0},{"id":5,"avatar":"http://pic.qqtn.com/up/2017-12/15127898935630842.jpg","nickname":"孤央","followid":5,"is_distribute":0},{"id":6,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","followid":6,"is_distribute":0},{"id":7,"avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg","nickname":"沉秋","followid":7,"is_distribute":0},{"id":8,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","followid":8,"is_distribute":0},{"id":9,"avatar":"http://pic.qqtn.com/up/2017-12/15127898933628309.jpg","nickname":"孤傲王者","followid":9,"is_distribute":0},{"id":10,"avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","nickname":"孤君独战","followid":10,"is_distribute":0},{"id":66,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","nickname":"小沙","followid":66,"is_distribute":0}]}
      */
 
     private int error;
@@ -54,8 +53,8 @@ public class UserFriendResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":2,"totalCount":11}
-         * data : [{"id":1,"avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额","is_distribute":1},{"id":2,"avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","nickname":"李五","is_distribute":1},{"id":3,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg","nickname":"九卿臣","is_distribute":0},{"id":4,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184236664.jpg","nickname":"团魂","is_distribute":0},{"id":5,"avatar":"http://pic.qqtn.com/up/2017-12/15127898935630842.jpg","nickname":"孤央","is_distribute":0},{"id":6,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","is_distribute":0},{"id":7,"avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg","nickname":"沉秋","is_distribute":0},{"id":8,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","is_distribute":1},{"id":9,"avatar":"http://pic.qqtn.com/up/2017-12/15127898933628309.jpg","nickname":"孤傲王者","is_distribute":0},{"id":10,"avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","nickname":"孤君独战","is_distribute":0},{"id":61,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/cKuFQO8UEyKesahdoW8hahuDr3FXuSKwVNv7lJHY7Y6gDlejf7TBbMhz866ZAX9iaibLmam2VAibCYY0gBMsFyBPw/132","nickname":"俊","is_distribute":1}]
+         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":9}
+         * data : [{"id":2,"avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","nickname":"李五","followid":2,"is_distribute":0},{"id":3,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg","nickname":"九卿臣","followid":3,"is_distribute":0},{"id":5,"avatar":"http://pic.qqtn.com/up/2017-12/15127898935630842.jpg","nickname":"孤央","followid":5,"is_distribute":0},{"id":6,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","followid":6,"is_distribute":0},{"id":7,"avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg","nickname":"沉秋","followid":7,"is_distribute":0},{"id":8,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","followid":8,"is_distribute":0},{"id":9,"avatar":"http://pic.qqtn.com/up/2017-12/15127898933628309.jpg","nickname":"孤傲王者","followid":9,"is_distribute":0},{"id":10,"avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","nickname":"孤君独战","followid":10,"is_distribute":0},{"id":66,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","nickname":"小沙","followid":66,"is_distribute":0}]
          */
 
         private PagenationBean pagenation;
@@ -89,8 +88,8 @@ public class UserFriendResponse {
             /**
              * page : 1
              * pageSize : 10
-             * totalPage : 2
-             * totalCount : 11
+             * totalPage : 1
+             * totalCount : 9
              */
 
             private int page;
@@ -143,15 +142,17 @@ public class UserFriendResponse {
 
         public static class DataBean implements Serializable {
             /**
-             * id : 1
-             * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg
-             * nickname : 嗯额
-             * is_distribute : 1
+             * id : 2
+             * avatar : http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg
+             * nickname : 李五
+             * followid : 2
+             * is_distribute : 0
              */
 
             private int id;
             private String avatar;
             private String nickname;
+            private int followid;
             private int is_distribute;
 
             public int getId() {
@@ -178,6 +179,14 @@ public class UserFriendResponse {
                 this.nickname = nickname;
             }
 
+            public int getFollowid() {
+                return followid;
+            }
+
+            public void setFollowid(int followid) {
+                this.followid = followid;
+            }
+
             public int getIs_distribute() {
                 return is_distribute;
             }
@@ -192,6 +201,7 @@ public class UserFriendResponse {
                         "id=" + id +
                         ", avatar='" + avatar + '\'' +
                         ", nickname='" + nickname + '\'' +
+                        ", followid=" + followid +
                         ", is_distribute=" + is_distribute +
                         '}';
             }

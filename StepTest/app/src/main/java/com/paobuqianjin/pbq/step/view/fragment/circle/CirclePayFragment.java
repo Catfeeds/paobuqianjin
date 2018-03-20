@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -81,6 +82,8 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     ImageView wechatPaySelect;
     @Bind(R.id.wallet_pay_select)
     ImageView walletPaySelect;
+    @Bind(R.id.recharge_edit)
+    EditText rechargeEdit;
     private String id;
     private String name;
     private String logo;
@@ -92,7 +95,9 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private boolean[] selectPay = new boolean[2];
     private ImageView[] selectIcon = new ImageView[2];
     private IWXAPI msgApi;
-
+    private final static String PAY_RESULT_ACTION = "android.intent.action.paobuqianjin.PAY_RESULT";
+    private final static String PAY_ACTION = "android.intent.action.PAY";
+    private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
 
     public enum PayStyles {
         WxPay,//微信支付
@@ -155,7 +160,16 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         wechatPaySelect = (ImageView) viewRoot.findViewById(R.id.wechat_pay_select);
         walletPaySelect = (ImageView) viewRoot.findViewById(R.id.wallet_pay_select);
         moneyNum = (TextView) viewRoot.findViewById(R.id.money_num);
-        moneyNum.setText(pay);
+        rechargeEdit = (EditText)viewRoot.findViewById(R.id.recharge_edit);
+        if (PAY_RECHARGE.equals(intent.getAction())) {
+            LocalLog.d(TAG, PAY_RECHARGE + "ENTER");
+            moneyNum.setVisibility(View.GONE);
+            rechargeEdit.setVisibility(View.VISIBLE);
+        } else if (PAY_ACTION.equals(intent.getAction())) {
+            moneyNum.setText(pay);
+            LocalLog.d(TAG, PAY_ACTION + "ENTER");
+        }
+
         selectIcon[0] = wechatPaySelect;
         selectIcon[1] = walletPaySelect;
         if (payStyles.ordinal() == PayStyles.WxPay.ordinal()) {
@@ -163,6 +177,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             walletPaySelect.setImageDrawable(null);
             selectPay[0] = true;
         }
+
     }
 
     @Override
@@ -230,13 +245,29 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                 LocalLog.d(TAG, "确认支付");
                 int style = getSelect();
                 if (style == 0) {
+                    float money = 0.0f;
+                    if (rechargeEdit.getVisibility() == View.VISIBLE) {
+                        try {
+                            money = Float.parseFloat(rechargeEdit.getText().toString());
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (money < 0.01) {
+                            Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    } else {
+                        money = Float.parseFloat(pay);
+                    }
                     dialog = ProgressDialog.show(getContext(), "提示" + "支付方式" + String.valueOf(style),
                             "正在提交订单");
                     PayOrderParam wxPayOrderParam = new PayOrderParam();
                     wxPayOrderParam.setCircleid(Integer.parseInt(id))
                             .setPayment_type("wx")
                             .setOrder_type(payAction)
-                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(Float.parseFloat(pay));
+                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
                     Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
                 } else {
                     Toast.makeText(getContext(), "其他支付方式暂时未开通,请选择微信", Toast.LENGTH_SHORT).show();

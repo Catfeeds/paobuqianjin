@@ -44,6 +44,7 @@
             android:textSize="15dp" />
 
         <EditText
+            android:gravity="right"
             android:id="@+id/target_task_step_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -94,6 +95,7 @@
             android:textSize="15dp" />
 
         <EditText
+            android:gravity="right"
             android:id="@+id/target_task_money_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,6 +146,7 @@
             android:textSize="15dp" />
 
         <EditText
+            android:gravity="right"
             android:id="@+id/target_task_day_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

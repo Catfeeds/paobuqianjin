@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter.task;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,11 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
             Presenter.getInstance(context).getImage(holder.dearIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
             holder.dearName.setText(((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.position = position;
+            if (mData.get(position).getIs_distribute() == 1) {
+                holder.selectIcon.setBackground(ContextCompat.getDrawable(context,R.drawable.circle_out_uncheck));
+            } else {
+                holder.setOnClickListener();
+            }
         }
     }
 
@@ -82,9 +88,12 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
 
         private void initView(View view) {
             selectIcon = (ImageView) view.findViewById(R.id.select_icon);
-            selectIcon.setOnClickListener(onClickListener);
             dearIcon = (CircleImageView) view.findViewById(R.id.dear_icon);
             dearName = (TextView) view.findViewById(R.id.dear_name);
+        }
+
+        private void setOnClickListener() {
+            selectIcon.setOnClickListener(onClickListener);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {

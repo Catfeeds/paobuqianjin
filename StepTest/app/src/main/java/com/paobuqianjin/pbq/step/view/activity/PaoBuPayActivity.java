@@ -26,6 +26,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
     private final static String TAG = PaoBuPayActivity.class.getSimpleName();
     private final static String PAY_ACTION = "android.intent.action.PAY";
     private final static String QRCODE_ACTION = "android.intent.action.QRCODE";
+    private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
     private SharedPreferences sharedPreferences;
     private final static String PAY_RESULT_ACTION = "android.intent.action.paobuqianjin.PAY_RESULT";
     private CirclePayFragment circlePayFragment = new CirclePayFragment();
@@ -50,7 +51,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
             return;
         }
 
-        if (intent.getAction() != null && intent.getAction().equals(PAY_ACTION)) {
+        if (intent.getAction() != null && (intent.getAction().equals(PAY_ACTION) || PAY_RECHARGE.equals(intent.getAction()))) {
             LocalLog.d(TAG, "调启支付");
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.pay_container, circlePayFragment)

@@ -136,6 +136,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.PAY" />
                 <action android:name="android.intent.action.QRCODE" />
+                <action android:name="coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION"></action>
             </intent-filter>
         </activity>
         <activity

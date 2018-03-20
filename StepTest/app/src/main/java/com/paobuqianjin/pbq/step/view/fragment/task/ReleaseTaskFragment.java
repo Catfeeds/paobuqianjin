@@ -160,7 +160,8 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
             LocalLog.d(TAG, "TaskReleaseResponse() enter");
             if (taskReleaseResponse.getError() == 0) {
                 LocalLog.d(TAG, "任务发布成功");
-                getActivity().finish();
+                //getActivity().finish();
+
             }
 
         }

@@ -143,6 +143,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private final static String ACTION_ENTER_CIRCLE = "coma.paobuqian.pbq.step.ICON_ACTION";
     private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.SCAN_ACTION";
     private final static String PAY_ACTION = "android.intent.action.PAY";
+    private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
 
     String titleStr = "";
 
@@ -540,7 +541,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                         Bundle bundlePay = new Bundle();
                         bundlePay.putString(CIRCLE_ID, String.valueOf(circleId));
                         bundlePay.putString(PAY_FOR_STYLE, "circle");
-                        startActivity(PaoBuPayActivity.class, bundlePay, true, PAY_ACTION);
+                        bundlePay.putString(CIRCLE_NAME, circleDetailResponse.getData().getName());
+                        bundlePay.putString(CIRCLE_LOGO, circleDetailResponse.getData().getLogo());
+                        startActivity(PaoBuPayActivity.class, bundlePay, true, PAY_RECHARGE);
                     }
                     break;
                 case R.id.red_pkg_button:
