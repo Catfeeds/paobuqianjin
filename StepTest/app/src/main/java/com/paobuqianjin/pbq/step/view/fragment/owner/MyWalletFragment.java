@@ -21,7 +21,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
 import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
-import com.paobuqianjin.pbq.step.view.activity.MyWalletPayActivity;
+import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -35,6 +35,7 @@ import butterknife.OnClick;
 
 public class MyWalletFragment extends BaseBarStyleTextViewFragment implements UserIncomInterface {
     private final static String TAG = MyWalletFragment.class.getSimpleName();
+
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -81,6 +82,8 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     private YesterDayIncomeFragment yesterDayIncomeFragment = new YesterDayIncomeFragment();
     private MonthIncomeFragment monthIncomeFragment = new MonthIncomeFragment();
     private AllIncomeFragment allIncomeFragment = new AllIncomeFragment();
+    private final static String PAY_FOR_STYLE = "pay_for_style";
+    private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
 
     @Override
     protected int getLayoutResId() {
@@ -159,8 +162,9 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         switch (view.getId()) {
             case R.id.charge_bar:
                 LocalLog.d(TAG, "向钱包充值");
-                intent.setClass(getContext(), MyWalletPayActivity.class);
-                startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putString(PAY_FOR_STYLE, "user");
+                startActivity(PaoBuPayActivity.class, bundle, false, PAY_RECHARGE);
                 break;
             case R.id.crash:
                 LocalLog.d(TAG, "提现");

@@ -25,6 +25,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.SelectFriendForTaskActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -103,6 +104,10 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.confirm)
     Button confirm;
 
+    private final static String PAY_FOR_STYLE = "pay_for_style";
+    private final static String PAY_ACTION = "android.intent.action.PAY";
+    private final static String TASK_NO = "taskno";
+    private final static String CIRCLE_RECHARGE = "pay";
     private static final int SELECT_FRIENDS = 0;
     ArrayList<UserFriendResponse.DataBeanX.DataBean> dataBeans = null;
     private TaskReleaseParam taskReleaseParam = new TaskReleaseParam();
@@ -159,9 +164,13 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
         public void response(TaskReleaseResponse taskReleaseResponse) {
             LocalLog.d(TAG, "TaskReleaseResponse() enter");
             if (taskReleaseResponse.getError() == 0) {
-                LocalLog.d(TAG, "任务发布成功");
+                LocalLog.d(TAG, "任务生成，去充值");
                 //getActivity().finish();
-
+                Bundle bundle = new Bundle();
+                bundle.putString(PAY_FOR_STYLE, "task");
+                bundle.putString(TASK_NO, taskReleaseResponse.getData().getTask_no());
+                bundle.putString(CIRCLE_RECHARGE, targetTaskMoneyNum.getText().toString());
+                startActivity(PaoBuPayActivity.class, bundle, true, PAY_ACTION);
             }
 
         }

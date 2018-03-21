@@ -97,7 +97,6 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
                 //获取下一页数据
                 pageIndex++;
                 Presenter.getInstance(getContext()).getAllMyCircle(pageIndex, 10);
-
             }
 
         }

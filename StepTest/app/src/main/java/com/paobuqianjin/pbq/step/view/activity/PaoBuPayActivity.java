@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
@@ -133,13 +134,16 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
     public void response(WxPayResultResponse wxPayResultResponse) {
         LocalLog.d(TAG, wxPayResultResponse.toString());
         if (wxPayResultResponse.getError() == 0) {
-            PaySuccessFragment paySuccessFragment = new PaySuccessFragment();
-            paySuccessFragment.setPayNum(Float.parseFloat(wxPayResultResponse.getData().getTotal_fee()));
-            getSupportFragmentManager().beginTransaction()
-                    .hide(circlePayFragment)
-                    .add(R.id.pay_container, paySuccessFragment)
-                    .show(paySuccessFragment)
-                    .commit();
+            Toast.makeText(this, "支付成功", Toast.LENGTH_SHORT).show();
+            if (wxPayResultResponse.getData() != null) {
+                PaySuccessFragment paySuccessFragment = new PaySuccessFragment();
+                paySuccessFragment.setPayNum(Float.parseFloat(wxPayResultResponse.getData().getTotal_fee()));
+                getSupportFragmentManager().beginTransaction()
+                        .hide(circlePayFragment)
+                        .add(R.id.pay_container, paySuccessFragment)
+                        .show(paySuccessFragment)
+                        .commit();
+            }
         } else {
             LocalLog.d(TAG, "error  ");
         }

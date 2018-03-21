@@ -38,7 +38,7 @@ circleid	圈子ID	false	int
 taskid	任务ID	false	int
      */
     private String payment_type;
-    private int taskid;
+    private String taskno;
     private int userid;
     private int circleid;
     private float total_fee;
@@ -63,13 +63,13 @@ taskid	任务ID	false	int
         }
     }
 
-    public int getTaskid() {
-        return taskid;
+    public String getTaskno() {
+        return taskno;
     }
 
-    public PayOrderParam setTaskid(int taskid) {
-        this.taskid = taskid;
-        params.put("taskid", String.valueOf(taskid));
+    public PayOrderParam setTaskno(String taskno) {
+        this.taskno = taskno;
+        params.put("taskno",taskno);
         return this;
     }
 
@@ -101,7 +101,7 @@ taskid	任务ID	false	int
     public String toString() {
         return "PayOrderParam{" +
                 "payment_type='" + payment_type + '\'' +
-                ", taskid=" + taskid +
+                ", taskid=" + taskno +
                 ", userid=" + userid +
                 ", circleid=" + circleid +
                 ", total_fee=" + total_fee +

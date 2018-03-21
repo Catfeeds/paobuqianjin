@@ -75,7 +75,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private final static String CIRCLE_NAME = "name";
     private final static String CIRCLE_LOGO = "logo";
     private final static String CIRCLE_RECHARGE = "pay";
-    private final static String PAY_FOR_STYLE = "pay_for_style";
+    private final static String TASK_NO = "taskno";
     private final static String PAY_ERROR_CODE = "pay_error_code";
     private final static String ORDER_TRADE_NO = "";
     @Bind(R.id.wechat_pay_select)
@@ -89,6 +89,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private String logo;
     private String pay;
     private String payAction;
+    private String taskno;
     private ProgressDialog dialog;
     private PayReq req;
     private PayStyles payStyles = PayStyles.WxPay;
@@ -98,6 +99,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private final static String PAY_RESULT_ACTION = "android.intent.action.paobuqianjin.PAY_RESULT";
     private final static String PAY_ACTION = "android.intent.action.PAY";
     private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
+    private final static String PAY_FOR_STYLE = "pay_for_style";
 
     public enum PayStyles {
         WxPay,//微信支付
@@ -155,12 +157,14 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         logo = bundle.getString(CIRCLE_LOGO, "");
         pay = bundle.getString(CIRCLE_RECHARGE, "");
         payAction = bundle.getString(PAY_FOR_STYLE, "");
-        LocalLog.d(TAG, "id = " + id + " name = "
-                + name + " logo= " + logo + " pay= " + pay + " payAction = " + payAction);
+        taskno = bundle.getString(TASK_NO,"");
+
+        LocalLog.d(TAG, "id = " + id + " ,name = "
+                + name + " ,logo= " + logo + ", pay= " + pay + " ,payAction = " + payAction + ",taskno = " +taskno);
         wechatPaySelect = (ImageView) viewRoot.findViewById(R.id.wechat_pay_select);
         walletPaySelect = (ImageView) viewRoot.findViewById(R.id.wallet_pay_select);
         moneyNum = (TextView) viewRoot.findViewById(R.id.money_num);
-        rechargeEdit = (EditText)viewRoot.findViewById(R.id.recharge_edit);
+        rechargeEdit = (EditText) viewRoot.findViewById(R.id.recharge_edit);
         if (PAY_RECHARGE.equals(intent.getAction())) {
             LocalLog.d(TAG, PAY_RECHARGE + "ENTER");
             moneyNum.setVisibility(View.GONE);
@@ -264,11 +268,34 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                     dialog = ProgressDialog.show(getContext(), "提示" + "支付方式" + String.valueOf(style),
                             "正在提交订单");
                     PayOrderParam wxPayOrderParam = new PayOrderParam();
-                    wxPayOrderParam.setCircleid(Integer.parseInt(id))
-                            .setPayment_type("wx")
-                            .setOrder_type(payAction)
-                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
-                    Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                    if ("circle".equals(payAction)) {
+                        LocalLog.d(TAG, "圈子支付");
+                        if (!"".equals(id)) {
+                            wxPayOrderParam.setCircleid(Integer.parseInt(id))
+                                    .setPayment_type("wx")
+                                    .setOrder_type(payAction)
+                                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                        }
+                    } else if ("user".equals(payAction)) {
+                        LocalLog.d(TAG, "用户订单");
+                        wxPayOrderParam
+                                .setPayment_type("wx")
+                                .setOrder_type(payAction)
+                                .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                        Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                    } else if ("task".equals(payAction)) {
+                        LocalLog.d(TAG, "任务订单");
+                        if (!"".equals(taskno)) {
+                            wxPayOrderParam
+                                    .setPayment_type("wx")
+                                    .setOrder_type(payAction)
+                                    .setTaskno(taskno)
+                                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                        }
+                    }
+
                 } else {
                     Toast.makeText(getContext(), "其他支付方式暂时未开通,请选择微信", Toast.LENGTH_SHORT).show();
                 }
