@@ -32,6 +32,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
     private final static String PAY_RESULT_ACTION = "android.intent.action.paobuqianjin.PAY_RESULT";
     private CirclePayFragment circlePayFragment = new CirclePayFragment();
     private QrCodeFragment qrCodeFragment = new QrCodeFragment();
+    private  String currentAction;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
                     .add(R.id.pay_container, circlePayFragment)
                     .show(circlePayFragment)
                     .commit();
+
         } else if (intent.getAction() != null && intent.getAction().equals(QRCODE_ACTION)) {
             LocalLog.d(TAG, "显示圈子二维码");
             getSupportFragmentManager().beginTransaction()
@@ -135,7 +137,6 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
         LocalLog.d(TAG, wxPayResultResponse.toString());
         if (wxPayResultResponse.getError() == 0) {
             Toast.makeText(this, "支付成功", Toast.LENGTH_SHORT).show();
-            if (wxPayResultResponse.getData() != null) {
                 PaySuccessFragment paySuccessFragment = new PaySuccessFragment();
                 paySuccessFragment.setPayNum(Float.parseFloat(wxPayResultResponse.getData().getTotal_fee()));
                 getSupportFragmentManager().beginTransaction()
@@ -143,7 +144,6 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
                         .add(R.id.pay_container, paySuccessFragment)
                         .show(paySuccessFragment)
                         .commit();
-            }
         } else {
             LocalLog.d(TAG, "error  ");
         }

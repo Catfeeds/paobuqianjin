@@ -385,6 +385,14 @@ public final class Engine {
         FlagPreference.setOutTradeNo(context, outTradeNO);
     }
 
+    public void setTradeStyle(Context context, String tradeStyle) {
+        FlagPreference.setTradeStyle(context, tradeStyle);
+    }
+
+    public String  getTradeStyle(Context context) {
+        return FlagPreference.getTradeStyle(context);
+    }
+
     public boolean getLogFlag(Context context) {
         return FlagPreference.getLoginFlag(context);
     }
@@ -1159,7 +1167,7 @@ public final class Engine {
                 .url(url)
                 .params(postCircleRedPkgParam.getParams())
                 .build()
-                .execute(new NetStringCallBack(circleDetailInterface,COMMAND_POST_REV_RED_PKG));
+                .execute(new NetStringCallBack(circleDetailInterface, COMMAND_POST_REV_RED_PKG));
     }
 
     public void deleteCircle(int circleId) {

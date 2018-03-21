@@ -100,6 +100,14 @@ public final class Presenter {
         engine.setOutTradeNo(mContext, outTradeNo);
     }
 
+    public void setTradeStyle(String tradeStyle) {
+        engine.setTradeStyle(mContext, tradeStyle);
+    }
+
+    public String getTradeStyle() {
+        return engine.getTradeStyle(mContext);
+    }
+
     public String getOutTradeNo() {
         return engine.getOutTradeNo(mContext);
     }
@@ -248,9 +256,10 @@ public final class Presenter {
         engine.getCircleDetail(circleId);
     }
 
-    public void postCircleRedPkg(PostCircleRedPkgParam postCircleRedPkgParam){
+    public void postCircleRedPkg(PostCircleRedPkgParam postCircleRedPkgParam) {
         engine.postCircleRedPkg(postCircleRedPkgParam);
     }
+
     public void getCircleIsRedPackage(int circleId) {
 
     }

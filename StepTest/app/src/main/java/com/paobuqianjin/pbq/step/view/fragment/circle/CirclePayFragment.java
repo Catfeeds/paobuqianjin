@@ -157,10 +157,10 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         logo = bundle.getString(CIRCLE_LOGO, "");
         pay = bundle.getString(CIRCLE_RECHARGE, "");
         payAction = bundle.getString(PAY_FOR_STYLE, "");
-        taskno = bundle.getString(TASK_NO,"");
+        taskno = bundle.getString(TASK_NO, "");
 
         LocalLog.d(TAG, "id = " + id + " ,name = "
-                + name + " ,logo= " + logo + ", pay= " + pay + " ,payAction = " + payAction + ",taskno = " +taskno);
+                + name + " ,logo= " + logo + ", pay= " + pay + " ,payAction = " + payAction + ",taskno = " + taskno);
         wechatPaySelect = (ImageView) viewRoot.findViewById(R.id.wechat_pay_select);
         walletPaySelect = (ImageView) viewRoot.findViewById(R.id.wallet_pay_select);
         moneyNum = (TextView) viewRoot.findViewById(R.id.money_num);
@@ -320,6 +320,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         req.timeStamp = String.valueOf(wxPayOrderResponse.getData().getTimestamp());
 
         Presenter.getInstance(getContext()).setOutTradeNo(wxPayOrderResponse.getData().getOrder_no());
+        Presenter.getInstance(getContext()).setTradeStyle(payAction);
         msgApi.registerApp(req.appId);
         msgApi.sendReq(req);
     }

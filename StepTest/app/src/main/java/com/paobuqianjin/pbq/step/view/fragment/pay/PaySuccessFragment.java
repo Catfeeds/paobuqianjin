@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -91,6 +92,12 @@ public class PaySuccessFragment extends BaseBarStyleTextViewFragment {
     @OnClick(R.id.repay_button)
     public void onClick() {
         LocalLog.d(TAG, "已确认支付结果");
-        ((PaoBuPayActivity) getActivity()).showQrCodeFragment(this);
+        String payAction = Presenter.getInstance(getContext()).getTradeStyle();
+        if ("user".equals(payAction) || "task".equals(payAction)) {
+            getActivity().finish();
+        }else{
+            ((PaoBuPayActivity) getActivity()).showQrCodeFragment(this);
+        }
+
     }
 }

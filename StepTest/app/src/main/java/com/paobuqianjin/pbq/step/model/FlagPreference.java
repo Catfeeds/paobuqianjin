@@ -46,6 +46,22 @@ public final class FlagPreference {
         editor.commit();
     }
 
+    //与订单号必须同步操作
+    public static void setTradeStyle(Context context, String tradeStyle) {
+        LocalLog.d(TAG, "setTradeStyle() 保存最新订类型");
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putString("out_trade_style", tradeStyle);
+        editor.commit();
+    }
+
+    public static String getTradeStyle(Context context) {
+        LocalLog.d(TAG, "TradeStyle() 获取最新订单号");
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        String trade_style = flagPreference.getString("out_trade_style", "");
+        return trade_style;
+    }
+
     public static String getOutTradeNo(Context context) {
         LocalLog.d(TAG, "getOutTradeNo() 获取最新订单号");
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
