@@ -3,9 +3,7 @@ package com.paobuqianjin.pbq.step.data.netcallback;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.AddFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
@@ -32,6 +30,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginOutResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MemberDeleteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
@@ -52,7 +51,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskMyReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskRecDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
@@ -419,11 +417,17 @@ public class NetStringCallBack extends StringCallback {
             WxPayResultResponse wxPayResultResponse = new Gson().fromJson(s, WxPayResultResponse.class);
             ((WxPayResultQueryInterface) callBackInterface).response(wxPayResultResponse);
         } else if (callBackInterface != null
-                && callBackInterface instanceof CircleMemberManagerInterface
-                && command == Engine.COMMAND_GET_MEMBER) {
-            LocalLog.d(TAG, "获取圈子成员");
-            CircleMemberResponse circleMemberResponse = new Gson().fromJson(s, CircleMemberResponse.class);
-            ((CircleMemberManagerInterface) callBackInterface).response(circleMemberResponse);
+                && callBackInterface instanceof CircleMemberManagerInterface) {
+            if (command == Engine.COMMAND_GET_MEMBER) {
+                LocalLog.d(TAG, "获取圈子成员");
+                CircleMemberResponse circleMemberResponse = new Gson().fromJson(s, CircleMemberResponse.class);
+                ((CircleMemberManagerInterface) callBackInterface).response(circleMemberResponse);
+            } else if (command == Engine.COMMAND_DELETE_MEMBER) {
+                LocalLog.d(TAG, "删除成员成功");
+                MemberDeleteResponse memberDeleteResponse = new Gson().fromJson(s, MemberDeleteResponse.class);
+                ((CircleMemberManagerInterface) callBackInterface).response(memberDeleteResponse);
+            }
+
         } else if (callBackInterface != null
                 && callBackInterface instanceof TaskReleaseInterface
                 && command == Engine.COMMAND_TASK_RELEASE) {
@@ -452,21 +456,24 @@ public class NetStringCallBack extends StringCallback {
             ((NearByInterface) callBackInterface).response(nearByResponse);
         } else if (callBackInterface != null && callBackInterface instanceof UserIncomInterface) {
             if (command == Engine.COMMAND_INCOME_YESTERDAY) {
-                LocalLog.d(TAG,"昨日收益");
+                LocalLog.d(TAG, "昨日收益");
                 IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
                 ((UserIncomInterface) callBackInterface).responseYesterday(incomeResponse);
             } else if (command == Engine.COMMAND_INCOME_TODAY) {
-                LocalLog.d(TAG,"今日收益");
+                LocalLog.d(TAG, "今日收益");
                 IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
                 ((UserIncomInterface) callBackInterface).responseToday(incomeResponse);
             } else if (command == Engine.COMMAND_INCOME_MONTH) {
-                LocalLog.d(TAG,"月收益");
+                LocalLog.d(TAG, "月收益");
                 IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
                 ((UserIncomInterface) callBackInterface).responseMonth(incomeResponse);
             } else if (command == Engine.COMMAND_INCOME_ALL) {
-                LocalLog.d(TAG,"总收益");
+                LocalLog.d(TAG, "总收益");
                 AllIncomeResponse allIncomeResponse = new Gson().fromJson(s, AllIncomeResponse.class);
                 ((UserIncomInterface) callBackInterface).responseAll(allIncomeResponse);
+            } else if (command == Engine.COMMAND_GET_USER_INFO) {
+                UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
+                ((UserIncomInterface) callBackInterface).response(userInfoResponse);
             }
         } else if (callBackInterface != null && callBackInterface instanceof CrashInterface) {
             if (command == Engine.COMMAND_CRASH_BANK_CARD_LIST) {

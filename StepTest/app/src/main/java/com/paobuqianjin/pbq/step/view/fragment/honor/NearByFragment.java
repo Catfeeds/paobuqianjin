@@ -67,7 +67,9 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
     @Override
     public void response(NearByResponse nearByResponse) {
         LocalLog.d(TAG, "NearByResponse() enter");
+        if(nearByResponse.getError() == 0){
+            nearByRecycler.setAdapter(new NearByAdapter(getContext(), nearByResponse.getData()));
+        }
 
-        nearByRecycler.setAdapter(new NearByAdapter(getContext(), nearByResponse.getData()));
     }
 }

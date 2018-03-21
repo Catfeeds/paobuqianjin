@@ -363,6 +363,9 @@ public final class Presenter {
     public void getCircleMemberAll(int circleId, int pageInex, int pageSize) {
         engine.getCircleMemberAll(circleId, pageInex, pageSize);
     }
+    public void deleteCircleMember(String idStr){
+        engine.deleteCircleMember(idStr);
+    }
 
     //TODO 圈子订单WX
     public void postCircleOrder(PayOrderParam wxPayOrderParam) {
@@ -484,6 +487,9 @@ public final class Presenter {
         engine.getUserDollarStep();
     }
 
+    public void getUserPackageMoney(){
+        engine.getUserPackageMoney();
+    }
     //
     public void getWeather(double latitude, double longitude) {
         engine.getWeather(latitude, longitude);

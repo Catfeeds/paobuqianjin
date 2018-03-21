@@ -58,12 +58,12 @@ public class MyTaskDetailStateAdapter extends RecyclerView.Adapter<MyTaskDetailS
                 dateStr = dates[0] + " 年 " + dates[1] + " 月 " + dates[2] + " 日";
             }
             holder.timeStmap.setText(dateStr);
-            if (((MyReleaseTaskDetailResponse.DataBean.TaskRecordBean) mData.get(position)).getIs_receive() == 0) {
-                holder.states.setText("未领取");
-                holder.states.setTextColor(ContextCompat.getColor(context,R.color.color_161727));
-            } else if (((MyReleaseTaskDetailResponse.DataBean.TaskRecordBean) mData.get(position)).getIs_receive() == 1) {
+            if (((MyReleaseTaskDetailResponse.DataBean.TaskRecordBean) mData.get(position)).getIs_receive() == 2) {
                 holder.states.setText("已领取");
-                holder.states.setTextColor(ContextCompat.getColor(context,R.color.color_e4393c));
+                holder.states.setTextColor(ContextCompat.getColor(context, R.color.color_e4393c));
+            } else {
+                holder.states.setText("未领取");
+                holder.states.setTextColor(ContextCompat.getColor(context, R.color.color_161727));
             }
         }
     }

@@ -235,8 +235,8 @@ public class HotCircleFragment extends BaseFragment {
                             myHotCircleResponse.getData().getData().get(0).getLogo());
                     circleIdA = myHotCircleResponse.getData().getData().get(0).getId();
                     circleNumA = myHotCircleResponse.getData().getData().get(0).getMember_number();
-                    Presenter.getInstance(getContext()).getCircleDetail(myHotCircleResponse.getData().getData().get(0).getId());
-                    if(myHotCircleResponse.getData().getData().get(0).getIs_red_packet() == 1){
+                    //Presenter.getInstance(getContext()).getCircleDetail(myHotCircleResponse.getData().getData().get(0).getId());
+                    if (myHotCircleResponse.getData().getData().get(0).getIs_red_packet() == 1) {
                         readPackAIV.setVisibility(View.VISIBLE);
                     }
                 } else if (size >= 2) {
@@ -250,13 +250,13 @@ public class HotCircleFragment extends BaseFragment {
 
                     circleIdB = myHotCircleResponse.getData().getData().get(1).getId();
                     circleNumB = myHotCircleResponse.getData().getData().get(1).getMember_number();
-                    Presenter.getInstance(getContext()).getCircleDetail(myHotCircleResponse.getData().getData().get(0).getId());
-                    if(myHotCircleResponse.getData().getData().get(0).getIs_red_packet() == 1){
+                    //Presenter.getInstance(getContext()).getCircleDetail(myHotCircleResponse.getData().getData().get(0).getId());
+                    if (myHotCircleResponse.getData().getData().get(0).getIs_red_packet() == 1) {
                         readPackAIV.setVisibility(View.VISIBLE);
                     }
-                    Presenter.getInstance(getContext()).getCircleDetail(myHotCircleResponse.getData().getData().get(1).getId());
-                    if(myHotCircleResponse.getData().getData().get(1).getIs_red_packet() == 1){
-                        readPackAIV.setVisibility(View.VISIBLE);
+                    //Presenter.getInstance(getContext()).getCircleDetail(myHotCircleResponse.getData().getData().get(1).getId());
+                    if (myHotCircleResponse.getData().getData().get(1).getIs_red_packet() == 1) {
+                        readPackBIV.setVisibility(View.VISIBLE);
                     }
                 }
                 pageCounts[1] = myHotCircleResponse.getData().getPagenation().getTotalPage();

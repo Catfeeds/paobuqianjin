@@ -17,13 +17,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddAdminResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AdminDeleteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DearNameModifyResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MemberDeleteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MemberManagerInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.base.adapter.CircleMemberBarAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.MemberManagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
+import com.paobuqianjin.pbq.step.view.fragment.honor.CircleStepDanFragment;
 
 import java.util.ArrayList;
 
@@ -34,7 +41,7 @@ import butterknife.ButterKnife;
  * Created by pbq on 2017/12/18.
  */
 
-public class CircleMemberManagerFragment extends BaseBarImageViewFragment {
+public class CircleMemberManagerFragment extends BaseBarImageViewFragment implements CircleMemberManagerInterface {
     private final static String TAG = CircleMemberManagerFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -66,6 +73,8 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment {
     private final static String MEMBER_MANANGER_ACTION = "android.intent.action.MAMBER_MANAGER_ACTION";
     private String id;
     private final static String CIRCLE_ID = "id";
+    ArrayList<CircleMemberBarAdapter.AdapterCallInterface> adapterCallInterface;
+    ArrayList<String> deleteArrList;
 
     @Override
     protected int getLayoutResId() {
@@ -75,7 +84,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Presenter.getInstance(context).attachUiInterface(circleMemberManagerInterface);
+        Presenter.getInstance(context).attachUiInterface(this);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             if (MEMBER_MANANGER_ACTION.equals(intent.getAction())) {
@@ -103,19 +112,65 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment {
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+        setToolBarListener(toolBarListener);
         adminRecyclerView = (RecyclerView) viewRoot.findViewById(R.id.circle_admin_span);
         normalRecyclerView = (RecyclerView) viewRoot.findViewById(R.id.all_member_span);
         adminManager = new LinearLayoutManager(getContext());
         normalManager = new LinearLayoutManager(getContext());
         adminRecyclerView.setLayoutManager(adminManager);
         normalRecyclerView.setLayoutManager(normalManager);
-
+        barTvRight = (ImageView) viewRoot.findViewById(R.id.bar_tv_right);
+        deleteMemberConfim = (Button) viewRoot.findViewById(R.id.delete_member_confim);
+        deleteMemberConfim.setOnClickListener(onClickListener);
+        adapterCallInterface = new ArrayList<>();
+        deleteArrList = new ArrayList<>();
     }
 
     @Override
     protected String title() {
         return "成员管理";
     }
+
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.delete_member_confim:
+                    LocalLog.d(TAG, "删除成员!");
+                    String idStr = "";
+                    for (int i = 0; i < deleteArrList.size(); i++) {
+                        if (i == (deleteArrList.size() - 1)) {
+                            idStr += deleteArrList.get(i);
+                        } else {
+                            idStr += deleteArrList.get(i) + ",";
+                        }
+                    }
+                    Presenter.getInstance(getContext()).deleteCircleMember(idStr);
+                    break;
+            }
+        }
+    };
+
+    private ToolBarListener toolBarListener = new ToolBarListener() {
+        @Override
+        public void clickLeft() {
+
+        }
+
+        @Override
+        public void clickRight() {
+            LocalLog.d(TAG, "点击删除成员");
+            for (int i = 0; i < adapterCallInterface.size(); i++) {
+                adapterCallInterface.get(i).call();
+            }
+            if (deleteMemberConfim.getVisibility() == View.GONE) {
+                deleteMemberConfim.setVisibility(View.VISIBLE);
+            } else if (deleteMemberConfim.getVisibility() == View.VISIBLE) {
+                deleteMemberConfim.setVisibility(View.GONE);
+            }
+        }
+    };
 
     private ArrayList<CircleMemberResponse.DataBeanX.DataBean>[] getAdminList(CircleMemberResponse circleMemberResponse) {
         LocalLog.d(TAG, "getAdminList() enter");
@@ -140,44 +195,88 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment {
         return data;
     }
 
-    private CircleMemberManagerInterface circleMemberManagerInterface = new CircleMemberManagerInterface() {
-        @Override
-        public void response(CircleMemberResponse circleMemberResponse) {
-            if (circleMemberResponse.getError() == 0) {
-                LocalLog.d(TAG, "circleMemberResponse() enter" + circleMemberResponse.toString());
-                ArrayList<CircleMemberResponse.DataBeanX.DataBean>[] data = getAdminList(circleMemberResponse);
-                MemberManagerAdapter adminAdapter = new MemberManagerAdapter(getContext(), data[0], data[1], opCallBackInterface);
 
-                adminRecyclerView.setAdapter(adminAdapter);
+    @Override
+    public void response(CircleMemberResponse circleMemberResponse) {
+        if (circleMemberResponse.getError() == 0) {
+            LocalLog.d(TAG, "circleMemberResponse() enter" + circleMemberResponse.toString());
+            ArrayList<CircleMemberResponse.DataBeanX.DataBean>[] data = getAdminList(circleMemberResponse);
+            MemberManagerAdapter adminAdapter = new MemberManagerAdapter(getContext(), data[0], data[1], opCallBackInterface);
 
-                MemberManagerAdapter normalAdapter = new MemberManagerAdapter(getContext(), data[2], opCallBackInterface);
-                normalRecyclerView.setAdapter(normalAdapter);
-            }
+            adminRecyclerView.setAdapter(adminAdapter);
+
+            MemberManagerAdapter normalAdapter = new MemberManagerAdapter(getContext(), data[2], opCallBackInterface);
+            normalRecyclerView.setAdapter(normalAdapter);
         }
-    };
+    }
 
     public interface OpCallBackInterface {
-        public void opMemberOutInto();
+        public void opMemberOutInto(int userid);
 
-        public void opMemberIntoOut();
+        public void opMemberIntoOut(CircleMemberBarAdapter.AdapterCallInterface adapterCallInterface);
+
+        public void onLongClick();
     }
 
     private OpCallBackInterface opCallBackInterface = new OpCallBackInterface() {
         @Override
-        public void opMemberOutInto() {
-            LocalLog.d(TAG, "opMemberOutInto() enter");
+        public void opMemberOutInto(int userId) {
+            LocalLog.d(TAG, "opMemberOutInto() enter userId" + userId);
+            if (deleteArrList.contains(String.valueOf(userId))) {
+                deleteArrList.remove(String.valueOf(userId));
+            } else {
+                deleteArrList.add(String.valueOf(userId));
+            }
         }
 
         @Override
-        public void opMemberIntoOut() {
+        public void opMemberIntoOut(CircleMemberBarAdapter.AdapterCallInterface adapterCallInterface) {
             LocalLog.d(TAG, "opMemberIntoOut() enter");
+            setAdapterCallInterface(adapterCallInterface);
+        }
+
+        @Override
+        public void onLongClick() {
+            LocalLog.d(TAG, "onLongClick() enter");
         }
     };
+
+    public void setAdapterCallInterface(CircleMemberBarAdapter.AdapterCallInterface adapterCallInterface) {
+        if (!this.adapterCallInterface.contains(adapterCallInterface)) {
+            LocalLog.d(TAG, "setAdapterCallInterface() add a callback");
+            this.adapterCallInterface.add(adapterCallInterface);
+        }
+
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        Presenter.getInstance(getContext()).dispatchUiInterface(circleMemberManagerInterface);
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
+        adapterCallInterface.clear();
+        deleteArrList.clear();
+    }
+
+    @Override
+    public void response(AddAdminResponse addAdminResponse) {
+        LocalLog.d(TAG, "AddAdminResponse() enter");
+    }
+
+    @Override
+    public void response(AdminDeleteResponse adminDeleteResponse) {
+        LocalLog.d(TAG, "AddAdminResponse() enter");
+    }
+
+    @Override
+    public void response(MemberDeleteResponse memberDeleteResponse) {
+        LocalLog.d(TAG, "AddAdminResponse() enter" + memberDeleteResponse.toString());
+        //TODO 更新本地UI
+
+    }
+
+    @Override
+    public void response(DearNameModifyResponse dearNameModifyResponse) {
+        LocalLog.d(TAG, "AddAdminResponse() enter");
     }
 }

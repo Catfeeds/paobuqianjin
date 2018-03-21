@@ -56,7 +56,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="27dp"
                     android:includeFontPadding="false"
-                    android:text="总金额0.11元"
+                    android:text="总金额0.00元"
                     android:textColor="@color/color_f8"
                     android:textSize="15dp" />
 

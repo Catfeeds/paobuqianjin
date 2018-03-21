@@ -250,6 +250,7 @@ public final class Engine {
     public final static int COMMAND_ADD_DELETE_FOLLOW = 69;
     public final static int COMMAND_FRIEND_HONOR = 70;
     public final static int COMMAND_POST_REV_RED_PKG = 71;
+    public final static int COMMAND_DELETE_MEMBER = 72;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -389,7 +390,7 @@ public final class Engine {
         FlagPreference.setTradeStyle(context, tradeStyle);
     }
 
-    public String  getTradeStyle(Context context) {
+    public String getTradeStyle(Context context) {
         return FlagPreference.getTradeStyle(context);
     }
 
@@ -852,6 +853,16 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(circleMemberManagerInterface, COMMAND_GET_MEMBER));
+    }
+
+    public void deleteCircleMember(String idStr) {
+        String url = NetApi.urlCircleMember + "/" + idStr;
+        LocalLog.d(TAG, "deleteCircleMember()" + url);
+        OkHttpUtils
+                .delete()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(circleMemberManagerInterface, COMMAND_DELETE_MEMBER));
     }
 
     //关于我们类型 http://119.29.10.64/v1/abouttype
@@ -1343,7 +1354,7 @@ public final class Engine {
 
     public void getUserDollarStep() {
         String url = NetApi.urlUser + String.valueOf(getId(mContext));
-        LocalLog.d(TAG, "getUserInfo() url = " + url);
+        LocalLog.d(TAG, "getUserDollarStep() url = " + url);
         OkHttpUtils
                 .get()
                 .url(url)
@@ -1351,6 +1362,15 @@ public final class Engine {
                 .execute(new NetStringCallBack(stepDollarDetailInterface, COMMAND_GET_USER_INFO));
     }
 
+    public void getUserPackageMoney(){
+        String url = NetApi.urlUser + String.valueOf(getId(mContext));
+        LocalLog.d(TAG, "getUserDollarStep() url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(userIncomInterface, COMMAND_GET_USER_INFO));
+    }
     //TODO 关注接口
     public void getFollows(String action, int page, int pagesize) {
         String url = NetApi.urlUserFollow + "?action=" + action + "&userid=" + String.valueOf(getId(mContext))

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -104,6 +105,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     public void onAttach(Context context) {
         super.onAttach(context);
         Presenter.getInstance(context).attachUiInterface(this);
+        Presenter.getInstance(context).getUserPackageMoney();
         Presenter.getInstance(context).getIncome("today", 1, 10);
         Presenter.getInstance(context).getIncome("yesterday", 1, 10);
         Presenter.getInstance(context).getIncome("month", 1, 10);
@@ -213,10 +215,8 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     public void responseAll(AllIncomeResponse allIncomeResponse) {
         LocalLog.d(TAG, " 所有收益 responseAll() enter" + allIncomeResponse.toString());
         if (allIncomeResponse.getError() == 0) {
-            String moneyFormat = getContext().getResources().getString(R.string.total_income);
-            if (allIncomeResponse.getData().getPagenation() != null) {
-                String moneyStr = String.format(moneyFormat, allIncomeResponse.getData().getTotal_amount());
-                incomeMoney.setText(moneyStr);
+            if (allIncomeResponse.getData() != null) {
+                totalIncomeNum.setText(String.valueOf(allIncomeResponse.getData().getTotal_amount()));
             }
         }
     }
@@ -226,6 +226,9 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         LocalLog.d(TAG, " 月收益 responseMonth() enter" + incomeResponse.toString());
         if (incomeResponse.getError() == 0) {
             monthIncomeFragment.setData(incomeResponse);
+            if (incomeResponse.getData() != null) {
+                monthIncomeNum.setText(String.valueOf(incomeResponse.getData().getTotal_amount()));
+            }
         }
 
     }
@@ -244,6 +247,17 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         LocalLog.d(TAG, "昨日收益 responseYesterday() enter" + yesterdayIncomeResponse.toString());
         if (yesterdayIncomeResponse.getError() == 0) {
             yesterDayIncomeFragment.setData(yesterdayIncomeResponse);
+            if (yesterdayIncomeResponse.getData() != null) {
+                yesterdayIncomeNum.setText(String.valueOf(yesterdayIncomeResponse.getData().getTotal_amount()));
+            }
+        }
+    }
+
+    @Override
+    public void response(UserInfoResponse userInfoResponse) {
+
+        if (userInfoResponse.getError() == 0) {
+            incomeMoney.setText("总金额:" + userInfoResponse.getData().getBalance());
         }
     }
 }

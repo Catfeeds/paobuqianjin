@@ -96,7 +96,6 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<MemberManagerAdap
         int size = 0;
         if (mData != null) {
             size = mData.size();
-            LocalLog.d(TAG, "size = " + size);
         }
         return size;
     }
