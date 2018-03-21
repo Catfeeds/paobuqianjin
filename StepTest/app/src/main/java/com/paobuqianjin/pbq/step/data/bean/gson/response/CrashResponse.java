@@ -33,4 +33,12 @@ public class CrashResponse {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    @Override
+    public String toString() {
+        return "CrashResponse{" +
+                "error=" + error +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

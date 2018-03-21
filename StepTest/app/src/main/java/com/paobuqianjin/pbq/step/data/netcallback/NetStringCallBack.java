@@ -15,6 +15,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashListDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DanListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
@@ -481,7 +482,8 @@ public class NetStringCallBack extends StringCallback {
                 BindCardListResponse bindCardListResponse = new Gson().fromJson(s, BindCardListResponse.class);
                 ((CrashInterface) callBackInterface).response(bindCardListResponse);
             } else if (command == Engine.COMMAND_CRASH_TO) {
-
+                CrashResponse crashResponse = new Gson().fromJson(s, CrashResponse.class);
+                ((CrashInterface) callBackInterface).response(crashResponse);
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof SignCodeInterface) {

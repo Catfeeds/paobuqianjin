@@ -11,10 +11,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -124,7 +126,11 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     }
 
     @Override
-    public void response() {
-
+    public void response(CrashResponse crashResponse) {
+        LocalLog.d(TAG, "CrashResponse()  enter  " + crashResponse.toString());
+        if (crashResponse.getError() == 0) {
+            Toast.makeText(getContext(), crashResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+        }
     }
 }
