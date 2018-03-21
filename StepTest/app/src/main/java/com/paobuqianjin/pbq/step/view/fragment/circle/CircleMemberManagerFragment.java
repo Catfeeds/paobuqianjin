@@ -161,6 +161,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
         @Override
         public void clickRight() {
             LocalLog.d(TAG, "点击删除成员");
+            deleteArrList.clear();
             for (int i = 0; i < adapterCallInterface.size(); i++) {
                 adapterCallInterface.get(i).call();
             }
@@ -223,8 +224,10 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
         public void opMemberOutInto(int userId) {
             LocalLog.d(TAG, "opMemberOutInto() enter userId" + userId);
             if (deleteArrList.contains(String.valueOf(userId))) {
+                LocalLog.d(TAG, "移除删除队列");
                 deleteArrList.remove(String.valueOf(userId));
             } else {
+                LocalLog.d(TAG, "加入删除队列");
                 deleteArrList.add(String.valueOf(userId));
             }
         }
@@ -272,7 +275,10 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     public void response(MemberDeleteResponse memberDeleteResponse) {
         LocalLog.d(TAG, "AddAdminResponse() enter" + memberDeleteResponse.toString());
         //TODO 更新本地UI
-
+        if (memberDeleteResponse.getError() == 0) {
+            deleteMemberConfim.setVisibility(View.GONE);
+            Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), 1, 10);
+        }
     }
 
     @Override

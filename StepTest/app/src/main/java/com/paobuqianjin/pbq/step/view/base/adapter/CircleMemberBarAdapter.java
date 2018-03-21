@@ -190,6 +190,7 @@ public class CircleMemberBarAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                             selectUserIcon.setImageDrawable(null);
                             isSelect = false;
                             LocalLog.d(TAG, "取消删除");
+                            opCallBackInterface.opMemberOutInto(mData.getId());
                         }
                         break;
                 }
