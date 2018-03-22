@@ -15,22 +15,22 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.AddAdminResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteAdminResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AdminDeleteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.DearNameModifyResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MemberDeleteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
-import com.paobuqianjin.pbq.step.presenter.im.MemberManagerInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.DearNameModifyActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleMemberBarAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.MemberManagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
-import com.paobuqianjin.pbq.step.view.fragment.honor.CircleStepDanFragment;
 
 import java.util.ArrayList;
 
@@ -75,6 +75,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     private final static String CIRCLE_ID = "id";
     ArrayList<CircleMemberBarAdapter.AdapterCallInterface> adapterCallInterface;
     ArrayList<String> deleteArrList;
+    private static final int DEAR_NAME_MODIFY = 0;
 
     @Override
     protected int getLayoutResId() {
@@ -212,7 +213,11 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     }
 
     public interface OpCallBackInterface {
-        public void opMemberOutInto(int userid);
+        public void opMemberOutInto(int id);
+
+        public void opModifyDearName(int id);
+
+        public void addDeleteAdmin(int id);
 
         public void opMemberIntoOut(CircleMemberBarAdapter.AdapterCallInterface adapterCallInterface);
 
@@ -221,14 +226,14 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
 
     private OpCallBackInterface opCallBackInterface = new OpCallBackInterface() {
         @Override
-        public void opMemberOutInto(int userId) {
-            LocalLog.d(TAG, "opMemberOutInto() enter userId" + userId);
-            if (deleteArrList.contains(String.valueOf(userId))) {
+        public void opMemberOutInto(int id) {
+            LocalLog.d(TAG, "opMemberOutInto() enter userId" + id);
+            if (deleteArrList.contains(String.valueOf(id))) {
                 LocalLog.d(TAG, "移除删除队列");
-                deleteArrList.remove(String.valueOf(userId));
+                deleteArrList.remove(String.valueOf(id));
             } else {
                 LocalLog.d(TAG, "加入删除队列");
-                deleteArrList.add(String.valueOf(userId));
+                deleteArrList.add(String.valueOf(id));
             }
         }
 
@@ -241,6 +246,24 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
         @Override
         public void onLongClick() {
             LocalLog.d(TAG, "onLongClick() enter");
+        }
+
+        @Override
+        public void opModifyDearName(int id) {
+            LocalLog.d(TAG, "修改昵称 id  = " + id);
+            Intent intent = new Intent();
+            intent.setClass(getContext(), DearNameModifyActivity.class);
+            intent.putExtra(getContext().getPackageName(), id);
+            startActivityForResult(intent, DEAR_NAME_MODIFY);
+        }
+
+        @Override
+        public void addDeleteAdmin(int id) {
+            PutDearNameParam putDearNameParam = new PutDearNameParam();
+            putDearNameParam
+                    .setId(id)
+                    .setAction("admin");
+            Presenter.getInstance(getContext()).modifyDearName(putDearNameParam);
         }
     };
 
@@ -262,18 +285,17 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     }
 
     @Override
-    public void response(AddAdminResponse addAdminResponse) {
-        LocalLog.d(TAG, "AddAdminResponse() enter");
-    }
-
-    @Override
-    public void response(AdminDeleteResponse adminDeleteResponse) {
-        LocalLog.d(TAG, "AddAdminResponse() enter");
+    public void response(AddDeleteAdminResponse addDeleteAdminResponse) {
+        LocalLog.d(TAG, "AddDeleteAdminResponse() enter " + addDeleteAdminResponse.toString());
+        if (addDeleteAdminResponse.getError() == 0) {
+            Toast.makeText(getContext(), addDeleteAdminResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), 1, 10);
+        }
     }
 
     @Override
     public void response(MemberDeleteResponse memberDeleteResponse) {
-        LocalLog.d(TAG, "AddAdminResponse() enter" + memberDeleteResponse.toString());
+        LocalLog.d(TAG, "AddDeleteAdminResponse() enter" + memberDeleteResponse.toString());
         //TODO 更新本地UI
         if (memberDeleteResponse.getError() == 0) {
             deleteMemberConfim.setVisibility(View.GONE);
@@ -282,7 +304,14 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     }
 
     @Override
-    public void response(DearNameModifyResponse dearNameModifyResponse) {
-        LocalLog.d(TAG, "AddAdminResponse() enter");
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case DEAR_NAME_MODIFY:
+                LocalLog.d(TAG, "昵称修改成功!");
+                Toast.makeText(getContext(), "昵称修改成功", Toast.LENGTH_SHORT).show();
+                Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), 1, 10);
+                break;
+        }
     }
 }

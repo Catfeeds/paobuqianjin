@@ -224,18 +224,17 @@ public class CircleMemberBarAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 switch (view.getId()) {
                     case R.id.bar_modify_dear:
                         LocalLog.d(TAG, "修改昵称");
-                        /*circleMemberViewHolder.memberNameInCircle.setEnabled(true);
-                        circleMemberViewHolder.memberNameInCircle.setBackgroundColor(ContextCompat.getColor(context, R.color.color_161727));
-                        circleMemberViewHolder.memberNameInCircle.setInputType(InputType.TYPE_CLASS_TEXT);
-                        circleMemberViewHolder.memberNameInCircle.setSelection(circleMemberViewHolder.memberNameInCircle.getText().length());*/
+                        opCallBackInterface.opModifyDearName(mData.getId());
                         break;
                     case R.id.bt_delete_admin:
                         LocalLog.d(TAG, "设为管理员或者移除管理权限");
                         switch (btDeleteAdmin.getText().toString()) {
-                            case "移除管理权限":
+                            case "移除管理员权限":
                                 LocalLog.d(TAG, "移除管理员权限");
+                                opCallBackInterface.addDeleteAdmin(mData.getId());
                                 break;
                             case "设为管理员":
+                                opCallBackInterface.addDeleteAdmin(mData.getId());
                                 LocalLog.d(TAG, "设为管理员");
                                 break;
                         }

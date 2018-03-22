@@ -1,8 +1,8 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
-import com.paobuqianjin.pbq.step.data.bean.gson.response.AddAdminResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteAdminResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AdminDeleteResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.DearNameModifyResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DearNameResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MemberDeleteResponse;
 
 /**
@@ -15,11 +15,11 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MemberDeleteResponse;
 *@description 成员管理接口
 */
 public interface MemberManagerInterface extends CallBackInterface {
-    public void response(AddAdminResponse addAdminResponse);
+    public void response(AddDeleteAdminResponse addAdminResponse);
 
     public void response(AdminDeleteResponse adminDeleteResponse);
 
     public void response(MemberDeleteResponse memberDeleteResponse);
 
-    public void response(DearNameModifyResponse dearNameModifyResponse);
+    public void response(DearNameResponse dearNameResponse);
 }

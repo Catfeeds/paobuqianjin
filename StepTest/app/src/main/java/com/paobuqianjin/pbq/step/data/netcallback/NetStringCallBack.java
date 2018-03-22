@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.data.netcallback;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteAdminResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
@@ -18,6 +19,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashListDetailResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DanListResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DearNameResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicIdDetailResponse;
@@ -79,6 +81,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashRecordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
+import com.paobuqianjin.pbq.step.presenter.im.DearNameModifyInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
@@ -430,6 +433,9 @@ public class NetStringCallBack extends StringCallback {
                 LocalLog.d(TAG, "删除成员成功");
                 MemberDeleteResponse memberDeleteResponse = new Gson().fromJson(s, MemberDeleteResponse.class);
                 ((CircleMemberManagerInterface) callBackInterface).response(memberDeleteResponse);
+            }else if(command == Engine.COMMAND_SET_AS_ADMIN){
+                AddDeleteAdminResponse addDeleteAdminResponse = new Gson().fromJson(s,AddDeleteAdminResponse.class);
+                ((CircleMemberManagerInterface) callBackInterface).response(addDeleteAdminResponse);
             }
 
         } else if (callBackInterface != null
@@ -664,6 +670,9 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null && callBackInterface instanceof RechargeDetailInterface) {
             RechargeDetailResponse rechargeDetailResponse = new Gson().fromJson(s, RechargeDetailResponse.class);
             ((RechargeDetailInterface) callBackInterface).response(rechargeDetailResponse);
+        } else if (callBackInterface != null && callBackInterface instanceof DearNameModifyInterface) {
+            DearNameResponse dearNameResponse = new Gson().fromJson(s, DearNameResponse.class);
+            ((DearNameModifyInterface) callBackInterface).response(dearNameResponse);
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }

@@ -208,6 +208,11 @@
             android:name=".view.activity.SponsorDetailActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
+
+        <activity
+            android:name=".view.activity.DearNameModifyActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme"></activity>
         <!-- 商品图片详情 -->
         <activity
             android:name=".view.activity.SponsorGoodsPicLookActivity"

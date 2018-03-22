@@ -28,6 +28,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostUserStepParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
@@ -52,6 +53,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CrashRecordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
+import com.paobuqianjin.pbq.step.presenter.im.DearNameModifyInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
@@ -174,6 +176,7 @@ public final class Engine {
     private DanCircleInterface danCircleInterface;
     private CircleStepDetailDanInterface circleStepDetailDanInterface;
     private RechargeDetailInterface rechargeDetailInterface;
+    private DearNameModifyInterface dearNameModifyInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -254,6 +257,8 @@ public final class Engine {
     public final static int COMMAND_DELETE_MEMBER = 72;
     public final static int COMMAND_RECHARGE_RECORD = 73;
     public final static int COMMAND_SPONSOR_PKG = 74;
+    public final static int COMMAND_DEAR_NAME = 75;
+    public final static int COMMAND_SET_AS_ADMIN =76;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -878,6 +883,56 @@ public final class Engine {
                 .execute(new NetStringCallBack(circleMemberManagerInterface, COMMAND_DELETE_MEMBER));
     }
 
+    public void modifyDearName(PutDearNameParam putDearNameParam) {
+
+        String url = NetApi.urlCircleMember +"/"+String.valueOf(putDearNameParam.getId());
+        LocalLog.d(TAG, "modifyDearName() enter " + putDearNameParam.paramString() + ", url = " + url);
+        switch (putDearNameParam.getAction()) {
+            case "remark":
+                LocalLog.d(TAG, "修改昵称");
+                OkHttpUtils
+                        .put()
+                        .requestBody(new RequestBody() {
+                            @Override
+                            public MediaType contentType() {
+                                return MediaType.parse("application/x-www-form-urlencoded");
+                            }
+
+                            @Override
+                            public void writeTo(BufferedSink sink) throws IOException {
+
+                            }
+                        })
+                        .url(url)
+                        .param("action","remark")
+                        .param("nickname",putDearNameParam.getNickname())
+                        .build()
+                        .execute(new NetStringCallBack(dearNameModifyInterface, COMMAND_DEAR_NAME));
+                break;
+            case "admin":
+                LocalLog.d(TAG, "设置为管理员");
+                OkHttpUtils
+                        .put()
+                        .requestBody(new RequestBody() {
+                            @Override
+                            public MediaType contentType() {
+                                return MediaType.parse("application/x-www-form-urlencoded");
+                            }
+
+                            @Override
+                            public void writeTo(BufferedSink sink) throws IOException {
+
+                            }
+                        })
+                        .url(url)
+                        .param("action","admin")
+                        .build()
+                        .execute(new NetStringCallBack(circleMemberManagerInterface, COMMAND_SET_AS_ADMIN));
+                break;
+        }
+
+    }
+
     //关于我们类型 http://119.29.10.64/v1/abouttype
     public void getAboutType() {
         LocalLog.d(TAG, "getAboutType() enter");
@@ -1264,7 +1319,7 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(homePageInterface,COMMAND_SPONSOR_PKG));
+                .execute(new NetStringCallBack(homePageInterface, COMMAND_SPONSOR_PKG));
     }
 
     //TODO
@@ -1935,6 +1990,8 @@ public final class Engine {
             circleStepDetailDanInterface = (CircleStepDetailDanInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof RechargeDetailInterface) {
             rechargeDetailInterface = (RechargeDetailInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DearNameModifyInterface) {
+            dearNameModifyInterface = (DearNameModifyInterface) uiCallBackInterface;
         }
     }
 
@@ -2032,6 +2089,8 @@ public final class Engine {
             circleStepDetailDanInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof RechargeDetailInterface) {
             rechargeDetailInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DearNameModifyInterface) {
+            dearNameModifyInterface = null;
         }
     }
 }

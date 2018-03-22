@@ -15,6 +15,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
@@ -197,7 +198,7 @@ public final class Presenter {
         engine.getHomePageIncome(action, page, pageSize);
     }
 
-    public void getSponsorRedPkg(){
+    public void getSponsorRedPkg() {
         engine.getSponsorRedPkg();
     }
 
@@ -371,6 +372,11 @@ public final class Presenter {
     public void deleteCircleMember(String idStr) {
         engine.deleteCircleMember(idStr);
     }
+
+    public void modifyDearName(PutDearNameParam putDearNameParam) {
+        engine.modifyDearName(putDearNameParam);
+    }
+
 
     //TODO 圈子订单WX
     public void postCircleOrder(PayOrderParam wxPayOrderParam) {

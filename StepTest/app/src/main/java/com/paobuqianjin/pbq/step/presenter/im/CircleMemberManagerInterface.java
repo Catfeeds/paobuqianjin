@@ -1,9 +1,8 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
-import com.paobuqianjin.pbq.step.data.bean.gson.response.AddAdminResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteAdminResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AdminDeleteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.DearNameModifyResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MemberDeleteResponse;
 
 /**
@@ -13,11 +12,8 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MemberDeleteResponse;
 public interface CircleMemberManagerInterface extends CallBackInterface {
     public void response(CircleMemberResponse circleMemberResponse);
 
-    public void response(AddAdminResponse addAdminResponse);
-
-    public void response(AdminDeleteResponse adminDeleteResponse);
+    public void response(AddDeleteAdminResponse addAdminResponse);
 
     public void response(MemberDeleteResponse memberDeleteResponse);
 
-    public void response(DearNameModifyResponse dearNameModifyResponse);
 }
