@@ -446,11 +446,14 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 switch (msg.what) {
                     case MSG_UPDATE_STEP:
                         //ava.lang.NullPointerException: Attempt to invoke virtual method 'android.content.Context android.content.Context.getApplicationContext()' on a null obje
-                        LocalLog.d(TAG,"MSG_UPDATE_STEP msg" + msg.arg1);
+                        LocalLog.d(TAG,"MSG_UPDATE_STEP msg " + msg.arg1);
                         if (homePageFragment.getContext() != null) {
-                            if (msg.arg1 < 0) {
+                            if (msg.arg1 > 0) {
                                 Presenter.getInstance(homePageFragment.getContext()).postUserStep(msg.arg1);
                             }
+                        }
+                        if(hasMessages(MSG_UPDATE_STEP)){
+                            removeMessages(MSG_UPDATE_STEP);
                         }
                         break;
                     default:
