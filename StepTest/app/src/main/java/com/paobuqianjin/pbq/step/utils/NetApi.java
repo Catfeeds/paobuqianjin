@@ -124,5 +124,7 @@ public class NetApi {
     public final static String urlInvite = "http://119.29.10.64/v1/userinviter";
     //TODO 用户在圈子中的排名 http://119.29.10.64/v1/Circle/getUserCircleRank?userid=30&circleid=100302
     public final static String urlUserCircleRank = "http://119.29.10.64/v1/Circle/getUserCircleRank?userid=";
+    //TODO 获取附近广告商户
+    public final static String urlBusiness = "http://119.29.10.64/v1/Business";
 
 }

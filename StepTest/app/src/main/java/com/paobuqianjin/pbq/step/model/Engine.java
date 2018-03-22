@@ -253,6 +253,8 @@ public final class Engine {
     public final static int COMMAND_POST_REV_RED_PKG = 71;
     public final static int COMMAND_DELETE_MEMBER = 72;
     public final static int COMMAND_RECHARGE_RECORD = 73;
+    public final static int COMMAND_SPONSOR_PKG = 74;
+
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
     }
@@ -557,7 +559,7 @@ public final class Engine {
                 .url(url)
                 .addParams("userid", String.valueOf(getId(mContext)))
                 .build()
-                .execute(new NetStringCallBack(rechargeDetailInterface,COMMAND_RECHARGE_RECORD));
+                .execute(new NetStringCallBack(rechargeDetailInterface, COMMAND_RECHARGE_RECORD));
     }
 
     //获取验证码
@@ -1254,6 +1256,15 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(homePageInterface, COMMAND_POST_USER_STEP));
+    }
+
+    public void getSponsorRedPkg() {
+        String url = NetApi.urlBusiness + "?userid=" + String.valueOf(getId(mContext));
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(homePageInterface,COMMAND_SPONSOR_PKG));
     }
 
     //TODO

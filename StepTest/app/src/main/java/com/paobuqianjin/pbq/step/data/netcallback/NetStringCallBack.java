@@ -51,6 +51,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RechargeDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseRecordResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskMyReleaseResponse;
@@ -450,6 +451,10 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_INCOME_MONTH) {
                 IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
                 ((HomePageInterface) callBackInterface).responseMonthIncome(incomeResponse);
+            } else if (command == Engine.COMMAND_SPONSOR_PKG) {
+                LocalLog.d(TAG, "商圈红包");
+                SponsorRedPkgResponse sponsorRedPkgResponse = new Gson().fromJson(s, SponsorRedPkgResponse.class);
+                ((HomePageInterface) callBackInterface).response(sponsorRedPkgResponse);
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof NearByInterface

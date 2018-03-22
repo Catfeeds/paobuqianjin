@@ -197,6 +197,10 @@ public final class Presenter {
         engine.getHomePageIncome(action, page, pageSize);
     }
 
+    public void getSponsorRedPkg(){
+        engine.getSponsorRedPkg();
+    }
+
     //TODO 获取收益
     public void getIncome(String action, int page, int pageSize) {
         engine.getIncome(action, page, pageSize);
