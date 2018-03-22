@@ -18,17 +18,17 @@
         app:tabIndicatorHeight="4dp"></android.support.design.widget.TabLayout>
 
     <ImageView
-        android:layout_alignBottom="@+id/in_out_come_tab"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_alignBottom="@+id/in_out_come_tab"
         android:background="@color/color_8a8a8a" />
 
-    <com.paobuqianjin.pbq.step.view.base.view.CustomViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/income_pager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/in_out_come_tab">
 
-    </com.paobuqianjin.pbq.step.view.base.view.CustomViewPager>
+    </android.support.v4.view.ViewPager>
 
 </RelativeLayout>

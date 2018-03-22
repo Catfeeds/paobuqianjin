@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.base.adapter.CirclePageAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.CustomViewPager;
@@ -44,7 +46,7 @@ public class InOutComeFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.in_out_come_tab)
     TabLayout inOutComeTab;
     @Bind(R.id.income_pager)
-    CustomViewPager incomePager;
+    ViewPager incomePager;
     CrashDetailFragment incomeDetailFragment;
     RechargeDetailFragment rechargeDetailFragment;
     String[] titles = {"充值明细", "提现明细"};
@@ -81,7 +83,8 @@ public class InOutComeFragment extends BaseBarStyleTextViewFragment {
                 , getActivity().getSupportFragmentManager(), fragments, titles);
 
         inOutComeTab = (TabLayout) viewRoot.findViewById(R.id.in_out_come_tab);
-        incomePager = (CustomViewPager) viewRoot.findViewById(R.id.income_pager);
+        incomePager = (ViewPager) viewRoot.findViewById(R.id.income_pager);
+
         incomePager.setAdapter(tabAdapter);
 
         inOutComeTab.setupWithViewPager(incomePager);
