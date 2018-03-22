@@ -46,7 +46,7 @@ public class InOutComeFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.income_pager)
     CustomViewPager incomePager;
     CrashDetailFragment incomeDetailFragment;
-    OutcomeDetailFragment outcomeDetailFragment;
+    RechargeDetailFragment rechargeDetailFragment;
     String[] titles = {"充值明细", "提现明细"};
 
     @Override
@@ -71,11 +71,11 @@ public class InOutComeFragment extends BaseBarStyleTextViewFragment {
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         incomeDetailFragment = new CrashDetailFragment();
-        outcomeDetailFragment = new OutcomeDetailFragment();
+        rechargeDetailFragment = new RechargeDetailFragment();
 
         List<Fragment> fragments = new ArrayList<>();
 
-        fragments.add(outcomeDetailFragment);
+        fragments.add(rechargeDetailFragment);
         fragments.add(incomeDetailFragment);
         TabAdapter tabAdapter = new TabAdapter(getContext()
                 , getActivity().getSupportFragmentManager(), fragments, titles);

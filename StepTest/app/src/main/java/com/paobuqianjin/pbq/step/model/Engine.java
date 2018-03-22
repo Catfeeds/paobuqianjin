@@ -71,6 +71,7 @@ import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.QueryRedPkgInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
+import com.paobuqianjin.pbq.step.presenter.im.RechargeDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseRecordInterface;
@@ -172,7 +173,7 @@ public final class Engine {
     private FriendHonorDetailInterface friendHonorDetailInterface;
     private DanCircleInterface danCircleInterface;
     private CircleStepDetailDanInterface circleStepDetailDanInterface;
-
+    private RechargeDetailInterface rechargeDetailInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -251,7 +252,7 @@ public final class Engine {
     public final static int COMMAND_FRIEND_HONOR = 70;
     public final static int COMMAND_POST_REV_RED_PKG = 71;
     public final static int COMMAND_DELETE_MEMBER = 72;
-
+    public final static int COMMAND_RECHARGE_RECORD = 73;
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
     }
@@ -547,6 +548,16 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(crashRecordInterface, COMMAND_CRASH_RECORD));
+    }
+
+    public void getRechargeRecord() {
+        String url = NetApi.urlCrashTo + "/rechargeList";
+        OkHttpUtils
+                .post()
+                .url(url)
+                .addParams("userid", String.valueOf(getId(mContext)))
+                .build()
+                .execute(new NetStringCallBack(rechargeDetailInterface,COMMAND_RECHARGE_RECORD));
     }
 
     //获取验证码
@@ -1362,7 +1373,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(stepDollarDetailInterface, COMMAND_GET_USER_INFO));
     }
 
-    public void getUserPackageMoney(){
+    public void getUserPackageMoney() {
         String url = NetApi.urlUser + String.valueOf(getId(mContext));
         LocalLog.d(TAG, "getUserDollarStep() url = " + url);
         OkHttpUtils
@@ -1371,6 +1382,7 @@ public final class Engine {
                 .build()
                 .execute(new NetStringCallBack(userIncomInterface, COMMAND_GET_USER_INFO));
     }
+
     //TODO 关注接口
     public void getFollows(String action, int page, int pagesize) {
         String url = NetApi.urlUserFollow + "?action=" + action + "&userid=" + String.valueOf(getId(mContext))
@@ -1910,6 +1922,8 @@ public final class Engine {
             friendHonorDetailInterface = (FriendHonorDetailInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CircleStepDetailDanInterface) {
             circleStepDetailDanInterface = (CircleStepDetailDanInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof RechargeDetailInterface) {
+            rechargeDetailInterface = (RechargeDetailInterface) uiCallBackInterface;
         }
     }
 
@@ -2005,6 +2019,8 @@ public final class Engine {
             friendHonorDetailInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof CircleStepDetailDanInterface) {
             circleStepDetailDanInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof RechargeDetailInterface) {
+            rechargeDetailInterface = null;
         }
     }
 }

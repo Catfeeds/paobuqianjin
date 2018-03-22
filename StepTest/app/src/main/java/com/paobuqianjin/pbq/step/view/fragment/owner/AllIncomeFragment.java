@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.WalletRedPkgIncomeAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -38,6 +40,11 @@ public class AllIncomeFragment extends BaseFragment {
         return rootView;
     }
 
+    public void setData(AllIncomeResponse allIncomeResponse) {
+        if (allIncomeRecycler != null) {
+            allIncomeRecycler.setAdapter(new WalletRedPkgIncomeAdapter(getContext(),allIncomeResponse.getData().getData()));
+        }
+    }
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);

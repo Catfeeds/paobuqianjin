@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
@@ -26,10 +27,10 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
     private final static String TAG = WalletRedPkgIncomeAdapter.class.getSimpleName();
     private final static int defaultCount = 8;
     private Context mContext;
-    private List<IncomeResponse.DataBeanX.DataBean> mData;
+    private List<?> mData;
 
     //TODO adapter data
-    public WalletRedPkgIncomeAdapter(Context context, List<IncomeResponse.DataBeanX.DataBean> data) {
+    public WalletRedPkgIncomeAdapter(Context context, List<?> data) {
         super();
         mContext = context;
         mData = data;
@@ -46,16 +47,26 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
     }
 
     private void updateListItem(WalletRedPkgIncomeListViewHolder holder, int position) {
-        LocalLog.d(TAG,"updateListItem() enter");
+        LocalLog.d(TAG, "updateListItem() enter");
 
         //转换为毫秒级
-        long createTime = mData.get(position).getCreate_time();
-        LocalLog.d(TAG, "createTime = " + createTime);
-        String dateStr = DateTimeUtil.formatDateTime(createTime*1000, DateTimeUtil.DF_YYYY_MM_DD);
-        LocalLog.d(TAG, "dateStr = " + dateStr);
-        holder.date.setText(dateStr);
-        holder.addIncome.setText(String.valueOf(mData.get(position).getAmount()));
-        holder.incomeFrom.setText(String.valueOf(mData.get(position).getName()));
+        if (mData.get(position) instanceof IncomeResponse.DataBeanX.DataBean) {
+            long createTime = ((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
+            LocalLog.d(TAG, "createTime = " + createTime);
+            String dateStr = DateTimeUtil.formatDateTime(createTime * 1000, DateTimeUtil.DF_YYYY_MM_DD);
+            LocalLog.d(TAG, "dateStr = " + dateStr);
+            holder.date.setText(dateStr);
+            holder.addIncome.setText(String.valueOf(((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getAmount()));
+            holder.incomeFrom.setText(String.valueOf(((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
+        } else if (mData.get(position) instanceof AllIncomeResponse.DataBeanX.DataBean) {
+            long createTime = ((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
+            LocalLog.d(TAG, "createTime = " + createTime);
+            String dateStr = DateTimeUtil.formatDateTime(createTime * 1000, DateTimeUtil.DF_YYYY_MM_DD);
+            LocalLog.d(TAG, "dateStr = " + dateStr);
+            holder.date.setText(dateStr);
+            holder.addIncome.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getAmount()));
+            holder.incomeFrom.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
+        }
     }
 
     @Override

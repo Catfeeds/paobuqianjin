@@ -68,6 +68,8 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
     @Override
     public void response(CrashListDetailResponse crashListDetailResponse) {
         LocalLog.d(TAG, "CrashListDetailResponse() enter " + crashListDetailResponse.toString());
-        incomeRecycler.setAdapter(new IncomeAdater(getContext(),crashListDetailResponse.getData().getData()));
+        if (crashListDetailResponse.getError() == 0) {
+            incomeRecycler.setAdapter(new IncomeAdater(getContext(), crashListDetailResponse.getData().getData()));
+        }
     }
 }

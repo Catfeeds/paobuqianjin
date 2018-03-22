@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashListDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RechargeDetailResponse;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
@@ -65,7 +66,20 @@ public class IncomeAdater extends RecyclerView.Adapter<IncomeAdater.IncomeDetail
             } else if (((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getStatus() == 1) {
                 LocalLog.d(TAG, "提现成功");
             }
-            holder.data.setText("￥:" + ((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getActual_amount() +"元");
+            holder.data.setText("￥:" + ((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getActual_amount() + "元");
+        } else if (mData.get(position) instanceof RechargeDetailResponse.DataBeanX.DataBean) {
+            if (((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getPtype() == 2) {
+                holder.incomeDetailDes.setText("微信充值");
+            } else if (((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getPtype() == 1) {
+                holder.incomeDetailDes.setText("支付宝充值");
+            } else if (((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getPtype() == 3) {
+                holder.incomeDetailDes.setText("银行卡充值");
+            }
+            long create_time = ((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
+            String date = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_YYYY_MM_DD_HH_MM);
+            String dateStr = date.replace("-", "/");
+            holder.incomeDetailTime.setText(dateStr);
+            holder.data.setText("￥:" + ((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getTotal_fee() + "元");
         }
     }
 

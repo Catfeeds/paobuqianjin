@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,10 @@ import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RechargeDetailResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.RechargeDetailInterface;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.IncomeAdater;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -19,7 +24,8 @@ import butterknife.ButterKnife;
  * Created by pbq on 2018/3/10.
  */
 
-public class OutcomeDetailFragment extends BaseFragment {
+public class RechargeDetailFragment extends BaseFragment implements RechargeDetailInterface {
+    private final static String TAG = RechargeDetailFragment.class.getSimpleName();
     @Bind(R.id.out_detail_recycler)
     RecyclerView outDetailRecycler;
     LinearLayoutManager layoutManager;
@@ -27,6 +33,12 @@ public class OutcomeDetailFragment extends BaseFragment {
     @Override
     protected int getLayoutResId() {
         return R.layout.outcome_detail_fg;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Presenter.getInstance(getContext()).attachUiInterface(this);
     }
 
     @Override
@@ -43,12 +55,23 @@ public class OutcomeDetailFragment extends BaseFragment {
         outDetailRecycler = (RecyclerView) viewRoot.findViewById(R.id.out_detail_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         outDetailRecycler.setLayoutManager(layoutManager);
-        outDetailRecycler.setAdapter(new IncomeAdater(getContext(), null));
+        //outDetailRecycler.setAdapter(new IncomeAdater(getContext(), null));
+        Presenter.getInstance(getContext()).getRechargeRecord();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
+    }
+
+    @Override
+    public void response(RechargeDetailResponse rechargeDetailResponse) {
+        LocalLog.d(TAG, "RechargeDetailResponse() enter  "+ rechargeDetailResponse.toString());
+        if(rechargeDetailResponse.getError() == 0){
+            outDetailRecycler.setAdapter(new IncomeAdater(getContext(), rechargeDetailResponse.getData().getData()));
+        }
+
     }
 }

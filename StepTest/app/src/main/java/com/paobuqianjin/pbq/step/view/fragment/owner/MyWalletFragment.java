@@ -215,6 +215,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     public void responseAll(AllIncomeResponse allIncomeResponse) {
         LocalLog.d(TAG, " 所有收益 responseAll() enter" + allIncomeResponse.toString());
         if (allIncomeResponse.getError() == 0) {
+            allIncomeFragment.setData(allIncomeResponse);
             if (allIncomeResponse.getData() != null) {
                 totalIncomeNum.setText(String.valueOf(allIncomeResponse.getData().getTotal_amount()));
             }

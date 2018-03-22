@@ -363,7 +363,8 @@ public final class Presenter {
     public void getCircleMemberAll(int circleId, int pageInex, int pageSize) {
         engine.getCircleMemberAll(circleId, pageInex, pageSize);
     }
-    public void deleteCircleMember(String idStr){
+
+    public void deleteCircleMember(String idStr) {
         engine.deleteCircleMember(idStr);
     }
 
@@ -460,6 +461,10 @@ public final class Presenter {
         engine.getCrashRecord();
     }
 
+    public void getRechargeRecord() {
+        engine.getRechargeRecord();
+    }
+
     //TODO 绑定提现账户
     public void bindCrashAccount(BindCardPostParam bindCardPostParam) {
         engine.bindCrashAccount(bindCardPostParam);
@@ -487,9 +492,10 @@ public final class Presenter {
         engine.getUserDollarStep();
     }
 
-    public void getUserPackageMoney(){
+    public void getUserPackageMoney() {
         engine.getUserPackageMoney();
     }
+
     //
     public void getWeather(double latitude, double longitude) {
         engine.getWeather(latitude, longitude);

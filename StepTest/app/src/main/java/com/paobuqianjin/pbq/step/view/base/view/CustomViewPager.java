@@ -5,6 +5,8 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by pbq on 2018/2/27.
  */
@@ -33,5 +35,19 @@ public class CustomViewPager extends ViewPager {
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        try {
+            Field mFirstLayout = ViewPager.class.getDeclaredField("mFirstLayout");
+            mFirstLayout.setAccessible(true);
+            mFirstLayout.set(this, false);
+            getAdapter().notifyDataSetChanged();
+            setCurrentItem(getCurrentItem());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
