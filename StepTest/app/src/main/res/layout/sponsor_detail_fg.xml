@@ -9,7 +9,7 @@
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/sponsor_detail">
 
         <RelativeLayout
@@ -104,6 +104,7 @@
                     android:textSize="14dp" />
 
                 <TextView
+                    android:id="@+id/sponsor_tel_num_str"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -149,6 +150,7 @@
                     android:textSize="14dp" />
 
                 <TextView
+                    android:id="@+id/sponsor_time_num_str"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -194,6 +196,7 @@
                     android:textSize="14dp" />
 
                 <TextView
+                    android:id="@+id/location_str"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -231,6 +234,7 @@
                     android:textSize="14dp" />
 
                 <TextView
+                    android:id="@+id/more_str"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5pt"
@@ -256,6 +260,8 @@
                 android:layout_marginTop="10dp">
 
                 <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/goods_a"
                     android:layout_width="109dp"
                     android:layout_height="80dp"
                     android:layout_alignParentLeft="true"
@@ -263,20 +269,23 @@
                     android:src="@drawable/circle_live_default_b" />
 
                 <ImageView
+                    android:visibility="gone"
                     android:id="@+id/center_pic"
                     android:layout_width="109dp"
                     android:layout_height="80dp"
-                    android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/circle_live_default_b" />
 
                 <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/goods_b"
                     android:layout_width="109dp"
                     android:layout_height="80dp"
-                    android:layout_marginLeft="10dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginLeft="10dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/circle_live_default_b" />
             </RelativeLayout>

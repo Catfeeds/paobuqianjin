@@ -61,6 +61,10 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
         return rootView;
     }
 
+    public void setTitle(String title) {
+        tv_title.setText(title);
+    }
+
     public BaseBarImageViewFragment.ToolBarListener setToolBarListener() {
         return null;
     }
@@ -69,7 +73,7 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
         tv_title = getView(rootView, R.id.bar_title);
         tv_right = getView(rootView, R.id.bar_tv_right);
         tv_left = getView(rootView, R.id.bar_return_drawable);
-        rv_left = getView(rootView,R.id.button_return_bar);
+        rv_left = getView(rootView, R.id.button_return_bar);
         setToolBarListener();
         tv_left.setOnClickListener(clickListener);
         tv_right.setOnClickListener(clickListener);

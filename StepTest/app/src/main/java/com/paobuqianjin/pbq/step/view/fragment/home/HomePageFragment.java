@@ -278,12 +278,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         addFriendImage.setOnClickListener(onClickListener);
         homeTitle = (TextView) viewRoot.findViewById(R.id.home_title);
         monthIncomeHome = (TextView) viewRoot.findViewById(R.id.month_income_home);
-        updateHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //popRedPkg();
-            }
-        }, 2000);
     }
 
     @Override
@@ -356,11 +350,11 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         if (toayStep != null) {
             toayStep.setText(String.valueOf(stepToday));
         }
-        Presenter.getInstance(getContext()).postUserStep(stepToday);
+        LocalLog.d(TAG,"stepToday = "  + stepToday);
         Message message = Message.obtain();
         message.what = MSG_UPDATE_STEP;
         message.arg1 = stepToday;
-        updateHandler.sendMessageDelayed(message, 5000);
+        updateHandler.sendMessageDelayed(message, 10000);
     }
 
     @Override
@@ -451,11 +445,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             if (homePageFragment != null) {
                 switch (msg.what) {
                     case MSG_UPDATE_STEP:
-                        if (hasMessages(MSG_UPDATE_STEP)) {
-                            removeMessages(MSG_UPDATE_STEP);
-                        }
                         //ava.lang.NullPointerException: Attempt to invoke virtual method 'android.content.Context android.content.Context.getApplicationContext()' on a null obje
-
+                        LocalLog.d(TAG,"MSG_UPDATE_STEP msg" + msg.arg1);
                         if (homePageFragment.getContext() != null) {
                             if (msg.arg1 < 0) {
                                 Presenter.getInstance(homePageFragment.getContext()).postUserStep(msg.arg1);
