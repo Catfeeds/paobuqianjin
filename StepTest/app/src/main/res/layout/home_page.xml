@@ -127,7 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/income_today"
-                android:text="￥8.41元"
+                android:text="￥0.00元"
                 android:textColor="@color/color_f8"
                 android:textSize="18dp" />
         </RelativeLayout>
@@ -177,7 +177,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_toEndOf="@+id/moth_income_ico"
-                    android:text=""
+                    android:text="0.00元"
                     android:textColor="@color/color_f8"
                     android:textSize="18dp" />
             </RelativeLayout>
