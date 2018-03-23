@@ -29,6 +29,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostPassWordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostUserStepParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWxQqBindPhoneParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
@@ -40,8 +41,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.FeedBackParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostIncomeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostMessageParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
@@ -63,6 +62,7 @@ import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.LoginBindPhoneInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
@@ -81,7 +81,6 @@ import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseRecordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SearchCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
-import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.StepDollarDetailInterface;
@@ -98,7 +97,6 @@ import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
-import com.squareup.picasso.Cache;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
@@ -180,6 +178,7 @@ public final class Engine {
     private RechargeDetailInterface rechargeDetailInterface;
     private DearNameModifyInterface dearNameModifyInterface;
     private ForgetPassWordInterface forgetPassWordInterface;
+    private LoginBindPhoneInterface loginBindPhoneInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -263,6 +262,8 @@ public final class Engine {
     public final static int COMMAND_DEAR_NAME = 75;
     public final static int COMMAND_SET_AS_ADMIN = 76;
     public final static int COMMAND_SET_PASS_WORD = 77;
+    public final static int COMMAND_PHONE_LOGIN = 78;
+    public final static int COMMAND_THIRD_BIND_PHONE = 79;
 
 
     public NetworkPolicy getNetworkPolicy() {
@@ -480,6 +481,16 @@ public final class Engine {
                 .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_REFRESH_PASSWORD));
     }
 
+    public void getLoginRecord(String userid) {
+        String url = NetApi.urlLoginRecord + userid;
+        LocalLog.d(TAG, "getLoginRecord() enter " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_PHONE_LOGIN));
+    }
+
     //手机号码注册
     public void registerByPhoneNumber(String[] userInfo) {
         LocalLog.d(TAG, "registerByPhoneNumber() enter");
@@ -529,6 +540,21 @@ public final class Engine {
                 .execute(new NetStringCallBack(signCodeInterface, COMMAND_GET_SIGN_CODE));
     }
 
+    public void getSignCodeLoginBind(String phone) {
+        String url = NetApi.urlSignCode + "/?mobile=" + phone;
+        LocalLog.d(TAG, "getSignCode() enter url  = " + url);
+        LocalLog.d(TAG, "getMsg() enter phone =" + phone);
+        if (!isPhone(phone)) {
+            Toast.makeText(mContext, "请输入一个手机号码:", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(loginBindPhoneInterface, COMMAND_GET_SIGN_CODE));
+    }
 
     public void getSignCodePassWord(String phone) {
         if (!isPhone(phone)) {
@@ -549,10 +575,30 @@ public final class Engine {
         LocalLog.d(TAG, "修改密码");
         OkHttpUtils
                 .post()
-                .url(NetApi.getUrlPassWord)
+                .url(NetApi.urlPassWord)
                 .params(postPassWordParam.getParams())
                 .build()
                 .execute(new NetStringCallBack(forgetPassWordInterface, COMMAND_SET_PASS_WORD));
+    }
+
+    public void checkLoginBindPhone(CheckSignCodeParam checkSignCodeParam) {
+        LocalLog.d(TAG, checkSignCodeParam.paramString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlSignCodeCheck)
+                .params(checkSignCodeParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(loginBindPhoneInterface, COMMAND_CHECK_SIGN_CODE));
+    }
+
+    public void bindLoginPhone(PostWxQqBindPhoneParam postWxQqBindPhoneParam) {
+        LocalLog.d(TAG, "bindLoginPhone() enter " + postWxQqBindPhoneParam.paramString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlBindPhone)
+                .params(postWxQqBindPhoneParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(loginBindPhoneInterface, COMMAND_THIRD_BIND_PHONE));
     }
 
     public void checkSignCodePassWord(CheckSignCodeParam checkSignCodeParam) {
@@ -620,17 +666,7 @@ public final class Engine {
                 .get()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(new SignCodeCallBackInterface() {
-                    @Override
-                    public void signCodeCallBack(SignCodeResponse response) {
-                        Toast.makeText(mContext, "验证码已发送，请查看短信！" + response.getMessage() + " data : " + response.getData(), Toast.LENGTH_SHORT).show();
-                        if (loginCallBackInterface != null && loginCallBackInterface instanceof LoginSignCallbackInterface) {
-                            // 设置验码
-                            ((LoginSignCallbackInterface) loginCallBackInterface).requestPhoneSignCodeCallBack(response.getData());
-                        }
-                        return;
-                    }
-                }));
+                .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_GET_SIGN_CODE));
     }
 
     /**
@@ -2039,6 +2075,8 @@ public final class Engine {
             dearNameModifyInterface = (DearNameModifyInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ForgetPassWordInterface) {
             forgetPassWordInterface = (ForgetPassWordInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof LoginBindPhoneInterface) {
+            loginBindPhoneInterface = (LoginBindPhoneInterface) uiCallBackInterface;
         }
     }
 
@@ -2140,6 +2178,8 @@ public final class Engine {
             dearNameModifyInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ForgetPassWordInterface) {
             forgetPassWordInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof LoginBindPhoneInterface) {
+            loginBindPhoneInterface = null;
         }
     }
 }

@@ -74,7 +74,10 @@
             android:layout_alignTop="@+id/dear_des"
             android:layout_marginRight="14dp"
             android:background="@null"
+            android:gravity="right"
             android:hint="必填"
+            android:maxLength="32"
+            android:maxLines="1"
             android:textColor="@color/color_161727"
             android:textColorHint="@color/color_8a8a8a"
             android:textSize="16dp" />
@@ -110,8 +113,7 @@
             android:layout_marginRight="9dp"
             android:layout_toStartOf="@+id/man"
             android:background="@drawable/shape_25_dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/selected_icon" />
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/man"
@@ -132,8 +134,7 @@
             android:layout_marginRight="9dp"
             android:layout_toStartOf="@+id/nv"
             android:background="@drawable/shape_25_dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/selected_icon" />
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/nv"

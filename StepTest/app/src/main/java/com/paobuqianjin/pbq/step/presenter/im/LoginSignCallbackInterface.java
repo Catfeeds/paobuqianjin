@@ -1,6 +1,8 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
@@ -16,25 +18,27 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse
 */
 public interface LoginSignCallbackInterface extends LoginCallBackInterface {
     /*@desc获取验证码
-    *@function requestPhoneSignCodeCallBack
+    *@function response
     *@param
     *@return
     */
-    public void requestPhoneSignCodeCallBack(int signCode);
+    public void response(GetSignCodeResponse getSignCodeResponse);
 
     /*@desc 登陆请求
     *@function requestLogin
     *@param
     *@return
     */
-    public void requestPhoneLoginCallback(LoginResponse loginResponse);
+    public void response(LoginResponse loginResponse);
 
     /*@desc 三方登入
-    *@function requestThirdLoginCallBack
+    *@function response
     *@param
     *@return 
     */
-    public void requestThirdLoginCallBack(ThirdPartyLoginResponse thirdPartyLoginResponse);
+    public void response(ThirdPartyLoginResponse thirdPartyLoginResponse);
 
-    public void registerByPhoneCallBack(SignUserResponse response);
+    public void response(SignUserResponse response);
+
+    public void response(LoginRecordResponse loginRecordResponse);
 }

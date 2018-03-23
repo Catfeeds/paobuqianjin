@@ -3,10 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/bar_bind_phone"
+        layout="@layout/bar_return_a_style"></include>
+
     <RelativeLayout
         android:id="@+id/phone_span"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_below="@+id/bar_bind_phone"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:layout_marginTop="80dp">
@@ -22,6 +27,7 @@
             android:textSize="15dp" />
 
         <EditText
+            android:id="@+id/phone_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/phone_num"
@@ -29,6 +35,7 @@
             android:layout_marginLeft="20dp"
             android:layout_toEndOf="@+id/phone_num"
             android:background="@null"
+            android:inputType="phone"
             android:hint="请输入手机号码"
             android:textColor="@color/color_161727"
             android:textColorHint="@color/color_8a8a8a"
@@ -61,6 +68,7 @@
             android:textSize="15dp" />
 
         <EditText
+            android:id="@+id/sign_code_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/sign_code_num"
@@ -68,12 +76,14 @@
             android:layout_marginLeft="20dp"
             android:layout_toEndOf="@+id/sign_code_num"
             android:background="@null"
+            android:inputType="number"
             android:hint="请输入验证码"
             android:textColor="@color/color_161727"
             android:textColorHint="@color/color_8a8a8a"
             android:textSize="15dp" />
 
         <TextView
+            android:id="@+id/sign_code_t"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/sign_code_num"
@@ -105,11 +115,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
-            android:text="密码"
+            android:text="密    码"
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
         <EditText
+            android:id="@+id/pass_word_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/pass_word"
@@ -117,12 +128,14 @@
             android:layout_marginLeft="20dp"
             android:layout_toEndOf="@+id/pass_word"
             android:background="@null"
+            android:inputType="textPassword"
             android:hint="请输入密码"
             android:textColor="@color/color_161727"
             android:textColorHint="@color/color_8a8a8a"
             android:textSize="15dp" />
 
         <ImageView
+            android:id="@+id/pass_y"
             android:layout_width="18dp"
             android:layout_height="13dp"
             android:layout_alignBottom="@+id/pass_word"
@@ -139,16 +152,16 @@
     </RelativeLayout>
 
     <Button
-        android:layout_below="@+id/password_span"
-        android:stateListAnimator="@null"
         android:id="@+id/confirm"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-       android:layout_marginTop="120dp"
+        android:layout_below="@+id/password_span"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
+        android:layout_marginTop="120dp"
         android:background="@drawable/rect_angle_background"
         android:gravity="center"
+        android:stateListAnimator="@null"
         android:text="确定"
         android:textColor="@color/color_fefefe"
         android:textSize="16dp" />

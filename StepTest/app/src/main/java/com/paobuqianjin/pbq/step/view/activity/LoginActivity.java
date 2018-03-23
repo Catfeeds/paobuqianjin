@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
@@ -45,6 +47,8 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelper.SoftKeyboardStateListener, LoginSignCallbackInterface {
     private final static String LOGIN_SUCCESS_ACTION = "com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION";
+    private final static String USER_FIT_ACTION_BIND = "com.paobuqianjin.pbq.USER_FIT_ACTION_BIND";
+    private final static String USER_FIT_ACTION_SETTING = "com.paobuqianjin.pbq.USER_FIT_ACTION_USER_SETTING";
     private final static String TAG = LoginActivity.class.getSimpleName();
     @Bind(R.id.wenxin)
     ImageView wenxin;
@@ -259,37 +263,77 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     }
 
     @Override
-    public void requestPhoneLoginCallback(LoginResponse loginResponse) {
+    public void response(LoginResponse loginResponse) {
         LocalLog.d(TAG, "手机号登入成功! 去获取用户信息!");
         Presenter.getInstance(this).steLogFlg(true);
         Presenter.getInstance(this).setId(loginResponse.getData().getId());
         Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
-        startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+        //startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
         //Presenter.getInstance(this).getUserInfo(loginResponse.getData().getId());
+        Presenter.getInstance(this).getLoginRecord(String.valueOf(loginResponse.getData().getId()));
     }
 
     @Override
-    public void requestPhoneSignCodeCallBack(int signCode) {
-        signCodeTV.setText(String.valueOf(signCode));
-    }
-
-    @Override
-    public void requestThirdLoginCallBack(ThirdPartyLoginResponse thirdPartyLoginResponse) {
-        if (thirdPartyLoginResponse.getData().getId() == 0) {
-            LocalLog.d(TAG, "首次登录,再次登录获取userid");
-            Presenter.getInstance(LoginActivity.this).postThirdPartyLogin(thirdPartyLoginParam);
-            return;
+    public void response(GetSignCodeResponse getSignCodeResponse) {
+        if (getSignCodeResponse.getError() == 0) {
+            Toast.makeText(this, getSignCodeResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        Presenter.getInstance(this).steLogFlg(true);
-        Presenter.getInstance(this).setId(thirdPartyLoginResponse.getData().getId());
-        Presenter.getInstance(this).setMobile(this, thirdPartyLoginResponse.getData().getMobile());
-        startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+    }
+
+    @Override
+    public void response(ThirdPartyLoginResponse thirdPartyLoginResponse) {
+        if (thirdPartyLoginResponse.getError() == 0) {
+            if (thirdPartyLoginResponse.getData().getId() == 0) {
+                LocalLog.d(TAG, "首次登录,再次登录获取userid");
+                Presenter.getInstance(LoginActivity.this).postThirdPartyLogin(thirdPartyLoginParam);
+                return;
+            }
+            if (thirdPartyLoginResponse.getData().getMobile() != null && !"".equals(thirdPartyLoginResponse.getData().getMobile())) {
+                LocalLog.d(TAG, "登录成功已经绑定过手机号码");
+                Presenter.getInstance(this).steLogFlg(true);
+                Presenter.getInstance(this).setId(thirdPartyLoginResponse.getData().getId());
+                Presenter.getInstance(this).setMobile(this, thirdPartyLoginResponse.getData().getMobile());
+                startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+            } else {
+                Intent intent = new Intent();
+                intent.setClass(this, UserFitActivity.class);
+                intent.setAction(USER_FIT_ACTION_BIND);
+                intent.putExtra("userinfo", thirdPartyLoginResponse.getData());
+                startActivity(intent);
+            }
+        }
 
     }
 
     @Override
-    public void registerByPhoneCallBack(SignUserResponse signUserResponse) {
+    public void response(LoginRecordResponse loginRecordResponse) {
+        LocalLog.d(TAG, "LoginRecordResponse() enter " + loginRecordResponse.toString());
+        if (loginRecordResponse.getError() == 1) {
+            LocalLog.d(TAG, "没有登录过");
+            startActivity(UserFitActivity.class, null, true, USER_FIT_ACTION_SETTING);
+        } else {
+            startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+        }
+    }
+
+    @Override
+    public void response(SignUserResponse signUserResponse) {
         Toast.makeText(this, signUserResponse.getMessage(), Toast.LENGTH_SHORT).show();
+        if (signUserResponse.getError() == 0) {
+            LocalLog.d(TAG, "注册成功! 去登陆页");
+            if (currentIndex == 0) {
+                LocalLog.e(TAG, "已经是登陆页了！");
+            } else {
+                backGround.setBackgroundResource(R.drawable.background_login);
+                signLayout.setVisibility(View.GONE);
+                loginLayout.setVisibility(View.VISIBLE);
+                currentIndex = 0;
+                blueSignLine.setVisibility(View.GONE);
+                blueLoginLine.setVisibility(View.VISIBLE);
+
+                loginOrSignTV.setText(getResources().getText(R.string.desc_login));
+            }
+        }
     }
 
     private UMAuthListener authListener = new UMAuthListener() {

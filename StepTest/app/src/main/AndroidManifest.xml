@@ -68,6 +68,15 @@
             android:theme="@style/ImageTranslucentTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
+            android:name=".view.activity.UserFitActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.USER_FIT_ACTION_BIND"></action>
+                <action android:name="com.paobuqianjin.pbq.USER_FIT_ACTION_USER_SETTING"></action>
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".view.activity.CreateCircleActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />

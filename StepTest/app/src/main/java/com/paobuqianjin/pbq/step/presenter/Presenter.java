@@ -16,6 +16,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostPassWordParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWxQqBindPhoneParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
@@ -154,21 +155,38 @@ public final class Presenter {
         engine.getSignCode(phone);
     }
 
+    public void getSignCodeLoginBind(String phone) {
+        engine.getSignCodeLoginBind(phone);
+    }
+
+    public void checkLoginBindPhone(CheckSignCodeParam checkSignCodeParam) {
+        engine.checkLoginBindPhone(checkSignCodeParam);
+    }
+
+    public void bindLoginPhone(PostWxQqBindPhoneParam postWxQqBindPhoneParam) {
+        engine.bindLoginPhone(postWxQqBindPhoneParam);
+    }
+
     public void checkSignCode(CheckSignCodeParam checkSignCodeParam) {
         engine.checkSignCode(checkSignCodeParam);
     }
 
-    public void checkSignCodePassWord(CheckSignCodeParam checkSignCodeParam){
+    public void checkSignCodePassWord(CheckSignCodeParam checkSignCodeParam) {
         engine.checkSignCodePassWord(checkSignCodeParam);
     }
 
-    public void getSignCodePassWord(String phone){
+    public void getSignCodePassWord(String phone) {
         engine.getSignCodePassWord(phone);
     }
 
-    public void postNewPassWord(PostPassWordParam postPassWordParam){
+    public void getLoginRecord(String userid) {
+        engine.getLoginRecord(userid);
+    }
+
+    public void postNewPassWord(PostPassWordParam postPassWordParam) {
         engine.postNewPassWord(postPassWordParam);
     }
+
     public void getMsg(String phone) {
         engine.getMsg(phone);
     }

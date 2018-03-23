@@ -34,6 +34,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginOutResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MemberDeleteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
@@ -92,6 +93,7 @@ import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
+import com.paobuqianjin.pbq.step.presenter.im.LoginBindPhoneInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
@@ -283,16 +285,20 @@ public class NetStringCallBack extends StringCallback {
             LocalLog.d(TAG, "disPatchResponse() enter body " + s);
             if (command == Engine.COMMAND_LOGIN_IN_BY_PHONE) {
                 LoginResponse loginResponse = new Gson().fromJson(s, LoginResponse.class);
-                ((LoginSignCallbackInterface) callBackInterface).requestPhoneLoginCallback(loginResponse);
-            }
-            if (command == Engine.COMMAND_LOGIN_BY_THIRD) {
+                ((LoginSignCallbackInterface) callBackInterface).response(loginResponse);
+            } else if (command == Engine.COMMAND_LOGIN_BY_THIRD) {
                 LocalLog.d(TAG, "三方登录成功");
                 ThirdPartyLoginResponse thirdPartyLoginResponse = new Gson().fromJson(s, ThirdPartyLoginResponse.class);
-                ((LoginSignCallbackInterface) callBackInterface).requestThirdLoginCallBack(thirdPartyLoginResponse);
-            }
-            if (command == Engine.COMMAND_REG_BY_PHONE) {
+                ((LoginSignCallbackInterface) callBackInterface).response(thirdPartyLoginResponse);
+            } else if (command == Engine.COMMAND_REG_BY_PHONE) {
                 SignUserResponse signUserResponse = new Gson().fromJson(s, SignUserResponse.class);
-                ((LoginSignCallbackInterface) callBackInterface).registerByPhoneCallBack(signUserResponse);
+                ((LoginSignCallbackInterface) callBackInterface).response(signUserResponse);
+            } else if (command == Engine.COMMAND_GET_SIGN_CODE) {
+                GetSignCodeResponse getSignCodeResponse = new Gson().fromJson(s, GetSignCodeResponse.class);
+                ((LoginSignCallbackInterface) callBackInterface).response(getSignCodeResponse);
+            } else if (command == Engine.COMMAND_PHONE_LOGIN) {
+                LoginRecordResponse loginRecordResponse = new Gson().fromJson(s, LoginRecordResponse.class);
+                ((LoginSignCallbackInterface) callBackInterface).response(loginRecordResponse);
             }
 
         } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {
@@ -689,6 +695,14 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_SET_PASS_WORD) {
                 PassWordResponse passWordResponse = new Gson().fromJson(s, PassWordResponse.class);
                 ((ForgetPassWordInterface) callBackInterface).response(passWordResponse);
+            }
+        } else if (callBackInterface != null && callBackInterface instanceof LoginBindPhoneInterface) {
+            if (command == Engine.COMMAND_GET_SIGN_CODE) {
+                GetSignCodeResponse getSignCodeResponse = new Gson().fromJson(s, GetSignCodeResponse.class);
+                ((LoginBindPhoneInterface) callBackInterface).response(getSignCodeResponse);
+            }else if(command == Engine.COMMAND_CHECK_SIGN_CODE){
+                CheckSignCodeResponse checkSignCodeResponse = new Gson().fromJson(s, CheckSignCodeResponse.class);
+                ((LoginBindPhoneInterface) callBackInterface).response(checkSignCodeResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

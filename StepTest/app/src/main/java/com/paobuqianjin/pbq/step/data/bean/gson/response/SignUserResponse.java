@@ -8,10 +8,12 @@ public class SignUserResponse {
     /**
      * error : 0
      * message : 注册成功
+     * data : {"userid":"68"}
      */
 
     private int error;
     private String message;
+    private DataBean data;
 
     public int getError() {
         return error;
@@ -29,11 +31,43 @@ public class SignUserResponse {
         this.message = message;
     }
 
+    public DataBean getData() {
+        return data;
+    }
+
+    public void setData(DataBean data) {
+        this.data = data;
+    }
+
     @Override
     public String toString() {
         return "SignUserResponse{" +
                 "error=" + error +
                 ", message='" + message + '\'' +
+                ", data=" + data +
                 '}';
+    }
+
+    public static class DataBean {
+        /**
+         * userid : 68
+         */
+
+        private String userid;
+
+        public String getUserid() {
+            return userid;
+        }
+
+        public void setUserid(String userid) {
+            this.userid = userid;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "userid='" + userid + '\'' +
+                    '}';
+        }
     }
 }
