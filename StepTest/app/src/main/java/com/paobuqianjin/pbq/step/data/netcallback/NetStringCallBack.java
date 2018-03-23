@@ -42,6 +42,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyReleaseTaskDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PassWordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostInviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostRevRedPkgResponse;
@@ -85,6 +86,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DearNameModifyInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ForgetPassWordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
@@ -677,6 +679,17 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null && callBackInterface instanceof DearNameModifyInterface) {
             DearNameResponse dearNameResponse = new Gson().fromJson(s, DearNameResponse.class);
             ((DearNameModifyInterface) callBackInterface).response(dearNameResponse);
+        } else if (callBackInterface != null && callBackInterface instanceof ForgetPassWordInterface) {
+            if (command == Engine.COMMAND_GET_SIGN_CODE) {
+                GetSignCodeResponse getSignCodeResponse = new Gson().fromJson(s, GetSignCodeResponse.class);
+                ((ForgetPassWordInterface) callBackInterface).response(getSignCodeResponse);
+            } else if (command == Engine.COMMAND_CHECK_SIGN_CODE) {
+                CheckSignCodeResponse checkSignCodeResponse = new Gson().fromJson(s, CheckSignCodeResponse.class);
+                ((ForgetPassWordInterface) callBackInterface).response(checkSignCodeResponse);
+            } else if (command == Engine.COMMAND_SET_PASS_WORD) {
+                PassWordResponse passWordResponse = new Gson().fromJson(s, PassWordResponse.class);
+                ((ForgetPassWordInterface) callBackInterface).response(passWordResponse);
+            }
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }

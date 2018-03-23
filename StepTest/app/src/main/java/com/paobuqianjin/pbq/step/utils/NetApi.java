@@ -126,5 +126,8 @@ public class NetApi {
     public final static String urlUserCircleRank = "http://119.29.10.64/v1/Circle/getUserCircleRank?userid=";
     //TODO 获取附近广告商户
     public final static String urlBusiness = "http://119.29.10.64/v1/Business";
+    //TODO 根据手机号码修改密码
+    public final static String getUrlPassWord = "http://119.29.10.64/v1/user/modifyPasswordByOldPassword";
+
 
 }

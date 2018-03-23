@@ -1,10 +1,15 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
 /**
- * Created by pbq on 2018/2/7.
+ * Created by pbq on 2018/3/23.
  */
-
-public class GetSignCodeResponse {
+/*
+@className :PassWordResponse
+*@date 2018/3/23
+*@author
+*@description 修改密码返回
+*/
+public class PassWordResponse {
     /**
      * error : 0
      * message : 提现成功

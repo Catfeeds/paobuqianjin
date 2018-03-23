@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostPassWordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostUserStepParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
@@ -56,6 +57,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DearNameModifyInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ForgetPassWordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
@@ -177,6 +179,7 @@ public final class Engine {
     private CircleStepDetailDanInterface circleStepDetailDanInterface;
     private RechargeDetailInterface rechargeDetailInterface;
     private DearNameModifyInterface dearNameModifyInterface;
+    private ForgetPassWordInterface forgetPassWordInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -259,6 +262,7 @@ public final class Engine {
     public final static int COMMAND_SPONSOR_PKG = 74;
     public final static int COMMAND_DEAR_NAME = 75;
     public final static int COMMAND_SET_AS_ADMIN = 76;
+    public final static int COMMAND_SET_PASS_WORD = 77;
 
 
     public NetworkPolicy getNetworkPolicy() {
@@ -523,6 +527,42 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(signCodeInterface, COMMAND_GET_SIGN_CODE));
+    }
+
+
+    public void getSignCodePassWord(String phone) {
+        if (!isPhone(phone)) {
+            Toast.makeText(mContext, "请输入一个手机号码:", Toast.LENGTH_SHORT).show();
+            return;
+
+        }
+        String url = NetApi.urlSignCode + "/?mobile=" + phone;
+        LocalLog.d(TAG, "getSignCode() enter url  = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(forgetPassWordInterface, COMMAND_GET_SIGN_CODE));
+    }
+
+    public void postNewPassWord(PostPassWordParam postPassWordParam) {
+        LocalLog.d(TAG, "修改密码");
+        OkHttpUtils
+                .post()
+                .url(NetApi.getUrlPassWord)
+                .params(postPassWordParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(forgetPassWordInterface, COMMAND_SET_PASS_WORD));
+    }
+
+    public void checkSignCodePassWord(CheckSignCodeParam checkSignCodeParam) {
+        LocalLog.d(TAG, checkSignCodeParam.paramString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlSignCodeCheck)
+                .params(checkSignCodeParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(forgetPassWordInterface, COMMAND_CHECK_SIGN_CODE));
     }
 
     //TODO 校验验证码
@@ -1543,9 +1583,9 @@ public final class Engine {
         picasso.setIndicatorsEnabled(true);
         //picasso.setLoggingEnabled(true);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        if(networkPolicy == NetworkPolicy.OFFLINE){
+        if (networkPolicy == NetworkPolicy.OFFLINE) {
             picasso.load(urlImage).config(Bitmap.Config.RGB_565).networkPolicy(networkPolicy).resize(200, 200).into(imageView);
-        }else{
+        } else {
             picasso.load(urlImage).config(Bitmap.Config.RGB_565).resize(200, 200).into(imageView);
         }
 
@@ -1997,6 +2037,8 @@ public final class Engine {
             rechargeDetailInterface = (RechargeDetailInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DearNameModifyInterface) {
             dearNameModifyInterface = (DearNameModifyInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ForgetPassWordInterface) {
+            forgetPassWordInterface = (ForgetPassWordInterface) uiCallBackInterface;
         }
     }
 
@@ -2096,6 +2138,8 @@ public final class Engine {
             rechargeDetailInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DearNameModifyInterface) {
             dearNameModifyInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ForgetPassWordInterface) {
+            forgetPassWordInterface = null;
         }
     }
 }

@@ -15,6 +15,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostPassWordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
@@ -157,6 +158,17 @@ public final class Presenter {
         engine.checkSignCode(checkSignCodeParam);
     }
 
+    public void checkSignCodePassWord(CheckSignCodeParam checkSignCodeParam){
+        engine.checkSignCodePassWord(checkSignCodeParam);
+    }
+
+    public void getSignCodePassWord(String phone){
+        engine.getSignCodePassWord(phone);
+    }
+
+    public void postNewPassWord(PostPassWordParam postPassWordParam){
+        engine.postNewPassWord(postPassWordParam);
+    }
     public void getMsg(String phone) {
         engine.getMsg(phone);
     }

@@ -77,7 +77,7 @@ public final class FlagPreference {
     }
 
     public static String getMobile(Context context) {
-        LocalLog.d(TAG, "getOutTradeNo() 获取最新订单号");
+        LocalLog.d(TAG, "getMobile() 获取最新订单号");
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
         String mobile = flagPreference.getString("mobile", "");
         return mobile;
