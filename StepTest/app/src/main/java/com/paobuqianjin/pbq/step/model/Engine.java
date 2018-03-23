@@ -258,23 +258,23 @@ public final class Engine {
     public final static int COMMAND_RECHARGE_RECORD = 73;
     public final static int COMMAND_SPONSOR_PKG = 74;
     public final static int COMMAND_DEAR_NAME = 75;
-    public final static int COMMAND_SET_AS_ADMIN =76;
+    public final static int COMMAND_SET_AS_ADMIN = 76;
+
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
     }
 
     public void setNetworkPolicy(NetworkPolicy networkPolicy) {
-        //this.networkPolicy = networkPolicy;
+        this.networkPolicy = networkPolicy;
     }
 
-    private NetworkPolicy networkPolicy = NetworkPolicy.NO_CACHE;
+    private NetworkPolicy networkPolicy = NetworkPolicy.NO_STORE;
 
     private Engine() {
         if (picasso == null) {
             picasso = new Picasso.Builder(mContext)
                     .downloader(new OkHttp3Downloader(OkHttpUtils.getInstance().getOkHttpClient()))
-                    .memoryCache(Cache.NONE)
                     .build();
             LocalLog.d(TAG, " 设置Picasso ");
             Picasso.setSingletonInstance(picasso);
@@ -885,7 +885,7 @@ public final class Engine {
 
     public void modifyDearName(PutDearNameParam putDearNameParam) {
 
-        String url = NetApi.urlCircleMember +"/"+String.valueOf(putDearNameParam.getId());
+        String url = NetApi.urlCircleMember + "/" + String.valueOf(putDearNameParam.getId());
         LocalLog.d(TAG, "modifyDearName() enter " + putDearNameParam.paramString() + ", url = " + url);
         switch (putDearNameParam.getAction()) {
             case "remark":
@@ -904,8 +904,8 @@ public final class Engine {
                             }
                         })
                         .url(url)
-                        .param("action","remark")
-                        .param("nickname",putDearNameParam.getNickname())
+                        .param("action", "remark")
+                        .param("nickname", putDearNameParam.getNickname())
                         .build()
                         .execute(new NetStringCallBack(dearNameModifyInterface, COMMAND_DEAR_NAME));
                 break;
@@ -925,7 +925,7 @@ public final class Engine {
                             }
                         })
                         .url(url)
-                        .param("action","admin")
+                        .param("action", "admin")
                         .build()
                         .execute(new NetStringCallBack(circleMemberManagerInterface, COMMAND_SET_AS_ADMIN));
                 break;
@@ -1250,13 +1250,13 @@ public final class Engine {
     }
 
     public void deleteCircle(int circleId) {
+        String url = NetApi.urlCircle + "/" + String.valueOf(circleId) + "&userid=" + String.valueOf(getId(mContext));
         LocalLog.d(TAG, "删除圈子：deleteCircle() enter");
-        String url = NetApi.urlCircle + "/" + circleId;
         OkHttpUtils
                 .delete()
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(null, COMMAND_DELETE_CIRCLE));
+                .execute(new NetStringCallBack(circleDetailInterface, COMMAND_DELETE_CIRCLE));
     }
 
     //获取用户登录记录，暂时无需实现
@@ -1533,7 +1533,7 @@ public final class Engine {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(79, 79).networkPolicy(networkPolicy).into(imageView);
+        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(79, 79).into(imageView);
     }
 
     //网络图片获取接口
@@ -1543,7 +1543,12 @@ public final class Engine {
         picasso.setIndicatorsEnabled(true);
         //picasso.setLoggingEnabled(true);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        picasso.load(urlImage).config(Bitmap.Config.RGB_565).resize(200, 200).networkPolicy(networkPolicy).into(imageView);
+        if(networkPolicy == NetworkPolicy.OFFLINE){
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).networkPolicy(networkPolicy).resize(200, 200).into(imageView);
+        }else{
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).resize(200, 200).into(imageView);
+        }
+
         //Picasso.with(mContext).load(urlImage).into(imageView);
 /*        OkHttpUtils
                 .get()

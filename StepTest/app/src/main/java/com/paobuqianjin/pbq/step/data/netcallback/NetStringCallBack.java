@@ -20,6 +20,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DanListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DearNameResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicIdDetailResponse;
@@ -351,6 +352,9 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_POST_REV_RED_PKG) {
                 PostRevRedPkgResponse postRevRedPkgResponse = new Gson().fromJson(s, PostRevRedPkgResponse.class);
                 ((CircleDetailInterface) callBackInterface).response(postRevRedPkgResponse);
+            } else if (command == Engine.COMMAND_DELETE_CIRCLE) {
+                DeleteCircleResponse deleteCircleResponse = new Gson().fromJson(s, DeleteCircleResponse.class);
+                ((CircleDetailInterface) callBackInterface).response(deleteCircleResponse);
             }
 
         } else if (callBackInterface != null
@@ -433,8 +437,8 @@ public class NetStringCallBack extends StringCallback {
                 LocalLog.d(TAG, "删除成员成功");
                 MemberDeleteResponse memberDeleteResponse = new Gson().fromJson(s, MemberDeleteResponse.class);
                 ((CircleMemberManagerInterface) callBackInterface).response(memberDeleteResponse);
-            }else if(command == Engine.COMMAND_SET_AS_ADMIN){
-                AddDeleteAdminResponse addDeleteAdminResponse = new Gson().fromJson(s,AddDeleteAdminResponse.class);
+            } else if (command == Engine.COMMAND_SET_AS_ADMIN) {
+                AddDeleteAdminResponse addDeleteAdminResponse = new Gson().fromJson(s, AddDeleteAdminResponse.class);
                 ((CircleMemberManagerInterface) callBackInterface).response(addDeleteAdminResponse);
             }
 

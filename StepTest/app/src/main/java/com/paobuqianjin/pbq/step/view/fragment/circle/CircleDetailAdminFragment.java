@@ -30,6 +30,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginOutResponse;
@@ -502,6 +503,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     break;
                 case R.id.cancle_text:
                     LocalLog.d(TAG, "解散");
+                    Presenter.getInstance(getContext()).deleteCircle(circleId);
                     break;
                 case R.id.exit_text:
                     LocalLog.d(TAG, "退出");
@@ -700,6 +702,18 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         }
         if (postRevRedPkgResponse.getError() == 0) {
             Toast.makeText(getActivity(), postRevRedPkgResponse.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void response(DeleteCircleResponse deleteCircleResponse) {
+        LocalLog.d(TAG, "DeleteCircleResponse() enter" + deleteCircleResponse.toString());
+        if (deleteCircleResponse.getError() == 0) {
+            Toast.makeText(getContext(), deleteCircleResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            popupOpWindowTop.dismiss();
+            popupOpWindowTop = null;
+            //TODO 通知上一层UI更新
+            getActivity().finish();
         }
     }
 }

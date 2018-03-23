@@ -269,6 +269,10 @@ public final class Presenter {
 
     }
 
+    public void deleteCircle(int circleId) {
+        engine.deleteCircle(circleId);
+    }
+
     /*热门界面*/
     //TODO 我创建的圈子
     public void getMyCreateCirlce(int pageIndex, int pagesize, String keyword) {
