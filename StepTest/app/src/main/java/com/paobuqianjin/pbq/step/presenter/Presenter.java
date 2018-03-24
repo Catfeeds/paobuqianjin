@@ -159,9 +159,9 @@ public final class Presenter {
         engine.getSignCodeLoginBind(phone);
     }
 
-    public void checkLoginBindPhone(CheckSignCodeParam checkSignCodeParam) {
+   /* public void checkLoginBindPhone(CheckSignCodeParam checkSignCodeParam) {
         engine.checkLoginBindPhone(checkSignCodeParam);
-    }
+    }*/
 
     public void bindLoginPhone(PostWxQqBindPhoneParam postWxQqBindPhoneParam) {
         engine.bindLoginPhone(postWxQqBindPhoneParam);
@@ -171,10 +171,10 @@ public final class Presenter {
         engine.checkSignCode(checkSignCodeParam);
     }
 
-    public void checkSignCodePassWord(CheckSignCodeParam checkSignCodeParam) {
-        engine.checkSignCodePassWord(checkSignCodeParam);
-    }
-
+    /*  public void checkSignCodePassWord(CheckSignCodeParam checkSignCodeParam) {
+          engine.checkSignCodePassWord(checkSignCodeParam);
+      }
+  */
     public void getSignCodePassWord(String phone) {
         engine.getSignCodePassWord(phone);
     }

@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -167,13 +168,17 @@ public final class OwnerFragment extends BaseFragment {
     RelativeLayout friendScan;
     private String userAvatar;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Presenter.getInstance(getContext()).attachUiInterface(ownerUiInterface);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).attachUiInterface(ownerUiInterface);
-        Presenter.getInstance(getContext()).getUserInfo(Presenter.getInstance(getContext()).getId());
         return rootView;
     }
 
@@ -183,8 +188,15 @@ public final class OwnerFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        Presenter.getInstance(getContext()).getUserInfo(Presenter.getInstance(getContext()).getId());
+    }
+
+    @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+        LocalLog.d(TAG, "initView() enter");
         barReturnDrawable = (ImageView) viewRoot.findViewById(R.id.bar_return_drawable);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
         barTitle.setText("我的");
@@ -200,12 +212,19 @@ public final class OwnerFragment extends BaseFragment {
         dynamicSpan = (RelativeLayout) viewRoot.findViewById(R.id.dynamic_span);
         danSpan = (RelativeLayout) viewRoot.findViewById(R.id.dan_span);
         suggestionSpan = (RelativeLayout) viewRoot.findViewById(R.id.suggestion_span);
+        if (headIcon != null) {
+            LocalLog.d(TAG, "###############");
+        }
+
+
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        LocalLog.d(TAG, "onDestroyView() enter");
+        Presenter.getInstance(getContext()).dispatchUiInterface(ownerUiInterface);
     }
 
     @OnClick({R.id.bar_tv_right, R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span,
@@ -306,6 +325,9 @@ public final class OwnerFragment extends BaseFragment {
             if (userInfoResponse.getError() == 0) {
                 LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
                 userAvatar = userInfoResponse.getData().getAvatar();
+                if (headIcon == null) {
+                    LocalLog.d(TAG, "vvvvvvvv");
+                }
                 Presenter.getInstance(getContext()).getImage(headIcon, userInfoResponse.getData().getAvatar());
                 userName.setText(userInfoResponse.getData().getNickname());
                 userId.setText("ID:" + String.valueOf(userInfoResponse.getData().getId()));

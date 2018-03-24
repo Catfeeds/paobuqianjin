@@ -2,17 +2,26 @@ package com.paobuqianjin.pbq.step.view.fragment.login;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoSetResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -24,7 +33,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by pbq on 2018/2/1.
  */
 
-public class PersonInfoSettingFragment extends BaseFragment {
+public class PersonInfoSettingFragment extends BaseFragment implements UserInfoLoginSetInterface {
     private final static String TAG = PersonInfoSettingFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -89,6 +98,11 @@ public class PersonInfoSettingFragment extends BaseFragment {
     ThirdPartyLoginResponse.DataBean dataBean;
     private final static String USER_FIT_ACTION_SETTING = "com.paobuqianjin.pbq.USER_FIT_ACTION_USER_SETTING";
     boolean[] select = {false, false};
+    @Bind(R.id.confirm)
+    Button confirm;
+    private View popSelectView;
+    private PopupWindow popupSelectWindow;
+    private TranslateAnimation animationCircleType;
 
     @Override
     protected int getLayoutResId() {
@@ -110,10 +124,12 @@ public class PersonInfoSettingFragment extends BaseFragment {
         useName = (EditText) viewRoot.findViewById(R.id.use_name);
         useGenderManSelect = (ImageView) viewRoot.findViewById(R.id.use_gender_man_select);
         useGenderNvSelect = (ImageView) viewRoot.findViewById(R.id.use_gender_nv_select);
+        confirm = (Button) viewRoot.findViewById(R.id.confirm);
+        userIcon.setOnClickListener(onClickListener);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             if (USER_FIT_ACTION_SETTING.equals(intent.getAction())) {
-                userIcon.setOnClickListener(onClickListener);
+
             }
         } else {
             update(dataBean);
@@ -126,6 +142,8 @@ public class PersonInfoSettingFragment extends BaseFragment {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.user_icon:
+                    LocalLog.d(TAG, "更换头像");
+                    setBirthDay();
                     break;
                 case R.id.use_gender_man_select:
                     LocalLog.d(TAG, "选择男");
@@ -137,6 +155,34 @@ public class PersonInfoSettingFragment extends BaseFragment {
             }
         }
     };
+
+
+    private void setBirthDay() {
+        LocalLog.d(TAG, "popRedPkgButton() 弹出红包");
+        popSelectView = View.inflate(getContext(), R.layout.wheel_select_layout, null);
+        popupSelectWindow = new PopupWindow(popSelectView,
+                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popRedPkgButton dismiss() ");
+                popupSelectWindow = null;
+            }
+        });
+
+        popupSelectWindow.setFocusable(true);
+        popupSelectWindow.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.person_message_fg), Gravity.BOTTOM, 0, 0);
+        popSelectView.startAnimation(animationCircleType);
+    }
 
     @Override
     public void onDestroyView() {
@@ -162,5 +208,13 @@ public class PersonInfoSettingFragment extends BaseFragment {
 
     public void setDataBen(ThirdPartyLoginResponse.DataBean dataBean) {
         this.dataBean = dataBean;
+    }
+
+    @Override
+    public void response(UserInfoSetResponse userInfoSetResponse) {
+        LocalLog.d(TAG, "UserInfoSetResponse() enter " + userInfoSetResponse.toString());
+        if (userInfoSetResponse.getError() == 0) {
+
+        }
     }
 }

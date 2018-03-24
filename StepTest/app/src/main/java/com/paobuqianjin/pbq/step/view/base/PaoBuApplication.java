@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 import android.os.Looper;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 import android.widget.ImageView;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -50,7 +52,7 @@ import okhttp3.internal.cache.InternalCache;
  * Created by pbq on 2017/12/14.
  */
 
-public class PaoBuApplication extends Application {
+public class PaoBuApplication extends MultiDexApplication {
     private final static String TAG = PaoBuApplication.class.getSimpleName();
     public LocationService locationService;
     private static boolean isAsyncRun = false;
@@ -74,6 +76,12 @@ public class PaoBuApplication extends Application {
         locationService = new LocationService(context);
         SDKInitializer.initialize(getApplicationContext());
         return true;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(base);
     }
 
     private boolean initWXapi(Context context) {

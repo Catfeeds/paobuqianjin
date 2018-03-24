@@ -132,7 +132,7 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
     @Override
     public void response(CheckSignCodeResponse checkSignCodeResponse) {
         if (checkSignCodeResponse.getError() == 0) {
-            PostWxQqBindPhoneParam postWxQqBindPhoneParam = new PostWxQqBindPhoneParam();
+            /*PostWxQqBindPhoneParam postWxQqBindPhoneParam = new PostWxQqBindPhoneParam();
             if (dataBean.getQq_openid().equals("")) {
                 if (!dataBean.getWx_openid().equals("")) {
                     postWxQqBindPhoneParam.setAction("wx");
@@ -145,7 +145,7 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
                 }
             }
 
-            Presenter.getInstance(getContext()).bindLoginPhone(postWxQqBindPhoneParam);
+            Presenter.getInstance(getContext()).bindLoginPhone(postWxQqBindPhoneParam);*/
         }
     }
 
@@ -167,14 +167,29 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
                 break;
             case R.id.confirm:
                 LocalLog.d(TAG, "确认");
-                CheckSignCodeParam checkSignCodeParam = new CheckSignCodeParam();
+                /*CheckSignCodeParam checkSignCodeParam = new CheckSignCodeParam();
                 if (signCodeEdit.getText().toString() == null || signCodeEdit.getText().toString().equals("")) {
                     LocalLog.d(TAG, "验证码不能为空");
                     return;
                 }
                 checkSignCodeParam.setCode(signCodeEdit.getText().toString());
                 checkSignCodeParam.setUserid(dataBean.getId());
-                Presenter.getInstance(getContext()).checkLoginBindPhone(checkSignCodeParam);
+                Presenter.getInstance(getContext()).checkLoginBindPhone(checkSignCodeParam);*/
+                PostWxQqBindPhoneParam postWxQqBindPhoneParam = new PostWxQqBindPhoneParam();
+                if (dataBean.getQq_openid().equals("")) {
+                    if (!dataBean.getWx_openid().equals("")) {
+                        postWxQqBindPhoneParam.setAction("wx");
+                        postWxQqBindPhoneParam.setMobile(phoneEdit.getText().toString()).setOpenid(dataBean.getWx_openid());
+                    }
+                } else {
+                    if (dataBean.getWx_openid().equals("")) {
+                        postWxQqBindPhoneParam.setAction("qq");
+                        postWxQqBindPhoneParam.setMobile(phoneEdit.getText().toString()).setOpenid(dataBean.getQq_openid());
+                    }
+                }
+                postWxQqBindPhoneParam.setCode(signCodeEdit.getText().toString());
+
+                Presenter.getInstance(getContext()).bindLoginPhone(postWxQqBindPhoneParam);
                 break;
             case R.id.sign_code_t:
                 LocalLog.d(TAG, "获取验证码");

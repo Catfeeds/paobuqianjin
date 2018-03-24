@@ -33,6 +33,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.LogBindPhoneResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginOutResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MemberDeleteResponse;
@@ -282,7 +283,7 @@ public class NetStringCallBack extends StringCallback {
 
     private void disPatchResponse(String s, int i) {
         if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface) {
-            LocalLog.d(TAG, "disPatchResponse() enter body " + s);
+
             if (command == Engine.COMMAND_LOGIN_IN_BY_PHONE) {
                 LoginResponse loginResponse = new Gson().fromJson(s, LoginResponse.class);
                 ((LoginSignCallbackInterface) callBackInterface).response(loginResponse);
@@ -700,9 +701,12 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_GET_SIGN_CODE) {
                 GetSignCodeResponse getSignCodeResponse = new Gson().fromJson(s, GetSignCodeResponse.class);
                 ((LoginBindPhoneInterface) callBackInterface).response(getSignCodeResponse);
-            }else if(command == Engine.COMMAND_CHECK_SIGN_CODE){
+            } else if (command == Engine.COMMAND_CHECK_SIGN_CODE) {
                 CheckSignCodeResponse checkSignCodeResponse = new Gson().fromJson(s, CheckSignCodeResponse.class);
                 ((LoginBindPhoneInterface) callBackInterface).response(checkSignCodeResponse);
+            } else if (command == Engine.COMMAND_THIRD_BIND_PHONE) {
+                LogBindPhoneResponse logBindPhoneResponse = new Gson().fromJson(s, LogBindPhoneResponse.class);
+                ((LoginBindPhoneInterface) callBackInterface).response(logBindPhoneResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

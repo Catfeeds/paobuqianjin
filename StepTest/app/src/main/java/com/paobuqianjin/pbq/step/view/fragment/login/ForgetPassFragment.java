@@ -116,11 +116,11 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
                     Toast.makeText(getContext(), "两次输入密码不一致", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                /*发送验证码之后必须携带用户ID*/
+               /* *//*发送验证码之后必须携带用户ID*//*
                 CheckSignCodeParam checkSignCodeParam = new CheckSignCodeParam();
                 checkSignCodeParam.setCode(signCode.getText().toString());
                 checkSignCodeParam.setUserid(Presenter.getInstance(getContext()).getId());
-                Presenter.getInstance(getContext()).checkSignCodePassWord(checkSignCodeParam);
+                Presenter.getInstance(getContext()).checkSignCodePassWord(checkSignCodeParam);*/
                 break;
         }
     }

@@ -74,6 +74,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     private String[] userInfo;
     private ProgressDialog dialog;
     private ThirdPartyLoginParam thirdPartyLoginParam;
+    LoginResponse loginResponse;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -265,12 +266,16 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     @Override
     public void response(LoginResponse loginResponse) {
         LocalLog.d(TAG, "手机号登入成功! 去获取用户信息!");
-        Presenter.getInstance(this).steLogFlg(true);
-        Presenter.getInstance(this).setId(loginResponse.getData().getId());
-        Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
-        //startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
-        //Presenter.getInstance(this).getUserInfo(loginResponse.getData().getId());
-        Presenter.getInstance(this).getLoginRecord(String.valueOf(loginResponse.getData().getId()));
+        this.loginResponse = loginResponse;
+        if (!"".equals(loginResponse.getData().getQq_openid()) || !"".equals(loginResponse.getData().getWx_openid())) {
+            Presenter.getInstance(this).steLogFlg(true);
+            Presenter.getInstance(this).setId(loginResponse.getData().getId());
+            Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
+            startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+        } else {
+            Presenter.getInstance(this).getLoginRecord(String.valueOf(loginResponse.getData().getId()));
+        }
+
     }
 
     @Override
@@ -312,7 +317,13 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
             LocalLog.d(TAG, "没有登录过");
             startActivity(UserFitActivity.class, null, true, USER_FIT_ACTION_SETTING);
         } else {
-            startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+            if (loginResponse != null) {
+                Presenter.getInstance(this).steLogFlg(true);
+                Presenter.getInstance(this).setId(loginResponse.getData().getId());
+                Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
+                startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+            }
+
         }
     }
 

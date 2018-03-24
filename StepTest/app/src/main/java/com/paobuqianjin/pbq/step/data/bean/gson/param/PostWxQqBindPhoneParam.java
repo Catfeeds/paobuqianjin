@@ -17,10 +17,23 @@ public class PostWxQqBindPhoneParam {
     action	用户类型 wx qq	true	string
 openid	微信或者QQ的openid	true	string
 mobile	绑定的手机号	true	string
+code	验证码
     * */
     private String action;
     private String openid;
     private String mobile;
+
+    public String getCode() {
+        return code;
+    }
+
+    public PostWxQqBindPhoneParam setCode(String code) {
+        this.code = code;
+        params.put("code", code);
+        return this;
+    }
+
+    private String code;
     private Map<String, String> params;
 
     public PostWxQqBindPhoneParam() {

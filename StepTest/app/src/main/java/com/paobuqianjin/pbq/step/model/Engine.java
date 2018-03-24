@@ -581,7 +581,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(forgetPassWordInterface, COMMAND_SET_PASS_WORD));
     }
 
-    public void checkLoginBindPhone(CheckSignCodeParam checkSignCodeParam) {
+/*    public void checkLoginBindPhone(CheckSignCodeParam checkSignCodeParam) {
         LocalLog.d(TAG, checkSignCodeParam.paramString());
         OkHttpUtils
                 .post()
@@ -589,7 +589,7 @@ public final class Engine {
                 .params(checkSignCodeParam.getParams())
                 .build()
                 .execute(new NetStringCallBack(loginBindPhoneInterface, COMMAND_CHECK_SIGN_CODE));
-    }
+    }*/
 
     public void bindLoginPhone(PostWxQqBindPhoneParam postWxQqBindPhoneParam) {
         LocalLog.d(TAG, "bindLoginPhone() enter " + postWxQqBindPhoneParam.paramString());
@@ -601,7 +601,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(loginBindPhoneInterface, COMMAND_THIRD_BIND_PHONE));
     }
 
-    public void checkSignCodePassWord(CheckSignCodeParam checkSignCodeParam) {
+/*    public void checkSignCodePassWord(CheckSignCodeParam checkSignCodeParam) {
         LocalLog.d(TAG, checkSignCodeParam.paramString());
         OkHttpUtils
                 .post()
@@ -609,7 +609,7 @@ public final class Engine {
                 .params(checkSignCodeParam.getParams())
                 .build()
                 .execute(new NetStringCallBack(forgetPassWordInterface, COMMAND_CHECK_SIGN_CODE));
-    }
+    }*/
 
     //TODO 校验验证码
     public void checkSignCode(CheckSignCodeParam checkSignCodeParam) {
