@@ -161,7 +161,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         LocalLog.d(TAG, "popRedPkgButton() 弹出红包");
         popSelectView = View.inflate(getContext(), R.layout.wheel_select_layout, null);
         popupSelectWindow = new PopupWindow(popSelectView,
-                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -180,7 +180,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         animationCircleType.setDuration(200);
 
 
-        popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.person_message_fg), Gravity.BOTTOM, 0, 0);
+        popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.person_message_fg), Gravity.CENTER_HORIZONTAL, 0, 0);
         popSelectView.startAnimation(animationCircleType);
     }
 

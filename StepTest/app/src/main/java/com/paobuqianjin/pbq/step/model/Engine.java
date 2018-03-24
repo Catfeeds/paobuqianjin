@@ -508,6 +508,7 @@ public final class Engine {
             Toast.makeText(mContext, "注册需要设置密码:", Toast.LENGTH_SHORT).show();
             return;
         }
+        LocalLog.d(TAG,userInfo[0]+" ," + userInfo[2] + "," + userInfo[1]);
         OkHttpUtils
                 .post()
                 .url(urlRegisterPhone)
