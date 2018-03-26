@@ -18,6 +18,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostPassWordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWxQqBindPhoneParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
@@ -205,6 +206,10 @@ public final class Presenter {
 
     public void getUserInfo(int userId) {
         engine.getUserInfo(userId);
+    }
+
+    public void putUserInfo(int id, PutUserInfoParam putUserInfoParam) {
+        engine.putUserInfo(id, putUserInfoParam);
     }
 
     public void createCircle(CreateCircleBodyParam createCircleBodyParam) {

@@ -31,6 +31,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostPassWordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostUserStepParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWxQqBindPhoneParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
@@ -42,6 +43,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostIncomeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostMessageParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoSetResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.AllPayOrderInterface;
@@ -94,6 +96,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
@@ -179,6 +182,7 @@ public final class Engine {
     private DearNameModifyInterface dearNameModifyInterface;
     private ForgetPassWordInterface forgetPassWordInterface;
     private LoginBindPhoneInterface loginBindPhoneInterface;
+    private UserInfoLoginSetInterface userInfoLoginSetInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -264,6 +268,7 @@ public final class Engine {
     public final static int COMMAND_SET_PASS_WORD = 77;
     public final static int COMMAND_PHONE_LOGIN = 78;
     public final static int COMMAND_THIRD_BIND_PHONE = 79;
+    public final static int COMMAND_USER_INFO_SET = 80;
 
 
     public NetworkPolicy getNetworkPolicy() {
@@ -457,6 +462,28 @@ public final class Engine {
                 .execute(new NetStringCallBack(ownerUiInterface, COMMAND_OWNER_USER_INFO));
     }
 
+    public void putUserInfo(int userid, PutUserInfoParam putUserInfoParam) {
+        String url = NetApi.urlUser  + String.valueOf(userid);
+        LocalLog.d(TAG, "putUserInfo() enter url = " + url +",putUserInfoParam = " + putUserInfoParam.paramString());
+        OkHttpUtils
+                .put()
+                .url(url)
+                .requestBody(new RequestBody() {
+                    @Override
+                    public MediaType contentType() {
+                        return MediaType.parse("application/x-www-form-urlencoded");
+                    }
+
+                    @Override
+                    public void writeTo(BufferedSink sink) throws IOException {
+
+                    }
+                })
+                .params(putUserInfoParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(userInfoLoginSetInterface, COMMAND_USER_INFO_SET));
+    }
+
     //重置密码
     public void refreshPassWorld() {
         LocalLog.d(TAG, "findPassWorld() enter");
@@ -508,7 +535,7 @@ public final class Engine {
             Toast.makeText(mContext, "注册需要设置密码:", Toast.LENGTH_SHORT).show();
             return;
         }
-        LocalLog.d(TAG,userInfo[0]+" ," + userInfo[2] + "," + userInfo[1]);
+        LocalLog.d(TAG, userInfo[0] + " ," + userInfo[2] + "," + userInfo[1]);
         OkHttpUtils
                 .post()
                 .url(urlRegisterPhone)
@@ -2078,6 +2105,8 @@ public final class Engine {
             forgetPassWordInterface = (ForgetPassWordInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof LoginBindPhoneInterface) {
             loginBindPhoneInterface = (LoginBindPhoneInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserInfoLoginSetInterface) {
+            userInfoLoginSetInterface = (UserInfoLoginSetInterface) uiCallBackInterface;
         }
     }
 
@@ -2181,6 +2210,8 @@ public final class Engine {
             forgetPassWordInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof LoginBindPhoneInterface) {
             loginBindPhoneInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserInfoLoginSetInterface) {
+            userInfoLoginSetInterface = null;
         }
     }
 }

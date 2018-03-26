@@ -89,6 +89,5 @@ dependencies {
     implementation 'com.yanzhenjie:permission:2.0.0-rc2'
     implementation 'com.yanzhenjie.alertdialog:alertdialog:1.0.1'
     compile 'com.yanzhenjie:recyclerview-swipe:1.1.4'
-    compile 'cn.aigestudio.wheelpicker:WheelPicker:1.1.2'
     compile 'com.android.support:multidex:1.0.0'
 }

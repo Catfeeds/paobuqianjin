@@ -268,12 +268,25 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
         LocalLog.d(TAG, "手机号登入成功! 去获取用户信息!");
         this.loginResponse = loginResponse;
         if (!"".equals(loginResponse.getData().getQq_openid()) || !"".equals(loginResponse.getData().getWx_openid())) {
+            LocalLog.d(TAG, "绑定过QQ或者微信");
             Presenter.getInstance(this).steLogFlg(true);
             Presenter.getInstance(this).setId(loginResponse.getData().getId());
             Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
             startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
         } else {
-            Presenter.getInstance(this).getLoginRecord(String.valueOf(loginResponse.getData().getId()));
+            if (loginResponse.getData().getIs_perfect() == 0) {
+                LocalLog.d(TAG, "没有完善信息");
+                Intent intent = new Intent();
+                intent.setClass(this, UserFitActivity.class);
+                intent.setAction(USER_FIT_ACTION_SETTING);
+                intent.putExtra("userinfo", loginResponse.getData());
+                startActivity(intent);
+            } else {
+                Presenter.getInstance(this).steLogFlg(true);
+                Presenter.getInstance(this).setId(loginResponse.getData().getId());
+                Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
+                startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+            }
         }
 
     }

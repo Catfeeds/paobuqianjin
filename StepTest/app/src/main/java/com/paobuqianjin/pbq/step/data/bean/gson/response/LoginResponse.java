@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import java.io.Serializable;
+
 /**
  * Created by pbq on 2017/12/21.
  */
@@ -49,7 +51,7 @@ public class LoginResponse {
                 '}';
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * id : 30
          * wx_openid : oPd5d0SDHRV1oZF8dB80Jq0kH_tY

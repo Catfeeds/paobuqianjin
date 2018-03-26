@@ -132,4 +132,5 @@ public class NetApi {
     public final static String urlLoginRecord = "http://119.29.10.64/v1/userrecord?userid=";
     //TODO 三方绑定手机号
     public final static String urlBindPhone = "http://119.29.10.64/v1/user/bindMobile";
+
 }

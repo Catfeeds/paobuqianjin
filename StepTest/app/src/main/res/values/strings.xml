@@ -89,6 +89,11 @@
 
     <string name="permission_setting">权限设置</string>
     <!--权限-->
+
+    <string name="Year">年</string>
+    <string name="Month">月</string>
+    <string name="Day">日</string>
+
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."

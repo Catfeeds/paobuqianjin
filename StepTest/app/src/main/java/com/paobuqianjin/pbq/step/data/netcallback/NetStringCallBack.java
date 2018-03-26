@@ -72,6 +72,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoSetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
@@ -127,6 +128,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UserFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
+import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
@@ -707,6 +709,12 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_THIRD_BIND_PHONE) {
                 LogBindPhoneResponse logBindPhoneResponse = new Gson().fromJson(s, LogBindPhoneResponse.class);
                 ((LoginBindPhoneInterface) callBackInterface).response(logBindPhoneResponse);
+            }
+        } else if (callBackInterface != null && callBackInterface instanceof UserInfoLoginSetInterface) {
+            if (command == Engine.COMMAND_USER_INFO_SET) {
+                LocalLog.d(TAG, "设置资料返回");
+                UserInfoSetResponse userInfoSetResponse = new Gson().fromJson(s, UserInfoSetResponse.class);
+                ((UserInfoLoginSetInterface) callBackInterface).response(userInfoSetResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");
