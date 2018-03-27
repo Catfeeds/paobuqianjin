@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.login;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +66,12 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Presenter.getInstance(getContext()).attachUiInterface(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
@@ -76,6 +83,7 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
     @Override
@@ -96,7 +104,7 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void response(CheckSignCodeResponse checkSignCodeResponse) {
         if (checkSignCodeResponse.getError() == 0) {
-            Presenter.getInstance(getContext()).postNewPassWord(postPassWordParam);
+
         }
     }
 
@@ -108,6 +116,7 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
                 Presenter.getInstance(getContext()).getSignCodePassWord(phone.getText().toString());
                 break;
             case R.id.confirm:
+                LocalLog.d(TAG,"修改密码");
                 postPassWordParam = new PostPassWordParam();
                 postPassWordParam.setCode(signCode.getText().toString())
                         .setMobile(phone.getText().toString())
@@ -121,6 +130,7 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
                 checkSignCodeParam.setCode(signCode.getText().toString());
                 checkSignCodeParam.setUserid(Presenter.getInstance(getContext()).getId());
                 Presenter.getInstance(getContext()).checkSignCodePassWord(checkSignCodeParam);*/
+                Presenter.getInstance(getContext()).postNewPassWord(postPassWordParam);
                 break;
         }
     }

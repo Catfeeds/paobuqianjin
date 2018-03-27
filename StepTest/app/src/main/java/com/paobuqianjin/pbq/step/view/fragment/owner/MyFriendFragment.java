@@ -216,7 +216,10 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
     @Override
     public void response(FollowUserResponse followUserResponse) {
         LocalLog.d(TAG, "FollowUserResponse() enter " + followUserResponse.toString());
-        followMeFragment.setAdapter(new FollowAdapter(getContext(), followUserResponse.getData().getData()));
+        if (followUserResponse.getError() == 0) {
+            followMeFragment.setAdapter(new FollowAdapter(getContext(), followUserResponse.getData().getData()));
+        }
+
     }
 
     @Override

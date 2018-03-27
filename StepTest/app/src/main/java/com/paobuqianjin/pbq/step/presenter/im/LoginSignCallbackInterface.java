@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
@@ -41,4 +42,6 @@ public interface LoginSignCallbackInterface extends LoginCallBackInterface {
     public void response(SignUserResponse response);
 
     public void response(LoginRecordResponse loginRecordResponse);
+
+    public void response(ErrorCode errorCode);
 }

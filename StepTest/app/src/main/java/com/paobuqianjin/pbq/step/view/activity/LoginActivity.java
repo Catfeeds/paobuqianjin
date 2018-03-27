@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
@@ -313,6 +314,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                 Presenter.getInstance(this).setMobile(this, thirdPartyLoginResponse.getData().getMobile());
                 startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
             } else {
+                LocalLog.d(TAG, "没有绑定过手机");
                 Intent intent = new Intent();
                 intent.setClass(this, UserFitActivity.class);
                 intent.setAction(USER_FIT_ACTION_BIND);
@@ -457,5 +459,11 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         UMShareAPI.get(this).onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        LocalLog.d(TAG, "error: " + errorCode.toString());
+        Toast.makeText(this, errorCode.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

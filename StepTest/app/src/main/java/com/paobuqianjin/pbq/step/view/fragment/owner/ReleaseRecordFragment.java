@@ -101,9 +101,11 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(ReleaseRecordResponse releaseRecordResponse) {
         LocalLog.d(TAG, "ReleaseRecordResponse() enter " + releaseRecordResponse.toString());
-        if (recordScroll.getVisibility() == View.GONE) {
-            recordScroll.setVisibility(View.VISIBLE);
+        if(releaseRecordResponse.getError() == 0){
+            if (recordScroll.getVisibility() == View.GONE) {
+                recordScroll.setVisibility(View.VISIBLE);
+            }
+            releaseRecord.setAdapter(new ReleaseRecordAdapter(getContext(),releaseRecordResponse.getData().getData()));
         }
-        releaseRecord.setAdapter(new ReleaseRecordAdapter(getContext(),releaseRecordResponse.getData().getData()));
     }
 }

@@ -184,6 +184,10 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
                 LocalLog.d(TAG, "记录第一条时间");
                 tempDays = create_timeStr;
                 list.add(dynamicPersonResponse.getData().getData().get(0));
+                if (dynamicPersonResponse.getData().getData().size() == 1) {
+                    map.add(list);
+                    break;
+                }
             } else {
                 if (create_timeStr.equals(tempDays)) {
                     list.add(dynamicPersonResponse.getData().getData().get(i));
@@ -245,7 +249,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             if (addDeleteFollowResponse.getError() == 0) {
                 if (addDeleteFollowResponse.getMessage().equals("取消关注成功")) {
                     bntLike.setText("关注");
-                }else{
+                } else {
                     bntLike.setText("已关注");
                 }
             }

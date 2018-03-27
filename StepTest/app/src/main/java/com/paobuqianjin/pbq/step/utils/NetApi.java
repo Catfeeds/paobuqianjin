@@ -127,7 +127,7 @@ public class NetApi {
     //TODO 获取附近广告商户
     public final static String urlBusiness = "http://119.29.10.64/v1/Business";
     //TODO 根据手机号码修改密码
-    public final static String urlPassWord = "http://119.29.10.64/v1/user/modifyPasswordByOldPassword";
+    public final static String urlPassWord = "http://119.29.10.64/v1/user/modifyPasswordByMobile";
     //TODO 获取登录记录
     public final static String urlLoginRecord = "http://119.29.10.64/v1/userrecord?userid=";
     //TODO 三方绑定手机号
