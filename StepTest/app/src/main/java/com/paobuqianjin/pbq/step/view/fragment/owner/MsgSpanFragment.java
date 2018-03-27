@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageAtResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageContentResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageLikeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageSystemResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.MessageInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.SystemMsgActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterContentActivity;
@@ -23,7 +30,7 @@ import butterknife.OnClick;
  * Created by pbq on 2018/1/17.
  */
 
-public class MsgSpanFragment extends BaseBarStyleTextViewFragment {
+public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements MessageInterface {
     private final static String TAG = MsgSpanFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -57,7 +64,7 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment {
     TextView systemMsgDesMsg;
     @Bind(R.id.system_span)
     RelativeLayout systemSpan;
-
+    
     @Override
     protected String title() {
         return "消息";
@@ -69,6 +76,12 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Presenter.getInstance(getContext()).attachUiInterface(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
@@ -77,9 +90,18 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment {
     }
 
     @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+        Presenter.getInstance(getContext()).getMessage(2);
+        Presenter.getInstance(getContext()).getMessage(3);
+        Presenter.getInstance(getContext()).getMessage(4);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
     @OnClick({R.id.message_span, R.id.like_span, R.id.system_span})
@@ -103,4 +125,25 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment {
                 break;
         }
     }
+
+    @Override
+    public void response(MessageAtResponse messageAtResponse) {
+
+    }
+
+    @Override
+    public void response(MessageLikeResponse messageLikeResponse) {
+
+    }
+
+    @Override
+    public void response(MessageSystemResponse messageSystemResponse) {
+
+    }
+
+    @Override
+    public void response(MessageContentResponse messageContentResponse) {
+
+    }
+
 }

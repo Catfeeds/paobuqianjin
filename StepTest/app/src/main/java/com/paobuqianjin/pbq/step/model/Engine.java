@@ -66,6 +66,7 @@ import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginBindPhoneInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MessageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
@@ -183,6 +184,7 @@ public final class Engine {
     private ForgetPassWordInterface forgetPassWordInterface;
     private LoginBindPhoneInterface loginBindPhoneInterface;
     private UserInfoLoginSetInterface userInfoLoginSetInterface;
+    private MessageInterface messageInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -269,6 +271,10 @@ public final class Engine {
     public final static int COMMAND_PHONE_LOGIN = 78;
     public final static int COMMAND_THIRD_BIND_PHONE = 79;
     public final static int COMMAND_USER_INFO_SET = 80;
+    public final static int COMMAND_AT_MESSAGE = 81;
+    public final static int COMMAND_CONTENT_MESSAGE = 82;
+    public final static int COMMAND_LIKE_MESSAGE = 83;
+    public final static int COMMAND_SYS_MESSAGE = 84;
 
 
     public NetworkPolicy getNetworkPolicy() {
@@ -1060,14 +1066,41 @@ public final class Engine {
 
 
     //TODO http://119.29.10.64/v1/usermessages?userid=1&typeid=1
-    public void getMessage(int userid, int typeid) {
-        String url = NetApi.urlMessage + "?useid=" + String.valueOf(userid)
+    public void getMessage(int typeid) {
+        String url = NetApi.urlMessage + "?useid=" + String.valueOf(getId(mContext))
                 + "&typeid=" + String.valueOf(typeid);
-        OkHttpUtils
-                .get()
-                .url(url)
-                .build()
-                .execute(new NetStringCallBack(null, -1));
+        LocalLog.d(TAG, "getMessage() enter " + url);
+        switch (typeid) {
+            case 1:
+                OkHttpUtils
+                        .get()
+                        .url(url)
+                        .build()
+                        .execute(new NetStringCallBack(messageInterface, COMMAND_AT_MESSAGE));
+                break;
+            case 2:
+                OkHttpUtils
+                        .get()
+                        .url(url)
+                        .build()
+                        .execute(new NetStringCallBack(messageInterface, COMMAND_CONTENT_MESSAGE));
+                break;
+            case 3:
+                OkHttpUtils
+                        .get()
+                        .url(url)
+                        .build()
+                        .execute(new NetStringCallBack(messageInterface, COMMAND_LIKE_MESSAGE));
+                break;
+            case 4:
+                OkHttpUtils
+                        .get()
+                        .url(url)
+                        .build()
+                        .execute(new NetStringCallBack(messageInterface, COMMAND_SYS_MESSAGE));
+                break;
+        }
+
     }
 
 
@@ -2105,6 +2138,8 @@ public final class Engine {
             loginBindPhoneInterface = (LoginBindPhoneInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserInfoLoginSetInterface) {
             userInfoLoginSetInterface = (UserInfoLoginSetInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MessageInterface) {
+            messageInterface = (MessageInterface) uiCallBackInterface;
         }
     }
 
@@ -2210,6 +2245,8 @@ public final class Engine {
             loginBindPhoneInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof UserInfoLoginSetInterface) {
             userInfoLoginSetInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MessageInterface) {
+            messageInterface = null;
         }
     }
 }

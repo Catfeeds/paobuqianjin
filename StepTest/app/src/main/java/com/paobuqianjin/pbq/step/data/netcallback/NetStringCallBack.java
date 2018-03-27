@@ -37,6 +37,10 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.LogBindPhoneResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginOutResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MemberDeleteResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageAtResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageContentResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageLikeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageSystemResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
@@ -97,6 +101,7 @@ import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginBindPhoneInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.MessageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
@@ -706,6 +711,19 @@ public class NetStringCallBack extends StringCallback {
                 LocalLog.d(TAG, "设置资料返回");
                 UserInfoSetResponse userInfoSetResponse = new Gson().fromJson(s, UserInfoSetResponse.class);
                 ((UserInfoLoginSetInterface) callBackInterface).response(userInfoSetResponse);
+            }
+        } else if (callBackInterface != null && callBackInterface instanceof MessageInterface) {
+            if (command == Engine.COMMAND_AT_MESSAGE) {
+                MessageAtResponse messageAtResponse = new Gson().fromJson(s, MessageAtResponse.class);
+                ((MessageInterface) callBackInterface).response(messageAtResponse);
+            } else if (command == Engine.COMMAND_CONTENT_MESSAGE) {
+                MessageContentResponse messageContentResponse = new Gson().fromJson(s, MessageContentResponse.class);
+                ((MessageInterface) callBackInterface).response(messageContentResponse);
+            } else if (command == Engine.COMMAND_LIKE_MESSAGE) {
+                MessageLikeResponse messageLikeResponse = new Gson().fromJson(s, MessageLikeResponse.class);
+                ((MessageInterface) callBackInterface).response(messageLikeResponse);
+            } else if (command == Engine.COMMAND_SYS_MESSAGE) {
+                MessageSystemResponse messageSystemResponse = new Gson().fromJson(s, MessageSystemResponse.class);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

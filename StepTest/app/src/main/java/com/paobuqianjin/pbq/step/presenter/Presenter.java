@@ -550,6 +550,10 @@ public final class Presenter {
         engine.getWeather(latitude, longitude);
     }
 
+    public void getMessage(int typeid) {
+        engine.getMessage(typeid);
+    }
+
     public void setNetworkPolicy(NetworkPolicy networkPolicy) {
         engine.setNetworkPolicy(networkPolicy);
     }
