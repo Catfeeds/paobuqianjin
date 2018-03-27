@@ -13,17 +13,17 @@
         android:src="@drawable/honor_master" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/rank_num"
         android:layout_width="19dp"
         android:layout_height="24dp"
-        android:layout_alignBottom="@+id/rank_icon"
+        android:gravity="center"
+        android:text=""
         android:layout_alignLeft="@+id/rank_icon"
         android:layout_alignTop="@+id/rank_icon"
-        android:gravity="center"
-        android:text="4"
+        android:layout_alignBottom="@+id/rank_icon"
         android:textColor="@color/color_161727"
-        android:textSize="14dp"
-        android:visibility="gone" />
+        android:textSize="14dp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/head_icon_user"

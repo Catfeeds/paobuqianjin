@@ -47,7 +47,8 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                 holder.rankIcon.setImageResource(R.drawable.honor_third);
             } else {
                 holder.rankNum.setVisibility(View.VISIBLE);
-                holder.rankIcon.setVisibility(View.GONE);
+                holder.rankNum.setText(String.valueOf(position + 1));
+                holder.rankIcon.setVisibility(View.INVISIBLE);
             }
             Presenter.getInstance(context).getImage(holder.headIconUser, ((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar());
             holder.stepNum.setText(String.valueOf(((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getStep_number()));

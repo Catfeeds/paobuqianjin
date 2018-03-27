@@ -83,9 +83,7 @@ public class NetApi {
     //TODO 关于我们类型
     //TODO 关于我们类型接口，请求方式：get，地址：http://119.29.10.64/v1/abouttype
     public final static String urlAboutType = "http://119.29.10.64/v1/abouttype";
-
-    //TODO 用户消息接口
-    public final static String urlMessage = "http://119.29.10.64/v1/messages";
+    
     //TODO 获取消息详情，请求方式：get，地址：http://119.29.10.64/v1/messages/detail/?id=1，参数：消息id
 
 
@@ -132,5 +130,7 @@ public class NetApi {
     public final static String urlLoginRecord = "http://119.29.10.64/v1/userrecord?userid=";
     //TODO 三方绑定手机号
     public final static String urlBindPhone = "http://119.29.10.64/v1/user/bindMobile";
+    //TODO 用户消息接口
+    public final static String urlMessage = "http://119.29.10.64/v1/usermessagess";
 
 }

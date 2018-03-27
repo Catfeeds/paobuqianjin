@@ -463,8 +463,8 @@ public final class Engine {
     }
 
     public void putUserInfo(int userid, PutUserInfoParam putUserInfoParam) {
-        String url = NetApi.urlUser  + String.valueOf(userid);
-        LocalLog.d(TAG, "putUserInfo() enter url = " + url +",putUserInfoParam = " + putUserInfoParam.paramString());
+        String url = NetApi.urlUser + String.valueOf(userid);
+        LocalLog.d(TAG, "putUserInfo() enter url = " + url + ",putUserInfoParam = " + putUserInfoParam.paramString());
         OkHttpUtils
                 .put()
                 .url(url)
@@ -1058,12 +1058,10 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, 0));
     }
 
-    //获取消息列表请求方式：get，地址：http://119.29.10.64/v1/messages/?userid=5&typeid=1，
-    // 参数：userid用户id，typeid消息类型id，如果是系统消息，请不要传值用户userid和类型typeid,-------------分页：
-    // page默认当前页为第一页，pagesize默认10条数据
 
+    //TODO http://119.29.10.64/v1/usermessages?userid=1&typeid=1
     public void getMessage(int userid, int typeid) {
-        String url = NetApi.urlMessage + "/?useid=" + String.valueOf(userid)
+        String url = NetApi.urlMessage + "?useid=" + String.valueOf(userid)
                 + "&typeid=" + String.valueOf(typeid);
         OkHttpUtils
                 .get()
@@ -1072,7 +1070,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //获取消息详情，请求方式：get，地址：http://119.29.10.64/v1/messages/detail/?id=1，参数：消息id
+
     public void getMessageDetail(int id) {
         LocalLog.d(TAG, "getMessageDetail() enter");
         String url = NetApi.urlMessage + "/detail/?id=" + String.valueOf(id);
