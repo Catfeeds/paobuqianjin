@@ -118,7 +118,7 @@ public class MessageLikeResponse {
             }
         }
 
-        public static class DataBean implements Serializable{
+        public static class DataBean implements Serializable {
             /**
              * id : 19
              * dynamicid : 1
@@ -263,7 +263,7 @@ public class MessageLikeResponse {
                 this.images = images;
             }
 
-            public static class DynamicdataBean {
+            public static class DynamicdataBean implements Serializable {
                 /**
                  * id : 1
                  * userid : 1

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/content_title"
@@ -45,18 +45,6 @@
                 android:textSize="12dp" />
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/button_reply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/shape_25_dp"
-            android:stateListAnimator="@null"
-            android:text="回复TA"
-            android:textColor="@color/color_6c71c4"
-            android:textSize="15dp" />
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -70,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="63dp"
-            android:text="嗯"
+            android:text="赞了我"
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 

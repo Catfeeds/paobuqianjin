@@ -1067,7 +1067,7 @@ public final class Engine {
 
     //TODO http://119.29.10.64/v1/usermessages?userid=1&typeid=1
     public void getMessage(int typeid) {
-        String url = NetApi.urlMessage + "?useid=" + String.valueOf(getId(mContext))
+        String url = NetApi.urlMessage + "?userid=" + String.valueOf(getId(mContext))
                 + "&typeid=" + String.valueOf(typeid);
         LocalLog.d(TAG, "getMessage() enter " + url);
         switch (typeid) {

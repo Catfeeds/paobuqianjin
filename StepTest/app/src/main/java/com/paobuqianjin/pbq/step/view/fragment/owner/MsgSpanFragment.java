@@ -11,6 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.bundle.MessageContentBundleData;
+import com.paobuqianjin.pbq.step.data.bean.bundle.MessageLikeBundleData;
+import com.paobuqianjin.pbq.step.data.bean.bundle.MessageSystemBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageAtResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageContentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageLikeResponse;
@@ -21,6 +24,8 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.SystemMsgActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterContentActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -64,8 +69,15 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
     TextView systemMsgDesMsg;
     @Bind(R.id.system_span)
     RelativeLayout systemSpan;
-    
+    MessageContentResponse messageContentResponse;
+    MessageLikeResponse messageLikeResponse;
+    MessageSystemResponse messageSystemResponse;
+    private final static String LIKE_MESSAGE_ACTION = "com.paobuqianjin.pbq.step.LIKE_MESSAGE_ACTION";
+    private final static String CONTENT_MESSAGE_ACTION = "com.paobuqianjin.pbq.step.CONTENT_MESSAGE_ACTION";
+    private final static String SYS_MESSAGE_ACTION = "com.paobuqianjin.pbq.step.SYS_MESSAGE_ACTION";
+
     @Override
+
     protected String title() {
         return "消息";
     }
@@ -110,17 +122,27 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
         switch (view.getId()) {
             case R.id.message_span:
                 LocalLog.d(TAG, "评论");
+                //TODO null判断
+                MessageContentBundleData messageContentBundleData = new MessageContentBundleData((ArrayList<MessageContentResponse.DataBeanX.DataBean>) messageContentResponse.getData().getData());
+                intent.putExtra(getActivity().getPackageName(), messageContentBundleData);
+                intent.setAction(CONTENT_MESSAGE_ACTION);
                 intent.setClass(getContext(), UserCenterContentActivity.class);
                 startActivity(intent);
                 break;
             case R.id.like_span:
                 LocalLog.d(TAG, "点赞");
+                MessageLikeBundleData messageLikeBundleData = new MessageLikeBundleData((ArrayList<MessageLikeResponse.DataBeanX.DataBean>) messageLikeResponse.getData().getData());
+                intent.putExtra(getActivity().getPackageName(), messageLikeBundleData);
+                intent.setAction(LIKE_MESSAGE_ACTION);
                 intent.setClass(getContext(), UserCenterContentActivity.class);
                 startActivity(intent);
                 break;
             case R.id.system_span:
                 LocalLog.d(TAG, "系统消息");
-                intent.setClass(getContext(), SystemMsgActivity.class);
+                MessageSystemBundleData messageSystemBundleData = new MessageSystemBundleData((ArrayList<MessageSystemResponse.DataBeanX.DataBean>) messageSystemResponse.getData().getData());
+                intent.putExtra(getActivity().getPackageName(), messageSystemBundleData);
+                intent.setAction(SYS_MESSAGE_ACTION);
+                intent.setClass(getContext(), UserCenterContentActivity.class);
                 startActivity(intent);
                 break;
         }
@@ -128,22 +150,30 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
 
     @Override
     public void response(MessageAtResponse messageAtResponse) {
+        if (messageAtResponse.getError() == 0) {
 
+        }
     }
 
     @Override
     public void response(MessageLikeResponse messageLikeResponse) {
-
+        if (messageLikeResponse.getError() == 0) {
+            this.messageLikeResponse = messageLikeResponse;
+        }
     }
 
     @Override
     public void response(MessageSystemResponse messageSystemResponse) {
-
+        if (messageSystemResponse.getError() == 0) {
+            this.messageSystemResponse = messageSystemResponse;
+        }
     }
 
     @Override
     public void response(MessageContentResponse messageContentResponse) {
-
+        if (messageContentResponse.getError() == 0) {
+            this.messageContentResponse = messageContentResponse;
+        }
     }
 
 }

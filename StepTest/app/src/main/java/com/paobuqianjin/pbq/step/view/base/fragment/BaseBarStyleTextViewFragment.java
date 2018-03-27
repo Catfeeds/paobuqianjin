@@ -107,6 +107,7 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
         }
     };
 
+
     protected void refreshTop(View viewRoot) {
         setLeftView(left() == null ? R.drawable.bar_bg_selector : left());
         setRightValue(viewRoot, R.id.bar_tv_right, right());

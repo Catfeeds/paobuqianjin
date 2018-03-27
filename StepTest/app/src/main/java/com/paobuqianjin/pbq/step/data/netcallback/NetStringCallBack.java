@@ -724,6 +724,7 @@ public class NetStringCallBack extends StringCallback {
                 ((MessageInterface) callBackInterface).response(messageLikeResponse);
             } else if (command == Engine.COMMAND_SYS_MESSAGE) {
                 MessageSystemResponse messageSystemResponse = new Gson().fromJson(s, MessageSystemResponse.class);
+                ((MessageInterface) callBackInterface).response(messageSystemResponse);
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");

@@ -227,16 +227,17 @@
             android:name=".view.activity.SponsorGoodsPicLookActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!-- 系统消息 -->
-        <activity
-            android:name=".view.activity.SystemMsgActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme" />
         <!-- 查看评论 -->
         <activity
             android:name=".view.activity.UserCenterContentActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme" />
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.LIKE_MESSAGE_ACTION" />
+                <action android:name="com.paobuqianjin.pbq.step.CONTENT_MESSAGE_ACTION" />
+                <action android:name="com.paobuqianjin.pbq.step.SYS_MESSAGE_ACTION" />
+            </intent-filter>
+        </activity>
         <!-- 提现 -->
         <activity
             android:name=".view.activity.CrashActivity"

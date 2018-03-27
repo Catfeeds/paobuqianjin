@@ -47,7 +47,7 @@ public class MessageSystemResponse {
         this.data = data;
     }
 
-    public static class DataBeanX implements Serializable{
+    public static class DataBeanX implements Serializable {
         /**
          * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":2}
          * data : [{"id":20,"dynamicid":0,"from_userid":0,"from_nickanme":null,"from_avatar":null,"to_userid":1,"to_nickanme":"嗯额","typeid":4,"title":"红包你还未领!","content":"红包你还未领!","dynamic":null,"images":[],"create_time":1519634237,"dynamicdata":[]},{"id":57,"dynamicid":0,"from_userid":0,"from_nickanme":null,"from_avatar":null,"to_userid":1,"to_nickanme":"嗯额","typeid":4,"title":"系统升级","content":"系统将于2018年3月25日至2018年3月30之间进行系统维护，届时系统将无法登录，给大家带来了不便敬请原谅。","dynamic":null,"images":[],"create_time":0,"dynamicdata":[]}]
@@ -118,7 +118,7 @@ public class MessageSystemResponse {
             }
         }
 
-        public static class DataBean {
+        public static class DataBean implements Serializable {
             /**
              * id : 20
              * dynamicid : 0

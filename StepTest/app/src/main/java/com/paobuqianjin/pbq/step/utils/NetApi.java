@@ -131,6 +131,6 @@ public class NetApi {
     //TODO 三方绑定手机号
     public final static String urlBindPhone = "http://119.29.10.64/v1/user/bindMobile";
     //TODO 用户消息接口
-    public final static String urlMessage = "http://119.29.10.64/v1/usermessagess";
+    public final static String urlMessage = "http://119.29.10.64/v1/usermessages";
 
 }
