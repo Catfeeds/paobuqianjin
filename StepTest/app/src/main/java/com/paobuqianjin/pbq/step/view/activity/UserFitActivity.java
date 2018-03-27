@@ -60,7 +60,7 @@ public class UserFitActivity extends BaseActivity {
         LocalLog.d(TAG, "showPersonInfo() enter 跳转到个人资料修改页");
         getSupportFragmentManager().beginTransaction()
                 .hide(bindPhoneFragment)
-                .add(R.id.pay_container, personInfoSettingFragment)
+                .add(R.id.user_fit_container, personInfoSettingFragment)
                 .show(personInfoSettingFragment)
                 .commit();
         personInfoSettingFragment.setDataBen(dataBean);

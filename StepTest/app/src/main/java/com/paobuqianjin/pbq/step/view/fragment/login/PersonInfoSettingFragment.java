@@ -1,9 +1,21 @@
 package com.paobuqianjin.pbq.step.view.fragment.login;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,15 +37,27 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoSetResponse;
+import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
+import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
+import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.MainActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
+import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.WheelPicker;
 import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.widgets.WheelDatePicker;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.Rationale;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -135,6 +159,10 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     private final static String LOGIN_SUCCESS_ACTION = "com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION";
     private boolean[] selectSex = new boolean[2];
     private ImageView[] selectIcon = new ImageView[2];
+    private Rationale mRationale;
+    private PermissionSetting mSetting;
+    private final static int CAMERA_PIC = 0;
+    private QServiceCfg qServiceCfg;
 
     @Override
     protected int getLayoutResId() {
@@ -145,6 +173,8 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     public void onAttach(Context context) {
         super.onAttach(context);
         Presenter.getInstance(getContext()).attachUiInterface(this);
+        mRationale = new DefaultRationale();
+        mSetting = new PermissionSetting(getContext());
     }
 
     @Override
@@ -201,6 +231,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             update(dataBean);
         }
         initData();
+        qServiceCfg = QServiceCfg.instance(getContext());
     }
 
     private void initData() {
@@ -393,14 +424,20 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         if (dataBean == null) {
             return;
         } else {
+            if (userIcon == null) {
+                LocalLog.d(TAG, "UI not live");
+                return;
+            }
             Presenter.getInstance(getContext()).getImage(userIcon, dataBean.getAvatar());
             useName.setText(dataBean.getNickname());
             if (dataBean.getSex() == 0) {
                 //
                 useGenderManSelect.setImageResource(R.drawable.selected_icon);
+                selectSex[0] = true;
             } else if (dataBean.getSex() == 1) {
                 //
                 useGenderNvSelect.setImageResource(R.drawable.selected_icon);
+                selectSex[0] = false;
             }
         }
     }
@@ -409,6 +446,9 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         this.dataBean = dataBean;
         if (dataBean != null) {
             userid = dataBean.getId();
+            if (userid != -1) {
+                update(dataBean);
+            }
         }
     }
 
@@ -435,12 +475,41 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     }
 
 
+    protected void toast(@StringRes int message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    /*权限适配*/
+    private void requestPermission(String... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        toast(R.string.successfully);
+                        LocalLog.d(TAG, "获取权限成功");
+                        Intent picture = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(picture, CAMERA_PIC);
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                toast(R.string.failure);
+                if (AndPermission.hasAlwaysDeniedPermission(getActivity(), permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
+    }
+
     @OnClick({R.id.user_icon, R.id.use_gender_man_select, R.id.use_gender_nv_select, R.id.birth_day_span, R.id.height_span, R.id.weight_span,
             R.id.confirm})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.user_icon:
                 LocalLog.d(TAG, "更换头像");
+                requestPermission(Permission.Group.STORAGE);
                 break;
             case R.id.use_gender_man_select:
                 LocalLog.d(TAG, "点击男");
@@ -513,4 +582,230 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 break;
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_PIC) {
+            LocalLog.d(TAG, "PICTURE OK");
+            if (data != null) {
+
+                //TODO 线程中上传保存*/
+                Uri selectedImage = data.getData();
+
+                final String pathResult = getPath(selectedImage);
+                LocalLog.d(TAG, "pathResult = " + pathResult);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = true;
+                Bitmap docodeFile = BitmapFactory.decodeFile(pathResult, options);
+
+
+                // 获取到这个图片的原始宽度和高度
+                int picWidth = options.outWidth;
+                int picHeight = options.outHeight;
+                LocalLog.d(TAG, "options.outWidth = " + options.outWidth + "options.outHeight = " + options.outHeight);
+
+                // 获取屏的宽度和高度
+                WindowManager windowManager = getActivity().getWindowManager();
+                Display display = windowManager.getDefaultDisplay();
+                int screenWidth = display.getWidth();
+                int screenHeight = display.getHeight();
+
+                LocalLog.d(TAG, "screenWidth =  " + screenWidth + ",screenHeight = " + screenHeight);
+                // isSampleSize是表示对图片的缩放程度，比如值为2图片的宽度和高度都变为以前的1/2
+                options.inSampleSize = 1;
+                // 根据屏的大小和图片大小计算出缩放比例
+                if (picWidth > picHeight) {
+                    if (picWidth > screenWidth)
+                        options.inSampleSize = picWidth / screenWidth;
+                } else {
+                    if (picHeight > screenHeight)
+                        options.inSampleSize = picHeight / screenHeight;
+                }
+
+                // 这次再真正地生成一个有像素的，经过缩放了的bitmap
+                options.inJustDecodeBounds = false;
+                //docodeFile = BitmapFactory.decodeFile(pathResult, options);
+                Presenter.getInstance(getContext()).getImage(pathResult, userIcon);
+                //logoCirclePic.setImageBitmap(docodeFile);
+                LogoUpTask logoUpTask = new LogoUpTask();
+                logoUpTask.execute(pathResult);
+            }
+/*        if (requestCode == REQUEST_CODE_TAG) {
+                if (data != null) {
+                    ArrayList<String> tags = data.getStringArrayListExtra("tag");
+                    if (tags != null) {
+                        if (tags.size() == 2) {
+                            flagA1.setText(tags.get(0));
+                            flagA0.setText(tags.get(1));
+                            flagA1.setVisibility(View.VISIBLE);
+                            flagA0.setVisibility(View.VISIBLE);
+                        } else if (tags.size() == 1) {
+                            flagA1.setText(tags.get(0));
+                            flagA1.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    ArrayList<String> ids = data.getStringArrayListExtra("id");
+                    if (ids != null) {
+                        if (ids.size() == 2) {
+                            LocalLog.d(TAG, ids.get(0));
+                            LocalLog.d(TAG, ids.get(1));
+                            createCircleBodyParam.setTags(ids.get(0) + "," + ids.get(1));
+                        } else if (ids.size() == 1) {
+                            LocalLog.d(TAG, ids.get(0));
+                            createCircleBodyParam.setTags(ids.get(0));
+                        }
+                    }
+
+                }
+        }*/
+        }
+    }
+
+
+    public class LogoUpTask extends AsyncTask<String, Integer, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //SocializeUtils.safeShowDialog(dialog);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String url = null;
+            for (String path : strings) {
+                LocalLog.d(TAG, "path = " + path);
+                ResultHelper result = null;
+                PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
+                result = putObjectSample.start(path);
+                //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
+                url = result.cosXmlResult.accessUrl;
+                LocalLog.d(TAG, "url = " + url);
+
+            }
+            return url;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            LocalLog.d(TAG, "onPostExecute() enter");
+            super.onPostExecute(s);
+            if (putUserInfoParam != null) {
+                putUserInfoParam.setAvatar(s);
+            }
+            //SocializeUtils.safeCloseDialog(dialog);
+        }
+    }
+
+
+    private String getPath(Uri uri) {
+        int sdkVersion = Build.VERSION.SDK_INT;
+        if (sdkVersion >= 19) {
+            LocalLog.d(TAG, "uri auth:" + uri.getAuthority());
+
+            if (isExternalStorageDocument(uri)) {
+                String docId = DocumentsContract.getDocumentId(uri);
+                String[] split = docId.split(":");
+                String type = split[0];
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                }
+            } else if (isDownloadsDocument(uri)) {
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                return getDataColumn(getContext(), contentUri, null, null);
+            } else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                Uri contentUri = null;
+                if ("img".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("auto".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[]{split[1]};
+                return getDataColumn(getContext(), contentUri, selection, selectionArgs);
+            } else if (isMedia(uri)) {
+                String[] proj = {MediaStore.Images.Media.DATA};
+                Cursor actualimagecursor = getActivity().managedQuery(uri, proj, null, null, null);
+                int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                actualimagecursor.moveToFirst();
+                return actualimagecursor.getString(actual_image_column_index);
+            } else if (isXiaoMi(uri)) {
+                LocalLog.d(TAG, "小米手机相册 enter()");
+                LocalLog.d(TAG, uri.toString());
+                if ("content".equalsIgnoreCase(uri.getScheme())) {
+                    return uri.getLastPathSegment();
+                }
+                return uri.getPath();
+            }
+        } else if ("content".equalsIgnoreCase(uri.getScheme())) {
+            if (isGooglePhotos(uri)) {
+                return uri.getLastPathSegment();
+            }
+            return getDataColumn(getContext(), uri, null, null);
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
+    }
+
+
+    private String getDataColumn(Context context, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {column};
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(index);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return null;
+    }
+
+    private boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    private boolean isDownloadsDocument(Uri uri) {
+        return "com.android.downloads.documents".equals(uri.getAuthority());
+    }
+
+    private boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    private boolean isMedia(Uri uri) {
+        return "media".equals(uri.getAuthority());
+    }
+
+    public boolean isGooglePhotos(Uri uri) {
+        return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    public boolean isXiaoMi(Uri uri) {
+        LocalLog.d(TAG, uri.getAuthority());
+        return "com.miui.gallery.open".equals(uri.getAuthority());
+    }
+
+    private void saveImage(Bitmap bitmap, String sourcePath) throws FileNotFoundException {
+        String path = getContext().getExternalCacheDir() + "/head_logo.png";
+        LocalLog.d(TAG, "path = " + path);
+        FileOutputStream fos = new FileOutputStream(path);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+
+    }
+
 }
