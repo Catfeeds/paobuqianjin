@@ -160,16 +160,7 @@ public class NetStringCallBack extends StringCallback {
             try {
                 ErrorCode errorCode = new Gson().fromJson(response.toString(), ErrorCode.class);
                 if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface) {
-
-                    if (command == Engine.COMMAND_LOGIN_IN_BY_PHONE) {
-
-                    }
-                    if (command == Engine.COMMAND_LOGIN_BY_THIRD) {
-
-                    }
-                    if (command == Engine.COMMAND_REG_BY_PHONE) {
-
-                    }
+                    ((LoginSignCallbackInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {
 
                 } else if (callBackInterface != null && callBackInterface instanceof SignCodeCallBackInterface) {
