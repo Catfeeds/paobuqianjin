@@ -1,6 +1,9 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
-/**圈子详情应答
+import java.io.Serializable;
+
+/**
+ * 圈子详情应答
  * Created by pbq on 2017/12/23.
  * 2018/2/2
  */
@@ -49,7 +52,7 @@ public class CircleDetailResponse {
                 '}';
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
         /**
          * id : 100233
          * userid : 30

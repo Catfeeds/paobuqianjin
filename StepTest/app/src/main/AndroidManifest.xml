@@ -272,6 +272,11 @@
             android:name=".view.activity.AddFriendAddressActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
+        <!--编辑圈子-->
+        <activity
+            android:name=".view.activity.EditCircleActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
         <!-- 修改资料 -->
         <activity
             android:name=".view.activity.UserInfoSettingActivity"

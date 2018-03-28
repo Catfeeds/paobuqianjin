@@ -42,6 +42,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.EditCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.LoveRankActivity;
 import com.paobuqianjin.pbq.step.view.activity.MemberManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
@@ -494,6 +495,12 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     break;
                 case R.id.editor_text:
                     LocalLog.d(TAG, "编辑");
+                    if (circleDetailResponse != null) {
+                        Intent intentEdit = new Intent();
+                        intentEdit.setClass(getContext(), EditCircleActivity.class);
+                        intentEdit.putExtra("circle_detail", circleDetailResponse.getData());
+                        startActivity(intentEdit);
+                    }
                     break;
                 case R.id.mananger_text:
                     LocalLog.d(TAG, "成员管理");
