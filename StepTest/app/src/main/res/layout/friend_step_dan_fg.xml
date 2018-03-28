@@ -58,7 +58,7 @@
                 android:layout_below="@+id/king_head_layer"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:text="跑步钱进"
+                android:text=""
                 android:textColor="@color/color_f8"
                 android:textSize="16dp" />
 
@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
-                    android:text="4"
+                    android:text=""
                     android:textColor="@color/color_161727" />
 
 
@@ -84,8 +84,7 @@
                     android:layout_height="40dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
-                    android:layout_toEndOf="@+id/your_dan"
-                    android:src="@drawable/default_head_ico" />
+                    android:layout_toEndOf="@+id/your_dan" />
 
                 <TextView
                     android:id="@+id/user_name_rank"

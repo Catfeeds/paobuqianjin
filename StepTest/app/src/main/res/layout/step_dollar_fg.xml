@@ -55,7 +55,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:includeFontPadding="false"
-                    android:text="36"
+                    android:text=""
                     android:textColor="@color/color_f8"
                     android:textSize="36dp" />
 
