@@ -43,7 +43,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostIncomeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostMessageParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoSetResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.AllPayOrderInterface;
@@ -59,6 +58,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DearNameModifyInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ForgetPassWordInterface;
+import com.paobuqianjin.pbq.step.presenter.im.FriendAddressInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
@@ -185,6 +185,7 @@ public final class Engine {
     private LoginBindPhoneInterface loginBindPhoneInterface;
     private UserInfoLoginSetInterface userInfoLoginSetInterface;
     private MessageInterface messageInterface;
+    private FriendAddressInterface friendAddressInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -213,7 +214,7 @@ public final class Engine {
     public final static int COMMAND_DYNAMIC_CONTENTS = 21;
     public final static int COMMAND_OWNER_USER_INFO = 22;
     public final static int COMMAND_LOGIN_BY_THIRD = 23;
-    public final static int COMMAND_CIRCLE_ORDER_POST = 24;
+    public final static int COMMAND_CIRCLE_ORDER_POST_WX = 24;
     public final static int COMMAND_PAY_RESULT_QUERY_WX = 25;
     public final static int COMMAND_GET_MY_HOT = 26;
     public final static int COMMAND_GET_MEMBER = 27;
@@ -275,7 +276,9 @@ public final class Engine {
     public final static int COMMAND_CONTENT_MESSAGE = 82;
     public final static int COMMAND_LIKE_MESSAGE = 83;
     public final static int COMMAND_SYS_MESSAGE = 84;
-
+    public final static int COMMAND_UPDATE_ADDRESS_BOOK = 85;
+    public final static int COMMAND_CIRCLE_ORDER_POST_ALI = 86;
+    public final static int COMMAND_CIRCLE_ORDER_POST_WALLET = 87;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1125,6 +1128,18 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
+    //TODO 好友通讯录
+    public void postAddressBook(String addressJson) {
+        LocalLog.d(TAG, "postAddressBook() enter");
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlAddressBook)
+                .addParams("userid", String.valueOf(getId(mContext)))
+                .addParams("mobiles", addressJson)
+                .build()
+                .execute(new NetStringCallBack(friendAddressInterface, COMMAND_UPDATE_ADDRESS_BOOK));
+    }
+
     //TODO 修改备注名称和设为管理员
     public void markAdminReset() {
         LocalLog.d(TAG, "markAdminReset() enter");
@@ -1709,12 +1724,36 @@ public final class Engine {
     //TODO 圈子订单 WX
     public void postWxPayOrder(PayOrderParam wxPayOrderParam) {
         LocalLog.d(TAG, wxPayOrderParam.paramString());
-        OkHttpUtils
-                .post()
-                .url(NetApi.urlPayOrder)
-                .params(wxPayOrderParam.getParams())
-                .build()
-                .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST));
+        switch (wxPayOrderParam.getPayment_type()) {
+            case "wx":
+                LocalLog.d(TAG, "微信支付");
+                OkHttpUtils
+                        .post()
+                        .url(NetApi.urlPayOrder)
+                        .params(wxPayOrderParam.getParams())
+                        .build()
+                        .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST_WX));
+                break;
+            case "ali":
+                LocalLog.d(TAG, "支付宝");
+                OkHttpUtils
+                        .post()
+                        .url(NetApi.urlPayOrder)
+                        .params(wxPayOrderParam.getParams())
+                        .build()
+                        .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST_ALI));
+                break;
+            case "wallet":
+                LocalLog.d(TAG, "钱包支付");
+                OkHttpUtils
+                        .post()
+                        .url(NetApi.urlPayOrder)
+                        .params(wxPayOrderParam.getParams())
+                        .build()
+                        .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST_WALLET));
+                break;
+        }
+
     }
 
     //TODO 获取我的订单 http://119.29.10.64/v1/Pay?userid=1
@@ -2140,6 +2179,8 @@ public final class Engine {
             userInfoLoginSetInterface = (UserInfoLoginSetInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MessageInterface) {
             messageInterface = (MessageInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof FriendAddressInterface) {
+            friendAddressInterface = (FriendAddressInterface) uiCallBackInterface;
         }
     }
 
@@ -2247,6 +2288,8 @@ public final class Engine {
             userInfoLoginSetInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof MessageInterface) {
             messageInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof FriendAddressInterface) {
+            friendAddressInterface = null;
         }
     }
 }

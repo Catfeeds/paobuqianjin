@@ -28,6 +28,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendAddResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
@@ -77,6 +78,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoSetResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
@@ -94,6 +96,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DearNameModifyInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ForgetPassWordInterface;
+import com.paobuqianjin.pbq.step.presenter.im.FriendAddressInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
@@ -229,7 +232,7 @@ public class NetStringCallBack extends StringCallback {
 
                 } else if (callBackInterface != null
                         && callBackInterface instanceof PayInterface
-                        && command == Engine.COMMAND_CIRCLE_ORDER_POST) {
+                        && command == Engine.COMMAND_CIRCLE_ORDER_POST_WX) {
 
                 } else if (callBackInterface != null
                         && callBackInterface instanceof WxPayResultQueryInterface
@@ -423,11 +426,19 @@ public class NetStringCallBack extends StringCallback {
             UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
             ((OwnerUiInterface) callBackInterface).response(userInfoResponse);
         } else if (callBackInterface != null
-                && callBackInterface instanceof PayInterface
-                && command == Engine.COMMAND_CIRCLE_ORDER_POST) {
-            LocalLog.d(TAG, "订单信息");
-            WxPayOrderResponse wxPayOrderResponse = new Gson().fromJson(s, WxPayOrderResponse.class);
-            ((PayInterface) callBackInterface).response(wxPayOrderResponse);
+                && callBackInterface instanceof PayInterface) {
+            if (command == Engine.COMMAND_CIRCLE_ORDER_POST_ALI) {
+                LocalLog.d(TAG, "支付宝支付");
+            } else if (command == Engine.COMMAND_CIRCLE_ORDER_POST_WX) {
+                LocalLog.d(TAG, "微信支付");
+                WxPayOrderResponse wxPayOrderResponse = new Gson().fromJson(s, WxPayOrderResponse.class);
+                ((PayInterface) callBackInterface).response(wxPayOrderResponse);
+            } else if (command == Engine.COMMAND_CIRCLE_ORDER_POST_WALLET) {
+                LocalLog.d(TAG, "钱包支付");
+                WalletPayOrderResponse walletPayOrderResponse = new Gson().fromJson(s, WalletPayOrderResponse.class);
+                ((PayInterface) callBackInterface).response(walletPayOrderResponse);
+            }
+
         } else if (callBackInterface != null
                 && callBackInterface instanceof WxPayResultQueryInterface
                 && command == Engine.COMMAND_PAY_RESULT_QUERY_WX) {
@@ -726,6 +737,9 @@ public class NetStringCallBack extends StringCallback {
                 MessageSystemResponse messageSystemResponse = new Gson().fromJson(s, MessageSystemResponse.class);
                 ((MessageInterface) callBackInterface).response(messageSystemResponse);
             }
+        } else if (callBackInterface != null && callBackInterface instanceof FriendAddressInterface) {
+            FriendAddResponse friendAddResponse = new Gson().fromJson(s, FriendAddResponse.class);
+            ((FriendAddressInterface) callBackInterface).response(friendAddResponse);
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }

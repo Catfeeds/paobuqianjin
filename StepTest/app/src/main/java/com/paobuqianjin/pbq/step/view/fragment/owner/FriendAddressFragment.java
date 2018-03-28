@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,9 +17,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostAddressBookParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendAddResponse;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.FriendAddressInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.LocalContactAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -29,6 +35,7 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +48,7 @@ import butterknife.ButterKnife;
  * Created by pbq on 2018/1/18.
  */
 
-public class FriendAddressFragment extends BaseBarStyleTextViewFragment {
+public class FriendAddressFragment extends BaseBarStyleTextViewFragment implements FriendAddressInterface {
     private final static String TAG = FriendAddressFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -66,7 +73,7 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment {
 
     private ContentResolver cr;
     private List<Map<String, String>> mp = new ArrayList<>();
-    private LinearLayoutManager layoutManager;
+    private LinearLayoutManager layoutManager, regLayoutManager;
     private Rationale mRationale;
     private PermissionSetting mSetting;
 
@@ -78,6 +85,12 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment {
     @Override
     protected String title() {
         return "通讯录好友";
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Presenter.getInstance(getContext()).attachUiInterface(this);
     }
 
     @Override
@@ -95,14 +108,16 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment {
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getContext());
         layoutManager = new LinearLayoutManager(getContext());
+        regLayoutManager = new LinearLayoutManager(getContext());
         unRegAppRecycler = (RecyclerView) viewRoot.findViewById(R.id.un_reg_app_recycler);
         unRegAppRecycler.setLayoutManager(layoutManager);
+        regAppRecycler = (RecyclerView) viewRoot.findViewById(R.id.reg_app_recycler);
+        regAppRecycler.setLayoutManager(regLayoutManager);
         requestPermission(Permission.Group.CONTACTS);
 
     }
 
-     /*权限适配*/
-
+    /*权限适配*/
     private void requestPermission(String... permissions) {
         AndPermission.with(this)
                 .permission(permissions)
@@ -111,7 +126,8 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment {
                     @Override
                     public void onAction(List<String> permissions) {
                         toast(R.string.successfully);
-                        unRegAppRecycler.setAdapter(new LocalContactAdapter(getContext(), getContacts()));
+                        List<Map<String, String>> maps = getContacts();
+                        updateAddressBook(maps);
                     }
                 }).onDenied(new Action() {
             @Override
@@ -124,35 +140,61 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment {
         }).start();
     }
 
+    private void updateAddressBook(List<Map<String, String>> maps) {
+        List<PostAddressBookParam.AddressPerson> list = new ArrayList<>();
+        if (maps != null) {
+            int size = maps.size();
+            LocalLog.d(TAG, "size = " + size);
+            for (int i = 0; i < size; i++) {
+                Map<String, String> stringMap = maps.get(i);
+                PostAddressBookParam.AddressPerson addressPerson = new PostAddressBookParam.AddressPerson();
+                for (String key : stringMap.keySet()) {
+                    if (key.equals("name")) {
+                        addressPerson.setName(stringMap.get(key));
+                    } else if (key.equals("phone")) {
+                        addressPerson.setPhone(stringMap.get(key));
+                    }
+
+                }
+                list.add(addressPerson);
+            }
+            Type type = new TypeToken<List<PostAddressBookParam.AddressPerson>>() {
+            }.getType();
+            String json = new Gson().toJson(list, type);
+            LocalLog.d(TAG, "json = " + json);
+            Presenter.getInstance(getContext()).postAddressBook(json);
+        }
+    }
 
     protected void toast(@StringRes int message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     public List<Map<String, String>> getContacts() {
-        Uri uri = Uri.parse("content://com.android.contacts/raw_contacts");
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        String[] projection = {
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER,
+        };
         cr = getContext().getContentResolver();
-        Cursor cs = cr.query(uri, null, null, null, null);
+        Cursor cs = cr.query(uri, projection, null, null, null);
+        if (cs == null) {
+            return null;
+        }
         while (cs.moveToNext()) {
-            int id = cs.getInt(cs.getColumnIndex("_id"));
-            String name = cs.getString(cs.getColumnIndex("display_name"));
-            LocalLog.d(TAG, "name = " + name);
 
-            Uri uri1 = Uri.parse("content://com.android.contacts/raw_contacts/" + String.valueOf(id) + "/data");
-            Cursor cs2 = cr.query(uri1, null, null, null, null);
-            Map<String, String> maps = new HashMap<>();
-            while (cs2.moveToNext()) {
-                String data1 = cs2.getString(cs2.getColumnIndex("data1"));
-                String type = cs2.getString(cs2.getColumnIndex("mimetype"));
-                String str = type.substring(type.indexOf("/") + 1, type.length());
+            String name = cs.getString(0);
+            String number = cs.getString(1);
 
-                if ("name".equals(str)) {
-                    maps.put("name", data1);
-                } else if ("phone_v2".equals(str)) {
-                    maps.put("phone", data1);
-                }
-                LocalLog.d(TAG, "data1 =" + data1 + " ,type =" + type);
+
+            number = number.replace(" ", "");
+            if (number.length() > 11) {
+                LocalLog.d(TAG, "非手机号码不处理");
+                continue;
             }
+            Map<String, String> maps = new HashMap<>();
+            maps.put("name", name);
+            maps.put("phone", number);
             mp.add(maps);
         }
         cs.close();
@@ -164,5 +206,17 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
+    }
+
+    @Override
+    public void response(FriendAddResponse friendAddResponse) {
+        LocalLog.d(TAG, "FriendAddResponse() enter ");
+        if (friendAddResponse.getError() == 0) {
+            if (regAppRecycler != null) {
+                regAppRecycler.setAdapter(new LocalContactAdapter(getContext(),friendAddResponse.getData().getIn_system()));
+                unRegAppRecycler.setAdapter(new LocalContactAdapter(getContext(), friendAddResponse.getData().getOut_system()));
+            }
+        }
     }
 }

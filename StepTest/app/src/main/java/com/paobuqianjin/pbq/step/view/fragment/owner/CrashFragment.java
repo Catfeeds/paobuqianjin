@@ -21,6 +21,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.BindWeChatActivity;
+import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserBindBankListActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.umeng.socialize.Config;
@@ -130,7 +131,7 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         LocalLog.d(TAG, "CrashResponse()  enter  " + crashResponse.toString());
         if (crashResponse.getError() == 0) {
             Toast.makeText(getContext(), crashResponse.getMessage(), Toast.LENGTH_SHORT).show();
-            getActivity().finish();
+            ((CrashActivity)getActivity()).showCrashResult(crashResponse);
         }
     }
 }

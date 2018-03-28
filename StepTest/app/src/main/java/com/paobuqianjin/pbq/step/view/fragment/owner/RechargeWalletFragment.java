@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
@@ -139,5 +140,10 @@ public class RechargeWalletFragment extends BaseBarStyleTextViewFragment impleme
         Presenter.getInstance(getContext()).setOutTradeNo(wxPayOrderResponse.getData().getOrder_no());
         msgApi.registerApp(req.appId);
         msgApi.sendReq(req);
+    }
+
+    @Override
+    public void response(WalletPayOrderResponse walletPayOrderResponse) {
+
     }
 }

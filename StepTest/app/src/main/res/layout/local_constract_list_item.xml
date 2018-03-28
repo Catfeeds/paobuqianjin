@@ -31,7 +31,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="14dp"
         android:background="@drawable/has_not_fllow_nearby"
-        android:text="邀请"
+        android:text=""
         android:textColor="@color/color_6c71c4"
         android:textSize="14dp" />
 

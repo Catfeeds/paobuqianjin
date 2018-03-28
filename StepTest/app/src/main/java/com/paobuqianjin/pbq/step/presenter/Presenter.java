@@ -554,6 +554,9 @@ public final class Presenter {
         engine.getMessage(typeid);
     }
 
+    public void postAddressBook(String addressBook){
+        engine.postAddressBook(addressBook);
+    }
     public void setNetworkPolicy(NetworkPolicy networkPolicy) {
         engine.setNetworkPolicy(networkPolicy);
     }

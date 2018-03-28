@@ -16,10 +16,12 @@ import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -296,6 +298,55 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                         }
                     }
 
+                } else if (style == 1) {
+                    LocalLog.d(TAG, "钱包支付");
+                    float money = 0.0f;
+                    if (rechargeEdit.getVisibility() == View.VISIBLE) {
+                        try {
+                            money = Float.parseFloat(rechargeEdit.getText().toString());
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (money < 0.01) {
+                            Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    } else {
+                        money = Float.parseFloat(pay);
+                    }
+                    dialog = ProgressDialog.show(getContext(), "提示" + "支付方式" + String.valueOf(style),
+                            "正在提交订单");
+                    PayOrderParam wxPayOrderParam = new PayOrderParam();
+                    if ("circle".equals(payAction)) {
+                        LocalLog.d(TAG, "圈子支付");
+                        if (!"".equals(id)) {
+                            wxPayOrderParam.setCircleid(Integer.parseInt(id))
+                                    .setPayment_type("wallet")
+                                    .setOrder_type(payAction)
+                                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                        }
+                    } else if ("user".equals(payAction)) {
+                        LocalLog.d(TAG, "用户订单");
+                        wxPayOrderParam
+                                .setPayment_type("wallet")
+                                .setOrder_type(payAction)
+                                .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                        Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                    } else if ("task".equals(payAction)) {
+                        LocalLog.d(TAG, "任务订单");
+                        if (!"".equals(taskno)) {
+                            wxPayOrderParam
+                                    .setPayment_type("wallet")
+                                    .setOrder_type(payAction)
+                                    .setTaskno(taskno)
+                                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                        }
+                    }
+
                 } else {
                     Toast.makeText(getContext(), "其他支付方式暂时未开通,请选择微信", Toast.LENGTH_SHORT).show();
                 }
@@ -310,18 +361,33 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         if (dialog != null) {
             dialog.dismiss();
         }
-        LocalLog.d(TAG, wxPayOrderResponse.toString());
-        req.appId = wxPayOrderResponse.getData().getAppid();
-        req.partnerId = wxPayOrderResponse.getData().getPartnerid();
-        req.prepayId = wxPayOrderResponse.getData().getPrepayid();
-        req.packageValue = wxPayOrderResponse.getData().getPackageX();
-        req.nonceStr = wxPayOrderResponse.getData().getNoncestr();
-        req.sign = wxPayOrderResponse.getData().getSign();
-        req.timeStamp = String.valueOf(wxPayOrderResponse.getData().getTimestamp());
+        if (wxPayOrderResponse.getError() == 0) {
+            LocalLog.d(TAG, "微信支付返回");
+            LocalLog.d(TAG, wxPayOrderResponse.toString());
+            req.appId = wxPayOrderResponse.getData().getAppid();
+            req.partnerId = wxPayOrderResponse.getData().getPartnerid();
+            req.prepayId = wxPayOrderResponse.getData().getPrepayid();
+            req.packageValue = wxPayOrderResponse.getData().getPackageX();
+            req.nonceStr = wxPayOrderResponse.getData().getNoncestr();
+            req.sign = wxPayOrderResponse.getData().getSign();
+            req.timeStamp = String.valueOf(wxPayOrderResponse.getData().getTimestamp());
 
-        Presenter.getInstance(getContext()).setOutTradeNo(wxPayOrderResponse.getData().getOrder_no());
-        Presenter.getInstance(getContext()).setTradeStyle(payAction);
-        msgApi.registerApp(req.appId);
-        msgApi.sendReq(req);
+            Presenter.getInstance(getContext()).setOutTradeNo(wxPayOrderResponse.getData().getOrder_no());
+            Presenter.getInstance(getContext()).setTradeStyle(payAction);
+            msgApi.registerApp(req.appId);
+            msgApi.sendReq(req);
+        }
+
+    }
+
+    @Override
+    public void response(WalletPayOrderResponse walletPayOrderResponse) {
+        LocalLog.d(TAG, "WalletPayOrderResponse() enter" + walletPayOrderResponse.toString());
+        if (dialog != null) {
+            dialog.dismiss();
+        }
+        if (walletPayOrderResponse.getError() == 0) {
+            ((PaoBuPayActivity) getActivity()).showPaySuccessWallet(walletPayOrderResponse);
+        }
     }
 }

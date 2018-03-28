@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendAddResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
@@ -30,10 +31,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapter.LocalContactViewHolder> {
     private final static String TAG = LocalContactAdapter.class.getSimpleName();
     Context context;
-    List<Map<String, String>> mData;
+    List<?> mData;
 
 
-    public LocalContactAdapter(Context context, List<Map<String, String>> data) {
+    public LocalContactAdapter(Context context, List<?> data) {
         this.context = context;
         mData = data;
     }
@@ -53,13 +54,19 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
     }
 
     private void updateListItem(LocalContactViewHolder holder, int position) {
-        Map<String, String> stringMap = mData.get(position);
-        for (String key : stringMap.keySet()) {
-            if (key.equals("name")) {
-                holder.dearName.setText(stringMap.get(key));
-            }else if(key.equals("phone")){
-                holder.phoneNum =  stringMap.get(key);
+        if (mData.get(position) instanceof FriendAddResponse.DataBean.InSystemBean) {
+            Presenter.getInstance(context).getImage(holder.userNearIcon, ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getAvatar());
+            holder.dearName.setText(((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getName());
+            if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getFollow_type() == 2) {
+                holder.btFollow.setText("已关注");
+            } else if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getFollow_type() == 3) {
+                holder.btFollow.setText("互相关注");
             }
+            holder.phoneNum = ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getPhone();
+        } else if (mData.get(position) instanceof FriendAddResponse.DataBean.OutSystemBean) {
+            holder.dearName.setText(((FriendAddResponse.DataBean.OutSystemBean) mData.get(position)).getName());
+            holder.btFollow.setText("邀请");
+            holder.phoneNum = ((FriendAddResponse.DataBean.OutSystemBean) mData.get(position)).getPhone();
         }
     }
 
@@ -95,6 +102,13 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
                 switch (view.getId()) {
                     case R.id.bt_follow:
                         LocalLog.d(TAG, "邀请" + phoneNum);
+                        switch (btFollow.getText().toString()) {
+                            case "邀请":
+                                //TODO 发送邀请
+                                break;
+                            default:
+                                break;
+                        }
                         break;
                 }
             }

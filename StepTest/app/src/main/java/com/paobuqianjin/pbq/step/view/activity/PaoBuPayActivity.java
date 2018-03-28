@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
@@ -147,5 +148,16 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
         } else {
             LocalLog.d(TAG, "error  ");
         }
+    }
+
+    public void showPaySuccessWallet(WalletPayOrderResponse walletPayOrderResponse){
+        Toast.makeText(this, "支付成功", Toast.LENGTH_SHORT).show();
+        PaySuccessFragment paySuccessFragment = new PaySuccessFragment();
+        paySuccessFragment.setPayNum(Float.parseFloat(walletPayOrderResponse.getData().getTotal_fee()));
+        getSupportFragmentManager().beginTransaction()
+                .hide(circlePayFragment)
+                .add(R.id.pay_container, paySuccessFragment)
+                .show(paySuccessFragment)
+                .commit();
     }
 }
