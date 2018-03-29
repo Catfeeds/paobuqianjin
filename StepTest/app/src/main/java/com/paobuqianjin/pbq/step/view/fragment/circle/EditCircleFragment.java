@@ -160,6 +160,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment {
                 moneyPkgPan = (RelativeLayout) viewRoot.findViewById(R.id.money_pkg_pan);
                 readPackageMumPan = (RelativeLayout) viewRoot.findViewById(R.id.read_package_mum_pan);
                 moneyMumPan = (RelativeLayout) viewRoot.findViewById(R.id.money_mum_pan);
+                switchCircleMoneyAddOff = (ImageView)viewRoot.findViewById(R.id.switch_circle_money_add_off);
                 if (1 == dataBean.getIs_recharge()) {
                     switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a));
                     is_recharge = true;
@@ -176,6 +177,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment {
                 moneyPkgNumEditor = (EditText) viewRoot.findViewById(R.id.money_pkg_num_editor);
                 moneyPkgNumEditor.setText(String.valueOf(dataBean.getRed_packet_amount()));
                 passwordPan = (RelativeLayout)viewRoot.findViewById(R.id.password_pan);
+                passwordCircleSwitch =(ImageView)viewRoot.findViewById(R.id.password_circle_switch);
                 if (dataBean.getIs_pwd() == 1) {
                     passwordCircleSwitch.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a));
                     is_pwd = true;
