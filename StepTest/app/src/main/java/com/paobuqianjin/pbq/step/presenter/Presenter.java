@@ -291,6 +291,10 @@ public final class Presenter {
         engine.getCircleTarget();
     }
 
+    public void getCircleTargetEdit() {
+        engine.getCircleTargetEdit();
+    }
+
     //TODO  获取圈子详情
     public void getCircleDetail(int circleId) {
         engine.getCircleDetail(circleId);
@@ -554,9 +558,10 @@ public final class Presenter {
         engine.getMessage(typeid);
     }
 
-    public void postAddressBook(String addressBook){
+    public void postAddressBook(String addressBook) {
         engine.postAddressBook(addressBook);
     }
+
     public void setNetworkPolicy(NetworkPolicy networkPolicy) {
         engine.setNetworkPolicy(networkPolicy);
     }

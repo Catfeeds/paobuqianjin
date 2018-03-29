@@ -95,6 +95,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DearNameModifyInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.EditCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ForgetPassWordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendAddressInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
@@ -740,6 +741,9 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null && callBackInterface instanceof FriendAddressInterface) {
             FriendAddResponse friendAddResponse = new Gson().fromJson(s, FriendAddResponse.class);
             ((FriendAddressInterface) callBackInterface).response(friendAddResponse);
+        } else if (callBackInterface != null && callBackInterface instanceof EditCircleInterface) {
+            CircleTargetResponse circleTargetResponse = new Gson().fromJson(s, CircleTargetResponse.class);
+            ((EditCircleInterface) callBackInterface).response(circleTargetResponse);
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }

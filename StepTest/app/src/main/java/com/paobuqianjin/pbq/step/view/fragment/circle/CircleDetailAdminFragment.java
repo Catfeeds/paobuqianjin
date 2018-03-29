@@ -468,6 +468,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         joinIn = (Button) viewRoot.findViewById(R.id.join_in);
         reChargeBt = (Button) viewRoot.findViewById(R.id.re_charge_bt);
         reChargeBt.setOnClickListener(onClickListener);
+        rankMoney = (RelativeLayout) viewRoot.findViewById(R.id.rank_money);
 
     }
 
@@ -668,6 +669,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 is_password = true;
             }
             titleStr = circleDetailResponse.getData().getName();
+            if (circleDetailResponse.getData().getIs_recharge() == 1) {
+                rankMoney.setVisibility(View.VISIBLE);
+            }
             Log.d(TAG, "titleStr = " + titleStr);
             setTitle(titleStr);
             /*Presenter.getInstance(getContext()).getImage(circleCover, circleDetailResponse.getData().getLogo());*/

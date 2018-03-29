@@ -57,6 +57,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DearNameModifyInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
+import com.paobuqianjin.pbq.step.presenter.im.EditCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ForgetPassWordInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendAddressInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
@@ -186,6 +187,7 @@ public final class Engine {
     private UserInfoLoginSetInterface userInfoLoginSetInterface;
     private MessageInterface messageInterface;
     private FriendAddressInterface friendAddressInterface;
+    private EditCircleInterface editCircleInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -1196,6 +1198,15 @@ public final class Engine {
                 .execute(new NetStringCallBack(uiCreateCircleInterface, COMMAND_GET_CIRCLE_TARGET));
     }
 
+    public void getCircleTargetEdit() {
+        LocalLog.d(TAG, "getCircleTargetEdit() enter");
+        OkHttpUtils
+                .get()
+                .url(NetApi.urlTarget)
+                .build()
+                .execute(new NetStringCallBack(editCircleInterface, COMMAND_GET_CIRCLE_TARGET));
+    }
+
     /*TODO 圈子类型接口*/
     public void getCircleType() {
         LocalLog.d(TAG, "圈子类型列表：getCircleType() enter");
@@ -2181,6 +2192,8 @@ public final class Engine {
             messageInterface = (MessageInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof FriendAddressInterface) {
             friendAddressInterface = (FriendAddressInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof EditCircleInterface) {
+            editCircleInterface = (EditCircleInterface) uiCallBackInterface;
         }
     }
 
@@ -2290,6 +2303,8 @@ public final class Engine {
             messageInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof FriendAddressInterface) {
             friendAddressInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof EditCircleInterface) {
+            editCircleInterface = null;
         }
     }
 }
