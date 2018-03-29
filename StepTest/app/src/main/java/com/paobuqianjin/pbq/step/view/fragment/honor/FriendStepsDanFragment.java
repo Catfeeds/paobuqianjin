@@ -12,7 +12,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendWeekResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -68,6 +70,8 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGE_DEFAULT_SIZE = 10;
     LinearLayoutManager layoutManager;
+    FriendStepRankDayResponse friendStepRankDayResponse;
+    FriendWeekResponse friendWeekResponse;
 
     @Override
     protected int getLayoutResId() {
@@ -132,22 +136,54 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
+    
     @Override
     public void response(FriendStepRankDayResponse friendStepRankDayResponse) {
         LocalLog.d(TAG, "FriendStepRankDayResponse() enter" + friendStepRankDayResponse.toString());
         if (friendStepRankDayResponse.getError() == 0) {
-            if (kingHeadIcon != null) {
-                userNameRank.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getNickname()));
-                yourDan.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getRanking()));
-                stepNumMy.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
-                Presenter.getInstance(getContext()).getImage(headIconUser, friendStepRankDayResponse.getData().getData().getMydata().getAvatar());
-                if (friendStepRankDayResponse.getData().getData().getMember().size() > 0) {
-                    Presenter.getInstance(getContext()).getImage(kingHeadIcon, friendStepRankDayResponse.getData().getData().getMember().get(0).getAvatar());
-                    kingName.setText(friendStepRankDayResponse.getData().getData().getMember().get(0).getNickname());
-                }
-                danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember()));
-            }
+            this.friendStepRankDayResponse = friendStepRankDayResponse;
+            updateFriendStepRankDayResponse(friendStepRankDayResponse);
         }
     }
 
+    private void updateFriendStepRankDayResponse(FriendStepRankDayResponse friendStepRankDayResponse) {
+        if (kingHeadIcon != null) {
+            userNameRank.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getNickname()));
+            yourDan.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getRank()));
+            stepNumMy.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
+            Presenter.getInstance(getContext()).getImage(headIconUser, friendStepRankDayResponse.getData().getData().getMydata().getAvatar());
+            if (friendStepRankDayResponse.getData().getData().getMember().size() > 0) {
+                Presenter.getInstance(getContext()).getImage(kingHeadIcon, friendStepRankDayResponse.getData().getData().getMember().get(0).getAvatar());
+                kingName.setText(friendStepRankDayResponse.getData().getData().getMember().get(0).getNickname());
+            }
+            danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember()));
+        }
+    }
+
+    private void updateFriendWeekResponse(FriendWeekResponse friendWeekResponse) {
+        if (kingHeadIcon != null && friendWeekResponse != null) {
+            userNameRank.setText(String.valueOf(friendWeekResponse.getData().getData().getMydata().getNickname()));
+            yourDan.setText(String.valueOf(friendWeekResponse.getData().getData().getMydata().getRank()));
+            stepNumMy.setText(String.valueOf(friendWeekResponse.getData().getData().getMydata().getStep_number()));
+            Presenter.getInstance(getContext()).getImage(headIconUser, friendWeekResponse.getData().getData().getMydata().getAvatar());
+            if (friendStepRankDayResponse.getData().getData().getMember().size() > 0) {
+                Presenter.getInstance(getContext()).getImage(kingHeadIcon, friendWeekResponse.getData().getData().getMember().get(0).getAvatar());
+                kingName.setText(friendWeekResponse.getData().getData().getMember().get(0).getNickname());
+            }
+            danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), friendWeekResponse.getData().getData().getMember()));
+        }
+    }
+
+    @Override
+    public void response(FriendWeekResponse friendWeekResponse) {
+        LocalLog.d(TAG, "FriendWeekResponse() enter" + friendWeekResponse.toString());
+        if (friendWeekResponse.getError() == 0) {
+            this.friendWeekResponse = friendWeekResponse;
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        
+    }
 }

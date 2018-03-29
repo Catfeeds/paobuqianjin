@@ -526,7 +526,7 @@
                         android:hint="请对你的圈子进行描述"
                         android:inputType="textMultiLine"
                         android:maxLength="400"
-                        android:textColor="@color/color_8a8a8a"
+                        android:textColor="@color/color_161727"
                         android:textSize="14dp" />
                 </FrameLayout>
 

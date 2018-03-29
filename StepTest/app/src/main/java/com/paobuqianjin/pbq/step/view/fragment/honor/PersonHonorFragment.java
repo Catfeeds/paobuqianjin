@@ -118,7 +118,7 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
         if (friendStepRankDayResponse.getError() == 0) {
             this.friendStepRankDayResponse = friendStepRankDayResponse;
             if (rankHonor != null && stepNum != null && rankRecyclerView != null) {
-                rankHonor.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getRanking()));
+                rankHonor.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getRank()));
                 stepNum.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
                 rankRecyclerView.setAdapter(new HonorAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember()));
             }

@@ -246,6 +246,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                 moneyMumPan = (RelativeLayout) viewRoot.findViewById(R.id.money_mum_pan);
                 switchCircleMoneyAddOff = (ImageView) viewRoot.findViewById(R.id.switch_circle_money_add_off);
                 logoCirclePic = (CircleImageView) viewRoot.findViewById(R.id.logo_circle_pic);
+                Presenter.getInstance(getContext()).getImage(logoCirclePic, dataBean.getLogo());
                 if (1 == dataBean.getIs_recharge()) {
                     switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a));
                     is_recharge = true;
@@ -263,6 +264,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                 moneyPkgNumEditor.setText(String.valueOf(dataBean.getRed_packet()));
                 passwordPan = (RelativeLayout) viewRoot.findViewById(R.id.password_pan);
                 passwordCircleSwitch = (ImageView) viewRoot.findViewById(R.id.password_circle_switch);
+                circleDescOfYour = (EditText) viewRoot.findViewById(R.id.circle_desc_of_your);
                 if (dataBean.getIs_pwd() == 1) {
                     passwordCircleSwitch.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a));
                     is_pwd = true;
@@ -273,6 +275,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                     disablePassEdit();
 
                 }
+                circleDescOfYour.setText(dataBean.getDescription());
                 mHandler = new Handler(getActivity().getMainLooper());
             }
         }
@@ -456,7 +459,9 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
 
     @Override
     public void response(EditCircleResponse editCircleResponse) {
-
+        if (editCircleResponse.getError() == 0) {
+            LocalLog.d(TAG, "编辑成功，通知详情界面更新");
+        }
     }
 
     @Override
@@ -572,7 +577,10 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                 requestPermission(Permission.Group.STORAGE);
                 break;
             case R.id.edit_circle_confim:
-                LocalLog.d(TAG, "编辑");
+                LocalLog.d(TAG, "保存");
+                if (checkcreateCircleBodyParam()) {
+                    Presenter.getInstance(getContext()).putCircle(createCircleBodyParam, dataBean.getId());
+                }
                 break;
         }
     }
@@ -658,8 +666,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
             Toast.makeText(getContext(), "圈子描述至少填写一个字符", Toast.LENGTH_SHORT).show();
         }
         createCircleBodyParam.setDescription(circleDescOfYour.getText().toString());
-        createCircleBodyParam.setCoverid(1);
-        //createCircleBodyParam.setLogo("http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg");
+
         return true;
     }
 

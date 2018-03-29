@@ -93,7 +93,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_toEndOf="@+id/head_icon_user"
-                    android:text="跑步钱进"
+                    android:text=""
                     android:textColor="@color/color_161727"
                     android:textSize="16dp" />
 
@@ -104,7 +104,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="15dp"
-                    android:text="15000"
+                    android:text=""
                     android:textColor="@color/color_161727"
                     android:textSize="15dp" />
             </RelativeLayout>
@@ -117,10 +117,10 @@
                 android:background="@color/color_f3f3f5" />
 
             <android.support.v7.widget.RecyclerView
-                android:layout_below="@+id/line_dan"
                 android:id="@+id/dan_detail_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line_dan">
 
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>

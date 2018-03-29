@@ -3,15 +3,19 @@ package com.paobuqianjin.pbq.step.data.bean.gson.response;
 import java.util.List;
 
 /**
- * Created by pbq on 2018/3/16.
+ * Created by pbq on 2018/3/29.
  */
-
-public class FriendStepRankDayResponse {
-
+/*
+@className :FriendWeekResponse
+*@date 2018/3/29
+*@author
+*@description 好友步数周排行
+*/
+public class FriendWeekResponse {
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":2,"totalCount":11},"data":{"member":[{"userid":57,"nickname":"周周周","avatar":"https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxXJTVJvRmxPhfS0aNF0pOXn3EdZ96DabUIULlH1E9mUbEZCE98IPEzqTgwD7jtSqfqiaUFV0rIsQ/132","step_number":"6000"},{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"291"},{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":"0"},{"userid":2,"nickname":"李五","avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","step_number":"0"},{"userid":3,"nickname":"九卿臣","avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg","step_number":"0"},{"userid":5,"nickname":"孤央","avatar":"http://pic.qqtn.com/up/2017-12/15127898935630842.jpg","step_number":"0"},{"userid":6,"nickname":"酒自斟","avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","step_number":"0"},{"userid":7,"nickname":"沉秋","avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg","step_number":"0"},{"userid":8,"nickname":"酒自斟","avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","step_number":"0"},{"userid":9,"nickname":"孤傲王者","avatar":"http://pic.qqtn.com/up/2017-12/15127898933628309.jpg","step_number":"0"},{"userid":10,"nickname":"孤君独战","avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","step_number":"0"},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":"0"}],"mydata":{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"291","rank":2}}}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":5},"data":{"member":[{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"37400"},{"userid":61,"nickname":"俊","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","step_number":"36000"},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":"21820"},{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":"14359"},{"userid":8,"nickname":"酒自斟","avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","step_number":"0"}],"mydata":{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":"14359","rank":4}}}
      */
 
     private int error;
@@ -44,7 +48,7 @@ public class FriendStepRankDayResponse {
 
     @Override
     public String toString() {
-        return "FriendStepRankDayResponse{" +
+        return "FriendWeekResponse{" +
                 "error=" + error +
                 ", message='" + message + '\'' +
                 ", data=" + data +
@@ -53,8 +57,8 @@ public class FriendStepRankDayResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":2,"totalCount":11}
-         * data : {"member":[{"userid":57,"nickname":"周周周","avatar":"https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxXJTVJvRmxPhfS0aNF0pOXn3EdZ96DabUIULlH1E9mUbEZCE98IPEzqTgwD7jtSqfqiaUFV0rIsQ/132","step_number":"6000"},{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"291"},{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":"0"},{"userid":2,"nickname":"李五","avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","step_number":"0"},{"userid":3,"nickname":"九卿臣","avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg","step_number":"0"},{"userid":5,"nickname":"孤央","avatar":"http://pic.qqtn.com/up/2017-12/15127898935630842.jpg","step_number":"0"},{"userid":6,"nickname":"酒自斟","avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","step_number":"0"},{"userid":7,"nickname":"沉秋","avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg","step_number":"0"},{"userid":8,"nickname":"酒自斟","avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","step_number":"0"},{"userid":9,"nickname":"孤傲王者","avatar":"http://pic.qqtn.com/up/2017-12/15127898933628309.jpg","step_number":"0"},{"userid":10,"nickname":"孤君独战","avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","step_number":"0"},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":"0"}],"mydata":{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"291","rank":2}}
+         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":5}
+         * data : {"member":[{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"37400"},{"userid":61,"nickname":"俊","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","step_number":"36000"},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":"21820"},{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":"14359"},{"userid":8,"nickname":"酒自斟","avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","step_number":"0"}],"mydata":{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":"14359","rank":4}}
          */
 
         private PagenationBean pagenation;
@@ -88,8 +92,8 @@ public class FriendStepRankDayResponse {
             /**
              * page : 1
              * pageSize : 10
-             * totalPage : 2
-             * totalCount : 11
+             * totalPage : 1
+             * totalCount : 5
              */
 
             private int page;
@@ -142,8 +146,8 @@ public class FriendStepRankDayResponse {
 
         public static class DataBean {
             /**
-             * member : [{"userid":57,"nickname":"周周周","avatar":"https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxXJTVJvRmxPhfS0aNF0pOXn3EdZ96DabUIULlH1E9mUbEZCE98IPEzqTgwD7jtSqfqiaUFV0rIsQ/132","step_number":"6000"},{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"291"},{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":"0"},{"userid":2,"nickname":"李五","avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","step_number":"0"},{"userid":3,"nickname":"九卿臣","avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg","step_number":"0"},{"userid":5,"nickname":"孤央","avatar":"http://pic.qqtn.com/up/2017-12/15127898935630842.jpg","step_number":"0"},{"userid":6,"nickname":"酒自斟","avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","step_number":"0"},{"userid":7,"nickname":"沉秋","avatar":"http://pic.qqtn.com/up/2017-12/15127898936485304.jpg","step_number":"0"},{"userid":8,"nickname":"酒自斟","avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","step_number":"0"},{"userid":9,"nickname":"孤傲王者","avatar":"http://pic.qqtn.com/up/2017-12/15127898933628309.jpg","step_number":"0"},{"userid":10,"nickname":"孤君独战","avatar":"http://pic.qqtn.com/up/2017-12/15127898932239362.jpg","step_number":"0"},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":"0"}]
-             * mydata : {"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"291","rank":2}
+             * member : [{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"37400"},{"userid":61,"nickname":"俊","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","step_number":"36000"},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":"21820"},{"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":"14359"},{"userid":8,"nickname":"酒自斟","avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","step_number":"0"}]
+             * mydata : {"userid":1,"nickname":"嗯额","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","step_number":"14359","rank":4}
              */
 
             private MydataBean mydata;
@@ -175,11 +179,11 @@ public class FriendStepRankDayResponse {
 
             public static class MydataBean {
                 /**
-                 * userid : 30
-                 * nickname : 黄钦平
-                 * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
-                 * step_number : 291
-                 * rank : 2
+                 * userid : 1
+                 * nickname : 嗯额
+                 * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg
+                 * step_number : 14359
+                 * rank : 4
                  */
 
                 private int userid;
@@ -242,10 +246,10 @@ public class FriendStepRankDayResponse {
 
             public static class MemberBean {
                 /**
-                 * userid : 57
-                 * nickname : 周周周
-                 * avatar : https://thirdwx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTIxXJTVJvRmxPhfS0aNF0pOXn3EdZ96DabUIULlH1E9mUbEZCE98IPEzqTgwD7jtSqfqiaUFV0rIsQ/132
-                 * step_number : 6000
+                 * userid : 30
+                 * nickname : 黄钦平
+                 * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
+                 * step_number : 37400
                  */
 
                 private int userid;

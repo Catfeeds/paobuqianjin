@@ -109,16 +109,12 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     TextView outRedPackage;
     @Bind(R.id.create_circle_image)
     ImageView createCircleImage;
-    @Bind(R.id.create_circle_des)
-    TextView createCircleDes;
     @Bind(R.id.income_red_pkg_image)
     ImageView incomeRedPkgImage;
     @Bind(R.id.income_red_package)
     TextView incomeRedPackage;
     @Bind(R.id.add_friend_image)
     ImageView addFriendImage;
-    @Bind(R.id.add_friend_des)
-    TextView addFriendDes;
     @Bind(R.id.ho_line)
     ImageView hoLine;
     @Bind(R.id.ve_line)
@@ -133,8 +129,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     TextView cityName;
     @Bind(R.id.create_circle)
     TextView createCircle;
-    @Bind(R.id.red_pkg_num)
-    TextView redPkgNum;
     @Bind(R.id.invite_friend)
     TextView inviteFriend;
     @Bind(R.id.today_income_num)
@@ -350,7 +344,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         if (toayStep != null) {
             toayStep.setText(String.valueOf(stepToday));
         }
-        LocalLog.d(TAG,"stepToday = "  + stepToday);
+        LocalLog.d(TAG, "stepToday = " + stepToday);
         Message message = Message.obtain();
         message.what = MSG_UPDATE_STEP;
         message.arg1 = stepToday;
@@ -446,13 +440,13 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 switch (msg.what) {
                     case MSG_UPDATE_STEP:
                         //ava.lang.NullPointerException: Attempt to invoke virtual method 'android.content.Context android.content.Context.getApplicationContext()' on a null obje
-                        LocalLog.d(TAG,"MSG_UPDATE_STEP msg " + msg.arg1);
+                        LocalLog.d(TAG, "MSG_UPDATE_STEP msg " + msg.arg1);
                         if (homePageFragment.getContext() != null) {
                             if (msg.arg1 > 0) {
                                 Presenter.getInstance(homePageFragment.getContext()).postUserStep(msg.arg1);
                             }
                         }
-                        if(hasMessages(MSG_UPDATE_STEP)){
+                        if (hasMessages(MSG_UPDATE_STEP)) {
                             removeMessages(MSG_UPDATE_STEP);
                         }
                         break;

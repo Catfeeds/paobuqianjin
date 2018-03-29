@@ -1386,15 +1386,26 @@ public final class Engine {
                 .execute(new NetStringCallBack(queryRedPkgInterface, COMMAND_GET_CIRCLE_DETAIL));
     }
 
-    public void putCircle(CreateCircleBodyParam createCircleBodyParam, int circleId) {
-        LocalLog.d(TAG, "编辑圈子 putCircle()");
-        String url = NetApi.urlCircle + "/" + circleId;
+    public void putCircle(CreateCircleBodyParam createCircleBodyParam,int circleId) {
+        String url = NetApi.urlCircle + "/" + String.valueOf(circleId);
+        LocalLog.d(TAG, "编辑圈子 putCircle() url = " + url + " ,createCircleBodyParam = " + createCircleBodyParam.toString());
         OkHttpUtils
                 .put()
                 .url(url)
+                .requestBody(new RequestBody() {
+                    @Override
+                    public MediaType contentType() {
+                        return MediaType.parse("application/x-www-form-urlencoded");
+                    }
+
+                    @Override
+                    public void writeTo(BufferedSink sink) throws IOException {
+
+                    }
+                })
                 .params(createCircleBodyParam.getParams())
                 .build()
-                .execute(new NetStringCallBack(null, COMMAND_EDIT_CIRCLE));
+                .execute(new NetStringCallBack(editCircleInterface, COMMAND_EDIT_CIRCLE));
     }
 
 

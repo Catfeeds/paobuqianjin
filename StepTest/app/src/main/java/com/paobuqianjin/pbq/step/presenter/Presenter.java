@@ -216,6 +216,9 @@ public final class Presenter {
         engine.createCircle(createCircleBodyParam);
     }
 
+    public void putCircle(CreateCircleBodyParam createCircleBodyParam,int circleId){
+        engine.putCircle(createCircleBodyParam,circleId);
+    }
     public void getUserRecoder(int userId) {
         engine.getUserRecord(userId);
     }

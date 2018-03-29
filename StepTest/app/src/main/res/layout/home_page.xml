@@ -70,6 +70,7 @@
                     android:textSize="18dp" />
 
                 <TextView
+                    android:id="@+id/target_steps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBaseline="@+id/mu_biao_text"
@@ -94,6 +95,16 @@
                     android:text="步"
                     android:textColor="@color/color_ffc14c"
                     android:textSize="20dp" />
+
+                <ImageView
+                    android:id="@+id/step_desc"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_below="@+id/target_steps"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/step_des" />
             </RelativeLayout>
         </RelativeLayout>
 
@@ -245,13 +256,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="28dp">
+                    android:layout_centerHorizontal="true">
 
                     <ImageView
                         android:id="@+id/out_red_pkg_image"
-                        android:layout_width="29dp"
-                        android:layout_height="32dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_centerHorizontal="true"
                         android:scaleType="centerCrop"
                         android:src="@drawable/out_red_pkg" />
@@ -260,10 +270,11 @@
                         android:id="@+id/out_red_package"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/out_red_pkg_image"
-                        android:layout_marginTop="10dp"
+                        android:layout_alignBottom="@+id/out_red_pkg_image"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="10dp"
                         android:text="发红包"
-                        android:textColor="@color/color_161727"
+                        android:textColor="@color/color_f8"
                         android:textSize="14dp" />
                 </RelativeLayout>
 
@@ -281,13 +292,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="15dp">
+                    android:layout_centerHorizontal="true">
 
                     <ImageView
                         android:id="@+id/create_circle_image"
-                        android:layout_width="29dp"
-                        android:layout_height="32dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_centerHorizontal="true"
                         android:scaleType="centerCrop"
                         android:src="@drawable/create_circle" />
@@ -296,22 +306,12 @@
                         android:id="@+id/create_circle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/create_circle_image"
+                        android:layout_alignBottom="@+id/create_circle_image"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="10dp"
                         android:text="创建圈子"
-                        android:textColor="@color/color_161727"
+                        android:textColor="@color/color_f8"
                         android:textSize="14dp" />
-
-                    <TextView
-                        android:id="@+id/create_circle_des"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/create_circle"
-                        android:layout_marginTop="7dp"
-                        android:text="谁的圈子谁的红包压岁钱多哟"
-                        android:textColor="@color/color_9999"
-                        android:textSize="12dp" />
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -329,13 +329,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="15dp">
+                    android:layout_centerHorizontal="true">
 
                     <ImageView
                         android:id="@+id/income_red_pkg_image"
-                        android:layout_width="29dp"
-                        android:layout_height="32dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_centerHorizontal="true"
                         android:scaleType="centerCrop"
                         android:src="@drawable/income_red_pkg" />
@@ -344,22 +343,12 @@
                         android:id="@+id/income_red_package"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/income_red_pkg_image"
+                        android:layout_alignBottom="@+id/income_red_pkg_image"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="10dp"
                         android:text="领红包"
-                        android:textColor="@color/color_161727"
+                        android:textColor="@color/color_f8"
                         android:textSize="14dp" />
-
-                    <TextView
-                        android:id="@+id/red_pkg_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/income_red_package"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="7dp"
-                        android:text="未领红包2个"
-                        android:textSize="12dp" />
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -373,16 +362,15 @@
                 android:layout_toEndOf="@+id/ho_line">
 
                 <RelativeLayout
-                    android:layout_marginBottom="15dp"
-                    android:layout_alignParentBottom="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true">
 
                     <ImageView
                         android:id="@+id/add_friend_image"
-                        android:layout_width="29dp"
-                        android:layout_height="32dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_centerHorizontal="true"
                         android:scaleType="centerCrop"
                         android:src="@drawable/invite_friend" />
@@ -391,39 +379,30 @@
                         android:id="@+id/invite_friend"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/add_friend_image"
+                        android:layout_alignBottom="@+id/add_friend_image"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp"
                         android:text="邀请好友"
-                        android:textColor="@color/color_161727"
+                        android:textColor="@color/color_f8"
                         android:textSize="14dp" />
 
-                    <TextView
-                        android:id="@+id/add_friend_des"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/invite_friend"
-                        android:layout_marginTop="7dp"
-                        android:text="春节有大量红包抢哟"
-                        android:textColor="@color/color_9999"
-                        android:textSize="12dp" />
+
                 </RelativeLayout>
 
             </RelativeLayout>
 
             <ImageView
                 android:id="@+id/ho_line"
-                android:layout_width="1dp"
+                android:layout_width="10dp"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:background="@color/color_9999" />
+                android:background="@color/color_f8" />
 
             <ImageView
                 android:id="@+id/ve_line"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="10dp"
                 android:layout_centerVertical="true"
-                android:background="@color/color_9999" />
+                android:background="@color/color_f8" />
         </RelativeLayout>
     </RelativeLayout>
 
@@ -467,18 +446,29 @@
             android:text="25°"
             android:textColor="@color/color_f8"
             android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/city_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/weather_icon"
+            android:layout_alignTop="@+id/wendu"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/wendu"
+            android:gravity="center"
+            android:text="深圳"
+            android:textColor="@color/color_f8"
+            android:textSize="14dp" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/city_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/home_title"
+    <ImageView
+        android:id="@+id/scan_mark_home"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_alignBottom="@+id/weather_span"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/home_title"
-        android:layout_marginRight="20dp"
-        android:gravity="center"
-        android:text="深圳"
-        android:textColor="@color/color_f8"
-        android:textSize="14dp" />
+        android:layout_alignTop="@+id/weather_span"
+        android:layout_marginRight="14dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/scan" />
 </RelativeLayout>

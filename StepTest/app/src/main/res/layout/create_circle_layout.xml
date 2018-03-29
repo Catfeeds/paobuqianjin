@@ -401,7 +401,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
-                    android:src="@drawable/logo_default" />
+                    android:src="@drawable/default_head_ico" />
 
                 <ImageView
                     android:layout_width="wrap_content"

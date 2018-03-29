@@ -26,6 +26,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListRespo
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicIdDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.EditCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendAddResponse;
@@ -742,8 +743,13 @@ public class NetStringCallBack extends StringCallback {
             FriendAddResponse friendAddResponse = new Gson().fromJson(s, FriendAddResponse.class);
             ((FriendAddressInterface) callBackInterface).response(friendAddResponse);
         } else if (callBackInterface != null && callBackInterface instanceof EditCircleInterface) {
-            CircleTargetResponse circleTargetResponse = new Gson().fromJson(s, CircleTargetResponse.class);
-            ((EditCircleInterface) callBackInterface).response(circleTargetResponse);
+            if (command == Engine.COMMAND_GET_CIRCLE_TARGET) {
+                CircleTargetResponse circleTargetResponse = new Gson().fromJson(s, CircleTargetResponse.class);
+                ((EditCircleInterface) callBackInterface).response(circleTargetResponse);
+            } else if (command == Engine.COMMAND_EDIT_CIRCLE) {
+                EditCircleResponse editCircleResponse = new Gson().fromJson(s, EditCircleResponse.class);
+                ((EditCircleInterface) callBackInterface).response(editCircleResponse);
+            }
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }
