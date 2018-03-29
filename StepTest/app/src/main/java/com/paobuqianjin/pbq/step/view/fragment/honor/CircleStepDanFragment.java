@@ -13,7 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CircleStepDetailDanInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -77,6 +80,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        Presenter.getInstance(getContext()).attachUiInterface(this);
     }
 
     @Override
@@ -115,6 +119,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             circleId = intent.getIntExtra("circleid", -1);
             if (circleId != -1) {
                 Presenter.getInstance(getContext()).getUserCircleRankDetail(circleId);
+                Presenter.getInstance(getContext()).getCircleDetailInCircleDan(circleId);
             }
         }
 
@@ -145,20 +150,38 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     public void response(CircleStepRankResponse circleStepRankResponse) {
         LocalLog.d(TAG, "CircleStepRankResponse() enter " + circleStepRankResponse.toString());
         if (circleStepRankResponse.getError() == 0) {
-            userNameRank.setText(String.valueOf(circleStepRankResponse.getData()));
+            userNameRank.setText(String.valueOf(circleStepRankResponse.getData().getNickname()));
             yourDan.setText(String.valueOf(circleStepRankResponse.getData().getRank()));
-            stepNumMy.setText("人员：" + String.valueOf(circleStepRankResponse.getData().getStep_number()));
-            numDes.setText(String.valueOf(circleStepRankResponse.getData().getCircle().size()));
+            stepNumMy.setText(String.valueOf(circleStepRankResponse.getData().getStep_number()));
+            Presenter.getInstance(getContext()).getImage(headIconUser, circleStepRankResponse.getData().getAvatar());
             if (circleStepRankResponse.getData().getCircle().size() > 0) {
                 Presenter.getInstance(getContext()).getImage(kingHeadIcon, circleStepRankResponse.getData().getCircle().get(0).getAvatar());
                 kingName.setText(circleStepRankResponse.getData().getCircle().get(0).getNickname());
             }
             for (int i = 0; i < circleStepRankResponse.getData().getCircle().size(); i++) {
                 if (circleStepRankResponse.getData().getCircle().get(i).getUserid() == Presenter.getInstance(getContext()).getId()) {
-                    Presenter.getInstance(getContext()).getImage(headIconUser, circleStepRankResponse.getData().getCircle().get(i).getAvatar());
                 }
             }
             danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), circleStepRankResponse.getData().getCircle()));
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+
+    }
+
+    @Override
+    public void response(StepRankResponse stepRankResponse) {
+        if (stepRankResponse.getError() == 0) {
+
+        }
+    }
+
+    @Override
+    public void response(CircleDetailResponse circleDetailResponse) {
+        if (circleDetailResponse.getError() == 0) {
+
         }
     }
 }

@@ -10,8 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -120,15 +118,10 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
         TextView stepNum = (TextView) circle.findViewById(R.id.step_num);
         stepNum.setText(String.valueOf(circleStepRankResponse.getData().getStep_number()));
         CircleImageView circleLogo = (CircleImageView) circle.findViewById(R.id.circle_logo);
-
-        for (int i = 0; i < circleStepRankResponse.getData().getCircle().size(); i++) {
-            if(Presenter.getInstance(getContext()).getId() == circleStepRankResponse.getData().getCircle().get(i).getUserid()){
-                Presenter.getInstance(getContext()).getImage(circleLogo,circleStepRankResponse.getData().getCircle().get(i).getAvatar());
-            }
-        }
+        Presenter.getInstance(getContext()).getImage(circleLogo, circleStepRankResponse.getData().getAvatar());
         RecyclerView rankRecyclerView = (RecyclerView) circle.findViewById(R.id.rank_recycler_view);
-        TextView no1 = (TextView) circle.findViewById(R.id.no_1_name);
-        no1.setText(circleStepRankResponse.getData().getCircle().get(0).getNickname());
+        TextView myName = (TextView) circle.findViewById(R.id.my_name);
+        myName.setText(circleStepRankResponse.getData().getNickname());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rankRecyclerView.setLayoutManager(layoutManager);
         rankRecyclerView.setAdapter(new HonorAdapter(getContext(), circleStepRankResponse.getData().getCircle()));
@@ -150,6 +143,9 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
         });
         mView.add(circle);
         circleIndex.setText(String.valueOf(mView.size()) + "/" + totalCircle);
+        if (mView.size() < totalCircle) {
+
+        }
         LocalLog.d(TAG, "initView() enter");
         adapter.notifyDataSetChanged();
     }

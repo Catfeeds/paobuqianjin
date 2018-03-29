@@ -1222,9 +1222,10 @@ public final class Engine {
 
     /* TODO 圈子接口*/
     public void getCircleStepRank(int circleId, int page, int pagesize) {
-        LocalLog.d(TAG, "圈子步数排行：getCircleStepRank() enter");
+
         String url = NetApi.urlCircleRank + "/?circleid=" + String.valueOf(circleId)
-                + "&action=step";
+                + "&action=step" + "&page=" + String.valueOf(page) + "&pagesize=" + pagesize;
+        LocalLog.d(TAG, "圈子步数排行：getCircleStepRank() enter url = " + url);
         OkHttpUtils
                 .get()
                 .url(url)
@@ -1240,6 +1241,16 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(danCircleInterface, COMMAND_STEP_RANK));
+    }
+
+    public void getCircleDetailInCircleDan(int circleId) {
+        String url = NetApi.urlUserCircleRank + String.valueOf(getId(mContext)) + "&circleid=" + String.valueOf(circleId);
+        LocalLog.d(TAG, "getUserCircleRankDetail() enter  url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(circleStepDetailDanInterface, COMMAND_GET_CIRCLE_DETAIL));
     }
 
     public void getUserCircleRankDetail(int circleId) {
@@ -1270,7 +1281,6 @@ public final class Engine {
         if (keyWord != null && !"".equals(keyWord)) {
             url += "&keyword=" + keyWord;
         }
-
         LocalLog.d(TAG, "我加入的圈子：getMyJoin() enter" + url);
         OkHttpUtils
                 .get()

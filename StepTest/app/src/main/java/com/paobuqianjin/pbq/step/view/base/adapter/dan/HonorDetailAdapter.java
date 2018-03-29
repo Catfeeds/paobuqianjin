@@ -12,6 +12,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendWeekResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 
 import java.util.List;
@@ -68,7 +69,7 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
             Presenter.getInstance(context).getImage(holder.headIconUser, ((CircleStepRankResponse.DataBean.CircleBean) mData.get(position)).getAvatar());
             holder.stepNum.setText(String.valueOf(((CircleStepRankResponse.DataBean.CircleBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((CircleStepRankResponse.DataBean.CircleBean) mData.get(position)).getNickname());
-        }else if(mData.get(position) instanceof FriendWeekResponse.DataBeanX.DataBean.MemberBean){
+        } else if (mData.get(position) instanceof FriendWeekResponse.DataBeanX.DataBean.MemberBean) {
             if (position == 0) {
                 holder.rankIcon.setImageResource(R.drawable.honor_master);
             } else if (position == 1) {
@@ -83,6 +84,12 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
             Presenter.getInstance(context).getImage(holder.headIconUser, ((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar());
             holder.stepNum.setText(String.valueOf(((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getNickname());
+        } else if (mData.get(position) instanceof StepRankResponse.DataBeanX.DataBean) {
+            Presenter.getInstance(context).getImage(holder.headIconUser, ((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
+            holder.stepNum.setText(String.valueOf(((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getStep_number()));
+            holder.userNameRank.setText(String.valueOf(position + 1));
+        } else {
+
         }
     }
 

@@ -694,6 +694,9 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_STEP_RANK) {
                 CircleStepRankResponse circleStepRankResponse = new Gson().fromJson(s, CircleStepRankResponse.class);
                 ((CircleStepDetailDanInterface) callBackInterface).response(circleStepRankResponse);
+            } else if (command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
+                CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
+                ((CircleStepDetailDanInterface) callBackInterface).response(circleDetailResponse);
             }
         } else if (callBackInterface != null && callBackInterface instanceof RechargeDetailInterface) {
             RechargeDetailResponse rechargeDetailResponse = new Gson().fromJson(s, RechargeDetailResponse.class);

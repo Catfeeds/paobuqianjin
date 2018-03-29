@@ -216,9 +216,10 @@ public final class Presenter {
         engine.createCircle(createCircleBodyParam);
     }
 
-    public void putCircle(CreateCircleBodyParam createCircleBodyParam,int circleId){
-        engine.putCircle(createCircleBodyParam,circleId);
+    public void putCircle(CreateCircleBodyParam createCircleBodyParam, int circleId) {
+        engine.putCircle(createCircleBodyParam, circleId);
     }
+
     public void getUserRecoder(int userId) {
         engine.getUserRecord(userId);
     }
@@ -384,6 +385,14 @@ public final class Presenter {
         engine.getUserCircleRank(circleId);
     }
 
+    public void getCircleDetailInCircleDan(int circleId) {
+
+    }
+
+    public void getCircleStepDan() {
+
+    }
+
     public void getUserCircleRankDetail(int circleId) {
         engine.getUserCircleRankDetail(circleId);
     }
@@ -503,7 +512,7 @@ public final class Presenter {
         engine.getFriendHonorDetail(page, pagesize);
     }
 
-    public void getFriendWeekHonor(int page, int pagesize){
+    public void getFriendWeekHonor(int page, int pagesize) {
         engine.getFriendWeekHonor(page, pagesize);
     }
 

@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.presenter.im;
 
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 
 /**
  * Created by pbq on 2018/3/10.

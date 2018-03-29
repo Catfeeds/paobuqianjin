@@ -145,7 +145,7 @@
                         android:src="@drawable/default_head_ico" />
 
                     <TextView
-                        android:id="@+id/no_1_name"
+                        android:id="@+id/my_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/circle_logo"
@@ -204,5 +204,4 @@
         </RelativeLayout>
 
     </RelativeLayout>
-
 </RelativeLayout>
