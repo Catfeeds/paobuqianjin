@@ -7,7 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -67,11 +72,14 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
 
-    private int pageIndex = 1, pageCount = 0;
+    private int pageIndex = 1, pageCount = 0, pageIndexWeek = 1;
     private final static int PAGE_DEFAULT_SIZE = 10;
     LinearLayoutManager layoutManager;
     FriendStepRankDayResponse friendStepRankDayResponse;
     FriendWeekResponse friendWeekResponse;
+    private View popCircleOpBar;
+    private PopupWindow popupOpWindowTop;
+    private TranslateAnimation animationCircleType;
 
     @Override
     protected int getLayoutResId() {
@@ -112,7 +120,10 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
 
         goDownSpan = (RelativeLayout) viewRoot.findViewById(R.id.go_down_span);
         timeGo = (TextView) viewRoot.findViewById(R.id.time_go);
+        goDownSpan.setOnClickListener(onClickListener);
         Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndex, PAGE_DEFAULT_SIZE);
+        Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
+
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -124,10 +135,50 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                     break;
                 case R.id.go_down_span:
                     LocalLog.d(TAG, "弹出查看排行...选择");
+                    popWeekDaySelect();
+                    break;
+                case R.id.today_text:
+                    LocalLog.d(TAG, "今日");
+                    timeGo.setText("今日");
+                    updateFriendStepRankDayResponse(friendStepRankDayResponse);
+                    break;
+                case R.id.week_text:
+                    LocalLog.d(TAG, "本周");
+                    timeGo.setText("本周");
+                    updateFriendWeekResponse(friendWeekResponse);
                     break;
             }
         }
     };
+
+    private void popWeekDaySelect() {
+        LocalLog.d(TAG, "popWeekDaySelect() enter");
+        popCircleOpBar = View.inflate(getContext(), R.layout.week_day_select_layout, null);
+        popupOpWindowTop = new PopupWindow(popCircleOpBar,
+                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popCircleOpBar.findViewById(R.id.today_text).setOnClickListener(onClickListener);
+        popCircleOpBar.findViewById(R.id.week_text).setOnClickListener(onClickListener);
+        popupOpWindowTop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popWindow dismiss() ");
+                popupOpWindowTop = null;
+            }
+        });
+
+        popupOpWindowTop.setFocusable(true);
+        popupOpWindowTop.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupOpWindowTop.showAsDropDown(barTvRight, 20, -10);
+        popCircleOpBar.startAnimation(animationCircleType);
+    }
 
     @Override
     public void onDestroyView() {
@@ -147,7 +198,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     }
 
     private void updateFriendStepRankDayResponse(FriendStepRankDayResponse friendStepRankDayResponse) {
-        if (kingHeadIcon != null) {
+        if (kingHeadIcon != null && friendStepRankDayResponse != null) {
             userNameRank.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getNickname()));
             yourDan.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getRank()));
             stepNumMy.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
@@ -184,6 +235,6 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
 
     @Override
     public void response(ErrorCode errorCode) {
-        
+
     }
 }

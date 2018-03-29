@@ -31,6 +31,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendAddResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendWeekResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
@@ -685,6 +686,9 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_FRIEND_HONOR) {
                 FriendStepRankDayResponse friendStepRankDayResponse = new Gson().fromJson(s, FriendStepRankDayResponse.class);
                 ((FriendHonorDetailInterface) callBackInterface).response(friendStepRankDayResponse);
+            } else if (command == Engine.COMMAND_FRIEND_HONOR_WEEK) {
+                FriendWeekResponse friendWeekResponse = new Gson().fromJson(s, FriendWeekResponse.class);
+                ((FriendHonorDetailInterface) callBackInterface).response(friendWeekResponse);
             }
         } else if (callBackInterface != null && callBackInterface instanceof CircleStepDetailDanInterface) {
             if (command == Engine.COMMAND_STEP_RANK) {

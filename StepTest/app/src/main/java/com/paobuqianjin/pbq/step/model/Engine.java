@@ -281,6 +281,7 @@ public final class Engine {
     public final static int COMMAND_UPDATE_ADDRESS_BOOK = 85;
     public final static int COMMAND_CIRCLE_ORDER_POST_ALI = 86;
     public final static int COMMAND_CIRCLE_ORDER_POST_WALLET = 87;
+    public final static int COMMAND_FRIEND_HONOR_WEEK = 88;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1386,7 +1387,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(queryRedPkgInterface, COMMAND_GET_CIRCLE_DETAIL));
     }
 
-    public void putCircle(CreateCircleBodyParam createCircleBodyParam,int circleId) {
+    public void putCircle(CreateCircleBodyParam createCircleBodyParam, int circleId) {
         String url = NetApi.urlCircle + "/" + String.valueOf(circleId);
         LocalLog.d(TAG, "编辑圈子 putCircle() url = " + url + " ,createCircleBodyParam = " + createCircleBodyParam.toString());
         OkHttpUtils
@@ -1699,6 +1700,17 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(friendHonorDetailInterface, COMMAND_FRIEND_HONOR));
+    }
+
+    public void getFriendWeekHonor(int page, int pagesize) {
+        String url = NetApi.urlUserFriends + "/getUserSort?userid=" + String.valueOf(getId(mContext)) + "&page=" + String.valueOf(page)
+                + "&pagesize=" + String.valueOf(pagesize);
+        LocalLog.d(TAG, "getFriendWeekHonor() enter url   " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(friendHonorDetailInterface, COMMAND_FRIEND_HONOR_WEEK));
     }
 
     public void getImage(String fileUrl, final ImageView imageView) {

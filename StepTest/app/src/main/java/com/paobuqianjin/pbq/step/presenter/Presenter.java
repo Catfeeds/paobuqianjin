@@ -503,6 +503,10 @@ public final class Presenter {
         engine.getFriendHonorDetail(page, pagesize);
     }
 
+    public void getFriendWeekHonor(int page, int pagesize){
+        engine.getFriendWeekHonor(page, pagesize);
+    }
+
     //TODO
     public void getUserBankCard() {
         engine.getUserBankCard();
