@@ -39,9 +39,10 @@
             <ImageView
                 android:layout_width="168dp"
                 android:layout_height="100dp"
-                android:src="@drawable/circle_live_default_a" />
+                android:src="@drawable/hot_live" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/live_a_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,9 +63,10 @@
             <ImageView
                 android:layout_width="168dp"
                 android:layout_height="100dp"
-                android:src="@drawable/circle_live_default_a" />
+                android:src="@drawable/hot_livei" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/live_b_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

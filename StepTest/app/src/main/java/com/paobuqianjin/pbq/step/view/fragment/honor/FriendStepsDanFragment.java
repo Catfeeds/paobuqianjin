@@ -136,7 +136,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
-    
+
     @Override
     public void response(FriendStepRankDayResponse friendStepRankDayResponse) {
         LocalLog.d(TAG, "FriendStepRankDayResponse() enter" + friendStepRankDayResponse.toString());
