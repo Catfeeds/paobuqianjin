@@ -30,6 +30,7 @@ import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeMakeActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
+import com.paobuqianjin.pbq.step.view.activity.SettingActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
 import com.paobuqianjin.pbq.step.view.activity.SuggestionActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
@@ -294,13 +295,14 @@ public final class OwnerFragment extends BaseFragment {
                 break;
             case R.id.task_release_span:
                 LocalLog.d(TAG, "我的发布");
-                startActivity(MyReleaseActivity.class, new Bundle());
+                startActivity(MyReleaseActivity.class, null);
                 break;
             case R.id.setting_span:
                 LocalLog.d(TAG, "设置 临时退出");
-                Presenter.getInstance(getContext()).setId(-1);
+                startActivity(SettingActivity.class,null);
+/*                Presenter.getInstance(getContext()).setId(-1);
                 Presenter.getInstance(getContext()).steLogFlg(false);
-                getActivity().finish();
+                getActivity().finish();*/
 /*                intent.setClass(getContext(), UserInfoSettingActivity.class);
                 startActivity(intent);*/
                 break;

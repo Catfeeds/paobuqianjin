@@ -282,6 +282,9 @@
             android:name=".view.activity.UserInfoSettingActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
+        <activity android:name=".view.activity.SettingActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme"/>
         <!-- 我的动态 -->
         <activity
             android:name=".view.activity.MyDynamicActivity"

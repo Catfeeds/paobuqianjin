@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/user_info_setting_fg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -20,12 +19,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="更换头像"
+            android:text="个人资料"
             android:textColor="@color/color_161727"
             android:textSize="16dp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/head_ico"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_centerVertical="true"
@@ -63,19 +61,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="昵称"
+            android:text="账号/绑定设置"
             android:textColor="@color/color_161727"
             android:textSize="16dp" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
-            android:layout_toStartOf="@+id/go_pic1"
-            android:background="@null"
-            android:hint="用户昵称"
-            android:textSize="15dp" />
 
         <ImageView
             android:id="@+id/go_pic1"
@@ -89,8 +77,7 @@
     <ImageView
         android:id="@+id/line_change_male"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignLeft="@+id/user_head_icon_change"
+        android:layout_height="10dp"
         android:layout_below="@+id/user_name_change"
         android:background="@color/color_ebebed" />
 
@@ -106,18 +93,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="性别"
+            android:text="清除缓存"
             android:textColor="@color/color_161727"
             android:textSize="16dp" />
 
-        <EditText
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:layout_toStartOf="@+id/go_pic2"
-            android:background="@null"
-            android:hint="女"
+            android:text="0.0M"
             android:textSize="15dp" />
 
         <ImageView
@@ -132,7 +118,7 @@
     <ImageView
         android:id="@+id/line_location_name"
         android:layout_width="match_parent"
-        android:layout_height="15dp"
+        android:layout_height="10dp"
         android:layout_below="@+id/change_male"
         android:background="@color/color_ebebed" />
 
@@ -148,19 +134,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="生日"
+            android:text="关于我们"
             android:textColor="@color/color_161727"
             android:textSize="16dp" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
-            android:layout_toStartOf="@+id/go_pic3"
-            android:background="@null"
-            android:hint="填写生日"
-            android:textSize="15dp" />
 
         <ImageView
             android:id="@+id/go_pic3"
@@ -170,58 +146,4 @@
             android:layout_centerVertical="true"
             android:src="@drawable/go_to" />
     </RelativeLayout>
-
-
-    <ImageView
-        android:id="@+id/line_change_birth"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignLeft="@+id/user_head_icon_change"
-        android:layout_below="@+id/change_birth"
-        android:background="@color/color_ebebed" />
-
-    <RelativeLayout
-        android:id="@+id/change_city"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@+id/line_change_birth"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="所在城市"
-            android:textColor="@color/color_161727"
-            android:textSize="16dp" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
-            android:layout_toStartOf="@+id/go_pic4"
-            android:background="@null"
-            android:hint="广东省·深圳市"
-            android:textSize="15dp" />
-
-        <ImageView
-            android:id="@+id/go_pic4"
-            android:layout_width="7dp"
-            android:layout_height="13dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/go_to" />
-    </RelativeLayout>
-
-
-    <ImageView
-        android:id="@+id/line_change_city"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignLeft="@+id/user_head_icon_change"
-        android:layout_below="@+id/change_city"
-        android:background="@color/color_ebebed" />
-
 </RelativeLayout>
