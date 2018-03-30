@@ -138,4 +138,7 @@ public class NetApi {
     public final static String urlCircleWeekRank = "http://119.29.10.64/v1/Circle/UserCircleWeekRank?circleid=";
     //TODO 周名次 http://119.29.10.64/v1/Circle/UserCircleWeekNum?circleid=100000&userid=1
     public final static String urlStepRankWeekNum = "http://119.29.10.64/v1/Circle/UserCircleWeekNum?circleid=";
+    //TODO 短信邀请
+    public final static String urlinviteMsg = "http://119.29.10.64/v1/userinviter/inviteMsg";
+
 }

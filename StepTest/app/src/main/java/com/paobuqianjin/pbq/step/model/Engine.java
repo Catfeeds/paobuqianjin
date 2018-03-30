@@ -533,6 +533,12 @@ public final class Engine {
                 .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_PHONE_LOGIN));
     }
 
+
+    //TODO 短信邀请
+    public void inviteMsg() {
+        
+    }
+
     //手机号码注册
     public void registerByPhoneNumber(String[] userInfo) {
         LocalLog.d(TAG, "registerByPhoneNumber() enter");

@@ -105,6 +105,7 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
                         switch (btFollow.getText().toString()) {
                             case "邀请":
                                 //TODO 发送邀请
+
                                 break;
                             default:
                                 break;
