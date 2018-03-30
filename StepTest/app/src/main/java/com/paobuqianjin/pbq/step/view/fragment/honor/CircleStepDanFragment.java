@@ -8,7 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -80,6 +85,9 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     private int pageIndexDay = 1, pageDayCount = 0;
     private int pageIndexWeek = 1, pageWeekCount = 0;
     private final static int PAGE_SIZE = 10;
+    private View popCircleOpBar;
+    private PopupWindow popupOpWindowTop;
+    private TranslateAnimation animationCircleType;
 
     @Override
 
@@ -121,7 +129,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
 
         goDownSpan = (RelativeLayout) viewRoot.findViewById(R.id.go_down_span);
         timeGo = (TextView) viewRoot.findViewById(R.id.time_go);
-
+        goDownSpan.setOnClickListener(onClickListener);
         numDes = (TextView) viewRoot.findViewById(R.id.num_des);
         circleTarget = (TextView) viewRoot.findViewById(R.id.circle_target);
         Intent intent = getActivity().getIntent();
@@ -131,8 +139,6 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                 Presenter.getInstance(getContext()).getUserCircleRankDetail(circleId);
                 Presenter.getInstance(getContext()).getCircleDetailInCircleDan(circleId);
                 Presenter.getInstance(getContext()).getCircleStepRankDay(circleId, pageIndexDay, PAGE_SIZE);
-                Presenter.getInstance(getContext()).getCircleRankNum(circleId);
-                Presenter.getInstance(getContext()).getCircleStepRankWeek(circleId, pageIndexWeek, PAGE_SIZE);
 
             }
         }
@@ -148,11 +154,52 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                     break;
                 case R.id.go_down_span:
                     LocalLog.d(TAG, "弹出查看排行...选择");
+                    popWeekDaySelect();
+                    break;
+                case R.id.today_text:
+                    LocalLog.d(TAG, "今日");
+                    timeGo.setText("今日");
+                    updateCircleStepRank(circleStepRankResponse);
+                    updateDayRank(stepRankResponse);
+                    break;
+                case R.id.week_text:
+                    LocalLog.d(TAG, "本周");
+                    timeGo.setText("本周");
+                    updateCircleStepWeekRank(circleStepRankWeekResponse);
+                    updateWeekRank(stepRandWeekResponse);
                     break;
             }
         }
     };
 
+    private void popWeekDaySelect() {
+        LocalLog.d(TAG, "popWeekDaySelect() enter");
+        popCircleOpBar = View.inflate(getContext(), R.layout.week_day_select_layout, null);
+        popupOpWindowTop = new PopupWindow(popCircleOpBar,
+                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popCircleOpBar.findViewById(R.id.today_text).setOnClickListener(onClickListener);
+        popCircleOpBar.findViewById(R.id.week_text).setOnClickListener(onClickListener);
+        popupOpWindowTop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popWindow dismiss() ");
+                popupOpWindowTop = null;
+            }
+        });
+
+        popupOpWindowTop.setFocusable(true);
+        popupOpWindowTop.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupOpWindowTop.showAsDropDown(barTvRight, 20, -10);
+        popCircleOpBar.startAnimation(animationCircleType);
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -193,6 +240,8 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             }
             numDes.setText("人员数：" + String.valueOf(stepRankResponse.getData().getData().size()));
             updateDayRank(stepRankResponse);
+            Presenter.getInstance(getContext()).getCircleRankNum(circleId);
+            Presenter.getInstance(getContext()).getCircleStepRankWeek(circleId, pageIndexWeek, PAGE_SIZE);
         }
     }
 
@@ -220,7 +269,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             if (this.stepRandWeekResponse == null) {
                 this.stepRandWeekResponse = stepRandWeekResponse;
             }
-            updateWeekRank(stepRandWeekResponse);
+            //updateWeekRank(stepRandWeekResponse);
         }
     }
 
@@ -241,7 +290,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             if (this.circleStepRankWeekResponse == null) {
                 this.circleStepRankWeekResponse = circleStepRankWeekResponse;
             }
-            updateCircleStepWeekRank(circleStepRankWeekResponse);
+            //updateCircleStepWeekRank(circleStepRankWeekResponse);
         }
     }
 
