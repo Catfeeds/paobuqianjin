@@ -21,6 +21,7 @@
         aigestudio:wheel_selected_item_text_color="#ff161727" />
 
     <TextView
+        android:visibility="gone"
         android:textSize="14dp"
         android:id="@+id/wheel_date_picker_year_tv"
         android:layout_width="wrap_content"
@@ -51,6 +52,7 @@
         android:layout_marginLeft="@dimen/WheelMargins"
         android:layout_marginRight="@dimen/WheelMargins"
         android:text="@string/Month"
+        android:visibility="gone"
         android:textColor="#ff161727" />
 
     <com.paobuqianjin.pbq.step.view.base.view.wheelpicker.widgets.WheelDayPicker
@@ -67,6 +69,7 @@
         aigestudio:wheel_selected_item_text_color="#ff161727" />
 
     <TextView
+        android:visibility="gone"
         android:paddingRight="14dp"
         android:textSize="14dp"
         android:id="@+id/wheel_date_picker_day_tv"
