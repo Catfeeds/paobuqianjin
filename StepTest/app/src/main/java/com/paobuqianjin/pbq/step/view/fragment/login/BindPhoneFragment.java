@@ -176,13 +176,13 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
                 checkSignCodeParam.setUserid(dataBean.getId());
                 Presenter.getInstance(getContext()).checkLoginBindPhone(checkSignCodeParam);*/
                 PostWxQqBindPhoneParam postWxQqBindPhoneParam = new PostWxQqBindPhoneParam();
-                if (dataBean.getQq_openid().equals("")) {
+                if ("".equals(dataBean.getQq_openid())) {
                     if (!dataBean.getWx_openid().equals("")) {
                         postWxQqBindPhoneParam.setAction("wx");
                         postWxQqBindPhoneParam.setMobile(phoneEdit.getText().toString()).setOpenid(dataBean.getWx_openid());
                     }
                 } else {
-                    if (dataBean.getWx_openid().equals("")) {
+                    if ("".equals(dataBean.getWx_openid())) {
                         postWxQqBindPhoneParam.setAction("qq");
                         postWxQqBindPhoneParam.setMobile(phoneEdit.getText().toString()).setOpenid(dataBean.getQq_openid());
                     }
