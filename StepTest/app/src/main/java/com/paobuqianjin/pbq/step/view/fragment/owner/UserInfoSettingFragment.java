@@ -15,6 +15,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -34,9 +36,16 @@ import com.lljjcoder.bean.CityBean;
 import com.lljjcoder.bean.DistrictBean;
 import com.lljjcoder.bean.ProvinceBean;
 import com.lljjcoder.citywheel.CityConfig;
+import com.lljjcoder.style.citylist.CityListSelectActivity;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
+import com.lljjcoder.style.citylist.bean.CityInfoBean;
 import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.lljjcoder.style.citypickerview.CityPickerView;
+import com.lwkandroid.imagepicker.ImagePicker;
+import com.lwkandroid.imagepicker.data.ImageBean;
+import com.lwkandroid.imagepicker.data.ImagePickType;
+import com.lwkandroid.imagepicker.data.ImagePickerCropParams;
+import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
@@ -50,10 +59,13 @@ import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by pbq on 2018/1/5.
@@ -107,9 +119,10 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
     private TranslateAnimation animationCircleType;
-    private static int CAMERA = 0;
-    private static int PICTURE = 1;
+
     QServiceCfg qServiceCfg;
+    private final int REQUEST_CODE = 111;
+    private String cachePath;
 
     @Override
     protected String title() {
@@ -141,6 +154,8 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
         setOnClickListener();
 
         qServiceCfg = QServiceCfg.instance(getContext());
+        cachePath = getContext().getExternalCacheDir().getAbsolutePath();
+        LocalLog.d(TAG, "cachePath = " + cachePath);
     }
 
     private void setOnClickListener() {
@@ -158,10 +173,11 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
             switch (view.getId()) {
                 case R.id.user_head_icon_change:
                     LocalLog.d(TAG, "设置头像");
+                    selectPicture();
 /*                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(camera, CAMERA);*/
+                    startActivityForResult(camera, CAMERA);*//*
                     Intent picture = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(picture, PICTURE);
+                    startActivityForResult(picture, PICTURE);*/
                     break;
                 case R.id.user_name_change:
                     LocalLog.d(TAG, "设置昵称");
@@ -223,14 +239,30 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
         ButterKnife.unbind(this);
     }
 
+
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LocalLog.d(TAG, "onActivityResult() enter");
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            List<ImageBean> resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);
+            String content = "";
+            for (ImageBean imageBean : resultList) {
+                content = content + imageBean.toString() + "\n";
+            }
+            LocalLog.d(TAG, "content = " + content);
+            return;
+        }
+
+    }
+   /* @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICTURE) {
             LocalLog.d(TAG, "PICTURE OK");
             if (data != null) {
 
-                //TODO 线程中上传保存*/
+                //TODO 线程中上传保存*//*
                 Uri selectedImage = data.getData();
 
                 final String pathResult = getPath(selectedImage);
@@ -271,7 +303,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
                 LogoUpTask logoUpTask = new LogoUpTask();
                 logoUpTask.execute(pathResult);
             }
-/*        if (requestCode == REQUEST_CODE_TAG) {
+*//*        if (requestCode == REQUEST_CODE_TAG) {
                 if (data != null) {
                     ArrayList<String> tags = data.getStringArrayListExtra("tag");
                     if (tags != null) {
@@ -298,9 +330,9 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
                     }
 
                 }
-        }*/
+        }*//*
         }
-    }
+    }*/
 
 
     public class LogoUpTask extends AsyncTask<String, Integer, String> {
@@ -444,6 +476,61 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
 
     }
+
+    private void selectPicture() {
+        popupCircleTypeView = View.inflate(getContext(), R.layout.select_camera_pic, null);
+        popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupCircleTypeWindow onDismiss() enter");
+                popupCircleTypeWindow = null;
+            }
+        });
+        popupCircleTypeWindow.setFocusable(true);
+        popupCircleTypeWindow.setOutsideTouchable(true);
+        ((RelativeLayout) popupCircleTypeView.findViewById(R.id.select_camera)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "相机");
+                new ImagePicker()
+                        .pickType(ImagePickType.ONLY_CAMERA)//设置选取类型(拍照、单选、多选)
+                        .maxNum(1)//设置最大选择数量(拍照和单选都是1，修改后也无效)
+                        .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
+                        .cachePath(cachePath)//自定义缓存路径
+                        .doCrop(1,1,0,0)//裁剪功能需要调用这个方法，多选模式下无效
+                        .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
+                        .start(UserInfoSettingFragment.this, REQUEST_CODE);
+                popupCircleTypeWindow.dismiss();
+            }
+        });
+        ((RelativeLayout) popupCircleTypeView.findViewById(R.id.xiangche_camera)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "相册");
+                new ImagePicker()
+                        .pickType(ImagePickType.MULTI)//设置选取类型(拍照、单选、多选)
+                        .maxNum(4)//设置最大选择数量(拍照和单选都是1，修改后也无效)
+                        .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
+                        .cachePath(cachePath)//自定义缓存路径
+                        .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
+                        .start(UserInfoSettingFragment.this, REQUEST_CODE);
+                popupCircleTypeWindow.dismiss();
+            }
+        });
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
+                , 0, Animation.RELATIVE_TO_PARENT, 0,
+                Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupCircleTypeWindow.showAtLocation(getActivity().findViewById(R.id.user_info_setting_fg), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
+                , 0, 0);
+        popupCircleTypeView.startAnimation(animationCircleType);
+    }
+
 
     //单选项
     public void selectType(ArrayList<String> strings) {

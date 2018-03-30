@@ -47,29 +47,4 @@ public class UserInfoSettingActivity extends BaseActivity {
                 .commit();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        LocalLog.d(TAG, "onActivityResult() enter "+requestCode +" " + (resultCode == RESULT_OK ? "OK" : "FAILED"));
-        if (requestCode == CityListSelectActivity.CITY_SELECT_RESULT_FRAG) {
-            if (resultCode == RESULT_OK) {
-                if (data == null) {
-                    return;
-                }
-                Bundle bundle = data.getExtras();
-
-                CityInfoBean cityInfoBean = (CityInfoBean) bundle.getParcelable("cityinfo");
-
-                if (null == cityInfoBean) {
-                    return;
-                }
-
-                LocalLog.d(TAG, "城市： " + cityInfoBean.toString());
-            }
-        }
-    }
-
-
-
-
 }

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_800000">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:id="@+id/select_des"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:background="@color/color_f8">
+
+            <TextView
+                android:id="@+id/select_pic_src"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:text="选择照片来源"
+                android:textColor="@color/color_161727"
+                android:textSize="15dp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/color_ebebed" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/select_camera"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:layout_below="@+id/select_des"
+            android:background="@color/color_f8">
+
+            <TextView
+                android:id="@+id/camera_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:text="相机"
+                android:textColor="@color/color_161727"
+                android:textSize="20dp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/color_ebebed" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/xiangche_camera"
+            android:layout_width="match_parent"
+            android:layout_height="57dp"
+            android:layout_below="@+id/select_camera"
+            android:background="@color/color_f8">
+
+            <TextView
+                android:id="@+id/xiangche_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:text="从手机相册选择"
+                android:textColor="@color/color_161727"
+                android:textSize="20dp" />
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/color_ebebed" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

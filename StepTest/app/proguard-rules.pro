@@ -112,3 +112,5 @@
 -keep class android.support.**{*;}
 -dontwarn com.yanzhenjie.permission.**
 }
+-dontwarn com.lwkandroid.imagepicker.**
+-keep class com.lwkandroid.imagepicker.**{*;}
