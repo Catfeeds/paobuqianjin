@@ -12,6 +12,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendWeekResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRandWeekResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 
@@ -64,7 +65,8 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                 holder.rankIcon.setImageResource(R.drawable.honor_third);
             } else {
                 holder.rankNum.setVisibility(View.VISIBLE);
-                holder.rankIcon.setVisibility(View.GONE);
+                holder.rankNum.setText(String.valueOf(position + 1));
+                holder.rankIcon.setVisibility(View.INVISIBLE);
             }
             Presenter.getInstance(context).getImage(holder.headIconUser, ((CircleStepRankResponse.DataBean.CircleBean) mData.get(position)).getAvatar());
             holder.stepNum.setText(String.valueOf(((CircleStepRankResponse.DataBean.CircleBean) mData.get(position)).getStep_number()));
@@ -85,11 +87,35 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
             holder.stepNum.setText(String.valueOf(((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getNickname());
         } else if (mData.get(position) instanceof StepRankResponse.DataBeanX.DataBean) {
+            if (position == 0) {
+                holder.rankIcon.setImageResource(R.drawable.honor_master);
+            } else if (position == 1) {
+                holder.rankIcon.setImageResource(R.drawable.honor_second);
+            } else if (position == 2) {
+                holder.rankIcon.setImageResource(R.drawable.honor_third);
+            } else {
+                holder.rankNum.setVisibility(View.VISIBLE);
+                holder.rankNum.setText(String.valueOf(position + 1));
+                holder.rankIcon.setVisibility(View.INVISIBLE);
+            }
             Presenter.getInstance(context).getImage(holder.headIconUser, ((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
             holder.stepNum.setText(String.valueOf(((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getStep_number()));
-            holder.userNameRank.setText(String.valueOf(position + 1));
-        } else {
-
+            holder.userNameRank.setText(((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
+        } else if (mData.get(position) instanceof StepRandWeekResponse.DataBeanX.DataBean) {
+            if (position == 0) {
+                holder.rankIcon.setImageResource(R.drawable.honor_master);
+            } else if (position == 1) {
+                holder.rankIcon.setImageResource(R.drawable.honor_second);
+            } else if (position == 2) {
+                holder.rankIcon.setImageResource(R.drawable.honor_third);
+            } else {
+                holder.rankNum.setVisibility(View.VISIBLE);
+                holder.rankNum.setText(String.valueOf(position + 1));
+                holder.rankIcon.setVisibility(View.INVISIBLE);
+            }
+            Presenter.getInstance(context).getImage(holder.headIconUser, ((StepRandWeekResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
+            holder.stepNum.setText(String.valueOf(((StepRandWeekResponse.DataBeanX.DataBean) mData.get(position)).getStep_number()));
+            holder.userNameRank.setText(((StepRandWeekResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
         }
     }
 

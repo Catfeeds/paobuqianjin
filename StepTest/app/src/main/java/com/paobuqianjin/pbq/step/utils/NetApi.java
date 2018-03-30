@@ -134,4 +134,8 @@ public class NetApi {
     public final static String urlMessage = "http://119.29.10.64/v1/usermessages";
     //TODO 通讯录上传
     public final static String urlAddressBook = " http://119.29.10.64/v1/UserFollow/addressBook";
+    //TODO 圈子榜单，排行http://119.29.10.64/v1/Circle/UserCircleWeekRank?circleid=100344&userid=30&page=1&pagesize=10
+    public final static String urlCircleWeekRank = "http://119.29.10.64/v1/Circle/UserCircleWeekRank?circleid=";
+    //TODO 周名次 http://119.29.10.64/v1/Circle/UserCircleWeekNum?circleid=100000&userid=1
+    public final static String urlStepRankWeekNum = "http://119.29.10.64/v1/Circle/UserCircleWeekNum?circleid=";
 }

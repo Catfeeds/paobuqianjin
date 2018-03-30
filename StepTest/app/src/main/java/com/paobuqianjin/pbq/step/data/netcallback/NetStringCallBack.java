@@ -12,6 +12,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankWeekResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
@@ -66,6 +67,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRandWeekResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskMyReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskRecDetailResponse;
@@ -697,6 +699,15 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
                 CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
                 ((CircleStepDetailDanInterface) callBackInterface).response(circleDetailResponse);
+            } else if (command == Engine.COMMAND_HONOR_DAN_DAY_STEP) {
+                StepRankResponse stepRankResponse = new Gson().fromJson(s, StepRankResponse.class);
+                ((CircleStepDetailDanInterface) callBackInterface).response(stepRankResponse);
+            } else if (command == Engine.COMMAND_HONOR_WEEK_STEP) {
+                StepRandWeekResponse stepRandWeekResponse = new Gson().fromJson(s, StepRandWeekResponse.class);
+                ((CircleStepDetailDanInterface) callBackInterface).response(stepRandWeekResponse);
+            }else if(command == Engine.COMMAND_HONOR_WEEK_RANK_NUM){
+                CircleStepRankWeekResponse circleStepRankWeekResponse = new Gson().fromJson(s,CircleStepRankWeekResponse.class);
+                ((CircleStepDetailDanInterface) callBackInterface).response(circleStepRankWeekResponse);
             }
         } else if (callBackInterface != null && callBackInterface instanceof RechargeDetailInterface) {
             RechargeDetailResponse rechargeDetailResponse = new Gson().fromJson(s, RechargeDetailResponse.class);

@@ -282,6 +282,9 @@ public final class Engine {
     public final static int COMMAND_CIRCLE_ORDER_POST_ALI = 86;
     public final static int COMMAND_CIRCLE_ORDER_POST_WALLET = 87;
     public final static int COMMAND_FRIEND_HONOR_WEEK = 88;
+    public final static int COMMAND_HONOR_DAN_DAY_STEP = 89;
+    public final static int COMMAND_HONOR_WEEK_STEP = 90;
+    public final static int COMMAND_HONOR_WEEK_RANK_NUM = 91;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -1243,8 +1246,40 @@ public final class Engine {
                 .execute(new NetStringCallBack(danCircleInterface, COMMAND_STEP_RANK));
     }
 
+    public void getCircleStepRankDay(int circleId, int page, int pagesize) {
+        String url = NetApi.urlCircleRank + "/?circleid=" + String.valueOf(circleId)
+                + "&action=step" + "&page=" + String.valueOf(page) + "&pagesize=" + pagesize;
+        LocalLog.d(TAG, "圈子步数排行：getCircleStepRank() enter url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(circleStepDetailDanInterface, COMMAND_HONOR_DAN_DAY_STEP));
+    }
+
+    public void getCircleStepRankWeek(int circleId, int page, int pagesize) {
+        String url = NetApi.urlCircleWeekRank + String.valueOf(circleId) + "&page=" + page + "&pagesize=" + pagesize;
+        LocalLog.d(TAG, "getCircleStepRankWeek() url = " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(circleStepDetailDanInterface, COMMAND_HONOR_WEEK_STEP));
+    }
+
+
+    public void getCircleRankNum(int circleId) {
+        String url = NetApi.urlStepRankWeekNum + String.valueOf(circleId) + "&userid=" + String.valueOf(getId(mContext));
+        LocalLog.d(TAG, "getCircleRankNum() enter  url " + url);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new NetStringCallBack(circleStepDetailDanInterface, COMMAND_HONOR_WEEK_RANK_NUM));
+    }
+
     public void getCircleDetailInCircleDan(int circleId) {
-        String url = NetApi.urlUserCircleRank + String.valueOf(getId(mContext)) + "&circleid=" + String.valueOf(circleId);
+        String url = NetApi.urlCircle + "/" + String.valueOf(circleId) + "?userid=" + String.valueOf(getId(mContext));
         LocalLog.d(TAG, "getUserCircleRankDetail() enter  url = " + url);
         OkHttpUtils
                 .get()
@@ -1266,7 +1301,7 @@ public final class Engine {
     public void getCircleRechargeRank(int circleId, int page, int pagesize) {
         LocalLog.d(TAG, "充值排行：getCircleRechargeRank() enter");
         String url = NetApi.urlCircleRank + "/?circleid=" + String.valueOf(circleId)
-                + "&action=recharge";
+                + "&action=recharge" + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         OkHttpUtils
                 .get()
                 .url(url)

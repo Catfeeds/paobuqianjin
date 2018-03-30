@@ -15,7 +15,9 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankWeekResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRandWeekResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CircleStepDetailDanInterface;
@@ -71,8 +73,16 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     private int circleId = -1;
     LinearLayoutManager layoutManager;
     private final static String ACTION_CIRCLE_HONOR = "com.paobuqianjin.pbq.ACTION_CIRCLE_HONOR";
+    CircleStepRankResponse circleStepRankResponse;
+    StepRankResponse stepRankResponse;
+    StepRandWeekResponse stepRandWeekResponse;
+    CircleStepRankWeekResponse circleStepRankWeekResponse;
+    private int pageIndexDay = 1, pageDayCount = 0;
+    private int pageIndexWeek = 1, pageWeekCount = 0;
+    private final static int PAGE_SIZE = 10;
 
     @Override
+
     protected int getLayoutResId() {
         return R.layout.circles_step_dan_fg;
     }
@@ -120,6 +130,10 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             if (circleId != -1) {
                 Presenter.getInstance(getContext()).getUserCircleRankDetail(circleId);
                 Presenter.getInstance(getContext()).getCircleDetailInCircleDan(circleId);
+                Presenter.getInstance(getContext()).getCircleStepRankDay(circleId, pageIndexDay, PAGE_SIZE);
+                Presenter.getInstance(getContext()).getCircleRankNum(circleId);
+                Presenter.getInstance(getContext()).getCircleStepRankWeek(circleId, pageIndexWeek, PAGE_SIZE);
+
             }
         }
 
@@ -150,19 +164,19 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     public void response(CircleStepRankResponse circleStepRankResponse) {
         LocalLog.d(TAG, "CircleStepRankResponse() enter " + circleStepRankResponse.toString());
         if (circleStepRankResponse.getError() == 0) {
+            if (this.circleStepRankResponse == null) {
+                this.circleStepRankResponse = circleStepRankResponse;
+            }
+            updateCircleStepRank(circleStepRankResponse);
+        }
+    }
+
+    private void updateCircleStepRank(CircleStepRankResponse circleStepRankResponse) {
+        if (circleStepRankResponse != null) {
             userNameRank.setText(String.valueOf(circleStepRankResponse.getData().getNickname()));
             yourDan.setText(String.valueOf(circleStepRankResponse.getData().getRank()));
             stepNumMy.setText(String.valueOf(circleStepRankResponse.getData().getStep_number()));
             Presenter.getInstance(getContext()).getImage(headIconUser, circleStepRankResponse.getData().getAvatar());
-            if (circleStepRankResponse.getData().getCircle().size() > 0) {
-                Presenter.getInstance(getContext()).getImage(kingHeadIcon, circleStepRankResponse.getData().getCircle().get(0).getAvatar());
-                kingName.setText(circleStepRankResponse.getData().getCircle().get(0).getNickname());
-            }
-            for (int i = 0; i < circleStepRankResponse.getData().getCircle().size(); i++) {
-                if (circleStepRankResponse.getData().getCircle().get(i).getUserid() == Presenter.getInstance(getContext()).getId()) {
-                }
-            }
-            danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), circleStepRankResponse.getData().getCircle()));
         }
     }
 
@@ -174,14 +188,69 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     @Override
     public void response(StepRankResponse stepRankResponse) {
         if (stepRankResponse.getError() == 0) {
+            if (stepRankResponse.getError() == 0) {
+                this.stepRankResponse = stepRankResponse;
+            }
+            numDes.setText("人员数：" + String.valueOf(stepRankResponse.getData().getData().size()));
+            updateDayRank(stepRankResponse);
+        }
+    }
 
+    private void updateDayRank(StepRankResponse stepRankResponse) {
+        if (stepRankResponse != null) {
+            if (stepRankResponse.getData().getPagenation().getTotalCount() > 0) {
+                Presenter.getInstance(getContext()).getImage(kingHeadIcon, stepRankResponse.getData().getData().get(0).getAvatar());
+                kingName.setText(stepRankResponse.getData().getData().get(0).getNickname());
+            }
+            danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), stepRankResponse.getData().getData()));
         }
     }
 
     @Override
     public void response(CircleDetailResponse circleDetailResponse) {
         if (circleDetailResponse.getError() == 0) {
+            circleTarget.setText("圈子目标：" + String.valueOf(circleDetailResponse.getData().getTarget()));
+        }
+    }
 
+    @Override
+    public void response(StepRandWeekResponse stepRandWeekResponse) {
+        LocalLog.d(TAG, "圈子用户本周排名");
+        if (stepRandWeekResponse.getError() == 0) {
+            if (this.stepRandWeekResponse == null) {
+                this.stepRandWeekResponse = stepRandWeekResponse;
+            }
+            updateWeekRank(stepRandWeekResponse);
+        }
+    }
+
+    private void updateWeekRank(StepRandWeekResponse stepRandWeekResponse) {
+        if (stepRandWeekResponse != null) {
+            if (stepRandWeekResponse.getData().getPagenation().getTotalCount() > 0) {
+                Presenter.getInstance(getContext()).getImage(kingHeadIcon, stepRandWeekResponse.getData().getData().get(0).getAvatar());
+                kingName.setText(stepRandWeekResponse.getData().getData().get(0).getNickname());
+            }
+            danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), stepRandWeekResponse.getData().getData()));
+        }
+    }
+
+    @Override
+    public void response(CircleStepRankWeekResponse circleStepRankWeekResponse) {
+        LocalLog.d(TAG, "当前用户本周排名");
+        if (circleStepRankWeekResponse.getError() == 0) {
+            if (this.circleStepRankWeekResponse == null) {
+                this.circleStepRankWeekResponse = circleStepRankWeekResponse;
+            }
+            updateCircleStepWeekRank(circleStepRankWeekResponse);
+        }
+    }
+
+    private void updateCircleStepWeekRank(CircleStepRankWeekResponse circleStepRankWeekResponse) {
+        if (circleStepRankWeekResponse != null) {
+            userNameRank.setText(String.valueOf(circleStepRankWeekResponse.getData().getNickname()));
+            yourDan.setText(String.valueOf(circleStepRankWeekResponse.getData().getRank()));
+            stepNumMy.setText(String.valueOf(circleStepRankWeekResponse.getData().getStep_number()));
+            Presenter.getInstance(getContext()).getImage(headIconUser, circleStepRankWeekResponse.getData().getAvatar());
         }
     }
 }

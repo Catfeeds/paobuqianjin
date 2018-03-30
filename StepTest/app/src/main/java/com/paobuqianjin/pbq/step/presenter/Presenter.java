@@ -386,11 +386,19 @@ public final class Presenter {
     }
 
     public void getCircleDetailInCircleDan(int circleId) {
-
+        engine.getCircleDetailInCircleDan(circleId);
     }
 
-    public void getCircleStepDan() {
+    public void getCircleStepRankDay(int circleId, int page, int pagesize) {
+        engine.getCircleStepRankDay(circleId, page, pagesize);
+    }
 
+    public void getCircleStepRankWeek(int circleId, int page, int pagesize) {
+        engine.getCircleStepRankWeek(circleId, page, pagesize);
+    }
+
+    public void getCircleRankNum(int circleId) {
+        engine.getCircleRankNum(circleId);
     }
 
     public void getUserCircleRankDetail(int circleId) {
