@@ -103,9 +103,11 @@ import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.view.base.view.PicassoTransformation;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.io.File;
 import java.io.IOException;
@@ -288,6 +290,7 @@ public final class Engine {
     public final static int COMMAND_HONOR_WEEK_STEP = 90;
     public final static int COMMAND_HONOR_WEEK_RANK_NUM = 91;
     public final static int COMMAND_FEED_SUGGEST = 92;
+    private Transformation transformation;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -306,6 +309,8 @@ public final class Engine {
                     .build();
             LocalLog.d(TAG, " 设置Picasso ");
             Picasso.setSingletonInstance(picasso);
+            transformation = new PicassoTransformation(mContext, 2);
+
         }
     }
 
@@ -1774,6 +1779,13 @@ public final class Engine {
         picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(79, 79).into(imageView);
     }
 
+    public void getImage(String fileUrl, final ImageView imageView, int targetWidth, int targetHeight) {
+        LocalLog.d(TAG, "getImage() local");
+        Picasso picasso = Picasso.with(mContext);
+        LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
+        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(targetWidth, targetHeight).into(imageView);
+    }
+
     //网络图片获取接口
     public void getImage(final ImageView imageView, String urlImage) {
         LocalLog.d(TAG, "getImage() enter");
@@ -1782,9 +1794,9 @@ public final class Engine {
         //picasso.setLoggingEnabled(true);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         if (networkPolicy == NetworkPolicy.OFFLINE) {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).networkPolicy(networkPolicy).resize(200, 200).into(imageView);
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).networkPolicy(networkPolicy).into(imageView);
         } else {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).resize(200, 200).into(imageView);
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).into(imageView);
         }
 
         //Picasso.with(mContext).load(urlImage).into(imageView);

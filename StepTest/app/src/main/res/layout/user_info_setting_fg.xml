@@ -110,13 +110,13 @@
             android:textColor="@color/color_161727"
             android:textSize="16dp" />
 
-        <EditText
+        <TextView
+            android:id="@+id/male_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:layout_toStartOf="@+id/go_pic2"
-            android:background="@null"
             android:hint="女"
             android:textSize="15dp" />
 
@@ -146,13 +146,13 @@
             android:textColor="@color/color_161727"
             android:textSize="16dp" />
 
-        <EditText
+        <TextView
+            android:id="@+id/birth_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:layout_toStartOf="@+id/go_pic3"
-            android:background="@null"
             android:hint="填写生日"
             android:textSize="15dp" />
 
@@ -190,6 +190,7 @@
             android:textSize="16dp" />
 
         <TextView
+            android:id="@+id/high_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -232,6 +233,7 @@
             android:textSize="16dp" />
 
         <TextView
+            android:id="@+id/weight_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -274,6 +276,7 @@
             android:textSize="16dp" />
 
         <TextView
+            android:id="@+id/city_names"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"

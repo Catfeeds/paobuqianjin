@@ -22,6 +22,7 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -43,14 +44,19 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
+import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.WheelPicker;
+import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.widgets.WheelDatePicker;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -73,6 +79,8 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
+    @Bind(R.id.head_ico)
+    CircleImageView headIco;
     @Bind(R.id.go_pic)
     ImageView goPic;
     @Bind(R.id.user_head_icon_change)
@@ -85,44 +93,63 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
     RelativeLayout userNameChange;
     @Bind(R.id.line_change_male)
     ImageView lineChangeMale;
+    @Bind(R.id.male_text)
+    TextView maleText;
     @Bind(R.id.go_pic2)
     ImageView goPic2;
     @Bind(R.id.change_male)
     RelativeLayout changeMale;
-    @Bind(R.id.line_location_name)
-    ImageView lineLocationName;
+    @Bind(R.id.birth_day)
+    TextView birthDayTV;
     @Bind(R.id.go_pic3)
     ImageView goPic3;
     @Bind(R.id.change_birth)
     RelativeLayout changeBirth;
-    @Bind(R.id.line_change_birth)
-    ImageView lineChangeBirth;
-    @Bind(R.id.go_pic4)
-    ImageView goPic4;
-    @Bind(R.id.change_city)
-    RelativeLayout changeCity;
-    @Bind(R.id.line_change_city)
-    ImageView lineChangeCity;
-    @Bind(R.id.head_ico)
-    CircleImageView headIco;
-    @Bind(R.id.user_info_setting_fg)
-    RelativeLayout userInfoSettingFg;
     @Bind(R.id.line_birth)
     ImageView lineBirth;
+    @Bind(R.id.high_num)
+    TextView highNum;
     @Bind(R.id.go_pic5)
     ImageView goPic5;
     @Bind(R.id.change_high)
     RelativeLayout changeHigh;
     @Bind(R.id.line_weight)
     ImageView lineWeight;
+    @Bind(R.id.weight_num)
+    TextView weightNum;
     @Bind(R.id.go_pic6)
     ImageView goPic6;
     @Bind(R.id.change_weight)
     RelativeLayout changeWeight;
+    @Bind(R.id.line_change_birth)
+    ImageView lineChangeBirth;
+    @Bind(R.id.city_names)
+    TextView cityNames;
+    @Bind(R.id.go_pic4)
+    ImageView goPic4;
+    @Bind(R.id.change_city)
+    RelativeLayout changeCity;
+    @Bind(R.id.line_change_city)
+    ImageView lineChangeCity;
+    @Bind(R.id.user_info_setting_fg)
+    RelativeLayout userInfoSettingFg;
 
+
+    private View popBirthSelectView;
+    private View popWeighSelectView;
+    private View popHighSelectView;
+    private PopupWindow popupSelectWindow;
+    private String birthYear = null;
+    private String birthMonth = null;
+    private String birthDay = null;
+    private String high;
+    private String weight;
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
     private TranslateAnimation animationCircleType;
+    ArrayList<String> weightList = new ArrayList<>();
+    //50-250cm
+    ArrayList<String> heightList = new ArrayList<>();
 
     QServiceCfg qServiceCfg;
     private final int REQUEST_CODE = 111;
@@ -156,11 +183,29 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
         headIco = (CircleImageView) viewRoot.findViewById(R.id.head_ico);
         changeHigh = (RelativeLayout) viewRoot.findViewById(R.id.change_high);
         changeWeight = (RelativeLayout) viewRoot.findViewById(R.id.change_weight);
+        maleText = (TextView) viewRoot.findViewById(R.id.male_text);
+        highNum = (TextView) viewRoot.findViewById(R.id.high_num);
         setOnClickListener();
 
         qServiceCfg = QServiceCfg.instance(getContext());
         cachePath = getContext().getExternalCacheDir().getAbsolutePath();
+        birthDayTV = (TextView) viewRoot.findViewById(R.id.birth_day);
         LocalLog.d(TAG, "cachePath = " + cachePath);
+        initData();
+    }
+
+    private void initData() {
+        int high = 50;
+        while (high < 250) {
+            heightList.add(String.valueOf(high));
+            high += 5;
+        }
+
+        float weight = 10.0f;
+        while (weight < 250.0f) {
+            weightList.add(String.valueOf(weight));
+            weight += 0.5;
+        }
     }
 
     private void setOnClickListener() {
@@ -182,9 +227,6 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
                     LocalLog.d(TAG, "设置头像");
                     selectPicture();
                     break;
-                case R.id.user_name_change:
-                    LocalLog.d(TAG, "设置昵称");
-                    break;
                 case R.id.change_male:
                     LocalLog.d(TAG, "设置性别");
                     ArrayList<String> male = new ArrayList<>();
@@ -194,6 +236,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
                     break;
                 case R.id.change_birth:
                     LocalLog.d(TAG, "设置生日");
+                    setBirthDay();
                     break;
                 case R.id.change_city:
                     LocalLog.d(TAG, "设置城市");
@@ -232,9 +275,11 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
                     break;
                 case R.id.change_high:
                     LocalLog.d(TAG, "设置身高");
+                    setHigh();
                     break;
                 case R.id.change_weight:
                     LocalLog.d(TAG, "设置体重");
+                    setWeight();
                     break;
                 default:
                     break;
@@ -260,6 +305,12 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
                 content = content + imageBean.toString() + "\n";
             }
             LocalLog.d(TAG, "content = " + content);
+            if (resultList != null && resultList.size() == 1) {
+                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), headIco, resultList.get(0).getWidth() / 4
+                        , resultList.get(0).getHeight() / 4);
+            } else {
+                LocalLog.d(TAG, "未知操作");
+            }
             return;
         }
 
@@ -541,6 +592,172 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
     }
 
 
+    private void setBirthDay() {
+        LocalLog.d(TAG, "setBirthDay() 生日选择框");
+        popBirthSelectView = View.inflate(getContext(), R.layout.wheel_select_layout, null);
+        popupSelectWindow = new PopupWindow(popBirthSelectView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popRedPkgButton dismiss() ");
+                popupSelectWindow = null;
+            }
+        });
+        Button confirmBt = (Button) popBirthSelectView.findViewById(R.id.confirm);
+        Button cancelBt = (Button) popBirthSelectView.findViewById(R.id.cancel);
+        final WheelDatePicker wheelDatePicker = (WheelDatePicker) popBirthSelectView.findViewById(R.id.date_picker);
+        wheelDatePicker.setOnDateSelectedListener(new WheelDatePicker.OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(WheelDatePicker picker, Date date) {
+                birthYear = DateTimeUtil.formatDateTime(date, "yyyy");
+                birthMonth = DateTimeUtil.formatDateTime(date, "MM");
+                birthDay = DateTimeUtil.formatDateTime(date, "dd");
+            }
+        });
+        confirmBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "确认");
+                birthDayTV.setText(birthYear + "年" + birthMonth + "月" + birthDay + "日");
+                popupSelectWindow.dismiss();
+            }
+        });
+        cancelBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "取消");
+                birthYear = null;
+                birthMonth = null;
+                birthDay = null;
+                //TODO  使用默认的生日
+                popupSelectWindow.dismiss();
+            }
+        });
+        popupSelectWindow.setFocusable(true);
+        popupSelectWindow.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.user_info_setting_fg), Gravity.CENTER_HORIZONTAL, 0, 0);
+        popBirthSelectView.startAnimation(animationCircleType);
+    }
+
+    public void setWeight() {
+        LocalLog.d(TAG, "setWeight() 选择框");
+        popWeighSelectView = View.inflate(getContext(), R.layout.wheel_weight_select_layout, null);
+        popupSelectWindow = new PopupWindow(popWeighSelectView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupSelectWindow dismiss() ");
+                popupSelectWindow = null;
+            }
+        });
+
+        Button confirmBt = (Button) popWeighSelectView.findViewById(R.id.confirm);
+        Button cancelBt = (Button) popWeighSelectView.findViewById(R.id.cancel);
+        final WheelPicker wheelWeigthPicker = (WheelPicker) popWeighSelectView.findViewById(R.id.weigth_picker);
+        wheelWeigthPicker.setData(weightList);
+        wheelWeigthPicker.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(WheelPicker picker, Object data, int position) {
+                weight = (String) data;
+            }
+        });
+        confirmBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "确认");
+                weightNum.setText(weight + "公斤");
+                popupSelectWindow.dismiss();
+            }
+        });
+        cancelBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "取消");
+                popupSelectWindow.dismiss();
+            }
+        });
+
+
+        popupSelectWindow.setFocusable(true);
+        popupSelectWindow.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.user_info_setting_fg), Gravity.CENTER_HORIZONTAL, 0, 0);
+        popWeighSelectView.startAnimation(animationCircleType);
+    }
+
+    public void setHigh() {
+        LocalLog.d(TAG, "setWeight() 选择框");
+        popHighSelectView = View.inflate(getContext(), R.layout.wheel_high_select_layout, null);
+        popupSelectWindow = new PopupWindow(popHighSelectView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupSelectWindow dismiss() ");
+                popupSelectWindow = null;
+            }
+        });
+
+        Button confirmBt = (Button) popHighSelectView.findViewById(R.id.confirm);
+        Button cancelBt = (Button) popHighSelectView.findViewById(R.id.cancel);
+        final WheelPicker wheelHighPicker = (WheelPicker) popHighSelectView.findViewById(R.id.high_picker);
+        wheelHighPicker.setData(heightList);
+        wheelHighPicker.setOnItemSelectedListener(new WheelPicker.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(WheelPicker picker, Object data, int position) {
+                LocalLog.d(TAG, (String) data);
+                high = (String) data;
+
+            }
+        });
+        confirmBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "确认");
+                highNum.setText(high + "cm");
+                popupSelectWindow.dismiss();
+            }
+        });
+        cancelBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "取消");
+                popupSelectWindow.dismiss();
+            }
+        });
+
+        popupSelectWindow.setFocusable(true);
+        popupSelectWindow.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.user_info_setting_fg), Gravity.CENTER_HORIZONTAL, 0, 0);
+        popHighSelectView.startAnimation(animationCircleType);
+    }
+
+
     //单选项
     public void selectType(ArrayList<String> strings) {
         final SelectSettingAdapter selectSettingAdapter = new SelectSettingAdapter(getContext(), strings);
@@ -583,6 +800,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
                 LocalLog.d(TAG, "onClick() 确定");
                 String selectString = selectSettingAdapter.getSelectContent();
                 LocalLog.d(TAG, "选择结果: " + selectString);
+                maleText.setText(selectString);
                 if (popupCircleTypeWindow.isShowing()) {
                     popupCircleTypeWindow.dismiss();
                     popupCircleTypeWindow = null;

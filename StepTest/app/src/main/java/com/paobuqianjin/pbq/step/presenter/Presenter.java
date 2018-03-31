@@ -366,6 +366,14 @@ public final class Presenter {
         engine.getImage(view, urlImg);
     }
 
+    public void getImage(String fileUrl, final ImageView imageView, int targetWidth, int targetHeight) {
+        if ("".equals(fileUrl)) {
+            return;
+        }
+
+        engine.getImage(fileUrl, imageView, targetWidth, targetHeight);
+    }
+
     public void getImage(String fileUrl, final ImageView imageView) {
         if (fileUrl == null) {
             return;
