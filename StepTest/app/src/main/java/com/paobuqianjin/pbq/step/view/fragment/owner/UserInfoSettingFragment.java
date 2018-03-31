@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -15,8 +14,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +22,6 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -36,21 +32,17 @@ import com.lljjcoder.bean.CityBean;
 import com.lljjcoder.bean.DistrictBean;
 import com.lljjcoder.bean.ProvinceBean;
 import com.lljjcoder.citywheel.CityConfig;
-import com.lljjcoder.style.citylist.CityListSelectActivity;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
-import com.lljjcoder.style.citylist.bean.CityInfoBean;
 import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.lljjcoder.style.citypickerview.CityPickerView;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
-import com.lwkandroid.imagepicker.data.ImagePickerCropParams;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
-import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -115,6 +107,18 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
     CircleImageView headIco;
     @Bind(R.id.user_info_setting_fg)
     RelativeLayout userInfoSettingFg;
+    @Bind(R.id.line_birth)
+    ImageView lineBirth;
+    @Bind(R.id.go_pic5)
+    ImageView goPic5;
+    @Bind(R.id.change_high)
+    RelativeLayout changeHigh;
+    @Bind(R.id.line_weight)
+    ImageView lineWeight;
+    @Bind(R.id.go_pic6)
+    ImageView goPic6;
+    @Bind(R.id.change_weight)
+    RelativeLayout changeWeight;
 
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
@@ -138,7 +142,6 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
@@ -151,6 +154,8 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
         changeBirth = (RelativeLayout) viewRoot.findViewById(R.id.change_birth);
         changeCity = (RelativeLayout) viewRoot.findViewById(R.id.change_city);
         headIco = (CircleImageView) viewRoot.findViewById(R.id.head_ico);
+        changeHigh = (RelativeLayout) viewRoot.findViewById(R.id.change_high);
+        changeWeight = (RelativeLayout) viewRoot.findViewById(R.id.change_weight);
         setOnClickListener();
 
         qServiceCfg = QServiceCfg.instance(getContext());
@@ -164,6 +169,8 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
         changeMale.setOnClickListener(onClickListener);
         changeBirth.setOnClickListener(onClickListener);
         changeCity.setOnClickListener(onClickListener);
+        changeHigh.setOnClickListener(onClickListener);
+        changeWeight.setOnClickListener(onClickListener);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -174,10 +181,6 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
                 case R.id.user_head_icon_change:
                     LocalLog.d(TAG, "设置头像");
                     selectPicture();
-/*                    Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(camera, CAMERA);*//*
-                    Intent picture = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(picture, PICTURE);*/
                     break;
                 case R.id.user_name_change:
                     LocalLog.d(TAG, "设置昵称");
@@ -226,6 +229,12 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
 
                     //显示
                     CityPickerView.getInstance().showCityPicker(getContext());
+                    break;
+                case R.id.change_high:
+                    LocalLog.d(TAG, "设置身高");
+                    break;
+                case R.id.change_weight:
+                    LocalLog.d(TAG, "设置体重");
                     break;
                 default:
                     break;
@@ -499,7 +508,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
                         .maxNum(1)//设置最大选择数量(拍照和单选都是1，修改后也无效)
                         .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
                         .cachePath(cachePath)//自定义缓存路径
-                        .doCrop(1,1,0,0)//裁剪功能需要调用这个方法，多选模式下无效
+                        .doCrop(1, 1, 0, 0)//裁剪功能需要调用这个方法，多选模式下无效
                         .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
                         .start(UserInfoSettingFragment.this, REQUEST_CODE);
                 popupCircleTypeWindow.dismiss();

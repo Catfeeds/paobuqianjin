@@ -129,18 +129,12 @@
             android:src="@drawable/go_to" />
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/line_location_name"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:layout_below="@+id/change_male"
-        android:background="@color/color_ebebed" />
 
     <RelativeLayout
         android:id="@+id/change_birth"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@+id/line_location_name"
+        android:layout_below="@+id/change_male"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp">
 
@@ -171,14 +165,97 @@
             android:src="@drawable/go_to" />
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/line_birth"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@+id/change_birth"
+        android:layout_below="@+id/change_birth"
+        android:background="@color/color_ebebed" />
+
+    <RelativeLayout
+        android:id="@+id/change_high"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/line_birth"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="身高"
+            android:textColor="@color/color_161727"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:layout_toStartOf="@+id/go_pic5"
+            android:text="170cm"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:id="@+id/go_pic5"
+            android:layout_width="7dp"
+            android:layout_height="13dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/go_to" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/line_weight"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@+id/change_high"
+        android:layout_below="@+id/change_high"
+        android:background="@color/color_ebebed" />
+
+    <RelativeLayout
+        android:id="@+id/change_weight"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/line_weight"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="体重"
+            android:textColor="@color/color_161727"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:layout_toStartOf="@+id/go_pic6"
+            android:text="84kg"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:id="@+id/go_pic6"
+            android:layout_width="7dp"
+            android:layout_height="13dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/go_to" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/line_change_birth"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignLeft="@+id/user_head_icon_change"
-        android:layout_below="@+id/change_birth"
+        android:layout_height="10dp"
+        android:layout_below="@+id/change_weight"
         android:background="@color/color_ebebed" />
+
 
     <RelativeLayout
         android:id="@+id/change_city"
@@ -196,14 +273,13 @@
             android:textColor="@color/color_161727"
             android:textSize="16dp" />
 
-        <EditText
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:layout_toStartOf="@+id/go_pic4"
-            android:background="@null"
-            android:hint="广东省·深圳市"
+            android:text="广东省·深圳市"
             android:textSize="15dp" />
 
         <ImageView
