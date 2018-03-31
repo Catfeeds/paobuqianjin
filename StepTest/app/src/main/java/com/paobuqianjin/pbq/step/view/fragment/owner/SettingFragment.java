@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -53,6 +55,8 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
     ImageView goPic3;
     @Bind(R.id.change_birth)
     RelativeLayout changeBirth;
+    @Bind(R.id.exit)
+    Button exit;
 
     @Override
     protected int getLayoutResId() {
@@ -78,7 +82,7 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.user_head_icon_change, R.id.user_name_change, R.id.change_male, R.id.change_birth})
+    @OnClick({R.id.user_head_icon_change, R.id.user_name_change, R.id.change_male, R.id.change_birth, R.id.exit})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.user_head_icon_change:
@@ -93,6 +97,13 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                 break;
             case R.id.change_birth:
                 LocalLog.d(TAG, "关于我们");
+                break;
+            case R.id.exit:
+                LocalLog.d(TAG, "退出APP");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                getActivity().finish();
+                System.exit(0);
                 break;
         }
     }

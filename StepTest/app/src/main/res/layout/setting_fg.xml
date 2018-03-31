@@ -146,4 +146,14 @@
             android:layout_centerVertical="true"
             android:src="@drawable/go_to" />
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/exit"
+        android:textSize="24dp"
+        android:textColor="@color/color_f8"
+        android:text="退出"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_6c71c4" />
 </RelativeLayout>

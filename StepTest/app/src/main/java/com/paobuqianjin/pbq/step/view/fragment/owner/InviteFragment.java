@@ -11,12 +11,20 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lwkandroid.imagepicker.ImagePicker;
+import com.lwkandroid.imagepicker.data.ImagePickType;
+import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
@@ -67,6 +75,9 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     MyInviteFragment myInviteFragment;
     InviteDanFragment inviteDanFragment;
     String[] titles = {"邀请达人榜", "我的邀请"};
+    private View popupCircleTypeView;
+    private PopupWindow popupCircleTypeWindow;
+    private TranslateAnimation animationCircleType;
 
     @Override
     protected int getLayoutResId() {
@@ -126,6 +137,33 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             }
         });
 
+    }
+
+
+    private void selectShare() {
+        popupCircleTypeView = View.inflate(getContext(), R.layout.share_pop_window, null);
+        popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupCircleTypeWindow onDismiss() enter");
+                popupCircleTypeWindow = null;
+            }
+        });
+        popupCircleTypeWindow.setFocusable(true);
+        popupCircleTypeWindow.setOutsideTouchable(true);
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
+                , 0, Animation.RELATIVE_TO_PARENT, 0,
+                Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupCircleTypeWindow.showAtLocation(getActivity().findViewById(R.id.invite_fg), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
+                , 0, 0);
+        popupCircleTypeView.startAnimation(animationCircleType);
     }
 
     private View getTabView(int position) {
@@ -188,9 +226,11 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
                 break;
             case R.id.invite_btn:
                 LocalLog.d(TAG, "邀请好友");
+                selectShare();
                 break;
         }
     }
+
 
     @Override
     public void response(MyInviteResponse myInviteResponse) {

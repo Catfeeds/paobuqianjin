@@ -300,9 +300,7 @@ public final class OwnerFragment extends BaseFragment {
             case R.id.setting_span:
                 LocalLog.d(TAG, "设置 临时退出");
                 startActivity(SettingActivity.class,null);
-/*                Presenter.getInstance(getContext()).setId(-1);
-                Presenter.getInstance(getContext()).steLogFlg(false);
-                getActivity().finish();*/
+
 /*                intent.setClass(getContext(), UserInfoSettingActivity.class);
                 startActivity(intent);*/
                 break;
