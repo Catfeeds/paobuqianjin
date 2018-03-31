@@ -88,6 +88,7 @@ import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.StepDollarDetailInterface;
+import com.paobuqianjin.pbq.step.presenter.im.SuggestInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskDetailRecInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
@@ -188,6 +189,7 @@ public final class Engine {
     private MessageInterface messageInterface;
     private FriendAddressInterface friendAddressInterface;
     private EditCircleInterface editCircleInterface;
+    private SuggestInterface suggestInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -285,6 +287,7 @@ public final class Engine {
     public final static int COMMAND_HONOR_DAN_DAY_STEP = 89;
     public final static int COMMAND_HONOR_WEEK_STEP = 90;
     public final static int COMMAND_HONOR_WEEK_RANK_NUM = 91;
+    public final static int COMMAND_FEED_SUGGEST = 92;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -536,7 +539,7 @@ public final class Engine {
 
     //TODO 短信邀请
     public void inviteMsg() {
-        
+
     }
 
     //手机号码注册
@@ -983,7 +986,7 @@ public final class Engine {
                 .url(NetApi.urlFeedBack)
                 .params(feedBackParam.getParam())
                 .build()
-                .execute(new NetStringCallBack(null, -1));
+                .execute(new NetStringCallBack(suggestInterface, COMMAND_FEED_SUGGEST));
     }
 
     //TODO 获取所有圈子成员
@@ -2268,6 +2271,8 @@ public final class Engine {
             friendAddressInterface = (FriendAddressInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof EditCircleInterface) {
             editCircleInterface = (EditCircleInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SuggestInterface) {
+            suggestInterface = (SuggestInterface) uiCallBackInterface;
         }
     }
 
@@ -2379,6 +2384,8 @@ public final class Engine {
             friendAddressInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof EditCircleInterface) {
             editCircleInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SuggestInterface) {
+            suggestInterface = null;
         }
     }
 }

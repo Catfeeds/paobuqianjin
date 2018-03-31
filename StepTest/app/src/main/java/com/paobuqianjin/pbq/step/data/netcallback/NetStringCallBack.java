@@ -69,6 +69,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRandWeekResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SuggestResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskMyReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskRecDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
@@ -130,6 +131,7 @@ import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.StepDollarDetailInterface;
+import com.paobuqianjin.pbq.step.presenter.im.SuggestInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskDetailRecInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
@@ -705,8 +707,8 @@ public class NetStringCallBack extends StringCallback {
             } else if (command == Engine.COMMAND_HONOR_WEEK_STEP) {
                 StepRandWeekResponse stepRandWeekResponse = new Gson().fromJson(s, StepRandWeekResponse.class);
                 ((CircleStepDetailDanInterface) callBackInterface).response(stepRandWeekResponse);
-            }else if(command == Engine.COMMAND_HONOR_WEEK_RANK_NUM){
-                CircleStepRankWeekResponse circleStepRankWeekResponse = new Gson().fromJson(s,CircleStepRankWeekResponse.class);
+            } else if (command == Engine.COMMAND_HONOR_WEEK_RANK_NUM) {
+                CircleStepRankWeekResponse circleStepRankWeekResponse = new Gson().fromJson(s, CircleStepRankWeekResponse.class);
                 ((CircleStepDetailDanInterface) callBackInterface).response(circleStepRankWeekResponse);
             }
         } else if (callBackInterface != null && callBackInterface instanceof RechargeDetailInterface) {
@@ -768,6 +770,9 @@ public class NetStringCallBack extends StringCallback {
                 EditCircleResponse editCircleResponse = new Gson().fromJson(s, EditCircleResponse.class);
                 ((EditCircleInterface) callBackInterface).response(editCircleResponse);
             }
+        } else if (callBackInterface != null && callBackInterface instanceof SuggestInterface) {
+            SuggestResponse suggestResponse = new Gson().fromJson(s, SuggestResponse.class);
+            ((SuggestInterface) callBackInterface).response(suggestResponse);
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }

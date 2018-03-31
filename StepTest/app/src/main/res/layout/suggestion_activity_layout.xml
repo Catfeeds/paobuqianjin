@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/help"
                 android:layout_centerHorizontal="true"
-                android:text="微信公众号 跑步前进"
+                android:text="微信公众号 跑步钱进"
                 android:textColor="@color/color_8a8a8a"
                 android:textSize="12dp" />
         </RelativeLayout>

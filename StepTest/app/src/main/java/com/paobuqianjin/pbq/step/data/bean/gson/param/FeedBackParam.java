@@ -51,6 +51,14 @@ mobile	用户手机号	true	string
         return this;
     }
 
+    public String paramString() {
+        String temp = "";
+        for (String key : param.keySet()) {
+            temp = temp + key + ":" + param.get(key) + "\n";
+        }
+        return temp;
+    }
+
     public Map<String, String> getParam() {
         return param;
     }

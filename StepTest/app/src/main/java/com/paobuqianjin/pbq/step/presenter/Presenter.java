@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.FeedBackParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
@@ -283,6 +284,11 @@ public final class Presenter {
 
     public void putVote(PutVoteParam putVoteParam) {
         engine.putVote(putVoteParam);
+    }
+
+    //TODO
+    public void postFeedBack(FeedBackParam feedBackParam) {
+        engine.postFeedBack(feedBackParam);
     }
 
     //TODO 发布动态

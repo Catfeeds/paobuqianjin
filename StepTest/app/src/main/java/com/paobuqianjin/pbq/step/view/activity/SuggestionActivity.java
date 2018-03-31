@@ -7,18 +7,27 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.FeedBackParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SuggestResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.SuggestInterface;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/1/16.
  */
 
-public class SuggestionActivity extends BaseBarActivity {
+public class SuggestionActivity extends BaseBarActivity implements SuggestInterface {
+    private final static String TAG = SuggestionActivity.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -38,11 +47,12 @@ public class SuggestionActivity extends BaseBarActivity {
     @Bind(R.id.phone_num)
     TextView phoneNum;
     @Bind(R.id.connect_us)
-    TextView connectUs;
+    EditText connectUs;
     @Bind(R.id.suggetion_btn)
     Button suggetionBtn;
     @Bind(R.id.help)
     TextView help;
+    FeedBackParam feedBackParam = new FeedBackParam();
 
     @Override
     protected String title() {
@@ -54,10 +64,41 @@ public class SuggestionActivity extends BaseBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.suggestion_activity_layout);
         ButterKnife.bind(this);
+        Presenter.getInstance(this).attachUiInterface(this);
     }
 
     @Override
     protected void initView() {
         super.initView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Presenter.getInstance(this).dispatchUiInterface(this);
+    }
+
+    @OnClick(R.id.suggetion_btn)
+    public void onClick() {
+        LocalLog.d(TAG, "提交");
+        feedBackParam.setContent(contentEdit.getText().toString());
+        feedBackParam.setMobile(connectUs.getText().toString());
+        if (feedBackParam.getContent() == null || feedBackParam.getContent().equals("")) {
+            Toast.makeText(this, "内容不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Presenter.getInstance(this).postFeedBack(feedBackParam);
+    }
+
+    @Override
+    public void response(SuggestResponse suggestResponse) {
+        if (suggestResponse.getError() == 0) {
+            LocalLog.d(TAG, "SuggestResponse() enter");
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+
     }
 }
