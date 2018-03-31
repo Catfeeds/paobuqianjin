@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import java.io.Serializable;
+
 /**
  * Created by pbq on 2017/12/21.
  */
@@ -14,7 +16,7 @@ public class UserInfoResponse {
     /**
      * error : 0
      * message : success
-     * data : {"id":1,"wx_openid":"","qq_openid":"","mobile":"18588278880","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D0922F24-15D6-451E-B432-9B1F123D2C9A.jpg","nickname":"嗯额咳咳","levelid":3,"sex":0,"birthyear":2018,"birthmonth":2,"birthday":26,"height":166,"type":1,"province":"广东省","city":"广州市","balance":"67.94","target_step":10000,"credit":60,"status":0,"is_perfect":1,"create_time":1512699325,"level":"第三段","followCount":5,"circleCount":95,"authentication_status":1,"messagesCount":5}
+     * data : {"id":30,"wx_openid":"oPd5d0SDHRV1oZF8dB80Jq0kH_tY","qq_openid":"","mobile":"13424156029","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","levelid":1,"sex":0,"birthyear":2015,"birthmonth":11,"birthday":29,"height":200,"weight":"45.00","type":1,"province":"广东","city":"深圳","balance":"9887.22","credit":0,"status":0,"is_perfect":1,"create_time":1521794437,"delete_time":null,"logintimes":31,"target_step":5000,"level":"第一段","followCount":15,"circleCount":10,"authentication_status":4,"messagesCount":3}
      */
 
     private int error;
@@ -45,43 +47,37 @@ public class UserInfoResponse {
         this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return "UserInfoResponse{" +
-                "error=" + error +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
-    }
-
-    public static class DataBean {
+    public static class DataBean implements Serializable{
         /**
-         * id : 1
-         * wx_openid :
+         * id : 30
+         * wx_openid : oPd5d0SDHRV1oZF8dB80Jq0kH_tY
          * qq_openid :
-         * mobile : 18588278880
-         * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D0922F24-15D6-451E-B432-9B1F123D2C9A.jpg
-         * nickname : 嗯额咳咳
-         * levelid : 3
+         * mobile : 13424156029
+         * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
+         * nickname : 黄钦平
+         * levelid : 1
          * sex : 0
-         * birthyear : 2018
-         * birthmonth : 2
-         * birthday : 26
-         * height : 166
+         * birthyear : 2015
+         * birthmonth : 11
+         * birthday : 29
+         * height : 200
+         * weight : 45.00
          * type : 1
-         * province : 广东省
-         * city : 广州市
-         * balance : 67.94
-         * target_step : 10000
-         * credit : 60
+         * province : 广东
+         * city : 深圳
+         * balance : 9887.22
+         * credit : 0
          * status : 0
          * is_perfect : 1
-         * create_time : 1512699325
-         * level : 第三段
-         * followCount : 5
-         * circleCount : 95
-         * authentication_status : 1
-         * messagesCount : 5
+         * create_time : 1521794437
+         * delete_time : null
+         * logintimes : 31
+         * target_step : 5000
+         * level : 第一段
+         * followCount : 15
+         * circleCount : 10
+         * authentication_status : 4
+         * messagesCount : 3
          */
 
         private int id;
@@ -96,15 +92,18 @@ public class UserInfoResponse {
         private int birthmonth;
         private int birthday;
         private int height;
+        private String weight;
         private int type;
         private String province;
         private String city;
         private String balance;
-        private int target_step;
         private int credit;
         private int status;
         private int is_perfect;
         private int create_time;
+        private Object delete_time;
+        private int logintimes;
+        private int target_step;
         private String level;
         private int followCount;
         private int circleCount;
@@ -207,6 +206,14 @@ public class UserInfoResponse {
             this.height = height;
         }
 
+        public String getWeight() {
+            return weight;
+        }
+
+        public void setWeight(String weight) {
+            this.weight = weight;
+        }
+
         public int getType() {
             return type;
         }
@@ -239,14 +246,6 @@ public class UserInfoResponse {
             this.balance = balance;
         }
 
-        public int getTarget_step() {
-            return target_step;
-        }
-
-        public void setTarget_step(int target_step) {
-            this.target_step = target_step;
-        }
-
         public int getCredit() {
             return credit;
         }
@@ -277,6 +276,30 @@ public class UserInfoResponse {
 
         public void setCreate_time(int create_time) {
             this.create_time = create_time;
+        }
+
+        public Object getDelete_time() {
+            return delete_time;
+        }
+
+        public void setDelete_time(Object delete_time) {
+            this.delete_time = delete_time;
+        }
+
+        public int getLogintimes() {
+            return logintimes;
+        }
+
+        public void setLogintimes(int logintimes) {
+            this.logintimes = logintimes;
+        }
+
+        public int getTarget_step() {
+            return target_step;
+        }
+
+        public void setTarget_step(int target_step) {
+            this.target_step = target_step;
         }
 
         public String getLevel() {
@@ -317,38 +340,6 @@ public class UserInfoResponse {
 
         public void setMessagesCount(int messagesCount) {
             this.messagesCount = messagesCount;
-        }
-
-        @Override
-        public String toString() {
-            return "DataBean{" +
-                    "id=" + id +
-                    ", wx_openid='" + wx_openid + '\'' +
-                    ", qq_openid='" + qq_openid + '\'' +
-                    ", mobile='" + mobile + '\'' +
-                    ", avatar='" + avatar + '\'' +
-                    ", nickname='" + nickname + '\'' +
-                    ", levelid=" + levelid +
-                    ", sex=" + sex +
-                    ", birthyear=" + birthyear +
-                    ", birthmonth=" + birthmonth +
-                    ", birthday=" + birthday +
-                    ", height=" + height +
-                    ", type=" + type +
-                    ", province='" + province + '\'' +
-                    ", city='" + city + '\'' +
-                    ", balance='" + balance + '\'' +
-                    ", target_step=" + target_step +
-                    ", credit=" + credit +
-                    ", status=" + status +
-                    ", is_perfect=" + is_perfect +
-                    ", create_time=" + create_time +
-                    ", level='" + level + '\'' +
-                    ", followCount=" + followCount +
-                    ", circleCount=" + circleCount +
-                    ", authentication_status=" + authentication_status +
-                    ", messagesCount=" + messagesCount +
-                    '}';
         }
     }
 }

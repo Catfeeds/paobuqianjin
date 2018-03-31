@@ -23,10 +23,12 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lljjcoder.Interface.OnCityItemClickListener;
 import com.lljjcoder.bean.CityBean;
@@ -41,10 +43,15 @@ import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoSetResponse;
+import com.paobuqianjin.pbq.step.data.bean.table.User;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
@@ -52,6 +59,7 @@ import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.WheelPicker;
 import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.widgets.WheelDatePicker;
+import com.paobuqianjin.pbq.step.view.fragment.login.PersonInfoSettingFragment;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -69,7 +77,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by pbq on 2018/1/5.
  */
 
-public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
+public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implements UserInfoLoginSetInterface {
     private final static String TAG = UserInfoSettingFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -129,11 +137,14 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
     ImageView goPic4;
     @Bind(R.id.change_city)
     RelativeLayout changeCity;
-    @Bind(R.id.line_change_city)
-    ImageView lineChangeCity;
     @Bind(R.id.user_info_setting_fg)
     RelativeLayout userInfoSettingFg;
-
+    @Bind(R.id.dear_name_setting)
+    EditText dearNameSetting;
+    PutUserInfoParam putUserInfoParam = new PutUserInfoParam();
+    @Bind(R.id.confirm_setting)
+    Button confirmSetting;
+    private String localAvatar;
 
     private View popBirthSelectView;
     private View popWeighSelectView;
@@ -154,6 +165,8 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
     QServiceCfg qServiceCfg;
     private final int REQUEST_CODE = 111;
     private String cachePath;
+    private UserInfoResponse.DataBean userInfo;
+    private boolean citySetFlag = false;
 
     @Override
     protected String title() {
@@ -185,13 +198,39 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
         changeWeight = (RelativeLayout) viewRoot.findViewById(R.id.change_weight);
         maleText = (TextView) viewRoot.findViewById(R.id.male_text);
         highNum = (TextView) viewRoot.findViewById(R.id.high_num);
-        setOnClickListener();
+        dearNameSetting = (EditText) viewRoot.findViewById(R.id.dear_name_setting);
+        weightNum = (TextView) viewRoot.findViewById(R.id.weight_num);
+        cityNames = (TextView) viewRoot.findViewById(R.id.city_names);
+
 
         qServiceCfg = QServiceCfg.instance(getContext());
         cachePath = getContext().getExternalCacheDir().getAbsolutePath();
         birthDayTV = (TextView) viewRoot.findViewById(R.id.birth_day);
+        confirmSetting = (Button) viewRoot.findViewById(R.id.confirm_setting);
+
         LocalLog.d(TAG, "cachePath = " + cachePath);
+
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            userInfo = (UserInfoResponse.DataBean) intent.getSerializableExtra("userinfo");
+            if (userInfo != null) {
+                Presenter.getInstance(getContext()).getImage(headIco, userInfo.getAvatar());
+                dearNameSetting.setText(userInfo.getNickname());
+                if (userInfo.getSex() == 0) {
+                    maleText.setText("男");
+                } else if (userInfo.getSex() == 1) {
+                    maleText.setText("女");
+                }
+                birthDayTV.setText(userInfo.getBirthyear() + "年" + userInfo.getBirthmonth() + "月" + userInfo.getBirthday() + "日");
+                highNum.setText(String.valueOf(userInfo.getHeight()) + "cm");
+                weightNum.setText(String.valueOf(userInfo.getWeight()) + "kg");
+                cityNames.setText(String.valueOf(userInfo.getCity()));
+                LocalLog.d(TAG, "ID = " + userInfo.getId());
+            }
+        }
+        setOnClickListener();
         initData();
+        Presenter.getInstance(getContext()).attachUiInterface(this);
     }
 
     private void initData() {
@@ -216,6 +255,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
         changeCity.setOnClickListener(onClickListener);
         changeHigh.setOnClickListener(onClickListener);
         changeWeight.setOnClickListener(onClickListener);
+        confirmSetting.setOnClickListener(onClickListener);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -261,6 +301,8 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
 
                             }
                             LocalLog.d(TAG, province.getName() + "· " + city.getName() + "·" + district.getName());
+                            putUserInfoParam.setCity(province.getName() + "· " + city.getName() + "·" + district.getName());
+                            cityNames.setText(province.getName() + "· " + city.getName() + "·" + district.getName());
 
                         }
 
@@ -281,6 +323,15 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
                     LocalLog.d(TAG, "设置体重");
                     setWeight();
                     break;
+                case R.id.confirm_setting:
+                    LocalLog.d(TAG, "确认修改");
+                    if (localAvatar != null) {
+                        LogoUpTask logoUpTask = new LogoUpTask();
+                        logoUpTask.execute(localAvatar);
+                    } else {
+                        Presenter.getInstance(getContext()).putUserInfo(userInfo.getId(), putUserInfoParam);
+                    }
+                    break;
                 default:
                     break;
             }
@@ -291,6 +342,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
 
@@ -308,6 +360,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
             if (resultList != null && resultList.size() == 1) {
                 Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), headIco, resultList.get(0).getWidth() / 4
                         , resultList.get(0).getHeight() / 4);
+                localAvatar = resultList.get(0).getImagePath();
             } else {
                 LocalLog.d(TAG, "未知操作");
             }
@@ -424,6 +477,8 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
             LocalLog.d(TAG, "onPostExecute() enter");
             super.onPostExecute(s);
             //SocializeUtils.safeCloseDialog(dialog);
+            putUserInfoParam.setAvatar(s);
+            Presenter.getInstance(getContext()).putUserInfo(userInfo.getId(), putUserInfoParam);
         }
     }
 
@@ -620,6 +675,8 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
             public void onClick(View view) {
                 LocalLog.d(TAG, "确认");
                 birthDayTV.setText(birthYear + "年" + birthMonth + "月" + birthDay + "日");
+
+                putUserInfoParam.setBirthyear(birthYear).setBirthmonth(birthMonth).setBirthday(birthDay);
                 popupSelectWindow.dismiss();
             }
         });
@@ -732,6 +789,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
             public void onClick(View view) {
                 LocalLog.d(TAG, "确认");
                 highNum.setText(high + "cm");
+                putUserInfoParam.setHeight(high);
                 popupSelectWindow.dismiss();
             }
         });
@@ -800,6 +858,11 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
                 LocalLog.d(TAG, "onClick() 确定");
                 String selectString = selectSettingAdapter.getSelectContent();
                 LocalLog.d(TAG, "选择结果: " + selectString);
+                if ("男".equals(selectString)) {
+                    putUserInfoParam.setSex(0);
+                } else {
+                    putUserInfoParam.setSex(1);
+                }
                 maleText.setText(selectString);
                 if (popupCircleTypeWindow.isShowing()) {
                     popupCircleTypeWindow.dismiss();
@@ -833,4 +896,11 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment {
         popupCircleTypeView.startAnimation(animationCircleType);
     }
 
+    @Override
+    public void response(UserInfoSetResponse userInfoSetResponse) {
+        if (userInfoSetResponse.getError() == 0) {
+            Toast.makeText(getContext(), userInfoSetResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+        }
+    }
 }

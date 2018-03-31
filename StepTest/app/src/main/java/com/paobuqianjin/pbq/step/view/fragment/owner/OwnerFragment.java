@@ -169,6 +169,8 @@ public final class OwnerFragment extends BaseFragment {
     RelativeLayout friendScan;
     private String userAvatar;
 
+    private UserInfoResponse userInfoResponse;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -298,9 +300,12 @@ public final class OwnerFragment extends BaseFragment {
                 startActivity(MyReleaseActivity.class, null);
                 break;
             case R.id.setting_span:
-                LocalLog.d(TAG, "设置 临时退出");
-                startActivity(SettingActivity.class,null);
 
+                if (this.userInfoResponse != null && this.userInfoResponse.getData() != null) {
+                    intent.putExtra("userinfo", this.userInfoResponse.getData());
+                    intent.setClass(getContext(), SettingActivity.class);
+                    startActivity(intent);
+                }
 /*                intent.setClass(getContext(), UserInfoSettingActivity.class);
                 startActivity(intent);*/
                 break;
@@ -324,6 +329,7 @@ public final class OwnerFragment extends BaseFragment {
         public void response(UserInfoResponse userInfoResponse) {
             if (userInfoResponse.getError() == 0) {
                 LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
+                OwnerFragment.this.userInfoResponse = userInfoResponse;
                 userAvatar = userInfoResponse.getData().getAvatar();
                 if (headIcon == null) {
                     LocalLog.d(TAG, "vvvvvvvv");

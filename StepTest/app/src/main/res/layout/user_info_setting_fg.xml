@@ -68,6 +68,7 @@
             android:textSize="16dp" />
 
         <EditText
+            android:id="@+id/dear_name_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -129,12 +130,19 @@
             android:src="@drawable/go_to" />
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/line_change_sex"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@+id/change_male"
+        android:layout_below="@+id/change_male"
+        android:background="@color/color_ebebed" />
 
     <RelativeLayout
         android:id="@+id/change_birth"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@+id/change_male"
+        android:layout_below="@+id/line_change_sex"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp">
 
@@ -294,13 +302,15 @@
             android:src="@drawable/go_to" />
     </RelativeLayout>
 
-
-    <ImageView
-        android:id="@+id/line_change_city"
+    <Button
+        android:id="@+id/confirm_setting"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignLeft="@+id/user_head_icon_change"
-        android:layout_below="@+id/change_city"
-        android:background="@color/color_ebebed" />
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_6c71c4"
+        android:stateListAnimator="@null"
+        android:text="确定"
+        android:textColor="@color/color_f8"
+        android:textSize="24dp" />
 
 </RelativeLayout>

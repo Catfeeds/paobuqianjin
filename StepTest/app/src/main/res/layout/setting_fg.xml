@@ -24,6 +24,7 @@
             android:textSize="16dp" />
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_ico"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_centerVertical="true"
@@ -149,11 +150,11 @@
 
     <Button
         android:id="@+id/exit"
-        android:textSize="24dp"
-        android:textColor="@color/color_f8"
-        android:text="退出"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/color_6c71c4" />
+        android:background="@color/color_6c71c4"
+        android:text="退出"
+        android:textColor="@color/color_f8"
+        android:textSize="24dp" />
 </RelativeLayout>

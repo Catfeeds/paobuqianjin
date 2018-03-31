@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
@@ -18,6 +20,7 @@ import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by pbq on 2018/3/30.
@@ -57,6 +60,9 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
     RelativeLayout changeBirth;
     @Bind(R.id.exit)
     Button exit;
+    @Bind(R.id.user_ico)
+    CircleImageView userIco;
+    private UserInfoResponse.DataBean userInfo;
 
     @Override
     protected int getLayoutResId() {
@@ -77,6 +83,19 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
     }
 
     @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+        userIco = (CircleImageView) viewRoot.findViewById(R.id.user_ico);
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            userInfo = (UserInfoResponse.DataBean) intent.getSerializableExtra("userinfo");
+            if (userInfo != null) {
+                Presenter.getInstance(getContext()).getImage(userIco, userInfo.getAvatar());
+            }
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
@@ -87,7 +106,13 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
         switch (view.getId()) {
             case R.id.user_head_icon_change:
                 LocalLog.d(TAG, "个人资料");
-                startActivity(UserInfoSettingActivity.class, null, false, null);
+                if (userInfo != null) {
+                    Intent userInfoIntent = new Intent();
+                    userInfoIntent.putExtra("userinfo", userInfo);
+                    userInfoIntent.setClass(getContext(), UserInfoSettingActivity.class);
+                    startActivity(userInfoIntent);
+                }
+
                 break;
             case R.id.user_name_change:
                 LocalLog.d(TAG, "账号设置");
