@@ -54,6 +54,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyReleaseTaskDetailResp
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.OldPassChangeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PassWordResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PostBindResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostInviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostRevRedPkgResponse;
@@ -91,6 +92,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
+import com.paobuqianjin.pbq.step.presenter.im.BindThirdAccoutInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
@@ -783,6 +785,9 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null && callBackInterface instanceof ProtocolInterface) {
             ProtocolResponse protocolResponse = new Gson().fromJson(s, ProtocolResponse.class);
             ((ProtocolInterface) callBackInterface).response(protocolResponse);
+        } else if (callBackInterface != null && callBackInterface instanceof BindThirdAccoutInterface) {
+            PostBindResponse postBindResponse = new Gson().fromJson(s, PostBindResponse.class);
+            ((BindThirdAccoutInterface) callBackInterface).response(postBindResponse);
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }

@@ -13,6 +13,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.FeedBackParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostBindUnBindWqParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
@@ -595,6 +596,11 @@ public final class Presenter {
     //
     public void protocol(String action) {
         engine.protocol(action);
+    }
+
+
+    public void postBindWq(PostBindUnBindWqParam postBindUnBindWqParam) {
+        engine.postBindWq(postBindUnBindWqParam);
     }
 
     public void getWeather(double latitude, double longitude) {

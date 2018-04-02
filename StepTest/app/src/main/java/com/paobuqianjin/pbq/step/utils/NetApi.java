@@ -144,4 +144,6 @@ public class NetApi {
     public final static String urlByOldPassWord = "http://119.29.10.64/v1/user/modifyPasswordByOldPassword";
     //TODO 协议接口
     public final static String urlProtocol = "http://119.29.10.64/v1/Zfile/getFile";
+    //TODO 绑定解绑三方借口
+    public final static String urlBindThird = "http://119.29.10.64/v1/user/bindOpenid";
 }

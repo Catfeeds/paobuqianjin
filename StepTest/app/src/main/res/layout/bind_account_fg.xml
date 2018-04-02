@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bind_account"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_f3f3f5">
@@ -84,7 +85,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:layout_toStartOf="@+id/go_to_we_chat"
-            android:text="已绑定账号"
+            android:text="尚未绑定"
             android:textColor="@color/color_8a8a8a"
             android:textSize="14dp" />
 
@@ -139,7 +140,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:layout_toStartOf="@+id/go_to_qq"
-            android:text="已绑定账号"
+            android:text="尚未绑定"
             android:textColor="@color/color_8a8a8a"
             android:textSize="14dp" />
 

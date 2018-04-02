@@ -24,6 +24,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostBindUnBindWqParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
@@ -47,6 +48,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.AllPayOrderInterface;
+import com.paobuqianjin.pbq.step.presenter.im.BindThirdAccoutInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
@@ -198,6 +200,7 @@ public final class Engine {
     private SuggestInterface suggestInterface;
     private OlderPassInterface olderPassInterface;
     private ProtocolInterface protocolInterface;
+    private BindThirdAccoutInterface bindThirdAccoutInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -298,6 +301,7 @@ public final class Engine {
     public final static int COMMAND_FEED_SUGGEST = 92;
     public final static int COMMAND_CHANGE_OLD_PASS = 93;
     public final static int COMMAND_PROTOCOL = 94;
+    public final static int COMMAND_BIND_THIRD = 95;
     private Transformation transformation;
 
     public NetworkPolicy getNetworkPolicy() {
@@ -2167,6 +2171,16 @@ public final class Engine {
                 .execute(new NetStringCallBack(signCodeInterface, COMMAND_BIND_CRASH_ACCOUNT));
     }
 
+    //TODO 绑定解绑定三方账号
+    public void postBindWq(PostBindUnBindWqParam postBindUnBindWqParam) {
+        LocalLog.d(TAG, postBindUnBindWqParam.setUserid(getId(mContext)).paramString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlBindThird)
+                .params(postBindUnBindWqParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(bindThirdAccoutInterface, COMMAND_BIND_THIRD));
+    }
 
     //TODO 软件协议
     public void protocol(String action) {
@@ -2324,6 +2338,8 @@ public final class Engine {
             olderPassInterface = (OlderPassInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ProtocolInterface) {
             protocolInterface = (ProtocolInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof BindThirdAccoutInterface) {
+            bindThirdAccoutInterface = (BindThirdAccoutInterface) uiCallBackInterface;
         }
     }
 
@@ -2441,6 +2457,8 @@ public final class Engine {
             olderPassInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ProtocolInterface) {
             protocolInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof BindThirdAccoutInterface) {
+            bindThirdAccoutInterface = null;
         }
     }
 }

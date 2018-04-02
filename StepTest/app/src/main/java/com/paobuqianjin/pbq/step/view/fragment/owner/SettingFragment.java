@@ -129,7 +129,12 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                 break;
             case R.id.user_name_change:
                 LocalLog.d(TAG, "账号设置");
-                startActivity(AccoutManagerActivity.class, null);
+                if (userInfo != null) {
+                    Intent userInfoIntent = new Intent();
+                    userInfoIntent.putExtra("userinfo", userInfo);
+                    userInfoIntent.setClass(getContext(), AccoutManagerActivity.class);
+                    startActivity(userInfoIntent);
+                }
                 break;
             case R.id.change_male:
                 LocalLog.d(TAG, "清除缓存");
