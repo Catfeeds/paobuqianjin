@@ -50,6 +50,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     private final static String LOGIN_SUCCESS_ACTION = "com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION";
     private final static String USER_FIT_ACTION_BIND = "com.paobuqianjin.pbq.USER_FIT_ACTION_BIND";
     private final static String USER_FIT_ACTION_SETTING = "com.paobuqianjin.pbq.USER_FIT_ACTION_USER_SETTING";
+    private final static String USER_SERVICE_AGREEMENT_ACTION = "com.paobuqianjin.pbq.step.SERVICE_ACTION";
     private final static String TAG = LoginActivity.class.getSimpleName();
     @Bind(R.id.wenxin)
     ImageView wenxin;
@@ -231,6 +232,12 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                         style.setSpan(new ForegroundColorSpan(Color.parseColor("#ffffffff")), 0, strPart1.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), strPart1.length(), (strPart1 + strPart2).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         userReadTV.setText(style);
+                        userReadTV.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                startActivity(AgreementActivity.class, null, false, USER_SERVICE_AGREEMENT_ACTION);
+                            }
+                        });
                         loginOrSignTV.setText(getResources().getText(R.string.desc_sign));
 
                     }

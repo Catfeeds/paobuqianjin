@@ -58,6 +58,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentRespo
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostInviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostRevRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ProtocolResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.QueryFollowStateResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
@@ -122,6 +123,7 @@ import com.paobuqianjin.pbq.step.presenter.im.OlderPassInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ProtocolInterface;
 import com.paobuqianjin.pbq.step.presenter.im.QueryRedPkgInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.RechargeDetailInterface;
@@ -778,6 +780,9 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null && callBackInterface instanceof OlderPassInterface) {
             OldPassChangeResponse oldPassChangeResponse = new Gson().fromJson(s, OldPassChangeResponse.class);
             ((OlderPassInterface) callBackInterface).response(oldPassChangeResponse);
+        } else if (callBackInterface != null && callBackInterface instanceof ProtocolInterface) {
+            ProtocolResponse protocolResponse = new Gson().fromJson(s, ProtocolResponse.class);
+            ((ProtocolInterface) callBackInterface).response(protocolResponse);
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }

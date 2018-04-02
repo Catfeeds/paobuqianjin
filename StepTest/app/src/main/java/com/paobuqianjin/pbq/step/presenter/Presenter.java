@@ -593,6 +593,10 @@ public final class Presenter {
     }
 
     //
+    public void protocol(String action) {
+        engine.protocol(action);
+    }
+
     public void getWeather(double latitude, double longitude) {
         engine.getWeather(latitude, longitude);
     }

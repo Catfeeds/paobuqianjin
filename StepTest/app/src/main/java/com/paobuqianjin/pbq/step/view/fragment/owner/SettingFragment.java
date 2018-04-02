@@ -13,10 +13,14 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.CacheCleanManager;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.AboutActivity;
 import com.paobuqianjin.pbq.step.view.activity.AccoutManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -63,6 +67,8 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
     Button exit;
     @Bind(R.id.user_ico)
     CircleImageView userIco;
+    @Bind(R.id.cache_size)
+    TextView cacheSize;
     private UserInfoResponse.DataBean userInfo;
 
     @Override
@@ -94,6 +100,13 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                 Presenter.getInstance(getContext()).getImage(userIco, userInfo.getAvatar());
             }
         }
+        cacheSize = (TextView) viewRoot.findViewById(R.id.cache_size);
+        File file = new File(getContext().getExternalCacheDir().getPath());
+        try {
+            cacheSize.setText(CacheCleanManager.getCacheSize(file));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -113,7 +126,6 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                     userInfoIntent.setClass(getContext(), UserInfoSettingActivity.class);
                     startActivity(userInfoIntent);
                 }
-
                 break;
             case R.id.user_name_change:
                 LocalLog.d(TAG, "账号设置");
@@ -121,9 +133,17 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                 break;
             case R.id.change_male:
                 LocalLog.d(TAG, "清除缓存");
+                CacheCleanManager.cleanInternalCache(getContext());
+                File file = new File(getContext().getExternalCacheDir().getPath());
+                try {
+                    cacheSize.setText(CacheCleanManager.getCacheSize(file));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.change_birth:
                 LocalLog.d(TAG, "关于我们");
+                startActivity(AboutActivity.class,null);
                 break;
             case R.id.exit:
                 LocalLog.d(TAG, "退出APP");

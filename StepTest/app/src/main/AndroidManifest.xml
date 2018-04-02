@@ -311,6 +311,15 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!--  -->
+        <activity
+            android:name=".view.activity.AgreementActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.SERVICE_ACTION"></action>
+                <action android:name="com.paobuqianjin.pbq.step.CRASH_ACTION"></action>
+            </intent-filter>
+        </activity>
         <!-- 我的段位 -->
         <activity
             android:name=".view.activity.DanActivity"

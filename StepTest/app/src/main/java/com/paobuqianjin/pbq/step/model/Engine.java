@@ -79,6 +79,7 @@ import com.paobuqianjin.pbq.step.presenter.im.OlderPassInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
+import com.paobuqianjin.pbq.step.presenter.im.ProtocolInterface;
 import com.paobuqianjin.pbq.step.presenter.im.QueryRedPkgInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.RechargeDetailInterface;
@@ -123,6 +124,7 @@ import okio.BufferedSink;
 
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
+import static com.paobuqianjin.pbq.step.utils.NetApi.urlProtocol;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlRegisterPhone;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlThirdLogin;
 
@@ -195,6 +197,7 @@ public final class Engine {
     private EditCircleInterface editCircleInterface;
     private SuggestInterface suggestInterface;
     private OlderPassInterface olderPassInterface;
+    private ProtocolInterface protocolInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -294,6 +297,7 @@ public final class Engine {
     public final static int COMMAND_HONOR_WEEK_RANK_NUM = 91;
     public final static int COMMAND_FEED_SUGGEST = 92;
     public final static int COMMAND_CHANGE_OLD_PASS = 93;
+    public final static int COMMAND_PROTOCOL = 94;
     private Transformation transformation;
 
     public NetworkPolicy getNetworkPolicy() {
@@ -492,6 +496,10 @@ public final class Engine {
     public void putUserInfo(int userid, PutUserInfoParam putUserInfoParam) {
         String url = NetApi.urlUser + String.valueOf(userid);
         LocalLog.d(TAG, "putUserInfo() enter url = " + url + ",putUserInfoParam = " + putUserInfoParam.paramString());
+        if (putUserInfoParam.paramString() == null) {
+            Toast.makeText(mContext, "至少修改一项资料", Toast.LENGTH_SHORT).show();
+            return;
+        }
         OkHttpUtils
                 .put()
                 .url(url)
@@ -2159,6 +2167,18 @@ public final class Engine {
                 .execute(new NetStringCallBack(signCodeInterface, COMMAND_BIND_CRASH_ACCOUNT));
     }
 
+
+    //TODO 软件协议
+    public void protocol(String action) {
+        LocalLog.d(TAG, "protocol() enter" + action);
+        OkHttpUtils
+                .post()
+                .url(urlProtocol)
+                .addParams("action", action)
+                .build()
+                .execute(new NetStringCallBack(protocolInterface, COMMAND_PROTOCOL));
+    }
+
     //TODO 处理广播信息
     public void handBroadcast(Intent intent) {
         if (intent != null) {
@@ -2302,6 +2322,8 @@ public final class Engine {
             suggestInterface = (SuggestInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof OlderPassInterface) {
             olderPassInterface = (OlderPassInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ProtocolInterface) {
+            protocolInterface = (ProtocolInterface) uiCallBackInterface;
         }
     }
 
@@ -2417,6 +2439,8 @@ public final class Engine {
             suggestInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof OlderPassInterface) {
             olderPassInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ProtocolInterface) {
+            protocolInterface = null;
         }
     }
 }
