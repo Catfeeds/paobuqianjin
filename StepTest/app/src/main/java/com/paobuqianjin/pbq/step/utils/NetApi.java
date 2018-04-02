@@ -140,4 +140,6 @@ public class NetApi {
     public final static String urlStepRankWeekNum = "http://119.29.10.64/v1/Circle/UserCircleWeekNum?circleid=";
     //TODO 短信邀请
     public final static String urlinviteMsg = "http://119.29.10.64/v1/userinviter/inviteMsg";
+    //TODO 根据旧的密码更换密码
+    public final static String urlByOldPassWord = "http://119.29.10.64/v1/user/modifyPasswordByOldPassword";
 }

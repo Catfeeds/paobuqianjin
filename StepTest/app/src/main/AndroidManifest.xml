@@ -369,6 +369,14 @@
             android:name=".view.activity.FillInviteCodeActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
+        <activity
+            android:name=".view.activity.AccoutManagerActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme"></activity>
+        <activity
+            android:name=".view.activity.OlderPassChangeActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/ImageTranslucentTheme" />
 
         <!-- 声明service组件 -->
         <service

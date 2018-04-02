@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostPassByOldParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostPassWordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostUserStepParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWxQqBindPhoneParam;
@@ -74,6 +75,7 @@ import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyReleaseTaskDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyReleaseTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
+import com.paobuqianjin.pbq.step.presenter.im.OlderPassInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
@@ -192,6 +194,7 @@ public final class Engine {
     private FriendAddressInterface friendAddressInterface;
     private EditCircleInterface editCircleInterface;
     private SuggestInterface suggestInterface;
+    private OlderPassInterface olderPassInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private Picasso picasso = null;
@@ -290,6 +293,7 @@ public final class Engine {
     public final static int COMMAND_HONOR_WEEK_STEP = 90;
     public final static int COMMAND_HONOR_WEEK_RANK_NUM = 91;
     public final static int COMMAND_FEED_SUGGEST = 92;
+    public final static int COMMAND_CHANGE_OLD_PASS = 93;
     private Transformation transformation;
 
     public NetworkPolicy getNetworkPolicy() {
@@ -626,6 +630,17 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(forgetPassWordInterface, COMMAND_GET_SIGN_CODE));
+    }
+
+    public void postPassByOlder(PostPassByOldParam postPassByOldParam) {
+        postPassByOldParam.setUserid(getId(mContext));
+        LocalLog.d(TAG, "postPassByOlder() enter " + postPassByOldParam.paramString());
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlByOldPassWord)
+                .params(postPassByOldParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(olderPassInterface, COMMAND_CHANGE_OLD_PASS));
     }
 
     public void postNewPassWord(PostPassWordParam postPassWordParam) {
@@ -2285,6 +2300,8 @@ public final class Engine {
             editCircleInterface = (EditCircleInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SuggestInterface) {
             suggestInterface = (SuggestInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof OlderPassInterface) {
+            olderPassInterface = (OlderPassInterface) uiCallBackInterface;
         }
     }
 
@@ -2398,6 +2415,8 @@ public final class Engine {
             editCircleInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof SuggestInterface) {
             suggestInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof OlderPassInterface) {
+            olderPassInterface = null;
         }
     }
 }

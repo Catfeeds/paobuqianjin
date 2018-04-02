@@ -9,11 +9,10 @@
         layout="@layout/bar_return_a_style"></include>
 
     <RelativeLayout
-        android:id="@+id/mail_address_layer"
+        android:id="@+id/pass_word_layer"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@+id/bar_add_from_address"
-        android:layout_marginTop="20dp"
         android:background="@color/color_f8">
 
         <ImageView
@@ -36,6 +35,14 @@
             android:textSize="17dp" />
 
         <ImageView
+            android:layout_width="7dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/go_to" />
+
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignLeft="@+id/phone_address"
@@ -48,7 +55,7 @@
         android:id="@+id/address_weichat_layer"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@+id/mail_address_layer"
+        android:layout_below="@+id/pass_word_layer"
         android:background="@color/color_f8">
 
         <ImageView
@@ -69,6 +76,26 @@
             android:text="微信账号"
             android:textColor="@color/color_161727"
             android:textSize="17dp" />
+
+        <TextView
+            android:id="@+id/we_chat_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:layout_toStartOf="@+id/go_to_we_chat"
+            android:text="已绑定账号"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:id="@+id/go_to_we_chat"
+            android:layout_width="7dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/go_to" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -105,14 +132,25 @@
             android:textColor="@color/color_161727"
             android:textSize="17dp" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignLeft="@+id/qq_address"
-            android:layout_alignParentBottom="true"
+        <TextView
+            android:id="@+id/qq_chat_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
-            android:background="@color/color_ebebed" />
+            android:layout_toStartOf="@+id/go_to_qq"
+            android:text="已绑定账号"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:id="@+id/go_to_qq"
+            android:layout_width="7dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/go_to" />
     </RelativeLayout>
-    >
 
 </RelativeLayout>

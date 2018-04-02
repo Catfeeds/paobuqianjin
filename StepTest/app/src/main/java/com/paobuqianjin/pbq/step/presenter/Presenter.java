@@ -16,6 +16,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostPassByOldParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostPassWordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWxQqBindPhoneParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
@@ -179,6 +180,10 @@ public final class Presenter {
   */
     public void getSignCodePassWord(String phone) {
         engine.getSignCodePassWord(phone);
+    }
+
+    public void postPassByOlder(PostPassByOldParam postPassByOldParam) {
+        engine.postPassByOlder(postPassByOldParam);
     }
 
     public void getLoginRecord(String userid) {

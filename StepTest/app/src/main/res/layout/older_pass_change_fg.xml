@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/bar_change_fg"
+        layout="@layout/bar_return_a_style"></include>
+
+    <RelativeLayout
+        android:id="@+id/older_pass"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/bar_change_fg">
+
+        <EditText
+            android:id="@+id/source_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:background="@null"
+            android:hint="原密码"
+            android:inputType="textPassword"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:textSize="18dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_d9d9d9" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/new_pass_pan"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/older_pass">
+
+        <EditText
+            android:id="@+id/new_pass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:background="@null"
+            android:hint="新密码"
+            android:inputType="textPassword"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:textSize="18dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_d9d9d9" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/new_pass_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/new_pass_pan">
+
+        <EditText
+            android:id="@+id/pass_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:background="@null"
+            android:hint="确定新密码"
+            android:inputType="textPassword"
+            android:maxLength="6"
+            android:maxLines="1"
+            android:textSize="18dp" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/confirm_new_pass"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/new_pass_confirm"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/rect_angle_background"
+        android:stateListAnimator="@null"
+        android:text="确定"
+        android:textColor="@color/color_f8"
+        android:textSize="18dp" />
+</RelativeLayout>

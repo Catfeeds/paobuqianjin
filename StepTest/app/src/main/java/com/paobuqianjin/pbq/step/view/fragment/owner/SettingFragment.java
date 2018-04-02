@@ -14,6 +14,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.AccoutManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -116,6 +117,7 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                 break;
             case R.id.user_name_change:
                 LocalLog.d(TAG, "账号设置");
+                startActivity(AccoutManagerActivity.class, null);
                 break;
             case R.id.change_male:
                 LocalLog.d(TAG, "清除缓存");

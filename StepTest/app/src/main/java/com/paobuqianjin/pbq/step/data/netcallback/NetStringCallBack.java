@@ -52,6 +52,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyReleaseTaskDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.OldPassChangeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PassWordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostInviteCodeResponse;
@@ -117,6 +118,7 @@ import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyReleaseTaskDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyReleaseTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
+import com.paobuqianjin.pbq.step.presenter.im.OlderPassInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
@@ -773,6 +775,9 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null && callBackInterface instanceof SuggestInterface) {
             SuggestResponse suggestResponse = new Gson().fromJson(s, SuggestResponse.class);
             ((SuggestInterface) callBackInterface).response(suggestResponse);
+        } else if (callBackInterface != null && callBackInterface instanceof OlderPassInterface) {
+            OldPassChangeResponse oldPassChangeResponse = new Gson().fromJson(s, OldPassChangeResponse.class);
+            ((OlderPassInterface) callBackInterface).response(oldPassChangeResponse);
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }
