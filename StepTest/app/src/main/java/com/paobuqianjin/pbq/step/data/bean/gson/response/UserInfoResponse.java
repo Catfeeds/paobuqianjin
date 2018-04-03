@@ -47,6 +47,15 @@ public class UserInfoResponse {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "UserInfoResponse{" +
+                "error=" + error +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
+
     public static class DataBean implements Serializable{
         /**
          * id : 30
@@ -340,6 +349,41 @@ public class UserInfoResponse {
 
         public void setMessagesCount(int messagesCount) {
             this.messagesCount = messagesCount;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "id=" + id +
+                    ", wx_openid='" + wx_openid + '\'' +
+                    ", qq_openid='" + qq_openid + '\'' +
+                    ", mobile='" + mobile + '\'' +
+                    ", avatar='" + avatar + '\'' +
+                    ", nickname='" + nickname + '\'' +
+                    ", levelid=" + levelid +
+                    ", sex=" + sex +
+                    ", birthyear=" + birthyear +
+                    ", birthmonth=" + birthmonth +
+                    ", birthday=" + birthday +
+                    ", height=" + height +
+                    ", weight='" + weight + '\'' +
+                    ", type=" + type +
+                    ", province='" + province + '\'' +
+                    ", city='" + city + '\'' +
+                    ", balance='" + balance + '\'' +
+                    ", credit=" + credit +
+                    ", status=" + status +
+                    ", is_perfect=" + is_perfect +
+                    ", create_time=" + create_time +
+                    ", delete_time=" + delete_time +
+                    ", logintimes=" + logintimes +
+                    ", target_step=" + target_step +
+                    ", level='" + level + '\'' +
+                    ", followCount=" + followCount +
+                    ", circleCount=" + circleCount +
+                    ", authentication_status=" + authentication_status +
+                    ", messagesCount=" + messagesCount +
+                    '}';
         }
     }
 }
