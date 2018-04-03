@@ -144,6 +144,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
 
     private void bindUnbindConfirm(final String actionWxQ) {
         LocalLog.d(TAG, "");
+        action = actionWxQ;
         popBirthSelectView = View.inflate(getContext(), R.layout.bind_unbind_select, null);
         popupSelectWindow = new PopupWindow(popBirthSelectView,
                 WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
@@ -314,15 +315,30 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
 
     @Override
     public void response(PostBindResponse postBindResponse) {
-        SocializeUtils.safeCloseDialog(dialog);
+
         if (postBindResponse.getError() == 0) {
             Toast.makeText(getContext(), postBindResponse.getMessage(), Toast.LENGTH_SHORT).show();
             switch (postBindResponse.getMessage()) {
                 case "解绑成功":
+                    if (action != null) {
+                        if ("wx".equals(action)) {
+                            weChatDes.setText("尚未绑定");
+                        } else if ("qq".equals(action)) {
+                            qqChatDes.setText("尚未绑定");
+                        }
+                    }
                     break;
                 case "加绑成功":
-                        break;
+                    if (action != null) {
+                        if ("wx".equals(action)) {
+                            weChatDes.setText("已经绑定");
+                        } else if ("qq".equals(action)) {
+                            qqChatDes.setText("已经绑定");
+                        }
+                    }
+                    break;
             }
         }
+        SocializeUtils.safeCloseDialog(dialog);
     }
 }
