@@ -158,12 +158,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void tabToTask() {
-        LocalLog.d(TAG, "tabToTask() enter");
-        mIndex = 2;
-        onTabIndex(mIndex);
-    }
-
+    
     private void updateDrawableFalse(int index) {
         Drawable top = getResources().getDrawable(icon[index][0]);
         top.setBounds(0, 0, 54, 54);

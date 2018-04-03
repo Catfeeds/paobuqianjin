@@ -41,8 +41,8 @@
     <string name="near_by_step">当天健步%1d步</string>
     <string name="near_by_distance">%fm</string>
     <string name="total_income">总金额%.2f元</string>
-    <string name="today_income">￥%.2f元</string>
-    <string name="month_income">%.2f元</string>
+    <string name="today_income">￥%.2f</string>
+    <string name="month_income">￥%.2f</string>
     <string name="user_target">%1d步</string>
     <string name="step_dollar">%ld步币</string>
     <string name="invite_code">我的邀请码:%ld</string>

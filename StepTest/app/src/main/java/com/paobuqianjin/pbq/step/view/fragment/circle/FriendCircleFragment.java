@@ -247,18 +247,16 @@ public final class FriendCircleFragment extends BaseFragment {
                         intent.setClass(getContext(), CreateDynamicActivity.class);
                         startActivity(intent);
                     }*/
-                    popSelect();
-                    break;
-                case R.id.scan_text:
-                    new IntentIntegrator(getActivity())
-                            .setOrientationLocked(false)
-                            .setCaptureActivity(QrCodeScanActivity.class)
-                            .initiateScan();
-                    break;
-                case R.id.release_dynamic_text:
+                    //popSelect();
                     Intent intent = new Intent();
                     intent.setClass(getContext(), CreateDynamicActivity.class);
                     startActivity(intent);
+                    break;
+                case R.id.scan_text:
+
+                    break;
+                case R.id.release_dynamic_text:
+
                     break;
             }
         }

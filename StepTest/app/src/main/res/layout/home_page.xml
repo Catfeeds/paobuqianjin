@@ -138,7 +138,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/income_today"
-                android:text="￥0.00元"
+                android:text="￥0.00"
                 android:textColor="@color/color_f8"
                 android:textSize="18dp" />
         </RelativeLayout>
@@ -169,29 +169,16 @@
                 android:textColor="@color/color_f8"
                 android:textSize="18dp" />
 
-            <RelativeLayout
+            <TextView
+                android:id="@+id/month_income_home"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/income_month">
+                android:layout_below="@+id/income_month"
+                android:layout_marginLeft="5dp"
+                android:text="￥0.00"
+                android:textColor="@color/color_f8"
+                android:textSize="18dp" />
 
-                <ImageView
-                    android:id="@+id/moth_income_ico"
-                    android:layout_width="9dp"
-                    android:layout_height="11dp"
-                    android:layout_centerVertical="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/month_income" />
-
-                <TextView
-                    android:id="@+id/month_income_home"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toEndOf="@+id/moth_income_ico"
-                    android:text="0.00元"
-                    android:textColor="@color/color_f8"
-                    android:textSize="18dp" />
-            </RelativeLayout>
 
         </RelativeLayout>
     </RelativeLayout>
@@ -381,6 +368,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/add_friend_image"
                         android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="10dp"
                         android:text="邀请好友"
                         android:textColor="@color/color_f8"
                         android:textSize="14dp" />
@@ -415,13 +403,12 @@
         android:layout_marginTop="32dp"
         android:text="跑步钱进"
         android:textColor="@color/color_d6d6d6"
-        android:textSize="23dp" />
+        android:textSize="18dp" />
 
     <RelativeLayout
         android:id="@+id/weather_span"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/home_title"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/home_title"
@@ -431,8 +418,7 @@
         <ImageView
             android:id="@+id/weather_icon"
             android:layout_width="28dp"
-            android:layout_height="22dp"
-            android:layout_centerVertical="true" />
+            android:layout_height="22dp" />
 
         <TextView
             android:id="@+id/wendu"
@@ -451,24 +437,30 @@
             android:id="@+id/city_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/weather_icon"
-            android:layout_alignTop="@+id/wendu"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/wendu"
+            android:layout_alignLeft="@+id/weather_icon"
+            android:layout_below="@+id/weather_icon"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="深圳"
             android:textColor="@color/color_f8"
             android:textSize="14dp" />
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/scan_mark_home"
-        android:layout_width="22dp"
+    <RelativeLayout
+        android:id="@+id/scan_img"
+        android:layout_width="48dp"
         android:layout_height="22dp"
-        android:layout_alignBottom="@+id/weather_span"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/weather_span"
-        android:layout_marginRight="14dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/scan" />
+        android:layout_marginRight="14dp">
+
+        <ImageView
+            android:id="@+id/scan_mark_home"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/scan" />
+    </RelativeLayout>
+
 </RelativeLayout>

@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
@@ -37,7 +38,7 @@ import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
-import com.paobuqianjin.pbq.step.view.activity.MainActivity;
+import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorRedPakAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -95,8 +96,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     ImageView line;
     @Bind(R.id.income_month)
     TextView incomeMonth;
-    @Bind(R.id.moth_income_ico)
-    ImageView mothIncomeIco;
     @Bind(R.id.month_income_home)
     TextView monthIncomeHome;
     @Bind(R.id.month_income_span)
@@ -133,6 +132,14 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     TextView inviteFriend;
     @Bind(R.id.today_income_num)
     TextView todayIncomeNum;
+    @Bind(R.id.target_steps)
+    TextView targetSteps;
+    @Bind(R.id.step_desc)
+    ImageView stepDesc;
+    @Bind(R.id.scan_mark_home)
+    ImageView scanMarkHome;
+    @Bind(R.id.scan_img)
+    RelativeLayout scanImg;
 
     private View popRedPkgView;
     private PopupWindow popupRedPkgWindow;
@@ -214,7 +221,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         requestPermission(Permission.Group.LOCATION);
         Presenter.getInstance(getContext()).getHomePageIncome("today", 1, 10);
         Presenter.getInstance(getContext()).getHomePageIncome("month", 1, 10);
-        Presenter.getInstance(getContext()).getSponsorRedPkg();
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -272,6 +278,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         addFriendImage.setOnClickListener(onClickListener);
         homeTitle = (TextView) viewRoot.findViewById(R.id.home_title);
         monthIncomeHome = (TextView) viewRoot.findViewById(R.id.month_income_home);
+        scanImg = (RelativeLayout) viewRoot.findViewById(R.id.scan_img);
+        scanImg.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -385,6 +393,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         LocalLog.d(TAG, "SponsorRedPkgResponse() enter " + sponsorRedPkgResponse.toString());
         if (sponsorRedPkgResponse.getError() == 0) {
             popRedPkg(sponsorRedPkgResponse);
+        } else {
+            Toast.makeText(getContext(), sponsorRedPkgResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -412,11 +422,19 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     break;
                 case R.id.income_red_pkg_image:
                     LocalLog.d(TAG, "领红包");
-                    ((MainActivity) getActivity()).tabToTask();
+                    Presenter.getInstance(getContext()).getSponsorRedPkg();
+                    /*((MainActivity) getActivity()).tabToTask();*/
                     break;
                 case R.id.add_friend_image:
                     LocalLog.d(TAG, "邀请好友");
                     startActivity(InviteActivity.class, null);
+                    break;
+                case R.id.scan_img:
+                    new IntentIntegrator(getActivity())
+                            .setOrientationLocked(false)
+                            .setCaptureActivity(QrCodeScanActivity.class)
+                            .initiateScan();
+                    LocalLog.d(TAG, "扫码");
                     break;
             }
         }

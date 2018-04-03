@@ -1817,7 +1817,7 @@ public final class Engine {
     public void getImage(final ImageView imageView, String urlImage) {
         LocalLog.d(TAG, "getImage() enter");
         Picasso picasso = Picasso.with(mContext);
-        picasso.setIndicatorsEnabled(true);
+        //picasso.setIndicatorsEnabled(true);
         //picasso.setLoggingEnabled(true);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         if (networkPolicy == NetworkPolicy.OFFLINE) {
