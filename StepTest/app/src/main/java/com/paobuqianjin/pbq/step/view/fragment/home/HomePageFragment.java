@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -140,8 +141,15 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     ImageView scanMarkHome;
     @Bind(R.id.scan_img)
     RelativeLayout scanImg;
+    @Bind(R.id.toay_step_span)
+    RelativeLayout toayStepSpan;
+    @Bind(R.id.target_steps_span)
+    RelativeLayout targetStepsSpan;
+    @Bind(R.id.step_desc_span)
+    RelativeLayout stepDescSpan;
 
     private View popRedPkgView;
+    private View popTargetView;
     private PopupWindow popupRedPkgWindow;
     private TranslateAnimation animationCircleType;
     private StepLocationReciver stepLocationReciver = new StepLocationReciver();
@@ -279,6 +287,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         homeTitle = (TextView) viewRoot.findViewById(R.id.home_title);
         monthIncomeHome = (TextView) viewRoot.findViewById(R.id.month_income_home);
         scanImg = (RelativeLayout) viewRoot.findViewById(R.id.scan_img);
+        stepDescSpan = (RelativeLayout) viewRoot.findViewById(R.id.step_desc_span);
+        stepDescSpan.setOnClickListener(onClickListener);
         scanImg.setOnClickListener(onClickListener);
     }
 
@@ -325,6 +335,35 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         popupRedPkgWindow.showAtLocation(getActivity().findViewById(R.id.home_page), Gravity.CENTER, 0, 0);
 
         popRedPkgView.startAnimation(animationCircleType);
+    }
+
+    private void popTargetView() {
+        popTargetView = View.inflate(getContext(), R.layout.target_dest_popwindow, null);
+        TextView confirm = (TextView) popTargetView.findViewById(R.id.read_des);
+        popupRedPkgWindow = new PopupWindow(popTargetView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupRedPkgWindow = null;
+            }
+        });
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupRedPkgWindow.dismiss();
+            }
+        });
+        popupRedPkgWindow.showAtLocation(getActivity().findViewById(R.id.home_page), Gravity.CENTER, 0, 0);
+
+        popTargetView.startAnimation(animationCircleType);
     }
 
     @Override
@@ -436,9 +475,18 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                             .initiateScan();
                     LocalLog.d(TAG, "扫码");
                     break;
+                case R.id.step_desc_span:
+                    LocalLog.d(TAG, "目标说明");
+                    popTargetView();
+                    break;
             }
         }
     };
+
+
+    private void popTargetDesc() {
+
+    }
 
     @OnClick(R.id.today_income_num)
     public void onClick() {

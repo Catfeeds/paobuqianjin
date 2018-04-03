@@ -36,6 +36,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendWeekResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteMessageResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LogBindPhoneResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginOutResponse;
@@ -766,8 +767,14 @@ public class NetStringCallBack extends StringCallback {
                 ((MessageInterface) callBackInterface).response(messageSystemResponse);
             }
         } else if (callBackInterface != null && callBackInterface instanceof FriendAddressInterface) {
-            FriendAddResponse friendAddResponse = new Gson().fromJson(s, FriendAddResponse.class);
-            ((FriendAddressInterface) callBackInterface).response(friendAddResponse);
+            if (command == Engine.COMMAND_IVITE_MSG) {
+                InviteMessageResponse inviteMessageResponse = new Gson().fromJson(s, InviteMessageResponse.class);
+                ((FriendAddressInterface) callBackInterface).response(inviteMessageResponse);
+            } else if (command == Engine.COMMAND_UPDATE_ADDRESS_BOOK) {
+                FriendAddResponse friendAddResponse = new Gson().fromJson(s, FriendAddResponse.class);
+                ((FriendAddressInterface) callBackInterface).response(friendAddResponse);
+            }
+
         } else if (callBackInterface != null && callBackInterface instanceof EditCircleInterface) {
             if (command == Engine.COMMAND_GET_CIRCLE_TARGET) {
                 CircleTargetResponse circleTargetResponse = new Gson().fromJson(s, CircleTargetResponse.class);

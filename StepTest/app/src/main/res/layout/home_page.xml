@@ -111,16 +111,24 @@
                         android:textSize="18dp" />
                 </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/step_desc"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                <RelativeLayout
+                    android:id="@+id/step_desc_span"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/target_steps_span"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="5dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/step_des" />
+                    android:layout_centerHorizontal="true">
+
+                    <ImageView
+                        android:id="@+id/step_desc"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/step_des" />
+                </RelativeLayout>
             </RelativeLayout>
+
         </RelativeLayout>
 
     </FrameLayout>

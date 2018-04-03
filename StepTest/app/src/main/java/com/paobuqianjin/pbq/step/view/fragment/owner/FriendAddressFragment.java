@@ -22,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostAddressBookParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendAddResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteMessageResponse;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.FriendAddressInterface;
@@ -214,9 +215,16 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
         LocalLog.d(TAG, "FriendAddResponse() enter ");
         if (friendAddResponse.getError() == 0) {
             if (regAppRecycler != null) {
-                regAppRecycler.setAdapter(new LocalContactAdapter(getContext(),friendAddResponse.getData().getIn_system()));
+                regAppRecycler.setAdapter(new LocalContactAdapter(getContext(), friendAddResponse.getData().getIn_system()));
                 unRegAppRecycler.setAdapter(new LocalContactAdapter(getContext(), friendAddResponse.getData().getOut_system()));
             }
+        }
+    }
+
+    @Override
+    public void response(InviteMessageResponse inviteMessageResponse) {
+        if (inviteMessageResponse.getError() == 0) {
+            
         }
     }
 }

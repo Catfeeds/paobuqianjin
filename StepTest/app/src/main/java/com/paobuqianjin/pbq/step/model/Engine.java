@@ -302,6 +302,7 @@ public final class Engine {
     public final static int COMMAND_CHANGE_OLD_PASS = 93;
     public final static int COMMAND_PROTOCOL = 94;
     public final static int COMMAND_BIND_THIRD = 95;
+    public final static int COMMAND_IVITE_MSG = 96;
     private Transformation transformation;
 
     public NetworkPolicy getNetworkPolicy() {
@@ -559,8 +560,14 @@ public final class Engine {
 
 
     //TODO 短信邀请
-    public void inviteMsg() {
-
+    public void inviteMsg(String phoneNum) {
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlinviteMsg)
+                .addParams("userid",String.valueOf(getId(mContext)))
+                .addParams("phones", "[" + "'" + getMobile(mContext) + "'" + "]")
+                .build()
+                .execute(new NetStringCallBack(friendAddressInterface, COMMAND_IVITE_MSG));
     }
 
     //手机号码注册

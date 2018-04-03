@@ -61,6 +61,8 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
                 holder.btFollow.setText("已关注");
             } else if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getFollow_type() == 3) {
                 holder.btFollow.setText("互相关注");
+            } else if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getFollow_type() == 0) {
+                holder.btFollow.setText("未关注");
             }
             holder.phoneNum = ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getPhone();
         } else if (mData.get(position) instanceof FriendAddResponse.DataBean.OutSystemBean) {
@@ -101,11 +103,14 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.bt_follow:
-                        LocalLog.d(TAG, "邀请" + phoneNum);
                         switch (btFollow.getText().toString()) {
                             case "邀请":
                                 //TODO 发送邀请
-
+                                LocalLog.d(TAG, "邀请好友");
+                                Presenter.getInstance(context).inviteMsg("13424156029");
+                                break;
+                            case "已关注":
+                                LocalLog.d(TAG, "取消关注");
                                 break;
                             default:
                                 break;

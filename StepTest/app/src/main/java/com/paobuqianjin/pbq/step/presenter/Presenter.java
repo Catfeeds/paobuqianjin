@@ -615,6 +615,9 @@ public final class Presenter {
         engine.postAddressBook(addressBook);
     }
 
+    public void inviteMsg(String phoneNum){
+        engine.inviteMsg(phoneNum);
+    }
     public void setNetworkPolicy(NetworkPolicy networkPolicy) {
         engine.setNetworkPolicy(networkPolicy);
     }
