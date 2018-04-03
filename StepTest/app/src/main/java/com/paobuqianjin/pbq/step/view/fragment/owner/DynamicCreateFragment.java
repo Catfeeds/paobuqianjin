@@ -16,17 +16,26 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lwkandroid.imagepicker.ImagePicker;
+import com.lwkandroid.imagepicker.data.ImageBean;
+import com.lwkandroid.imagepicker.data.ImagePickType;
+import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
@@ -59,7 +68,9 @@ import static android.app.Activity.RESULT_OK;
 
 public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implements ReleaseDynamicInterface {
     private final static String TAG = DynamicCreateFragment.class.getSimpleName();
-
+    private View popupCircleTypeView;
+    private PopupWindow popupCircleTypeWindow;
+    private TranslateAnimation animationCircleType;
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -103,6 +114,9 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     PostDynamicParam postDynamicParam = new PostDynamicParam();
     private StepLocationReciver stepLocationReciver = new StepLocationReciver();
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
+    private String cachePath;
+    private final int REQUEST_CODE = 111;
+    List<ImageBean> mResultList = null;
 
     @Override
     protected String title() {
@@ -146,7 +160,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         public void clickRight() {
             LocalLog.d(TAG, "发布");
             String content = dynamicContent.getText().toString();
-            if (picPath.size() == 0) {
+            if (mResultList == null || mResultList.size() == 0) {
                 LocalLog.d(TAG, "没有图片");
                 if (content.equals("")) {
                     Toast.makeText(getContext(), "没有内容", Toast.LENGTH_SHORT).show();
@@ -158,8 +172,14 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                     Presenter.getInstance(getContext()).postDynamic(postDynamicParam);
                 }
             } else {
-                LogoUpTask logoUpTask = new LogoUpTask();
-                logoUpTask.execute(picPath);
+                for (int i = 0; i < mResultList.size(); i++) {
+                    picPath.add(mResultList.get(i).getImagePath());
+                }
+                if (picPath.size() > 0) {
+                    LogoUpTask logoUpTask = new LogoUpTask();
+                    logoUpTask.execute(picPath);
+                }
+
             }
         }
     };
@@ -180,6 +200,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         qServiceCfg = QServiceCfg.instance(getContext());
         dialog = new ProgressDialog(getContext());
         Presenter.getInstance(getContext()).startService(null, LocalBaiduService.class);
+        cachePath = getContext().getExternalCacheDir().getAbsolutePath();
     }
 
     @Override
@@ -202,42 +223,67 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pic_a:
-                LocalLog.d(TAG, "添加第一张图");
-                if (bitmaps.size() >= 4) {
-                    return;
-                }
-                Intent pictureA = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pictureA, CAMERA_PIC);
-                break;
-            case R.id.pic_b:
-                LocalLog.d(TAG, "添加第二张图");
-                if (bitmaps.size() >= 4) {
-                    return;
-                }
-                Intent pictureB = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pictureB, CAMERA_PIC);
-                break;
-            case R.id.pic_c:
-                LocalLog.d(TAG, "添加第三张图");
-                if (bitmaps.size() >= 4) {
-                    return;
-                }
-                Intent pictureC = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pictureC, CAMERA_PIC);
-                break;
-            case R.id.pic_d:
-                LocalLog.d(TAG, "添加第四张图");
-                if (bitmaps.size() >= 4) {
-                    return;
-                }
-                Intent pictureD = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pictureD, CAMERA_PIC);
+                selectPicture();
                 break;
             case R.id.location_span:
                 LocalLog.d(TAG, "开启定位");
 
                 break;
         }
+    }
+
+    private void selectPicture() {
+        popupCircleTypeView = View.inflate(getContext(), R.layout.select_camera_pic, null);
+        popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupCircleTypeWindow onDismiss() enter");
+                popupCircleTypeWindow = null;
+            }
+        });
+        popupCircleTypeWindow.setFocusable(true);
+        popupCircleTypeWindow.setOutsideTouchable(true);
+        ((RelativeLayout) popupCircleTypeView.findViewById(R.id.select_camera)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "相机");
+                new ImagePicker()
+                        .pickType(ImagePickType.ONLY_CAMERA)//设置选取类型(拍照、单选、多选)
+                        .maxNum(1)//设置最大选择数量(拍照和单选都是1，修改后也无效)
+                        .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
+                        .cachePath(cachePath)//自定义缓存路径
+                        .doCrop(1, 1, 0, 0)//裁剪功能需要调用这个方法，多选模式下无效
+                        .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
+                        .start(DynamicCreateFragment.this, REQUEST_CODE);
+                popupCircleTypeWindow.dismiss();
+            }
+        });
+        ((RelativeLayout) popupCircleTypeView.findViewById(R.id.xiangche_camera)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "相册");
+                new ImagePicker()
+                        .pickType(ImagePickType.MULTI)//设置选取类型(拍照、单选、多选)
+                        .maxNum(4)//设置最大选择数量(拍照和单选都是1，修改后也无效)
+                        .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
+                        .cachePath(cachePath)//自定义缓存路径
+                        .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
+                        .start(DynamicCreateFragment.this, REQUEST_CODE);
+                popupCircleTypeWindow.dismiss();
+            }
+        });
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
+                , 0, Animation.RELATIVE_TO_PARENT, 0,
+                Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupCircleTypeWindow.showAtLocation(getActivity().findViewById(R.id.dynamic_create), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
+                , 0, 0);
+        popupCircleTypeView.startAnimation(animationCircleType);
     }
 
 
@@ -247,71 +293,57 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         if (resultCode != RESULT_OK) {
             return;
         }
-        if (requestCode == CAMERA_PIC) {
-            LocalLog.d(TAG, "PICTURE OK");
-            if (data != null) {
-                Uri selectedImage = data.getData();
 
-                final String pathResult = getPath(selectedImage);
-                LocalLog.d(TAG, "pathResult = " + pathResult);
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                Bitmap docodeFile = BitmapFactory.decodeFile(pathResult, options);
-
-
-                // 获取到这个图片的原始宽度和高度
-                int picWidth = options.outWidth;
-                int picHeight = options.outHeight;
-                LocalLog.d(TAG, "options.outWidth = " + options.outWidth + "options.outHeight = " + options.outHeight);
-
-                // 获取屏的宽度和高度
-                WindowManager windowManager = getActivity().getWindowManager();
-                Display display = windowManager.getDefaultDisplay();
-                int screenWidth = display.getWidth();
-                int screenHeight = display.getHeight();
-
-                LocalLog.d(TAG, "screenWidth =  " + screenWidth + ",screenHeight = " + screenHeight);
-                // isSampleSize是表示对图片的缩放程度，比如值为2图片的宽度和高度都变为以前的1/2
-                options.inSampleSize = 1;
-                // 根据屏的大小和图片大小计算出缩放比例
-                if (picWidth > picHeight) {
-                    if (picWidth > screenWidth)
-                        options.inSampleSize = picWidth / screenWidth;
-                } else {
-                    if (picHeight > screenHeight)
-
-                        options.inSampleSize = picHeight / screenHeight;
-                }
-
-                // 这次再真正地生成一个有像素的，经过缩放了的bitmap
-                options.inJustDecodeBounds = false;
-                //docodeFile = BitmapFactory.decodeFile(pathResult, options);
-/*                try {
-                    saveImage(docodeFile);
-                } catch (FileNotFoundException e) {
-
-                }*/
-                picPath.add(pathResult);
-                int size = picPath.size();
-                if (size == 1) {
-                    Presenter.getInstance(getContext()).getImage(picPath.get(0), picA);
-                    picB.setVisibility(View.VISIBLE);
-                } else if (size == 2) {
-                    Presenter.getInstance(getContext()).getImage(picPath.get(1), picB);
-                    picC.setVisibility(View.VISIBLE);
-                } else if (size == 3) {
-                    Presenter.getInstance(getContext()).getImage(picPath.get(2), picC);
-                    picD.setVisibility(View.VISIBLE);
-                } else if (size == 4) {
-                    Presenter.getInstance(getContext()).getImage(picPath.get(3), picD);
-                } else if (size >= 5) {
-                    LocalLog.e(TAG, "图片过多");
-                }
-                //TODO 线程中上传保存
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            List<ImageBean> resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);
+            String content = "";
+            for (ImageBean imageBean : resultList) {
+                content = content + imageBean.toString() + "\n";
             }
+            LocalLog.d(TAG, "content = " + content);
+            if (resultList != null) {
+                int size = resultList.size();
+                LocalLog.d(TAG, "size = " + size);
+                mResultList = resultList;
+                if (size == 1) {
+                    showA(resultList.get(0).getImagePath());
+                } else if (size == 2) {
+                    showA(resultList.get(0).getImagePath());
+                    showB(resultList.get(1).getImagePath());
+                } else if (size == 3) {
+                    showA(resultList.get(0).getImagePath());
+                    showB(resultList.get(1).getImagePath());
+                    showC(resultList.get(2).getImagePath());
+                } else if (size == 4) {
+                    showA(resultList.get(0).getImagePath());
+                    showB(resultList.get(1).getImagePath());
+                    showC(resultList.get(2).getImagePath());
+                    showD(resultList.get(3).getImagePath());
+                    picD.setVisibility(View.VISIBLE);
+                }
+            }
+            return;
         }
     }
 
+    private void showA(String imagePath) {
+        Presenter.getInstance(getContext()).getImage(imagePath, picA);
+        picB.setVisibility(View.VISIBLE);
+    }
+
+    private void showB(String imagePath) {
+        Presenter.getInstance(getContext()).getImage(imagePath, picB);
+        picC.setVisibility(View.VISIBLE);
+    }
+
+    private void showC(String imagePath) {
+        Presenter.getInstance(getContext()).getImage(imagePath, picC);
+        picD.setVisibility(View.VISIBLE);
+    }
+
+    private void showD(String imagePath) {
+        Presenter.getInstance(getContext()).getImage(imagePath, picD);
+    }
 
     public class LogoUpTask extends AsyncTask<List<String>, Integer, List<String>> {
 
