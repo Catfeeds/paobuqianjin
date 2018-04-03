@@ -11,7 +11,7 @@
         android:layout_marginRight="14dp"
         android:layout_marginTop="20dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/rect_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -35,6 +35,7 @@
                 android:textSize="15dp" />
 
             <TextView
+                android:id="@+id/time_stmap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/dear_name"
@@ -103,31 +104,34 @@
                 android:layout_marginTop="30dp">
 
                 <ImageView
+                    android:id="@+id/image_a"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/circle_live_default_b" />
+                    android:visibility="gone" />
 
                 <ImageView
+                    android:id="@+id/image_b"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginLeft="10dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/circle_live_default_b" />
+                    android:visibility="gone" />
 
                 <ImageView
+                    android:id="@+id/image_c"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginLeft="10dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/circle_live_default_b" />
+                    android:visibility="gone" />
 
                 <ImageView
+                    android:id="@+id/image_d"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginLeft="10dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/circle_live_default_b"
                     android:visibility="gone" />
             </LinearLayout>
         </RelativeLayout>

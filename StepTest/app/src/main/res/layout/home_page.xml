@@ -49,58 +49,73 @@
                 android:layout_centerInParent="true"
                 android:layout_gravity="center">
 
-                <TextView
-                    android:id="@+id/toay_step"
+                <RelativeLayout
+                    android:id="@+id/toay_step_span"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    android:text="3689"
-                    android:textColor="@color/color_ffc14c"
-                    android:textSize="30dp" />
+                    android:layout_centerHorizontal="true">
 
-                <TextView
-                    android:id="@+id/mu_biao_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/toay_step"
-                    android:layout_marginTop="0dp"
-                    android:includeFontPadding="false"
-                    android:text="@string/mu_biao"
-                    android:textColor="@color/color_ffc14c"
-                    android:textSize="18dp" />
+                    <TextView
+                        android:id="@+id/toay_step"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="3689"
+                        android:textColor="@color/color_ffc14c"
+                        android:textSize="30dp" />
 
-                <TextView
-                    android:id="@+id/target_steps"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/mu_biao_text"
-                    android:layout_alignBottom="@+id/mu_biao_text"
-                    android:layout_alignTop="@+id/mu_biao_text"
-                    android:layout_toEndOf="@+id/mu_biao_text"
-                    android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:text="10000步"
-                    android:textColor="@color/color_ffc14c"
-                    android:textSize="18dp" />
 
-                <TextView
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/toay_step"
+                        android:layout_alignTop="@+id/toay_step"
+                        android:layout_toEndOf="@+id/toay_step"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="步"
+                        android:textColor="@color/color_ffc14c"
+                        android:textSize="20dp" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/target_steps_span"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/toay_step"
-                    android:layout_alignBottom="@+id/toay_step"
-                    android:layout_alignTop="@+id/toay_step"
-                    android:layout_toEndOf="@+id/toay_step"
-                    android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:text="步"
-                    android:textColor="@color/color_ffc14c"
-                    android:textSize="20dp" />
+                    android:layout_below="@+id/toay_step_span">
+
+                    <TextView
+                        android:id="@+id/mu_biao_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginTop="0dp"
+                        android:includeFontPadding="false"
+                        android:text="@string/mu_biao"
+                        android:textColor="@color/color_ffc14c"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:id="@+id/target_steps"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/mu_biao_text"
+                        android:layout_alignBottom="@+id/mu_biao_text"
+                        android:layout_alignTop="@+id/mu_biao_text"
+                        android:layout_toEndOf="@+id/mu_biao_text"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="10000步"
+                        android:textColor="@color/color_ffc14c"
+                        android:textSize="18dp" />
+                </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/step_desc"
                     android:layout_width="22dp"
                     android:layout_height="22dp"
-                    android:layout_below="@+id/target_steps"
+                    android:layout_below="@+id/target_steps_span"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:scaleType="centerCrop"

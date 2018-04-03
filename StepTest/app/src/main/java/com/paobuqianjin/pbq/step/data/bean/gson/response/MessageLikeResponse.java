@@ -13,10 +13,11 @@ import java.util.List;
 *@description 点赞消息
 */
 public class MessageLikeResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":1},"data":[{"id":19,"dynamicid":1,"from_userid":2,"from_nickanme":"李五","from_avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","to_userid":1,"to_nickanme":"嗯额","typeid":3,"title":"","content":"在TA的动态中点赞了你","dynamic":"你马上要8岁了哟 看我一眼好不好","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"create_time":1519634190,"dynamicdata":{"id":1,"userid":1,"avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额","dynamic":"你马上要8岁了哟 看我一眼好不好","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"深圳","vote":100,"comment":54,"create_time":1513393712}}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":3},"data":[{"id":135,"dynamicid":125,"from_userid":61,"from_nickanme":"俊手机","from_avatar":"https://thirdwx.qlogo.cn/mmopen/vi_32/cKuFQO8UEyKesahdoW8hahuDr3FXuSKwVNv7lJHY7Y6gDlejf7TBbMhz866ZAX9iaibLmam2VAibCYY0gBMsFyBPw/132","to_userid":30,"to_nickanme":"黄钦平","typeid":3,"title":"收到点赞","content":"Vivo Android 5.0  720*1280 ","dynamic":"Vivo Android 5.0  720*1280 ","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"],"create_time":1522668786,"dynamicdata":{"id":125,"userid":30,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","dynamic":"Vivo Android 5.0  720*1280 ","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"],"city":"上海市","vote":2,"comment":23,"create_time":1522409030}},{"id":129,"dynamicid":125,"from_userid":30,"from_nickanme":"黄钦平","from_avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","to_userid":30,"to_nickanme":"黄钦平","typeid":3,"title":"收到点赞","content":"Vivo Android 5.0  720*1280 ","dynamic":"Vivo Android 5.0  720*1280 ","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"],"create_time":1522635760,"dynamicdata":{"id":125,"userid":30,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","dynamic":"Vivo Android 5.0  720*1280 ","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"],"city":"上海市","vote":2,"comment":23,"create_time":1522409030}},{"id":126,"dynamicid":111,"from_userid":30,"from_nickanme":"黄钦平","from_avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","to_userid":30,"to_nickanme":"黄钦平","typeid":3,"title":"收到点赞","content":"","dynamic":"","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171004_170343.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171004_170343.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171004_165312.jpg"],"create_time":1522315751,"dynamicdata":{"id":111,"userid":30,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","dynamic":"","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171004_170343.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171004_170343.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171004_165312.jpg"],"city":"深圳市","vote":1,"comment":0,"create_time":1521445371}}]}
      */
 
     private int error;
@@ -47,10 +48,10 @@ public class MessageLikeResponse {
         this.data = data;
     }
 
-    public static class DataBeanX {
+    public static class DataBeanX implements Serializable {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":1}
-         * data : [{"id":19,"dynamicid":1,"from_userid":2,"from_nickanme":"李五","from_avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","to_userid":1,"to_nickanme":"嗯额","typeid":3,"title":"","content":"在TA的动态中点赞了你","dynamic":"你马上要8岁了哟 看我一眼好不好","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"create_time":1519634190,"dynamicdata":{"id":1,"userid":1,"avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额","dynamic":"你马上要8岁了哟 看我一眼好不好","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"深圳","vote":100,"comment":54,"create_time":1513393712}}]
+         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":3}
+         * data : [{"id":135,"dynamicid":125,"from_userid":61,"from_nickanme":"俊手机","from_avatar":"https://thirdwx.qlogo.cn/mmopen/vi_32/cKuFQO8UEyKesahdoW8hahuDr3FXuSKwVNv7lJHY7Y6gDlejf7TBbMhz866ZAX9iaibLmam2VAibCYY0gBMsFyBPw/132","to_userid":30,"to_nickanme":"黄钦平","typeid":3,"title":"收到点赞","content":"Vivo Android 5.0  720*1280 ","dynamic":"Vivo Android 5.0  720*1280 ","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"],"create_time":1522668786,"dynamicdata":{"id":125,"userid":30,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","dynamic":"Vivo Android 5.0  720*1280 ","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"],"city":"上海市","vote":2,"comment":23,"create_time":1522409030}},{"id":129,"dynamicid":125,"from_userid":30,"from_nickanme":"黄钦平","from_avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","to_userid":30,"to_nickanme":"黄钦平","typeid":3,"title":"收到点赞","content":"Vivo Android 5.0  720*1280 ","dynamic":"Vivo Android 5.0  720*1280 ","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"],"create_time":1522635760,"dynamicdata":{"id":125,"userid":30,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","dynamic":"Vivo Android 5.0  720*1280 ","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"],"city":"上海市","vote":2,"comment":23,"create_time":1522409030}},{"id":126,"dynamicid":111,"from_userid":30,"from_nickanme":"黄钦平","from_avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","to_userid":30,"to_nickanme":"黄钦平","typeid":3,"title":"收到点赞","content":"","dynamic":"","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171004_170343.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171004_170343.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171004_165312.jpg"],"create_time":1522315751,"dynamicdata":{"id":111,"userid":30,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","dynamic":"","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171004_170343.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171004_170343.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171004_165312.jpg"],"city":"深圳市","vote":1,"comment":0,"create_time":1521445371}}]
          */
 
         private PagenationBean pagenation;
@@ -72,12 +73,12 @@ public class MessageLikeResponse {
             this.data = data;
         }
 
-        public static class PagenationBean {
+        public static class PagenationBean implements Serializable {
             /**
              * page : 1
              * pageSize : 10
              * totalPage : 1
-             * totalCount : 1
+             * totalCount : 3
              */
 
             private int page;
@@ -120,20 +121,20 @@ public class MessageLikeResponse {
 
         public static class DataBean implements Serializable {
             /**
-             * id : 19
-             * dynamicid : 1
-             * from_userid : 2
-             * from_nickanme : 李五
-             * from_avatar : http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg
-             * to_userid : 1
-             * to_nickanme : 嗯额
+             * id : 135
+             * dynamicid : 125
+             * from_userid : 61
+             * from_nickanme : 俊手机
+             * from_avatar : https://thirdwx.qlogo.cn/mmopen/vi_32/cKuFQO8UEyKesahdoW8hahuDr3FXuSKwVNv7lJHY7Y6gDlejf7TBbMhz866ZAX9iaibLmam2VAibCYY0gBMsFyBPw/132
+             * to_userid : 30
+             * to_nickanme : 黄钦平
              * typeid : 3
-             * title :
-             * content : 在TA的动态中点赞了你
-             * dynamic : 你马上要8岁了哟 看我一眼好不好
-             * images : ["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"]
-             * create_time : 1519634190
-             * dynamicdata : {"id":1,"userid":1,"avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额","dynamic":"你马上要8岁了哟 看我一眼好不好","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"深圳","vote":100,"comment":54,"create_time":1513393712}
+             * title : 收到点赞
+             * content : Vivo Android 5.0  720*1280
+             * dynamic : Vivo Android 5.0  720*1280
+             * images : ["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"]
+             * create_time : 1522668786
+             * dynamicdata : {"id":125,"userid":30,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","dynamic":"Vivo Android 5.0  720*1280 ","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"],"city":"上海市","vote":2,"comment":23,"create_time":1522409030}
              */
 
             private int id;
@@ -147,7 +148,7 @@ public class MessageLikeResponse {
             private String title;
             private String content;
             private String dynamic;
-            private int create_time;
+            private long create_time;
             private DynamicdataBean dynamicdata;
             private List<String> images;
 
@@ -239,11 +240,11 @@ public class MessageLikeResponse {
                 this.dynamic = dynamic;
             }
 
-            public int getCreate_time() {
+            public long getCreate_time() {
                 return create_time;
             }
 
-            public void setCreate_time(int create_time) {
+            public void setCreate_time(long create_time) {
                 this.create_time = create_time;
             }
 
@@ -265,16 +266,16 @@ public class MessageLikeResponse {
 
             public static class DynamicdataBean implements Serializable {
                 /**
-                 * id : 1
-                 * userid : 1
-                 * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg
-                 * nickname : 嗯额
-                 * dynamic : 你马上要8岁了哟 看我一眼好不好
-                 * images : ["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"]
-                 * city : 深圳
-                 * vote : 100
-                 * comment : 54
-                 * create_time : 1513393712
+                 * id : 125
+                 * userid : 30
+                 * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
+                 * nickname : 黄钦平
+                 * dynamic : Vivo Android 5.0  720*1280
+                 * images : ["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"]
+                 * city : 上海市
+                 * vote : 2
+                 * comment : 23
+                 * create_time : 1522409030
                  */
 
                 private int id;

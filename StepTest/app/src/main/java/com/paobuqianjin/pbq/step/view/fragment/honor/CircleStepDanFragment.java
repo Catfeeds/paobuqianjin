@@ -27,7 +27,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CircleStepDetailDanInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -75,6 +74,10 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     ImageView lineDan;
     @Bind(R.id.dan_detail_recycler)
     RecyclerView danDetailRecycler;
+    @Bind(R.id.buttone_left_bar)
+    RelativeLayout buttoneLeftBar;
+    @Bind(R.id.rank_icon)
+    ImageView rankIcon;
     private int circleId = -1;
     LinearLayoutManager layoutManager;
     private final static String ACTION_CIRCLE_HONOR = "com.paobuqianjin.pbq.ACTION_CIRCLE_HONOR";
@@ -132,6 +135,8 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
         goDownSpan.setOnClickListener(onClickListener);
         numDes = (TextView) viewRoot.findViewById(R.id.num_des);
         circleTarget = (TextView) viewRoot.findViewById(R.id.circle_target);
+        buttoneLeftBar = (RelativeLayout) viewRoot.findViewById(R.id.buttone_left_bar);
+        buttoneLeftBar.setOnClickListener(onClickListener);
         Intent intent = getActivity().getIntent();
         if (intent != null && ACTION_CIRCLE_HONOR.equals(intent.getAction())) {
             circleId = intent.getIntExtra("circleid", -1);
@@ -149,7 +154,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.bar_return_drawable:
+                case R.id.buttone_left_bar:
                     getActivity().finish();
                     break;
                 case R.id.go_down_span:
@@ -200,6 +205,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
         popupOpWindowTop.showAsDropDown(barTvRight, 20, -10);
         popCircleOpBar.startAnimation(animationCircleType);
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

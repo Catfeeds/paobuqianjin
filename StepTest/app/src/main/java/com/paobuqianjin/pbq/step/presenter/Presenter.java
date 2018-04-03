@@ -607,8 +607,8 @@ public final class Presenter {
         engine.getWeather(latitude, longitude);
     }
 
-    public void getMessage(int typeid) {
-        engine.getMessage(typeid);
+    public void getMessage(int typeid, int page, int pagesize) {
+        engine.getMessage(typeid, page, pagesize);
     }
 
     public void postAddressBook(String addressBook) {

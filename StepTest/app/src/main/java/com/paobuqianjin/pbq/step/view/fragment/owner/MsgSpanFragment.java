@@ -104,9 +104,11 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        Presenter.getInstance(getContext()).getMessage(2);
-        Presenter.getInstance(getContext()).getMessage(3);
-        Presenter.getInstance(getContext()).getMessage(4);
+        Presenter.getInstance(getContext()).getMessage(2, 1, 10);
+        Presenter.getInstance(getContext()).getMessage(3, 1, 10);
+        Presenter.getInstance(getContext()).getMessage(4, 1, 10);
+        contentDesMsg = (TextView) viewRoot.findViewById(R.id.content_des_msg);
+        likeDesMsg = (TextView) viewRoot.findViewById(R.id.like_des_msg);
     }
 
     @Override
@@ -166,6 +168,7 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
     public void response(MessageSystemResponse messageSystemResponse) {
         if (messageSystemResponse.getError() == 0) {
             this.messageSystemResponse = messageSystemResponse;
+            likeDesMsg.setText(String.valueOf(messageSystemResponse.getData().getPagenation().getTotalCount()) + "个赞");
         }
     }
 
@@ -173,6 +176,10 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
     public void response(MessageContentResponse messageContentResponse) {
         if (messageContentResponse.getError() == 0) {
             this.messageContentResponse = messageContentResponse;
+            if (contentDesMsg == null) {
+                return;
+            }
+            contentDesMsg.setText(String.valueOf(messageContentResponse.getData().getPagenation().getTotalCount()) + "条消息");
         }
     }
 

@@ -71,9 +71,9 @@ public class IncomeAdater extends RecyclerView.Adapter<IncomeAdater.IncomeDetail
             if (((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getPtype() == 2) {
                 holder.incomeDetailDes.setText("微信充值");
             } else if (((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getPtype() == 1) {
-                holder.incomeDetailDes.setText("支付宝充值");
+                holder.incomeDetailDes.setText("钱包充值");
             } else if (((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getPtype() == 3) {
-                holder.incomeDetailDes.setText("银行卡充值");
+                holder.incomeDetailDes.setText("支付宝充值");
             }
             long create_time = ((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
             String date = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_YYYY_MM_DD_HH_MM);

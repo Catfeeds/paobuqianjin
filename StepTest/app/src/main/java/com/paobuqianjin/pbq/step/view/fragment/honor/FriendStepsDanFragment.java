@@ -23,7 +23,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendWeekResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -71,6 +70,10 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     TextView stepNumMy;
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
+    @Bind(R.id.buttone_left_bar)
+    RelativeLayout buttoneLeftBar;
+    @Bind(R.id.rank_icon)
+    ImageView rankIcon;
 
     private int pageIndex = 1, pageCount = 0, pageIndexWeek = 1;
     private final static int PAGE_DEFAULT_SIZE = 10;
@@ -121,6 +124,8 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         goDownSpan = (RelativeLayout) viewRoot.findViewById(R.id.go_down_span);
         timeGo = (TextView) viewRoot.findViewById(R.id.time_go);
         goDownSpan.setOnClickListener(onClickListener);
+        buttoneLeftBar = (RelativeLayout) viewRoot.findViewById(R.id.buttone_left_bar);
+        buttoneLeftBar.setOnClickListener(onClickListener);
         Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndex, PAGE_DEFAULT_SIZE);
         Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
 
@@ -130,7 +135,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.bar_return_drawable:
+                case R.id.buttone_left_bar:
                     getActivity().finish();
                     break;
                 case R.id.go_down_span:
