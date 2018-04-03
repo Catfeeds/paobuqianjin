@@ -7,10 +7,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -18,6 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class AboutActivity extends BaseBarActivity {
+    private final static String USER_SERVICE_AGREEMENT_ACTION = "com.paobuqianjin.pbq.step.SERVICE_ACTION";
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -44,6 +47,10 @@ public class AboutActivity extends BaseBarActivity {
     TextView text1;
     @Bind(R.id.protol_span)
     RelativeLayout protolSpan;
+    @Bind(R.id.go_to)
+    ImageView goTo;
+    @Bind(R.id.copyright)
+    TextView copyright;
 
     @Override
     protected String title() {
@@ -60,5 +67,12 @@ public class AboutActivity extends BaseBarActivity {
     @Override
     protected void initView() {
         super.initView();
+        version = (TextView) findViewById(R.id.version);
+        version.setText("当前版本 " + Utils.getVersionCode(this));
+    }
+
+    @OnClick(R.id.introduce_span)
+    public void onClick() {
+        startActivity(AgreementActivity.class, null, false, USER_SERVICE_AGREEMENT_ACTION);
     }
 }
