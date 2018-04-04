@@ -209,17 +209,17 @@ public class HotCircleFragment extends BaseFragment {
     }
 
     public void setMyHotLa(String name, String urlImage) {
+        myHotLa.setVisibility(View.VISIBLE);
         myHotCircleTV.setText(name);
 
         Presenter.getInstance(mContext).getImage(myHotCircleIV, urlImage);
-        myHotLa.setVisibility(View.VISIBLE);
 
     }
 
     public void setMyHotLb(String name, String urlImage) {
+        myHotLb.setVisibility(View.VISIBLE);
         secondHotCircleTV.setText(name);
         Presenter.getInstance(mContext).getImage(secondHotCircleIV, urlImage);
-        myHotLb.setVisibility(View.VISIBLE);
     }
 
     private UiHotCircleInterface uiHotCircleInterface = new UiHotCircleInterface() {

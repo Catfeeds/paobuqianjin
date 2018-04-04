@@ -81,6 +81,7 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
     private TranslateAnimation animationCircleType;
     private int mScreenWidth;
     private int mScreenHeight;
+
     @Override
 
     protected String title() {
@@ -118,7 +119,7 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
         myDynamicRecycler.setLayoutManager(layoutManager);
 
         //myDynamicRecycler.setAdapter(new MyDynamicAdapter(getContext()));
-        adapter = new MyDynamicAdapter(getContext(), null,popBigImageInterface);
+        adapter = new MyDynamicAdapter(getContext(), null, popBigImageInterface);
         // 自定义的核心就是DefineLoadMoreView类。
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());
         myDynamicRecycler.addFooterView(loadMoreView); // 添加为Footer。
@@ -348,9 +349,12 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
     /**
      * 第一次加载数据。
      */
-    private void loadData(ArrayList<DynamicPersonResponse.DataBeanX.DataBean> dataBeans) {
-        adapter.notifyDataSetChanged(dataBeans);
 
+    private void loadData(ArrayList<DynamicPersonResponse.DataBeanX.DataBean> dataBeans) {
+        if (swipeRefreshLayout == null) {
+            return;
+        }
+        adapter.notifyDataSetChanged(dataBeans);
         swipeRefreshLayout.setRefreshing(false);
 
         // 第一次加载数据：一定要掉用这个方法。

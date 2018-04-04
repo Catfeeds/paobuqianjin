@@ -22,6 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/my_circle_spans"
+                android:layout_marginLeft="14dp"
                 android:layout_marginTop="20dp"
                 android:gravity="left"
                 android:includeFontPadding="false"
@@ -36,29 +37,30 @@
                 android:layout_alignBaseline="@+id/my_circle_string"
                 android:layout_alignBottom="@+id/my_circle_string"
                 android:layout_alignEnd="@+id/my_circle_spans"
+                android:layout_marginRight="14dp"
                 android:text="查看更多"
                 android:textColor="@color/color_8a8a8a"
                 android:textSize="12dp" />
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/my_circle_spans"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/my_circle_string"
                 android:layout_centerInParent="true"
-                android:layout_marginEnd="14dp"
-                android:layout_marginLeft="14dp"
                 android:layout_marginTop="15dp">
 
                 <RelativeLayout
                     android:id="@+id/create_circle_lab"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/circle_create"
                         android:layout_width="58dp"
                         android:layout_height="58dp"
+                        android:layout_centerHorizontal="true"
                         android:src="@drawable/quanzhi" />
 
                     <TextView
@@ -67,86 +69,101 @@
                         android:layout_below="@+id/circle_create"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp"
+                        android:gravity="center"
                         android:includeFontPadding="true"
                         android:text="创建圈子"
                         android:textColor="@color/color_161727"
                         android:textSize="12dp" />
                 </RelativeLayout>
 
-                <RelativeLayout
-                    android:id="@+id/circle_hot_a_span"
-                    android:layout_width="58dp"
-                    android:layout_height="58dp"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/create_circle_lab"
                     android:layout_alignTop="@+id/create_circle_lab"
-                    android:layout_centerInParent="true"
-                    android:visibility="gone">
+                    android:layout_weight="3">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/circle_hot_a_img"
-                        android:layout_width="58dp"
-                        android:layout_height="58dp"
-                        android:src="@drawable/default_head_ico" />
-
-                    <TextView
-                        android:id="@+id/circle_hot_a_name"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:visibility="gone"
+                        android:id="@+id/circle_hot_a_span"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/circle_hot_a_img"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="5dp"
-                        android:includeFontPadding="true"
-                        android:text=""
-                        android:textColor="@color/color_161727"
-                        android:textSize="12dp" />
-                </RelativeLayout>
+                        android:layout_weight="1">
 
-                <RelativeLayout
-                    android:id="@+id/hot_circle_b"
-                    android:layout_width="58dp"
-                    android:layout_height="58dp"
-                    android:layout_alignBottom="@+id/create_circle_lab"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignTop="@+id/create_circle_lab"
-                    android:visibility="gone">
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/circle_hot_a_img"
+                            android:layout_width="58dp"
+                            android:layout_height="58dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/default_head_ico" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/circle_hot_b_img"
-                        android:layout_width="58dp"
-                        android:layout_height="58dp"
-                        android:src="@drawable/default_head_ico" />
+                        <ImageView
+                            android:id="@+id/red_pack_a"
+                            android:layout_width="16dp"
+                            android:layout_height="17dp"
+                            android:layout_alignEnd="@+id/circle_hot_a_img"
+                            android:layout_alignParentTop="true"
+                            android:src="@drawable/red_pack"
+                            android:visibility="gone" />
 
-                    <TextView
-                        android:id="@+id/circle_hot_b_name"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/circle_hot_a_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/circle_hot_a_img"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="5dp"
+                            android:ellipsize="end"
+                            android:includeFontPadding="true"
+                            android:maxEms="32"
+                            android:singleLine="true"
+                            android:textColor="@color/color_161727"
+                            android:textSize="12dp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:visibility="gone"
+                        android:id="@+id/hot_circle_b"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/circle_hot_b_img"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="5dp"
-                        android:includeFontPadding="true"
-                        android:text=""
-                        android:textColor="@color/color_161727"
-                        android:textSize="12dp" />
-                </RelativeLayout>
+                        android:layout_alignParentEnd="true"
+                        android:layout_weight="1">
 
-                <ImageView
-                    android:id="@+id/red_pack_b"
-                    android:layout_width="16dp"
-                    android:layout_height="17dp"
-                    android:layout_alignEnd="@+id/hot_circle_b"
-                    android:layout_alignParentTop="true"
-                    android:src="@drawable/red_pack"
-                    android:visibility="gone" />
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/circle_hot_b_img"
+                            android:layout_width="58dp"
+                            android:layout_height="58dp"
+                            android:layout_centerHorizontal="true" />
 
-                <ImageView
-                    android:id="@+id/red_pack_a"
-                    android:layout_width="16dp"
-                    android:layout_height="17dp"
-                    android:layout_alignEnd="@+id/circle_hot_a_span"
-                    android:layout_alignParentTop="true"
-                    android:src="@drawable/red_pack"
-                    android:visibility="gone" />
-            </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/red_pack_b"
+                            android:layout_width="16dp"
+                            android:layout_height="17dp"
+                            android:layout_alignEnd="@+id/circle_hot_b_img"
+                            android:layout_alignParentTop="true"
+                            android:src="@drawable/red_pack"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/circle_hot_b_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/circle_hot_b_img"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="5dp"
+                            android:ellipsize="end"
+                            android:includeFontPadding="true"
+                            android:maxEms="32"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textColor="@color/color_161727"
+                            android:textSize="12dp" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/circle_live_line"

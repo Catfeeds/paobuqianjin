@@ -5,11 +5,11 @@
     android:layout_below="@+id/my_circles">
 
     <ImageView
-        android:layout_marginTop="15dp"
         android:id="@+id/circle_live_line"
         android:layout_width="match_parent"
         android:layout_height="8dp"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
         android:background="@color/color_f6f6f6" />
 
     <TextView
@@ -17,32 +17,35 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/circle_live_line"
+        android:layout_marginLeft="14dp"
         android:layout_marginTop="20dp"
         android:text="圈子活动"
         android:textColor="@color/color_161727"
         android:textSize="14dp" />
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/circle_live_desc"
         android:layout_below="@+id/circle_live_desc"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
         android:layout_marginTop="15dp">
 
         <RelativeLayout
             android:id="@+id/circle_live_default_a"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
             <ImageView
-                android:layout_width="168dp"
+                android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/hot_live" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/live_a_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,23 +53,28 @@
                 android:layout_centerVertical="true"
                 android:text="跑步挑战"
                 android:textColor="@color/color_f8"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                android:visibility="gone" />
         </RelativeLayout>
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
 
         <RelativeLayout
             android:id="@+id/circle_live_default_b"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_toEndOf="@+id/circle_live_default_a">
+            android:layout_marginRight="0dp"
+            android:layout_weight="1">
 
             <ImageView
-                android:layout_width="168dp"
+                android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/hot_livei" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/live_b_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +82,8 @@
                 android:layout_centerVertical="true"
                 android:text="计步挑战"
                 android:textColor="@color/color_f8"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                android:visibility="gone" />
         </RelativeLayout>
-    </RelativeLayout>
+    </LinearLayout>
 </RelativeLayout>

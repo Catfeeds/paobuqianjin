@@ -17,6 +17,7 @@
         android:layout_below="@+id/circle_live_line"
         android:layout_marginTop="20dp"
         android:gravity="left"
+        android:layout_marginLeft="14dp"
         android:includeFontPadding="false"
         android:text="精选圈子"
         android:textColor="@color/color_161727"
@@ -29,8 +30,9 @@
         android:layout_alignBaseline="@+id/circle_choose_good_des"
         android:layout_alignBottom="@+id/circle_choose_good_des"
         android:gravity="right"
+        android:layout_marginRight="14dp"
         android:text="查看更多"
-        android:layout_alignEnd="@+id/live_choose_good_module_rel"
+        android:layout_alignParentRight="true"
         android:textColor="@color/color_8a8a8a"
         android:textSize="12dp" />
 
@@ -38,7 +40,6 @@
         android:id="@+id/live_choose_good_module_rel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/circle_choose_good_des"
         android:layout_below="@+id/circle_choose_good_des"
         android:layout_marginTop="15dp">
 

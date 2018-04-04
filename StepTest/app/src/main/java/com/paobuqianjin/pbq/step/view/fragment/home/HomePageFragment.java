@@ -417,6 +417,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public void responseWeather(WeatherResponse weatherResponse) {
         LocalLog.d(TAG, "responseWeather() enter" + weatherResponse.toString());
+        if(wendu == null){
+            return;
+        }
         wendu.setText(weatherResponse.getData().getTemp() + "°");
         weatherIcon.setImageResource(weatherMap.get(weatherResponse.getData().getImg()));
 
