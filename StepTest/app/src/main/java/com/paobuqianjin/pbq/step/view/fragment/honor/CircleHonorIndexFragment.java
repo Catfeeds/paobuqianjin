@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DanCircleInterface;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.FriendStepDanActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
@@ -107,6 +109,11 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
         }
     }
 
+    private void upDateCircleDetail(TextView myName, ImageView imageView, TextView stepNum, int circleId) {
+        LocalLog.d(TAG, "upDateCircleDetail() enter" + circleId);
+        Presenter.getInstance(getContext()).getCircleDetailView(myName, imageView, stepNum, circleId);
+    }
+
     private void load(CircleStepRankResponse circleStepRankResponse) {
         //TODO 所有异步更新都要判断界面UI是否存在
         if (getContext() == null) {
@@ -116,17 +123,19 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
         TextView rankHonor = (TextView) circle.findViewById(R.id.rank_honor);
         rankHonor.setText(String.valueOf(circleStepRankResponse.getData().getRank()));
         TextView stepNum = (TextView) circle.findViewById(R.id.step_num);
-        stepNum.setText(String.valueOf(circleStepRankResponse.getData().getStep_number()));
+        //stepNum.setText(String.valueOf(circleStepRankResponse.getData().getStep_number()));
         CircleImageView circleLogo = (CircleImageView) circle.findViewById(R.id.circle_logo);
-        Presenter.getInstance(getContext()).getImage(circleLogo, circleStepRankResponse.getData().getAvatar());
+        //Presenter.getInstance(getContext()).getImage(circleLogo, circleStepRankResponse.getData().getAvatar());
         RecyclerView rankRecyclerView = (RecyclerView) circle.findViewById(R.id.rank_recycler_view);
         TextView myName = (TextView) circle.findViewById(R.id.my_name);
-        myName.setText(circleStepRankResponse.getData().getNickname());
+        //myName.setText(circleStepRankResponse.getData().getNickname());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rankRecyclerView.setLayoutManager(layoutManager);
         rankRecyclerView.setAdapter(new HonorAdapter(getContext(), circleStepRankResponse.getData().getCircle()));
         RelativeLayout relativeLayout = (RelativeLayout) circle.findViewById(R.id.more_span);
         TextView circleIndex = (TextView) circle.findViewById(R.id.circle_index);
+        TextView timeToday = (TextView) circle.findViewById(R.id.times_today);
+        timeToday.setText(DateTimeUtil.getLocalTime());
         relativeLayout.setTag(circleStepRankResponse.getData().getCircleid());
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +150,7 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
 
             }
         });
+        upDateCircleDetail(myName, circleLogo, stepNum, circleStepRankResponse.getData().getCircleid());
         mView.add(circle);
         circleIndex.setText(String.valueOf(mView.size()) + "/" + totalCircle);
         if (mView.size() < totalCircle) {

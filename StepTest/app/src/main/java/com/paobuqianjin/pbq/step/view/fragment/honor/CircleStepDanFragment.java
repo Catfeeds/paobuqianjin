@@ -26,6 +26,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRandWeekResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CircleStepDetailDanInterface;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -78,6 +79,8 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     RelativeLayout buttoneLeftBar;
     @Bind(R.id.rank_icon)
     ImageView rankIcon;
+    @Bind(R.id.times_today)
+    TextView timesToday;
     private int circleId = -1;
     LinearLayoutManager layoutManager;
     private final static String ACTION_CIRCLE_HONOR = "com.paobuqianjin.pbq.ACTION_CIRCLE_HONOR";
@@ -137,6 +140,8 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
         circleTarget = (TextView) viewRoot.findViewById(R.id.circle_target);
         buttoneLeftBar = (RelativeLayout) viewRoot.findViewById(R.id.buttone_left_bar);
         buttoneLeftBar.setOnClickListener(onClickListener);
+        timesToday = (TextView)viewRoot.findViewById(R.id.times_today);
+        timesToday.setText(DateTimeUtil.getLocalTime());
         Intent intent = getActivity().getIntent();
         if (intent != null && ACTION_CIRCLE_HONOR.equals(intent.getAction())) {
             circleId = intent.getIntExtra("circleid", -1);

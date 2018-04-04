@@ -13,10 +13,14 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
+import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
@@ -45,7 +49,9 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostIncomeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostMessageParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.AllPayOrderInterface;
 import com.paobuqianjin.pbq.step.presenter.im.BindThirdAccoutInterface;
@@ -120,6 +126,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
+import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
@@ -1469,6 +1476,36 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(circleDetailInterface, COMMAND_GET_CIRCLE_DETAIL));
+    }
+
+    public void getCircleDetailView(final TextView myName, final ImageView imageView, final TextView stepNum, final int circleId) {
+        LocalLog.d(TAG, "getCircleDetailCircle() cirCleId =  " + circleId);
+        String url = NetApi.urlCircle + "/" + String.valueOf(circleId) + "?userid=" + String.valueOf(getId(mContext));
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
+                        if (myName != null) {
+                            myName.setText(circleDetailResponse.getData().getName());
+                        }
+                        if (imageView != null) {
+                            Presenter.getInstance(mContext).getImage(imageView, circleDetailResponse.getData().getLogo());
+                        }
+                        if (stepNum != null) {
+                            stepNum.setText(String.valueOf(circleDetailResponse.getData().getTarget()));
+                        }
+                    }
+                });
+
     }
 
     public void getCircleIsRedPackage(int circleId) {

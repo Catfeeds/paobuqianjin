@@ -134,6 +134,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private PopupWindow popCircleRedPkg;
     private TranslateAnimation animationCircleType;
     private ImageView imageView;
+    private TextView money;
     private CircleDetailResponse circleDetailResponse = null;
     private final static String CIRCLE_ID = "id";
     private final static String CIRCLE_NAME = "name";
@@ -287,7 +288,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 popCircleRedPkg = null;
             }
         });
-
+        money = (TextView)popCircleOpBar.findViewById(R.id.rec_money);
         popCircleRedPkg.setFocusable(true);
         popCircleRedPkg.setOutsideTouchable(true);
 
@@ -709,7 +710,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         LocalLog.d(TAG, "PostRevRedPkgResponse() enter " + postRevRedPkgResponse.toString());
         if (imageView != null) {
             imageView.clearAnimation();
-            popCircleRedPkg.dismiss();
+            imageView.setVisibility(View.GONE);
+            money.setText(String.valueOf("￥ " +postRevRedPkgResponse.getData().getAmount()));
+            //popCircleRedPkg.dismiss();
         }
         if (postRevRedPkgResponse.getError() == 0) {
             Toast.makeText(getActivity(), postRevRedPkgResponse.getMessage(), Toast.LENGTH_SHORT).show();

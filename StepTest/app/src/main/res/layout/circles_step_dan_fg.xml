@@ -23,6 +23,17 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/dan_detail_bg" />
 
+            <TextView
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:text=""
+                android:textColor="@color/color_f8"
+                android:textSize="14dp"
+                android:id="@+id/times_today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/king_head_icon"
                 android:layout_width="70dp"
@@ -76,13 +87,13 @@
                 android:layout_below="@+id/bg_dan">
 
                 <ImageView
-                    android:visibility="invisible"
                     android:id="@+id/rank_icon"
                     android:layout_width="19dp"
                     android:layout_height="24dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
-                    android:src="@drawable/honor_master" />
+                    android:src="@drawable/honor_master"
+                    android:visibility="invisible" />
 
                 <TextView
                     android:id="@+id/your_dan"

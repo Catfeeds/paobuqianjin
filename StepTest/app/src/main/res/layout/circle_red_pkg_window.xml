@@ -10,11 +10,11 @@
 
 
         <ImageView
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:id="@+id/red_pkg_bg"
             android:layout_width="304dp"
             android:layout_height="350dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:scaleType="centerCrop"
             android:src="@drawable/un_op_pkg" />
 
@@ -30,9 +30,9 @@
 
         <TextView
             android:id="@+id/message_red_a"
-            android:layout_alignTop="@+id/red_pkg_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/red_pkg_bg"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="40dp"
             android:text="恭喜您获得"
@@ -59,6 +59,16 @@
             android:layout_marginTop="71dp"
             android:scaleType="centerCrop"
             android:src="@drawable/op_button" />
+
+        <TextView
+            android:id="@+id/rec_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/message_red_b"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="71dp"
+            android:textColor="@color/color_f8ce95"
+            android:textSize="36dp" />
 
         <TextView
             android:id="@+id/pkg_des"

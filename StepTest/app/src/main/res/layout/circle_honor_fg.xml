@@ -44,6 +44,17 @@
             android:text="2/20"
             android:textColor="@color/color_f8"
             android:textSize="14dp" />
+        <TextView
+            android:text=""
+            android:textColor="@color/color_f8"
+            android:textSize="14dp"
+            android:id="@+id/times_today"
+            android:layout_alignBottom="@+id/rank_circle"
+            android:layout_alignTop="@+id/rank_circle"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <RelativeLayout
             android:id="@+id/rank_data_span"
@@ -126,7 +137,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="12dp"
                         android:includeFontPadding="false"
-                        android:text="步数"
+                        android:text="目标步数"
                         android:textColor="@color/color_161727"
                         android:textSize="12dp" />
                 </RelativeLayout>

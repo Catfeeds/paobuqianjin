@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
@@ -314,6 +315,9 @@ public final class Presenter {
     //TODO  获取圈子详情
     public void getCircleDetail(int circleId) {
         engine.getCircleDetail(circleId);
+    }
+    public void getCircleDetailView(TextView myName, ImageView imageView, TextView stepNum, int circleId){
+        engine.getCircleDetailView(myName, imageView, stepNum, circleId);
     }
 
     public void postCircleRedPkg(PostCircleRedPkgParam postCircleRedPkgParam) {
