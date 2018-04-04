@@ -278,6 +278,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
         if (!"".equals(loginResponse.getData().getQq_openid()) || !"".equals(loginResponse.getData().getWx_openid())) {
             LocalLog.d(TAG, "绑定过QQ或者微信");
             Presenter.getInstance(this).steLogFlg(true);
+            Presenter.getInstance(this).setToken(this,loginResponse.getData().getUser_token());
             Presenter.getInstance(this).setId(loginResponse.getData().getId());
             Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
             startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
@@ -292,6 +293,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
             } else {
                 Presenter.getInstance(this).steLogFlg(true);
                 Presenter.getInstance(this).setId(loginResponse.getData().getId());
+                Presenter.getInstance(this).setToken(this,loginResponse.getData().getUser_token());
                 Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
                 startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
             }
@@ -319,6 +321,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                 Presenter.getInstance(this).steLogFlg(true);
                 Presenter.getInstance(this).setId(thirdPartyLoginResponse.getData().getId());
                 Presenter.getInstance(this).setMobile(this, thirdPartyLoginResponse.getData().getMobile());
+                Presenter.getInstance(this).setToken(this,thirdPartyLoginResponse.getData().getUser_token());
                 startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
             } else {
                 LocalLog.d(TAG, "没有绑定过手机");
@@ -341,6 +344,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
         } else {
             if (loginResponse != null) {
                 Presenter.getInstance(this).steLogFlg(true);
+                Presenter.getInstance(this).setToken(this,loginResponse.getData().getUser_token());
                 Presenter.getInstance(this).setId(loginResponse.getData().getId());
                 Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
                 startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);

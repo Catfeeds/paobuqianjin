@@ -30,6 +30,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.LikeBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
@@ -249,6 +250,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 Presenter.getInstance(getContext()).getDynamicVoteList(dynamicid, userid, 1, 10);
             }
         }
+
+
     }
 
 

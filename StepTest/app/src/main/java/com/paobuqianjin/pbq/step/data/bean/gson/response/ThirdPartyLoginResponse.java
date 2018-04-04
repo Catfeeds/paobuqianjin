@@ -10,8 +10,8 @@ public class ThirdPartyLoginResponse {
 
     /**
      * error : 0
-     * message : 登陆成功
-     * data : {"id":30,"wx_openid":"oPd5d0SDHRV1oZF8dB80Jq0kH_tY","qq_openid":"","mobile":"","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","levelid":1,"sex":0,"birthyear":0,"birthmonth":0,"birthday":0,"height":169,"weight":120,"type":0,"province":"广东","city":"深圳","balance":"4.71","target_step":0,"credit":0,"status":0,"is_perfect":0,"create_time":1513757559,"delete_time":null}
+     * message : 登录成功
+     * data : {"id":30,"wx_openid":"oPd5d0SDHRV1oZF8dB80Jq0kH_tY","qq_openid":"","mobile":"13424156029","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","levelid":3,"sex":0,"birthyear":2016,"birthmonth":10,"birthday":1,"height":200,"weight":"45.00","type":1,"province":"广东","city":"深圳","balance":"9888.38","target_step":0,"credit":0,"status":0,"is_perfect":1,"create_time":1521794437,"delete_time":null,"logintimes":53,"h_long":null,"h_lat":null,"h_updatetime":0,"c_long":"0.00000","c_lat":"0.00000","c_updatetime":0,"n_long":"0.00000","n_lat":"0.00000","n_updatetime":0,"user_token":"30:FS4LtmiN3BhZadHFOS7ve6VraLicFDqj"}
      */
 
     private int error;
@@ -42,40 +42,42 @@ public class ThirdPartyLoginResponse {
         this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return "ThirdPartyLoginResponse{" +
-                "error=" + error +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
-    }
-
-    public static class DataBean implements Serializable {
+    public static class DataBean implements Serializable{
         /**
          * id : 30
          * wx_openid : oPd5d0SDHRV1oZF8dB80Jq0kH_tY
          * qq_openid :
-         * mobile :
+         * mobile : 13424156029
          * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
          * nickname : 黄钦平
-         * levelid : 1
+         * levelid : 3
          * sex : 0
-         * birthyear : 0
-         * birthmonth : 0
-         * birthday : 0
-         * height : 169
-         * weight : 120
-         * type : 0
+         * birthyear : 2016
+         * birthmonth : 10
+         * birthday : 1
+         * height : 200
+         * weight : 45.00
+         * type : 1
          * province : 广东
          * city : 深圳
-         * balance : 4.71
+         * balance : 9888.38
          * target_step : 0
          * credit : 0
          * status : 0
-         * is_perfect : 0
-         * create_time : 1513757559
+         * is_perfect : 1
+         * create_time : 1521794437
          * delete_time : null
+         * logintimes : 53
+         * h_long : null
+         * h_lat : null
+         * h_updatetime : 0
+         * c_long : 0.00000
+         * c_lat : 0.00000
+         * c_updatetime : 0
+         * n_long : 0.00000
+         * n_lat : 0.00000
+         * n_updatetime : 0
+         * user_token : 30:FS4LtmiN3BhZadHFOS7ve6VraLicFDqj
          */
 
         private int id;
@@ -90,7 +92,7 @@ public class ThirdPartyLoginResponse {
         private int birthmonth;
         private int birthday;
         private int height;
-        private int weight;
+        private String weight;
         private int type;
         private String province;
         private String city;
@@ -101,6 +103,17 @@ public class ThirdPartyLoginResponse {
         private int is_perfect;
         private int create_time;
         private Object delete_time;
+        private int logintimes;
+        private Object h_long;
+        private Object h_lat;
+        private int h_updatetime;
+        private String c_long;
+        private String c_lat;
+        private int c_updatetime;
+        private String n_long;
+        private String n_lat;
+        private int n_updatetime;
+        private String user_token;
 
         public int getId() {
             return id;
@@ -198,11 +211,11 @@ public class ThirdPartyLoginResponse {
             this.height = height;
         }
 
-        public int getWeight() {
+        public String getWeight() {
             return weight;
         }
 
-        public void setWeight(int weight) {
+        public void setWeight(String weight) {
             this.weight = weight;
         }
 
@@ -286,6 +299,94 @@ public class ThirdPartyLoginResponse {
             this.delete_time = delete_time;
         }
 
+        public int getLogintimes() {
+            return logintimes;
+        }
+
+        public void setLogintimes(int logintimes) {
+            this.logintimes = logintimes;
+        }
+
+        public Object getH_long() {
+            return h_long;
+        }
+
+        public void setH_long(Object h_long) {
+            this.h_long = h_long;
+        }
+
+        public Object getH_lat() {
+            return h_lat;
+        }
+
+        public void setH_lat(Object h_lat) {
+            this.h_lat = h_lat;
+        }
+
+        public int getH_updatetime() {
+            return h_updatetime;
+        }
+
+        public void setH_updatetime(int h_updatetime) {
+            this.h_updatetime = h_updatetime;
+        }
+
+        public String getC_long() {
+            return c_long;
+        }
+
+        public void setC_long(String c_long) {
+            this.c_long = c_long;
+        }
+
+        public String getC_lat() {
+            return c_lat;
+        }
+
+        public void setC_lat(String c_lat) {
+            this.c_lat = c_lat;
+        }
+
+        public int getC_updatetime() {
+            return c_updatetime;
+        }
+
+        public void setC_updatetime(int c_updatetime) {
+            this.c_updatetime = c_updatetime;
+        }
+
+        public String getN_long() {
+            return n_long;
+        }
+
+        public void setN_long(String n_long) {
+            this.n_long = n_long;
+        }
+
+        public String getN_lat() {
+            return n_lat;
+        }
+
+        public void setN_lat(String n_lat) {
+            this.n_lat = n_lat;
+        }
+
+        public int getN_updatetime() {
+            return n_updatetime;
+        }
+
+        public void setN_updatetime(int n_updatetime) {
+            this.n_updatetime = n_updatetime;
+        }
+
+        public String getUser_token() {
+            return user_token;
+        }
+
+        public void setUser_token(String user_token) {
+            this.user_token = user_token;
+        }
+
         @Override
         public String toString() {
             return "DataBean{" +
@@ -301,7 +402,7 @@ public class ThirdPartyLoginResponse {
                     ", birthmonth=" + birthmonth +
                     ", birthday=" + birthday +
                     ", height=" + height +
-                    ", weight=" + weight +
+                    ", weight='" + weight + '\'' +
                     ", type=" + type +
                     ", province='" + province + '\'' +
                     ", city='" + city + '\'' +
@@ -312,6 +413,17 @@ public class ThirdPartyLoginResponse {
                     ", is_perfect=" + is_perfect +
                     ", create_time=" + create_time +
                     ", delete_time=" + delete_time +
+                    ", logintimes=" + logintimes +
+                    ", h_long=" + h_long +
+                    ", h_lat=" + h_lat +
+                    ", h_updatetime=" + h_updatetime +
+                    ", c_long='" + c_long + '\'' +
+                    ", c_lat='" + c_lat + '\'' +
+                    ", c_updatetime=" + c_updatetime +
+                    ", n_long='" + n_long + '\'' +
+                    ", n_lat='" + n_lat + '\'' +
+                    ", n_updatetime=" + n_updatetime +
+                    ", user_token='" + user_token + '\'' +
                     '}';
         }
     }

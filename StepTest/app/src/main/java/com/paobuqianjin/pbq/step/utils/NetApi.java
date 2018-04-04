@@ -146,4 +146,6 @@ public class NetApi {
     public final static String urlProtocol = "http://119.29.10.64/v1/Zfile/getFile";
     //TODO 绑定解绑三方借口
     public final static String urlBindThird = "http://119.29.10.64/v1/user/bindOpenid";
+    //TODO 退出APP接口
+    public final static String urlLogOut = "http://119.29.10.64/v1/user/logOut";
 }

@@ -148,12 +148,13 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                 break;
             case R.id.change_birth:
                 LocalLog.d(TAG, "关于我们");
-                startActivity(AboutActivity.class,null);
+                startActivity(AboutActivity.class, null);
                 break;
             case R.id.exit:
                 LocalLog.d(TAG, "退出APP");
                 Presenter.getInstance(getContext()).setId(-1);
                 Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
                 getActivity().finish();
                 System.exit(0);
                 break;

@@ -463,6 +463,14 @@ public final class Engine {
         FlagPreference.setLoginFlag(context, isLogin);
     }
 
+    public void setToken(Context context, String user_token) {
+        FlagPreference.setToken(context, user_token);
+    }
+
+    public String getToken(Context context) {
+        return FlagPreference.getToken(context);
+    }
+
     public int getId(Context context) {
         return FlagPreference.getUid(context);
     }
@@ -500,6 +508,7 @@ public final class Engine {
         LocalLog.d(TAG, "getUserInfo() url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(ownerUiInterface, COMMAND_OWNER_USER_INFO));
@@ -514,6 +523,7 @@ public final class Engine {
         }
         OkHttpUtils
                 .put()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .requestBody(new RequestBody() {
                     @Override
@@ -537,6 +547,7 @@ public final class Engine {
         String url = urlFindPassWord + "13424156029";
         OkHttpUtils
                 .put()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .requestBody(new RequestBody() {
                     @Override
@@ -560,6 +571,7 @@ public final class Engine {
         LocalLog.d(TAG, "getLoginRecord() enter " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_PHONE_LOGIN));
@@ -571,6 +583,7 @@ public final class Engine {
         LocalLog.d(TAG, "inviteMsg() phoneNum " + phoneNum);
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlinviteMsg)
                 .addParams("userid", String.valueOf(getId(mContext)))
                 .addParams("phones", "[" + "\"" + phoneNum + "\"" + "]")
@@ -598,6 +611,7 @@ public final class Engine {
         LocalLog.d(TAG, userInfo[0] + " ," + userInfo[2] + "," + userInfo[1]);
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(urlRegisterPhone)
                 .addParams("mobile", userInfo[0])
                 .addParams("password", userInfo[2])
@@ -612,6 +626,7 @@ public final class Engine {
         LocalLog.d(TAG, "url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(nearByInterface, COMMAND_NEARBY_PEOPLE));
@@ -623,6 +638,7 @@ public final class Engine {
         LocalLog.d(TAG, "getSignCode() enter url  = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(signCodeInterface, COMMAND_GET_SIGN_CODE));
@@ -639,6 +655,7 @@ public final class Engine {
         }
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(loginBindPhoneInterface, COMMAND_GET_SIGN_CODE));
@@ -654,6 +671,7 @@ public final class Engine {
         LocalLog.d(TAG, "getSignCode() enter url  = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(forgetPassWordInterface, COMMAND_GET_SIGN_CODE));
@@ -664,6 +682,7 @@ public final class Engine {
         LocalLog.d(TAG, "postPassByOlder() enter " + postPassByOldParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlByOldPassWord)
                 .params(postPassByOldParam.getParams())
                 .build()
@@ -674,6 +693,7 @@ public final class Engine {
         LocalLog.d(TAG, "修改密码");
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlPassWord)
                 .params(postPassWordParam.getParams())
                 .build()
@@ -694,6 +714,7 @@ public final class Engine {
         LocalLog.d(TAG, "bindLoginPhone() enter " + postWxQqBindPhoneParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlBindPhone)
                 .params(postWxQqBindPhoneParam.getParams())
                 .build()
@@ -715,6 +736,7 @@ public final class Engine {
         LocalLog.d(TAG, checkSignCodeParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlSignCodeCheck)
                 .params(checkSignCodeParam.getParams())
                 .build()
@@ -726,6 +748,7 @@ public final class Engine {
         LocalLog.d(TAG, crashToParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlCrashTo)
                 .params(crashToParam.getParams())
                 .build()
@@ -737,6 +760,7 @@ public final class Engine {
         LocalLog.d(TAG, "getCrashRecord() url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(crashRecordInterface, COMMAND_CRASH_RECORD));
@@ -746,6 +770,7 @@ public final class Engine {
         String url = NetApi.urlCrashTo + "/rechargeList";
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .addParams("userid", String.valueOf(getId(mContext)))
                 .build()
@@ -763,6 +788,7 @@ public final class Engine {
         String url = NetApi.urlSendMsg + phone;
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_GET_SIGN_CODE));
@@ -800,6 +826,7 @@ public final class Engine {
         }
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlUserLogin)
                 .addParams("mobile", userInfo[0])
                 .addParams("password", userInfo[1])
@@ -828,6 +855,7 @@ public final class Engine {
         String url = NetApi.urlCircleTags;
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(tagFragInterface, COMMAND_GET_TAG));
@@ -853,6 +881,7 @@ public final class Engine {
         LocalLog.d(TAG, "getCircleCover() enter");
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlCircleCover)
                 .build()
                 .execute(new NetStringCallBack(null, -1));
@@ -869,6 +898,7 @@ public final class Engine {
         String url = NetApi.urlDynamic + "/?userid=" + String.valueOf(getId(mContext)) + "&page=" + page + "&pagesize=" + pagesize;
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(dynamicIndexUiInterface, Engine.COMMAND_GET_DYNAMIC_INDEX));
@@ -880,6 +910,7 @@ public final class Engine {
         LocalLog.d(TAG, "getUserDynamic() enter url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(userHomeInterface, COMMAND_GET_USER_DYNAMIC));
@@ -893,6 +924,7 @@ public final class Engine {
         LocalLog.d(TAG, "getMyDynamic() enter");
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(myDynamicInterface, COMMAND_GET_USER_DYNAMIC));
@@ -904,6 +936,7 @@ public final class Engine {
         LocalLog.d(TAG, "getUserInfo() url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(userHomeInterface, COMMAND_GET_USER_INFO));
@@ -914,6 +947,7 @@ public final class Engine {
         LocalLog.d(TAG, "postDynamic() enter" + postDynamicParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlDynamic)
                 .params(postDynamicParam.getParams())
                 .build()
@@ -926,6 +960,7 @@ public final class Engine {
         String url = NetApi.urlDynamic + "/" + String.valueOf(id);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_GET_DYNAMIC_ID_DETAIL));
@@ -938,6 +973,7 @@ public final class Engine {
         LocalLog.d(TAG, "getDynamicCommentList() enter url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_DYNAMIC_CONTENTS));
@@ -950,6 +986,7 @@ public final class Engine {
         LocalLog.d(TAG, "getDynamicVoteList() enter url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_GET_VOTE_LIST));
@@ -960,6 +997,7 @@ public final class Engine {
         LocalLog.d(TAG, "postContent() enter " + postDynamicContentParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlDynamicComment)
                 .params(postDynamicContentParam.getParams())
                 .build()
@@ -971,6 +1009,7 @@ public final class Engine {
         LocalLog.d(TAG, "putVote() enter " + putVoteParam.paramString());
         OkHttpUtils
                 .put()
+                .addHeader("headtoken", getToken(mContext))
                 .requestBody(new RequestBody() {
                     @Override
                     public MediaType contentType() {
@@ -995,6 +1034,7 @@ public final class Engine {
         String url = NetApi.urlDynamicComment + "/" + String.valueOf(id);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(null, -1));
@@ -1005,6 +1045,7 @@ public final class Engine {
         LocalLog.d(TAG, "postDynamicComment() enter");
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlDynamicComment)
                 .params(dynamicContentParam.getParam())
                 .build()
@@ -1020,6 +1061,7 @@ public final class Engine {
 
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(null, -1));
@@ -1030,6 +1072,7 @@ public final class Engine {
         LocalLog.d(TAG, "postFeedBack() enter");
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlFeedBack)
                 .params(feedBackParam.getParam())
                 .build()
@@ -1043,6 +1086,7 @@ public final class Engine {
                 + "&page=" + page + "&pagesize=" + pagesize;
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(circleMemberManagerInterface, COMMAND_GET_MEMBER));
@@ -1053,6 +1097,7 @@ public final class Engine {
         LocalLog.d(TAG, "deleteCircleMember()" + url);
         OkHttpUtils
                 .delete()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(circleMemberManagerInterface, COMMAND_DELETE_MEMBER));
@@ -1067,6 +1112,7 @@ public final class Engine {
                 LocalLog.d(TAG, "修改昵称");
                 OkHttpUtils
                         .put()
+                        .addHeader("headtoken", getToken(mContext))
                         .requestBody(new RequestBody() {
                             @Override
                             public MediaType contentType() {
@@ -1088,6 +1134,7 @@ public final class Engine {
                 LocalLog.d(TAG, "设置为管理员");
                 OkHttpUtils
                         .put()
+                        .addHeader("headtoken", getToken(mContext))
                         .requestBody(new RequestBody() {
                             @Override
                             public MediaType contentType() {
@@ -1113,6 +1160,7 @@ public final class Engine {
         LocalLog.d(TAG, "getAboutType() enter");
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlAboutType)
                 .build()
                 .execute(new NetStringCallBack(null, -1));
@@ -1124,6 +1172,7 @@ public final class Engine {
         String url = NetApi.urlAboutType + "/" + String.valueOf(id);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(null, 0));
@@ -1139,6 +1188,7 @@ public final class Engine {
             case 1:
                 OkHttpUtils
                         .get()
+                        .addHeader("headtoken", getToken(mContext))
                         .url(url)
                         .build()
                         .execute(new NetStringCallBack(messageInterface, COMMAND_AT_MESSAGE));
@@ -1146,6 +1196,7 @@ public final class Engine {
             case 2:
                 OkHttpUtils
                         .get()
+                        .addHeader("headtoken", getToken(mContext))
                         .url(url)
                         .build()
                         .execute(new NetStringCallBack(messageInterface, COMMAND_CONTENT_MESSAGE));
@@ -1153,6 +1204,7 @@ public final class Engine {
             case 3:
                 OkHttpUtils
                         .get()
+                        .addHeader("headtoken", getToken(mContext))
                         .url(url)
                         .build()
                         .execute(new NetStringCallBack(messageInterface, COMMAND_LIKE_MESSAGE));
@@ -1160,6 +1212,7 @@ public final class Engine {
             case 4:
                 OkHttpUtils
                         .get()
+                        .addHeader("headtoken", getToken(mContext))
                         .url(url)
                         .build()
                         .execute(new NetStringCallBack(messageInterface, COMMAND_SYS_MESSAGE));
@@ -1174,6 +1227,7 @@ public final class Engine {
         String url = NetApi.urlMessage + "/detail/?id=" + String.valueOf(id);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(null, -1));
@@ -1184,6 +1238,7 @@ public final class Engine {
         LocalLog.d(TAG, "postMessage() enter");
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlMessage)
                 .params(postMessageParam.getParam())
                 .build()
@@ -1195,6 +1250,7 @@ public final class Engine {
         LocalLog.d(TAG, "postAddressBook() enter");
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlAddressBook)
                 .addParams("userid", String.valueOf(getId(mContext)))
                 .addParams("mobiles", addressJson)
@@ -1214,6 +1270,7 @@ public final class Engine {
         LocalLog.d(TAG, "loginOutCircle()  " + loginOutParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlCircleMember + "/signOutCirscle")
                 .params(loginOutParam.getParams())
                 .build()
@@ -1227,6 +1284,7 @@ public final class Engine {
         LocalLog.d(TAG, "joinCircle() enter" + joinCircleParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlCircleMember)
                 .params(joinCircleParam.getParams())
                 .build()
@@ -1240,6 +1298,7 @@ public final class Engine {
         LocalLog.d(TAG, "joinCircle() password");
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlCircleMember)
                 .addParams("userid", String.valueOf(getId(mContext)))
                 .addParams("circleid", String.valueOf(circleid))
@@ -1253,6 +1312,7 @@ public final class Engine {
         LocalLog.d(TAG, "getCircleTarget() enter");
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlTarget)
                 .build()
                 .execute(new NetStringCallBack(uiCreateCircleInterface, COMMAND_GET_CIRCLE_TARGET));
@@ -1262,6 +1322,7 @@ public final class Engine {
         LocalLog.d(TAG, "getCircleTargetEdit() enter");
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlTarget)
                 .build()
                 .execute(new NetStringCallBack(editCircleInterface, COMMAND_GET_CIRCLE_TARGET));
@@ -1272,6 +1333,7 @@ public final class Engine {
         LocalLog.d(TAG, "圈子类型列表：getCircleType() enter");
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlCircleType)
                 .build()
                 .execute(new NetStringCallBack(uiCreateCircleInterface, COMMAND_CIRCLE_TYPE) {
@@ -1287,6 +1349,7 @@ public final class Engine {
         LocalLog.d(TAG, "圈子步数排行：getCircleStepRank() enter url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(uiStepAndLoveRankInterface, COMMAND_STEP_RANK));
@@ -1297,6 +1360,7 @@ public final class Engine {
         LocalLog.d(TAG, "getUserCircleRank() enter  url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(danCircleInterface, COMMAND_STEP_RANK));
@@ -1308,6 +1372,7 @@ public final class Engine {
         LocalLog.d(TAG, "圈子步数排行：getCircleStepRank() enter url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(circleStepDetailDanInterface, COMMAND_HONOR_DAN_DAY_STEP));
@@ -1318,6 +1383,7 @@ public final class Engine {
         LocalLog.d(TAG, "getCircleStepRankWeek() url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(circleStepDetailDanInterface, COMMAND_HONOR_WEEK_STEP));
@@ -1329,6 +1395,7 @@ public final class Engine {
         LocalLog.d(TAG, "getCircleRankNum() enter  url " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(circleStepDetailDanInterface, COMMAND_HONOR_WEEK_RANK_NUM));
@@ -1339,6 +1406,7 @@ public final class Engine {
         LocalLog.d(TAG, "getUserCircleRankDetail() enter  url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(circleStepDetailDanInterface, COMMAND_GET_CIRCLE_DETAIL));
@@ -1349,6 +1417,7 @@ public final class Engine {
         LocalLog.d(TAG, "getUserCircleRankDetail() enter  url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(circleStepDetailDanInterface, COMMAND_STEP_RANK));
@@ -1360,6 +1429,7 @@ public final class Engine {
                 + "&action=recharge" + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(uiStepAndLoveRankInterface, COMMAND_RECHARGE_RANK));
@@ -1375,6 +1445,7 @@ public final class Engine {
         LocalLog.d(TAG, "我加入的圈子：getMyJoin() enter" + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(myJoinCircleInterface, COMMAND_GET_MY_JOIN_CIRCLE));
@@ -1387,6 +1458,7 @@ public final class Engine {
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(reflashMyCircleInterface, COMMAND_REFLASH_CIRCLE));
@@ -1402,6 +1474,7 @@ public final class Engine {
         LocalLog.d(TAG, "getMyCreateCirlce() url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(myCreatCircleInterface, COMMAND_GET_MY_CREATE_CIRCLE));
@@ -1414,6 +1487,7 @@ public final class Engine {
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_MY_HOT));
@@ -1426,6 +1500,7 @@ public final class Engine {
         LocalLog.d(TAG, "getAllMyCircle() url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(danCircleInterface, COMMAND_GET_MY_HOT));
@@ -1439,6 +1514,7 @@ public final class Engine {
         LocalLog.d(TAG, "精选圈子：getCircleChoice() enter" + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(uiHotCircleInterface, COMMAND_GET_CHOICE_CIRCLE));
@@ -1453,6 +1529,7 @@ public final class Engine {
         LocalLog.d(TAG, "精选圈子：getMoreCircle() enter" + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(searchCircleInterface, COMMAND_GET_CHOICE_CIRCLE));
@@ -1462,6 +1539,7 @@ public final class Engine {
         LocalLog.d(TAG, "  创建圈子createCircle() enter " + createCircleBodyParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlCircle)
                 .params(createCircleBodyParam.getParams())
                 .build()
@@ -1473,6 +1551,7 @@ public final class Engine {
         String url = NetApi.urlCircle + "/" + String.valueOf(circleId) + "?userid=" + String.valueOf(getId(mContext));
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(circleDetailInterface, COMMAND_GET_CIRCLE_DETAIL));
@@ -1483,6 +1562,7 @@ public final class Engine {
         String url = NetApi.urlCircle + "/" + String.valueOf(circleId) + "?userid=" + String.valueOf(getId(mContext));
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new StringCallback() {
@@ -1513,6 +1593,7 @@ public final class Engine {
         String url = NetApi.urlCircle + "/" + String.valueOf(circleId) + "?userid=" + String.valueOf(getId(mContext));
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(queryRedPkgInterface, COMMAND_GET_CIRCLE_DETAIL));
@@ -1523,6 +1604,7 @@ public final class Engine {
         LocalLog.d(TAG, "编辑圈子 putCircle() url = " + url + " ,createCircleBodyParam = " + createCircleBodyParam.toString());
         OkHttpUtils
                 .put()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .requestBody(new RequestBody() {
                     @Override
@@ -1547,6 +1629,7 @@ public final class Engine {
         LocalLog.d(TAG, "postCircleRedPkg() enter url = " + url + " postCircleRedPkgParam = " + postCircleRedPkgParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .params(postCircleRedPkgParam.getParams())
                 .build()
@@ -1558,6 +1641,7 @@ public final class Engine {
         LocalLog.d(TAG, "删除圈子：deleteCircle() enter");
         OkHttpUtils
                 .delete()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(circleDetailInterface, COMMAND_DELETE_CIRCLE));
@@ -1569,6 +1653,7 @@ public final class Engine {
         String url = NetApi.urlUserRecord + String.valueOf(userId);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(null, -1));
@@ -1584,6 +1669,7 @@ public final class Engine {
 
         OkHttpUtils
                 .post()
+                .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlUserRecordPost)
                 .params(userRecordParam.getParam())
                 .build()
@@ -1597,6 +1683,7 @@ public final class Engine {
         LocalLog.d(TAG, "getUserStep() enter url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(null, -1));
@@ -1611,6 +1698,7 @@ public final class Engine {
         LocalLog.d(TAG, "putUserStep() enter url =" + url + "\n" + postUserStepParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken",getToken(mContext))
                 .params(postUserStepParam.getParams())
                 .url(url)
                 .build()
@@ -1621,6 +1709,7 @@ public final class Engine {
         String url = NetApi.urlBusiness + "?userid=" + String.valueOf(getId(mContext));
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(homePageInterface, COMMAND_SPONSOR_PKG));
@@ -1634,12 +1723,14 @@ public final class Engine {
         if ("month".equals(action)) {
             OkHttpUtils
                     .get()
+                    .addHeader("headtoken",getToken(mContext))
                     .url(url)
                     .build()
                     .execute(new NetStringCallBack(homePageInterface, COMMAND_INCOME_MONTH));
         } else if ("today".equals(action)) {
             OkHttpUtils
                     .get()
+                    .addHeader("headtoken",getToken(mContext))
                     .url(url)
                     .build()
                     .execute(new NetStringCallBack(homePageInterface, COMMAND_INCOME_TODAY));
@@ -1654,24 +1745,28 @@ public final class Engine {
         if ("month".equals(action)) {
             OkHttpUtils
                     .get()
+                    .addHeader("headtoken",getToken(mContext))
                     .url(url)
                     .build()
                     .execute(new NetStringCallBack(userIncomInterface, COMMAND_INCOME_MONTH));
         } else if ("yesterday".equals(action)) {
             OkHttpUtils
                     .get()
+                    .addHeader("headtoken",getToken(mContext))
                     .url(url)
                     .build()
                     .execute(new NetStringCallBack(userIncomInterface, COMMAND_INCOME_YESTERDAY));
         } else if ("all".equals(action)) {
             OkHttpUtils
                     .get()
+                    .addHeader("headtoken",getToken(mContext))
                     .url(url)
                     .build()
                     .execute(new NetStringCallBack(userIncomInterface, COMMAND_INCOME_ALL));
         } else if ("today".equals(action)) {
             OkHttpUtils
                     .get()
+                    .addHeader("headtoken",getToken(mContext))
                     .url(url)
                     .build()
                     .execute(new NetStringCallBack(userIncomInterface, COMMAND_INCOME_TODAY));
@@ -1683,6 +1778,7 @@ public final class Engine {
         String url;
         OkHttpUtils
                 .post()
+                .addHeader("headtoken",getToken(mContext))
                 .url(NetApi.urlIncome)
                 .params(param.getParam())
                 .build()
@@ -1694,6 +1790,7 @@ public final class Engine {
         LocalLog.d(TAG, "postAuthentication() enter");
         OkHttpUtils
                 .post()
+                .addHeader("headtoken",getToken(mContext))
                 .url(NetApi.urlAuthentication)
                 .params(authenticationParam.getParam())
                 .build()
@@ -1706,6 +1803,7 @@ public final class Engine {
         String url = NetApi.getUrlAuthenticationState + String.valueOf(id);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(null, 0));
@@ -1717,6 +1815,7 @@ public final class Engine {
         String url = NetApi.urlIncomeType + String.valueOf(id);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(null, -1));
@@ -1728,6 +1827,7 @@ public final class Engine {
         LocalLog.d(TAG, "usercredit() enter url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(stepDollarDetailInterface, COMMAND_GET_USER_STEP_DOLLAR_DETAIL));
@@ -1738,6 +1838,7 @@ public final class Engine {
         LocalLog.d(TAG, "getUserDollarStep() url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(stepDollarDetailInterface, COMMAND_GET_USER_INFO));
@@ -1748,6 +1849,7 @@ public final class Engine {
         LocalLog.d(TAG, "getUserDollarStep() url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(userIncomInterface, COMMAND_GET_USER_INFO));
@@ -1763,6 +1865,7 @@ public final class Engine {
                 LocalLog.d(TAG, "获取我关注的");
                 OkHttpUtils
                         .get()
+                        .addHeader("headtoken",getToken(mContext))
                         .url(url)
                         .build()
                         .execute(new NetStringCallBack(userFollowInterface, COMMAND_MY_FOLLOW));
@@ -1771,6 +1874,7 @@ public final class Engine {
                 LocalLog.d(TAG, "获取关注我的");
                 OkHttpUtils
                         .get()
+                        .addHeader("headtoken",getToken(mContext))
                         .url(url)
                         .build()
                         .execute(new NetStringCallBack(userFollowInterface, COMMAND_FOLLOW_ME));
@@ -1779,6 +1883,7 @@ public final class Engine {
                 LocalLog.d(TAG, "获取互相关注");
                 OkHttpUtils
                         .get()
+                        .addHeader("headtoken",getToken(mContext))
                         .url(url)
                         .build()
                         .execute(new NetStringCallBack(userFollowInterface, COMMAND_FOLLOW_O_TO_O));
@@ -1791,6 +1896,7 @@ public final class Engine {
         LocalLog.d(TAG, "postAddUserFollow()");
         OkHttpUtils
                 .post()
+                .addHeader("headtoken",getToken(mContext))
                 .url(NetApi.urlUserFollow)
                 .params(queryFollowStateParam.getParams())
                 .build()
@@ -1803,6 +1909,7 @@ public final class Engine {
         LocalLog.d(TAG, "postQueryFollowState() enter " + queryFollowStateParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken",getToken(mContext))
                 .url(NetApi.urlUserFollow + "/followStatus")
                 .params(queryFollowStateParam.getParams())
                 .build()
@@ -1817,6 +1924,7 @@ public final class Engine {
         LocalLog.d(TAG, "getFriendHonor() enter url" + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(friendHonorInterface, COMMAND_FRIEND_HONOR));
@@ -1828,6 +1936,7 @@ public final class Engine {
         LocalLog.d(TAG, "getFriendHonorDetail() enter url" + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(friendHonorDetailInterface, COMMAND_FRIEND_HONOR));
@@ -1839,6 +1948,7 @@ public final class Engine {
         LocalLog.d(TAG, "getFriendWeekHonor() enter url   " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(friendHonorDetailInterface, COMMAND_FRIEND_HONOR_WEEK));
@@ -1901,6 +2011,7 @@ public final class Engine {
                 LocalLog.d(TAG, "微信支付");
                 OkHttpUtils
                         .post()
+                        .addHeader("headtoken",getToken(mContext))
                         .url(NetApi.urlPayOrder)
                         .params(wxPayOrderParam.getParams())
                         .build()
@@ -1910,6 +2021,7 @@ public final class Engine {
                 LocalLog.d(TAG, "支付宝");
                 OkHttpUtils
                         .post()
+                        .addHeader("headtoken",getToken(mContext))
                         .url(NetApi.urlPayOrder)
                         .params(wxPayOrderParam.getParams())
                         .build()
@@ -1919,6 +2031,7 @@ public final class Engine {
                 LocalLog.d(TAG, "钱包支付");
                 OkHttpUtils
                         .post()
+                        .addHeader("headtoken",getToken(mContext))
                         .url(NetApi.urlPayOrder)
                         .params(wxPayOrderParam.getParams())
                         .build()
@@ -1934,6 +2047,7 @@ public final class Engine {
         LocalLog.d(TAG, "getMyPayOrders() " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(allPayOrderInterface, COMMAND_ALL_PAY_ORDER));
@@ -1945,6 +2059,7 @@ public final class Engine {
         LocalLog.d(TAG, "getWxPayResultByOrderNo() url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(payWxResultQueryInterface, COMMAND_PAY_RESULT_QUERY_WX));
@@ -1956,6 +2071,7 @@ public final class Engine {
         LocalLog.d(TAG, thirdPartyLoginParam.toString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken",getToken(mContext))
                 .url(urlThirdLogin)
                 .params(thirdPartyLoginParam.getParam())
                 .build()
@@ -1967,6 +2083,7 @@ public final class Engine {
         LocalLog.d(TAG, taskReleaseParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken",getToken(mContext))
                 .url(NetApi.urlTask)
                 .params(taskReleaseParam.getParams())
                 .build()
@@ -1980,6 +2097,7 @@ public final class Engine {
         LocalLog.d(TAG, "getTaskDetail() url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(myReleaseTaskDetailInterface, COMMAND_GET_MY_RELEASE_TASK_DETAIL));
@@ -1994,6 +2112,7 @@ public final class Engine {
             case "receive_task":
                 OkHttpUtils
                         .put()
+                        .addHeader("headtoken",getToken(mContext))
                         .url(url)
                         .requestBody(new RequestBody() {
                             @Override
@@ -2013,6 +2132,7 @@ public final class Engine {
                 LocalLog.d(TAG, "领取奖励");
                 OkHttpUtils
                         .put()
+                        .addHeader("headtoken",getToken(mContext))
                         .url(url)
                         .requestBody(new RequestBody() {
                             @Override
@@ -2037,6 +2157,7 @@ public final class Engine {
         LocalLog.d(TAG, "getTaskDetailRec() enter url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(taskDetailRecInterface, COMMAND_GET_REC_TASK_DETAIL));
@@ -2048,6 +2169,7 @@ public final class Engine {
         LocalLog.d(TAG, "taskMyRelease() enter url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(myReleaseTaskInterface, COMMAND_GET_MY_RELEASE_TASK));
@@ -2059,6 +2181,7 @@ public final class Engine {
         LocalLog.d(TAG, "getReleaseRecord() enter url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(releaseRecordInterface, COMMAND_GET_MY_RELEASE_RECORD));
@@ -2068,6 +2191,7 @@ public final class Engine {
     public void getDanList() {
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(NetApi.urlUserLevel)
                 .build()
                 .execute(new NetStringCallBack(danInterface, COMMAND_GET_DAN_LIST));
@@ -2078,6 +2202,7 @@ public final class Engine {
         LocalLog.d(TAG, "getUserDan()  enter");
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(danInterface, COMMAND_GET_USER_DAN));
@@ -2111,6 +2236,7 @@ public final class Engine {
         LocalLog.d(TAG, "getInviteDan() enter url =" + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(inviteInterface, COMMAND_GET_INVITE_DAN));
@@ -2121,6 +2247,7 @@ public final class Engine {
         LocalLog.d(TAG, "getMyInviteMsg() enter url =  " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(inviteInterface, COMMAND_GET_MY_INVITE_MSG));
@@ -2130,6 +2257,7 @@ public final class Engine {
         LocalLog.d(TAG, "postInviteCode() enter " + postInviteCodeParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken",getToken(mContext))
                 .url(NetApi.urlInvite)
                 .params(postInviteCodeParam.getParams())
                 .build()
@@ -2142,6 +2270,7 @@ public final class Engine {
         LocalLog.d(TAG, "getUserFriends() url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(selectUserFriendInterface, COMMAND_USER_FRIEND));
@@ -2153,6 +2282,7 @@ public final class Engine {
         LocalLog.d(TAG, "url  =  " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(taskMyRecInterface, COMMAND_GET_MY_RCV_TASK_RECORD));
@@ -2188,6 +2318,7 @@ public final class Engine {
         LocalLog.d(TAG, "url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(homePageInterface, COMMAND_WEATHER));
@@ -2199,6 +2330,7 @@ public final class Engine {
         LocalLog.d(TAG, "getUserBankCard() enter url = " + url);
         OkHttpUtils
                 .get()
+                .addHeader("headtoken",getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(crashInterface, COMMAND_CRASH_BANK_CARD_LIST));
@@ -2210,6 +2342,7 @@ public final class Engine {
         LocalLog.d(TAG, "bindCrashAccount() enter" + bindCardPostParam.paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken",getToken(mContext))
                 .url(NetApi.urlUserBankCard)
                 .params(bindCardPostParam.getParams())
                 .build()
@@ -2221,6 +2354,7 @@ public final class Engine {
         LocalLog.d(TAG, postBindUnBindWqParam.setUserid(getId(mContext)).paramString());
         OkHttpUtils
                 .post()
+                .addHeader("headtoken",getToken(mContext))
                 .url(NetApi.urlBindThird)
                 .params(postBindUnBindWqParam.getParams())
                 .build()
@@ -2232,6 +2366,7 @@ public final class Engine {
         LocalLog.d(TAG, "protocol() enter" + action);
         OkHttpUtils
                 .post()
+                .addHeader("headtoken",getToken(mContext))
                 .url(urlProtocol)
                 .addParams("action", action)
                 .build()

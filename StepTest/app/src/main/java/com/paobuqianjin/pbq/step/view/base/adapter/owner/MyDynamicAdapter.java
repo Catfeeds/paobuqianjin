@@ -25,6 +25,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
+import com.paobuqianjin.pbq.step.view.fragment.owner.MyDynamicFragment;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,10 +46,12 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
     private final static int defaultCount = 3;
     private Context mContext;
     private List<?> mData;
+    MyDynamicFragment.PopBigImageInterface popBigImageInterface;
 
-    public MyDynamicAdapter(Context context, List<DynamicPersonResponse.DataBeanX.DataBean> data) {
+    public MyDynamicAdapter(Context context, List<DynamicPersonResponse.DataBeanX.DataBean> data, MyDynamicFragment.PopBigImageInterface popBigImageInterface) {
         mContext = context;
         mData = data;
+        this.popBigImageInterface = popBigImageInterface;
     }
 
     public void notifyDataSetChanged(List<DynamicPersonResponse.DataBeanX.DataBean> data) {
@@ -119,7 +122,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 holder.contentNumbers.setText(String.valueOf(content));
                 String firstContentDes = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getOne_comment().getNickname() + ":";
                 String firstContentText = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getOne_comment().getContent();
-                if(firstContentText != null){
+                if (firstContentText != null) {
                     for (int i = 0; i < emj.length; i++) {
                         firstContentText = firstContentText.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
                     }
@@ -151,6 +154,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                     ImageView imageView0 = (ImageView) holder.imageView0.findViewById(R.id.dynamic_pic);
 
                     Presenter.getInstance(mContext).getImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
+                    showBigImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                 }
             } else if (imageSize == 2) {
 
@@ -170,6 +174,8 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 Presenter.getInstance(mContext).getImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                 Presenter.getInstance(mContext).getImage(imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
 
+                showBigImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
+                showBigImage(imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
             } else if (imageSize == 3) {
 
                 holder.imageView0 = LayoutInflater.from(mContext).inflate(R.layout.image_view_pager, null);
@@ -195,6 +201,10 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 Presenter.getInstance(mContext).getImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                 Presenter.getInstance(mContext).getImage(imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
                 Presenter.getInstance(mContext).getImage(imageView2, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));
+
+                showBigImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
+                showBigImage(imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
+                showBigImage(imageView2, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));
 
 
             } else if (imageSize >= 4) {
@@ -229,6 +239,11 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 Presenter.getInstance(mContext).getImage(imageView2, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));
                 Presenter.getInstance(mContext).getImage(imageView3, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(3));
 
+
+                showBigImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
+                showBigImage(imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
+                showBigImage(imageView2, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));
+                showBigImage(imageView3, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(3));
             } else {
                 LocalLog.e(TAG, "图片数量超过5");
             }
@@ -239,6 +254,18 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
 
             }
         }
+    }
+
+    private void showBigImage(ImageView imageView, final String url) {
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (popBigImageInterface != null) {
+                    popBigImageInterface.popImageView(url);
+                }
+
+            }
+        });
     }
 
     @Override

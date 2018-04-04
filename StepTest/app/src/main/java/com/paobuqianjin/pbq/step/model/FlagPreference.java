@@ -112,6 +112,20 @@ public final class FlagPreference {
         editor.commit();
     }
 
+    public static void setToken(Context context, String user_token) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putString("user_token", user_token);
+        editor.commit();
+    }
+
+    public static String getToken(Context context) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        String user_token = flagPreference.getString("user_token", "");
+        return user_token;
+    }
+
     public static String getEffectStartSportTime(Context context) {
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
         String effectStartSortTime = flagPreference.getString("effect_start_time", "5:30");

@@ -124,6 +124,7 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
     public void response(LogBindPhoneResponse logBindPhoneResponse) {
         if (logBindPhoneResponse.getError() == 0) {
             Presenter.getInstance(getContext()).steLogFlg(true);
+            Presenter.getInstance(getContext()).setToken(getContext(),dataBean.getUser_token());
             Presenter.getInstance(getContext()).setId(dataBean.getId());
             ((UserFitActivity) getActivity()).showPersonInfo(dataBean);
         }

@@ -460,6 +460,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 LocalLog.d(TAG, "手机号登陆成功");
                 Presenter.getInstance(getContext()).steLogFlg(true);
                 Presenter.getInstance(getContext()).setId(phoneLoginDataBean.getId());
+                Presenter.getInstance(getContext()).setToken(getContext(), phoneLoginDataBean.getUser_token());
                 Presenter.getInstance(getContext()).setMobile(getContext(), phoneLoginDataBean.getMobile());
                 startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
             }
@@ -468,6 +469,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 Presenter.getInstance(getContext()).steLogFlg(true);
                 Presenter.getInstance(getContext()).setId(dataBean.getId());
                 Presenter.getInstance(getContext()).setMobile(getContext(), dataBean.getMobile());
+                Presenter.getInstance(getContext()).setToken(getContext(), phoneLoginDataBean.getUser_token());
                 startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
             }
 

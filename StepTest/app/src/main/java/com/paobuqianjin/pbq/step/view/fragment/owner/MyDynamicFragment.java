@@ -7,32 +7,47 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lwkandroid.imagepicker.data.ImageDataModel;
+import com.lwkandroid.imagepicker.ui.pager.adapter.ImagePagerAdapter;
+import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
+import com.lwkandroid.imagepicker.widget.photoview.OnPhotoTapListener;
+import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.adapter.AttentionCircleAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.MyDynamicAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.widgets.WheelDatePicker;
 import com.paobuqianjin.pbq.step.view.fragment.circle.AttentionCircleFragment;
 import com.yanzhenjie.loading.LoadingView;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -61,7 +76,11 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
     SwipeRefreshLayout swipeRefreshLayout;
     ArrayList<DynamicPersonResponse.DataBeanX.DataBean> dynamicAllData = new ArrayList<>();
     MyDynamicAdapter adapter;
-
+    private View popBirthSelectView;
+    private PopupWindow popupSelectWindow;
+    private TranslateAnimation animationCircleType;
+    private int mScreenWidth;
+    private int mScreenHeight;
     @Override
 
     protected String title() {
@@ -91,13 +110,15 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+        mScreenWidth = ImagePickerComUtils.getScreenWidth(getContext());
+        mScreenHeight = ImagePickerComUtils.getScreenHeight(getContext());
         myDynamicRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.my_dynamic_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         myDynamicRecycler.setLayoutManager(layoutManager);
 
         //myDynamicRecycler.setAdapter(new MyDynamicAdapter(getContext()));
-        adapter = new MyDynamicAdapter(getContext(), null);
+        adapter = new MyDynamicAdapter(getContext(), null,popBigImageInterface);
         // 自定义的核心就是DefineLoadMoreView类。
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());
         myDynamicRecycler.addFooterView(loadMoreView); // 添加为Footer。
@@ -112,6 +133,42 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
 
         loadData(dynamicAllData);
     }
+
+    public interface PopBigImageInterface {
+        public void popImageView(String url);
+    }
+
+    private PopBigImageInterface popBigImageInterface = new PopBigImageInterface() {
+        @Override
+        public void popImageView(String url) {
+            LocalLog.d(TAG, "查看大图");
+            popBirthSelectView = View.inflate(getContext(), R.layout.image_big_view, null);
+            PhotoView photoView = (PhotoView) popBirthSelectView.findViewById(R.id.photo_view);
+            ImageDataModel.getInstance().getDisplayer().display(getContext(), url, photoView, mScreenWidth, mScreenHeight);
+            popupSelectWindow = new PopupWindow(popBirthSelectView,
+                    WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    LocalLog.d(TAG, "popImageVie dismiss() ");
+                    popupSelectWindow = null;
+                }
+            });
+
+            popupSelectWindow.setFocusable(true);
+            popupSelectWindow.setOutsideTouchable(true);
+
+            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleType.setInterpolator(new AccelerateInterpolator());
+            animationCircleType.setDuration(200);
+
+
+            popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.my_dynamic_fg), Gravity.CENTER, 0, 0);
+            popBirthSelectView.startAnimation(animationCircleType);
+        }
+    };
 
     private void loadMore(ArrayList<DynamicPersonResponse.DataBeanX.DataBean> newData) {
         /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/

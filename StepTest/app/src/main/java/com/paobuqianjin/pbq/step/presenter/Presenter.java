@@ -95,6 +95,14 @@ public final class Presenter {
         engine.setLogFlag(mContext, isLogin);
     }
 
+    public void setToken(Context context, String user_token) {
+        engine.setToken(context, user_token);
+    }
+
+    public String getToken(Context context) {
+        return engine.getToken(context);
+    }
+
 
     public void setPayResultCode(int errorCode) {
         engine.setPayResultCode(mContext, errorCode);
@@ -316,7 +324,8 @@ public final class Presenter {
     public void getCircleDetail(int circleId) {
         engine.getCircleDetail(circleId);
     }
-    public void getCircleDetailView(TextView myName, ImageView imageView, TextView stepNum, int circleId){
+
+    public void getCircleDetailView(TextView myName, ImageView imageView, TextView stepNum, int circleId) {
         engine.getCircleDetailView(myName, imageView, stepNum, circleId);
     }
 
@@ -619,9 +628,10 @@ public final class Presenter {
         engine.postAddressBook(addressBook);
     }
 
-    public void inviteMsg(String phoneNum){
+    public void inviteMsg(String phoneNum) {
         engine.inviteMsg(phoneNum);
     }
+
     public void setNetworkPolicy(NetworkPolicy networkPolicy) {
         engine.setNetworkPolicy(networkPolicy);
     }
