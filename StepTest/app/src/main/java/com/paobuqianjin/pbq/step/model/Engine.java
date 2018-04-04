@@ -561,11 +561,12 @@ public final class Engine {
 
     //TODO 短信邀请
     public void inviteMsg(String phoneNum) {
+        LocalLog.d(TAG, "inviteMsg() phoneNum " + phoneNum);
         OkHttpUtils
                 .post()
                 .url(NetApi.urlinviteMsg)
-                .addParams("userid",String.valueOf(getId(mContext)))
-                .addParams("phones", "[" + "'" + getMobile(mContext) + "'" + "]")
+                .addParams("userid", String.valueOf(getId(mContext)))
+                .addParams("phones", "[" + "\"" + phoneNum + "\"" + "]")
                 .build()
                 .execute(new NetStringCallBack(friendAddressInterface, COMMAND_IVITE_MSG));
     }
