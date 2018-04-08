@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoSetResponse;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
@@ -135,6 +136,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     RelativeLayout weightSpan;
     ThirdPartyLoginResponse.DataBean dataBean;
     LoginResponse.DataBean phoneLoginDataBean;
+    SignUserResponse.DataBean signUserDataBean;
     private final static String USER_FIT_ACTION_SETTING = "com.paobuqianjin.pbq.USER_FIT_ACTION_USER_SETTING";
     @Bind(R.id.confirm)
     Button confirm;
@@ -221,6 +223,10 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         if (intent != null) {
             if (USER_FIT_ACTION_SETTING.equals(intent.getAction())) {
                 LocalLog.d(TAG, "手机号登入第一次设置");
+                signUserDataBean = (SignUserResponse.DataBean) intent.getSerializableExtra("signinfo");
+                if (signUserDataBean != null) {
+                    userid = signUserDataBean.getUserid();
+                }
                 phoneLoginDataBean = (LoginResponse.DataBean) intent.getSerializableExtra("userinfo");
                 if (phoneLoginDataBean != null) {
                     userid = phoneLoginDataBean.getId();
@@ -472,6 +478,12 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 Presenter.getInstance(getContext()).setToken(getContext(), phoneLoginDataBean.getUser_token());
                 startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
             }
+            if(signUserDataBean != null){
+                LocalLog.d(TAG,"立即登登陆");
+                Presenter.getInstance(getContext()).steLogFlg(true);
+                Presenter.getInstance(getContext()).setId(signUserDataBean.getUserid());
+                startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+            }
 
         }
     }
@@ -578,6 +590,9 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                         putUserInfoParam.setHeight(high);
                     }
                     putUserInfoParam.setSex(getSelect());
+                    if (signUserDataBean != null) {
+                        Presenter.getInstance(getContext()).setToken(getContext(), signUserDataBean.getUser_token());
+                    }
                     Presenter.getInstance(getContext()).putUserInfo(userid, putUserInfoParam);
                 }
 
