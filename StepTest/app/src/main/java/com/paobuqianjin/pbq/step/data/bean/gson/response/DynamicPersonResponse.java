@@ -12,10 +12,11 @@ import java.util.List;
 *@description 个人动态列表
 */
 public class DynamicPersonResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":10},"data":[{"id":1,"userid":1,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184235460.jpg","nickname":"狗狗","dynamic":"你马上要8岁了哟 看我一眼好不好","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"深圳","vote":100,"comment":9,"create_time":1513393712,"one_comment":{"id":2,"reply_userid":2,"userid":3,"dynamicid":1,"content":"原图老哥谢谢","create_time":1513394223,"nickname":"九卿臣"}}]}
+     * data : {"pagenation":{"page":4,"pageSize":1,"totalPage":15,"totalCount":15},"data":[{"id":125,"userid":30,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","dynamic":"Vivo Android 5.0  720*1280 ","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"],"city":"上海市","vote":2,"comment":25,"create_time":1522409030,"one_comment":{"id":338,"parent_id":0,"reply_userid":30,"userid":61,"dynamicid":125,"content":"[0x1f603][0x1f60d][0x1f612][0x1f633][0x1f601][0x1f618]","create_time":1522668805,"nickname":""},"is_vote":1}]}
      */
 
     private int error;
@@ -57,8 +58,8 @@ public class DynamicPersonResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":10}
-         * data : [{"id":1,"userid":1,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184235460.jpg","nickname":"狗狗","dynamic":"你马上要8岁了哟 看我一眼好不好","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"深圳","vote":100,"comment":9,"create_time":1513393712,"one_comment":{"id":2,"reply_userid":2,"userid":3,"dynamicid":1,"content":"原图老哥谢谢","create_time":1513394223,"nickname":"九卿臣"}}]
+         * pagenation : {"page":4,"pageSize":1,"totalPage":15,"totalCount":15}
+         * data : [{"id":125,"userid":30,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","dynamic":"Vivo Android 5.0  720*1280 ","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"],"city":"上海市","vote":2,"comment":25,"create_time":1522409030,"one_comment":{"id":338,"parent_id":0,"reply_userid":30,"userid":61,"dynamicid":125,"content":"[0x1f603][0x1f60d][0x1f612][0x1f633][0x1f601][0x1f618]","create_time":1522668805,"nickname":""},"is_vote":1}]
          */
 
         private PagenationBean pagenation;
@@ -90,10 +91,10 @@ public class DynamicPersonResponse {
 
         public static class PagenationBean {
             /**
-             * page : 1
-             * pageSize : 10
-             * totalPage : 1
-             * totalCount : 10
+             * page : 4
+             * pageSize : 1
+             * totalPage : 15
+             * totalCount : 15
              */
 
             private int page;
@@ -146,17 +147,18 @@ public class DynamicPersonResponse {
 
         public static class DataBean {
             /**
-             * id : 1
-             * userid : 1
-             * avatar : http://pic.qqtn.com/up/2017-12/2017120911184235460.jpg
-             * nickname : 狗狗
-             * dynamic : 你马上要8岁了哟 看我一眼好不好
-             * images : ["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"]
-             * city : 深圳
-             * vote : 100
-             * comment : 9
-             * create_time : 1513393712
-             * one_comment : {"id":2,"reply_userid":2,"userid":3,"dynamicid":1,"content":"原图老哥谢谢","create_time":1513394223,"nickname":"九卿臣"}
+             * id : 125
+             * userid : 30
+             * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
+             * nickname : 黄钦平
+             * dynamic : Vivo Android 5.0  720*1280
+             * images : ["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"]
+             * city : 上海市
+             * vote : 2
+             * comment : 25
+             * create_time : 1522409030
+             * one_comment : {"id":338,"parent_id":0,"reply_userid":30,"userid":61,"dynamicid":125,"content":"[0x1f603][0x1f60d][0x1f612][0x1f633][0x1f601][0x1f618]","create_time":1522668805,"nickname":""}
+             * is_vote : 1
              */
 
             private int id;
@@ -167,8 +169,9 @@ public class DynamicPersonResponse {
             private String city;
             private int vote;
             private int comment;
-            private long create_time;
+            private int create_time;
             private OneCommentBean one_comment;
+            private int is_vote;
             private List<String> images;
 
             public int getId() {
@@ -235,7 +238,7 @@ public class DynamicPersonResponse {
                 this.comment = comment;
             }
 
-            public long getCreate_time() {
+            public int getCreate_time() {
                 return create_time;
             }
 
@@ -249,6 +252,14 @@ public class DynamicPersonResponse {
 
             public void setOne_comment(OneCommentBean one_comment) {
                 this.one_comment = one_comment;
+            }
+
+            public int getIs_vote() {
+                return is_vote;
+            }
+
+            public void setIs_vote(int is_vote) {
+                this.is_vote = is_vote;
             }
 
             public List<String> getImages() {
@@ -272,22 +283,25 @@ public class DynamicPersonResponse {
                         ", comment=" + comment +
                         ", create_time=" + create_time +
                         ", one_comment=" + one_comment +
+                        ", is_vote=" + is_vote +
                         ", images=" + images +
                         '}';
             }
 
             public static class OneCommentBean {
                 /**
-                 * id : 2
-                 * reply_userid : 2
-                 * userid : 3
-                 * dynamicid : 1
-                 * content : 原图老哥谢谢
-                 * create_time : 1513394223
-                 * nickname : 九卿臣
+                 * id : 338
+                 * parent_id : 0
+                 * reply_userid : 30
+                 * userid : 61
+                 * dynamicid : 125
+                 * content : [0x1f603][0x1f60d][0x1f612][0x1f633][0x1f601][0x1f618]
+                 * create_time : 1522668805
+                 * nickname :
                  */
 
                 private int id;
+                private int parent_id;
                 private int reply_userid;
                 private int userid;
                 private int dynamicid;
@@ -301,6 +315,14 @@ public class DynamicPersonResponse {
 
                 public void setId(int id) {
                     this.id = id;
+                }
+
+                public int getParent_id() {
+                    return parent_id;
+                }
+
+                public void setParent_id(int parent_id) {
+                    this.parent_id = parent_id;
                 }
 
                 public int getReply_userid() {
@@ -349,19 +371,6 @@ public class DynamicPersonResponse {
 
                 public void setNickname(String nickname) {
                     this.nickname = nickname;
-                }
-
-                @Override
-                public String toString() {
-                    return "OneCommentBean{" +
-                            "id=" + id +
-                            ", reply_userid=" + reply_userid +
-                            ", userid=" + userid +
-                            ", dynamicid=" + dynamicid +
-                            ", content='" + content + '\'' +
-                            ", create_time=" + create_time +
-                            ", nickname='" + nickname + '\'' +
-                            '}';
                 }
             }
         }

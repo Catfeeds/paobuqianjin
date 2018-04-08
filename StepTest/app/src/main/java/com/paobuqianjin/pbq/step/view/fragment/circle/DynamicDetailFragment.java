@@ -156,6 +156,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     private LinearLayoutManager layoutManagerContent;
     int dynamicid = -1;
     int userid = -1;
+    int is_vote = 0;
 
     private View popRedPkgView;
     private PopupWindow popupRedPkgWindow;
@@ -243,7 +244,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         if (intent != null) {
             dynamicid = intent.getIntExtra(getContext().getPackageName() + "dynamicId", -1);
             userid = intent.getIntExtra(getContext().getPackageName() + "userId", -1);
-            LocalLog.d(TAG, "dynamicid= " + dynamicid + "userid = " + userid);
+            is_vote = intent.getIntExtra(getContext().getPackageName() + "is_vote", 0);
+            LocalLog.d(TAG, "dynamicid= " + dynamicid + "userid = " + userid + "is_vote = " + is_vote);
             if (dynamicid != -1) {
                 Presenter.getInstance(getContext()).getDynamicCommentList(dynamicid, currentIndexPage, 10);
                 Presenter.getInstance(getContext()).getDynamicDetail(dynamicid);
@@ -356,7 +358,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             LocalLog.d(TAG, "create_time = " + DateTimeUtil.formatDateTime(create_time * 1000));
             String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
             dynamicTime.setText(create_timeStr);
-
+            if (is_vote == 1) {
+                likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_s));
+            }
             int[] emj = getContext().getResources().getIntArray(R.array.emjio_list);
             String content = dynamicIdDetailResponse.getData().getDynamic();
 

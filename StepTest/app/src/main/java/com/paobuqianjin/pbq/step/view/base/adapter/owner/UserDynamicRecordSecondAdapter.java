@@ -101,6 +101,7 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
 
             holder.dynamicId = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getId();
             holder.userid = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
+            holder.is_vote = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getIs_vote();
         }
 
     }
@@ -132,6 +133,7 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
 
         int dynamicId = -1;
         int userid = -1;
+        int is_vote = 0;
 
         public UserDynamicRecordSecondViewHolder(View view) {
             super(view);
@@ -146,7 +148,7 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
             image.setVisibility(View.GONE);
             image.setOnClickListener(onClickListener);
             contentNumbers = (TextView) view.findViewById(R.id.content_numbers);
-            likeNumIcon = (ImageView)view.findViewById(R.id.like_num_icon);
+            likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
             contentNumberIcon = (ImageView) view.findViewById(R.id.content_number_icon);
             contentSupports = (TextView) view.findViewById(R.id.content_supports);
 
@@ -162,6 +164,7 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
                         Intent intent = new Intent();
                         intent.putExtra(context.getPackageName() + "dynamicId", dynamicId);
                         intent.putExtra(context.getPackageName() + "userId", userid);
+                        intent.putExtra(context.getPackageName() + "is_vote", is_vote);
                         intent.setClass(context, DynamicActivity.class);
                         context.startActivity(intent);
                         break;

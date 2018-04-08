@@ -92,6 +92,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
             int imageSize = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().size();
             holder.dynamicId = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getId();
             holder.userid = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
+            holder.is_vote = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getIs_vote();
             LocalLog.d(TAG, "imageSize = " + imageSize);
             if (((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic().equals("")) {
                 LocalLog.d(TAG, "无内容");
@@ -331,6 +332,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
         ImageViewPagerAdapter adapter;
         int dynamicId = -1;
         int userid = -1;
+        int is_vote = 0;
 
         public MyDynamicViewHolder(View view) {
             super(view);
@@ -393,6 +395,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                         Intent intent = new Intent();
                         intent.putExtra(mContext.getPackageName() + "dynamicId", dynamicId);
                         intent.putExtra(mContext.getPackageName() + "userId", userid);
+                        intent.putExtra(mContext.getPackageName() + "is_vote",is_vote);
                         intent.setClass(mContext, DynamicActivity.class);
                         mContext.startActivity(intent);
                         break;

@@ -132,6 +132,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         if (holder instanceof OneOrZeroViewHodler) {
             ((OneOrZeroViewHodler) holder).dynamicid = data.get(position).getId();
             ((OneOrZeroViewHodler) holder).userid = data.get(position).getUserid();
+            ((OneOrZeroViewHodler) holder).is_vote = data.get(position).getIs_vote();
             if (((OneOrZeroViewHodler) holder).viewType == 1) {
                 ((OneOrZeroViewHodler) holder).timeStmp.setText(create_timeStr);
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicPicOne, data.get(position).getImages().get(0));
@@ -182,7 +183,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else if (((OneOrZeroViewHodler) holder).viewType == 0) {
                 ((OneOrZeroViewHodler) holder).timeStmp.setText(create_timeStr);
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar());
-
+                ((OneOrZeroViewHodler) holder).is_vote = data.get(position).getIs_vote();
                 String content = data.get(position).getDynamic();
                 LocalLog.d(TAG, "content = " + content);
                 if (content != null) {
@@ -227,6 +228,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((TwoPicViewHolder) holder).timeStmp.setText(create_timeStr);
             ((TwoPicViewHolder) holder).dynamicid = data.get(position).getId();
             ((TwoPicViewHolder) holder).userid = data.get(position).getUserid();
+            ((TwoPicViewHolder) holder).is_vote = data.get(position).getIs_vote();
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0));
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1));
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar());
@@ -274,6 +276,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((ThreePicViewHolder) holder).timeStmp.setText(create_timeStr);
             ((ThreePicViewHolder) holder).dynamicid = data.get(position).getId();
             ((ThreePicViewHolder) holder).userid = data.get(position).getUserid();
+            ((ThreePicViewHolder) holder).is_vote = data.get(position).getIs_vote();
             ((ThreePicViewHolder) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
             Presenter.getInstance(mContext).getImage(((ThreePicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0));
             Presenter.getInstance(mContext).getImage(((ThreePicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1));
@@ -356,6 +359,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         TextView timeStmp;
         int dynamicid = -1;
         int userid = -1;
+        int is_vote = 0;
 
         public OneOrZeroViewHodler(View view, int viewType) {
             super(view);
@@ -406,6 +410,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         Intent intent = new Intent();
                         intent.putExtra(mContext.getPackageName() + "dynamicId", dynamicid);
                         intent.putExtra(mContext.getPackageName() + "userId", userid);
+                        intent.putExtra(mContext.getPackageName() + "is_vote", is_vote);
                         intent.setClass(mContext, DynamicActivity.class);
                         mContext.startActivity(intent);
                         break;
@@ -458,6 +463,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         TextView timeStmp;
         int dynamicid = -1;
         int userid = -1;
+        int is_vote = 0;
 
         public TwoPicViewHolder(View view, int viewType) {
             super(view);
@@ -500,6 +506,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         Intent intent = new Intent();
                         intent.putExtra(mContext.getPackageName() + "dynamicId", dynamicid);
                         intent.putExtra(mContext.getPackageName() + "userId", userid);
+                        intent.putExtra(mContext.getPackageName() + "is_vote", is_vote);
                         intent.setClass(mContext, DynamicActivity.class);
                         mContext.startActivity(intent);
                         break;
@@ -553,6 +560,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
         int dynamicid = -1;
         int userid = -1;
+        int is_vote = 0;
 
         public ThreePicViewHolder(View view, int viewType) {
             super(view);
@@ -600,6 +608,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         Intent intent = new Intent();
                         intent.putExtra(mContext.getPackageName() + "dynamicId", dynamicid);
                         intent.putExtra(mContext.getPackageName() + "userId", userid);
+                        intent.putExtra(mContext.getPackageName() + "is_vote", is_vote);
                         intent.setClass(mContext, DynamicActivity.class);
                         mContext.startActivity(intent);
                         break;

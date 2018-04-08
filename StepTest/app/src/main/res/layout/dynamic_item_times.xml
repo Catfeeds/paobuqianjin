@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/item"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
@@ -114,7 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="9dp"
             android:layout_toRightOf="@+id/content_number_icon"
-            android:text="16"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
@@ -133,7 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="9dp"
             android:layout_toRightOf="@+id/like_num_icon"
-            android:text="44"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
@@ -142,7 +142,7 @@
             android:layout_width="17dp"
             android:layout_height="14dp"
             android:layout_centerVertical="true"
-            android:background="@drawable/fabulous_s" />
+            android:background="@drawable/fabulous_n" />
     </RelativeLayout>
 
 
