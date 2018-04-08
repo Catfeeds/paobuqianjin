@@ -168,9 +168,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                                 content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
                             }
                         }
-
+                        LocalLog.d(TAG, "name =  " + data.get(position).getOne_comment().getNickname());
                         String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
-                        Log.d(TAG,"replyStr = " + replyStr);
+                        Log.d(TAG, "replyStr = " + replyStr);
                         SpannableString spannableString = new SpannableString(replyStr);
                         ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                         spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length()
@@ -212,8 +212,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                             }
                         }
 
+                        LocalLog.d(TAG, "name =  " + data.get(position).getOne_comment().getNickname());
                         String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
-                        Log.d(TAG,"replyStr = " + replyStr);
+                        Log.d(TAG, "replyStr = " + replyStr);
                         SpannableString spannableString = new SpannableString(replyStr);
                         ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                         spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length()
@@ -259,8 +260,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         }
                     }
 
+                    LocalLog.d(TAG, "name =  " + data.get(position).getOne_comment().getNickname());
                     String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
-                    Log.d(TAG,"replyStr = " + replyStr);
+                    Log.d(TAG, "replyStr = " + replyStr);
                     SpannableString spannableString = new SpannableString(replyStr);
                     ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                     spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length()
@@ -298,8 +300,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         }
                     }
 
+                    LocalLog.d(TAG, "name =  " + data.get(position).getOne_comment().getNickname());
                     String replyStr = data.get(position).getOne_comment().getNickname() + ":" + contentL;
-                    Log.d(TAG,"replyStr = " + replyStr);
+                    Log.d(TAG, "replyStr = " + replyStr);
                     SpannableString spannableString = new SpannableString(replyStr);
                     ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                     spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length(),

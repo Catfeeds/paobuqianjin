@@ -165,7 +165,7 @@
             android:layout_width="17dp"
             android:layout_height="14dp"
             android:layout_centerVertical="true"
-            android:background="@drawable/fabulous_s" />
+            android:background="@drawable/fabulous_n" />
 
         <ImageView
             android:id="@+id/delete_dynamic"
