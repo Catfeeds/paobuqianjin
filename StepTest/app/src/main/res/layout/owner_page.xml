@@ -33,8 +33,7 @@
                         android:id="@+id/head_icon"
                         android:layout_width="55dp"
                         android:layout_height="55dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/logo">
+                        android:layout_centerInParent="true">
 
                     </de.hdodenhof.circleimageview.CircleImageView>
 
@@ -68,7 +67,10 @@
                         android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="用户昵称"
+                        android:text=""
+                        android:maxEms="16"
+                        android:ellipsize="end"
+                        android:singleLine="true"
                         android:textColor="@color/color_161727"
                         android:textSize="16dp" />
 
@@ -77,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/user_name"
-                        android:text="ID:123456"
+                        android:text=""
                         android:textColor="@color/color_8a8a8a"
                         android:textSize="14dp" />
                 </RelativeLayout>
@@ -120,7 +122,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_centerHorizontal="true"
-                        android:text="29"
+                        android:text=""
                         android:textColor="@color/color_161727"
                         android:textSize="15dp" />
 
@@ -146,7 +148,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:text="29"
+                        android:text=""
                         android:textColor="@color/color_161727"
                         android:textSize="15dp" />
 

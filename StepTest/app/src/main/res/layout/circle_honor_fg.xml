@@ -44,17 +44,18 @@
             android:text="2/20"
             android:textColor="@color/color_f8"
             android:textSize="14dp" />
+
         <TextView
+            android:id="@+id/times_today"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/rank_circle"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/rank_circle"
+            android:layout_marginRight="15dp"
             android:text=""
             android:textColor="@color/color_f8"
-            android:textSize="14dp"
-            android:id="@+id/times_today"
-            android:layout_alignBottom="@+id/rank_circle"
-            android:layout_alignTop="@+id/rank_circle"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="14dp" />
 
         <RelativeLayout
             android:id="@+id/rank_data_span"
@@ -125,7 +126,7 @@
                         android:id="@+id/step_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10086"
+                        android:text=""
                         android:textColor="@color/color_161727"
                         android:textSize="20dp" />
 
@@ -162,7 +163,10 @@
                         android:layout_below="@+id/circle_logo"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="12dp"
-                        android:text="跑步钱进"
+                        android:ellipsize="end"
+                        android:maxEms="8"
+                        android:singleLine="true"
+                        android:text=""
                         android:textColor="@color/color_161727"
                         android:textSize="12dp" />
                 </RelativeLayout>
@@ -176,8 +180,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rank_data_span"
-            android:layout_marginLeft="35dp"
-            android:layout_marginRight="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_marginTop="15dp">
 
             <android.support.v7.widget.RecyclerView

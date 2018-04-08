@@ -57,6 +57,9 @@
                 android:layout_below="@+id/king_head_layer"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:maxEms="16"
+                android:singleLine="true"
                 android:text=""
                 android:textColor="@color/color_f8"
                 android:textSize="16dp" />
@@ -68,13 +71,13 @@
                 android:layout_below="@+id/bg_dan">
 
                 <ImageView
-                    android:visibility="invisible"
                     android:id="@+id/rank_icon"
                     android:layout_width="19dp"
                     android:layout_height="24dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
-                    android:src="@drawable/honor_master" />
+                    android:src="@drawable/honor_master"
+                    android:visibility="invisible" />
 
                 <TextView
                     android:id="@+id/your_dan"
@@ -103,6 +106,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_toEndOf="@+id/head_icon_user"
+                    android:ellipsize="end"
+                    android:maxEms="8"
+                    android:singleLine="true"
                     android:text=""
                     android:textColor="@color/color_161727"
                     android:textSize="16dp" />

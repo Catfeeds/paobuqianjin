@@ -329,6 +329,13 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                         LogoUpTask logoUpTask = new LogoUpTask();
                         logoUpTask.execute(localAvatar);
                     } else {
+                        if (dearNameSetting.getText() == null && "".equals(dearNameSetting.getText().toString())) {
+                            Toast.makeText(getContext(), "昵称不能为空", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (!userInfo.getNickname().equals(dearNameSetting.getText().toString())) {
+                            putUserInfoParam.setNickname(dearNameSetting.getText().toString());
+                        }
                         Presenter.getInstance(getContext()).putUserInfo(userInfo.getId(), putUserInfoParam);
                     }
                     break;
