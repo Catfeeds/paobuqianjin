@@ -18,6 +18,7 @@ import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.OwnerCreateAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,7 @@ import butterknife.ButterKnife;
 
 public class OwnerJoinFragment extends BaseFragment {
     private final static String TAG = OwnerJoinFragment.class.getSimpleName();
-    RecyclerView ownerJoinCircleLists;
+    SwipeMenuRecyclerView ownerJoinCircleLists;
     private LinearLayoutManager layoutManager;
     private Context mContext;
     private ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> ownerCircleData;
@@ -63,7 +64,7 @@ public class OwnerJoinFragment extends BaseFragment {
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         //TODO
-        ownerJoinCircleLists = (RecyclerView) viewRoot.findViewById(R.id.owner_join_circle_lists);
+        ownerJoinCircleLists = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.owner_join_circle_lists);
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         ownerJoinCircleLists.setLayoutManager(layoutManager);

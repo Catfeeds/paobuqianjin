@@ -17,6 +17,7 @@ import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.OwnerCreateAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,7 @@ import butterknife.ButterKnife;
 public class OwnerCreateFragment extends BaseFragment {
     private final static String TAG = OwnerCreateFragment.class.getSimpleName();
     @Bind(R.id.owner_create_circle_lists)
-    RecyclerView ownerCreateCircleLists;
+    SwipeMenuRecyclerView ownerCreateCircleLists;
     private LinearLayoutManager layoutManager;
     private ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> ownerCreateCircleData;
     private boolean isRefresh;
@@ -64,30 +65,10 @@ public class OwnerCreateFragment extends BaseFragment {
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         LocalLog.d(TAG, "initView() enter");
-        ownerCreateCircleLists = (RecyclerView) viewRoot.findViewById(R.id.owner_create_circle_lists);
+        ownerCreateCircleLists = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.owner_create_circle_lists);
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         ownerCreateCircleLists.setLayoutManager(layoutManager);
-        ownerCreateCircleLists.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && (layoutManager.findLastVisibleItemPosition() == layoutManager.getItemCount() - 1)
-                        && !isRefresh) {
-                    LocalLog.d(TAG, "正在刷新...");
-                    isRefresh = true;
-                    currentPage++;
-                    Presenter.getInstance(getContext()).reflashMyCircle(currentPage);
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-
     }
 
 

@@ -71,6 +71,7 @@ public class HotCircleFragment extends BaseFragment {
     private int PAGE_INDEX_DEFAULT = 1;
     private int PAGE_DEFAULT_SIZE = 10;
     private static int SEARCH_ADD = 0;
+    private static int MY_CIRCLE_ADD = 1;
 
     @Override
 
@@ -183,15 +184,10 @@ public class HotCircleFragment extends BaseFragment {
                     break;
                 case R.id.find_more_my_circle:
                     LocalLog.d(TAG, "查看更多我的圈子");
-                    MyCreateCircleBundleData myCreateCircleBundleData = new MyCreateCircleBundleData(myCreateCircle);
-                    MyJoinCreateCircleBudleData myJoinCreateCircleBudleData = new MyJoinCreateCircleBudleData(myJoinCirCle);
+
                     Intent intentCircle = new Intent();
                     intentCircle.setClass(getActivity(), OwnerCircleActivity.class);
-/*                    intentCircle.putExtra(getActivity().getPackageName() + "my_create", myCreateCircleBundleData);
-                    intentCircle.putExtra(getActivity().getPackageName() + "my_join", myJoinCreateCircleBudleData);
-                    intentCircle.putExtra(getActivity().getPackageName() + "my_create_total_page", pageCounts[0]);
-                    intentCircle.putExtra(getActivity().getPackageName() + "my_join_total_page", pageCounts[1]);*/
-                    getActivity().startActivity(intentCircle);
+                    startActivityForResult(intentCircle, MY_CIRCLE_ADD);
                     break;
                 case R.id.live_choose_good_module:
 
