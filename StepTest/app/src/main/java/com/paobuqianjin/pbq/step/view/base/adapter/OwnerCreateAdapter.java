@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -18,6 +19,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by pbq on 2017/12/28.
@@ -26,13 +28,13 @@ import java.util.ArrayList;
 public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.OwnerCreateViewHolder> {
     private final static String TAG = OwnerCreateAdapter.class.getSimpleName();
     private Context mContext;
-    private ArrayList<?> data;
+    private List<?> data;
 
     private MyCreateCircleResponse.DataBeanX.DataBean tmpData;
     private MyJoinCircleResponse.DataBeanX.DataBean tmpData1;
     private final static String ACTION_ENTER_ICON = "coma.paobuqian.pbq.step.ICON_ACTION";
 
-    public OwnerCreateAdapter(Context context, ArrayList<?> data) {
+    public OwnerCreateAdapter(Context context, List<?> data) {
         super();
         this.data = data;
         mContext = context;
@@ -51,6 +53,12 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
         OwnerCreateViewHolder holder = new OwnerCreateViewHolder(LayoutInflater.from(mContext)
                 .inflate(R.layout.circle_kan_ban_list, parent, false));
         return holder;
+    }
+
+
+    public void notifyDataSetChanged(List<?> data) {
+        this.data = data;
+        super.notifyDataSetChanged();
     }
 
     @Override

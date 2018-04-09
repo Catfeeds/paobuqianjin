@@ -24,10 +24,10 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:layout_toEndOf="@+id/dynamic_user_icon"
-            android:text=""
             android:ellipsize="end"
-            android:maxEms="12"
+            android:maxEms="8"
             android:singleLine="true"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="18dp" />
 

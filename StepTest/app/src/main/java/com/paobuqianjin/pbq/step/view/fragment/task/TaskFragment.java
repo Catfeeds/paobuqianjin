@@ -89,7 +89,7 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
         allTaskFragment = new AllTaskFragment();
         finishedTaskFragment = new FinishedTaskFragment();
         unFinishTaskFragment = new UnFinishTaskFragment();
-        //emptyTaskFragment = new EmptyTaskFragment();
+        emptyTaskFragment = new EmptyTaskFragment();
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
         barTvRight = (TextView) viewRoot.findViewById(R.id.bar_tv_right);
         barTitle.setText("任务列表");
@@ -99,9 +99,11 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
                 .add(R.id.container_task, allTaskFragment)
                 .add(R.id.container_task, unFinishTaskFragment)
                 .add(R.id.container_task, finishedTaskFragment)
+                .add(R.id.container_task, emptyTaskFragment)
                 .show(allTaskFragment)
                 .hide(unFinishTaskFragment)
                 .hide(finishedTaskFragment)
+                .hide(emptyTaskFragment)
                 .commit();
     }
 
@@ -186,7 +188,35 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
             if (!mFragments[fragmentIndex].isAdded()) {
                 trx.add(R.id.fragment_container, mFragments[fragmentIndex]);
             }
-            trx.show(mFragments[fragmentIndex]).commit();
+            if (fragmentIndex == 0) {
+                if (allTaskList == null) {
+                    if (!emptyTaskFragment.isAdded()) {
+                        trx.add(R.id.fragment_container, emptyTaskFragment);
+                    }
+                    trx.show(emptyTaskFragment).commit();
+                } else {
+                    trx.show(mFragments[fragmentIndex]).commit();
+                }
+            } else if (fragmentIndex == 1) {
+                if (doingTaskList == null) {
+                    if (!emptyTaskFragment.isAdded()) {
+                        trx.add(R.id.fragment_container, emptyTaskFragment);
+                    }
+                    trx.show(emptyTaskFragment).commit();
+                } else {
+                    trx.show(mFragments[fragmentIndex]).commit();
+                }
+            } else if (fragmentIndex == 2) {
+                if (finishTaskList == null) {
+                    if (!emptyTaskFragment.isAdded()) {
+                        trx.add(R.id.fragment_container, emptyTaskFragment);
+                    }
+                    trx.show(emptyTaskFragment).commit();
+                } else {
+                    trx.show(mFragments[fragmentIndex]).commit();
+                }
+            }
+
             setCurrentIndexStateUnSelect();
         }
         mCurrentIndex = fragmentIndex;
@@ -233,7 +263,12 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
             unFinishTaskFragment.setData(doingTaskList);
             finishedTaskFragment.setData(finishTaskList);
         } else if (myRecvTaskRecordResponse.getError() == 1) {
-
+            FragmentTransaction trx = getActivity().getSupportFragmentManager().beginTransaction();
+            trx.hide(mFragments[mCurrentIndex]);
+            if (!emptyTaskFragment.isAdded()) {
+                trx.add(R.id.fragment_container, emptyTaskFragment);
+            }
+            trx.show(emptyTaskFragment).commit();
         } else if (myRecvTaskRecordResponse.getError() == -1) {
 
         } else if (myRecvTaskRecordResponse.getError() == -100) {

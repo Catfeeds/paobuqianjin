@@ -622,6 +622,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         public void response(StepRankResponse stepRankResponse) {
             LocalLog.d(TAG, "StepRankResponse() ");
             if (stepRankResponse.getError() == 0) {
+                if (stepRecycler == null) {
+                    return;
+                }
                 stepRecycler.setAdapter(new RankAdapter(getContext(), stepRankResponse.getData().getData()));
                 String sAgeFormat = mContext.getResources().getString(R.string.member_total);
                 String sFinalMember = String.format(sAgeFormat, stepRankResponse.getData().getPagenation().getTotalCount());
