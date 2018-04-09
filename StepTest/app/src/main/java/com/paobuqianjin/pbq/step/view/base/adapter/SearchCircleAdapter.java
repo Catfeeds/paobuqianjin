@@ -25,6 +25,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InOutCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
@@ -53,11 +54,13 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
     TextView cancelText;
     TextView confirmText;
     RelativeLayout partTwo;
+    InOutCallBackInterface inOutCallBackInterface;
 
-    public SearchCircleAdapter(Context context, final Activity activity) {
+    public SearchCircleAdapter(Context context, final Activity activity, InOutCallBackInterface inOutCallBackInterface) {
         super();
         mContext = context;
         this.activity = activity;
+        this.inOutCallBackInterface = inOutCallBackInterface;
     }
 
 
@@ -138,6 +141,9 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
                 if (joinCircleResponse.getError() == 0) {
                     LocalLog.d(TAG, "加入成功");
                     joinIn.setText("已加入");
+                    if(inOutCallBackInterface != null){
+                        inOutCallBackInterface.inCallBack();
+                    }
                 } else if (joinCircleResponse.getError() == -1) {
                     Toast.makeText(mContext, joinCircleResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -163,7 +169,6 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
             locationDescSearchList = (TextView) view.findViewById(R.id.location_desc_search_list);
             joinIn = (Button) view.findViewById(R.id.join_in);
             joinIn.setOnClickListener(onClickListener);
-            Presenter.getInstance(mContext).attachUiInterface(joinCircleInterface);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -184,6 +189,7 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
                                     popPassWordEdit();
                                     return;
                                 }
+                                Presenter.getInstance(mContext).attachUiInterface(joinCircleInterface);
                                 Presenter.getInstance(mContext).joinCircle(joinCircleParam);
                                 break;
                             default:
@@ -196,6 +202,7 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
                             joinCircleParam.setPassword(passEdit.getText().toString());
                             popupOpWindow.dismiss();
                         }
+                        Presenter.getInstance(mContext).attachUiInterface(joinCircleInterface);
                         Presenter.getInstance(mContext).joinCircle(joinCircleParam);
                         break;
                     case R.id.cancel_text:

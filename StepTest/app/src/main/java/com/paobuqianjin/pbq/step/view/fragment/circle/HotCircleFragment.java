@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InOutCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.QueryRedPkgInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
@@ -35,6 +36,7 @@ import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.SelectFriendForTaskActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleChooseGoodAdapter;
 
@@ -68,6 +70,7 @@ public class HotCircleFragment extends BaseFragment {
     private final static String ACTION_ENTER_ICON = "coma.paobuqian.pbq.step.ICON_ACTION";
     private int PAGE_INDEX_DEFAULT = 1;
     private int PAGE_DEFAULT_SIZE = 10;
+    private static int SEARCH_ADD = 0;
 
     @Override
 
@@ -196,7 +199,10 @@ public class HotCircleFragment extends BaseFragment {
                 case R.id.find_more_choice:
                     LocalLog.d(TAG, "查看更多圈子！");
                     ChoiceBundleData choiceBundleData = new ChoiceBundleData(choiceCircleData);
-                    startActivity(SearchCircleActivity.class, choiceBundleData);
+                    Intent intentSearch = new Intent();
+                    intentSearch.putExtra(getActivity().getPackageName(), choiceBundleData);
+                    intentSearch.setClass(getActivity(), SearchCircleActivity.class);
+                    startActivityForResult(intentSearch, SEARCH_ADD);
                     break;
                 default:
                     break;
@@ -335,10 +341,10 @@ public class HotCircleFragment extends BaseFragment {
                 LocalLog.d(TAG, " response() 更新精选圈子 size = " + choiceCircleResponse.getData().getData().size());
                 choiceCircleData = (ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData();
                 adapter = new CircleChooseGoodAdapter(getActivity(), getContext(),
-                        choiceCircleData);
+                        choiceCircleData, inOutCallBackInterface);
                 choiceRecyclerView.setAdapter(adapter);
                 pageCounts[2] = choiceCircleResponse.getData().getPagenation().getTotalPage();
-            }else if(choiceCircleResponse.getError() == -100){
+            } else if (choiceCircleResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 Presenter.getInstance(getContext()).setId(-1);
                 Presenter.getInstance(getContext()).steLogFlg(false);
@@ -349,6 +355,24 @@ public class HotCircleFragment extends BaseFragment {
         }
     };
 
+    private InOutCallBackInterface inOutCallBackInterface = new InOutCallBackInterface() {
+        @Override
+        public void inCallBack() {
+            updateMyHotCircle();
+        }
+
+        @Override
+        public void outCallBack() {
+
+        }
+    };
+
+    /*刷新我的热门圈子*/
+    private void updateMyHotCircle() {
+        LocalLog.d(TAG, "更新界面");
+        Presenter.getInstance(mContext).getMyHotCircle(PAGE_INDEX_DEFAULT, 2);
+        Presenter.getInstance(mContext).getCircleChoice(PAGE_INDEX_DEFAULT, PAGE_DEFAULT_SIZE);
+    }
 
     private QueryRedPkgInterface queryRedPkgInterface = new QueryRedPkgInterface() {
         @Override
@@ -377,4 +401,14 @@ public class HotCircleFragment extends BaseFragment {
             }
         }
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SEARCH_ADD) {
+            LocalLog.d(TAG, "SEARCH_ADD ++++");
+            LocalLog.d(TAG, "进行过加入圈子的操作");
+            updateMyHotCircle();
+        }
+    }
 }

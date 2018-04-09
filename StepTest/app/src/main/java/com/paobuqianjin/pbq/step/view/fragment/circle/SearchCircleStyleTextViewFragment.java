@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InOutCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.SearchCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
@@ -65,6 +67,8 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     SearchCircleAdapter adapter;
     int pageIndex = 1;
     int pageCount = 0;
+    boolean addCircle = false;
+    private static int SEARCH_ADD = 0;
 
     public void setChoiceCircleData(ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData) {
         this.choiceCircleData = choiceCircleData;
@@ -124,20 +128,32 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         recyclerView.addFooterView(loadMoreView); // 添加为Footer。
         recyclerView.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         recyclerView.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
-        adapter = new SearchCircleAdapter(this.getContext(), getActivity());
+        adapter = new SearchCircleAdapter(this.getContext(), getActivity(), inOutCallBackInterface);
         recyclerView.setAdapter(adapter);
         loadData();
         Presenter.getInstance(getContext()).attachUiInterface(this);
         searchIcon = (RelativeLayout) viewRoot.findViewById(R.id.search_icon);
-        searchCircleText = (EditText)viewRoot.findViewById(R.id.search_circle_text);
+        searchCircleText = (EditText) viewRoot.findViewById(R.id.search_circle_text);
         searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Presenter.getInstance(getContext()).getMoreCircle(1, Utils.PAGE_SIZE_DEFAULT,searchCircleText.getText().toString());
+                Presenter.getInstance(getContext()).getMoreCircle(1, Utils.PAGE_SIZE_DEFAULT, searchCircleText.getText().toString());
             }
         });
     }
 
+
+    private InOutCallBackInterface inOutCallBackInterface = new InOutCallBackInterface() {
+        @Override
+        public void inCallBack() {
+            addCircle = true;
+        }
+
+        @Override
+        public void outCallBack() {
+
+        }
+    };
 
     /**
      * 第一次加载数据。
@@ -174,7 +190,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
                         }
                     }
 
-                    Presenter.getInstance(getContext()).getMoreCircle(pageIndex, Utils.PAGE_SIZE_DEFAULT,"");
+                    Presenter.getInstance(getContext()).getMoreCircle(pageIndex, Utils.PAGE_SIZE_DEFAULT, "");
 
                 }
             }, 1000);
@@ -353,7 +369,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
             recyclerView.loadMoreFinish(false, true);
         } else if (choiceCircleResponse.getError() == -1) {
             recyclerView.loadMoreFinish(false, true);
-        }else if(choiceCircleResponse.getError() == -100){
+        } else if (choiceCircleResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
             Presenter.getInstance(getContext()).steLogFlg(false);
@@ -368,5 +384,12 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         super.onDestroyView();
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
         ButterKnife.unbind(this);
+        LocalLog.d(TAG, "onDestroyView() enter");
+        if (addCircle) {
+            LocalLog.d(TAG, "进行过加入圈子的操作");
+            Intent intent = new Intent();
+            getActivity().setResult(SEARCH_ADD, intent);
+            getActivity().finish();
+        }
     }
 }

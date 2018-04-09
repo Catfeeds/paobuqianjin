@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InOutCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
@@ -59,12 +60,15 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
     RelativeLayout partTwo;
     private JoinCircleParam joinCircleParam;
     private final static String ACTION_ENTER_ICON = "coma.paobuqian.pbq.step.ICON_ACTION";
+    InOutCallBackInterface inOutCallBackInterface;
 
-    public CircleChooseGoodAdapter(final Activity activity, Context context, ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data) {
+    public CircleChooseGoodAdapter(final Activity activity, Context context,
+                                   ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data, InOutCallBackInterface inOutCallBackInterface) {
         super();
         this.activity = activity;
         mContext = context;
         this.data = data;
+        this.inOutCallBackInterface = inOutCallBackInterface;
     }
 
     @Override
@@ -103,6 +107,7 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
             holder.circleJoin.setOnClickListener(holder.onClickListener);
         } else if (tmpData.getIs_join() == 1) {
             holder.circleJoin.setText("已加入");
+            holder.is_join = true;
         }
         holder.setCircleId(tmpData.getCircleid());
     }
@@ -145,6 +150,7 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
         Button circleJoin;
 
         ImageView lock;
+        boolean is_join;
 
 
         public CircleChooseViewHolder(View view) {
@@ -153,11 +159,24 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent();
-                    intent.setClass(mContext, CirCleDetailActivity.class);
-                    intent.setAction(ACTION_ENTER_ICON);
-                    intent.putExtra(mContext.getPackageName() + "circleid",getCircleId());
-                    mContext.startActivity(intent);
+
+                    if (is_join) {
+                        Intent intent = new Intent();
+                        intent.setClass(mContext, CirCleDetailActivity.class);
+                        intent.setAction(ACTION_ENTER_ICON);
+                        intent.putExtra(mContext.getPackageName() + "circleid", getCircleId());
+                        mContext.startActivity(intent);
+                    } else {
+                        if (is_pwd) {
+                            popPassWordEdit();
+                        } else {
+                            Intent intent = new Intent();
+                            intent.setClass(mContext, CirCleDetailActivity.class);
+                            intent.setAction(ACTION_ENTER_ICON);
+                            intent.putExtra(mContext.getPackageName() + "circleid", getCircleId());
+                            mContext.startActivity(intent);
+                        }
+                    }
                 }
             });
         }
@@ -211,12 +230,17 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
         private JoinCircleInterface joinCircleInterface = new JoinCircleInterface() {
             @Override
             public void response(JoinCircleResponse joinCircleResponse) {
+                LocalLog.d(TAG, " JoinCircleResponse() " + joinCircleResponse.toString());
                 if (joinCircleResponse.getError() == 0) {
                     LocalLog.d(TAG, "加入成功");
                     circleJoin.setText("已加入");
+                    if (inOutCallBackInterface != null) {
+                        inOutCallBackInterface.inCallBack();
+                    }
                 } else if (joinCircleResponse.getError() == -1) {
                     Toast.makeText(mContext, joinCircleResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+                Presenter.getInstance(mContext).dispatchUiInterface(this);
             }
 
             @Override
@@ -256,6 +280,7 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
                                 } else {
 
                                 }
+                                Presenter.getInstance(mContext).attachUiInterface(joinCircleInterface);
                                 Presenter.getInstance(mContext).joinCircle(joinCircleParam);
                                 break;
                         }
@@ -263,9 +288,16 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
                     case R.id.confirm_text:
                         LocalLog.d(TAG, "确定");
                         if (popupOpWindow != null) {
+                            if (joinCircleParam == null) {
+                                joinCircleParam = new JoinCircleParam();
+                            }
+                            if (passEdit.getText().toString().equals("")) {
+                                return;
+                            }
                             joinCircleParam.setPassword(passEdit.getText().toString());
                             popupOpWindow.dismiss();
                         }
+                        Presenter.getInstance(mContext).attachUiInterface(joinCircleInterface);
                         Presenter.getInstance(mContext).joinCircle(joinCircleParam);
                         break;
                     case R.id.cancel_text:
