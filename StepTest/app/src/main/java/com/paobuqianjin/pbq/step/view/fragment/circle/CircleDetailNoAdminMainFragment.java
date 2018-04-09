@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.RechargeRankBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -201,7 +202,18 @@ public class CircleDetailNoAdminMainFragment extends BaseBarImageViewFragment {
     };
 
     private UiStepAndLoveRankInterface uiStepAndLoveRankInterface = new UiStepAndLoveRankInterface() {
- /*       @Override
+        @Override
+        public void response(ErrorCode errorCode) {
+            if (errorCode.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
+            }
+        }
+        /*       @Override
         public void response(CircleDetailResponse circleDetailResponse) {
             LocalLog.d(TAG, "CircleDetailResponse() ");
             String sAgeFormat = mContext.getResources().getString(R.string.target_step);
@@ -219,16 +231,34 @@ public class CircleDetailNoAdminMainFragment extends BaseBarImageViewFragment {
         @Override
         public void response(ReChargeRankResponse reChargeRankResponse) {
             LocalLog.d(TAG, "ReChargeRankResponse() ");
-            rankRecycler.setAdapter(new RechargeRankSimpleAdapter(getContext(), reChargeRankResponse.getData().getData()));
-            rechargeRankBundleData = new RechargeRankBundleData(
-                    (ArrayList<ReChargeRankResponse.DataBeanX.DataBean>)
-                            reChargeRankResponse.getData().getData());
+            if (reChargeRankResponse.getError() == 0) {
+                rankRecycler.setAdapter(new RechargeRankSimpleAdapter(getContext(), reChargeRankResponse.getData().getData()));
+                rechargeRankBundleData = new RechargeRankBundleData(
+                        (ArrayList<ReChargeRankResponse.DataBeanX.DataBean>)
+                                reChargeRankResponse.getData().getData());
+            } else if (reChargeRankResponse.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
+            }
         }
 
         @Override
         public void response(StepRankResponse stepRankResponse) {
             LocalLog.d(TAG, "StepRankResponse() ");
-            stepRecycler.setAdapter(new RankAdapter(getContext(), stepRankResponse.getData().getData()));
+            if (stepRankResponse.getError() == 0) {
+                stepRecycler.setAdapter(new RankAdapter(getContext(), stepRankResponse.getData().getData()));
+            } else if (stepRankResponse.getError() == -100 ){
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
+            }
         }
     };
 }

@@ -344,6 +344,13 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
         } else if (dynamicCommentListResponse.getError() == -1) {
             LocalLog.d(TAG, "");
+        } else if (dynamicCommentListResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -477,6 +484,13 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
             adapter = new ImageViewPagerAdapter(getContext(), Mview);
             imageViewpager.setAdapter(adapter);
+        } else if (dynamicIdDetailResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -490,6 +504,13 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
             likeData = (ArrayList<DynamicLikeListResponse.DataBeanX.DataBean>) dynamicLikeListResponse.getData().getData();
             supportIconRecycler.setAdapter(new LikeUserAdapter(getContext(), dynamicLikeListResponse.getData().getData()));
+        } else if (dynamicLikeListResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
 
     }
@@ -503,6 +524,13 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 reflashInterface.notifyReflash();
             }
             popupRedPkgWindow.dismiss();
+        } else if (postDynamicContentResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -510,14 +538,23 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     public void response(PutVoteResponse putVoteResponse) {
         LocalLog.d(TAG, "PutVoteResponse() enter " + putVoteResponse.toString());
         Toast.makeText(getContext(), putVoteResponse.getMessage(), Toast.LENGTH_SHORT).show();
-        if (putVoteResponse.getMessage().equals("点赞成功")) {
-            likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_s));
-            likeNum += 1;
-            contentSupports.setText(String.valueOf(likeNum));
-        } else {
-            likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_n));
-            likeNum -= 1;
-            contentSupports.setText(String.valueOf(likeNum));
+        if (putVoteResponse.getError() == 0) {
+            if (putVoteResponse.getMessage().equals("点赞成功")) {
+                likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_s));
+                likeNum += 1;
+                contentSupports.setText(String.valueOf(likeNum));
+            } else {
+                likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_n));
+                likeNum -= 1;
+                contentSupports.setText(String.valueOf(likeNum));
+            }
+        }else if(putVoteResponse.getError() == -100){
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
 
     }

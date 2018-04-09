@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
@@ -235,6 +236,25 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
 
         } else if (myRecvTaskRecordResponse.getError() == -1) {
 
+        } else if (myRecvTaskRecordResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 }

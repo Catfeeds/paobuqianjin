@@ -38,6 +38,7 @@ import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
@@ -138,6 +139,13 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         LocalLog.d(TAG, "ReleaseDynamicResponse() enter" + releaseDynamicResponse.toString());
         if (releaseDynamicResponse.getError() == 0) {
             getActivity().finish();
+        } else if (releaseDynamicResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -507,5 +515,17 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(String city, double latitude, double longitude) {
         locationStr.setText(city);
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
@@ -27,4 +28,6 @@ public interface HomePageInterface extends CallBackInterface {
     public void response(PostUserStepResponse postUserStepResponse);
 
     public void response(SponsorRedPkgResponse sponsorRedPkgResponse);
+
+    public void response(ErrorCode errorCode);
 }

@@ -158,7 +158,7 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    
+
     private void updateDrawableFalse(int index) {
         Drawable top = getResources().getDrawable(icon[index][0]);
         top.setBounds(0, 0, 54, 54);
@@ -222,7 +222,12 @@ public class MainActivity extends BaseActivity {
                     LocalLog.d(TAG, "扫描个人");
                     String userid = ScanResult.substring("userid:".length(), ScanResult.length());
                     LocalLog.d(TAG, "userid = " + userid);
+                    Intent intent = new Intent();
                     //TODO ACTION_SCAN_USERID
+                    intent.putExtra("userid", Integer.parseInt(userid));
+                    intent.setClass(this, UserCenterActivity.class);
+                    startActivity(intent);
+
                 } else if (ScanResult.startsWith("circleid:")) {
                     LocalLog.d(TAG, "扫描圈子");
                     String circleid = ScanResult.substring("circleid:".length(), ScanResult.length());

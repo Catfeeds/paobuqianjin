@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostAddressBookParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendAddResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteMessageResponse;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
@@ -218,6 +219,13 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
                 regAppRecycler.setAdapter(new LocalContactAdapter(getContext(), friendAddResponse.getData().getIn_system()));
                 unRegAppRecycler.setAdapter(new LocalContactAdapter(getContext(), friendAddResponse.getData().getOut_system()));
             }
+        }else if(friendAddResponse.getError() == -100){
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -225,6 +233,25 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
     public void response(InviteMessageResponse inviteMessageResponse) {
         if (inviteMessageResponse.getError() == 0) {
             
+        }else if(inviteMessageResponse.getError() == -100){
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 }

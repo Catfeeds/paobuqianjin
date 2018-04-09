@@ -19,6 +19,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -228,6 +229,13 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
 
         } else if (stepDollarDetailResponse.getError() == -1) {
 
+        } else if (stepDollarDetailResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -239,6 +247,13 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
 
         } else if (userInfoResponse.getError() == -1) {
 
+        } else if (userInfoResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -247,5 +262,17 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
         super.onDestroyView();
         ButterKnife.unbind(this);
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
     }
 }

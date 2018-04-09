@@ -34,10 +34,10 @@
                 android:layout_alignBottom="@+id/user_head_ico"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="14dp"
-                android:textColor="@color/color_f8"
                 android:background="@drawable/shape"
                 android:gravity="center"
                 android:stateListAnimator="@null"
+                android:textColor="@color/color_f8"
                 android:visibility="gone" />
 
             <RelativeLayout
@@ -53,6 +53,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:ellipsize="end"
+                    android:maxEms="6"
+                    android:singleLine="true"
                     android:text=""
                     android:textColor="@color/color_161727"
                     android:textSize="24dp" />

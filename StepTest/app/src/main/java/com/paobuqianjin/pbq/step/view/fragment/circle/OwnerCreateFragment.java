@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.MyCreatCircleInterface;
@@ -96,6 +97,25 @@ public class OwnerCreateFragment extends BaseFragment {
             if (myCreateCircleResponse.getError() == 0) {
                 ownerCreateCircleLists.setAdapter(new OwnerCreateAdapter(getContext(),
                         (ArrayList<MyCreateCircleResponse.DataBeanX.DataBean>) myCreateCircleResponse.getData().getData()));
+            }else if(myCreateCircleResponse.getError() == -100){
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
+            }
+        }
+
+        @Override
+        public void response(ErrorCode errorCode) {
+            if (errorCode.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
             }
         }
     };
@@ -105,6 +125,18 @@ public class OwnerCreateFragment extends BaseFragment {
         public void response(MyCreateCircleResponse myCreateCircleResponse) {
             LocalLog.d(TAG, " Reflash MyCreateCircleResponse()");
             isRefresh = false;
+        }
+
+        @Override
+        public void response(ErrorCode errorCode) {
+            if (errorCode.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
+            }
         }
     };
 

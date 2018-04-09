@@ -17,6 +17,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -122,7 +123,16 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     @Override
     public void response(BindCardListResponse bindCardListResponse) {
         LocalLog.d(TAG, "BindCardListResponse() enter " + bindCardListResponse.toString());
-        selectBankId = bindCardListResponse.getData().get(0).getId();
+        if (bindCardListResponse.getError() == 0) {
+            selectBankId = bindCardListResponse.getData().get(0).getId();
+        } else if (bindCardListResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
 
     }
 
@@ -131,7 +141,26 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         LocalLog.d(TAG, "CrashResponse()  enter  " + crashResponse.toString());
         if (crashResponse.getError() == 0) {
             Toast.makeText(getContext(), crashResponse.getMessage(), Toast.LENGTH_SHORT).show();
-            ((CrashActivity)getActivity()).showCrashResult(crashResponse);
+            ((CrashActivity) getActivity()).showCrashResult(crashResponse);
+        } else if (crashResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 }

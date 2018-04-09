@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -128,22 +129,43 @@ public class RechargeWalletFragment extends BaseBarStyleTextViewFragment impleme
         if (dialog != null) {
             dialog.dismiss();
         }
-        LocalLog.d(TAG, wxPayOrderResponse.toString());
-        req.appId = wxPayOrderResponse.getData().getAppid();
-        req.partnerId = wxPayOrderResponse.getData().getPartnerid();
-        req.prepayId = wxPayOrderResponse.getData().getPrepayid();
-        req.packageValue = wxPayOrderResponse.getData().getPackageX();
-        req.nonceStr = wxPayOrderResponse.getData().getNoncestr();
-        req.sign = wxPayOrderResponse.getData().getSign();
-        req.timeStamp = String.valueOf(wxPayOrderResponse.getData().getTimestamp());
+        if (wxPayOrderResponse.getError() == 0) {
+            LocalLog.d(TAG, wxPayOrderResponse.toString());
+            req.appId = wxPayOrderResponse.getData().getAppid();
+            req.partnerId = wxPayOrderResponse.getData().getPartnerid();
+            req.prepayId = wxPayOrderResponse.getData().getPrepayid();
+            req.packageValue = wxPayOrderResponse.getData().getPackageX();
+            req.nonceStr = wxPayOrderResponse.getData().getNoncestr();
+            req.sign = wxPayOrderResponse.getData().getSign();
+            req.timeStamp = String.valueOf(wxPayOrderResponse.getData().getTimestamp());
 
-        Presenter.getInstance(getContext()).setOutTradeNo(wxPayOrderResponse.getData().getOrder_no());
-        msgApi.registerApp(req.appId);
-        msgApi.sendReq(req);
+            Presenter.getInstance(getContext()).setOutTradeNo(wxPayOrderResponse.getData().getOrder_no());
+            msgApi.registerApp(req.appId);
+            msgApi.sendReq(req);
+        } else if (wxPayOrderResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
     }
 
     @Override
     public void response(WalletPayOrderResponse walletPayOrderResponse) {
 
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
     }
 }

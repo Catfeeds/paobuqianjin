@@ -14,6 +14,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.MessageContentBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.MessageLikeBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.MessageSystemBundleData;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageAtResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageContentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageLikeResponse;
@@ -161,6 +162,13 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
     public void response(MessageLikeResponse messageLikeResponse) {
         if (messageLikeResponse.getError() == 0) {
             this.messageLikeResponse = messageLikeResponse;
+        } else if (messageLikeResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -169,6 +177,13 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
         if (messageSystemResponse.getError() == 0) {
             this.messageSystemResponse = messageSystemResponse;
             likeDesMsg.setText(String.valueOf(messageSystemResponse.getData().getPagenation().getTotalCount()) + "个赞");
+        } else if (messageSystemResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -180,7 +195,25 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
                 return;
             }
             contentDesMsg.setText(String.valueOf(messageContentResponse.getData().getPagenation().getTotalCount()) + "条消息");
+        } else if (messageContentResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
+    }
 }

@@ -353,6 +353,13 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
             recyclerView.loadMoreFinish(false, true);
         } else if (choiceCircleResponse.getError() == -1) {
             recyclerView.loadMoreFinish(false, true);
+        }else if(choiceCircleResponse.getError() == -100){
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 

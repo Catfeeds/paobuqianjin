@@ -223,6 +223,19 @@ public class HotCircleFragment extends BaseFragment {
     }
 
     private UiHotCircleInterface uiHotCircleInterface = new UiHotCircleInterface() {
+
+        @Override
+        public void response(ErrorCode errorCode) {
+            if (errorCode.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
+            }
+        }
+
         @Override
         public void response(MyHotCircleResponse myHotCircleResponse) {
             if (myHotCircleResponse.getError() == 0) {
@@ -260,6 +273,13 @@ public class HotCircleFragment extends BaseFragment {
                     }
                 }
                 pageCounts[1] = myHotCircleResponse.getData().getPagenation().getTotalPage();
+            } else if (myHotCircleResponse.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
             }
         }
 
@@ -318,12 +338,31 @@ public class HotCircleFragment extends BaseFragment {
                         choiceCircleData);
                 choiceRecyclerView.setAdapter(adapter);
                 pageCounts[2] = choiceCircleResponse.getData().getPagenation().getTotalPage();
+            }else if(choiceCircleResponse.getError() == -100){
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
             }
         }
     };
 
 
     private QueryRedPkgInterface queryRedPkgInterface = new QueryRedPkgInterface() {
+        @Override
+        public void response(ErrorCode errorCode) {
+            if (errorCode.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
+            }
+        }
+
         @Override
         public void response(CircleDetailResponse circleDetailResponse) {
             LocalLog.d(TAG, "获取圈子详情");

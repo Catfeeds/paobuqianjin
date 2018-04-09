@@ -118,4 +118,16 @@ public class FillInCodeFragment extends BaseBarStyleTextViewFragment implements 
         LocalLog.d(TAG, "PostInviteCodeResponse() enter " + postInviteCodeResponse.toString());
         getActivity().finish();
     }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
+    }
 }

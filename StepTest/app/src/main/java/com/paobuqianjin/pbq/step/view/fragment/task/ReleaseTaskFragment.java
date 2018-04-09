@@ -20,6 +20,7 @@ import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.LikeBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -171,8 +172,27 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
                 bundle.putString(TASK_NO, taskReleaseResponse.getData().getTask_no());
                 bundle.putString(CIRCLE_RECHARGE, targetTaskMoneyNum.getText().toString());
                 startActivity(PaoBuPayActivity.class, bundle, true, PAY_ACTION);
+            } else if (taskReleaseResponse.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
             }
 
+        }
+
+        @Override
+        public void response(ErrorCode errorCode) {
+            if (errorCode.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
+            }
         }
     };
 

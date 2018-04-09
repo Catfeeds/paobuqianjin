@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RechargeDetailResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -68,10 +69,29 @@ public class RechargeDetailFragment extends BaseFragment implements RechargeDeta
 
     @Override
     public void response(RechargeDetailResponse rechargeDetailResponse) {
-        LocalLog.d(TAG, "RechargeDetailResponse() enter  "+ rechargeDetailResponse.toString());
-        if(rechargeDetailResponse.getError() == 0){
+        LocalLog.d(TAG, "RechargeDetailResponse() enter  " + rechargeDetailResponse.toString());
+        if (rechargeDetailResponse.getError() == 0) {
             outDetailRecycler.setAdapter(new IncomeAdater(getContext(), rechargeDetailResponse.getData().getData()));
+        } else if (rechargeDetailResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
 
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
     }
 }

@@ -18,6 +18,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindAccountResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
@@ -152,5 +153,10 @@ public class BindSignCodeFragment extends BaseBarStyleTextViewFragment implement
                 Presenter.getInstance(getContext()).checkSignCode(checkSignCodeParam);
                 break;
         }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+
     }
 }

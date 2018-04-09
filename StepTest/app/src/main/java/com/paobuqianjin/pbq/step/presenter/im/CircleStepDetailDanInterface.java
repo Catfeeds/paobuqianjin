@@ -23,4 +23,5 @@ public interface CircleStepDetailDanInterface extends CallBackInterface {
     public void response(StepRandWeekResponse stepRandWeekResponse);
 
     public void response(CircleStepRankWeekResponse circleStepRankWeekResponse);
+
 }

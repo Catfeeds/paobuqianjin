@@ -22,6 +22,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteAdminResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AdminDeleteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MemberDeleteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
@@ -209,6 +210,13 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
 
             MemberManagerAdapter normalAdapter = new MemberManagerAdapter(getContext(), data[2], opCallBackInterface);
             normalRecyclerView.setAdapter(normalAdapter);
+        } else if (circleMemberResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -290,6 +298,13 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
         if (addDeleteAdminResponse.getError() == 0) {
             Toast.makeText(getContext(), addDeleteAdminResponse.getMessage(), Toast.LENGTH_SHORT).show();
             Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), 1, 10);
+        } else if (addDeleteAdminResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -300,6 +315,13 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
         if (memberDeleteResponse.getError() == 0) {
             deleteMemberConfim.setVisibility(View.GONE);
             Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), 1, 10);
+        } else if (memberDeleteResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -312,6 +334,18 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                 Toast.makeText(getContext(), "昵称修改成功", Toast.LENGTH_SHORT).show();
                 Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), 1, 10);
                 break;
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 }

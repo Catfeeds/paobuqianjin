@@ -26,6 +26,7 @@ import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -238,6 +239,13 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         if (myInviteResponse.getError() == 0) {
             myInviteFragment.setMsg(myInviteResponse.getData().getNumber(), myInviteResponse.getData().getSum_credit(),
                     myInviteResponse.getData().getMobile());
+        } else if (myInviteResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -246,6 +254,25 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         LocalLog.d(TAG, "InviteDanResponse() enter " + inviteDanResponse.toString());
         if (inviteDanResponse.getError() == 0) {
             inviteDanFragment.setDanAdapter(new InviteDanAdapter(getContext(), inviteDanResponse.getData().getData()));
+        } else if (inviteDanResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 }

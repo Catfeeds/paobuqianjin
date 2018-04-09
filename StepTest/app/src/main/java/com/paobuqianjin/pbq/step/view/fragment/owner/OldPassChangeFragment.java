@@ -114,6 +114,13 @@ public class OldPassChangeFragment extends BaseBarStyleTextViewFragment implemen
             LocalLog.d(TAG, "密码修改成功");
             Toast.makeText(getContext(), oldPassChangeResponse.getMessage(), Toast.LENGTH_SHORT).show();
             getActivity().finish();
+        } else if (oldPassChangeResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 }

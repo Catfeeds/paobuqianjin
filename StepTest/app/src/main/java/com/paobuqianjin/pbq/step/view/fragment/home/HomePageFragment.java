@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
@@ -382,6 +383,13 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             String moneyStr = String.format(moneyFormat, incomeResponse.getData().getTotal_amount());
             LocalLog.d(TAG, "responseMonthIncome() " + moneyStr);
             monthIncomeHome.setText(moneyStr);
+        } else if (incomeResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -410,6 +418,13 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             String moneyFormat = getContext().getResources().getString(R.string.today_income);
             String moneyStr = String.format(moneyFormat, incomeResponse.getData().getTotal_amount());
             todayIncomeNum.setText(moneyStr);
+        } else if (incomeResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
 
     }
@@ -417,17 +432,30 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public void responseWeather(WeatherResponse weatherResponse) {
         LocalLog.d(TAG, "responseWeather() enter" + weatherResponse.toString());
-        if(wendu == null){
+        if (wendu == null) {
             return;
         }
-        wendu.setText(weatherResponse.getData().getTemp() + "°");
-        weatherIcon.setImageResource(weatherMap.get(weatherResponse.getData().getImg()));
+        if (weatherResponse.getError() == 0) {
+            if (weatherResponse.getData() != null) {
+                wendu.setText(weatherResponse.getData().getTemp() + "°");
+                weatherIcon.setImageResource(weatherMap.get(weatherResponse.getData().getImg()));
+            }
+        } else if (weatherResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
+
 
     }
 
     @Override
     public void response(PostUserStepResponse postUserStepResponse) {
         LocalLog.d(TAG, "PostUserStepResponse() enter");
+
     }
 
     @Override
@@ -435,6 +463,13 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         LocalLog.d(TAG, "SponsorRedPkgResponse() enter " + sponsorRedPkgResponse.toString());
         if (sponsorRedPkgResponse.getError() == 0) {
             popRedPkg(sponsorRedPkgResponse);
+        } else if (sponsorRedPkgResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         } else {
             Toast.makeText(getContext(), sponsorRedPkgResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -523,6 +558,18 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         break;
                 }
             }
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 }

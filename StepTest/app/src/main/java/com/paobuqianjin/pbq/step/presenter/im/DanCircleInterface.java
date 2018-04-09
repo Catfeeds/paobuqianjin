@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 
@@ -17,4 +18,6 @@ public interface DanCircleInterface extends CallBackInterface {
     public void response(MyHotCircleResponse myHotCircleResponse);
 
     public void response(CircleStepRankResponse circleStepRankResponse);
+
+    public void response(ErrorCode errorCode);
 }

@@ -92,6 +92,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.BindThirdAccoutInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
@@ -181,6 +182,7 @@ public class NetStringCallBack extends StringCallback {
             LocalLog.d(TAG, "onError() enter" + response.toString());
             try {
                 ErrorCode errorCode = new Gson().fromJson(response.toString(), ErrorCode.class);
+
                 if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface) {
                     ((LoginSignCallbackInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {

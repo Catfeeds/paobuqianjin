@@ -127,6 +127,13 @@ public class MyReleaseFragment extends BaseBarStyleTextViewFragment implements M
                 myReleaseScroll.setVisibility(View.VISIBLE);
             }
             myReleaseRecycler.setAdapter(new MyReleaseTaskAdapter(getContext(), taskMyReleaseResponse.getData().getData()));
+        } else if (taskMyReleaseResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
 
     }

@@ -199,6 +199,13 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         if (friendStepRankDayResponse.getError() == 0) {
             this.friendStepRankDayResponse = friendStepRankDayResponse;
             updateFriendStepRankDayResponse(friendStepRankDayResponse);
+        } else if (friendStepRankDayResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -235,6 +242,13 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         LocalLog.d(TAG, "FriendWeekResponse() enter" + friendWeekResponse.toString());
         if (friendWeekResponse.getError() == 0) {
             this.friendWeekResponse = friendWeekResponse;
+        }else if(friendWeekResponse.getError() == -100){
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 

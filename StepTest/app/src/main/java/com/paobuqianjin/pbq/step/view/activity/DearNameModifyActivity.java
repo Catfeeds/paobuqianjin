@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DearNameResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DearNameModifyInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -51,9 +52,9 @@ public class DearNameModifyActivity extends BaseActivity implements DearNameModi
     @Override
     protected void initView() {
         super.initView();
-        barTitle = (TextView)findViewById(R.id.bar_title);
+        barTitle = (TextView) findViewById(R.id.bar_title);
         barTitle.setText("修改昵称");
-        barTvRight = (TextView)findViewById(R.id.bar_tv_right);
+        barTvRight = (TextView) findViewById(R.id.bar_tv_right);
         barTvRight.setText("保存");
         Intent intent = getIntent();
         if (intent != null) {
@@ -97,6 +98,18 @@ public class DearNameModifyActivity extends BaseActivity implements DearNameModi
             Intent intent = new Intent();
             setResult(DEAR_NAME_MODIFY, intent);
             finish();
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(DearNameModifyActivity.this).setId(-1);
+            Presenter.getInstance(DearNameModifyActivity.this).steLogFlg(false);
+            Presenter.getInstance(DearNameModifyActivity.this).setToken(this, "");
+            DearNameModifyActivity.this.finish();
+            System.exit(0);
         }
     }
 }

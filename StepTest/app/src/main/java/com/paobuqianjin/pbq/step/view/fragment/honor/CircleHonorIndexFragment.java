@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DanCircleInterface;
@@ -99,6 +100,13 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
                 Presenter.getInstance(getContext()).getAllMyCircle(pageIndex, 10);
             }
 
+        } else if (myHotCircleResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -106,6 +114,13 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
     public void response(CircleStepRankResponse circleStepRankResponse) {
         if (circleStepRankResponse.getError() == 0) {
             load(circleStepRankResponse);
+        } else if (circleStepRankResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -158,5 +173,17 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
         }
         LocalLog.d(TAG, "initView() enter");
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
     }
 }

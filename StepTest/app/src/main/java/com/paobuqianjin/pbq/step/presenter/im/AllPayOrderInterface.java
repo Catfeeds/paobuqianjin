@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllMyPayResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 
 /**
  * Created by pbq on 2018/2/3.
@@ -13,4 +14,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.AllMyPayResponse;
 */
 public interface AllPayOrderInterface extends CallBackInterface {
     public void response(AllMyPayResponse allMyPayResponse);
+
+    public void response(ErrorCode errorCode);
 }

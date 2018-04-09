@@ -100,7 +100,7 @@ public class MyReleaseDetailFragment extends BaseBarStyleTextViewFragment implem
         releaseTargetDays = (TextView) viewRoot.findViewById(R.id.release_target_days);
         releaseTarget = (TextView) viewRoot.findViewById(R.id.release_target);
         releaseTotalMoney = (TextView) viewRoot.findViewById(R.id.release_total_money);
-        releaseLiveRules = (TextView)viewRoot.findViewById(R.id.release_live_rules);
+        releaseLiveRules = (TextView) viewRoot.findViewById(R.id.release_live_rules);
         num1 = (TextView) viewRoot.findViewById(R.id.num_1);
       /*  num2 = (TextView) viewRoot.findViewById(R.id.num_2);*/
         taskDetailRecycler = (RecyclerView) viewRoot.findViewById(R.id.task_detail_recycler);
@@ -110,7 +110,7 @@ public class MyReleaseDetailFragment extends BaseBarStyleTextViewFragment implem
         if (intent != null) {
             int taskId = intent.getIntExtra("taskid", -1);
             if (taskId != -1) {
-                LocalLog.d(TAG,"获取 " + taskId + "任务详情");
+                LocalLog.d(TAG, "获取 " + taskId + "任务详情");
                 Presenter.getInstance(getContext()).getTaskDetail(taskId);
             }
         }
@@ -130,21 +130,30 @@ public class MyReleaseDetailFragment extends BaseBarStyleTextViewFragment implem
 
     @Override
     public void response(MyReleaseTaskDetailResponse myReleaseTaskDetailResponse) {
-        LocalLog.d(TAG, "MyReleaseTaskDetailResponse() enter " + myReleaseTaskDetailResponse.toString());
-        targetStep.setText(myReleaseTaskDetailResponse.getData().getTask().getTask_name());
-        String targetMoneyStrFormat = getString(R.string.target_money);
-        String targetMoneyStr = String.format(targetMoneyStrFormat, myReleaseTaskDetailResponse.getData().getTask().getReward_amount());
-        targetMoney.setText(targetMoneyStr);
-        String targetDayStrFormat = getString(R.string.task_days);
-        String targetDayStr = String.format(targetDayStrFormat, myReleaseTaskDetailResponse.getData().getTask().getTask_days());
-        releaseTargetDays.setText(targetDayStr);
-        releaseTotalMoney.setText(targetMoneyStr);
-        String releaseTargetFormat = getString(R.string.task_step_release);
-        String releaseTargetStr = String.format(releaseTargetFormat, myReleaseTaskDetailResponse.getData().getTask().getTarget_step());
-        releaseTarget.setText(releaseTargetStr);
+        if (myReleaseTaskDetailResponse.getError() == 0) {
+            LocalLog.d(TAG, "MyReleaseTaskDetailResponse() enter " + myReleaseTaskDetailResponse.toString());
+            targetStep.setText(myReleaseTaskDetailResponse.getData().getTask().getTask_name());
+            String targetMoneyStrFormat = getString(R.string.target_money);
+            String targetMoneyStr = String.format(targetMoneyStrFormat, myReleaseTaskDetailResponse.getData().getTask().getReward_amount());
+            targetMoney.setText(targetMoneyStr);
+            String targetDayStrFormat = getString(R.string.task_days);
+            String targetDayStr = String.format(targetDayStrFormat, myReleaseTaskDetailResponse.getData().getTask().getTask_days());
+            releaseTargetDays.setText(targetDayStr);
+            releaseTotalMoney.setText(targetMoneyStr);
+            String releaseTargetFormat = getString(R.string.task_step_release);
+            String releaseTargetStr = String.format(releaseTargetFormat, myReleaseTaskDetailResponse.getData().getTask().getTarget_step());
+            releaseTarget.setText(releaseTargetStr);
 
-        releaseLiveRules.setText("任务规则:"+myReleaseTaskDetailResponse.getData().getTask().getTask_rule());
-        num1.setText(myReleaseTaskDetailResponse.getData().getTask().getTask_desc());
-        taskDetailRecycler.setAdapter(new MyTaskDetailStateAdapter(getContext(), myReleaseTaskDetailResponse.getData().getTask_record()));
+            releaseLiveRules.setText("任务规则:" + myReleaseTaskDetailResponse.getData().getTask().getTask_rule());
+            num1.setText(myReleaseTaskDetailResponse.getData().getTask().getTask_desc());
+            taskDetailRecycler.setAdapter(new MyTaskDetailStateAdapter(getContext(), myReleaseTaskDetailResponse.getData().getTask_record()));
+        } else if (myReleaseTaskDetailResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
     }
 }

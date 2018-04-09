@@ -24,7 +24,10 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:layout_toEndOf="@+id/dynamic_user_icon"
-            android:text="阳阳"
+            android:ellipsize="end"
+            android:maxEms="10"
+            android:singleLine="true"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="18dp" />
 
@@ -35,7 +38,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="14dp"
-            android:text="4小时前"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
     </RelativeLayout>
@@ -55,18 +58,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:text="今天干哈？"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:visibility="visible"
         android:id="@+id/pic_viewpager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/dynamic_owner_rel"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="15dp"
+        android:visibility="visible">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/image_viewpager"
@@ -80,48 +83,49 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/image_viewpager"
+            android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"
             android:orientation="horizontal">
 
             <View
-                android:visibility="gone"
+                android:id="@+id/dot_1"
+                android:layout_width="8dp"
+                android:layout_height="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/image_viewpager_dot_selected"
-                android:id="@+id/dot_1"
-                android:layout_width="8dp"
-                android:layout_height="8dp"></View>
+                android:visibility="gone"></View>
 
             <View
-                android:visibility="gone"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/image_viewpager_dot_unselected"
                 android:id="@+id/dot_2"
                 android:layout_width="8dp"
-                android:layout_height="8dp"></View>
-
-            <View
-                android:visibility="gone"
+                android:layout_height="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/image_viewpager_dot_unselected"
+                android:visibility="gone"></View>
+
+            <View
                 android:id="@+id/dot_3"
                 android:layout_width="8dp"
-                android:layout_height="8dp"></View>
-
-            <View
-                android:visibility="gone"
+                android:layout_height="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/image_viewpager_dot_unselected"
+                android:visibility="gone"></View>
+
+            <View
                 android:id="@+id/dot_4"
                 android:layout_width="8dp"
-                android:layout_height="8dp"></View>
+                android:layout_height="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/image_viewpager_dot_unselected"
+                android:visibility="gone"></View>
         </LinearLayout>
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/location_support_rel"
         android:layout_width="match_parent"
@@ -135,7 +139,7 @@
             android:id="@+id/dynamic_location_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="深圳"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 

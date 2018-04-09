@@ -101,11 +101,18 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(ReleaseRecordResponse releaseRecordResponse) {
         LocalLog.d(TAG, "ReleaseRecordResponse() enter " + releaseRecordResponse.toString());
-        if(releaseRecordResponse.getError() == 0){
+        if (releaseRecordResponse.getError() == 0) {
             if (recordScroll.getVisibility() == View.GONE) {
                 recordScroll.setVisibility(View.VISIBLE);
             }
-            releaseRecord.setAdapter(new ReleaseRecordAdapter(getContext(),releaseRecordResponse.getData().getData()));
+            releaseRecord.setAdapter(new ReleaseRecordAdapter(getContext(), releaseRecordResponse.getData().getData()));
+        } else if (releaseRecordResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendSearchResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -124,11 +125,30 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
         if (userFriendResponse.getError() == 0) {
             selectTaskFriendAdapter = new SelectTaskFriendAdapter(getContext(), userFriendResponse.getData().getData());
             friendRecycler.setAdapter(selectTaskFriendAdapter);
+        } else if (userFriendResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
     @Override
     public void response(UserFriendSearchResponse userFriendSearchResponse) {
         LocalLog.d(TAG, "UserFriendSearchResponse() enter");
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
     }
 }

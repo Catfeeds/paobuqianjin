@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -219,6 +220,13 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
             if (allIncomeResponse.getData() != null) {
                 totalIncomeNum.setText(String.valueOf(allIncomeResponse.getData().getTotal_amount()));
             }
+        } else if (allIncomeResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -230,6 +238,13 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
             if (incomeResponse.getData() != null) {
                 monthIncomeNum.setText(String.valueOf(incomeResponse.getData().getTotal_amount()));
             }
+        } else if (incomeResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
 
     }
@@ -239,6 +254,13 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         LocalLog.d(TAG, "今天收益 responseToday() enter" + incomeResponse.toString());
         if (incomeResponse.getError() == 0) {
             incomeDes.setText(String.valueOf(incomeResponse.getData().getTotal_amount()));
+        } else if (incomeResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
 
     }
@@ -251,6 +273,13 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
             if (yesterdayIncomeResponse.getData() != null) {
                 yesterdayIncomeNum.setText(String.valueOf(yesterdayIncomeResponse.getData().getTotal_amount()));
             }
+        } else if (yesterdayIncomeResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -259,6 +288,25 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
 
         if (userInfoResponse.getError() == 0) {
             incomeMoney.setText("总金额:" + userInfoResponse.getData().getBalance());
+        } else if (userInfoResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 }

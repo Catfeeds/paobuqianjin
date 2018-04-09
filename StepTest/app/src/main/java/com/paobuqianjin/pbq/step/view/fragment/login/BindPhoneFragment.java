@@ -18,6 +18,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWxQqBindPhoneParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LogBindPhoneResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
@@ -127,6 +128,13 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
             Presenter.getInstance(getContext()).setToken(getContext(),dataBean.getUser_token());
             Presenter.getInstance(getContext()).setId(dataBean.getId());
             ((UserFitActivity) getActivity()).showPersonInfo(dataBean);
+        }else if(logBindPhoneResponse.getError() == -100){
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -196,6 +204,18 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
                 LocalLog.d(TAG, "获取验证码");
                 Presenter.getInstance(getContext()).getSignCodeLoginBind(phoneEdit.getText().toString());
                 break;
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 }

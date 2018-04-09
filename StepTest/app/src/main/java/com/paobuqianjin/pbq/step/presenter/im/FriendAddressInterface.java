@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendAddResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteMessageResponse;
 
@@ -11,4 +12,6 @@ public interface FriendAddressInterface extends CallBackInterface {
     public void response(FriendAddResponse friendAddResponse);
 
     public void response(InviteMessageResponse inviteMessageResponse);
+
+    public void response(ErrorCode errorCode);
 }

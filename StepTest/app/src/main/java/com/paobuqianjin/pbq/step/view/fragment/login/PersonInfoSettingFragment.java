@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
@@ -478,13 +479,20 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 Presenter.getInstance(getContext()).setToken(getContext(), phoneLoginDataBean.getUser_token());
                 startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
             }
-            if(signUserDataBean != null){
-                LocalLog.d(TAG,"立即登登陆");
+            if (signUserDataBean != null) {
+                LocalLog.d(TAG, "立即登登陆");
                 Presenter.getInstance(getContext()).steLogFlg(true);
                 Presenter.getInstance(getContext()).setId(signUserDataBean.getUserid());
                 startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
             }
 
+        } else if (userInfoSetResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -825,4 +833,15 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
 
     }
 
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
+    }
 }

@@ -288,7 +288,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 popCircleRedPkg = null;
             }
         });
-        money = (TextView)popCircleOpBar.findViewById(R.id.rec_money);
+        money = (TextView) popCircleOpBar.findViewById(R.id.rec_money);
         popCircleRedPkg.setFocusable(true);
         popCircleRedPkg.setOutsideTouchable(true);
 
@@ -579,6 +579,13 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 if (circleId != -1) {
                     Presenter.getInstance(getContext()).getCircleStepRank(circleId);
                 }
+            } else if (joinCircleResponse.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
             }
         }
 
@@ -601,6 +608,13 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                         (ArrayList<ReChargeRankResponse.DataBeanX.DataBean>)
                                 reChargeRankResponse.getData().getData());
 
+            } else if (reChargeRankResponse.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
             }
         }
 
@@ -612,8 +626,27 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 String sAgeFormat = mContext.getResources().getString(R.string.member_total);
                 String sFinalMember = String.format(sAgeFormat, stepRankResponse.getData().getPagenation().getTotalCount());
                 memberNumDes.setText(sFinalMember);
+            } else if (stepRankResponse.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
             }
 
+        }
+
+        @Override
+        public void response(ErrorCode errorCode) {
+            if (errorCode.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
+            }
         }
     };
 
@@ -687,6 +720,13 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             Toast.makeText(getContext(), circleDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
         } else if (circleDetailResponse.getError() == 1) {
 
+        } else if (circleDetailResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -711,7 +751,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         if (imageView != null) {
             imageView.clearAnimation();
             imageView.setVisibility(View.GONE);
-            money.setText(String.valueOf("￥ " +postRevRedPkgResponse.getData().getAmount()));
+            money.setText(String.valueOf("￥ " + postRevRedPkgResponse.getData().getAmount()));
             //popCircleRedPkg.dismiss();
         }
         if (postRevRedPkgResponse.getError() == 0) {
@@ -728,6 +768,18 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             popupOpWindowTop = null;
             //TODO 通知上一层UI更新
             getActivity().finish();
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 }

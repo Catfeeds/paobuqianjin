@@ -17,6 +17,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.QueryFollowStateResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -146,29 +147,47 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void response(UserInfoResponse userInfoResponse) {
         LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
-        if (userInfoResponse.getData().getSex() == 0) {
-            sexIcon.setImageResource(R.drawable.man_flag);
-        } else if (userInfoResponse.getData().getSex() == 1) {
-            sexIcon.setImageResource(R.drawable.woman_flag);
-        }
-        userName.setText(userInfoResponse.getData().getNickname());
-        String stepFormat = getContext().getResources().getString(R.string.user_target);
-        String stepStr = String.format(stepFormat, userInfoResponse.getData().getTarget_step());
-        targerNum.setText(stepStr);
-        Presenter.getInstance(getContext()).getImage(userHeadIco, userInfoResponse.getData().getAvatar());
-        if (userInfoResponse.getData().getCity().equals(userInfoResponse.getData().getProvince())) {
-            locationCity.setText(userInfoResponse.getData().getCity());
-        } else {
-            locationCity.setText(userInfoResponse.getData().getProvince() + "," + userInfoResponse.getData().getCity());
+        if (userInfoResponse.getError() == 0) {
+            if (userInfoResponse.getData().getSex() == 0) {
+                sexIcon.setImageResource(R.drawable.man_flag);
+            } else if (userInfoResponse.getData().getSex() == 1) {
+                sexIcon.setImageResource(R.drawable.woman_flag);
+            }
+            userName.setText(userInfoResponse.getData().getNickname());
+            String stepFormat = getContext().getResources().getString(R.string.user_target);
+            String stepStr = String.format(stepFormat, userInfoResponse.getData().getTarget_step());
+            targerNum.setText(stepStr);
+            Presenter.getInstance(getContext()).getImage(userHeadIco, userInfoResponse.getData().getAvatar());
+            if (userInfoResponse.getData().getCity().equals(userInfoResponse.getData().getProvince())) {
+                locationCity.setText(userInfoResponse.getData().getCity());
+            } else {
+                locationCity.setText(userInfoResponse.getData().getProvince() + "," + userInfoResponse.getData().getCity());
+            }
+        } else if (userInfoResponse.getError() == 0) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
     @Override
     public void response(DynamicPersonResponse dynamicPersonResponse) {
-        LocalLog.d(TAG, "DynamicPersonResponse() enter " + dynamicPersonResponse.toString());
-        List<List> map = checkDaysDynamic(dynamicPersonResponse);
-        dynamicRecordRecycler.addItemDecoration(new UserDynamicRecordAdapter.SpaceItemDecoration(45));
-        dynamicRecordRecycler.setAdapter(new UserDynamicRecordAdapter(getContext(), map));
+        if (dynamicPersonResponse.getError() == 0) {
+            LocalLog.d(TAG, "DynamicPersonResponse() enter " + dynamicPersonResponse.toString());
+            List<List> map = checkDaysDynamic(dynamicPersonResponse);
+            dynamicRecordRecycler.addItemDecoration(new UserDynamicRecordAdapter.SpaceItemDecoration(45));
+            dynamicRecordRecycler.setAdapter(new UserDynamicRecordAdapter(getContext(), map));
+        } else if (dynamicPersonResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
     }
 
     private List<List> checkDaysDynamic(DynamicPersonResponse dynamicPersonResponse) {
@@ -240,6 +259,13 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
                     }
                 }
             });
+        } else if (queryFollowStateResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -252,7 +278,38 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
                 } else {
                     bntLike.setText("已关注");
                 }
+            } else if (addDeleteFollowResponse.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
+            }
+        }
+
+        @Override
+        public void response(ErrorCode errorCode) {
+            if (errorCode.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(getContext()).setId(-1);
+                Presenter.getInstance(getContext()).steLogFlg(false);
+                Presenter.getInstance(getContext()).setToken(getContext(), "");
+                getActivity().finish();
+                System.exit(0);
             }
         }
     };
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
+    }
 }

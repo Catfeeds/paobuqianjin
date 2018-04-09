@@ -140,7 +140,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
         circleTarget = (TextView) viewRoot.findViewById(R.id.circle_target);
         buttoneLeftBar = (RelativeLayout) viewRoot.findViewById(R.id.buttone_left_bar);
         buttoneLeftBar.setOnClickListener(onClickListener);
-        timesToday = (TextView)viewRoot.findViewById(R.id.times_today);
+        timesToday = (TextView) viewRoot.findViewById(R.id.times_today);
         timesToday.setText(DateTimeUtil.getLocalTime());
         Intent intent = getActivity().getIntent();
         if (intent != null && ACTION_CIRCLE_HONOR.equals(intent.getAction())) {
@@ -226,6 +226,13 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                 this.circleStepRankResponse = circleStepRankResponse;
             }
             updateCircleStepRank(circleStepRankResponse);
+        } else if (circleStepRankResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -253,6 +260,13 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             updateDayRank(stepRankResponse);
             Presenter.getInstance(getContext()).getCircleRankNum(circleId);
             Presenter.getInstance(getContext()).getCircleStepRankWeek(circleId, pageIndexWeek, PAGE_SIZE);
+        } else if (stepRankResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -270,6 +284,13 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     public void response(CircleDetailResponse circleDetailResponse) {
         if (circleDetailResponse.getError() == 0) {
             circleTarget.setText("圈子目标：" + String.valueOf(circleDetailResponse.getData().getTarget()));
+        } else if (circleDetailResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -281,6 +302,13 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                 this.stepRandWeekResponse = stepRandWeekResponse;
             }
             //updateWeekRank(stepRandWeekResponse);
+        }else if(stepRandWeekResponse.getError() == -100){
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -302,6 +330,13 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                 this.circleStepRankWeekResponse = circleStepRankWeekResponse;
             }
             //updateCircleStepWeekRank(circleStepRankWeekResponse);
+        }else if(circleStepRankWeekResponse.getError() == -100){
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 

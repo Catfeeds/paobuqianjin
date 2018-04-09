@@ -157,47 +157,64 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
     @Override
     public void response(DanListResponse danListResponse) {
         LocalLog.d(TAG, "DanListResponse() enter " + danListResponse.toString());
-        for (int i = 0; i < danListResponse.getData().size(); i++) {
-            if (userStep > danListResponse.getData().get(i).getTarget()) {
-                danListResponse.getData().get(i).setFinished(true);
+        if (danListResponse.getError() == 0) {
+            for (int i = 0; i < danListResponse.getData().size(); i++) {
+                if (userStep > danListResponse.getData().get(i).getTarget()) {
+                    danListResponse.getData().get(i).setFinished(true);
+                }
             }
-        }
 
-        danRecycler.setAdapter(new DanAdapter(getContext(), danListResponse.getData()));
+            danRecycler.setAdapter(new DanAdapter(getContext(), danListResponse.getData()));
+        } else if (danListResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
     }
 
     @Override
     public void response(UserDanResponse userDanResponse) {
         LocalLog.d(TAG, "UserDanResponse() enter " + userDanResponse.toString());
+        if (userDanResponse.getError() == 0) {
+            userStep = userDanResponse.getData().getTotal_step_number();
+            LocalLog.d(TAG, "用户当前步数");
+            String stepStrFormat = getString(R.string.total_step_dan);
+            String stepStr = String.format(stepStrFormat, userStep);
+            danStepDes.setText(stepStr);
+            String beatStrFormat = getString(R.string.beat_nums);
+            String beatStr = String.format(beatStrFormat, userDanResponse.getData().getBeat());
+            danPercent.setText(beatStr);
+            String processDanFormat = getString(R.string.steps_should_add_to);
+            String processDanStr = String.format(processDanFormat, userDanResponse.getData().getTarget());
+            processDan.setText(processDanStr);
 
-        userStep = userDanResponse.getData().getTotal_step_number();
-        LocalLog.d(TAG, "用户当前步数");
-        String stepStrFormat = getString(R.string.total_step_dan);
-        String stepStr = String.format(stepStrFormat, userStep);
-        danStepDes.setText(stepStr);
-        String beatStrFormat = getString(R.string.beat_nums);
-        String beatStr = String.format(beatStrFormat, userDanResponse.getData().getBeat());
-        danPercent.setText(beatStr);
-        String processDanFormat = getString(R.string.steps_should_add_to);
-        String processDanStr = String.format(processDanFormat, userDanResponse.getData().getTarget());
-        processDan.setText(processDanStr);
-
-        final float percents = (float) userDanResponse.getData().getTotal_step_number() / userDanResponse.getData().getTarget();
-        processBar.post(new Runnable() {
-            @Override
-            public void run() {
-                int width = processBar.getWidth();
-                int height = processBar.getHeight();
-                LocalLog.d(TAG, "width = " + width + ",height = " + height);
-                processBar.setImageDrawable(new ProcessDanDrawable().setLength(width *percents,height));
-            }
-        });
-        String percentFormat = getString(R.string.percent);
-        String percentStr = String.format(percentFormat, percents * 100);
-        percent.setText(percentStr);
-        String peopleNumFormat = getString(R.string.people_finished);
-        String peopleNumStr = String.format(peopleNumFormat, userDanResponse.getData().getNumber());
-        processDes.setText(peopleNumStr);
-        Presenter.getInstance(getContext()).getDanList();
+            final float percents = (float) userDanResponse.getData().getTotal_step_number() / userDanResponse.getData().getTarget();
+            processBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    int width = processBar.getWidth();
+                    int height = processBar.getHeight();
+                    LocalLog.d(TAG, "width = " + width + ",height = " + height);
+                    processBar.setImageDrawable(new ProcessDanDrawable().setLength(width * percents, height));
+                }
+            });
+            String percentFormat = getString(R.string.percent);
+            String percentStr = String.format(percentFormat, percents * 100);
+            percent.setText(percentStr);
+            String peopleNumFormat = getString(R.string.people_finished);
+            String peopleNumStr = String.format(peopleNumFormat, userDanResponse.getData().getNumber());
+            processDes.setText(peopleNumStr);
+            Presenter.getInstance(getContext()).getDanList();
+        }else if(userDanResponse.getError() == -100){
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
     }
 }

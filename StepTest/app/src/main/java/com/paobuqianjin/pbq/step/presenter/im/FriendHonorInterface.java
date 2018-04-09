@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.presenter.im;
 
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayResponse;
 
 /**
@@ -8,4 +9,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayRespon
 
 public interface FriendHonorInterface extends CallBackInterface {
     public void response(FriendStepRankDayResponse friendStepRankDayResponse);
+
+    public void response(ErrorCode errorCode);
 }

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -159,5 +160,17 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
                 .add(R.id.pay_container, paySuccessFragment)
                 .show(paySuccessFragment)
                 .commit();
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(this).setId(-1);
+            Presenter.getInstance(this).steLogFlg(false);
+            Presenter.getInstance(this).setToken(this, "");
+            finish();
+            System.exit(0);
+        }
     }
 }

@@ -218,6 +218,13 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
         LocalLog.d(TAG, "FollowUserResponse() enter " + followUserResponse.toString());
         if (followUserResponse.getError() == 0) {
             followMeFragment.setAdapter(new FollowAdapter(getContext(), followUserResponse.getData().getData()));
+        } else if (followUserResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
 
     }
@@ -233,6 +240,13 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
             LocalLog.e(TAG, "没有数据");
         } else if (userIdFollowResponse.getError() == -1) {
             LocalLog.e(TAG, userIdFollowResponse.getMessage());
+        } else if (userIdFollowResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -243,6 +257,13 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
             if (userFollowOtOResponse.getData() != null) {
                 followOtoFragment.setAdapter(new FollowAdapter(getContext(), userFollowOtOResponse.getData().getData()));
             }
+        } else if (userFollowOtOResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
 
     }

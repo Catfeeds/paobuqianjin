@@ -47,6 +47,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
@@ -303,6 +304,18 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         public void response(Object error) {
             error.toString();
             Toast.makeText(CreateCircleActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void response(ErrorCode errorCode) {
+            if (errorCode.getError() == -100) {
+                LocalLog.d(TAG, "Token 过期!");
+                Presenter.getInstance(CreateCircleActivity.this).setId(-1);
+                Presenter.getInstance(CreateCircleActivity.this).steLogFlg(false);
+                Presenter.getInstance(CreateCircleActivity.this).setToken(CreateCircleActivity.this, "");
+                CreateCircleActivity.this.finish();
+                System.exit(0);
+            }
         }
 
         @Override
@@ -631,7 +644,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                     @Override
                     public void onAction(List<String> permissions) {
                         toast(R.string.successfully);
-                        LocalLog.d(TAG,"发起定位");
+                        LocalLog.d(TAG, "发起定位");
                         Presenter.getInstance(CreateCircleActivity.this).startService(null, LocalBaiduService.class);
                     }
                 }).onDenied(new Action() {

@@ -16,6 +16,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostPassWordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PassWordResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -90,6 +91,13 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
     public void response(PassWordResponse passWordResponse) {
         if (passWordResponse.getError() == 0) {
             Toast.makeText(getContext(), "密码修改成功，可以用新密码登录了", Toast.LENGTH_SHORT).show();
+        } else if (passWordResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -98,6 +106,13 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
         LocalLog.d(TAG, "GetSignCodeResponse() enter " + getSignCodeResponse.toString());
         if (getSignCodeResponse.getError() == 0) {
             LocalLog.d(TAG, "验证码发送成功");
+        } else if (getSignCodeResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -105,6 +120,13 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
     public void response(CheckSignCodeResponse checkSignCodeResponse) {
         if (checkSignCodeResponse.getError() == 0) {
 
+        } else if (checkSignCodeResponse.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 
@@ -116,7 +138,7 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
                 Presenter.getInstance(getContext()).getSignCodePassWord(phone.getText().toString());
                 break;
             case R.id.confirm:
-                LocalLog.d(TAG,"修改密码");
+                LocalLog.d(TAG, "修改密码");
                 postPassWordParam = new PostPassWordParam();
                 postPassWordParam.setCode(signCode.getText().toString())
                         .setMobile(phone.getText().toString())
@@ -132,6 +154,18 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
                 Presenter.getInstance(getContext()).checkSignCodePassWord(checkSignCodeParam);*/
                 Presenter.getInstance(getContext()).postNewPassWord(postPassWordParam);
                 break;
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        if (errorCode.getError() == -100) {
+            LocalLog.d(TAG, "Token 过期!");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
         }
     }
 }
