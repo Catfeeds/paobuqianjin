@@ -110,7 +110,7 @@ public class AllIncomeResponse {
             private int page;
             private int pageSize;
             private int totalPage;
-            private double totalCount;
+            private int totalCount;
 
             public int getPage() {
                 return page;
@@ -136,11 +136,11 @@ public class AllIncomeResponse {
                 this.totalPage = totalPage;
             }
 
-            public double getTotalCount() {
+            public int getTotalCount() {
                 return totalCount;
             }
 
-            public void setTotalCount(double totalCount) {
+            public void setTotalCount(int totalCount) {
                 this.totalCount = totalCount;
             }
 

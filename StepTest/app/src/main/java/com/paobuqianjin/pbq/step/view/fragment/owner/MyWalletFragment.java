@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
@@ -29,15 +30,19 @@ import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
 import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.FollowAdapter;
+import com.paobuqianjin.pbq.step.view.base.adapter.owner.WalletRedPkgIncomeAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.paobuqianjin.pbq.step.utils.Utils.PAGE_SIZE_DEFAULT;
 
 /**
  * Created by pbq on 2018/1/15.
@@ -98,10 +103,10 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     private YesterDayIncomeFragment yesterDayIncomeFragment = new YesterDayIncomeFragment();
     private MonthIncomeFragment monthIncomeFragment = new MonthIncomeFragment();
     private AllIncomeFragment allIncomeFragment = new AllIncomeFragment();
-    FollowAdapter followOtoAdapter, myFollowAdapter, followMeAdapter;
-    ArrayList<UserFollowOtOResponse.DataBeanX.DataBean> followOtoData = new ArrayList<>();
-    ArrayList<UserIdFollowResponse.DataBeanX.DataBean> myFollowData = new ArrayList<>();
-    ArrayList<FollowUserResponse.DataBeanX.DataBean> followMeData = new ArrayList<>();
+    WalletRedPkgIncomeAdapter yesterDayAdapter, monthAdapter, allAdapter;
+    ArrayList<IncomeResponse.DataBeanX.DataBean> yesterData = new ArrayList<>();
+    ArrayList<IncomeResponse.DataBeanX.DataBean> monthData = new ArrayList<>();
+    ArrayList<AllIncomeResponse.DataBeanX.DataBean> allData = new ArrayList<>();
     private final static String PAY_FOR_STYLE = "pay_for_style";
     private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
     private int pageIndexYD = 1, pageIndexMonth = 1, pageIndexAll = 1;
@@ -128,9 +133,6 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         Presenter.getInstance(context).attachUiInterface(this);
         Presenter.getInstance(context).getUserPackageMoney();
         Presenter.getInstance(context).getIncome("today", 1, 10);
-        Presenter.getInstance(context).getIncome("yesterday", 1, 10);
-        Presenter.getInstance(context).getIncome("month", 1, 10);
-        Presenter.getInstance(context).getIncome("all", 1, 10);
     }
 
     @Override
@@ -168,6 +170,25 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 .hide(allIncomeFragment)
                 .show(yesterDayIncomeFragment)
                 .commit();
+
+        walletRefresh = (SwipeRefreshLayout) viewRoot.findViewById(R.id.wallet_refresh);
+        yesterDayAdapter = new WalletRedPkgIncomeAdapter(getContext(), null);
+        monthAdapter = new WalletRedPkgIncomeAdapter(getContext(), null);
+        allAdapter = new WalletRedPkgIncomeAdapter(getContext(), null);
+        yesterDayIncomeFragment.setAdapter(yesterDayAdapter);
+        yesterDayIncomeFragment.listen(mLoadMoreListener);
+        allIncomeFragment.setAdapter(allAdapter);
+        allIncomeFragment.listen(mLoadMoreListener);
+        monthIncomeFragment.setAdapter(monthAdapter);
+        monthIncomeFragment.listen(mLoadMoreListener);
+
+        loadYesterData(yesterData);
+        loadMonthData(monthData);
+        loadAllData(allData);
+        walletRefresh.setOnRefreshListener(mRefreshListener);
+        Presenter.getInstance(getContext()).getIncome("yesterday", pageIndexYD, PAGE_SIZE_DEFAULT);
+        Presenter.getInstance(getContext()).getIncome("month", pageIndexMonth, PAGE_SIZE_DEFAULT);
+        Presenter.getInstance(getContext()).getIncome("all", pageIndexAll, PAGE_SIZE_DEFAULT);
         mIndex = 0;
         mCurrentIndex = 0;
     }
@@ -232,14 +253,192 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         mCurrentIndex = fragmentIndex;
     }
 
+    /**
+     * 刷新。
+     */
+    private SwipeRefreshLayout.OnRefreshListener mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            LocalLog.d(TAG, "刷新当前页面!");
+            if (mCurrentIndex == 0) {
+                loadYesterData(yesterData);
+            } else if (mCurrentIndex == 1) {
+                loadMonthData(monthData);
+            } else if (mCurrentIndex == 2) {
+                loadAllData(allData);
+            }
+        }
+    };
+
+
+    /**
+     * 第一次加载数据。
+     */
+    private void loadYesterData(ArrayList<IncomeResponse.DataBeanX.DataBean> dataBeans) {
+        LocalLog.d(TAG, "loadYesterData() enter");
+        yesterDayAdapter.notifyDataSetChanged(dataBeans);
+
+        walletRefresh.setRefreshing(false);
+
+        // 第一次加载数据：一定要掉用这个方法。
+        // 第一个参数：表示此次数据是否为空，假如你请求到的list为空(== null || list.size == 0)，那么这里就要true。
+        // 第二个参数：表示是否还有更多数据，根据服务器返回给你的page等信息判断是否还有更多，这样可以提供性能，如果不能判断则传true。
+        if (dataBeans == null || dataBeans.size() == 0) {
+            yesterDayIncomeFragment.loadMoreFinish(true, true);
+        } else {
+            yesterDayIncomeFragment.loadMoreFinish(false, true);
+        }
+    }
+
+    private void loadYesterDayMore(ArrayList<IncomeResponse.DataBeanX.DataBean> newData) {
+        LocalLog.d(TAG, "loadYesterDayMore() enter");
+        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        yesterData.addAll(newData);
+        // notifyItemRangeInserted()或者notifyDataSetChanged().
+        yesterDayAdapter.notifyItemRangeInserted(yesterData.size() - newData.size(), newData.size());
+
+        // 数据完更多数据，一定要掉用这个方法。
+        // 第一个参数：表示此次数据是否为空。
+        // 第二个参数：表示是否还有更多数据。
+        yesterDayIncomeFragment.loadMoreFinish(false, true);
+
+        // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
+        // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
+        // errorMessage是会显示到loadMoreView上的，用户可以看到。
+        // mRecyclerView.loadMoreError(0, "请求网络失败");
+    }
+
+    private void loadMonthData(ArrayList<IncomeResponse.DataBeanX.DataBean> dataBeans) {
+        LocalLog.d(TAG, "loadMonthData() enter");
+        monthAdapter.notifyDataSetChanged(dataBeans);
+
+        walletRefresh.setRefreshing(false);
+
+        // 第一次加载数据：一定要掉用这个方法。
+        // 第一个参数：表示此次数据是否为空，假如你请求到的list为空(== null || list.size == 0)，那么这里就要true。
+        // 第二个参数：表示是否还有更多数据，根据服务器返回给你的page等信息判断是否还有更多，这样可以提供性能，如果不能判断则传true。
+        if (dataBeans == null || dataBeans.size() == 0) {
+            monthIncomeFragment.loadMoreFinish(true, true);
+        } else {
+            monthIncomeFragment.loadMoreFinish(false, true);
+        }
+    }
+
+    private void loadMonthMore(ArrayList<IncomeResponse.DataBeanX.DataBean> newData) {
+        LocalLog.d(TAG, "loadMonthMore() enter");
+        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        monthData.addAll(newData);
+        // notifyItemRangeInserted()或者notifyDataSetChanged().
+        monthAdapter.notifyItemRangeInserted(monthData.size() - newData.size(), newData.size());
+
+        // 数据完更多数据，一定要掉用这个方法。
+        // 第一个参数：表示此次数据是否为空。
+        // 第二个参数：表示是否还有更多数据。
+        monthIncomeFragment.loadMoreFinish(false, true);
+
+        // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
+        // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
+        // errorMessage是会显示到loadMoreView上的，用户可以看到。
+        // mRecyclerView.loadMoreError(0, "请求网络失败");
+    }
+
+    private void loadAllData(ArrayList<AllIncomeResponse.DataBeanX.DataBean> dataBeans) {
+        LocalLog.d(TAG, "loadAllData() enter");
+        allAdapter.notifyDataSetChanged(dataBeans);
+
+        walletRefresh.setRefreshing(false);
+
+        // 第一次加载数据：一定要掉用这个方法。
+        // 第一个参数：表示此次数据是否为空，假如你请求到的list为空(== null || list.size == 0)，那么这里就要true。
+        // 第二个参数：表示是否还有更多数据，根据服务器返回给你的page等信息判断是否还有更多，这样可以提供性能，如果不能判断则传true。
+        if (dataBeans == null || dataBeans.size() == 0) {
+            allIncomeFragment.loadMoreFinish(true, true);
+        } else {
+            allIncomeFragment.loadMoreFinish(false, true);
+        }
+    }
+
+    private void loadAllMore(ArrayList<AllIncomeResponse.DataBeanX.DataBean> newData) {
+        LocalLog.d(TAG, "loadAllMore() enter");
+        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        allData.addAll(newData);
+        // notifyItemRangeInserted()或者notifyDataSetChanged().
+        allAdapter.notifyItemRangeInserted(allData.size() - newData.size(), newData.size());
+
+        // 数据完更多数据，一定要掉用这个方法。
+        // 第一个参数：表示此次数据是否为空。
+        // 第二个参数：表示是否还有更多数据。
+        allIncomeFragment.loadMoreFinish(false, true);
+
+        // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
+        // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
+        // errorMessage是会显示到loadMoreView上的，用户可以看到。
+        // mRecyclerView.loadMoreError(0, "请求网络失败");
+    }
+
+
+    /**
+     * 加载更多。
+     */
+    private SwipeMenuRecyclerView.LoadMoreListener mLoadMoreListener = new SwipeMenuRecyclerView.LoadMoreListener() {
+        @Override
+        public void onLoadMore() {
+            LocalLog.d(TAG, "加载更多!");
+            if (mCurrentIndex == 0) {
+                if (pageYDCount == 0) {
+                    LocalLog.d(TAG, "第一次刷新");
+                } else {
+                    if (pageIndexYD > pageYDCount) {
+                        Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                        yesterDayIncomeFragment.loadMoreFinish(false, true);
+                        return;
+                    }
+                }
+
+                Presenter.getInstance(getContext()).getIncome("yesterday", pageIndexYD, PAGE_SIZE_DEFAULT);
+            } else if (mCurrentIndex == 1) {
+                if (pageMonthCount == 0) {
+                    LocalLog.d(TAG, "第一次刷新");
+                } else {
+                    if (pageIndexMonth > pageMonthCount) {
+                        Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                        monthIncomeFragment.loadMoreFinish(false, true);
+                        return;
+                    }
+                }
+
+                Presenter.getInstance(getContext()).getIncome("month", pageIndexMonth, PAGE_SIZE_DEFAULT);
+
+            } else if (mCurrentIndex == 2) {
+                if (pageAllCount == 0) {
+                    LocalLog.d(TAG, "第一次刷新");
+                } else {
+                    if (pageIndexAll > pageAllCount) {
+                        Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                        allIncomeFragment.loadMoreFinish(false, true);
+                        return;
+                    }
+                }
+                Presenter.getInstance(getContext()).getIncome("all", pageIndexAll, PAGE_SIZE_DEFAULT);
+            }
+        }
+    };
+
     @Override
     public void responseAll(AllIncomeResponse allIncomeResponse) {
         LocalLog.d(TAG, " 所有收益 responseAll() enter" + allIncomeResponse.toString());
         if (allIncomeResponse.getError() == 0) {
-            allIncomeFragment.setData(allIncomeResponse);
             if (allIncomeResponse.getData() != null) {
                 totalIncomeNum.setText(String.valueOf(allIncomeResponse.getData().getTotal_amount()));
             }
+            pageAllCount = allIncomeResponse.getData().getPagenation().getTotalPage();
+            LocalLog.d(TAG, "pageIndexAll = " + pageIndexAll + " ,pageAllCount = " + pageAllCount);
+            loadAllMore((ArrayList<AllIncomeResponse.DataBeanX.DataBean>) allIncomeResponse.getData().getData());
+            if (pageIndexAll == 1) {
+                allIncomeFragment.scrollTop();
+            }
+            pageIndexAll++;
+            Presenter.getInstance(getContext()).getIncome("all", pageIndexAll, PAGE_SIZE_DEFAULT);
         } else if (allIncomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -254,10 +453,16 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     public void responseMonth(IncomeResponse incomeResponse) {
         LocalLog.d(TAG, " 月收益 responseMonth() enter" + incomeResponse.toString());
         if (incomeResponse.getError() == 0) {
-            monthIncomeFragment.setData(incomeResponse);
             if (incomeResponse.getData() != null) {
                 monthIncomeNum.setText(String.valueOf(incomeResponse.getData().getTotal_amount()));
             }
+            pageMonthCount = incomeResponse.getData().getPagenation().getTotalPage();
+            LocalLog.d(TAG, "pageIndexAll = " + pageIndexMonth + " ,pageAllCount = " + pageMonthCount);
+            loadMonthMore((ArrayList<IncomeResponse.DataBeanX.DataBean>) incomeResponse.getData().getData());
+            if (pageIndexMonth == 1) {
+                monthIncomeFragment.scrollTop();
+            }
+            pageIndexMonth++;
         } else if (incomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -285,14 +490,22 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
 
     }
 
+
     @Override
     public void responseYesterday(IncomeResponse yesterdayIncomeResponse) {
         LocalLog.d(TAG, "昨日收益 responseYesterday() enter" + yesterdayIncomeResponse.toString());
         if (yesterdayIncomeResponse.getError() == 0) {
-            yesterDayIncomeFragment.setData(yesterdayIncomeResponse);
             if (yesterdayIncomeResponse.getData() != null) {
                 yesterdayIncomeNum.setText(String.valueOf(yesterdayIncomeResponse.getData().getTotal_amount()));
             }
+
+            pageYDCount = yesterdayIncomeResponse.getData().getPagenation().getTotalPage();
+            LocalLog.d(TAG, "pageIndexAll = " + pageIndexYD + " ,pageAllCount = " + pageYDCount);
+            loadYesterDayMore((ArrayList<IncomeResponse.DataBeanX.DataBean>) yesterdayIncomeResponse.getData().getData());
+            if (pageIndexYD == 1) {
+                yesterDayIncomeFragment.scrollTop();
+            }
+            pageIndexYD++;
         } else if (yesterdayIncomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

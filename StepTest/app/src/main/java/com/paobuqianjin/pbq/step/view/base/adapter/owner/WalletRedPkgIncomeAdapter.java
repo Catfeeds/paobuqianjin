@@ -36,6 +36,11 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
         mData = data;
     }
 
+    public void notifyDataSetChanged(List<?> data) {
+        this.mData = data;
+        super.notifyDataSetChanged();
+    }
+
     @Override
     public int getItemViewType(int position) {
         return super.getItemViewType(position);
