@@ -110,8 +110,10 @@ public class OwnerJoinFragment extends BaseFragment {
                         LocalLog.d(TAG, "第一次刷新");
                     } else {
                         if (pageIndex > pageCount) {
-                            Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
-                            ownerJoinCircleLists.loadMoreFinish(false, true);
+                            if (getContext() != null) {
+                                Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                                ownerJoinCircleLists.loadMoreFinish(false, true);
+                            }
                             return;
                         }
                     }

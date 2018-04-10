@@ -39,6 +39,12 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
         mData = data;
     }
 
+
+    public void notifyDataSetChanged(List<?> data) {
+        this.mData = data;
+        super.notifyDataSetChanged();
+    }
+
     @Override
     public int getItemCount() {
         if (mData != null) {
@@ -55,14 +61,14 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
 
     @TargetApi(19)
     private void updateListItem(FollowViewHolder holder, int position) {
-        LocalLog.d(TAG,"updateListItem() enter");
+        LocalLog.d(TAG, "updateListItem() enter");
         if (mData.get(position) instanceof FollowUserResponse.DataBeanX.DataBean) {
             LocalLog.d(TAG, "关注我的");
             holder.dearName.setText(((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.userid = ((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
             Presenter.getInstance(context).getImage(holder.userNearIcon, ((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
-            holder.btFollow.setBackground(ContextCompat.getDrawable(context,R.drawable.has_fllow_nearby));
-            holder.btFollow.setTextColor(ContextCompat.getColor(context,R.color.color_6c71c4));
+            holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
+            holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
             holder.stytle = 0;
             holder.btFollow.setText("关注");
         } else if (mData.get(position) instanceof UserIdFollowResponse.DataBeanX.DataBean) {
@@ -71,8 +77,8 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             holder.userid = ((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
             Presenter.getInstance(context).getImage(holder.userNearIcon, ((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
             holder.btFollow.setText("已关注");
-            holder.btFollow.setBackground(ContextCompat.getDrawable(context,R.drawable.has_not_fllow_nearby));
-            holder.btFollow.setTextColor(ContextCompat.getColor(context,R.color.color_646464));
+            holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_not_fllow_nearby));
+            holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_646464));
             holder.stytle = 1;
         } else if (mData.get(position) instanceof UserFollowOtOResponse.DataBeanX.DataBean) {
             LocalLog.d(TAG, "互相关注");
@@ -80,8 +86,8 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             holder.userid = ((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
             Presenter.getInstance(context).getImage(holder.userNearIcon, ((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
             holder.btFollow.setText("互相关注");
-            holder.btFollow.setBackground(ContextCompat.getDrawable(context,R.drawable.has_fllow_nearby));
-            holder.btFollow.setTextColor(ContextCompat.getColor(context,R.color.color_6c71c4));
+            holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
+            holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
             holder.stytle = 2;
         } else {
             LocalLog.d(TAG, "not match");
@@ -121,7 +127,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
                         context.startActivity(intent);
                         break;
                     case R.id.bt_follow:
-                        LocalLog.d(TAG, "style = " + stytle + ",content "+btFollow.getText());
+                        LocalLog.d(TAG, "style = " + stytle + ",content " + btFollow.getText());
                         break;
                 }
             }

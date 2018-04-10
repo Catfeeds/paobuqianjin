@@ -8,8 +8,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="14dp"
-        android:src="@drawable/default_head_ico" />
+        android:layout_marginLeft="14dp" />
 
     <TextView
         android:id="@+id/dear_name"
@@ -18,7 +17,10 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:layout_toEndOf="@+id/user_near_icon"
-        android:text="喵喵"
+        android:ellipsize="end"
+        android:maxEms="10"
+        android:singleLine="true"
+        android:text=""
         android:textColor="@color/color_161727"
         android:textSize="14dp" />
 
@@ -31,7 +33,7 @@
         android:layout_centerVertical="true"
         android:layout_marginRight="14dp"
         android:background="@drawable/has_not_fllow_nearby"
-        android:text="关注"
+        android:text=""
         android:textColor="@color/color_6c71c4"
         android:textSize="14dp" />
 
