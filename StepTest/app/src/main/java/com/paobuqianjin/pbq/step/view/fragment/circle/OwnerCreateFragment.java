@@ -118,7 +118,9 @@ public class OwnerCreateFragment extends BaseFragment {
                             return;
                         }
                     }
-
+                    if (getContext() == null) {
+                        return;
+                    }
                     Presenter.getInstance(getContext()).getMyCreateCirlce(pageIndex, PAGE_SIZE_DEFAULT, keyWord);
 
                 }

@@ -41,6 +41,10 @@ public class IncomeAdater extends RecyclerView.Adapter<IncomeAdater.IncomeDetail
             return 0;
         }
     }
+    public void notifyDataSetChanged(List<?> data) {
+        this.mData = data;
+        super.notifyDataSetChanged();
+    }
 
     @Override
     public void onBindViewHolder(IncomeDetailViewHolder holder, int position) {

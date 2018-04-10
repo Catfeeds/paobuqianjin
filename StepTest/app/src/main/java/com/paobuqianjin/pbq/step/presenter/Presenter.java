@@ -567,8 +567,8 @@ public final class Presenter {
         engine.postCrashTo(crashToParam);
     }
 
-    public void getCrashRecord() {
-        engine.getCrashRecord();
+    public void getCrashRecord(int pageIndex,int pagesize) {
+        engine.getCrashRecord(pageIndex,pagesize);
     }
 
     public void getRechargeRecord() {

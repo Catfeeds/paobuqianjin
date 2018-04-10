@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,13 +11,13 @@ import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RechargeDetailResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.RechargeDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.IncomeAdater;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,9 +28,14 @@ import butterknife.ButterKnife;
 
 public class RechargeDetailFragment extends BaseFragment implements RechargeDetailInterface {
     private final static String TAG = RechargeDetailFragment.class.getSimpleName();
-    @Bind(R.id.out_detail_recycler)
-    RecyclerView outDetailRecycler;
+
     LinearLayoutManager layoutManager;
+    @Bind(R.id.out_detail_recycler)
+    SwipeMenuRecyclerView outDetailRecycler;
+    @Bind(R.id.out_come_refresh)
+    SwipeRefreshLayout outComeRefresh;
+    private int pageIndex = 1, pageCount = 0;
+    private final static int PAGE_SIZE_DEFAULT = 10;
 
     @Override
     protected int getLayoutResId() {
@@ -53,7 +59,7 @@ public class RechargeDetailFragment extends BaseFragment implements RechargeDeta
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        outDetailRecycler = (RecyclerView) viewRoot.findViewById(R.id.out_detail_recycler);
+        outDetailRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.out_detail_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         outDetailRecycler.setLayoutManager(layoutManager);
         //outDetailRecycler.setAdapter(new IncomeAdater(getContext(), null));
