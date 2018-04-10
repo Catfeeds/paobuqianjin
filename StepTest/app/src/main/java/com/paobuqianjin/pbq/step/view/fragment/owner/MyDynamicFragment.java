@@ -320,6 +320,9 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
                         LocalLog.d(TAG, "第一次刷新");
                     } else {
                         if (pageIndex > pageCount) {
+                            if (getContext() == null) {
+                                return;
+                            }
                             Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
                             myDynamicRecycler.loadMoreFinish(false, true);
                             return;

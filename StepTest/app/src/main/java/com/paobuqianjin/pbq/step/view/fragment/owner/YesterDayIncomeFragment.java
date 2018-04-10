@@ -12,6 +12,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.WalletRedPkgIncomeAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,6 +26,9 @@ public class YesterDayIncomeFragment extends BaseFragment {
     @Bind(R.id.yesterday_income_recycler)
     RecyclerView yesterdayIncomeRecycler;
     private LinearLayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
+    FollowOtoFragment.DefineLoadMoreView loadMoreView;
+    SwipeMenuRecyclerView.LoadMoreListener loadMoreListener;
 
     @Override
     protected int getLayoutResId() {
@@ -46,12 +50,13 @@ public class YesterDayIncomeFragment extends BaseFragment {
         layoutManager = new LinearLayoutManager(getContext());
         yesterdayIncomeRecycler = (RecyclerView) viewRoot.findViewById(R.id.yesterday_income_recycler);
         yesterdayIncomeRecycler.setLayoutManager(layoutManager);
+        adapter = new WalletRedPkgIncomeAdapter(getContext(), null);
 
     }
 
     public void setData(IncomeResponse incomeResponse) {
         if (yesterdayIncomeRecycler != null) {
-            yesterdayIncomeRecycler.setAdapter(new WalletRedPkgIncomeAdapter(getContext(),incomeResponse.getData().getData()));
+            yesterdayIncomeRecycler.setAdapter(new WalletRedPkgIncomeAdapter(getContext(), incomeResponse.getData().getData()));
         }
     }
 

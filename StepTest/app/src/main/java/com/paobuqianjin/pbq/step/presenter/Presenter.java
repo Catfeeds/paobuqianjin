@@ -571,8 +571,8 @@ public final class Presenter {
         engine.getCrashRecord(pageIndex,pagesize);
     }
 
-    public void getRechargeRecord() {
-        engine.getRechargeRecord();
+    public void getRechargeRecord(int page,int pagesize) {
+        engine.getRechargeRecord(page,pagesize);
     }
 
     //TODO 绑定提现账户

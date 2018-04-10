@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,10 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
@@ -24,8 +28,12 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
 import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
+import com.paobuqianjin.pbq.step.view.base.adapter.owner.FollowAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -78,14 +86,26 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     Button chargeBar;
     @Bind(R.id.crash)
     Button crash;
+    @Bind(R.id.income_container)
+    RelativeLayout incomeContainer;
+    @Bind(R.id.scroll_view_income)
+    BounceScrollView scrollViewIncome;
+    @Bind(R.id.wallet_refresh)
+    SwipeRefreshLayout walletRefresh;
     private int mIndex;//当前收入页面索引
     private Fragment[] fragments;
     private int mCurrentIndex = 0;
     private YesterDayIncomeFragment yesterDayIncomeFragment = new YesterDayIncomeFragment();
     private MonthIncomeFragment monthIncomeFragment = new MonthIncomeFragment();
     private AllIncomeFragment allIncomeFragment = new AllIncomeFragment();
+    FollowAdapter followOtoAdapter, myFollowAdapter, followMeAdapter;
+    ArrayList<UserFollowOtOResponse.DataBeanX.DataBean> followOtoData = new ArrayList<>();
+    ArrayList<UserIdFollowResponse.DataBeanX.DataBean> myFollowData = new ArrayList<>();
+    ArrayList<FollowUserResponse.DataBeanX.DataBean> followMeData = new ArrayList<>();
     private final static String PAY_FOR_STYLE = "pay_for_style";
     private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
+    private int pageIndexYD = 1, pageIndexMonth = 1, pageIndexAll = 1;
+    private int pageYDCount = 0, pageMonthCount = 0, pageAllCount = 0;
 
     @Override
     protected int getLayoutResId() {

@@ -767,13 +767,15 @@ public final class Engine {
                 .execute(new NetStringCallBack(crashRecordInterface, COMMAND_CRASH_RECORD));
     }
 
-    public void getRechargeRecord() {
+    public void getRechargeRecord(int page, int pagesize) {
         String url = NetApi.urlCrashTo + "/rechargeList";
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .addParams("userid", String.valueOf(getId(mContext)))
+                .addParams("page", String.valueOf(page))
+                .addParams("pagesize", String.valueOf(pagesize))
                 .build()
                 .execute(new NetStringCallBack(rechargeDetailInterface, COMMAND_RECHARGE_RECORD));
     }

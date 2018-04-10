@@ -295,7 +295,6 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
     public void response(CrashListDetailResponse crashListDetailResponse) {
         LocalLog.d(TAG, "CrashListDetailResponse() enter " + crashListDetailResponse.toString());
         if (crashListDetailResponse.getError() == 0) {
-
             LocalLog.d(TAG, crashListDetailResponse.getMessage());
             pageCount = crashListDetailResponse.getData().getPagenation().getTotalPage();
             LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
