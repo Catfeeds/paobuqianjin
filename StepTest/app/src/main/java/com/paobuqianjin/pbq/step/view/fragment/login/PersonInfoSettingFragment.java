@@ -601,6 +601,9 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                     if (signUserDataBean != null) {
                         Presenter.getInstance(getContext()).setToken(getContext(), signUserDataBean.getUser_token());
                     }
+                    if(phoneLoginDataBean != null){
+                        Presenter.getInstance(getContext()).setToken(getContext(), phoneLoginDataBean.getUser_token());
+                    }
                     Presenter.getInstance(getContext()).putUserInfo(userid, putUserInfoParam);
                 }
 

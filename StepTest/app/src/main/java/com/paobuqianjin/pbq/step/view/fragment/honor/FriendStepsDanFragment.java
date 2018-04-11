@@ -127,6 +127,9 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         goDownSpan.setOnClickListener(onClickListener);
         buttoneLeftBar = (RelativeLayout) viewRoot.findViewById(R.id.buttone_left_bar);
         buttoneLeftBar.setOnClickListener(onClickListener);
+
+        danDetailRecycler.setHasFixedSize(true);
+        danDetailRecycler.setNestedScrollingEnabled(false);
         Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndex, PAGE_DEFAULT_SIZE);
         Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
 
