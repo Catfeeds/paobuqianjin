@@ -106,6 +106,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageC, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));
                     }
                     ((MessageContentViewHolder) holder).dynamicId = ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getDynamicid();
+                    ((MessageContentViewHolder) holder).is_vote = ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getDynamicdata().getIs_vote();
                 }
             } else if (mData.get(position) instanceof MessageLikeResponse.DataBeanX.DataBean) {
                 if (holder instanceof MessageLikeViewHolder) {
@@ -145,7 +146,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageC, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));
                     }
                     ((MessageLikeViewHolder) holder).dynamicId = ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getDynamicid();
-                    //
+                    ((MessageLikeViewHolder) holder).is_vote = ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getDynamicdata().getIs_vote();
                 }
             }
         }
@@ -192,6 +193,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         TextView timeStmap;
 
         int dynamicId = -1;
+        int is_vote = 0;
 
 
         public MessageContentViewHolder(View view) {
@@ -203,7 +205,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     Intent intent = new Intent();
                     intent.putExtra(context.getPackageName() + "dynamicId", dynamicId);
                     intent.putExtra(context.getPackageName() + "userId", Presenter.getInstance(context).getId());
-                    //intent.putExtra(context.getPackageName() + "is_vote", is_vote);
+                    intent.putExtra(context.getPackageName() + "is_vote", is_vote);
                     intent.setClass(context, DynamicActivity.class);
                     context.startActivity(intent);
                 }
@@ -249,6 +251,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         TextView timeStmap;
 
         int dynamicId = -1;
+        int is_vote = 0;
 
         public MessageLikeViewHolder(View view) {
             super(view);
@@ -259,7 +262,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     Intent intent = new Intent();
                     intent.putExtra(context.getPackageName() + "dynamicId", dynamicId);
                     intent.putExtra(context.getPackageName() + "userId", Presenter.getInstance(context).getId());
-                    //intent.putExtra(context.getPackageName() + "is_vote", is_vote);
+                    intent.putExtra(context.getPackageName() + "is_vote", is_vote);
                     intent.setClass(context, DynamicActivity.class);
                     context.startActivity(intent);
                 }

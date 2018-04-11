@@ -51,13 +51,13 @@ public class LikeSupportDetailAdapter extends RecyclerView.Adapter<LikeSupportDe
         if (mData.get(position) instanceof DynamicLikeListResponse.DataBeanX.DataBean) {
             Presenter.getInstance(context).getImage(holder.circleLogoSearch, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
             holder.searchCircleDesListName.setText(((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
-            if (((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getIs_follow() == 1) {
-                holder.loveNumber.setText("已关注");
-            } else {
-                holder.loveNumber.setText("关注");
-            }
-
             holder.userid = ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
+            /*查询我与该用户的关注状态*/
+            if (holder.userid == Presenter.getInstance(context).getId()) {
+                holder.loveNumber.setVisibility(View.GONE);
+            } else {
+                
+            }
         }
     }
 

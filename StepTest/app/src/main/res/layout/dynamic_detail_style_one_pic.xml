@@ -25,7 +25,7 @@
             android:layout_marginLeft="15dp"
             android:layout_toEndOf="@+id/dynamic_user_icon"
             android:ellipsize="end"
-            android:maxEms="10"
+            android:maxEms="8"
             android:singleLine="true"
             android:text=""
             android:textColor="@color/color_161727"

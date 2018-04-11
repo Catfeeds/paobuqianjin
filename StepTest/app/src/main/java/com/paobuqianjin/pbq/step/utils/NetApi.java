@@ -148,4 +148,6 @@ public class NetApi {
     public final static String urlBindThird = "http://119.29.10.64/v1/user/bindOpenid";
     //TODO 退出APP接口
     public final static String urlLogOut = "http://119.29.10.64/v1/user/logOut";
+    //TODO 查询关注关系
+    public final static String urlFollowStatus = "http://119.29.10.64/v1/UserFollow/followStatus";
 }

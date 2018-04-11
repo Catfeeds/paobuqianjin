@@ -14,6 +14,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +51,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostMessageParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
@@ -2362,6 +2364,30 @@ public final class Engine {
                 .params(postBindUnBindWqParam.getParams())
                 .build()
                 .execute(new NetStringCallBack(bindThirdAccoutInterface, COMMAND_BIND_THIRD));
+    }
+
+    public void postFollowStatus(final Button button, int followId) {
+        OkHttpUtils
+                .post()
+                .addHeader("headtoken", getToken(mContext))
+                .url(NetApi.urlFollowStatus)
+                .addParams("userid", String.valueOf(getId(mContext)))
+                .addParams("followid", String.valueOf(followId))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        FollowStatusResponse followStatusResponse = new Gson().fromJson(s, FollowStatusResponse.class);
+                        if (button != null) {
+
+                        }
+                    }
+                });
     }
 
     //TODO 软件协议
