@@ -93,8 +93,8 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     Button crash;
     @Bind(R.id.income_container)
     RelativeLayout incomeContainer;
-    @Bind(R.id.scroll_view_income)
-    BounceScrollView scrollViewIncome;
+    /*    @Bind(R.id.scroll_view_income)
+        BounceScrollView scrollViewIncome;*/
     @Bind(R.id.wallet_refresh)
     SwipeRefreshLayout walletRefresh;
     private int mIndex;//当前收入页面索引
@@ -429,6 +429,9 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         LocalLog.d(TAG, " 所有收益 responseAll() enter" + allIncomeResponse.toString());
         if (allIncomeResponse.getError() == 0) {
             if (allIncomeResponse.getData() != null) {
+                if (totalIncomeNum == null) {
+                    return;
+                }
                 totalIncomeNum.setText(String.valueOf(allIncomeResponse.getData().getTotal_amount()));
             }
             pageAllCount = allIncomeResponse.getData().getPagenation().getTotalPage();
@@ -454,6 +457,9 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         LocalLog.d(TAG, " 月收益 responseMonth() enter" + incomeResponse.toString());
         if (incomeResponse.getError() == 0) {
             if (incomeResponse.getData() != null) {
+                if (monthIncomeNum == null) {
+                    return;
+                }
                 monthIncomeNum.setText(String.valueOf(incomeResponse.getData().getTotal_amount()));
             }
             pageMonthCount = incomeResponse.getData().getPagenation().getTotalPage();
@@ -478,6 +484,9 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     public void responseToday(IncomeResponse incomeResponse) {
         LocalLog.d(TAG, "今天收益 responseToday() enter" + incomeResponse.toString());
         if (incomeResponse.getError() == 0) {
+            if (incomeDes == null) {
+                return;
+            }
             incomeDes.setText(String.valueOf(incomeResponse.getData().getTotal_amount()));
         } else if (incomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");

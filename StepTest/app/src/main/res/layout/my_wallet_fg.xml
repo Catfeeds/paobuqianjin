@@ -12,10 +12,10 @@
         android:layout_below="@+id/bar_wallet_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+<!--        <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
             android:id="@+id/scroll_view_income"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content">-->
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -186,7 +186,7 @@
             </RelativeLayout>
 
 
-        </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+<!--        </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>-->
     </android.support.v4.widget.SwipeRefreshLayout>
 
 
