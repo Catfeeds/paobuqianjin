@@ -7,23 +7,18 @@
         android:id="@+id/bar_release_record"
         layout="@layout/bar_return_a_style" />
 
-    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
-        android:id="@+id/record_scroll"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/release_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bar_release_record">
 
-        <RelativeLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/release_record"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/release_record"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-        </RelativeLayout>
-    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
-
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"></android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
     <RelativeLayout
         android:id="@+id/empty_record_span"
         android:layout_width="match_parent"

@@ -441,7 +441,6 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 allIncomeFragment.scrollTop();
             }
             pageIndexAll++;
-            Presenter.getInstance(getContext()).getIncome("all", pageIndexAll, PAGE_SIZE_DEFAULT);
         } else if (allIncomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

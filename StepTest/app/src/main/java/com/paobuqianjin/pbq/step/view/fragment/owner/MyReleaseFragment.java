@@ -17,6 +17,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskMyReleaseResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.MyReleaseTaskInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.MyReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.MyReleaseTaskAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
@@ -119,10 +120,25 @@ public class MyReleaseFragment extends BaseBarStyleTextViewFragment implements M
     public void response(TaskMyReleaseResponse taskMyReleaseResponse) {
         LocalLog.d(TAG, "TaskMyReleaseResponse() enter");
         if (taskMyReleaseResponse.getError() == 1) {
-
+            if (noReleaseRecord.getVisibility() == View.GONE) {
+                noReleaseRecord.setVisibility(View.VISIBLE);
+                if (myReleaseScroll.getVisibility() != View.GONE) {
+                    myReleaseScroll.setVisibility(View.GONE);
+                }
+                TextView release = (TextView) noReleaseRecord.findViewById(R.id.go_to_release);
+                release.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(TaskReleaseActivity.class, null);
+                    }
+                });
+            }
         } else if (taskMyReleaseResponse.getError() == -1) {
 
         } else if (taskMyReleaseResponse.getError() == 0) {
+            if (noReleaseRecord.getVisibility() == View.VISIBLE) {
+                noReleaseRecord.setVisibility(View.GONE);
+            }
             if (myReleaseScroll.getVisibility() != View.VISIBLE) {
                 myReleaseScroll.setVisibility(View.VISIBLE);
             }

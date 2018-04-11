@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,12 +42,12 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
     @Bind(R.id.release_record)
     RecyclerView releaseRecord;
     LinearLayoutManager layoutManager;
-    @Bind(R.id.record_scroll)
-    BounceScrollView recordScroll;
-    @Bind(R.id.empty_record)
-    ImageView emptyRecord;
     @Bind(R.id.empty_record_span)
     RelativeLayout emptyRecordSpan;
+    @Bind(R.id.release_refresh)
+    SwipeRefreshLayout releaseRefresh;
+    @Bind(R.id.empty_record)
+    ImageView emptyRecord;
 
     @Override
     protected int getLayoutResId() {
@@ -76,7 +77,7 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        recordScroll = (BounceScrollView) viewRoot.findViewById(R.id.record_scroll);
+        releaseRefresh = (SwipeRefreshLayout) viewRoot.findViewById(R.id.release_refresh);
         layoutManager = new LinearLayoutManager(getContext());
         releaseRecord = (RecyclerView) viewRoot.findViewById(R.id.release_record);
         releaseRecord.setLayoutManager(layoutManager);
@@ -102,8 +103,8 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
     public void response(ReleaseRecordResponse releaseRecordResponse) {
         LocalLog.d(TAG, "ReleaseRecordResponse() enter " + releaseRecordResponse.toString());
         if (releaseRecordResponse.getError() == 0) {
-            if (recordScroll.getVisibility() == View.GONE) {
-                recordScroll.setVisibility(View.VISIBLE);
+            if (releaseRefresh.getVisibility() == View.GONE) {
+                releaseRefresh.setVisibility(View.VISIBLE);
             }
             releaseRecord.setAdapter(new ReleaseRecordAdapter(getContext(), releaseRecordResponse.getData().getData()));
         } else if (releaseRecordResponse.getError() == -100) {

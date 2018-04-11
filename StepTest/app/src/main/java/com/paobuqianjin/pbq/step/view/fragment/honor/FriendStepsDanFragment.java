@@ -25,6 +25,7 @@ import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -65,7 +66,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     @Bind(R.id.line_dan)
     ImageView lineDan;
     @Bind(R.id.dan_detail_recycler)
-    RecyclerView danDetailRecycler;
+    SwipeMenuRecyclerView danDetailRecycler;
     @Bind(R.id.step_num_my)
     TextView stepNumMy;
     @Bind(R.id.bar_return_drawable)
@@ -113,7 +114,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         headIconUser = (CircleImageView) viewRoot.findViewById(R.id.head_icon_user);
         userNameRank = (TextView) viewRoot.findViewById(R.id.user_name_rank);
         stepNumMy = (TextView) viewRoot.findViewById(R.id.step_num_my);
-        danDetailRecycler = (RecyclerView) viewRoot.findViewById(R.id.dan_detail_recycler);
+        danDetailRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.dan_detail_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         danDetailRecycler.setLayoutManager(layoutManager);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
@@ -242,7 +243,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         LocalLog.d(TAG, "FriendWeekResponse() enter" + friendWeekResponse.toString());
         if (friendWeekResponse.getError() == 0) {
             this.friendWeekResponse = friendWeekResponse;
-        }else if(friendWeekResponse.getError() == -100){
+        } else if (friendWeekResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
             Presenter.getInstance(getContext()).steLogFlg(false);

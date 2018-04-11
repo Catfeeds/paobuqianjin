@@ -3,10 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/bar_empty"
+        layout="@layout/bar_return_a_style"
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/no_record"
         android:layout_width="105dp"
         android:layout_height="101dp"
+        android:layout_below="@+id/bar_empty"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="96dp"
         android:src="@drawable/task_norecord" />

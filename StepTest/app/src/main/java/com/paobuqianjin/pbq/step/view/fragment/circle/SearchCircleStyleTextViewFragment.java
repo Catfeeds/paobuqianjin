@@ -189,7 +189,9 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
                             return;
                         }
                     }
-
+                    if (getContext() == null) {
+                        return;
+                    }
                     Presenter.getInstance(getContext()).getMoreCircle(pageIndex, Utils.PAGE_SIZE_DEFAULT, "");
 
                 }
