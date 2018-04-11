@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.MemberManagerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,8 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
     private final static String TAG = OwnerCreateAdapter.class.getSimpleName();
     private Context mContext;
     private List<?> data;
+    private final static String CIRCLE_ID = "id";
+    private final static String MEMBER_MANANGER_ACTION = "android.intent.action.MAMBER_MANAGER_ACTION";
 
     private MyCreateCircleResponse.DataBeanX.DataBean tmpData;
     private MyJoinCircleResponse.DataBeanX.DataBean tmpData1;
@@ -80,12 +84,10 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
             String sAgeFormat = mContext.getResources().getString(R.string.member_number);
             String sFinalMember = String.format(sAgeFormat, tmpData.getMember_number());
             holder.searchCircleDesListNum.setText(sFinalMember);
+            holder.joinIn.setText("管理");
             if (tmpData.getIs_recharge() == 1) {
-                holder.joinIn.setText("管理");
                 holder.is_recharge = true;
-
             } else if (tmpData.getIs_recharge() == 0) {
-                holder.joinIn.setText("充值");
                 holder.is_recharge = false;
             }
             holder.setCircleid(tmpData.getId());
@@ -171,6 +173,13 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
                         } else {
                             LocalLog.d(TAG, "充值");
                         }
+                        Intent intentManager = new Intent();
+                        intentManager.setAction(MEMBER_MANANGER_ACTION);
+                        intentManager.setClass(mContext, MemberManagerActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString(CIRCLE_ID, String.valueOf(getCircleid()));
+                        intentManager.putExtra(mContext.getPackageName(), bundle);
+                        mContext.startActivity(intentManager);
                         break;
                     case R.id.circle_logo_search:
                         LocalLog.d(TAG, " 点击圈子头像进入圈子");

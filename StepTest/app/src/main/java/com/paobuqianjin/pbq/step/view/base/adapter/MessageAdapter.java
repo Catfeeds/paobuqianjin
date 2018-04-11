@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -103,6 +105,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         ((MessageContentViewHolder) holder).imageC.setVisibility(View.VISIBLE);
                         Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageC, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));
                     }
+                    ((MessageContentViewHolder) holder).dynamicId = ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getDynamicid();
                 }
             } else if (mData.get(position) instanceof MessageLikeResponse.DataBeanX.DataBean) {
                 if (holder instanceof MessageLikeViewHolder) {
@@ -141,6 +144,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         ((MessageLikeViewHolder) holder).imageC.setVisibility(View.VISIBLE);
                         Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageC, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));
                     }
+                    ((MessageLikeViewHolder) holder).dynamicId = ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getDynamicid();
+                    //
                 }
             }
         }
@@ -188,9 +193,21 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         int dynamicId = -1;
 
+
         public MessageContentViewHolder(View view) {
             super(view);
             initView(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent();
+                    intent.putExtra(context.getPackageName() + "dynamicId", dynamicId);
+                    intent.putExtra(context.getPackageName() + "userId", Presenter.getInstance(context).getId());
+                    //intent.putExtra(context.getPackageName() + "is_vote", is_vote);
+                    intent.setClass(context, DynamicActivity.class);
+                    context.startActivity(intent);
+                }
+            });
         }
 
         private void initView(View view) {
@@ -232,9 +249,21 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         TextView timeStmap;
 
         int dynamicId = -1;
+
         public MessageLikeViewHolder(View view) {
             super(view);
             initView(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent();
+                    intent.putExtra(context.getPackageName() + "dynamicId", dynamicId);
+                    intent.putExtra(context.getPackageName() + "userId", Presenter.getInstance(context).getId());
+                    //intent.putExtra(context.getPackageName() + "is_vote", is_vote);
+                    intent.setClass(context, DynamicActivity.class);
+                    context.startActivity(intent);
+                }
+            });
         }
 
         private void initView(View view) {
