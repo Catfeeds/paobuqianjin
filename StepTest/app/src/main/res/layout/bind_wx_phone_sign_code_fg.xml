@@ -27,7 +27,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="25dp"
         android:layout_toEndOf="@+id/phone_text"
-        android:text="13424156029"
+        android:text=""
         android:textColor="@color/color_8a8a8a"
         android:textSize="15dp" />
 
@@ -62,7 +62,9 @@
         android:layout_marginRight="25dp"
         android:layout_toEndOf="@+id/sign_code_text"
         android:background="@null"
-        android:text="13424156029"
+        android:maxEms="6"
+        android:singleLine="true"
+        android:text=""
         android:textColor="@color/color_8a8a8a"
         android:textSize="15dp" />
 
