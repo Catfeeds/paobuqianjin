@@ -50,6 +50,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostIncomeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostMessageParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
@@ -1908,6 +1909,35 @@ public final class Engine {
                 .execute(new NetStringCallBack(addDeleteFollowInterface, COMMAND_ADD_DELETE_FOLLOW));
     }
 
+    public void postUserStatus(final Button button, int followid) {
+        LocalLog.d(TAG,"followid =   "  + followid);
+        OkHttpUtils
+                .post()
+                .addHeader("headtoken", getToken(mContext))
+                .url(NetApi.urlUserFollow)
+                .addParams("userid", String.valueOf(getId(mContext)))
+                .addParams("followid", String.valueOf(followid))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        AddDeleteFollowResponse addDeleteFollowResponse = new Gson().fromJson(s, AddDeleteFollowResponse.class);
+                        if (button != null) {
+                            if (addDeleteFollowResponse.getMessage().equals("取消关注成功")) {
+                                button.setText("关注");
+                            } else {
+                                button.setText("已关注");
+                            }
+                        }
+                    }
+                });
+    }
+
     //TODO 获取关注状态
     public void postQueryFollowState(QueryFollowStateParam queryFollowStateParam) {
         queryFollowStateParam.setUserid(getId(mContext));
@@ -2377,14 +2407,18 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
-
+                        LocalLog.d(TAG, "查询状态失败");
                     }
 
                     @Override
                     public void onResponse(String s, int i) {
                         FollowStatusResponse followStatusResponse = new Gson().fromJson(s, FollowStatusResponse.class);
                         if (button != null) {
-
+                            if (followStatusResponse.getData().getIs_follow() == 0) {
+                                button.setText("关注");
+                            } else if (followStatusResponse.getData().getIs_follow() == 1) {
+                                button.setText("已关注");
+                            }
                         }
                     }
                 });

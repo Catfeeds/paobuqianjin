@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/like_support_list_rel"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <RelativeLayout
@@ -26,23 +26,26 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:layout_toEndOf="@+id/circle_logo_search"
+            android:ellipsize="end"
             android:gravity="center"
             android:includeFontPadding="false"
-            android:text="用户昵称"
+            android:maxEms="12"
+            android:singleLine="true"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
 
         <Button
-            android:stateListAnimator="@null"
-            android:background="@drawable/button_join"
             android:id="@+id/love_number"
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
+            android:background="@drawable/button_join"
             android:gravity="center"
+            android:stateListAnimator="@null"
             android:text=""
             android:textColor="@color/color_161727"
             android:textSize="14dp" />

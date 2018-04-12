@@ -339,6 +339,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     public void response(DynamicCommentListResponse dynamicCommentListResponse) {
         LocalLog.d(TAG, "DynamicCommentListResponse() enter " + dynamicCommentListResponse.toString());
         if (dynamicCommentListResponse.getError() == 0) {
+            if (contentDetailsListItem == null) {
+                return;
+            }
             contentDetailsListItem.setAdapter(new TopLevelContentAdapter(getContext(), dynamicCommentListResponse.getData().getData(), this));
         } else if (dynamicCommentListResponse.getError() == 1) {
 
@@ -548,7 +551,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 likeNum -= 1;
                 contentSupports.setText(String.valueOf(likeNum));
             }
-        }else if(putVoteResponse.getError() == -100){
+        } else if (putVoteResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
             Presenter.getInstance(getContext()).steLogFlg(false);

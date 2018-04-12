@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 
 import java.util.List;
 
@@ -56,7 +58,7 @@ public class LikeSupportDetailAdapter extends RecyclerView.Adapter<LikeSupportDe
             if (holder.userid == Presenter.getInstance(context).getId()) {
                 holder.loveNumber.setVisibility(View.GONE);
             } else {
-                
+                Presenter.getInstance(context).postFollowStatus(holder.loveNumber, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getUserid());
             }
         }
     }
@@ -100,9 +102,14 @@ public class LikeSupportDetailAdapter extends RecyclerView.Adapter<LikeSupportDe
                 switch (view.getId()) {
                     case R.id.circle_logo_search:
                         LocalLog.d(TAG, "点击头像");
+                        Intent intent = new Intent();
+                        //TODO ACTION_SCAN_USERID
+                        intent.putExtra("userid", userid);
+                        intent.setClass(context, UserCenterActivity.class);
+                        context.startActivity(intent);
                         break;
                     case R.id.love_number:
-                        LocalLog.d(TAG, "点击关注或者取消关注");
+                        Presenter.getInstance(context).postUserStatus(loveNumber, userid);
                         break;
                 }
             }

@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -540,6 +541,10 @@ public final class Presenter {
         engine.postAddUserFollow(queryFollowStateParam);
     }
 
+    public void postUserStatus(Button button,int followid) {
+        engine.postUserStatus(button,followid);
+    }
+
     //TODO 用户好友接口
     public void getUserFiends() {
         engine.getUserFriends();
@@ -567,12 +572,12 @@ public final class Presenter {
         engine.postCrashTo(crashToParam);
     }
 
-    public void getCrashRecord(int pageIndex,int pagesize) {
-        engine.getCrashRecord(pageIndex,pagesize);
+    public void getCrashRecord(int pageIndex, int pagesize) {
+        engine.getCrashRecord(pageIndex, pagesize);
     }
 
-    public void getRechargeRecord(int page,int pagesize) {
-        engine.getRechargeRecord(page,pagesize);
+    public void getRechargeRecord(int page, int pagesize) {
+        engine.getRechargeRecord(page, pagesize);
     }
 
     //TODO 绑定提现账户
@@ -614,6 +619,11 @@ public final class Presenter {
 
     public void postBindWq(PostBindUnBindWqParam postBindUnBindWqParam) {
         engine.postBindWq(postBindUnBindWqParam);
+    }
+
+
+    public void postFollowStatus(final Button button, int followId) {
+        engine.postFollowStatus(button, followId);
     }
 
     public void getWeather(double latitude, double longitude) {
