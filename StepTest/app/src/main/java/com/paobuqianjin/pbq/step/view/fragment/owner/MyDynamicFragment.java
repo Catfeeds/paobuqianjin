@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -38,6 +39,7 @@ import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.AttentionCircleAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.MyDynamicAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -59,7 +61,7 @@ import butterknife.ButterKnife;
 
 public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements MyDynamicInterface {
     private final static String TAG = MyDynamicFragment.class.getSimpleName();
-
+    private final static int REQUEST_DETAIL = 0;
     LinearLayoutManager layoutManager;
     int pageIndex = 1;
     int pageCount;
@@ -303,6 +305,12 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
         @Override
         public void onItemClick(View itemView, int position) {
             //Toast.makeText(getActivity(), "第" + position + "个", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.putExtra(getContext().getPackageName() + "dynamicId", dynamicAllData.get(position).getId());
+            intent.putExtra(getContext().getPackageName() + "userId", dynamicAllData.get(position).getUserid());
+            intent.putExtra(getContext().getPackageName() + "is_vote", dynamicAllData.get(position).getIs_vote());
+            intent.setClass(getContext(), DynamicActivity.class);
+            startActivityForResult(intent, REQUEST_DETAIL);
         }
     };
 

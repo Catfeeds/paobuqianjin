@@ -30,7 +30,9 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lwkandroid.imagepicker.data.ImageDataModel;
 import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
+import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.LikeBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
@@ -60,6 +62,7 @@ import com.paobuqianjin.pbq.step.view.emoji.EmotionKeyboard;
 import com.paobuqianjin.pbq.step.view.emoji.EmotionLayout;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionExtClickListener;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionSelectedListener;
+import com.paobuqianjin.pbq.step.view.fragment.owner.MyDynamicFragment;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -165,6 +168,10 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     private int currentIndexPage = 1;
     private int likeNum, contentNum;
     private ReflashInterface reflashInterface;
+    private View popBirthSelectView;
+    private PopupWindow popupSelectWindow;
+    private int mScreenWidth;
+    private int mScreenHeight;
 
     @Override
     protected int getLayoutResId() {
@@ -194,6 +201,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+        mScreenWidth = ImagePickerComUtils.getScreenWidth(getContext());
+        mScreenHeight = ImagePickerComUtils.getScreenHeight(getContext());
         dots = new ArrayList<View>();
         dot1 = viewRoot.findViewById(R.id.dot_1);
         dot2 = viewRoot.findViewById(R.id.dot_2);
@@ -415,6 +424,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                     dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
                     ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
                     Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
+                    showBigImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
                 }
             } else if (imageSize == 2) {
 
@@ -433,6 +443,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
                 Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
                 Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
+                showBigImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
+                showBigImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
 
             } else if (imageSize == 3) {
                 dots.add(dot1);
@@ -453,6 +465,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
                 Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
                 Presenter.getInstance(getContext()).getImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
+                showBigImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
+                showBigImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
+                showBigImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
 
             } else if (imageSize >= 4) {
 
@@ -480,6 +495,10 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
                 Presenter.getInstance(getContext()).getImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
                 Presenter.getInstance(getContext()).getImage(imageViewD, dynamicIdDetailResponse.getData().getImages().get(3));
+                showBigImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
+                showBigImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
+                showBigImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
+                showBigImage(imageViewD, dynamicIdDetailResponse.getData().getImages().get(3));
 
             } else {
                 LocalLog.e(TAG, "图片数量超过5");
@@ -561,6 +580,56 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         }
 
     }
+
+    private void showBigImage(ImageView imageView, final String url) {
+        LocalLog.d(TAG, "URL = " + url);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (popBigImageInterface != null) {
+                    LocalLog.d(TAG, "url = " + url);
+                    popBigImageInterface.popImageView(url);
+                }
+
+            }
+        });
+    }
+
+    public interface PopBigImageInterface {
+        public void popImageView(String url);
+    }
+
+    private PopBigImageInterface popBigImageInterface = new PopBigImageInterface() {
+        @Override
+        public void popImageView(String url) {
+            LocalLog.d(TAG, "查看大图");
+            popBirthSelectView = View.inflate(getContext(), R.layout.image_big_view, null);
+            PhotoView photoView = (PhotoView) popBirthSelectView.findViewById(R.id.photo_view);
+            ImageDataModel.getInstance().getDisplayer().display(getContext(), url, photoView, mScreenWidth, mScreenHeight);
+            popupSelectWindow = new PopupWindow(popBirthSelectView,
+                    WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    LocalLog.d(TAG, "popImageVie dismiss() ");
+                    popupSelectWindow = null;
+                }
+            });
+
+            popupSelectWindow.setFocusable(true);
+            popupSelectWindow.setOutsideTouchable(true);
+
+            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleType.setInterpolator(new AccelerateInterpolator());
+            animationCircleType.setDuration(200);
+
+
+            popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.dynamic_id_detail), Gravity.CENTER, 0, 0);
+            popBirthSelectView.startAnimation(animationCircleType);
+        }
+    };
 
     @Override
     public void postDynamicAction(PostDynamicContentParam postDynamicContentParam, String dearName, ReflashInterface reflashInterface) {

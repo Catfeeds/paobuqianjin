@@ -79,8 +79,10 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
     }
 
     private void upDataListItem(MyDynamicViewHolder holder, int position) {
-        LocalLog.d(TAG, "upDataListItem() enter");
         if (mData.get(position) instanceof DynamicPersonResponse.DataBeanX.DataBean) {
+            holder.dots = new ArrayList<>();
+            holder.Mview = new ArrayList<>();
+            LocalLog.d(TAG, "upDataListItem() enter  data " + ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).toString());
             int[] emj = mContext.getResources().getIntArray(R.array.emjio_list);
             Presenter.getInstance(mContext).getImage(holder.dynamicUserIcon, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
             holder.dynamicUserName.setText(((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
@@ -150,6 +152,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                     holder.picViewpager.setVisibility(View.GONE);
                 } else {
                     holder.imageView0 = LayoutInflater.from(mContext).inflate(R.layout.image_view_pager, null);
+
                     holder.dots.add(holder.dot1);
                     holder.Mview.add(holder.imageView0);
                     ImageView imageView0 = (ImageView) holder.imageView0.findViewById(R.id.dynamic_pic);
@@ -235,11 +238,11 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 holder.Mview.add(holder.imageView2);
                 holder.Mview.add(holder.imageView3);
                 holder.dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
+
                 Presenter.getInstance(mContext).getImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                 Presenter.getInstance(mContext).getImage(imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
                 Presenter.getInstance(mContext).getImage(imageView2, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));
                 Presenter.getInstance(mContext).getImage(imageView3, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(3));
-
 
                 showBigImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                 showBigImage(imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
@@ -248,7 +251,6 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
             } else {
                 LocalLog.e(TAG, "图片数量超过5");
             }
-
             holder.adapter = new ImageViewPagerAdapter(mContext, holder.Mview);
             holder.imageViewpager.setAdapter(holder.adapter);
             if (Presenter.getInstance(mContext).getId() == ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getUserid()) {
@@ -258,15 +260,17 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
     }
 
     private void showBigImage(ImageView imageView, final String url) {
+        /*LocalLog.d(TAG, "URL = " + url);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (popBigImageInterface != null) {
+                    LocalLog.d(TAG, "url = " + url);
                     popBigImageInterface.popImageView(url);
                 }
 
             }
-        });
+        });*/
     }
 
     @Override
@@ -324,7 +328,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
         @Bind(R.id.create_time)
         TextView createTime;
 
-        List<View> Mview = new ArrayList<>();
+        List<View> Mview;
         List<View> dots;
         int oldPosition;
         int currentItem;
@@ -354,7 +358,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
             deleteDynamic = (ImageView) viewRoot.findViewById(R.id.delete_dynamic);
 
             picViewpager = (RelativeLayout) viewRoot.findViewById(R.id.pic_viewpager);
-            dots = new ArrayList<View>();
+
             dot1 = viewRoot.findViewById(R.id.dot_1);
             dot2 = viewRoot.findViewById(R.id.dot_2);
             dot3 = viewRoot.findViewById(R.id.dot_3);
@@ -395,7 +399,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                         Intent intent = new Intent();
                         intent.putExtra(mContext.getPackageName() + "dynamicId", dynamicId);
                         intent.putExtra(mContext.getPackageName() + "userId", userid);
-                        intent.putExtra(mContext.getPackageName() + "is_vote",is_vote);
+                        intent.putExtra(mContext.getPackageName() + "is_vote", is_vote);
                         intent.setClass(mContext, DynamicActivity.class);
                         mContext.startActivity(intent);
                         break;

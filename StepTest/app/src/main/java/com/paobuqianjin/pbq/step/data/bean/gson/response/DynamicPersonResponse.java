@@ -57,6 +57,14 @@ public class DynamicPersonResponse {
     }
 
     public static class DataBeanX {
+        @Override
+        public String toString() {
+            return "DataBeanX{" +
+                    "pagenation=" + pagenation +
+                    ", data=" + data +
+                    '}';
+        }
+
         /**
          * pagenation : {"page":4,"pageSize":1,"totalPage":15,"totalCount":15}
          * data : [{"id":125,"userid":30,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","dynamic":"Vivo Android 5.0  720*1280 ","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/exit_0.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2018_03_13__04_37_21.png","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/hua2.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/app_icon.png"],"city":"上海市","vote":2,"comment":25,"create_time":1522409030,"one_comment":{"id":338,"parent_id":0,"reply_userid":30,"userid":61,"dynamicid":125,"content":"[0x1f603][0x1f60d][0x1f612][0x1f633][0x1f601][0x1f618]","create_time":1522668805,"nickname":""},"is_vote":1}]
@@ -79,14 +87,6 @@ public class DynamicPersonResponse {
 
         public void setData(List<DataBean> data) {
             this.data = data;
-        }
-
-        @Override
-        public String toString() {
-            return "DataBeanX{" +
-                    "pagenation=" + pagenation +
-                    ", data=" + data +
-                    '}';
         }
 
         public static class PagenationBean {
@@ -371,6 +371,20 @@ public class DynamicPersonResponse {
 
                 public void setNickname(String nickname) {
                     this.nickname = nickname;
+                }
+
+                @Override
+                public String toString() {
+                    return "OneCommentBean{" +
+                            "id=" + id +
+                            ", parent_id=" + parent_id +
+                            ", reply_userid=" + reply_userid +
+                            ", userid=" + userid +
+                            ", dynamicid=" + dynamicid +
+                            ", content='" + content + '\'' +
+                            ", create_time=" + create_time +
+                            ", nickname='" + nickname + '\'' +
+                            '}';
                 }
             }
         }
