@@ -33,6 +33,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginOutResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.squareup.picasso.NetworkPolicy;
 
@@ -296,6 +297,10 @@ public final class Presenter {
 
     public void postContent(PostDynamicContentParam postDynamicContentParam) {
         engine.postContent(postDynamicContentParam);
+    }
+
+    public void putVote(PutVoteParam putVoteParam, InnerCallBack innerCallBack) {
+        engine.putVote(putVoteParam,innerCallBack);
     }
 
     public void putVote(PutVoteParam putVoteParam) {

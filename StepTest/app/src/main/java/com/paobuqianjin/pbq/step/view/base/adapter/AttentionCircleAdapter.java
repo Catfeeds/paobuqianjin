@@ -17,10 +17,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
@@ -129,8 +132,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         LocalLog.d(TAG, "create_time = " + create_time);
         String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
         int[] emj = mContext.getResources().getIntArray(R.array.emjio_list);//TODO 优化
-        LocalLog.d(TAG,"DATA = "  + data.get(position).toString());
+        LocalLog.d(TAG, "DATA = " + data.get(position).toString());
         if (holder instanceof OneOrZeroViewHodler) {
+            LocalLog.d(TAG, "无图");
             ((OneOrZeroViewHodler) holder).dynamicid = data.get(position).getId();
             ((OneOrZeroViewHodler) holder).userid = data.get(position).getUserid();
             ((OneOrZeroViewHodler) holder).is_vote = data.get(position).getIs_vote();
@@ -152,6 +156,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getCity());
                 ((OneOrZeroViewHodler) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
                 ((OneOrZeroViewHodler) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
+                ((OneOrZeroViewHodler) holder).vote = data.get(position).getVote();
                 if (data.get(position).getIs_vote() == 1) {
                     LocalLog.d(TAG, "赞过");
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
@@ -182,6 +187,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
 
             } else if (((OneOrZeroViewHodler) holder).viewType == 0) {
+                LocalLog.d(TAG, "1图");
                 ((OneOrZeroViewHodler) holder).timeStmp.setText(create_timeStr);
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar());
                 ((OneOrZeroViewHodler) holder).is_vote = data.get(position).getIs_vote();
@@ -197,6 +203,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getCity());
                 ((OneOrZeroViewHodler) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
                 ((OneOrZeroViewHodler) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
+                ((OneOrZeroViewHodler) holder).vote = data.get(position).getVote();
                 if (data.get(position).getIs_vote() == 1) {
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
                 }
@@ -225,6 +232,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     }
                 }
             }
+            ((OneOrZeroViewHodler) holder).position = position;
         } else if (holder instanceof TwoPicViewHolder) {
             ((TwoPicViewHolder) holder).timeStmp.setText(create_timeStr);
             ((TwoPicViewHolder) holder).dynamicid = data.get(position).getId();
@@ -246,6 +254,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((TwoPicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getCity());
             ((TwoPicViewHolder) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
             ((TwoPicViewHolder) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
+            ((TwoPicViewHolder) holder).vote = data.get(position).getVote();
             if (data.get(position).getIs_vote() == 1) {
                 ((TwoPicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
             }
@@ -273,6 +282,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     ((TwoPicViewHolder) holder).firstContent.setText(spannableString);
                 }
             }
+
+            LocalLog.d(TAG, "2图");
+            ((TwoPicViewHolder) holder).position = position;
         } else if (holder instanceof ThreePicViewHolder) {
             ((ThreePicViewHolder) holder).timeStmp.setText(create_timeStr);
             ((ThreePicViewHolder) holder).dynamicid = data.get(position).getId();
@@ -287,12 +299,17 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((ThreePicViewHolder) holder).dynamicUserName.setText(data.get(position).getNickname());
             ((ThreePicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getCity());
             ((ThreePicViewHolder) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
+            ((ThreePicViewHolder) holder).vote = data.get(position).getVote();
             if (data.get(position).getIs_vote() == 1) {
                 ((ThreePicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
             }
+            LocalLog.d(TAG, "3图");
             if (data.get(position).getComment() <= 0) {
                 LocalLog.d(TAG, "updateItem() 无人评论");
                 ((ThreePicViewHolder) holder).scanMore.setVisibility(View.GONE);
+            } else {
+                LocalLog.d(TAG, "updateItem() 有评论");
+                ((ThreePicViewHolder) holder).scanMore.setVisibility(View.VISIBLE);
             }
             if (data.get(position).getOne_comment() != null) {
                 if (data.get(position).getOne_comment().getNickname() != null) {
@@ -314,6 +331,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     ((ThreePicViewHolder) holder).firstContent.setText(spannableString);
                 }
             }
+            ((ThreePicViewHolder) holder).position = position;
         } else {
             LocalLog.e(TAG, " unknown data!");
         }
@@ -361,6 +379,31 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         int dynamicid = -1;
         int userid = -1;
         int is_vote = 0;
+        int vote = 0;
+        int position = 0;
+        DynamicAllIndexResponse.DataBeanX.DataBean dataBean;
+        private InnerCallBack innerCallBack = new InnerCallBack() {
+            @Override
+            public void innerCallBack(Object object) {
+                if (object instanceof PutVoteResponse) {
+                    if (((PutVoteResponse) object).getError() == 0) {
+                        if (((PutVoteResponse) object).getMessage().equals("点赞成功")) {
+                            likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
+
+                            vote++;
+                            is_vote = 1;
+                        } else {
+                            likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
+                            vote--;
+                            is_vote = 0;
+                        }
+                        data.get(position).setIs_vote(is_vote);
+                        contentSupports.setText(String.valueOf(vote));
+                    }
+                }
+            }
+        };
+
 
         public OneOrZeroViewHodler(View view, int viewType) {
             super(view);
@@ -392,6 +435,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             contentSupports = (TextView) view.findViewById(R.id.content_supports);
             firstContent = (TextView) view.findViewById(R.id.first_content);
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
+            likeNumIcon.setOnClickListener(onClickListener);
             timeStmp = (TextView) view.findViewById(R.id.time_stmp);
         }
 
@@ -400,6 +444,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             public void onClick(View view) {
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
+                    case R.id.like_num_icon:
+                        LocalLog.d(TAG, "点赞");
+                        PutVoteParam putVoteParam = new PutVoteParam();
+                        putVoteParam.setDynamicid(dynamicid).setUserid(Presenter.getInstance(mContext).getId());
+                        Presenter.getInstance(mContext).putVote(putVoteParam, innerCallBack);
+                        break;
                     case R.id.scan_more:
                         LocalLog.d(TAG, "点击查看更多评价");
                         LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
@@ -460,12 +510,35 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         int dynamicid = -1;
         int userid = -1;
         int is_vote = 0;
+        int vote = 0;
+        int position = 0;
 
         public TwoPicViewHolder(View view, int viewType) {
             super(view);
             this.viewType = viewType;
             initViewHolder(view, viewType);
         }
+
+        private InnerCallBack innerCallBack = new InnerCallBack() {
+            @Override
+            public void innerCallBack(Object object) {
+                if (object instanceof PutVoteResponse) {
+                    if (((PutVoteResponse) object).getError() == 0) {
+                        if (((PutVoteResponse) object).getMessage().equals("点赞成功")) {
+                            likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
+                            vote++;
+                            is_vote = 1;
+                        } else {
+                            likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
+                            vote--;
+                            is_vote = 0;
+                        }
+                        contentSupports.setText(String.valueOf(vote));
+                        data.get(position).setIs_vote(is_vote);
+                    }
+                }
+            }
+        };
 
         private void initViewHolder(View view, int viewType) {
             LocalLog.d(TAG, "initViewHolder()  enter" + viewType);
@@ -483,6 +556,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
             timeStmp = (TextView) view.findViewById(R.id.time_stmp);
             scanMore.setOnClickListener(onClickListener);
+            likeNumIcon.setOnClickListener(onClickListener);
 
         }
 
@@ -491,6 +565,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             public void onClick(View view) {
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
+                    case R.id.like_num_icon:
+                        LocalLog.d(TAG, "点赞");
+                        PutVoteParam putVoteParam = new PutVoteParam();
+                        putVoteParam.setDynamicid(dynamicid).setUserid(Presenter.getInstance(mContext).getId());
+                        Presenter.getInstance(mContext).putVote(putVoteParam, innerCallBack);
+                        break;
                     case R.id.scan_more:
                         LocalLog.d(TAG, "点击查看更多评价");
                         LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
@@ -552,6 +632,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         int dynamicid = -1;
         int userid = -1;
         int is_vote = 0;
+        int vote = 0;
+        int position = 0;
 
         public ThreePicViewHolder(View view, int viewType) {
             super(view);
@@ -576,14 +658,41 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             dynamicUserName = (TextView) view.findViewById(R.id.dynamic_user_name);
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
             timeStmp = (TextView) view.findViewById(R.id.time_stmp);
+            likeNumIcon.setOnClickListener(onClickListener);
 
         }
 
+        private InnerCallBack innerCallBack = new InnerCallBack() {
+            @Override
+            public void innerCallBack(Object object) {
+                if (object instanceof PutVoteResponse) {
+                    if (((PutVoteResponse) object).getError() == 0) {
+                        if (((PutVoteResponse) object).getMessage().equals("点赞成功")) {
+                            likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
+                            vote++;
+                            is_vote = 1;
+                        } else {
+                            likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
+                            vote--;
+                            is_vote = 0;
+                        }
+                        data.get(position).setIs_vote(is_vote);
+                        contentSupports.setText(String.valueOf(vote));
+                    }
+                }
+            }
+        };
         private View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
+                    case R.id.like_num_icon:
+                        LocalLog.d(TAG, "点赞");
+                        PutVoteParam putVoteParam = new PutVoteParam();
+                        putVoteParam.setDynamicid(dynamicid).setUserid(Presenter.getInstance(mContext).getId());
+                        Presenter.getInstance(mContext).putVote(putVoteParam, innerCallBack);
+                        break;
                     case R.id.scan_more:
                         LocalLog.d(TAG, "点击查看更多评价");
                         LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);

@@ -53,6 +53,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
@@ -75,6 +76,7 @@ import com.paobuqianjin.pbq.step.presenter.im.FriendAddressInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.LoginBindPhoneInterface;
@@ -627,7 +629,7 @@ public final class Engine {
 
     //TODO 获取附近的人http://119.29.10.64/v1/user/getNearbyPeople?userid=1&longitude=86.26000&latitude=35.17000
     public void getNearByPeople(double latitude, double longitude, int page, int pagesize) {
-        String url = urlNearByPeople + "/userid="+String.valueOf(getId(mContext)) + "&longitude=" + String.valueOf(latitude)
+        String url = urlNearByPeople + "/userid=" + String.valueOf(getId(mContext)) + "&longitude=" + String.valueOf(latitude)
                 + "&latitude=" + String.valueOf(longitude) + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         LocalLog.d(TAG, "url = " + url);
         OkHttpUtils
@@ -1011,6 +1013,41 @@ public final class Engine {
                 .params(postDynamicContentParam.getParams())
                 .build()
                 .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_POST_DYNAMIC_COMMENT));
+    }
+
+    public void putVote(final PutVoteParam putVoteParam, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "putVote() enter " + putVoteParam.paramString());
+        OkHttpUtils
+                .put()
+                .addHeader("headtoken", getToken(mContext))
+                .requestBody(new RequestBody() {
+                    @Override
+                    public MediaType contentType() {
+                        return MediaType.parse("application/x-www-form-urlencoded");
+                    }
+
+                    @Override
+                    public void writeTo(BufferedSink sink) throws IOException {
+
+                    }
+                })
+                .url(NetApi.urlDynamicVote + "/" + String.valueOf(putVoteParam.getDynamicid()))
+                .param("userid", String.valueOf(putVoteParam.getUserid()))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        PutVoteResponse putVoteResponse = new Gson().fromJson(s, PutVoteResponse.class);
+                        if (innerCallBack != null) {
+                            innerCallBack.innerCallBack(putVoteResponse);
+                        }
+                    }
+                });
     }
 
     //TODO 点赞
@@ -2335,7 +2372,6 @@ public final class Engine {
     public void getTargetStep() {
         LocalLog.d(TAG, "getTargetStep() enter");
     }
-
 
 
     public void getIncomeToday() {
