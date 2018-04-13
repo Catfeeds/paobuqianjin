@@ -262,7 +262,6 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
                 LocalLog.d(TAG, "分享到朋友圈");
                 share_media = SHARE_MEDIA.WEIXIN_CIRCLE;
                 imageCircleQr = new UMImage(getContext(), bitmap);
-                circleLogo.setImageBitmap(bitmap);
                 new ShareAction(getActivity()).withMedia(imageCircleQr)
                         .setPlatform(share_media)
                         .setCallback(shareListener).share();
@@ -271,7 +270,6 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
                 LocalLog.d(TAG, "分享到微信");
                 share_media = SHARE_MEDIA.WEIXIN;
                 imageCircleQr = new UMImage(getContext(), bitmap);
-                circleLogo.setImageBitmap(bitmap);
                 new ShareAction(getActivity()).withMedia(imageCircleQr)
                         .setPlatform(share_media)
                         .setCallback(shareListener).share();

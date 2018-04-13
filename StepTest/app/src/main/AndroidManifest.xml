@@ -39,11 +39,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:replace="android:theme">
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="ratio_float" />
 
         <!-- 配置百度地图KEY -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="0ug1iU9lhYsMn10Ukwz4d2oxh8uP3zga" />
+
+        <!-- 屏幕适配尺寸 -->
+        <meta-data
+            android:name="design_width"
+            android:value="750" />
+        <meta-data
+            android:name="design_height"
+            android:value="1334" />
 
         <activity
             android:name=".view.activity.MainActivity"
@@ -72,8 +83,8 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
-                <action android:name="com.paobuqianjin.pbq.USER_FIT_ACTION_BIND"></action>
-                <action android:name="com.paobuqianjin.pbq.USER_FIT_ACTION_USER_SETTING"></action>
+                <action android:name="com.paobuqianjin.pbq.USER_FIT_ACTION_BIND" />
+                <action android:name="com.paobuqianjin.pbq.USER_FIT_ACTION_USER_SETTING" />
             </intent-filter>
         </activity>
         <activity
@@ -89,7 +100,7 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAMBER_MANAGER_ACTION"></action>
+                <action android:name="android.intent.action.MAMBER_MANAGER_ACTION" />
             </intent-filter>
         </activity>
         <activity
@@ -122,8 +133,8 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
-                <action android:name="com.paobuqianjin.pbq.step.SCAN_ACTION"></action>
-                <action android:name="coma.paobuqian.pbq.step.ICON_ACTION"></action>
+                <action android:name="com.paobuqianjin.pbq.step.SCAN_ACTION" />
+                <action android:name="coma.paobuqian.pbq.step.ICON_ACTION" />
             </intent-filter>
         </activity>
         <activity
@@ -145,7 +156,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.PAY" />
                 <action android:name="android.intent.action.QRCODE" />
-                <action android:name="coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION"></action>
+                <action android:name="coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION" />
             </intent-filter>
         </activity>
         <activity
@@ -158,16 +169,16 @@
         </activity>
         <!-- 忘记密码 -->
         <activity android:name=".view.activity.LoginForgetPassActivity" />
-        <!--选择提现账号-->
+        <!-- 选择提现账号 -->
         <activity
             android:name=".view.activity.UserBindBankListActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--提现绑定微信-->
+        <!-- 提现绑定微信 -->
         <activity
             android:name=".view.activity.BindWeChatActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme"></activity>
+            android:theme="@style/ImageTranslucentTheme" />
         <!-- 任务发布 -->
         <activity
             android:name=".view.activity.TaskReleaseActivity"
@@ -183,7 +194,7 @@
             android:name=".view.activity.TaskDetailActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--我的发布-->
+        <!-- 我的发布 -->
         <activity
             android:name=".view.activity.MyReleaseActivity"
             android:launchMode="singleTask"
@@ -203,8 +214,8 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
-                <action android:name="com.paobuqianjin.pbq.ACTION_FRIEND_HONOR"></action>
-                <action android:name="com.paobuqianjin.pbq.ACTION_CIRCLE_HONOR"></action>
+                <action android:name="com.paobuqianjin.pbq.ACTION_FRIEND_HONOR" />
+                <action android:name="com.paobuqianjin.pbq.ACTION_CIRCLE_HONOR" />
             </intent-filter>
         </activity>
         <!-- 我的钱包 -->
@@ -217,11 +228,10 @@
             android:name=".view.activity.SponsorDetailActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-
         <activity
             android:name=".view.activity.DearNameModifyActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme"></activity>
+            android:theme="@style/ImageTranslucentTheme" />
         <!-- 商品图片详情 -->
         <activity
             android:name=".view.activity.SponsorGoodsPicLookActivity"
@@ -252,7 +262,7 @@
             android:name=".view.activity.StepDollarActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--充值到钱包-->
+        <!-- 充值到钱包 -->
         <activity
             android:name=".view.activity.InoutcomDetailActivity"
             android:launchMode="singleTask"
@@ -272,7 +282,7 @@
             android:name=".view.activity.AddFriendAddressActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!--编辑圈子-->
+        <!-- 编辑圈子 -->
         <activity
             android:name=".view.activity.EditCircleActivity"
             android:launchMode="singleTask"
@@ -316,8 +326,8 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
-                <action android:name="com.paobuqianjin.pbq.step.SERVICE_ACTION"></action>
-                <action android:name="com.paobuqianjin.pbq.step.CRASH_ACTION"></action>
+                <action android:name="com.paobuqianjin.pbq.step.SERVICE_ACTION" />
+                <action android:name="com.paobuqianjin.pbq.step.CRASH_ACTION" />
             </intent-filter>
         </activity>
         <!-- 我的段位 -->
@@ -325,7 +335,7 @@
             android:name=".view.activity.DanActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
-        <!-- wechat callback -->
+        <!-- 微信回调 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -381,7 +391,21 @@
         <activity
             android:name=".view.activity.AccoutManagerActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme"></activity>
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- 这里的scheme是qq分享要用的，100424468为自己申请的appid，真实项目中需要替换 -->
+                <data android:scheme="tencent1106825696" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.umeng.qq.tencent.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".view.activity.OlderPassChangeActivity"
             android:launchMode="singleTask"
@@ -391,8 +415,7 @@
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"></service>
-
+            android:process=":remote" />
         <service
             android:name=".model.services.local.LocalBaiduService"
             android:enabled="true"
@@ -412,6 +435,10 @@
                 <action android:name="com.paobuqianjin.intent.ACTION_LOCATION" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".view.activity.RegisterActivity" />
+        <activity android:name=".view.activity.ForgotPasswordActivity" />
+        <activity android:name=".view.activity.BindPhoneNumActivity" />
     </application>
 
 </manifest>

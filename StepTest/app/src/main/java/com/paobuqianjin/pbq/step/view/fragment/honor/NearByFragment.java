@@ -29,6 +29,9 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
     @Bind(R.id.near_by_recycler)
     RecyclerView nearByRecycler;
     private LinearLayoutManager layoutManager;
+    private int pageIndex = 0;
+
+    private final static int PAGE_SIZE_DEFAULT = 10;
 
     @Override
     protected int getLayoutResId() {
@@ -39,7 +42,6 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
     public void onAttach(Context context) {
         super.onAttach(context);
         Presenter.getInstance(context).attachUiInterface(this);
-        Presenter.getInstance(context).getNearByPeople(0, 0);
     }
 
     @Override
@@ -56,6 +58,8 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
         nearByRecycler = (RecyclerView) viewRoot.findViewById(R.id.near_by_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         nearByRecycler.setLayoutManager(layoutManager);
+        Presenter.getInstance(getContext()).getNearByPeople(Presenter.getInstance(getContext()).getLocation()[0],
+                Presenter.getInstance(getContext()).getLocation()[1], pageIndex, PAGE_SIZE_DEFAULT);
     }
 
     @Override

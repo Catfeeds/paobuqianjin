@@ -2,12 +2,16 @@ package com.paobuqianjin.pbq.step.view.fragment.home;
 
 import android.content.Context;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -80,12 +84,12 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     FrameLayout processStep;
     @Bind(R.id.wave_view)
     WaveView waveView;
-    @Bind(R.id.wave_view_span)
-    RelativeLayout waveViewSpan;
-    @Bind(R.id.major_bg)
-    ImageView majorBg;
-    @Bind(R.id.major_span)
-    RelativeLayout majorSpan;
+    //    @Bind(R.id.wave_view_span)
+//    RelativeLayout waveViewSpan;
+//    @Bind(R.id.major_bg)
+//    ImageView majorBg;
+//    @Bind(R.id.major_span)
+    //  RelativeLayout majorSpan;
     @Bind(R.id.home_title)
     TextView homeTitle;
     @Bind(R.id.home_page)
@@ -116,10 +120,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     TextView incomeRedPackage;
     @Bind(R.id.add_friend_image)
     ImageView addFriendImage;
-    @Bind(R.id.ho_line)
-    ImageView hoLine;
-    @Bind(R.id.ve_line)
-    ImageView veLine;
+
     @Bind(R.id.weather_icon)
     ImageView weatherIcon;
     @Bind(R.id.wendu)
@@ -211,6 +212,10 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
     }
 
+
+
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -222,6 +227,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, super.onCreateView(inflater, container, savedInstanceState));
+        //rectRoundBitmap();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(STEP_ACTION);
         intentFilter.addAction(LOCATION_ACTION);
@@ -233,6 +239,20 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
+
+//    private void rectRoundBitmap() {
+//        //得到资源文件的BitMap
+//        Bitmap image= BitmapFactory.decodeResource(getResources(),R.drawable.send_red_package);
+//        //创建RoundedBitmapDrawable对象
+//        RoundedBitmapDrawable roundImg = RoundedBitmapDrawableFactory.create(getResources(),image);
+//        //抗锯齿
+//        roundImg.setAntiAlias(true);
+//        //设置圆角半径
+//        roundImg.setCornerRadius(30);
+//        //设置显示图片
+//        outRedPkgImage.setImageDrawable(roundImg);
+//
+//    }
 
     /*权限适配*/
 

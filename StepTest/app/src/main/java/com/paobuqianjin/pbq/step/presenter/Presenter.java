@@ -209,8 +209,8 @@ public final class Presenter {
         engine.getMsg(phone);
     }
 
-    public void getNearByPeople(double latitude, double longitude) {
-        engine.getNearByPeople(latitude, longitude);
+    public void getNearByPeople(double latitude, double longitude, int page, int pagesize) {
+        engine.getNearByPeople(latitude, longitude, page, pagesize);
     }
 
     public void registerByPhoneNumber(String[] userInfo) {
@@ -541,8 +541,8 @@ public final class Presenter {
         engine.postAddUserFollow(queryFollowStateParam);
     }
 
-    public void postUserStatus(Button button,int followid) {
-        engine.postUserStatus(button,followid);
+    public void postUserStatus(Button button, int followid) {
+        engine.postUserStatus(button, followid);
     }
 
     //TODO 用户好友接口
@@ -616,6 +616,10 @@ public final class Presenter {
         engine.protocol(action);
     }
 
+
+    public double[] getLocation() {
+        return engine.getLocation();
+    }
 
     public void postBindWq(PostBindUnBindWqParam postBindUnBindWqParam) {
         engine.postBindWq(postBindUnBindWqParam);

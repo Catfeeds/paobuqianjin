@@ -1,19 +1,23 @@
 package com.paobuqianjin.pbq.step.view.fragment.login;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostPassWordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -22,38 +26,35 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.PassWordResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ForgetPassWordInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.ForgotPasswordActivity;
+import com.paobuqianjin.pbq.step.view.activity.LoginActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by pbq on 2018/1/25.
- */
+public class ForgetPassFragment extends BaseFragment implements ForgetPassWordInterface {
+    private final static String TAG = ForgotPasswordActivity.class.getSimpleName();
 
-public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements ForgetPassWordInterface {
-    private final static String TAG = ForgetPassFragment.class.getSimpleName();
-    @Bind(R.id.bar_return_drawable)
-    ImageView barReturnDrawable;
-    @Bind(R.id.button_return_bar)
-    RelativeLayout buttonReturnBar;
-    @Bind(R.id.bar_title)
-    TextView barTitle;
-    @Bind(R.id.bar_tv_right)
-    TextView barTvRight;
-    @Bind(R.id.phone)
-    EditText phone;
-    @Bind(R.id.sign_code)
-    EditText signCode;
-    @Bind(R.id.sign_code_request)
-    TextView signCodeRequest;
-    @Bind(R.id.new_password)
-    EditText newPassword;
-    @Bind(R.id.confirm_password)
-    EditText confirmPassword;
-    @Bind(R.id.confirm)
-    Button confirm;
+    private boolean showLoginPass = false, showSignPass = false;
+    @Bind(R.id.img_back)
+    ImageView img_back;
+    @Bind(R.id.forgotpwd_account)
+    EditText forgotpwd_account;
+    @Bind(R.id.forgotpwd_indntifying_code)
+    EditText forgotpwd_indntifying_code;
+    @Bind(R.id.forgotpwd_getCode)
+    Button forgotpwd_getCode;
+    @Bind(R.id.forgotpwd_pwd)
+    EditText forgotpwd_pwd;
+    @Bind(R.id.forgotPwd_eyes)
+    ImageView forgotPwd_eyes;
+    @Bind(R.id.forgotpwd_ok)
+    Button forgotpwd_ok;
+    private String[] userInfo;
+
     PostPassWordParam postPassWordParam;
 
     @Override
@@ -62,15 +63,12 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
     }
 
     @Override
-    protected String title() {
-        return "忘记密码";
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         Presenter.getInstance(getContext()).attachUiInterface(this);
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,12 +78,7 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
         return rootView;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-        Presenter.getInstance(getContext()).dispatchUiInterface(this);
-    }
+
 
     @Override
     public void response(PassWordResponse passWordResponse) {
@@ -100,6 +93,7 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
             System.exit(0);
         }
     }
+
 
     @Override
     public void response(GetSignCodeResponse getSignCodeResponse) {
@@ -130,33 +124,50 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
         }
     }
 
-    @OnClick({R.id.sign_code_request, R.id.confirm})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.sign_code_request:
-                LocalLog.d(TAG, "获取验证码");
-                Presenter.getInstance(getContext()).getSignCodePassWord(phone.getText().toString());
-                break;
-            case R.id.confirm:
-                LocalLog.d(TAG, "修改密码");
-                postPassWordParam = new PostPassWordParam();
-                postPassWordParam.setCode(signCode.getText().toString())
-                        .setMobile(phone.getText().toString())
-                        .setPassword(newPassword.getText().toString());
-                if (newPassword.getText().toString() == null || !newPassword.getText().toString().equals(confirmPassword.getText().toString())) {
-                    Toast.makeText(getContext(), "两次输入密码不一致", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-               /* *//*发送验证码之后必须携带用户ID*//*
-                CheckSignCodeParam checkSignCodeParam = new CheckSignCodeParam();
-                checkSignCodeParam.setCode(signCode.getText().toString());
-                checkSignCodeParam.setUserid(Presenter.getInstance(getContext()).getId());
-                Presenter.getInstance(getContext()).checkSignCodePassWord(checkSignCodeParam);*/
-                Presenter.getInstance(getContext()).postNewPassWord(postPassWordParam);
-                break;
-        }
-    }
 
+    @OnClick({R.id.img_back, R.id.forgotpwd_getCode, R.id.forgotPwd_eyes, R.id.forgotpwd_ok})
+    public void onClickTab(View view) {
+        if (view != null) {
+            switch (view.getId()) {
+                case R.id.img_back:
+                    startActivity(new Intent(getContext(), LoginActivity.class));
+                    break;
+                case R.id.forgotpwd_getCode:
+                    LocalLog.d(TAG, "onTabLogin() 请求验证码!");
+                    Presenter.getInstance(getContext()).getSignCodePassWord(forgotpwd_account.getText().toString());
+                    break;
+                case R.id.forgotPwd_eyes:
+                    if (!showLoginPass) {
+                        LocalLog.d(TAG, " onTabLogin() 设置显示密码!");
+                        forgotpwd_pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                        showLoginPass = true;
+                        forgotPwd_eyes.setImageDrawable(getResources().getDrawable(R.drawable.forgotpwd_eyes));
+                    } else {
+                        LocalLog.d(TAG, " onTabLogin() 设置不显示密码!");
+                        forgotpwd_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                        showLoginPass = false;
+                        forgotPwd_eyes.setImageDrawable(getResources().getDrawable(R.drawable.register_eyes));
+                    }
+                    break;
+
+                case R.id.forgotpwd_ok:
+                    postPassWordParam = new PostPassWordParam();
+                    postPassWordParam.setCode(forgotpwd_indntifying_code.getText().toString())
+                            .setMobile(forgotpwd_account.getText().toString())
+                            .setPassword(forgotpwd_pwd.getText().toString());
+                    Presenter.getInstance(getContext()).postNewPassWord(postPassWordParam);
+                    break;
+
+            }
+        }
+
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
+    }
     @Override
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
@@ -168,4 +179,17 @@ public class ForgetPassFragment extends BaseBarStyleTextViewFragment implements 
             System.exit(0);
         }
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+

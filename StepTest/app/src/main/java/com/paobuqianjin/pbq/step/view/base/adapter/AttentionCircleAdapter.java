@@ -129,6 +129,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         LocalLog.d(TAG, "create_time = " + create_time);
         String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
         int[] emj = mContext.getResources().getIntArray(R.array.emjio_list);//TODO 优化
+        LocalLog.d(TAG,"DATA = "  + data.get(position).toString());
         if (holder instanceof OneOrZeroViewHodler) {
             ((OneOrZeroViewHodler) holder).dynamicid = data.get(position).getId();
             ((OneOrZeroViewHodler) holder).userid = data.get(position).getUserid();
@@ -392,9 +393,6 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             firstContent = (TextView) view.findViewById(R.id.first_content);
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
             timeStmp = (TextView) view.findViewById(R.id.time_stmp);
-
-            dynamicPicOne.setOnClickListener(onClickListener);
-            dynamicContentText.setOnClickListener(onClickListener);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -403,8 +401,6 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
                     case R.id.scan_more:
-                    case R.id.dynamic_content_text:
-                    case R.id.dynamic_pic_one:
                         LocalLog.d(TAG, "点击查看更多评价");
                         LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
                         Intent intent = new Intent();
@@ -486,10 +482,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             dynamicUserName = (TextView) view.findViewById(R.id.dynamic_user_name);
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
             timeStmp = (TextView) view.findViewById(R.id.time_stmp);
+            scanMore.setOnClickListener(onClickListener);
 
-            dynamicPicOne.setOnClickListener(onClickListener);
-            dynamicPicTwo.setOnClickListener(onClickListener);
-            dynamicContentText.setOnClickListener(onClickListener);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -498,9 +492,6 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
                     case R.id.scan_more:
-                    case R.id.dynamic_content_text:
-                    case R.id.dynamic_pic_one:
-                    case R.id.dynamic_pic_two:
                         LocalLog.d(TAG, "点击查看更多评价");
                         LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
                         Intent intent = new Intent();
@@ -586,11 +577,6 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
             timeStmp = (TextView) view.findViewById(R.id.time_stmp);
 
-
-            dynamicPicOne.setOnClickListener(onClickListener);
-            dynamicPicTwo.setOnClickListener(onClickListener);
-            dynamicPicThree.setOnClickListener(onClickListener);
-            dynamicContentText.setOnClickListener(onClickListener);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -599,10 +585,6 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
                     case R.id.scan_more:
-                    case R.id.dynamic_content_text:
-                    case R.id.dynamic_pic_one:
-                    case R.id.dynamic_pic_two:
-                    case R.id.dynamic_pic_three:
                         LocalLog.d(TAG, "点击查看更多评价");
                         LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
                         Intent intent = new Intent();

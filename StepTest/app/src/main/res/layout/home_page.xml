@@ -11,19 +11,19 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/bg_home_page" />
+        android:src="@drawable/home_pageimg" />
 
     <FrameLayout
         android:id="@+id/process_step"
-        android:layout_width="210dp"
-        android:layout_height="210dp"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
         android:layout_below="@+id/home_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="13dp">
 
         <ImageView
-            android:layout_width="184dp"
-            android:layout_height="184dp"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
             android:layout_gravity="center"
             android:src="@drawable/home_page_step_total" />
 
@@ -33,8 +33,8 @@
             android:layout_height="match_parent" />
 
         <RelativeLayout
-            android:layout_width="134dp"
-            android:layout_height="134dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_gravity="center">
 
             <ImageView
@@ -139,7 +139,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/process_step"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="9dp">
+        android:layout_marginTop="5dp">
 
         <RelativeLayout
             android:id="@+id/today_income_span"
@@ -206,216 +206,224 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/major_span"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp">
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/major_span"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="200dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_marginBottom="12dp">-->
 
-        <RelativeLayout
-            android:id="@+id/wave_view_span"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/wave_view_span"-->
+    <!--android:layout_width="wrap_content"-->
 
-            <com.paobuqianjin.pbq.step.view.base.view.WaveView
-                android:id="@+id/wave_view"
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
+    <!--android:layout_height="wrap_content">-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_below="@+id/wave_view"
-                android:background="@color/color_f8"></RelativeLayout>
-        </RelativeLayout>
+    <!--<com.paobuqianjin.pbq.step.view.base.view.WaveView-->
+    <!--android:id="@+id/wave_view"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="30dp"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--/>-->
 
-
-        <ImageView
-            android:id="@+id/major_bg"
-            android:layout_width="match_parent"
-            android:layout_height="210dp"
-            android:layout_below="@+id/wave_view_span"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="-60dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/bg_major" />
-
-        <RelativeLayout
-
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignBottom="@+id/major_bg"
-            android:layout_alignLeft="@+id/major_bg"
-            android:layout_alignRight="@+id/major_bg"
-            android:layout_alignTop="@+id/major_bg"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/ve_line"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/ho_line">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true">
-
-                    <ImageView
-                        android:id="@+id/out_red_pkg_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/out_red_pkg" />
-
-                    <TextView
-                        android:id="@+id/out_red_package"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/out_red_pkg_image"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="10dp"
-                        android:text="发红包"
-                        android:textColor="@color/color_f8"
-                        android:textSize="14dp" />
-                </RelativeLayout>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/ve_line"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@+id/ho_line">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true">
-
-                    <ImageView
-                        android:id="@+id/create_circle_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/create_circle" />
-
-                    <TextView
-                        android:id="@+id/create_circle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/create_circle_image"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="10dp"
-                        android:text="创建圈子"
-                        android:textColor="@color/color_f8"
-                        android:textSize="14dp" />
-                </RelativeLayout>
-
-            </RelativeLayout>
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/send_create"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:layout_below="@+id/wave_view"-->
+    <!--android:background="@color/white">-->
+    <!--</RelativeLayout>-->
+    <!--</RelativeLayout>-->
 
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_alignTop="@id/ve_line"
-                android:layout_below="@+id/ve_line"
-                android:layout_toStartOf="@+id/ho_line">
+    <!--<ImageView-->
+    <!--android:id="@+id/major_bg"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="180dp"-->
+    <!--android:layout_below="@+id/wave_view_span"-->
+    <!--android:layout_marginTop="-50dp"-->
+    <!--android:layout_marginBottom="0dp"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--android:background="@color/white" />-->
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true">
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/back_white"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignBottom="@+id/major_bg"-->
+    <!--android:layout_alignLeft="@+id/major_bg"-->
+    <!--android:layout_alignRight="@+id/major_bg"-->
+    <!--android:layout_alignTop="@+id/major_bg"-->
+    <!--android:layout_marginBottom="0dp"-->
+    <!--android:layout_marginLeft="6dp"-->
+    <!--android:layout_marginRight="6dp">-->
 
-                    <ImageView
-                        android:id="@+id/income_red_pkg_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/income_red_pkg" />
-
-                    <TextView
-                        android:id="@+id/income_red_package"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/income_red_pkg_image"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="10dp"
-                        android:text="领红包"
-                        android:textColor="@color/color_f8"
-                        android:textSize="14dp" />
-                </RelativeLayout>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/ve_line"
-                android:layout_below="@+id/ve_line"
-                android:layout_toEndOf="@+id/ho_line">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true">
-
-                    <ImageView
-                        android:id="@+id/add_friend_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/invite_friend" />
-
-                    <TextView
-                        android:id="@+id/invite_friend"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/add_friend_image"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="10dp"
-                        android:text="邀请好友"
-                        android:textColor="@color/color_f8"
-                        android:textSize="14dp" />
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_above="@+id/ve_line"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_toStartOf="@+id/ho_line">-->
 
 
-                </RelativeLayout>
+    <!--<ImageView-->
+    <!--android:id="@+id/out_red_pkg_image"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="90dp"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--android:background="@drawable/heme_page_selector" />-->
 
-            </RelativeLayout>
+    <!--<TextView-->
+    <!--android:id="@+id/out_red_package"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignBottom="@+id/out_red_pkg_image"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:text="发红包"-->
+    <!--android:textColor="@color/color_f8"-->
+    <!--android:textSize="14dp" />-->
 
-            <ImageView
-                android:id="@+id/ho_line"
-                android:layout_width="10dp"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:background="@color/color_f8" />
 
-            <ImageView
-                android:id="@+id/ve_line"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_centerVertical="true"
-                android:background="@color/color_f8" />
-        </RelativeLayout>
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
+
+    <!--<RelativeLayout-->
+
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_above="@+id/ve_line"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:layout_toEndOf="@+id/ho_line">-->
+
+
+
+    <!--<ImageView-->
+    <!--android:id="@+id/create_circle_image"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="90dp"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginRight="5dp"-->
+    <!--android:paddingRight="2dp"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:background="@drawable/create_cicle_selector"-->
+    <!--/>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/create_circle"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignBottom="@+id/create_circle_image"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:text="创建圈子"-->
+    <!--android:textColor="@color/color_f8"-->
+    <!--android:textSize="14dp" />-->
+    <!--</RelativeLayout>-->
+
+
+
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_alignTop="@id/ve_line"-->
+    <!--android:layout_below="@+id/ve_line"-->
+    <!--android:layout_toStartOf="@+id/ho_line">-->
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_centerHorizontal="true">-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/income_red_pkg_image"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="80dp"-->
+    <!--android:layout_alignParentEnd="true"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--android:paddingLeft="1dp"-->
+    <!--android:background="@drawable/recive_red_package_selector"-->
+    <!--android:layout_marginLeft="3dp"-->
+    <!--/>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/income_red_package"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignBottom="@+id/income_red_pkg_image"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:text="领红包"-->
+    <!--android:textColor="@color/color_f8"-->
+    <!--android:textSize="14dp" />-->
+    <!--</RelativeLayout>-->
+
+    <!--</RelativeLayout>-->
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_alignTop="@+id/ve_line"-->
+    <!--android:layout_below="@+id/ve_line"-->
+    <!--android:layout_toEndOf="@+id/ho_line">-->
+
+    <!--<RelativeLayout-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_centerHorizontal="true">-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/add_friend_image"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="80dp"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginRight="7dp"-->
+    <!--android:background="@drawable/invite_friend"-->
+    <!--android:scaleType="centerCrop"-->
+    <!--/>-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/invite_friend"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignBottom="@+id/add_friend_image"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:text="邀请好友"-->
+    <!--android:textColor="@color/color_f8"-->
+    <!--android:textSize="14dp" />-->
+    <!--</RelativeLayout>-->
+
+    <!--</RelativeLayout>-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/ho_line"-->
+    <!--android:layout_width="10dp"-->
+    <!--android:layout_height="200dp"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:background="@color/white" />-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/ve_line"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="14dp"-->
+    <!--android:layout_centerHorizontal="true"-->
+
+    <!--android:background="@color/white" />-->
+    <!--</RelativeLayout>-->
+    <!--</RelativeLayout>-->
 
     <TextView
         android:id="@+id/home_title"
@@ -435,13 +443,15 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/home_title"
-        android:layout_marginLeft="20dp"
+
         android:layout_toStartOf="@+id/home_title">
 
         <ImageView
             android:id="@+id/weather_icon"
             android:layout_width="28dp"
-            android:layout_height="22dp" />
+            android:layout_height="22dp"
+            android:layout_marginLeft="15dp"
+            />
 
         <TextView
             android:id="@+id/wendu"
@@ -449,9 +459,10 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/weather_icon"
             android:layout_alignTop="@+id/weather_icon"
-            android:layout_marginLeft="5dp"
+          android:paddingLeft="3dp"
             android:layout_toEndOf="@+id/weather_icon"
             android:gravity="center"
+            android:layout_toRightOf="@id/weather_icon"
             android:text="25°"
             android:textColor="@color/color_f8"
             android:textSize="14dp" />
@@ -466,6 +477,7 @@
             android:gravity="center"
             android:text="深圳"
             android:textColor="@color/color_f8"
+            android:layout_marginLeft="16dp"
             android:textSize="14dp" />
     </RelativeLayout>
 
@@ -481,9 +493,150 @@
             android:id="@+id/scan_mark_home"
             android:layout_width="22dp"
             android:layout_height="22dp"
+            android:paddingRight="5dp"
             android:layout_alignParentRight="true"
             android:scaleType="centerCrop"
             android:src="@drawable/scan" />
     </RelativeLayout>
+    <!--<ImageView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="12dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:background="@color/white"-->
+    <!--android:layout_marginBottom="0dp"-->
+    <!--/>-->
+    <com.paobuqianjin.pbq.step.view.base.view.WaveView
+        android:id="@+id/wave_view"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_above="@id/bottom_background"
+        />
+    <RelativeLayout
+        android:id="@+id/bottom_background"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        >
+
+
+        <ImageView
+            android:id="@+id/out_red_pkg_image"
+            android:layout_width="170dp"
+            android:layout_height="85dp"
+            android:background="@drawable/heme_page_selector"
+            android:layout_marginLeft="12dp"
+
+            />
+
+        <TextView
+            android:id="@+id/out_red_package"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:text="发红包"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/color_f8"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="75dp"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:id="@+id/ho_line"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layout_toRightOf="@id/out_red_pkg_image"
+            />
+
+        <ImageView
+            android:id="@+id/create_circle_image"
+            android:layout_width="170dp"
+            android:layout_height="85dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="12dp"
+            android:layout_toRightOf="@id/ho_line"
+            android:scaleType="centerCrop"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/create_cicle_selector"
+            />
+
+        <TextView
+            android:id="@+id/create_circle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/create_circle_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="60dp"
+            android:text="创建圈子"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="65dp"
+            android:textColor="@color/color_f8"
+            android:textSize="14dp" />
+
+
+        <ImageView
+            android:id="@+id/income_red_pkg_image"
+            android:layout_width="170dp"
+            android:layout_height="85dp"
+            android:scaleType="centerCrop"
+            android:layout_below="@id/out_red_pkg_image"
+            android:background="@drawable/recive_red_package_selector"
+            android:layout_marginLeft="12dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="10dp"
+            />
+
+        <TextView
+            android:id="@+id/income_red_package"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="75dp"
+            android:text="领红包"
+            android:textColor="@color/color_f8"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="20dp"
+
+            android:textSize="14dp" />
+
+
+        <ImageView
+            android:id="@+id/add_friend_image"
+            android:layout_width="170dp"
+            android:layout_height="85dp"
+            android:layout_toRightOf="@id/ho_line"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="12dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/invite_friend_selector"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/create_circle_image"
+
+            />
+
+        <TextView
+            android:id="@+id/invite_friend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/add_friend_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="60dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="65dp"
+            android:text="邀请好友"
+            android:textColor="@color/color_f8"
+            android:textSize="14dp" />
+    </RelativeLayout>
+
+
+
 
 </RelativeLayout>

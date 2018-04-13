@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +26,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.AttentionCircleAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.SearchCircleAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -53,6 +55,7 @@ public class AttentionCircleFragment extends BaseFragment {
     int pageCount = 0;
     ArrayList<DynamicAllIndexResponse.DataBeanX.DataBean> dynamicAllData = new ArrayList<>();
     AttentionCircleAdapter adapter;
+    private final static int REQUEST_DETAIL = 0;
 
     @Nullable
     @Override
@@ -228,7 +231,12 @@ public class AttentionCircleFragment extends BaseFragment {
     private SwipeItemClickListener mItemClickListener = new SwipeItemClickListener() {
         @Override
         public void onItemClick(View itemView, int position) {
-            //Toast.makeText(getActivity(), "第" + position + "个", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            intent.putExtra(getContext().getPackageName() + "dynamicId", dynamicAllData.get(position).getId());
+            intent.putExtra(getContext().getPackageName() + "userId", dynamicAllData.get(position).getUserid());
+            intent.putExtra(getContext().getPackageName() + "is_vote", dynamicAllData.get(position).getIs_vote());
+            intent.setClass(getContext(), DynamicActivity.class);
+            startActivityForResult(intent, REQUEST_DETAIL);
         }
     };
 
@@ -324,7 +332,7 @@ public class AttentionCircleFragment extends BaseFragment {
 
             } else if (dynamicAllIndexResponse.getError() == 1) {
 
-            }else if(dynamicAllIndexResponse.getError() == -100){
+            } else if (dynamicAllIndexResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 Presenter.getInstance(getContext()).setId(-1);
                 Presenter.getInstance(getContext()).steLogFlg(false);

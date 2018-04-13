@@ -1,22 +1,22 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
-import android.text.style.ForegroundColorSpan;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
@@ -29,8 +29,9 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
+
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
+import com.paobuqianjin.pbq.step.view.fragment.login.ForgetPassFragment;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -46,33 +47,36 @@ import butterknife.OnClick;
  * Created by pbq on 2017/12/7.
  */
 
-public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelper.SoftKeyboardStateListener, LoginSignCallbackInterface {
+public class LoginActivity extends BaseActivity implements LoginSignCallbackInterface{
     private final static String LOGIN_SUCCESS_ACTION = "com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION";
     private final static String USER_FIT_ACTION_BIND = "com.paobuqianjin.pbq.USER_FIT_ACTION_BIND";
     private final static String USER_FIT_ACTION_SETTING = "com.paobuqianjin.pbq.USER_FIT_ACTION_USER_SETTING";
-    private final static String USER_SERVICE_AGREEMENT_ACTION = "com.paobuqianjin.pbq.step.SERVICE_ACTION";
     private final static String TAG = LoginActivity.class.getSimpleName();
-    @Bind(R.id.wenxin)
-    ImageView wenxin;
-    @Bind(R.id.qq)
-    ImageView qq;
-    @Bind(R.id.sina)
-    ImageView sina;
+    @Bind(R.id.login_weixin)
+    ImageView login_weixin;
+    @Bind(R.id.login_qq)
+    ImageView login_qq;
+    @Bind(R.id.login_account)
+    EditText loginAccount;
+    //    @Bind(R.id.text_tile_login)
+//    TextView mTextView;
+    @Bind(R.id.login_pwd)
+    EditText loginPwd;
+    @Bind(R.id.btn_login)
+    Button btnLogin;
+    @Bind(R.id.forgot_pwd)
+    TextView forgotPwd;
+    @Bind(R.id.register)
+    TextView register;
+    @Bind(R.id.other_login)
+    TextView otherLogin;
+
+
     private boolean showLoginPass = false, showSignPass = false;
     /*默认显示登入界面*/
     private int currentIndex;
-    private RelativeLayout loginPan;
     private RelativeLayout.LayoutParams layoutParams, newLayoutParams;
-    private RelativeLayout loginLayout;
-    private RelativeLayout signLayout;
-    private ImageView blueLoginLine, blueSignLine;
-    private ImageView passWordOpenIV;
-    private ImageView passWordSignOpenIV;
-    private EditText useNameTV, phoneNumTV, passWordTV, signCodeTV, passWordSignTV;
-    private TextView loginOrSignTV;
-    private TextView userReadTV, signRequestTV;
-    private TextView findPassTV;
-    private RelativeLayout backGround;
+
     private String[] userInfo;
     private ProgressDialog dialog;
     private ThirdPartyLoginParam thirdPartyLoginParam;
@@ -81,95 +85,37 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_sign_layout);
+        setContentView(R.layout.login_layout);
         ButterKnife.bind(this);
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        detectKeyBoardHide();
+        //detectKeyBoardHide();
         Presenter.getInstance(this).attachUiInterface(this);
     }
 
 
-    private void detectKeyBoardHide() {
-        final SoftKeyboardStateHelper softKeyboardStateHelper = new SoftKeyboardStateHelper(findViewById(R.id.background_login_sign));
-        softKeyboardStateHelper.addSoftKeyboardStateListener(this);
-    }
 
-    public void onSoftKeyboardOpened(int keyboardHeightInPx) {
-        Toast.makeText(LoginActivity.this, "弹出", Toast.LENGTH_SHORT).show();
-        newLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        newLayoutParams.setMargins(layoutParams.leftMargin, layoutParams.topMargin - 100, layoutParams.rightMargin, layoutParams.bottomMargin);
 
-        loginPan.setLayoutParams(newLayoutParams);
-
-    }
-
-    public void onSoftKeyboardClosed() {
-        Toast.makeText(LoginActivity.this, "隐藏", Toast.LENGTH_SHORT).show();
-        loginPan.setLayoutParams(layoutParams);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Presenter.getInstance(this).dispatchUiInterface(this);
-        UMShareAPI.get(this).release();
-    }
 
     @Override
     protected void initView() {
         super.initView();
-
         dialog = new ProgressDialog(this);
-        loginPan = (RelativeLayout) findViewById(R.id.login_pan);
-        layoutParams = (RelativeLayout.LayoutParams) loginPan.getLayoutParams();
-        backGround = (RelativeLayout) findViewById(R.id.background_login_sign);
-        loginLayout = (RelativeLayout) findViewById(R.id.log_pan);
-        signLayout = (RelativeLayout) findViewById(R.id.sign_pan);
-        blueLoginLine = (ImageView) findViewById(R.id.blue_line_login);
-        blueSignLine = (ImageView) findViewById(R.id.blue_line_sign);
-        loginOrSignTV = (TextView) findViewById(R.id.reg_login_des);
-
-        phoneNumTV = (EditText) signLayout.findViewById(R.id.phone);
-        signCodeTV = (EditText) signLayout.findViewById(R.id.sign_code);
-        passWordSignTV = (EditText) signLayout.findViewById(R.id.password);
-        signRequestTV = (TextView) signLayout.findViewById(R.id.sign_code_request);
-        userReadTV = (TextView) signLayout.findViewById(R.id.xie_yi);
-        passWordSignOpenIV = (ImageView) signLayout.findViewById(R.id.password_open_sign);
-
-
-        useNameTV = (EditText) loginLayout.findViewById(R.id.login_user_name);
-        passWordTV = (EditText) loginLayout.findViewById(R.id.login_user_password);
-        passWordOpenIV = (ImageView) loginLayout.findViewById(R.id.password_open);
-        findPassTV = (TextView) loginLayout.findViewById(R.id.wang_ji);
-
     }
 
 
-    private String[] collectLoginUserInfo() {
-        userInfo = new String[3];
-        userInfo[0] = useNameTV.getText().toString();
-        userInfo[1] = passWordTV.getText().toString();
-        return userInfo;
-    }
-
-    private String[] collectSignUserInfo() {
-        userInfo = new String[3];
-        userInfo[0] = phoneNumTV.getText().toString();
-        userInfo[1] = signCodeTV.getText().toString();
-        userInfo[2] = passWordSignTV.getText().toString();
-        return userInfo;
-    }
 
     public void onTabLogin(View view) {
         LocalLog.d(TAG, "onTabLogin() enter");
         if (view != null) {
             switch (view.getId()) {
-                case R.id.password_open:
+                /*case R.id.password_open:
                     if (!showLoginPass) {
                         LocalLog.d(TAG, " onTabLogin() 设置显示密码!");
                         passWordTV.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
@@ -181,18 +127,18 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                         showLoginPass = false;
                         passWordOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_no));
                     }
-                    break;
-                case R.id.wang_ji:
+                    break;*/
+                case R.id.forgot_pwd:
                     //TODO
                     LocalLog.d(TAG, "onTabLogin() 忘记密码");
                     startActivity(LoginForgetPassActivity.class, null, false);
                     break;
-                case R.id.sign_code_request:
+                /*case R.id.sign_code_request:
                     LocalLog.d(TAG, "onTabLogin() 请求验证码!");
                     collectSignUserInfo();
                     Presenter.getInstance(this).getMsg(userInfo[0]);
-                    break;
-                case R.id.password_open_sign:
+                    break;*/
+                /*case R.id.password_open_sign:
                     if (!showSignPass) {
                         LocalLog.d(TAG, " onTabLogin() 设置显示密码!");
                         passWordSignTV.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
@@ -204,7 +150,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                         showSignPass = false;
                         passWordSignOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_no));
                     }
-                    break;
+                    break;*/
                 default:
                     break;
             }
@@ -214,7 +160,7 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     public void onTabLogSign(View view) {
         if (view != null) {
             switch (view.getId()) {
-                case R.id.login_page_sign:
+                /*case R.id.login_page_sign:
                     LocalLog.d(TAG, "onTabLogSign() 点击注册");
                     if (currentIndex == 1) {
                         LocalLog.e(TAG, "已经是注册页了！");
@@ -232,34 +178,11 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                         style.setSpan(new ForegroundColorSpan(Color.parseColor("#ffffffff")), 0, strPart1.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), strPart1.length(), (strPart1 + strPart2).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         userReadTV.setText(style);
-                        userReadTV.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                startActivity(AgreementActivity.class, null, false, USER_SERVICE_AGREEMENT_ACTION);
-                            }
-                        });
                         loginOrSignTV.setText(getResources().getText(R.string.desc_sign));
 
                     }
-
-                    break;
-                case R.id.sign_page_login:
-                    LocalLog.d(TAG, "onTabLogSign() 点击登入");
-                    if (currentIndex == 0) {
-                        LocalLog.e(TAG, "已经是登陆页了！");
-                    } else {
-                        backGround.setBackgroundResource(R.drawable.background_login);
-                        signLayout.setVisibility(View.GONE);
-                        loginLayout.setVisibility(View.VISIBLE);
-                        currentIndex = 0;
-                        blueSignLine.setVisibility(View.GONE);
-                        blueLoginLine.setVisibility(View.VISIBLE);
-
-                        loginOrSignTV.setText(getResources().getText(R.string.desc_login));
-                    }
-                    break;
-
-                case R.id.btn_sign_foot:
+                    break;*/
+                case R.id.btn_login:
                     LocalLog.d(TAG, "currentIndex = " + currentIndex);
                     if (currentIndex == 0) {
                         Presenter.getInstance(this).userLoginByPhoneNumber(collectLoginUserInfo());
@@ -267,9 +190,49 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
                         Presenter.getInstance(this).registerByPhoneNumber(collectSignUserInfo());
                     }
                     break;
+                case R.id.register:
+                    startActivity(RegisterActivity.class, null, false);
+                    //Presenter.getInstance(this).registerByPhoneNumber(collectSignUserInfo());
+                    break;
+
+
+//                case R.id.btn_sign_foot:
+//                    LocalLog.d(TAG, "currentIndex = " + currentIndex);
+//                    if (currentIndex == 0) {
+//                        Presenter.getInstance(this).userLoginByPhoneNumber(collectLoginUserInfo());
+//                    } else if (currentIndex == 1) {
+//                        Presenter.getInstance(this).registerByPhoneNumber(collectSignUserInfo());
+//                    }
+//                    break;
             }
         }
     }
+
+
+    private String[] collectSignUserInfo() {
+        userInfo = new String[3];
+        userInfo[0] = loginAccount.getText().toString();
+        userInfo[1] = loginPwd.getText().toString();
+
+        return userInfo;
+    }
+
+
+
+    private String[] collectLoginUserInfo() {
+        userInfo = new String[3];
+        userInfo[0] = loginAccount.getText().toString();
+        userInfo[1] = loginPwd.getText().toString();
+        return userInfo;
+    }
+
+    /*private String[] collectSignUserInfo() {
+        userInfo = new String[3];
+        userInfo[0] = phoneNumTV.getText().toString();
+        userInfo[1] = signCodeTV.getText().toString();
+        userInfo[2] = passWordSignTV.getText().toString();
+        return userInfo;
+    }*/
 
     @Override
     public void response(LoginResponse loginResponse) {
@@ -441,25 +404,28 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
         }
     };
 
-    @OnClick({R.id.wenxin, R.id.qq, R.id.sina})
-    public void onClick(View view) {
+    @OnClick({R.id.login_weixin, R.id.login_qq})
+    public void onClickTab(View view) {
+        if (view!=null) {
         switch (view.getId()) {
-            case R.id.wenxin:
+                case R.id.login_weixin:
                 LocalLog.d(TAG, "微信三方登录");
                 LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.WEIXIN));
                 //UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
                 UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
 
                 break;
-            case R.id.qq:
-                LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.QQ));
-                UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.QQ, authListener);
-                UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, authListener);
+                case R.id.login_qq:
+                    //  LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.QQ));
+                    UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.QQ, authListener);
+                    UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, authListener);
                 break;
-            case R.id.sina:
+            /*case R.id.sina:
                 UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
                 UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
-                break;
+                break;*/
+            }
+
         }
     }
 
@@ -481,5 +447,12 @@ public class LoginActivity extends BaseActivity implements SoftKeyboardStateHelp
     public void response(ErrorCode errorCode) {
         LocalLog.d(TAG, "error: " + errorCode.toString());
         Toast.makeText(this, errorCode.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Presenter.getInstance(this).dispatchUiInterface(this);
+        UMShareAPI.get(this).release();
     }
 }

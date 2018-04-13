@@ -68,7 +68,7 @@ public class StepProcessDrawable extends Drawable {
 
     @TargetApi(19)
     public StepProcessDrawable(Context context) {
-        bitmap = ((BitmapDrawable) ContextCompat.getDrawable(context,R.drawable.foot_ico)).getBitmap();
+        bitmap = ((BitmapDrawable) ContextCompat.getDrawable(context,R.drawable.foot)).getBitmap();
         oval = new RectF(30, 30, 390, 390);
     }
 

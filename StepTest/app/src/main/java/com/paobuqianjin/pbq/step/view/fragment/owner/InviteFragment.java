@@ -1,6 +1,8 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -21,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImagePickType;
@@ -32,12 +35,20 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.activity.FillInviteCodeActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.InviteDanAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.paobuqianjin.pbq.step.view.base.view.CustomViewPager;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.umeng.socialize.utils.SocializeUtils;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -79,6 +90,9 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
     private TranslateAnimation animationCircleType;
+    private SHARE_MEDIA share_media;
+    private ProgressDialog dialog;
+    private UMWeb web;
 
     @Override
     protected int getLayoutResId() {
@@ -138,8 +152,51 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             }
         });
 
+        dialog = new ProgressDialog(getContext());
+        web = new UMWeb(NetApi.urlShare + String.valueOf(Presenter.getInstance(getContext()).getId()));
+        web.setTitle("跑步钱进");
+        web.setThumb(new UMImage(getContext(), R.mipmap.app_icon));
+        web.setDescription("邀请好友");
     }
 
+
+    private UMShareListener shareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+            LocalLog.d(TAG, share_media.toString() + "开始分享");
+            SocializeUtils.safeShowDialog(dialog);
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+            Toast.makeText(getContext(), "分享成功", Toast.LENGTH_SHORT).show();
+            SocializeUtils.safeCloseDialog(dialog);
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+            SocializeUtils.safeCloseDialog(dialog);
+            Toast.makeText(getContext(), "失败" + throwable.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+            SocializeUtils.safeCloseDialog(dialog);
+            Toast.makeText(getContext(), "取消分享", Toast.LENGTH_LONG).show();
+        }
+    };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(getContext()).onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        UMShareAPI.get(getContext()).release();
+    }
 
     private void selectShare() {
         popupCircleTypeView = View.inflate(getContext(), R.layout.share_pop_window, null);
@@ -152,6 +209,12 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
                 popupCircleTypeWindow = null;
             }
         });
+        RelativeLayout friendCircle = (RelativeLayout) popupCircleTypeView.findViewById(R.id.friend_circle);
+        RelativeLayout wechat = (RelativeLayout) popupCircleTypeView.findViewById(R.id.we_chat);
+        RelativeLayout qq_icon = (RelativeLayout) popupCircleTypeView.findViewById(R.id.qq_icon);
+        friendCircle.setOnClickListener(onClickListener);
+        wechat.setOnClickListener(onClickListener);
+        qq_icon.setOnClickListener(onClickListener);
         popupCircleTypeWindow.setFocusable(true);
         popupCircleTypeWindow.setOutsideTouchable(true);
 
@@ -166,6 +229,30 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
                 , 0, 0);
         popupCircleTypeView.startAnimation(animationCircleType);
     }
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.friend_circle:
+                    share_media = SHARE_MEDIA.WEIXIN_CIRCLE;
+                    new ShareAction(getActivity()).withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(shareListener).share();
+                    break;
+                case R.id.we_chat:
+                    share_media = SHARE_MEDIA.WEIXIN;
+                    new ShareAction(getActivity()).withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(shareListener).share();
+                    break;
+                case R.id.qq_icon:
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     private View getTabView(int position) {
         RelativeLayout view = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.text_tab, null);

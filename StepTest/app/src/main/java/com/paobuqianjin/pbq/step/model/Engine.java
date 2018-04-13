@@ -314,6 +314,8 @@ public final class Engine {
     public final static int COMMAND_BIND_THIRD = 95;
     public final static int COMMAND_IVITE_MSG = 96;
     private Transformation transformation;
+    private double la = 0;
+    private double lb = 0;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -624,8 +626,9 @@ public final class Engine {
     }
 
     //TODO 获取附近的人http://119.29.10.64/v1/user/getNearbyPeople?userid=1&longitude=86.26000&latitude=35.17000
-    public void getNearByPeople(double latitude, double longitude) {
-        String url = urlNearByPeople + "/userid=1" + "&longitude=" + String.valueOf(86.26000d) + "&latitude=" + String.valueOf(35.17000d);
+    public void getNearByPeople(double latitude, double longitude, int page, int pagesize) {
+        String url = urlNearByPeople + "/userid="+String.valueOf(getId(mContext)) + "&longitude=" + String.valueOf(latitude)
+                + "&latitude=" + String.valueOf(longitude) + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         LocalLog.d(TAG, "url = " + url);
         OkHttpUtils
                 .get()
@@ -1910,7 +1913,7 @@ public final class Engine {
     }
 
     public void postUserStatus(final Button button, int followid) {
-        LocalLog.d(TAG,"followid =   "  + followid);
+        LocalLog.d(TAG, "followid =   " + followid);
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
@@ -2333,9 +2336,7 @@ public final class Engine {
         LocalLog.d(TAG, "getTargetStep() enter");
     }
 
-    public void getLocation() {
-        LocalLog.d(TAG, "getLocation() enter");
-    }
+
 
     public void getIncomeToday() {
         LocalLog.d(TAG, "getIncomeToday() enter");
@@ -2396,6 +2397,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(bindThirdAccoutInterface, COMMAND_BIND_THIRD));
     }
 
+
     public void postFollowStatus(final Button button, int followId) {
         OkHttpUtils
                 .post()
@@ -2424,6 +2426,28 @@ public final class Engine {
                 });
     }
 
+
+    public void postLocation(double la, double lb) {
+        OkHttpUtils
+                .post()
+                .url(NetApi.urlLocation)
+                .addParams("userid", String.valueOf(getId(mContext)))
+                .addParams("latitude", String.valueOf(la))
+                .addParams("longitude", String.valueOf(lb))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        LocalLog.d(TAG, "LOCATION SUCCESS");
+                    }
+                });
+    }
+
     //TODO 软件协议
     public void protocol(String action) {
         LocalLog.d(TAG, "protocol() enter" + action);
@@ -2434,6 +2458,13 @@ public final class Engine {
                 .addParams("action", action)
                 .build()
                 .execute(new NetStringCallBack(protocolInterface, COMMAND_PROTOCOL));
+    }
+
+    public double[] getLocation() {
+        double[] laction = new double[2];
+        laction[0] = la;
+        laction[1] = lb;
+        return laction;
     }
 
     //TODO 处理广播信息
@@ -2450,6 +2481,9 @@ public final class Engine {
                 String city = intent.getStringExtra("city");
                 double la = intent.getDoubleExtra("latitude", 0d);
                 double lb = intent.getDoubleExtra("longitude", 0d);
+                this.la = la;
+                this.lb = lb;
+                postLocation(la, lb);
                 if (uiCreateCircleInterface != null) {
                     uiCreateCircleInterface.responseLocation(city, la, lb);
                     return;

@@ -150,4 +150,8 @@ public class NetApi {
     public final static String urlLogOut = "http://119.29.10.64/v1/user/logOut";
     //TODO 查询关注关系
     public final static String urlFollowStatus = "http://119.29.10.64/v1/UserFollow/followStatus";
+    //TODO 位置信息
+    public final static String urlLocation = "http://119.29.10.64/v1/UserLocation/setLocation";
+    //TODO share
+    public final static String urlShare = "http://share.runmoneyin.com/in.html?";
 }

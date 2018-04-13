@@ -603,6 +603,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         public void response(ReChargeRankResponse reChargeRankResponse) {
             LocalLog.d(TAG, "ReChargeRankResponse() ");
             if (reChargeRankResponse.getError() == 0) {
+                if (rankRecycler == null) {
+                    return;
+                }
                 rankRecycler.setAdapter(new RechargeRankSimpleAdapter(getContext(), reChargeRankResponse.getData().getData()));
                 rechargeRankBundleData = new RechargeRankBundleData(
                         (ArrayList<ReChargeRankResponse.DataBeanX.DataBean>)

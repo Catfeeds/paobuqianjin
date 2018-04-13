@@ -41,6 +41,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lwkandroid.imagepicker.ImagePicker;
+import com.lwkandroid.imagepicker.data.ImageBean;
+import com.lwkandroid.imagepicker.data.ImagePickType;
+import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
@@ -63,7 +67,6 @@ import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
-import com.umeng.socialize.utils.SocializeUtils;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
@@ -209,6 +212,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     private ArrayList<String> targetDefaults = new ArrayList<>();
     private boolean is_recharge = false;
     private boolean is_pwd = false;
+    private String cachePath;
     private ArrayList<String> circleTypeDefaults = new ArrayList<>();
     private final static int REQUEST_CODE_TAG = 0;
     private CreateCircleBodyParam createCircleBodyParam = new CreateCircleBodyParam();
@@ -223,6 +227,8 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     private final static String PAY_FOR_STYLE = "pay_for_style";
     private final static String PAY_ACTION = "android.intent.action.PAY";
     private final static String QRCODE_ACTION = "android.intent.action.QRCODE";
+    private final int REQUEST_CODE = 111;
+    private String localAvatar;
 /*
 
     static {
@@ -280,6 +286,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(this);
         requestLocationPermission(Permission.Group.LOCATION);
+        cachePath = getExternalCacheDir().getAbsolutePath();
     }
 
 
@@ -588,9 +595,11 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 break;
             case R.id.create_circle_confim:
                 LocalLog.d(TAG, "创建圈子");
-                if (checkcreateCircleBodyParam()) {
-                    Presenter.getInstance(this).createCircle(createCircleBodyParam);
+                if (localAvatar != null) {
+                    LogoUpTask logoUpTask = new LogoUpTask();
+                    logoUpTask.execute(localAvatar);
                 }
+
                 break;
             case R.id.logo_circle_pan:
                 LocalLog.d(TAG, "上传圈子logo");
@@ -617,10 +626,8 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 .onGranted(new Action() {
                     @Override
                     public void onAction(List<String> permissions) {
-                        toast(R.string.successfully);
                         LocalLog.d(TAG, "获取权限成功");
-                        Intent picture = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(picture, CAMERA_PIC);
+                        selectPicture();
                     }
                 }).onDenied(new Action() {
             @Override
@@ -634,6 +641,59 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     }
 
 
+    private void selectPicture() {
+        popupCircleTypeView = View.inflate(this, R.layout.select_camera_pic, null);
+        popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupCircleTypeWindow onDismiss() enter");
+                popupCircleTypeWindow = null;
+            }
+        });
+        popupCircleTypeWindow.setFocusable(true);
+        popupCircleTypeWindow.setOutsideTouchable(true);
+        ((RelativeLayout) popupCircleTypeView.findViewById(R.id.select_camera)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "相机");
+                new ImagePicker()
+                        .pickType(ImagePickType.ONLY_CAMERA)//设置选取类型(拍照、单选、多选)
+                        .maxNum(1)//设置最大选择数量(拍照和单选都是1，修改后也无效)
+                        .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
+                        .cachePath(cachePath)//自定义缓存路径
+                        .doCrop(1, 1, 0, 0)//裁剪功能需要调用这个方法，多选模式下无效
+                        .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
+                        .start(CreateCircleActivity.this, REQUEST_CODE);
+                popupCircleTypeWindow.dismiss();
+            }
+        });
+        ((RelativeLayout) popupCircleTypeView.findViewById(R.id.xiangche_camera)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "相册");
+                new ImagePicker()
+                        .pickType(ImagePickType.MULTI)//设置选取类型(拍照、单选、多选)
+                        .maxNum(1)//设置最大选择数量(拍照和单选都是1，修改后也无效)
+                        .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
+                        .cachePath(cachePath)//自定义缓存路径
+                        .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
+                        .start(CreateCircleActivity.this, REQUEST_CODE);
+                popupCircleTypeWindow.dismiss();
+            }
+        });
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
+                , 0, Animation.RELATIVE_TO_PARENT, 0,
+                Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupCircleTypeWindow.showAtLocation(findViewById(R.id.create_circle_layout), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
+                , 0, 0);
+        popupCircleTypeView.startAnimation(animationCircleType);
+    }
         /*权限适配*/
 
     private void requestLocationPermission(String... permissions) {
@@ -746,6 +806,9 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             if (s != null && !"".equals(s)) {
                 createCircleBodyParam.setLogo(s);
             }
+            if (checkcreateCircleBodyParam()) {
+                Presenter.getInstance(CreateCircleActivity.this).createCircle(createCircleBodyParam);
+            }
             //SocializeUtils.safeCloseDialog(dialog);
         }
     }
@@ -753,83 +816,24 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         LocalLog.d(TAG, "onActivityResult() enter");
-        if (resultCode != RESULT_OK) {
+        LocalLog.d(TAG, "onActivityResult() enter");
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            List<ImageBean> resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);
+            String content = "";
+            for (ImageBean imageBean : resultList) {
+                content = content + imageBean.toString() + "\n";
+            }
+            LocalLog.d(TAG, "content = " + content);
+            if (resultList != null && resultList.size() == 1) {
+                Presenter.getInstance(this).getImage(resultList.get(0).getImagePath(), logoCirclePic, resultList.get(0).getWidth() / 4
+                        , resultList.get(0).getHeight() / 4);
+                localAvatar = resultList.get(0).getImagePath();
+            } else {
+                LocalLog.d(TAG, "未知操作");
+            }
             return;
         }
-        if (requestCode == CAMERA_PIC) {
-            LocalLog.d(TAG, "PICTURE OK");
-            if (data != null) {
 
-                //TODO 线程中上传保存*/
-                Uri selectedImage = data.getData();
-
-                final String pathResult = getPath(selectedImage);
-                LocalLog.d(TAG, "pathResult = " + pathResult);
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                Bitmap docodeFile = BitmapFactory.decodeFile(pathResult, options);
-
-
-                // 获取到这个图片的原始宽度和高度
-                int picWidth = options.outWidth;
-                int picHeight = options.outHeight;
-                LocalLog.d(TAG, "options.outWidth = " + options.outWidth + "options.outHeight = " + options.outHeight);
-
-                // 获取屏的宽度和高度
-                WindowManager windowManager = getWindowManager();
-                Display display = windowManager.getDefaultDisplay();
-                int screenWidth = display.getWidth();
-                int screenHeight = display.getHeight();
-
-                LocalLog.d(TAG, "screenWidth =  " + screenWidth + ",screenHeight = " + screenHeight);
-                // isSampleSize是表示对图片的缩放程度，比如值为2图片的宽度和高度都变为以前的1/2
-                options.inSampleSize = 1;
-                // 根据屏的大小和图片大小计算出缩放比例
-                if (picWidth > picHeight) {
-                    if (picWidth > screenWidth)
-                        options.inSampleSize = picWidth / screenWidth;
-                } else {
-                    if (picHeight > screenHeight)
-                        options.inSampleSize = picHeight / screenHeight;
-                }
-
-                // 这次再真正地生成一个有像素的，经过缩放了的bitmap
-                options.inJustDecodeBounds = false;
-                //docodeFile = BitmapFactory.decodeFile(pathResult, options);
-                Presenter.getInstance(this).getImage(pathResult, logoCirclePic);
-                //logoCirclePic.setImageBitmap(docodeFile);
-                LogoUpTask logoUpTask = new LogoUpTask();
-                logoUpTask.execute(pathResult);
-            }
-/*        if (requestCode == REQUEST_CODE_TAG) {
-                if (data != null) {
-                    ArrayList<String> tags = data.getStringArrayListExtra("tag");
-                    if (tags != null) {
-                        if (tags.size() == 2) {
-                            flagA1.setText(tags.get(0));
-                            flagA0.setText(tags.get(1));
-                            flagA1.setVisibility(View.VISIBLE);
-                            flagA0.setVisibility(View.VISIBLE);
-                        } else if (tags.size() == 1) {
-                            flagA1.setText(tags.get(0));
-                            flagA1.setVisibility(View.VISIBLE);
-                        }
-                    }
-                    ArrayList<String> ids = data.getStringArrayListExtra("id");
-                    if (ids != null) {
-                        if (ids.size() == 2) {
-                            LocalLog.d(TAG, ids.get(0));
-                            LocalLog.d(TAG, ids.get(1));
-                            createCircleBodyParam.setTags(ids.get(0) + "," + ids.get(1));
-                        } else if (ids.size() == 1) {
-                            LocalLog.d(TAG, ids.get(0));
-                            createCircleBodyParam.setTags(ids.get(0));
-                        }
-                    }
-
-                }
-        }*/
-        }
     }
 
     private String getPath(Uri uri) {

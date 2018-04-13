@@ -53,6 +53,7 @@
                 android:layout_toEndOf="@+id/search_icon"
                 android:layout_toRightOf="@+id/search_cancel"
                 android:background="@null"
+                android:imeOptions="actionSearch"
                 android:hint="输入圈子名称/id"
                 android:inputType="text"
                 android:maxLines="1"

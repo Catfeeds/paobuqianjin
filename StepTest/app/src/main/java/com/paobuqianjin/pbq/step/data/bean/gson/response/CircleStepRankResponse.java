@@ -93,8 +93,8 @@ public class CircleStepRankResponse {
         private int birthyear;
         private int birthmonth;
         private int birthday;
-        private int height;
-        private int weight;
+        private String height;
+        private String  weight;
         private int type;
         private String province;
         private String city;
@@ -198,19 +198,19 @@ public class CircleStepRankResponse {
             this.birthday = birthday;
         }
 
-        public int getHeight() {
+        public String getHeight() {
             return height;
         }
 
-        public void setHeight(int height) {
+        public void setHeight(String height) {
             this.height = height;
         }
 
-        public int getWeight() {
+        public String getWeight() {
             return weight;
         }
 
-        public void setWeight(int weight) {
+        public void setWeight(String weight) {
             this.weight = weight;
         }
 

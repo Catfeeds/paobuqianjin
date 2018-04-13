@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         resetDensity();
         highApiEffects();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
