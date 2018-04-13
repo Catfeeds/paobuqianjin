@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -352,6 +353,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         popupCircleTypeWindow.setFocusable(true);
 
         popupCircleTypeWindow.setOutsideTouchable(true);
+        popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
 
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
                 , 0, Animation.RELATIVE_TO_PARENT, 0,

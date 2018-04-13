@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -299,6 +300,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         });
         popupSelectWindow.setFocusable(true);
         popupSelectWindow.setOutsideTouchable(true);
+        popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
 
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
@@ -353,7 +355,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
 
         popupSelectWindow.setFocusable(true);
         popupSelectWindow.setOutsideTouchable(true);
-
+        popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
                 1, Animation.RELATIVE_TO_PARENT, 0);
@@ -408,6 +410,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
 
         popupSelectWindow.setFocusable(true);
         popupSelectWindow.setOutsideTouchable(true);
+        popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
 
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
@@ -601,7 +604,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                     if (signUserDataBean != null) {
                         Presenter.getInstance(getContext()).setToken(getContext(), signUserDataBean.getUser_token());
                     }
-                    if(phoneLoginDataBean != null){
+                    if (phoneLoginDataBean != null) {
                         Presenter.getInstance(getContext()).setToken(getContext(), phoneLoginDataBean.getUser_token());
                     }
                     Presenter.getInstance(getContext()).putUserInfo(userid, putUserInfoParam);

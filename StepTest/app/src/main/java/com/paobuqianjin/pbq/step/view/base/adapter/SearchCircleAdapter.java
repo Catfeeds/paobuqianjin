@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -141,7 +142,7 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
                 if (joinCircleResponse.getError() == 0) {
                     LocalLog.d(TAG, "加入成功");
                     joinIn.setText("已加入");
-                    if(inOutCallBackInterface != null){
+                    if (inOutCallBackInterface != null) {
                         inOutCallBackInterface.inCallBack();
                     }
                 } else if (joinCircleResponse.getError() == -1) {
@@ -239,6 +240,7 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
 
             popupOpWindow.setFocusable(true);
             popupOpWindow.setOutsideTouchable(true);
+            popupOpWindow.setBackgroundDrawable(new BitmapDrawable());
 
             animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                     0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,

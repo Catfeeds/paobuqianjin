@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -337,6 +338,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         totalRedPkg.setText("￥" + String.valueOf(sponsorRedPkgResponse.getData().getTotal_red_packet()));
         popupRedPkgWindow.setFocusable(true);
         popupRedPkgWindow.setOutsideTouchable(true);
+        popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         redPkgRecycler.setLayoutManager(layoutManager);
         redPkgRecycler.setAdapter(new SponsorRedPakAdapter(getContext(), sponsorRedPkgResponse.getData().getData()));
@@ -375,7 +377,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 1, Animation.RELATIVE_TO_PARENT, 0);
         animationCircleType.setInterpolator(new AccelerateInterpolator());
         animationCircleType.setDuration(200);
-
+        popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupRedPkgWindow.setOutsideTouchable(true);
+        popupRedPkgWindow.setFocusable(true);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -618,6 +619,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
             popupSelectWindow.setFocusable(true);
             popupSelectWindow.setOutsideTouchable(true);
+            popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
 
             animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                     0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
@@ -685,7 +687,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         mEmotionKeyboard.setEmotionLayout(mElEmotion);
         popupRedPkgWindow.setFocusable(true);
         popupRedPkgWindow.setOutsideTouchable(true);
-
+        popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
 
         mElEmotion.attachEditText(editText);
         mElEmotion.setEmotionAddVisiable(true);

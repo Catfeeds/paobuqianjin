@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -161,6 +162,7 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
 
             popupSelectWindow.setFocusable(true);
             popupSelectWindow.setOutsideTouchable(true);
+            popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
 
             animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                     0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,

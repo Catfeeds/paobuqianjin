@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -204,6 +205,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
         });
         popupSelectWindow.setFocusable(true);
         popupSelectWindow.setOutsideTouchable(true);
+        popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
 
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,

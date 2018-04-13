@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -214,6 +215,7 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
 
             popupOpWindow.setFocusable(true);
             popupOpWindow.setOutsideTouchable(true);
+            popupOpWindow.setBackgroundDrawable(new BitmapDrawable());
 
             animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                     0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,

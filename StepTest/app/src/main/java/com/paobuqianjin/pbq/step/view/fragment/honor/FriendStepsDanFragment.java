@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.honor;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -177,6 +178,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
 
         popupOpWindowTop.setFocusable(true);
         popupOpWindowTop.setOutsideTouchable(true);
+        popupOpWindowTop.setBackgroundDrawable(new BitmapDrawable());
 
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,

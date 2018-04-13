@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -253,6 +254,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         });
         popupCircleTypeWindow.setFocusable(true);
         popupCircleTypeWindow.setOutsideTouchable(true);
+        popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
         ((RelativeLayout) popupCircleTypeView.findViewById(R.id.select_camera)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

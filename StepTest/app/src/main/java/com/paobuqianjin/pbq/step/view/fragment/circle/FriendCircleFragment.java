@@ -4,6 +4,7 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -214,6 +215,7 @@ public final class FriendCircleFragment extends BaseFragment {
 
         popupOpWindow.setFocusable(true);
         popupOpWindow.setOutsideTouchable(true);
+        popupOpWindow.setBackgroundDrawable(new BitmapDrawable());
 
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,

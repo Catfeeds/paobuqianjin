@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -217,6 +218,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         qq_icon.setOnClickListener(onClickListener);
         popupCircleTypeWindow.setFocusable(true);
         popupCircleTypeWindow.setOutsideTouchable(true);
+        popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
 
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
                 , 0, Animation.RELATIVE_TO_PARENT, 0,

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -613,6 +614,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
         });
         popupCircleTypeWindow.setFocusable(true);
         popupCircleTypeWindow.setOutsideTouchable(true);
+        popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
         ((RelativeLayout) popupCircleTypeView.findViewById(R.id.select_camera)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -701,6 +703,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
         });
         popupSelectWindow.setFocusable(true);
         popupSelectWindow.setOutsideTouchable(true);
+        popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
 
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
@@ -755,7 +758,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
 
         popupSelectWindow.setFocusable(true);
         popupSelectWindow.setOutsideTouchable(true);
-
+        popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
                 1, Animation.RELATIVE_TO_PARENT, 0);
@@ -811,6 +814,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
 
         popupSelectWindow.setFocusable(true);
         popupSelectWindow.setOutsideTouchable(true);
+        popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
 
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
@@ -842,6 +846,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
         popupCircleTypeWindow.setFocusable(true);
 
         popupCircleTypeWindow.setOutsideTouchable(true);
+        popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
 
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
                 , 0, Animation.RELATIVE_TO_PARENT, 0,
@@ -909,7 +914,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
         if (userInfoSetResponse.getError() == 0) {
             Toast.makeText(getContext(), userInfoSetResponse.getMessage(), Toast.LENGTH_SHORT).show();
             getActivity().finish();
-        }else if(userInfoSetResponse.getError() == -100){
+        } else if (userInfoSetResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
             Presenter.getInstance(getContext()).steLogFlg(false);

@@ -451,6 +451,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         popupCircleTypeWindow.setFocusable(true);
 
         popupCircleTypeWindow.setOutsideTouchable(true);
+        popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
 
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
                 , 0, Animation.RELATIVE_TO_PARENT, 0,
@@ -654,6 +655,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         });
         popupCircleTypeWindow.setFocusable(true);
         popupCircleTypeWindow.setOutsideTouchable(true);
+        popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
         ((RelativeLayout) popupCircleTypeView.findViewById(R.id.select_camera)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
