@@ -1,25 +1,40 @@
 package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
@@ -44,11 +59,16 @@ import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDynamicViewHolder> {
     private final static String TAG = MyDynamicAdapter.class.getSimpleName();
     private final static int defaultCount = 3;
-    private Context mContext;
+    private Activity mContext;
     private List<?> mData;
     MyDynamicFragment.PopBigImageInterface popBigImageInterface;
+    private View popCircleOpBar;
+    private PopupWindow popupOpWindow;
+    private TranslateAnimation animationCircleType;
+    TextView cancelText;
+    TextView confirmText;
 
-    public MyDynamicAdapter(Context context, List<DynamicPersonResponse.DataBeanX.DataBean> data, MyDynamicFragment.PopBigImageInterface popBigImageInterface) {
+    public MyDynamicAdapter(Activity context, List<DynamicPersonResponse.DataBeanX.DataBean> data, MyDynamicFragment.PopBigImageInterface popBigImageInterface) {
         mContext = context;
         mData = data;
         this.popBigImageInterface = popBigImageInterface;
@@ -95,6 +115,8 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
             holder.dynamicId = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getId();
             holder.userid = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
             holder.is_vote = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getIs_vote();
+            holder.vote = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getVote();
+            holder.position = position;
             LocalLog.d(TAG, "imageSize = " + imageSize);
             if (((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic().equals("")) {
                 LocalLog.d(TAG, "无内容");
@@ -278,6 +300,54 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
         super.onBindViewHolder(holder, position, payloads);
     }
 
+
+    private void popQuitConfirm(final int dynamicId, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "popQuitConfirm() enter 退圈确认");
+        popCircleOpBar = View.inflate(mContext, R.layout.quit_circle_confirm, null);
+        TextView viewTitle = (TextView) popCircleOpBar.findViewById(R.id.quit_title);
+        viewTitle.setText("是否删除该动态");
+        popupOpWindow = new PopupWindow(popCircleOpBar, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupOpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupOpWindow = null;
+            }
+        });
+
+        cancelText = (TextView) popCircleOpBar.findViewById(R.id.cancel_quit_text);
+        cancelText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "取消退圈动作");
+                popupOpWindow.dismiss();
+            }
+        });
+        confirmText = (TextView) popCircleOpBar.findViewById(R.id.confirm_quit_text);
+        confirmText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Presenter.getInstance(mContext).deleteDynamic(dynamicId, innerCallBack);
+
+            }
+        });
+
+
+        popupOpWindow.setFocusable(true);
+        popupOpWindow.setOutsideTouchable(true);
+        popupOpWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new
+
+                AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+        popupOpWindow.showAtLocation(mContext.findViewById(R.id.my_dynamic_fg), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        popCircleOpBar.startAnimation(animationCircleType);
+    }
+
     public class MyDynamicViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.dynamic_user_icon)
         CircleImageView dynamicUserIcon;
@@ -337,11 +407,42 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
         int dynamicId = -1;
         int userid = -1;
         int is_vote = 0;
+        int position = 0;
+        int vote = 0;
 
         public MyDynamicViewHolder(View view) {
             super(view);
             initView(view);
         }
+
+        private InnerCallBack innerCallBack = new InnerCallBack() {
+            @Override
+            public void innerCallBack(Object object) {
+                if (object instanceof PutVoteResponse) {
+                    if (((PutVoteResponse) object).getError() == 0) {
+                        if (((PutVoteResponse) object).getMessage().equals("点赞成功")) {
+                            likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
+
+                            vote++;
+                            is_vote = 1;
+                        } else {
+                            likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
+                            vote--;
+                            is_vote = 0;
+                        }
+
+                        ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).setIs_vote(is_vote);
+                        contentSupports.setText(String.valueOf(vote));
+                    }
+                } else if (object instanceof DeleteDynamicResponse) {
+                    if (((DeleteDynamicResponse) object).getError() == 0) {
+                        Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                    }
+                    popupOpWindow.dismiss();
+                }
+            }
+        };
+
 
         private void initView(View viewRoot) {
 
@@ -353,7 +454,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
             contentSupports = (TextView) viewRoot.findViewById(R.id.content_supports);
             likeNumIcon = (ImageView) viewRoot.findViewById(R.id.like_num_icon);
             firstContent = (TextView) viewRoot.findViewById(R.id.first_content);
-            scanMore = (TextView) viewRoot.findViewById(R.id.scan_more);
+            likeNumIcon.setOnClickListener(onClickListener);
             createTime = (TextView) viewRoot.findViewById(R.id.create_time);
             deleteDynamic = (ImageView) viewRoot.findViewById(R.id.delete_dynamic);
 
@@ -392,8 +493,6 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.scan_more:
-                    case R.id.dynamic_content_text:
-                    case R.id.image_viewpager:
                         LocalLog.d(TAG, "点击查看更多评价");
                         LocalLog.d(TAG, "dynamicId = " + dynamicId + ",userId = " + userid);
                         Intent intent = new Intent();
@@ -405,6 +504,14 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                         break;
                     case R.id.delete_dynamic:
                         LocalLog.d(TAG, "删除动态");
+                        //
+                        popQuitConfirm(dynamicId, innerCallBack);
+                        break;
+                    case R.id.like_num_icon:
+                        LocalLog.d(TAG, "点赞");
+                        PutVoteParam putVoteParam = new PutVoteParam();
+                        putVoteParam.setDynamicid(dynamicId).setUserid(Presenter.getInstance(mContext).getId());
+                        Presenter.getInstance(mContext).putVote(putVoteParam, innerCallBack);
                         break;
                     default:
                         break;

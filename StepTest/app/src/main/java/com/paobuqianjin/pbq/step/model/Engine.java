@@ -52,6 +52,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
@@ -975,6 +976,33 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(dynamicDetailInterface, COMMAND_GET_DYNAMIC_ID_DETAIL));
+    }
+
+    //TODO 删除动态
+    public void deleteDynamic(int dynamicId, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "deleteDynamic() enter");
+        String url = NetApi.urlDynamic + "/" + String.valueOf(dynamicId);
+        OkHttpUtils
+                .delete()
+                .addHeader("headtoken", getToken(mContext))
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        LocalLog.d(TAG,"S = "  + s);
+                        if (innerCallBack != null) {
+                            DeleteDynamicResponse deleteDynamicResponse = new Gson().fromJson(s, DeleteDynamicResponse.class);
+                            innerCallBack.innerCallBack(deleteDynamicResponse);
+                        }
+                    }
+                });
+
     }
 
     //TODO 获取评论列表 http://119.29.10.64/v1/DynamicComment/?dynamicid=1

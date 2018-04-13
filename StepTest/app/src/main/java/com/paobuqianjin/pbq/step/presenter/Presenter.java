@@ -291,6 +291,10 @@ public final class Presenter {
         engine.getDynamicDetail(id);
     }
 
+    public void deleteDynamic(int dynamicId, final InnerCallBack innerCallBack) {
+        engine.deleteDynamic(dynamicId, innerCallBack);
+    }
+
     public void getDynamicVoteList(int id, int userid, int page, int pagesize) {
         engine.getDynamicVoteList(id, userid, page, pagesize);
     }
@@ -300,7 +304,7 @@ public final class Presenter {
     }
 
     public void putVote(PutVoteParam putVoteParam, InnerCallBack innerCallBack) {
-        engine.putVote(putVoteParam,innerCallBack);
+        engine.putVote(putVoteParam, innerCallBack);
     }
 
     public void putVote(PutVoteParam putVoteParam) {

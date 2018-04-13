@@ -123,7 +123,7 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
         myDynamicRecycler.setLayoutManager(layoutManager);
 
         //myDynamicRecycler.setAdapter(new MyDynamicAdapter(getContext()));
-        adapter = new MyDynamicAdapter(getContext(), null, popBigImageInterface);
+        adapter = new MyDynamicAdapter(getActivity(), null, popBigImageInterface);
         // 自定义的核心就是DefineLoadMoreView类。
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());
         myDynamicRecycler.addFooterView(loadMoreView); // 添加为Footer。
