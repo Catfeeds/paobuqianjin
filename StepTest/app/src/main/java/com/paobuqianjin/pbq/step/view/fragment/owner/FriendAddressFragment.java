@@ -226,6 +226,8 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        }else{
+            Toast.makeText(getContext(), friendAddResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -240,6 +242,8 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        }else {
+            Toast.makeText(getContext(), inviteMessageResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

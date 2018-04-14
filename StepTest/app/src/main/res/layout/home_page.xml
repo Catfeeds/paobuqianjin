@@ -22,12 +22,15 @@
         android:layout_marginTop="13dp">
 
         <ImageView
+            android:id="@+id/target_step_circle"
             android:layout_width="175dp"
             android:layout_height="175dp"
             android:layout_gravity="center"
-            android:src="@drawable/home_page_step_total" />
+            android:src="@drawable/home_page_step_total"
+            android:scaleType="centerCrop" />
 
-        <View
+        <ImageView
+            android:scaleType="centerCrop"
             android:id="@+id/process_step_now"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -301,7 +304,6 @@
     <!--android:layout_toEndOf="@+id/ho_line">-->
 
 
-
     <!--<ImageView-->
     <!--android:id="@+id/create_circle_image"-->
     <!--android:layout_width="match_parent"-->
@@ -325,8 +327,6 @@
     <!--android:textColor="@color/color_f8"-->
     <!--android:textSize="14dp" />-->
     <!--</RelativeLayout>-->
-
-
 
 
     <!--<RelativeLayout-->
@@ -450,8 +450,7 @@
             android:id="@+id/weather_icon"
             android:layout_width="28dp"
             android:layout_height="22dp"
-            android:layout_marginLeft="15dp"
-            />
+            android:layout_marginLeft="15dp" />
 
         <TextView
             android:id="@+id/wendu"
@@ -459,10 +458,10 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/weather_icon"
             android:layout_alignTop="@+id/weather_icon"
-          android:paddingLeft="3dp"
             android:layout_toEndOf="@+id/weather_icon"
-            android:gravity="center"
             android:layout_toRightOf="@id/weather_icon"
+            android:gravity="center"
+            android:paddingLeft="3dp"
             android:text="25°"
             android:textColor="@color/color_f8"
             android:textSize="14dp" />
@@ -473,11 +472,11 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/weather_icon"
             android:layout_below="@+id/weather_icon"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="深圳"
             android:textColor="@color/color_f8"
-            android:layout_marginLeft="16dp"
             android:textSize="14dp" />
     </RelativeLayout>
 
@@ -493,8 +492,8 @@
             android:id="@+id/scan_mark_home"
             android:layout_width="22dp"
             android:layout_height="22dp"
-            android:paddingRight="5dp"
             android:layout_alignParentRight="true"
+            android:paddingRight="5dp"
             android:scaleType="centerCrop"
             android:src="@drawable/scan" />
     </RelativeLayout>
@@ -509,25 +508,24 @@
         android:id="@+id/wave_view"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:layout_marginTop="10dp"
         android:layout_above="@id/bottom_background"
-        />
+        android:layout_marginTop="10dp" />
+
     <RelativeLayout
         android:id="@+id/bottom_background"
         android:layout_width="match_parent"
         android:layout_height="190dp"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        >
+        android:layout_centerHorizontal="true"
+        android:background="@color/white">
 
 
         <ImageView
             android:id="@+id/out_red_pkg_image"
             android:layout_width="170dp"
             android:layout_height="85dp"
-            android:background="@drawable/heme_page_selector"
             android:layout_marginLeft="12dp"
+            android:background="@drawable/heme_page_selector"
 
             />
 
@@ -535,46 +533,44 @@
             android:id="@+id/out_red_package"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="8dp"
-            android:text="发红包"
-            android:layout_alignParentLeft="true"
-            android:textColor="@color/color_f8"
-            android:layout_marginTop="60dp"
             android:layout_marginLeft="75dp"
+            android:layout_marginTop="60dp"
+            android:text="发红包"
+            android:textColor="@color/color_f8"
             android:textSize="14dp" />
 
         <ImageView
             android:id="@+id/ho_line"
             android:layout_width="10dp"
             android:layout_height="match_parent"
-            android:background="@color/white"
             android:layout_toRightOf="@id/out_red_pkg_image"
-            />
+            android:background="@color/white" />
 
         <ImageView
             android:id="@+id/create_circle_image"
             android:layout_width="170dp"
             android:layout_height="85dp"
+            android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_marginRight="12dp"
             android:layout_toRightOf="@id/ho_line"
-            android:scaleType="centerCrop"
-            android:layout_alignParentRight="true"
             android:background="@drawable/create_cicle_selector"
-            />
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/create_circle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/create_circle_image"
+            android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="8dp"
+            android:layout_marginRight="65dp"
             android:layout_marginTop="60dp"
             android:text="创建圈子"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="65dp"
             android:textColor="@color/color_f8"
             android:textSize="14dp" />
 
@@ -583,24 +579,23 @@
             android:id="@+id/income_red_pkg_image"
             android:layout_width="170dp"
             android:layout_height="85dp"
-            android:scaleType="centerCrop"
             android:layout_below="@id/out_red_pkg_image"
-            android:background="@drawable/recive_red_package_selector"
-            android:layout_marginLeft="12dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginLeft="12dp"
             android:layout_marginTop="10dp"
-            />
+            android:background="@drawable/recive_red_package_selector"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/income_red_package"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
             android:layout_marginLeft="75dp"
+            android:layout_marginTop="60dp"
             android:text="领红包"
             android:textColor="@color/color_f8"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="20dp"
 
             android:textSize="14dp" />
 
@@ -609,15 +604,15 @@
             android:id="@+id/add_friend_image"
             android:layout_width="170dp"
             android:layout_height="85dp"
-            android:layout_toRightOf="@id/ho_line"
-            android:layout_centerHorizontal="true"
-            android:layout_marginRight="12dp"
             android:layout_alignParentRight="true"
+            android:layout_below="@id/create_circle_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/ho_line"
             android:background="@drawable/invite_friend_selector"
             android:scaleType="centerCrop"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_below="@id/create_circle_image"
 
             />
 
@@ -626,17 +621,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/add_friend_image"
+            android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="60dp"
-            android:layout_alignParentRight="true"
             android:layout_marginRight="65dp"
+            android:layout_marginTop="60dp"
             android:text="邀请好友"
             android:textColor="@color/color_f8"
             android:textSize="14dp" />
     </RelativeLayout>
-
-
 
 
 </RelativeLayout>

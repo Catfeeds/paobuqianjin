@@ -132,6 +132,8 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            Toast.makeText(getContext(), bindCardListResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -187,6 +188,8 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            Toast.makeText(getContext(), taskRecDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -216,6 +219,8 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            Toast.makeText(getContext(), recPayResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

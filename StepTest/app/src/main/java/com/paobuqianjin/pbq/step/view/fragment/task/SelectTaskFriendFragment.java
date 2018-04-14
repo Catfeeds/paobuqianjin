@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
@@ -132,12 +133,15 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            Toast.makeText(getContext(), userFriendResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void response(UserFriendSearchResponse userFriendSearchResponse) {
         LocalLog.d(TAG, "UserFriendSearchResponse() enter");
+
     }
 
     @Override

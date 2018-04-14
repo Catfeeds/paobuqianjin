@@ -317,6 +317,8 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            Toast.makeText(getContext(), crashListDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

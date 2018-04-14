@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.base.view;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
@@ -16,9 +17,11 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.widget.ImageView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 
 /**
  * Created by pbq on 2018/1/19.
@@ -32,13 +35,15 @@ public class StepProcessDrawable extends Drawable {
     private Bitmap bitmap;
     private RectF oval;
     private long animationTime = 200;
+    private int viewParentWidth = 0, viewParentHeight = 0, acrWidth = 0, arcHeight = 0, left = 0, top = 0;
+    private int footWidth = 0;
 
     public StepProcessDrawable setmAngle(float mAngle) {
         this.mAngle = mAngle;
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setStrokeWidth(8.0F);
+        mPaint.setStrokeWidth(widthStrokeWidth);
         // 设置风格为实线
         mPaint.setStyle(Paint.Style.STROKE);
         // 设置画笔颜色
@@ -49,13 +54,14 @@ public class StepProcessDrawable extends Drawable {
     }
 
     private float mAngle = 0.0f;
+    private float widthStrokeWidth = 20.0f;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
                 case REDRAW:
-                    mCurrentAngle += mAngle / 200;
+                    mCurrentAngle += mAngle / 500;
                     LocalLog.d(TAG, "mCurrentAngle = " + mCurrentAngle);
                     if (mCurrentAngle <= mAngle) {
                         StepProcessDrawable.this.invalidateSelf();
@@ -67,9 +73,25 @@ public class StepProcessDrawable extends Drawable {
     };
 
     @TargetApi(19)
-    public StepProcessDrawable(Context context) {
-        bitmap = ((BitmapDrawable) ContextCompat.getDrawable(context,R.drawable.foot)).getBitmap();
-        oval = new RectF(30, 30, 390, 390);
+    public StepProcessDrawable(Context context, int left, int top, int width, int height, int parentWidth, int parentHeight) {
+        LocalLog.d(TAG, "left = " + left + ", top = " + top + ",width = " + width + ",height = " + height + ",parentWidth =  " + parentWidth + ",parentHeight =  " + parentHeight);
+        this.left = left;
+        this.top = top;
+        viewParentWidth = width;
+        viewParentHeight = height;
+        acrWidth = parentWidth;
+        arcHeight = parentHeight;
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = false;
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.foot_ico, options);
+        footWidth = Utils.dip2px(context, 20);
+        LocalLog.d(TAG, "width = " + bitmap.getWidth() + ", height = " + bitmap.getHeight());
+        options.inSampleSize = bitmap.getWidth() / footWidth;
+        widthStrokeWidth = 20.0f;
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.foot_ico, options);
+        LocalLog.d(TAG, "width = " + bitmap.getWidth() + ", height = " + bitmap.getHeight());
+        oval = new RectF((width - parentWidth) / 2 + widthStrokeWidth / 2, (height - parentHeight) / 2 + widthStrokeWidth / 2,
+                parentWidth + (width - parentWidth) / 2 - widthStrokeWidth / 2, parentHeight + (height - parentHeight) / 2 - widthStrokeWidth / 2);
     }
 
     @Override
@@ -81,12 +103,11 @@ public class StepProcessDrawable extends Drawable {
     public void draw(@NonNull Canvas canvas) {
         LocalLog.d(TAG, "draw() enter");
         if (mCurrentAngle > 15) {
-            canvas.drawArc(oval, 90, mCurrentAngle - 15, false, mPaint);
+            canvas.drawArc(oval, 90, mCurrentAngle - 1, false, mPaint);
         }
         canvas.save();
-        canvas.rotate(mCurrentAngle, 210, 210);
-        //canvas.drawCircle(184, 358, 8.0f, mPaint);
-        canvas.drawBitmap(bitmap, 159, 324, null);
+        canvas.rotate(mCurrentAngle, viewParentHeight / 2, viewParentHeight / 2);
+        canvas.drawBitmap(bitmap, (viewParentWidth - bitmap.getWidth()) / 2, viewParentHeight - bitmap.getHeight() - widthStrokeWidth / 2, null);
         canvas.restore();
     }
 

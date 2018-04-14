@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -270,7 +271,7 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
             }
             trx.show(emptyTaskFragment).commit();
         } else if (myRecvTaskRecordResponse.getError() == -1) {
-
+            Toast.makeText(getContext(), myRecvTaskRecordResponse.getMessage(), Toast.LENGTH_SHORT).show();
         } else if (myRecvTaskRecordResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

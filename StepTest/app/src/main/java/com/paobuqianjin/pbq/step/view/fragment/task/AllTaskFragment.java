@@ -90,7 +90,7 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
                 this.reflashInterface.notifyReflash();
             }
         } else if (receiveTaskResponse.getError() == 1) {
-
+            Toast.makeText(getContext(), receiveTaskResponse.getMessage(), Toast.LENGTH_SHORT).show();
         } else if (receiveTaskResponse.getError() == -1) {
             Toast.makeText(getContext(), receiveTaskResponse.getMessage(), Toast.LENGTH_SHORT).show();
         } else if (receiveTaskResponse.getError() == -100) {

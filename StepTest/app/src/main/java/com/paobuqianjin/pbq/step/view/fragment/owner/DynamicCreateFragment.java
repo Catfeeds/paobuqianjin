@@ -147,6 +147,8 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        }else{
+            Toast.makeText(getContext(), releaseDynamicResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 

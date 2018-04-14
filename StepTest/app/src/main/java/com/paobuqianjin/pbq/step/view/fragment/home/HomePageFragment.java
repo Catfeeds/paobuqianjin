@@ -76,7 +76,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Bind(R.id.bg_home)
     ImageView bgHome;
     @Bind(R.id.process_step_now)
-    View processStepNow;
+    ImageView processStepNow;
     @Bind(R.id.toay_step)
     TextView toayStep;
     @Bind(R.id.mu_biao_text)
@@ -214,9 +214,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     }
 
 
-
-
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -291,8 +288,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        processStepNow = (View) viewRoot.findViewById(R.id.process_step_now);
-        processStepNow.setBackground(new StepProcessDrawable(getContext()).setmAngle(90));
+        processStepNow = (ImageView) viewRoot.findViewById(R.id.process_step_now);
         toayStep = (TextView) viewRoot.findViewById(R.id.toay_step);
         cityName = (TextView) viewRoot.findViewById(R.id.city_name);
         todayIncomeNum = (TextView) viewRoot.findViewById(R.id.today_income_num);
@@ -312,6 +308,22 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         stepDescSpan = (RelativeLayout) viewRoot.findViewById(R.id.step_desc_span);
         stepDescSpan.setOnClickListener(onClickListener);
         scanImg.setOnClickListener(onClickListener);
+        final ImageView targetCircle = (ImageView) viewRoot.findViewById(R.id.target_step_circle);
+        targetCircle.post(new Runnable() {
+            @Override
+            public void run() {
+                int[] location = new int[2];
+                processStepNow.getLocationOnScreen(location);
+                processStepNow.setImageDrawable(new StepProcessDrawable(getContext(), location[0], location[1], processStepNow.getWidth(), processStepNow.getHeight(),
+                        targetCircle.getWidth(), targetCircle.getHeight()).setmAngle(360));
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     @Override

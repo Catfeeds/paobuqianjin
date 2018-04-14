@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
@@ -172,6 +173,8 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            Toast.makeText(getContext(), danListResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -208,13 +211,15 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
             String peopleNumStr = String.format(peopleNumFormat, userDanResponse.getData().getNumber());
             processDes.setText(peopleNumStr);
             Presenter.getInstance(getContext()).getDanList();
-        }else if(userDanResponse.getError() == -100){
+        } else if (userDanResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
             Presenter.getInstance(getContext()).steLogFlg(false);
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            Toast.makeText(getContext(), userDanResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }

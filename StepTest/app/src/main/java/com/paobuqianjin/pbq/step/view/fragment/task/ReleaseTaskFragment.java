@@ -179,6 +179,8 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
                 Presenter.getInstance(getContext()).setToken(getContext(), "");
                 getActivity().finish();
                 System.exit(0);
+            } else {
+                Toast.makeText(getContext(), taskReleaseResponse.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         }

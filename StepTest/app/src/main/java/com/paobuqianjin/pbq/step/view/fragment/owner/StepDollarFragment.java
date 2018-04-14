@@ -242,6 +242,9 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void response(UserInfoResponse userInfoResponse) {
         if (userInfoResponse.getError() == 0) {
+            if (stepDollarNums == null) {
+                return;
+            }
             stepDollarNums.setText(String.valueOf(userInfoResponse.getData().getCredit()));
         } else if (userInfoResponse.getError() == 1) {
 

@@ -335,6 +335,8 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        }else {
+            Toast.makeText(getContext(), myInviteResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -350,6 +352,8 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        }else{
+            Toast.makeText(getContext(), inviteDanResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
