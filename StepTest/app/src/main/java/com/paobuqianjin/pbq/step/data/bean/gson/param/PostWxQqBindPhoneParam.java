@@ -13,13 +13,23 @@ import java.util.Map;
 *@description  三方绑定手机号码
 */
 public class PostWxQqBindPhoneParam {
+    public int getUserid() {
+        return userid;
+    }
+
+    public PostWxQqBindPhoneParam setUserid(int userid) {
+        this.userid = userid;
+        params.put("userid", String.valueOf(userid));
+        return this;
+    }
+
     /*
-    action	用户类型 wx qq	true	string
-openid	微信或者QQ的openid	true	string
-mobile	绑定的手机号	true	string
-code	验证码
-    * */
-    private String action;
+    userid	用户id必填	true	string
+    openid	微信或者QQ的openid	true	string
+    mobile	绑定的手机号	true	string
+    code	验证码	true	string
+        * */
+    private int userid;
     private String openid;
     private String mobile;
 
@@ -50,15 +60,6 @@ code	验证码
         return temp;
     }
 
-    public String getAction() {
-        return action;
-    }
-
-    public PostWxQqBindPhoneParam setAction(String action) {
-        this.action = action;
-        params.put("action", action);
-        return this;
-    }
 
     public String getOpenid() {
         return openid;

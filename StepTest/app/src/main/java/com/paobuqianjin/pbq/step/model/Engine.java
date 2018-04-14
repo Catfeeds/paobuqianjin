@@ -995,7 +995,7 @@ public final class Engine {
 
                     @Override
                     public void onResponse(String s, int i) {
-                        LocalLog.d(TAG,"S = "  + s);
+                        LocalLog.d(TAG, "S = " + s);
                         if (innerCallBack != null) {
                             DeleteDynamicResponse deleteDynamicResponse = new Gson().fromJson(s, DeleteDynamicResponse.class);
                             innerCallBack.innerCallBack(deleteDynamicResponse);
@@ -2171,7 +2171,7 @@ public final class Engine {
 
     //TODO 三方登录
     public void PostThirdPartyLogin(ThirdPartyLoginParam thirdPartyLoginParam) {
-        LocalLog.d(TAG, thirdPartyLoginParam.toString());
+        LocalLog.d(TAG, thirdPartyLoginParam.paramString());
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))

@@ -9,19 +9,23 @@ import java.util.Map;
 
 public class ThirdPartyLoginParam {
     /*
-    * action	登陆方式 wx 微信登陆 | qq QQ登陆	true	string
+    * action	登录方式 wx 微信登录 | qq QQ登录	true	string
 openid	openid	true	string
+unionid	unionid	true	string
 nickname	昵称	true	string
 avatar	头像	true	string
-province	省份	true	string
-city	城市	true	string
-sex	性别 0男 1女	true	int*/
+province	省份	false	string
+city	城市	false	string
+sex	性别 0男 1女	false	int
+side	用户端：0未知|1ios|2android|3小程序|4web	false	int
+*/
     private String action;
     private String openid;
     private String nickname;
     private String avatar;
     private String province;
     private String city;
+    private String unionid;
     private int sex;
 
 
@@ -41,6 +45,16 @@ sex	性别 0男 1女	true	int*/
     }
 
     private Map<String, String> param;
+
+    public String getUnionid() {
+        return unionid;
+    }
+
+    public ThirdPartyLoginParam setUnionid(String unionid) {
+        this.unionid = unionid;
+        param.put("unionid", unionid);
+        return this;
+    }
 
     public String getAction() {
         return action;
@@ -112,17 +126,11 @@ sex	性别 0男 1女	true	int*/
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "ThirdPartyLoginParam{" +
-                "action='" + action + '\'' +
-                ", openid='" + openid + '\'' +
-                ", nickname='" + nickname + '\'' +
-                ", avatar='" + avatar + '\'' +
-                ", province='" + province + '\'' +
-                ", city='" + city + '\'' +
-                ", sex=" + sex +
-                ", param=" + param +
-                '}';
+    public String paramString() {
+        String temp = "";
+        for (String key : param.keySet()) {
+            temp = temp + key + ":" + param.get(key) + "\n";
+        }
+        return temp;
     }
 }

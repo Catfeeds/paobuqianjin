@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
@@ -103,6 +104,7 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
         if (intent != null) {
             LocalLog.d(TAG, "userinfo");
             dataBean = (ThirdPartyLoginResponse.DataBean) intent.getSerializableExtra("userinfo");
+            Presenter.getInstance(getContext()).setToken(getContext(), dataBean.getUser_token());
         }
 
     }
@@ -125,16 +127,18 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
     public void response(LogBindPhoneResponse logBindPhoneResponse) {
         if (logBindPhoneResponse.getError() == 0) {
             Presenter.getInstance(getContext()).steLogFlg(true);
-            Presenter.getInstance(getContext()).setToken(getContext(),dataBean.getUser_token());
+            Presenter.getInstance(getContext()).setToken(getContext(), dataBean.getUser_token());
             Presenter.getInstance(getContext()).setId(dataBean.getId());
             ((UserFitActivity) getActivity()).showPersonInfo(dataBean);
-        }else if(logBindPhoneResponse.getError() == -100){
+        } else if (logBindPhoneResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
             Presenter.getInstance(getContext()).steLogFlg(false);
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            Toast.makeText(getContext(), logBindPhoneResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -185,17 +189,13 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
                 checkSignCodeParam.setUserid(dataBean.getId());
                 Presenter.getInstance(getContext()).checkLoginBindPhone(checkSignCodeParam);*/
                 PostWxQqBindPhoneParam postWxQqBindPhoneParam = new PostWxQqBindPhoneParam();
-                if ("".equals(dataBean.getQq_openid())) {
-                    if (!dataBean.getWx_openid().equals("")) {
-                        postWxQqBindPhoneParam.setAction("wx");
-                        postWxQqBindPhoneParam.setMobile(phoneEdit.getText().toString()).setOpenid(dataBean.getWx_openid());
-                    }
+                if (dataBean.getQq_openid() != null && !"".equals(dataBean.getQq_openid())) {
+                    postWxQqBindPhoneParam.setMobile(phoneEdit.getText().toString()).setOpenid(dataBean.getQq_openid());
                 } else {
-                    if ("".equals(dataBean.getWx_openid())) {
-                        postWxQqBindPhoneParam.setAction("qq");
-                        postWxQqBindPhoneParam.setMobile(phoneEdit.getText().toString()).setOpenid(dataBean.getQq_openid());
-                    }
+                    if (dataBean.getWx_openid() != null && !"".equals(dataBean.getWx_openid()))
+                        postWxQqBindPhoneParam.setMobile(phoneEdit.getText().toString()).setOpenid(dataBean.getWx_openid());
                 }
+                postWxQqBindPhoneParam.setUserid(dataBean.getId());
                 postWxQqBindPhoneParam.setCode(signCodeEdit.getText().toString());
 
                 Presenter.getInstance(getContext()).bindLoginPhone(postWxQqBindPhoneParam);

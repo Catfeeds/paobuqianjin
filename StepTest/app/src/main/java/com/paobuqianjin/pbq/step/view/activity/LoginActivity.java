@@ -47,7 +47,7 @@ import butterknife.OnClick;
  * Created by pbq on 2017/12/7.
  */
 
-public class LoginActivity extends BaseActivity implements LoginSignCallbackInterface{
+public class LoginActivity extends BaseActivity implements LoginSignCallbackInterface {
     private final static String LOGIN_SUCCESS_ACTION = "com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION";
     private final static String USER_FIT_ACTION_BIND = "com.paobuqianjin.pbq.USER_FIT_ACTION_BIND";
     private final static String USER_FIT_ACTION_SETTING = "com.paobuqianjin.pbq.USER_FIT_ACTION_USER_SETTING";
@@ -99,16 +99,11 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     }
 
 
-
-
-
-
     @Override
     protected void initView() {
         super.initView();
         dialog = new ProgressDialog(this);
     }
-
 
 
     public void onTabLogin(View view) {
@@ -218,7 +213,6 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     }
 
 
-
     private String[] collectLoginUserInfo() {
         userInfo = new String[3];
         userInfo[0] = loginAccount.getText().toString();
@@ -293,6 +287,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                 intent.setAction(USER_FIT_ACTION_BIND);
                 intent.putExtra("userinfo", thirdPartyLoginResponse.getData());
                 startActivity(intent);
+                finish();
             }
         }
 
@@ -326,6 +321,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             intent.setAction(USER_FIT_ACTION_SETTING);
             intent.putExtra("signinfo", signUserResponse.getData());
             startActivity(intent);
+            finish();
 /*            if (currentIndex == 0) {
                 LocalLog.e(TAG, "已经是登陆页了！");
             } else {
@@ -381,6 +377,9 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                                 thirdPartyLoginParam.setSex(1);
                             }
                             continue;
+                        case "unionid":
+                            thirdPartyLoginParam.setUnionid(map.get(key));
+                            continue;
                         default:
                             continue;
                     }
@@ -406,20 +405,20 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
 
     @OnClick({R.id.login_weixin, R.id.login_qq})
     public void onClickTab(View view) {
-        if (view!=null) {
-        switch (view.getId()) {
+        if (view != null) {
+            switch (view.getId()) {
                 case R.id.login_weixin:
-                LocalLog.d(TAG, "微信三方登录");
-                LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.WEIXIN));
-                //UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
-                UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
+                    LocalLog.d(TAG, "微信三方登录");
+                    LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.WEIXIN));
+                    //UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
+                    UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
 
-                break;
+                    break;
                 case R.id.login_qq:
                     //  LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.QQ));
                     UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.QQ, authListener);
                     UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, authListener);
-                break;
+                    break;
             /*case R.id.sina:
                 UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
                 UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
