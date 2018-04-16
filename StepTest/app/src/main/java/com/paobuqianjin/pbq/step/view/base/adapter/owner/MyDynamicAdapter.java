@@ -437,6 +437,8 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 } else if (object instanceof DeleteDynamicResponse) {
                     if (((DeleteDynamicResponse) object).getError() == 0) {
                         Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                        mData.remove(MyDynamicViewHolder.this.getAdapterPosition());
+                        notifyItemRemoved(MyDynamicViewHolder.this.getAdapterPosition());
                     }
                     popupOpWindow.dismiss();
                 }
