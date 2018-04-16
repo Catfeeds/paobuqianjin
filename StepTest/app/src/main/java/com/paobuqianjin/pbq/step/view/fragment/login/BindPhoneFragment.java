@@ -102,8 +102,8 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
         barTitle.setText("绑定手机号");
         Intent intent = getActivity().getIntent();
         if (intent != null) {
-            LocalLog.d(TAG, "userinfo");
-            dataBean = (ThirdPartyLoginResponse.DataBean) intent.getSerializableExtra("userinfo");
+            LocalLog.d(TAG, "thirdinfo");
+            dataBean = (ThirdPartyLoginResponse.DataBean) intent.getSerializableExtra("thirdinfo");
             Presenter.getInstance(getContext()).setToken(getContext(), dataBean.getUser_token());
         }
 
@@ -129,7 +129,7 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
             Presenter.getInstance(getContext()).steLogFlg(true);
             Presenter.getInstance(getContext()).setToken(getContext(), dataBean.getUser_token());
             Presenter.getInstance(getContext()).setId(dataBean.getId());
-            ((UserFitActivity) getActivity()).showPersonInfo(dataBean);
+            //((UserFitActivity) getActivity()).showPersonInfo(dataBean);
         } else if (logBindPhoneResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

@@ -87,6 +87,7 @@ public class PaoBuApplication extends MultiDexApplication {
     private boolean initWXapi(Context context) {
         Config.DEBUG = true;
         PlatformConfig.setWeixin("wx1ed4ccc9a2226a73", "b1398e4064b5ea28549201f43965c1dc");
+        PlatformConfig.setQQZone("1106825696", "4An0iHCeY1xfvRS7");
         return true;
     }
 

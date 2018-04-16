@@ -245,10 +245,17 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 if (phoneLoginDataBean != null) {
                     userid = phoneLoginDataBean.getId();
                 }
-                isPhoneNumLogin = true;
+                dataBean = (ThirdPartyLoginResponse.DataBean) intent.getSerializableExtra("thirdinfo");
+                if (dataBean != null) {
+                    LocalLog.d(TAG, "三方登录");
+                    userid = dataBean.getId();
+                    Presenter.getInstance(getContext()).setToken(getContext(), dataBean.getUser_token());
+                    Presenter.getInstance(getContext()).setId(dataBean.getId());
+                    update(dataBean);
+                }
             }
         } else {
-            update(dataBean);
+            //
         }
         initData();
         qServiceCfg = QServiceCfg.instance(getContext());
@@ -513,10 +520,12 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 //
                 useGenderManSelect.setImageResource(R.drawable.selected_icon);
                 selectSex[0] = true;
+                selectSex[1] = false;
             } else if (dataBean.getSex() == 1) {
                 //
                 useGenderNvSelect.setImageResource(R.drawable.selected_icon);
                 selectSex[0] = false;
+                selectSex[1] = true;
             }
         }
     }

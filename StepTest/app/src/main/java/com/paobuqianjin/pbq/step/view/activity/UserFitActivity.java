@@ -28,7 +28,7 @@ public class UserFitActivity extends BaseActivity {
     private final static String TAG = UserFitActivity.class.getSimpleName();
     private final static String USER_FIT_ACTION_BIND = "com.paobuqianjin.pbq.USER_FIT_ACTION_BIND";
     private final static String USER_FIT_ACTION_SETTING = "com.paobuqianjin.pbq.USER_FIT_ACTION_USER_SETTING";
-    private BindPhoneFragment bindPhoneFragment = new BindPhoneFragment();
+    //private BindPhoneFragment bindPhoneFragment = new BindPhoneFragment();
     private PersonInfoSettingFragment personInfoSettingFragment = new PersonInfoSettingFragment();
 
     @Override
@@ -56,7 +56,7 @@ public class UserFitActivity extends BaseActivity {
         }
     }
 
-    public void showPersonInfo(ThirdPartyLoginResponse.DataBean dataBean) {
+    /*public void showPersonInfo(ThirdPartyLoginResponse.DataBean dataBean) {
         LocalLog.d(TAG, "showPersonInfo() enter 跳转到个人资料修改页");
         personInfoSettingFragment.setDataBen(dataBean);
         getSupportFragmentManager().beginTransaction()
@@ -64,5 +64,5 @@ public class UserFitActivity extends BaseActivity {
                 .add(R.id.user_fit_container, personInfoSettingFragment)
                 .show(personInfoSettingFragment)
                 .commit();
-    }
+    }*/
 }

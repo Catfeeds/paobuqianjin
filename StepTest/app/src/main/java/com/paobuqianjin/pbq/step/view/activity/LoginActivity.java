@@ -273,7 +273,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                 Presenter.getInstance(LoginActivity.this).postThirdPartyLogin(thirdPartyLoginParam);
                 return;
             }
-            if (thirdPartyLoginResponse.getData().getMobile() != null && !"".equals(thirdPartyLoginResponse.getData().getMobile())) {
+           /* if (thirdPartyLoginResponse.getData().getMobile() != null && !"".equals(thirdPartyLoginResponse.getData().getMobile())) {
                 LocalLog.d(TAG, "登录成功已经绑定过手机号码");
                 Presenter.getInstance(this).steLogFlg(true);
                 Presenter.getInstance(this).setId(thirdPartyLoginResponse.getData().getId());
@@ -284,10 +284,25 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                 LocalLog.d(TAG, "没有绑定过手机");
                 Intent intent = new Intent();
                 intent.setClass(this, UserFitActivity.class);
-                intent.setAction(USER_FIT_ACTION_BIND);
-                intent.putExtra("userinfo", thirdPartyLoginResponse.getData());
+                intent.setAction(USER_FIT_ACTION_SETTING);
+                intent.putExtra("thirdinfo", thirdPartyLoginResponse.getData());
                 startActivity(intent);
                 finish();
+            }*/
+            if (thirdPartyLoginResponse.getData().getIs_perfect() == 0) {
+                LocalLog.d(TAG, "没有绑定过手机");
+                Intent intent = new Intent();
+                intent.setClass(this, UserFitActivity.class);
+                intent.setAction(USER_FIT_ACTION_SETTING);
+                intent.putExtra("thirdinfo", thirdPartyLoginResponse.getData());
+                startActivity(intent);
+                finish();
+            } else {
+                Presenter.getInstance(this).steLogFlg(true);
+                Presenter.getInstance(this).setId(thirdPartyLoginResponse.getData().getId());
+                Presenter.getInstance(this).setMobile(this, thirdPartyLoginResponse.getData().getMobile());
+                Presenter.getInstance(this).setToken(this, thirdPartyLoginResponse.getData().getUser_token());
+                startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
             }
         }
 
@@ -385,6 +400,40 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                     }
                 }
 
+            } else if (share_media.ordinal() == SHARE_MEDIA.QQ.ordinal()) {
+                thirdPartyLoginParam.setAction("qq");
+                for (String key : map.keySet()) {
+                    temp = temp + key + ":" + map.get(key) + "\n";
+                    switch (key) {
+                        case "openid":
+                            thirdPartyLoginParam.setOpenid(map.get(key));
+                            continue;
+                        case "screen_name":
+                            thirdPartyLoginParam.setNickname(map.get(key));
+                            continue;
+                        case "iconurl":
+                            thirdPartyLoginParam.setAvatar(map.get(key));
+                            continue;
+                        case "province":
+                            thirdPartyLoginParam.setProvince(map.get(key));
+                            continue;
+                        case "city":
+                            thirdPartyLoginParam.setCity(map.get(key));
+                            continue;
+                        case "gender":
+                            if (map.get(key).equals("男")) {
+                                thirdPartyLoginParam.setSex(0);
+                            } else {
+                                thirdPartyLoginParam.setSex(1);
+                            }
+                            continue;
+                        case "unionid":
+                            thirdPartyLoginParam.setUnionid(map.get(key));
+                            continue;
+                        default:
+                            continue;
+                    }
+                }
             }
             Presenter.getInstance(LoginActivity.this).postThirdPartyLogin(thirdPartyLoginParam);
             LocalLog.d(TAG, temp);
@@ -415,8 +464,8 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
 
                     break;
                 case R.id.login_qq:
-                    //  LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.QQ));
-                    UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.QQ, authListener);
+                    LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.QQ));
+                    //UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.QQ, authListener);
                     UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, authListener);
                     break;
             /*case R.id.sina:
