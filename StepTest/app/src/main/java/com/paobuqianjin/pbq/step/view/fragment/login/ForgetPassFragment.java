@@ -7,8 +7,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +32,7 @@ import com.paobuqianjin.pbq.step.presenter.im.ForgetPassWordInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.ForgotPasswordActivity;
 import com.paobuqianjin.pbq.step.view.activity.LoginActivity;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.activity.RegisterActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -36,24 +40,27 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ForgetPassFragment extends BaseFragment implements ForgetPassWordInterface {
-    private final static String TAG = ForgotPasswordActivity.class.getSimpleName();
+    private static final String TAG = "ForgetPassFragment";
 
     private boolean showLoginPass = false, showSignPass = false;
     @Bind(R.id.img_back)
     ImageView img_back;
     @Bind(R.id.forgotpwd_account)
-    EditText forgotpwd_account;
+    EditText forgotpwdAccount;
     @Bind(R.id.forgotpwd_indntifying_code)
-    EditText forgotpwd_indntifying_code;
+    EditText forgotpwdIindntifyingCode;
     @Bind(R.id.forgotpwd_getCode)
-    Button forgotpwd_getCode;
+    Button forgotpwdGetCode;
     @Bind(R.id.forgotpwd_pwd)
-    EditText forgotpwd_pwd;
+    EditText forgotpwdPwd;
     @Bind(R.id.forgotPwd_eyes)
     ImageView forgotPwd_eyes;
     @Bind(R.id.forgotpwd_ok)
-    Button forgotpwd_ok;
+    Button forgotpwdOk;
     private String[] userInfo;
+    public int T = 60; //倒计时时长
+    private Handler mHandler = new Handler();
+
 
     PostPassWordParam postPassWordParam;
 
@@ -75,6 +82,77 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
+        forgotpwdAccount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.d(TAG, "进来了: ");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                Log.d(TAG, "进来了: ");
+                String forgotpwdAccountStr = forgotpwdAccount.getText().toString().trim();
+                if (forgotpwdAccountStr.length() == 11) {
+                    forgotpwdGetCode.setEnabled(true);
+                } else {
+                    forgotpwdGetCode.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Log.d(TAG, "进来了: ");
+            }
+        });
+
+        forgotpwdPwd.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String forgotpwdAccountStr = forgotpwdAccount.getText().toString().trim();
+                String forgotpwdPwdStr = forgotpwdPwd.getText().toString().trim();
+                String forgotpwdIindntifyingCodeStr = forgotpwdIindntifyingCode.getText().toString().trim();
+                if ((forgotpwdAccountStr.length() == 11) && (forgotpwdPwdStr.length() == 6) && (forgotpwdIindntifyingCodeStr.length() == 6)) {
+                    forgotpwdOk.setEnabled(true);
+                } else {
+                    forgotpwdOk.setEnabled(false);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        forgotpwdIindntifyingCode.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String forgotpwdAccountStr = forgotpwdAccount.getText().toString().trim();
+                String forgotpwdPwdStr = forgotpwdPwd.getText().toString().trim();
+                String forgotpwdIindntifyingCodeStr = forgotpwdIindntifyingCode.getText().toString().trim();
+                if ((forgotpwdAccountStr.length() == 11) && (forgotpwdPwdStr.length() == 6) && (forgotpwdIindntifyingCodeStr.length() == 6)) {
+                    forgotpwdOk.setEnabled(true);
+                } else {
+                    forgotpwdOk.setEnabled(false);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         return rootView;
     }
 
@@ -83,7 +161,7 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
     @Override
     public void response(PassWordResponse passWordResponse) {
         if (passWordResponse.getError() == 0) {
-            Toast.makeText(getContext(), "密码修改成功，可以用新密码登录了", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "密码修改成功，请重新登录", Toast.LENGTH_SHORT).show();
         } else if (passWordResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -133,18 +211,18 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
                     startActivity(new Intent(getContext(), LoginActivity.class));
                     break;
                 case R.id.forgotpwd_getCode:
-                    LocalLog.d(TAG, "onTabLogin() 请求验证码!");
-                    Presenter.getInstance(getContext()).getSignCodePassWord(forgotpwd_account.getText().toString());
+                    new Thread(new MyCountDownTimer()).start();//开始执行
+                    Presenter.getInstance(getContext()).getSignCodePassWord(forgotpwdAccount.getText().toString());
                     break;
                 case R.id.forgotPwd_eyes:
                     if (!showLoginPass) {
                         LocalLog.d(TAG, " onTabLogin() 设置显示密码!");
-                        forgotpwd_pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                        forgotpwdPwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                         showLoginPass = true;
                         forgotPwd_eyes.setImageDrawable(getResources().getDrawable(R.drawable.forgotpwd_eyes));
                     } else {
                         LocalLog.d(TAG, " onTabLogin() 设置不显示密码!");
-                        forgotpwd_pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                        forgotpwdPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
                         showLoginPass = false;
                         forgotPwd_eyes.setImageDrawable(getResources().getDrawable(R.drawable.register_eyes));
                     }
@@ -152,9 +230,9 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
 
                 case R.id.forgotpwd_ok:
                     postPassWordParam = new PostPassWordParam();
-                    postPassWordParam.setCode(forgotpwd_indntifying_code.getText().toString())
-                            .setMobile(forgotpwd_account.getText().toString())
-                            .setPassword(forgotpwd_pwd.getText().toString());
+                    postPassWordParam.setCode(forgotpwdIindntifyingCode.getText().toString())
+                            .setMobile(forgotpwdAccount.getText().toString())
+                            .setPassword(forgotpwdPwd.getText().toString());
                     Presenter.getInstance(getContext()).postNewPassWord(postPassWordParam);
                     break;
 
@@ -180,6 +258,36 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
         }
     }
 
+    private class MyCountDownTimer implements Runnable {
+        public void run() {
+
+            //倒计时开始，循环
+            while (T > 0) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        forgotpwdGetCode.setClickable(false);
+                        forgotpwdGetCode.setText(T + "秒");
+                    }
+                });
+                try {
+                    Thread.sleep(1000); //强制线程休眠1秒，就是设置倒计时的间隔时间为1秒。
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                T--;
+            }
+            //倒计时结束，也就是循环结束
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    forgotpwdGetCode.setClickable(true);
+                    forgotpwdGetCode.setText("获取验证码");
+                }
+            });
+            T = 60; //最后再恢复倒计时时长
+        }
+    }
 }
 
 

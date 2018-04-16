@@ -48,6 +48,7 @@
                 android:drawablePadding="15dp"
                 android:hint="@string/login_phoneNum"
                 android:layout_marginLeft="15dp"
+                android:singleLine="true"
                 android:layout_marginTop="20dp"
                 android:background="@null"
                 android:textSize="14dp"
@@ -84,6 +85,7 @@
                 android:drawablePadding="15dp"
                 android:layout_marginLeft="15dp"
                 android:hint="@string/login_phonePwd"
+                android:singleLine="true"
                 android:background="@null"
                 android:textSize="14dp" />
 
@@ -96,10 +98,11 @@
                 android:background="#d9d9d9" />
         </RelativeLayout>
         <Button
+            android:enabled="false"
             android:id="@+id/btn_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_selector"
+            android:background="@drawable/change_color_btn"
             android:onClick="onTabLogSign"
             android:layout_marginTop="30dp"
             android:text="@string/action_sign_in_short"

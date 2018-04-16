@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendSearchRespons
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.SelectTaskFriendAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -81,7 +84,7 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
 
     public void searchKeyWord(String keyWord) {
         this.keyWord = keyWord;
-        pageIndex = 0;
+        pageIndex = 1;
         Presenter.getInstance(getContext()).getUserFiends(pageIndex, PAGE_SIZE, keyWord);
     }
 
@@ -94,6 +97,17 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
         barReturnLeft.setText("取消");
         barTitle.setText("选择好友");
         barTvRight.setText("确认");
+        searchCircleText = (EditText) viewRoot.findViewById(R.id.search_circle_text);
+        searchCircleText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    searchKeyWord(searchCircleText.getText().toString());
+                    Utils.hideInput(getContext());
+                }
+                return false;
+            }
+        });
         barReturnLeft.setOnClickListener(onClickListener);
         barTvRight.setOnClickListener(onClickListener);
         friendRecycler = (RecyclerView) viewRoot.findViewById(R.id.friend_recycler);

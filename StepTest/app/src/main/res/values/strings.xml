@@ -35,6 +35,7 @@
     <string name="prompt_password">密码</string>
     <string name="action_sign_in">注 册</string>
     <string name="forgotpwd_ok">确 定</string>
+    <string name="bind_phone">确定</string>
     <string name="forgot_pwd">忘记密码?</string>
     <string name="register">立即注册</string>
     <string name="other_login">第三方登录</string>

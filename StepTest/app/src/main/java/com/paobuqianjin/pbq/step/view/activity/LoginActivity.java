@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -88,7 +91,50 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         setContentView(R.layout.login_layout);
         ButterKnife.bind(this);
 
+        loginAccount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String loginStr = loginAccount.getText().toString().trim();
+                String pwdStr = loginPwd.getText().toString().trim();
+                if(loginStr.length()==11&&pwdStr.length()==6){
+                    btnLogin.setEnabled(true);
+                }else {
+                    btnLogin.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        loginPwd.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String pwdStr = loginPwd.getText().toString().trim();
+                String loginStr = loginAccount.getText().toString().trim();
+                if(loginStr.length()==11&&pwdStr.length()==6){
+                    btnLogin.setEnabled(true);
+                }else {
+                    btnLogin.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     @Override
@@ -110,42 +156,13 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         LocalLog.d(TAG, "onTabLogin() enter");
         if (view != null) {
             switch (view.getId()) {
-                /*case R.id.password_open:
-                    if (!showLoginPass) {
-                        LocalLog.d(TAG, " onTabLogin() 设置显示密码!");
-                        passWordTV.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                        showLoginPass = true;
-                        passWordOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_yes));
-                    } else {
-                        LocalLog.d(TAG, " onTabLogin() 设置不显示密码!");
-                        passWordTV.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                        showLoginPass = false;
-                        passWordOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_no));
-                    }
-                    break;*/
+
                 case R.id.forgot_pwd:
                     //TODO
                     LocalLog.d(TAG, "onTabLogin() 忘记密码");
                     startActivity(LoginForgetPassActivity.class, null, false);
                     break;
-                /*case R.id.sign_code_request:
-                    LocalLog.d(TAG, "onTabLogin() 请求验证码!");
-                    collectSignUserInfo();
-                    Presenter.getInstance(this).getMsg(userInfo[0]);
-                    break;*/
-                /*case R.id.password_open_sign:
-                    if (!showSignPass) {
-                        LocalLog.d(TAG, " onTabLogin() 设置显示密码!");
-                        passWordSignTV.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                        showSignPass = true;
-                        passWordSignOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_yes));
-                    } else {
-                        LocalLog.d(TAG, " onTabLogin() 设置不显示密码!");
-                        passWordSignTV.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                        showSignPass = false;
-                        passWordSignOpenIV.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_no));
-                    }
-                    break;*/
+
                 default:
                     break;
             }
@@ -155,50 +172,15 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     public void onTabLogSign(View view) {
         if (view != null) {
             switch (view.getId()) {
-                /*case R.id.login_page_sign:
-                    LocalLog.d(TAG, "onTabLogSign() 点击注册");
-                    if (currentIndex == 1) {
-                        LocalLog.e(TAG, "已经是注册页了！");
-                    } else {
-                        backGround.setBackgroundResource(R.drawable.background_sign);
-                        loginLayout.setVisibility(View.GONE);
-                        signLayout.setVisibility(View.VISIBLE);
-                        blueLoginLine.setVisibility(View.GONE);
-                        blueSignLine.setVisibility(View.VISIBLE);
-                        currentIndex = 1;
 
-                        String strPart1 = "点击注册，即表示你已阅读并同意";
-                        String strPart2 = "《跑步钱进服务协议》";
-                        SpannableStringBuilder style = new SpannableStringBuilder(strPart1 + strPart2);
-                        style.setSpan(new ForegroundColorSpan(Color.parseColor("#ffffffff")), 0, strPart1.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), strPart1.length(), (strPart1 + strPart2).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        userReadTV.setText(style);
-                        loginOrSignTV.setText(getResources().getText(R.string.desc_sign));
-
-                    }
-                    break;*/
                 case R.id.btn_login:
-                    LocalLog.d(TAG, "currentIndex = " + currentIndex);
-                    if (currentIndex == 0) {
-                        Presenter.getInstance(this).userLoginByPhoneNumber(collectLoginUserInfo());
-                    } else if (currentIndex == 1) {
-                        Presenter.getInstance(this).registerByPhoneNumber(collectSignUserInfo());
-                    }
+                    Presenter.getInstance(this).userLoginByPhoneNumber(collectLoginUserInfo());
                     break;
                 case R.id.register:
                     startActivity(RegisterActivity.class, null, false);
-                    //Presenter.getInstance(this).registerByPhoneNumber(collectSignUserInfo());
                     break;
 
 
-//                case R.id.btn_sign_foot:
-//                    LocalLog.d(TAG, "currentIndex = " + currentIndex);
-//                    if (currentIndex == 0) {
-//                        Presenter.getInstance(this).userLoginByPhoneNumber(collectLoginUserInfo());
-//                    } else if (currentIndex == 1) {
-//                        Presenter.getInstance(this).registerByPhoneNumber(collectSignUserInfo());
-//                    }
-//                    break;
             }
         }
     }
@@ -220,13 +202,6 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         return userInfo;
     }
 
-    /*private String[] collectSignUserInfo() {
-        userInfo = new String[3];
-        userInfo[0] = phoneNumTV.getText().toString();
-        userInfo[1] = signCodeTV.getText().toString();
-        userInfo[2] = passWordSignTV.getText().toString();
-        return userInfo;
-    }*/
 
     @Override
     public void response(LoginResponse loginResponse) {
@@ -337,18 +312,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             intent.putExtra("signinfo", signUserResponse.getData());
             startActivity(intent);
             finish();
-/*            if (currentIndex == 0) {
-                LocalLog.e(TAG, "已经是登陆页了！");
-            } else {
-                backGround.setBackgroundResource(R.drawable.background_login);
-                signLayout.setVisibility(View.GONE);
-                loginLayout.setVisibility(View.VISIBLE);
-                currentIndex = 0;
-                blueSignLine.setVisibility(View.GONE);
-                blueLoginLine.setVisibility(View.VISIBLE);
 
-                loginOrSignTV.setText(getResources().getText(R.string.desc_login));
-            }*/
         }
     }
 
@@ -468,10 +432,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                     //UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.QQ, authListener);
                     UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, authListener);
                     break;
-            /*case R.id.sina:
-                UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
-                UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
-                break;*/
+
             }
 
         }

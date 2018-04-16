@@ -287,6 +287,15 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         mSetting = new PermissionSetting(this);
         requestLocationPermission(Permission.Group.LOCATION);
         cachePath = getExternalCacheDir().getAbsolutePath();
+        cirNameDesc.setSelection(cirNameDesc.getText().toString().length());
+        circlePhoneNumEditor.setSelection(circlePhoneNumEditor.getText().toString().length());
+        circleMoneyNumEditor.setSelection(circleMoneyNumEditor.getText().toString().length());
+        cirNameDesc.setSelection(cirNameDesc.getText().toString().length());
+        circleReadPackageEditor.setSelection(circleReadPackageEditor.getText().toString().length());
+        moneyPkgNumEditor.setSelection(moneyPkgNumEditor.getText().toString().length());
+        passwordNumEditor.setSelection(passwordNumEditor.getText().toString().length());
+
+
     }
 
 

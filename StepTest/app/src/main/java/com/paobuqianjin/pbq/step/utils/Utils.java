@@ -1,7 +1,11 @@
 package com.paobuqianjin.pbq.step.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.input.InputManager;
+import android.view.inputmethod.InputMethod;
+import android.view.inputmethod.InputMethodManager;
 
 /**
  * Created by pbq on 2017/12/4.
@@ -66,5 +70,13 @@ public class Utils {
             e.printStackTrace();
         }
         return verName;
+    }
+    public  static void hideInput(Context context) {
+        InputMethodManager manager = null;
+        if (manager == null) {
+            manager = ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE));
+        }
+        manager.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }

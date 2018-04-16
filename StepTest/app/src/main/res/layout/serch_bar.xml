@@ -45,6 +45,7 @@
                 android:layout_toRightOf="@+id/search_cancel"
                 android:background="@null"
                 android:focusable="true"
+                android:hint="搜索"
                 android:focusableInTouchMode="true"
                 android:imeOptions="actionSearch"
                 android:inputType="text"

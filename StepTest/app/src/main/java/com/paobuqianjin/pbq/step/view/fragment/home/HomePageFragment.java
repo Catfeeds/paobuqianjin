@@ -238,19 +238,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     }
 
 
-//    private void rectRoundBitmap() {
-//        //得到资源文件的BitMap
-//        Bitmap image= BitmapFactory.decodeResource(getResources(),R.drawable.send_red_package);
-//        //创建RoundedBitmapDrawable对象
-//        RoundedBitmapDrawable roundImg = RoundedBitmapDrawableFactory.create(getResources(),image);
-//        //抗锯齿
-//        roundImg.setAntiAlias(true);
-//        //设置圆角半径
-//        roundImg.setCornerRadius(30);
-//        //设置显示图片
-//        outRedPkgImage.setImageDrawable(roundImg);
-//
-//    }
+
 
     /*权限适配*/
 
