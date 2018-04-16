@@ -42,15 +42,15 @@ public class UserFitActivity extends BaseActivity {
         super.initView();
         Intent intent = getIntent();
         if (intent != null) {
-            if (USER_FIT_ACTION_BIND.equals(intent.getAction())) {
+            /*if (USER_FIT_ACTION_BIND.equals(intent.getAction())) {
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.user_fit_container, bindPhoneFragment)
                         .show(bindPhoneFragment).commit();
-            } else if (USER_FIT_ACTION_SETTING.equals(intent.getAction())) {
+            } else if (USER_FIT_ACTION_SETTING.equals(intent.getAction())) {*/
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.user_fit_container, personInfoSettingFragment)
                         .show(personInfoSettingFragment).commit();
-            }
+           /* }*/
         } else {
             finish();
         }
