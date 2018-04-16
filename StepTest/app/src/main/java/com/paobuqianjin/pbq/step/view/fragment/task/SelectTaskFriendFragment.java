@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendSearchResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -25,6 +26,7 @@ import com.paobuqianjin.pbq.step.view.base.adapter.task.SelectTaskFriendAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -51,6 +53,11 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     RecyclerView friendRecycler;
     private LinearLayoutManager layoutManager;
     private static final int SELECT_FRIENDS = 0;
+    FriendBundleData friendBundleData = null;
+    private int pageIndex = 1, pageCount = 0;
+    private final static int PAGE_SIZE = 10;
+    private String keyWord = "";
+    private ArrayList<UserFriendResponse.DataBeanX.DataBean> friendAll = new ArrayList<>();
 
     @Override
     protected int getLayoutResId() {
@@ -68,8 +75,14 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getUserFiends();
+        Presenter.getInstance(getContext()).getUserFiends(pageIndex, PAGE_SIZE, keyWord);
         return rootView;
+    }
+
+    public void searchKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+        pageIndex = 0;
+        Presenter.getInstance(getContext()).getUserFiends(pageIndex, PAGE_SIZE, keyWord);
     }
 
     @Override
@@ -86,7 +99,33 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
         friendRecycler = (RecyclerView) viewRoot.findViewById(R.id.friend_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         friendRecycler.setLayoutManager(layoutManager);
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            friendBundleData = (FriendBundleData) intent.getParcelableExtra(getActivity().getPackageName());
+            if (friendBundleData != null) {
+                selectTaskFriendAdapter = new SelectTaskFriendAdapter(getContext(), null, friendBundleData.getFriendData());
+            } else {
+                selectTaskFriendAdapter = new SelectTaskFriendAdapter(getContext(), null, null);
+            }
+            loadData(friendAll);
+            friendRecycler.setAdapter(selectTaskFriendAdapter);
+        }
 
+
+    }
+
+    /**
+     * 第一次加载数据。
+     */
+    private void loadData(ArrayList<UserFriendResponse.DataBeanX.DataBean> dataBeans) {
+        selectTaskFriendAdapter.notifyDataSetChanged(dataBeans);
+    }
+
+    private void loadMore(ArrayList<UserFriendResponse.DataBeanX.DataBean> newData) {
+        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        friendAll.addAll(newData);
+        // notifyItemRangeInserted()或者notifyDataSetChanged().
+        selectTaskFriendAdapter.notifyItemRangeInserted(friendAll.size() - newData.size(), newData.size());
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -124,8 +163,13 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     public void response(UserFriendResponse userFriendResponse) {
         LocalLog.d(TAG, "UserFriendResponse() enter " + userFriendResponse.toString());
         if (userFriendResponse.getError() == 0) {
-            selectTaskFriendAdapter = new SelectTaskFriendAdapter(getContext(), userFriendResponse.getData().getData());
-            friendRecycler.setAdapter(selectTaskFriendAdapter);
+            pageCount = userFriendResponse.getData().getPagenation().getTotalPage();
+            LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
+            loadMore((ArrayList<UserFriendResponse.DataBeanX.DataBean>) userFriendResponse.getData().getData());
+            pageIndex++;
+            if (pageIndex <= pageCount) {
+                Presenter.getInstance(getContext()).getUserFiends(pageIndex, PAGE_SIZE, keyWord);
+            }
         } else if (userFriendResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

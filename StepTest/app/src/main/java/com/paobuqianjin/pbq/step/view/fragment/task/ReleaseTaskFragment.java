@@ -114,6 +114,7 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
     private TaskReleaseParam taskReleaseParam = new TaskReleaseParam();
     private String friends;
     LinearLayoutManager layoutManager;
+    FriendBundleData friendBundleData = null;
 
     @Override
     protected String title() {
@@ -155,9 +156,12 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
         recvRecycler = (RecyclerView) viewRoot.findViewById(R.id.recv_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recvRecycler.setNestedScrollingEnabled(false);
+        recvRecycler.setHasFixedSize(true);
         recvRecycler.setLayoutManager(layoutManager);
 
         addFriendDes = (TextView) viewRoot.findViewById(R.id.add_friend_des);
+        recvRecycler.addItemDecoration(new LikeUserAdapter.SpaceItemDecoration(10));
     }
 
     private TaskReleaseInterface taskReleaseInterface = new TaskReleaseInterface() {
@@ -207,6 +211,7 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
             case R.id.add_task_friend:
                 LocalLog.d(TAG, "添加任务好友");
                 Intent intent = new Intent();
+                intent.putExtra(getActivity().getPackageName(), friendBundleData);
                 intent.setClass(getActivity(), SelectFriendForTaskActivity.class);
                 startActivityForResult(intent, SELECT_FRIENDS);
                 break;
@@ -260,10 +265,9 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
             case SELECT_FRIENDS:
                 LocalLog.d(TAG, "添加数据成功");
                 if (data != null) {
-                    FriendBundleData friendBundleData = (FriendBundleData) data.getParcelableExtra(getActivity().getPackageName());
+                    friendBundleData = (FriendBundleData) data.getParcelableExtra(getActivity().getPackageName());
                     dataBeans = friendBundleData.getFriendData();
                     recvRecycler.setAdapter(new LikeUserAdapter(getContext(), dataBeans));
-                    recvRecycler.addItemDecoration(new LikeUserAdapter.SpaceItemDecoration(10));
                     String friends = "";
                     String sFriendFormat = getContext().getResources().getString(R.string.add_friend);
                     String sFriendNum = String.format(sFriendFormat, dataBeans.size());

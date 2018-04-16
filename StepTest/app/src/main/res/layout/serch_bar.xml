@@ -11,18 +11,20 @@
         android:background="@color/color_ebebed">
 
         <RelativeLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
-            android:background="@drawable/column">
+            android:background="@drawable/column"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
             <RelativeLayout
                 android:id="@+id/search_icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp">
+
                 <ImageView
                     android:layout_width="19dp"
                     android:layout_height="19dp"
@@ -43,9 +45,8 @@
                 android:layout_toRightOf="@+id/search_cancel"
                 android:background="@null"
                 android:focusable="true"
-                android:imeOptions="actionSearch"
                 android:focusableInTouchMode="true"
-                android:hint="输入圈子id、名称"
+                android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:maxLines="1"
                 android:singleLine="false"

@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -2368,8 +2369,12 @@ public final class Engine {
     }
 
     //TODO 获取任务可选择好友
-    public void getUserFriends() {
-        String url = NetApi.urlTaskRecord + "/getFriends?userid=" + getId(mContext);
+    public void getUserFriends(int pageIndex, int pagesize, String keyWord) {
+        String url = NetApi.urlTaskRecord + "/getFriends?userid=" + getId(mContext) + "&page="
+                + String.valueOf(pageIndex) + "&pagesize=" + String.valueOf(pagesize);
+        if (!TextUtils.isEmpty(keyWord)) {
+            url += "&keyword=" + keyWord;
+        }
         LocalLog.d(TAG, "getUserFriends() url = " + url);
         OkHttpUtils
                 .get()

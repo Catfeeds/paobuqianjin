@@ -44,7 +44,6 @@
             android:textSize="15dp" />
 
         <EditText
-            android:gravity="right"
             android:id="@+id/target_task_step_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,10 +51,11 @@
             android:layout_marginRight="6dp"
             android:layout_toLeftOf="@+id/go_to_target_step"
             android:background="@null"
+            android:gravity="right"
             android:hint="输入目标步数"
+            android:inputType="number"
             android:maxLength="6"
             android:maxLines="1"
-            android:inputType="number"
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
@@ -95,7 +95,6 @@
             android:textSize="15dp" />
 
         <EditText
-            android:gravity="right"
             android:id="@+id/target_task_money_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -103,10 +102,11 @@
             android:layout_marginRight="6dp"
             android:layout_toLeftOf="@+id/task_pay"
             android:background="@null"
+            android:gravity="right"
             android:hint="输入奖励金额"
+            android:inputType="numberDecimal"
             android:maxLength="6"
             android:maxLines="1"
-            android:inputType="numberDecimal"
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
@@ -146,7 +146,6 @@
             android:textSize="15dp" />
 
         <EditText
-            android:gravity="right"
             android:id="@+id/target_task_day_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -154,6 +153,7 @@
             android:layout_marginRight="6dp"
             android:layout_toLeftOf="@+id/task_day"
             android:background="@null"
+            android:gravity="right"
             android:hint="输入任务天数"
             android:inputType="number"
             android:maxLength="3"
@@ -237,7 +237,9 @@
         android:layout_height="40dp"
         android:layout_alignLeft="@+id/add_friend_des"
         android:layout_below="@+id/add_friend_des"
-        android:layout_marginTop="15dp">
+        android:layout_marginRight="34dp"
+        android:layout_marginTop="15dp"
+        android:overScrollMode="never">
 
     </android.support.v7.widget.RecyclerView>
 

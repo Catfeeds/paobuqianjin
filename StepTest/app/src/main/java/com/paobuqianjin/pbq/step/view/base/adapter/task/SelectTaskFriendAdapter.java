@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendSearchResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -31,15 +32,22 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
     private Context context;
     private List<UserFriendResponse.DataBeanX.DataBean> mData;
     private List<UserFriendResponse.DataBeanX.DataBean> resultData = new ArrayList<>();
+    private List<UserFriendResponse.DataBeanX.DataBean> sourceData;
 
     public List<UserFriendResponse.DataBeanX.DataBean> getResultData() {
         return resultData;
     }
 
-    public SelectTaskFriendAdapter(Context context, List<UserFriendResponse.DataBeanX.DataBean> data) {
+    public SelectTaskFriendAdapter(Context context, List<UserFriendResponse.DataBeanX.DataBean> data, List<UserFriendResponse.DataBeanX.DataBean> sourceData) {
         super();
         this.context = context;
         mData = data;
+        this.sourceData = sourceData;
+    }
+
+    public void notifyDataSetChanged(List<UserFriendResponse.DataBeanX.DataBean> data) {
+        this.mData = data;
+        super.notifyDataSetChanged();
     }
 
     @Override
@@ -49,9 +57,20 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
             holder.dearName.setText(((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.position = position;
             if (mData.get(position).getIs_distribute() == 1) {
-                holder.selectIcon.setBackground(ContextCompat.getDrawable(context,R.drawable.circle_out_uncheck));
+                holder.selectIcon.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_out_uncheck));
             } else {
                 holder.setOnClickListener();
+            }
+            if (sourceData != null) {
+                for (int i = 0; i < sourceData.size(); i++) {
+                    if (mData.get(position).getId() == sourceData.get(i).getId()) {
+                        LocalLog.d(TAG, "id =" + mData.get(position).getId() + "被选中过");
+                        holder.selectIcon.setImageResource(R.drawable.selected_icon);
+                        holder.isSelected = true;
+                        LocalLog.d(TAG, "非选中状态变为选中");
+                        resultData.add(mData.get(position));
+                    }
+                }
             }
         }
     }
@@ -84,6 +103,22 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
         public SelectTaskFriendViewHolder(View view) {
             super(view);
             initView(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (isSelected) {
+                        selectIcon.setImageDrawable(null);
+                        isSelected = false;
+                        LocalLog.d(TAG, "选中状态变为非选中");
+                        resultData.remove(mData.get(position));
+                    } else {
+                        selectIcon.setImageResource(R.drawable.selected_icon);
+                        isSelected = true;
+                        LocalLog.d(TAG, "非选中状态变为选中");
+                        resultData.add(mData.get(position));
+                    }
+                }
+            });
         }
 
         private void initView(View view) {

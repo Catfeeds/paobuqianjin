@@ -97,12 +97,12 @@ public class LikeUserAdapter extends RecyclerView.Adapter<LikeUserAdapter.LikeUs
             } else {
                 outRect.left = mSpace;
             }
-            if (parent.getChildAdapterPosition(view) == defaultValue - 1) {
+            /*if (parent.getChildAdapterPosition(view) == defaultValue - 1) {
                 outRect.right = 0;
                 LocalLog.d(TAG, "getItemOffsets() last set");
             } else {
                 outRect.right = mSpace;
-            }
+            }*/
         }
 
         public SpaceItemDecoration(int space) {

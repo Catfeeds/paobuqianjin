@@ -555,8 +555,8 @@ public final class Presenter {
     }
 
     //TODO 用户好友接口
-    public void getUserFiends() {
-        engine.getUserFriends();
+    public void getUserFiends(int pageIndex, int pagesize, String keyWord) {
+        engine.getUserFriends(pageIndex, pagesize,keyWord);
     }
 
     public void getFriendHonor(int page, int pagesize) {
