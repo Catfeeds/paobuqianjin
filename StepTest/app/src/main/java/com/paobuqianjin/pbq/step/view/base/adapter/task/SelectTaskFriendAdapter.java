@@ -56,7 +56,8 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
             Presenter.getInstance(context).getImage(holder.dearIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
             holder.dearName.setText(((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.position = position;
-            if (mData.get(position).getIs_distribute() == 1) {
+            holder.is_distrubute = mData.get(position).getIs_distribute();
+            if (holder.is_distrubute == 1) {
                 holder.selectIcon.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_out_uncheck));
             } else {
                 holder.setOnClickListener();
@@ -99,6 +100,7 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
         TextView dearName;
         boolean isSelected = false;
         int position = -1;
+        int is_distrubute = 0;
 
         public SelectTaskFriendViewHolder(View view) {
             super(view);
@@ -106,6 +108,9 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (is_distrubute == 1) {
+                        return;
+                    }
                     if (isSelected) {
                         selectIcon.setImageDrawable(null);
                         isSelected = false;

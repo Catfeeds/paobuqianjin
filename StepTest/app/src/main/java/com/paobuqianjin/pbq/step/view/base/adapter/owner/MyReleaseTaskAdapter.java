@@ -34,6 +34,11 @@ public class MyReleaseTaskAdapter extends RecyclerView.Adapter<MyReleaseTaskAdap
         mData = data;
     }
 
+    public void notifyDataSetChanged(List<?> data) {
+        this.mData = data;
+        super.notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(MyReleaseTaskViewHolder holder, int position) {
         updateListItem(holder, position);

@@ -3,22 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp">
-
+        android:layout_marginTop="18dp"
+        >
         <ImageView
             android:id="@+id/register_img_back"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:onClick="onTabLogin"
             android:layout_marginStart="14dp"
             android:background="@mipmap/back"
-            android:onClick="onTabLogin" />
-    </android.support.v7.widget.Toolbar>
 
+            />
+    </android.support.v7.widget.Toolbar>
     <TextView
         android:id="@+id/text_tile_login"
         android:layout_width="wrap_content"
@@ -33,11 +35,11 @@
         android:id="@+id/ll_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/text_tile_login"
         android:layout_marginEnd="50dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="71dp"
         android:orientation="vertical"
+        android:layout_below="@id/text_tile_login"
 
         >
 
@@ -50,38 +52,38 @@
                 android:id="@+id/login_sccounty_img"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginTop="20dp"
                 android:src="@drawable/login_sccounty"
+                android:layout_marginTop="20dp"
 
                 />
-
             <EditText
                 android:id="@+id/new_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:layout_marginTop="20dp"
                 android:layout_toRightOf="@id/login_sccounty_img"
-                android:background="@null"
-                android:drawablePadding="15dp"
                 android:hint="@string/login_phoneNum"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="15dp"
                 android:singleLine="true"
-                android:textSize="14dp" />
+                android:layout_marginRight="15dp"
+                android:drawablePadding="15dp"
+                android:background="@null"
+                android:textSize="14dp"
+                />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/new_account"
                 android:layout_marginTop="11dp"
+                android:layout_below="@id/new_account"
                 android:background="#d9d9d9" />
 
         </RelativeLayout>
 
         <RelativeLayout
+            android:layout_marginTop="2dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp">
+            android:layout_height="wrap_content">
 
 
             <!--    android:drawableLeft="@drawable/identifying_code"-->
@@ -91,18 +93,18 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/identifying_code" />
-
+                android:src="@drawable/identifying_code"
+                />
             <EditText
                 android:id="@+id/indntifying_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:background="@null"
                 android:layout_marginTop="20dp"
                 android:layout_toRightOf="@id/identify_code_img"
-                android:background="@null"
-                android:drawablePadding="15dp"
+                android:layout_marginLeft="15dp"
                 android:hint="@string/identifying_code"
+                android:drawablePadding="15dp"
                 android:singleLine="true"
                 android:textSize="14dp" />
 
@@ -112,26 +114,26 @@
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/change_color_btn"
-                android:enabled="false"
                 android:onClick="onViewClicked"
+                android:enabled="false"
+                android:background="@drawable/change_color_btn"
                 android:text="@string/recive_indetitying_code"
-                android:textColor="#ffffff"
-                android:textSize="14dp" />
+                android:layout_marginTop="8dp"
+                android:textSize="14dp"
+                android:textColor="#ffffff" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/get_code"
                 android:layout_marginTop="10dp"
+                android:layout_below="@id/get_code"
                 android:background="#d9d9d9" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:layout_height="wrap_content">
 
             <!--android:drawableLeft="@drawable/login_pwd"-->
             <ImageView
@@ -146,22 +148,23 @@
             <EditText
                 android:id="@+id/new_pwd"
                 android:layout_width="match_parent"
+                android:background="@null"
+                android:layout_toRightOf="@id/new_pwd_img"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
-                android:layout_toRightOf="@id/new_pwd_img"
-                android:background="@null"
-                android:drawablePadding="15dp"
-                android:hint="@string/login_phonePwd"
                 android:inputType="textPassword"
                 android:singleLine="true"
-                android:textSize="14dp" />
+                android:drawablePadding="15dp"
+                android:hint="@string/login_phonePwd"
+                android:textSize="14dp"
+                />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@id/new_pwd"
                 android:layout_marginTop="11dp"
+                android:layout_below="@id/new_pwd"
                 android:background="#d9d9d9" />
 
             <ImageView
@@ -170,9 +173,9 @@
                 android:layout_height="25dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="30dp"
-                android:layout_marginTop="10dp"
-                android:onClick="onViewClicked"
                 android:src="@drawable/register_eyes"
+                android:onClick="onViewClicked"
+                android:layout_marginTop="10dp"
 
                 />
         </RelativeLayout>
@@ -181,12 +184,12 @@
             android:id="@+id/new_btn_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
             android:background="@drawable/change_color_btn"
+            android:text="@string/action_sign_in"
             android:enabled="false"
             android:onClick="onViewClicked"
-            android:text="@string/action_sign_in"
             android:textColor="#ffffff"
+            android:layout_marginTop="30dp"
             android:textSize="18dp" />
     </LinearLayout>
 
@@ -196,26 +199,27 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/ll_login"
         android:layout_marginStart="20dp"
+        android:gravity="center"
         android:layout_marginTop="12dp"
-        android:gravity="center">
+        >
 
         <TextView
             android:id="@+id/read_xieyi"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/user_read"
+            android:textSize="12dp"
 
-            android:textSize="12dp" />
+            android:text="@string/user_read" />
 
         <ToggleButton
             android:id="@+id/user_read_choose"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/read_xieyi"
-            android:background="@drawable/nochoose"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:onClick="onViewClicked"
+            android:background="@drawable/nochoose"
             android:textOff=""
             android:textOn="" />
     </RelativeLayout>
