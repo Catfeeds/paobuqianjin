@@ -21,12 +21,15 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendWeekResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -67,7 +70,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     @Bind(R.id.line_dan)
     ImageView lineDan;
     @Bind(R.id.dan_detail_recycler)
-    SwipeMenuRecyclerView danDetailRecycler;
+    RecyclerView danDetailRecycler;
     @Bind(R.id.step_num_my)
     TextView stepNumMy;
     @Bind(R.id.bar_return_drawable)
@@ -77,7 +80,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     @Bind(R.id.rank_icon)
     ImageView rankIcon;
 
-    private int pageIndex = 1, pageCount = 0, pageIndexWeek = 1;
+    private int pageIndexDay = 1, pageCountDay = 0, pageIndexWeek = 1, pageCountWeek = 0;
     private final static int PAGE_DEFAULT_SIZE = 10;
     LinearLayoutManager layoutManager;
     FriendStepRankDayResponse friendStepRankDayResponse;
@@ -85,6 +88,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     private View popCircleOpBar;
     private PopupWindow popupOpWindowTop;
     private TranslateAnimation animationCircleType;
+    HonorDetailAdapter adapter;
 
     @Override
     protected int getLayoutResId() {
@@ -115,7 +119,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         headIconUser = (CircleImageView) viewRoot.findViewById(R.id.head_icon_user);
         userNameRank = (TextView) viewRoot.findViewById(R.id.user_name_rank);
         stepNumMy = (TextView) viewRoot.findViewById(R.id.step_num_my);
-        danDetailRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.dan_detail_recycler);
+        danDetailRecycler = (RecyclerView) viewRoot.findViewById(R.id.dan_detail_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         danDetailRecycler.setLayoutManager(layoutManager);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
@@ -129,10 +133,9 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         buttoneLeftBar = (RelativeLayout) viewRoot.findViewById(R.id.buttone_left_bar);
         buttoneLeftBar.setOnClickListener(onClickListener);
 
-        danDetailRecycler.setHasFixedSize(true);
-        danDetailRecycler.setNestedScrollingEnabled(false);
-        Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndex, PAGE_DEFAULT_SIZE);
+        Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndexDay, PAGE_DEFAULT_SIZE);
         Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
+
 
     }
 
@@ -198,13 +201,69 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
+    private void loadMoreDay(FriendStepRankDayResponse moreData) {
+        if (this.friendStepRankDayResponse == null) {
+            this.friendStepRankDayResponse = moreData;
+        } else {
+            friendStepRankDayResponse.getData().getData().getMember().addAll(moreData.getData().getData().getMember());
+            if (adapter == null) {
+                return;
+            }
+            adapter.notifyItemRangeInserted(friendStepRankDayResponse.getData().getData().getMember().size()
+                            - moreData.getData().getData().getMember().size()
+                    , moreData.getData().getData().getMember().size());
+        }
+
+    }
+
+
+    private void loadMoreWeek(FriendWeekResponse moreData) {
+        if (this.friendWeekResponse == null) {
+            this.friendWeekResponse = moreData;
+        } else {
+            friendWeekResponse.getData().getData().getMember().addAll(moreData.getData().getData().getMember());
+            if (adapter == null) {
+                return;
+            }
+            adapter.notifyItemRangeInserted(friendWeekResponse.getData().getData().getMember().size()
+                            - moreData.getData().getData().getMember().size()
+                    , moreData.getData().getData().getMember().size());
+        }
+    }
 
     @Override
     public void response(FriendStepRankDayResponse friendStepRankDayResponse) {
         LocalLog.d(TAG, "FriendStepRankDayResponse() enter" + friendStepRankDayResponse.toString());
         if (friendStepRankDayResponse.getError() == 0) {
-            this.friendStepRankDayResponse = friendStepRankDayResponse;
-            updateFriendStepRankDayResponse(friendStepRankDayResponse);
+            if (this.friendStepRankDayResponse == null) {
+                this.friendStepRankDayResponse = friendStepRankDayResponse;
+                pageCountDay = friendStepRankDayResponse.getData().getPagenation().getTotalPage();
+                LocalLog.d(TAG, "pageIndexDay = " + pageIndexDay + "pageIndexDay = " + pageCountDay);
+                //adapter.notifyDataSetChanged(friendStepRankDayResponse.getData().getData().getMember());
+                if (userNameRank == null) {
+                    return;
+                }
+                userNameRank.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getNickname()));
+                yourDan.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getRank()));
+                stepNumMy.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
+                Presenter.getInstance(getContext()).getImage(headIconUser, friendStepRankDayResponse.getData().getData().getMydata().getAvatar());
+                adapter = new HonorDetailAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember());
+                danDetailRecycler.setAdapter(adapter);
+                if (pageIndexDay == pageCountDay) {
+
+                } else if (pageIndexDay < pageCountDay) {
+                    pageIndexDay++;
+                    Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndexDay, PAGE_DEFAULT_SIZE);
+                }
+            } else {
+                LocalLog.d(TAG, "加载到更多数据....");
+                loadMoreDay(friendStepRankDayResponse);
+                if (pageIndexDay < pageCountDay) {
+                    pageIndexDay++;
+                    Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndexDay, PAGE_DEFAULT_SIZE);
+                }
+            }
+
         } else if (friendStepRankDayResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -235,7 +294,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
             yourDan.setText(String.valueOf(friendWeekResponse.getData().getData().getMydata().getRank()));
             stepNumMy.setText(String.valueOf(friendWeekResponse.getData().getData().getMydata().getStep_number()));
             Presenter.getInstance(getContext()).getImage(headIconUser, friendWeekResponse.getData().getData().getMydata().getAvatar());
-            if (friendStepRankDayResponse.getData().getData().getMember().size() > 0) {
+            if (friendWeekResponse.getData().getData().getMember().size() > 0) {
                 Presenter.getInstance(getContext()).getImage(kingHeadIcon, friendWeekResponse.getData().getData().getMember().get(0).getAvatar());
                 kingName.setText(friendWeekResponse.getData().getData().getMember().get(0).getNickname());
             }
@@ -247,7 +306,28 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     public void response(FriendWeekResponse friendWeekResponse) {
         LocalLog.d(TAG, "FriendWeekResponse() enter" + friendWeekResponse.toString());
         if (friendWeekResponse.getError() == 0) {
-            this.friendWeekResponse = friendWeekResponse;
+            if (this.friendWeekResponse == null) {
+                this.friendWeekResponse = friendWeekResponse;
+                pageCountWeek = friendWeekResponse.getData().getPagenation().getTotalPage();
+                LocalLog.d(TAG, "pageIndexWeek = " + pageIndexWeek + "pageCountWeek = " + pageCountWeek);
+                //adapter.notifyDataSetChanged(friendWeekResponse.getData().getData().getMember());
+                adapter = new HonorDetailAdapter(getContext(), friendWeekResponse.getData().getData().getMember());
+                danDetailRecycler.setAdapter(adapter);
+                danDetailRecycler.setAdapter(adapter);
+                if (pageIndexWeek == pageCountWeek) {
+
+                } else if (pageIndexWeek < pageCountWeek) {
+                    pageIndexWeek++;
+                    Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
+                }
+            } else {
+                LocalLog.d(TAG, "加载到更多数据....");
+                loadMoreWeek(friendWeekResponse);
+                if (pageIndexWeek < pageCountWeek) {
+                    pageIndexWeek++;
+                    Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
+                }
+            }
         } else if (friendWeekResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

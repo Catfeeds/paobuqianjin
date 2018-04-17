@@ -164,8 +164,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/income_today"
                 android:text="￥0.00"
+                android:layout_marginLeft="10dp"
                 android:textColor="@color/color_f8"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
         </RelativeLayout>
 
         <ImageView
@@ -197,10 +198,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/income_month"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:text="￥0.00"
                 android:textColor="@color/color_f8"
-                android:textSize="18dp" />
+                android:textSize="16dp" />
         </RelativeLayout>
     </RelativeLayout>
     <!--<RelativeLayout-->
@@ -466,7 +467,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/weather_icon"
             android:layout_below="@+id/weather_icon"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="6dp"
             android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="深圳"
@@ -484,8 +485,8 @@
 
         <ImageView
             android:id="@+id/scan_mark_home"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:paddingRight="5dp"
             android:scaleType="centerCrop"
@@ -501,10 +502,10 @@
     <com.paobuqianjin.pbq.step.view.base.view.WaveView
         android:id="@+id/wave_view"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-
-        android:layout_above="@id/bottom_background"
-        android:layout_marginTop="10dp" />
+        android:layout_height="210dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentBottom="true"
+        />
 
     <RelativeLayout
         android:id="@+id/bottom_background"
@@ -512,8 +513,7 @@
         android:layout_height="190dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@color/white">
-
+    >
 
         <ImageView
             android:id="@+id/out_red_pkg_image"
@@ -545,7 +545,7 @@
             android:layout_width="10dp"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/out_red_pkg_image"
-            android:background="@color/white" />
+            />
 
         <ImageView
             android:id="@+id/create_circle_image"

@@ -22,8 +22,9 @@ public class ProcessDanDrawable extends Drawable {
     private Paint mPaint;
     private final static int REDRAW = 0;
     private float processLength = 0;
-    private float CurrentLength = 0;
+    private float currentLength = 0;
     private float width;
+    private float widthMax;
 
     @Override
     public void setAlpha(int i) {
@@ -43,6 +44,11 @@ public class ProcessDanDrawable extends Drawable {
     @Override
     public void setColorFilter(int color, @NonNull PorterDuff.Mode mode) {
         super.setColorFilter(color, mode);
+    }
+
+    public ProcessDanDrawable setMaxLength(float widthMax) {
+        this.widthMax = widthMax;
+        return this;
     }
 
     public ProcessDanDrawable setLength(float processLength, float width) {
@@ -67,9 +73,9 @@ public class ProcessDanDrawable extends Drawable {
             super.handleMessage(msg);
             switch (msg.what) {
                 case REDRAW:
-                    CurrentLength += processLength / 500;
-                    LocalLog.d(TAG, "CurrentLength = " + CurrentLength);
-                    if (CurrentLength <= processLength) {
+                    currentLength += processLength / 500;
+                    LocalLog.d(TAG, "currentLength = " + currentLength);
+                    if (currentLength <= processLength) {
                         ProcessDanDrawable.this.invalidateSelf();
                         sendEmptyMessage(REDRAW);
                     }
@@ -80,6 +86,11 @@ public class ProcessDanDrawable extends Drawable {
 
     @Override
     public void draw(@NonNull Canvas canvas) {
-        canvas.drawLine(0 + width / 2, width / 2, CurrentLength, width / 2, mPaint);
+        if (currentLength < widthMax - width / 2) {
+            canvas.drawLine(0 + width / 2, width / 2, currentLength, width / 2, mPaint);
+        } else {
+            canvas.drawLine(0 + width / 2, width / 2, widthMax - width / 2, width / 2, mPaint);
+        }
+
     }
 }

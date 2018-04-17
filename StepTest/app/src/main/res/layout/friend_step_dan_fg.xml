@@ -8,153 +8,147 @@
         android:id="@+id/friend_dan"
         layout="@layout/bar_return_style_e" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
+
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/friend_dan">
+        android:layout_below="@+id/friend_dan"
+        android:overScrollMode="never">
 
-        <ScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:overScrollMode="never">
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/bg_dan"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/dan_detail_bg" />
+
+            <RelativeLayout
+                android:id="@+id/king_head_layer"
+                android:layout_width="79dp"
+                android:layout_height="91dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/king_head_icon"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    app:civ_border_color="#FFd8d9f0"
+                    app:civ_border_width="2dp" />
+
+                <ImageView
+                    android:id="@+id/dan_king"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/dan_king" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/king_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/king_head_layer"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:ellipsize="end"
+                android:maxEms="16"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/color_f8"
+                android:textSize="16dp" />
+
+            <RelativeLayout
+                android:id="@+id/your_dan_layer"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_below="@+id/bg_dan">
+
+                <ImageView
+                    android:id="@+id/rank_icon"
+                    android:layout_width="19dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/honor_master"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:id="@+id/your_dan"
+                    android:layout_width="19dp"
+                    android:layout_height="24dp"
+                    android:layout_alignBottom="@+id/rank_icon"
+                    android:layout_alignLeft="@+id/rank_icon"
+                    android:layout_alignTop="@+id/rank_icon"
+                    android:gravity="center"
+                    android:text=""
+                    android:textColor="@color/color_161727" />
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/head_icon_user"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toEndOf="@+id/your_dan" />
+
+                <TextView
+                    android:id="@+id/user_name_rank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toEndOf="@+id/head_icon_user"
+                    android:ellipsize="end"
+                    android:maxEms="8"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/color_161727"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/step_num_my"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:text=""
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/line_dan"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/your_dan_layer"
+                android:background="@color/color_f3f3f5" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line_dan"
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/bg_dan"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/dan_detail_recycler"
                     android:layout_width="match_parent"
-                    android:layout_height="170dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/dan_detail_bg" />
+                    android:layout_height="wrap_content">
 
-                <RelativeLayout
-                    android:id="@+id/king_head_layer"
-                    android:layout_width="79dp"
-                    android:layout_height="91dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="30dp">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/king_head_icon"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentStart="true"
-                        app:civ_border_color="#FFd8d9f0"
-                        app:civ_border_width="2dp" />
-
-                    <ImageView
-                        android:id="@+id/dan_king"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/dan_king" />
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/king_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/king_head_layer"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp"
-                    android:ellipsize="end"
-                    android:maxEms="16"
-                    android:singleLine="true"
-                    android:text=""
-                    android:textColor="@color/color_f8"
-                    android:textSize="16dp" />
-
-                <RelativeLayout
-                    android:id="@+id/your_dan_layer"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:layout_below="@+id/bg_dan">
-
-                    <ImageView
-                        android:id="@+id/rank_icon"
-                        android:layout_width="19dp"
-                        android:layout_height="24dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
-                        android:src="@drawable/honor_master"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:id="@+id/your_dan"
-                        android:layout_width="19dp"
-                        android:layout_height="24dp"
-                        android:layout_alignBottom="@+id/rank_icon"
-                        android:layout_alignLeft="@+id/rank_icon"
-                        android:layout_alignTop="@+id/rank_icon"
-                        android:gravity="center"
-                        android:text=""
-                        android:textColor="@color/color_161727" />
-
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/head_icon_user"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
-                        android:layout_toEndOf="@+id/your_dan" />
-
-                    <TextView
-                        android:id="@+id/user_name_rank"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
-                        android:layout_toEndOf="@+id/head_icon_user"
-                        android:ellipsize="end"
-                        android:maxEms="8"
-                        android:singleLine="true"
-                        android:text=""
-                        android:textColor="@color/color_161727"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/step_num_my"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="15dp"
-                        android:text=""
-                        android:textColor="@color/color_161727"
-                        android:textSize="15dp" />
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/line_dan"
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_below="@+id/your_dan_layer"
-                    android:background="@color/color_f3f3f5" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/line_dan"
-                    android:descendantFocusability="blocksDescendants"
-                    android:orientation="vertical">
-
-                    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-                        android:id="@+id/dan_detail_recycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
-                </RelativeLayout>
-
+                </android.support.v7.widget.RecyclerView>
             </RelativeLayout>
-        </ScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
 
-
+        </RelativeLayout>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 </RelativeLayout>

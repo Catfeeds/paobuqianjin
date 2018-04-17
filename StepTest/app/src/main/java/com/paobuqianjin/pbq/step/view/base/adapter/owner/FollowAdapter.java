@@ -12,10 +12,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 
@@ -115,6 +117,44 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             initView(view);
         }
 
+        private InnerCallBack innerCallBack = new InnerCallBack() {
+            @Override
+            public void innerCallBack(Object object) {
+                if (object instanceof AddDeleteFollowResponse) {
+                    if (((AddDeleteFollowResponse) object).getMessage().equals("取消关注成功")) {
+                        LocalLog.d(TAG, "取消关注");
+                        switch (btFollow.getText().toString()) {
+                            case "关注":
+                                break;
+                            case "已关注":
+                                mData.remove(getAdapterPosition());
+                                notifyItemRemoved(getAdapterPosition());
+                                break;
+                            case "互相关注":
+                                mData.remove(getAdapterPosition());
+                                notifyItemRemoved(getAdapterPosition());
+                                break;
+                        }
+                    } else {
+                        LocalLog.d(TAG, "关注");
+                        switch (btFollow.getText().toString()) {
+                            case "关注":
+                                mData.remove(getAdapterPosition());
+                                notifyItemRemoved(getAdapterPosition());
+                                break;
+                            case "已关注":
+                                mData.remove(getAdapterPosition());
+                                notifyItemRemoved(getAdapterPosition());
+                                break;
+                            case "互相关注":
+                                mData.remove(getAdapterPosition());
+                                notifyItemRemoved(getAdapterPosition());
+                                break;
+                        }
+                    }
+                }
+            }
+        };
         private View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,6 +168,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
                         break;
                     case R.id.bt_follow:
                         LocalLog.d(TAG, "style = " + stytle + ",content " + btFollow.getText());
+                        Presenter.getInstance(context).postAddUserFollow(innerCallBack, userid);
                         break;
                 }
             }

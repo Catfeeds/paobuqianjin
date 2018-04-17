@@ -201,7 +201,10 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
                     int width = processBar.getWidth();
                     int height = processBar.getHeight();
                     LocalLog.d(TAG, "width = " + width + ",height = " + height);
-                    processBar.setImageDrawable(new ProcessDanDrawable().setLength(width * percents, height));
+                    if (width <= width * percents) {
+
+                    }
+                    processBar.setImageDrawable(new ProcessDanDrawable().setMaxLength(width).setLength(width * percents, height));
                 }
             });
             String percentFormat = getString(R.string.percent);

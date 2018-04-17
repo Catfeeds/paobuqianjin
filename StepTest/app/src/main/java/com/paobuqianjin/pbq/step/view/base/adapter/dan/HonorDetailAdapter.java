@@ -35,6 +35,11 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
         mData = data;
     }
 
+    public void notifyDataSetChanged(List<?> data) {
+        this.mData = data;
+        super.notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(HonorAdapterViewHolder holder, int position) {
         updateListItem(holder, position);

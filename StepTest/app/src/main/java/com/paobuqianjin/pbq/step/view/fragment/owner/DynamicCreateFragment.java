@@ -118,7 +118,8 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private String cachePath;
     private final int REQUEST_CODE = 111;
-    List<ImageBean> mResultList = null;
+    List<ImageBean> mResultList = new ArrayList<>();
+    private int picIndex = 0;
 
     @Override
     protected String title() {
@@ -234,20 +235,23 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pic_a:
-                selectPicture(0);
+                picIndex = 0;
+                selectPicture(picIndex);
                 break;
             case R.id.pic_b:
-                selectPicture(1);
+                picIndex = 1;
+                selectPicture(picIndex);
                 break;
             case R.id.pic_c:
-                selectPicture(2);
+                picIndex = 2;
+                selectPicture(picIndex);
                 break;
             case R.id.pic_d:
-                selectPicture(3);
+                picIndex = 3;
+                selectPicture(picIndex);
                 break;
             case R.id.location_span:
                 LocalLog.d(TAG, "开启定位");
-
                 break;
         }
     }
@@ -324,9 +328,10 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
             LocalLog.d(TAG, "content = " + content);
             if (resultList != null) {
                 int size = resultList.size();
-                LocalLog.d(TAG, "size = " + size);
+                LocalLog.d(TAG, "size = " + size + ",mResultList size = " + mResultList.size());
                 mResultList = resultList;
                 if (size == 1) {
+                    //TODO a bug
                     showA(resultList.get(0).getImagePath());
                 } else if (size == 2) {
                     showA(resultList.get(0).getImagePath());
@@ -345,6 +350,11 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
             }
             return;
         }
+    }
+
+
+    private void addResult(int pageIndex, int size) {
+
     }
 
     private void showA(String imagePath) {

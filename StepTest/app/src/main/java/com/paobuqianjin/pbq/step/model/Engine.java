@@ -1978,6 +1978,30 @@ public final class Engine {
                 .execute(new NetStringCallBack(addDeleteFollowInterface, COMMAND_ADD_DELETE_FOLLOW));
     }
 
+    public void postAddUserFollow(final InnerCallBack innerCallBack,final int followid) {
+        OkHttpUtils
+                .post()
+                .addHeader("headtoken", getToken(mContext))
+                .url(NetApi.urlUserFollow)
+                .addParams("userid", String.valueOf(getId(mContext)))
+                .addParams("followid", String.valueOf(followid))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        AddDeleteFollowResponse addDeleteFollowResponse = new Gson().fromJson(s, AddDeleteFollowResponse.class);
+                        if (innerCallBack != null) {
+                            innerCallBack.innerCallBack(addDeleteFollowResponse);
+                        }
+                    }
+                });
+    }
+
     public void postUserStatus(final Button button, int followid) {
         LocalLog.d(TAG, "followid =   " + followid);
         OkHttpUtils

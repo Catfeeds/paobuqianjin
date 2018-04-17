@@ -550,13 +550,17 @@ public final class Presenter {
         engine.postAddUserFollow(queryFollowStateParam);
     }
 
+    public void postAddUserFollow(final InnerCallBack innerCallBack, final int followid) {
+        engine.postAddUserFollow(innerCallBack, followid);
+    }
+
     public void postUserStatus(Button button, int followid) {
         engine.postUserStatus(button, followid);
     }
 
     //TODO 用户好友接口
     public void getUserFiends(int pageIndex, int pagesize, String keyWord) {
-        engine.getUserFriends(pageIndex, pagesize,keyWord);
+        engine.getUserFriends(pageIndex, pagesize, keyWord);
     }
 
     public void getFriendHonor(int page, int pagesize) {
