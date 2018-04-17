@@ -43,6 +43,11 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<ReleaseRecordAdap
         }
     }
 
+    public void notifyDataSetChanged(List<?> data) {
+        this.mData = data;
+        super.notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(ReleaseRecordViewHolder holder, int position) {
         updateListItem(holder, position);

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -145,7 +146,7 @@ public class MyReleaseDetailFragment extends BaseBarStyleTextViewFragment implem
             releaseTarget.setText(releaseTargetStr);
 
             releaseLiveRules.setText("任务规则:" + myReleaseTaskDetailResponse.getData().getTask().getTask_rule());
-            num1.setText(myReleaseTaskDetailResponse.getData().getTask().getTask_desc());
+            num1.setText(Html.fromHtml(myReleaseTaskDetailResponse.getData().getTask().getTask_desc()));
             taskDetailRecycler.setAdapter(new MyTaskDetailStateAdapter(getContext(), myReleaseTaskDetailResponse.getData().getTask_record()));
         } else if (myReleaseTaskDetailResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
