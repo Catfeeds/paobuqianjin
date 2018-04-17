@@ -26,13 +26,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lwkandroid.imagepicker.ImagePicker;
-import com.lwkandroid.imagepicker.data.ImagePickType;
-import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -41,8 +39,6 @@ import com.paobuqianjin.pbq.step.view.activity.FillInviteCodeActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.InviteDanAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
-import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
-import com.paobuqianjin.pbq.step.view.base.view.CustomViewPager;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -94,6 +90,10 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     private SHARE_MEDIA share_media;
     private ProgressDialog dialog;
     private UMWeb web;
+    private int pageIndexDan = 1, pageCountDan = 0;
+    private final static int PAGE_SIZE = 10;
+    InviteDanAdapter adapter;
+    private ArrayList<InviteDanResponse.DataBeanX.DataBean> inviteDan = new ArrayList<>();
 
     @Override
     protected int getLayoutResId() {
@@ -116,7 +116,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getInviteDan(1, 10);
+        Presenter.getInstance(getContext()).getInviteDan(pageIndexDan, PAGE_SIZE);
         Presenter.getInstance(getContext()).getMyInviteMsg();
         return rootView;
     }
@@ -158,6 +158,10 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         web.setTitle("跑步钱进");
         web.setThumb(new UMImage(getContext(), R.mipmap.app_icon));
         web.setDescription("邀请好友");
+        adapter = new InviteDanAdapter(getContext(), null);
+        inviteDanFragment.setDanAdapter(adapter);
+        loadData(inviteDan);
+
     }
 
 
@@ -322,6 +326,21 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     }
 
 
+    private void loadMore(ArrayList<InviteDanResponse.DataBeanX.DataBean> newData) {
+        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        inviteDan.addAll(newData);
+        // notifyItemRangeInserted()或者notifyDataSetChanged().
+        adapter.notifyItemRangeInserted(inviteDan.size() - newData.size(), newData.size());
+    }
+
+    /**
+     * 第一次加载数据。
+     */
+    private void loadData(ArrayList<InviteDanResponse.DataBeanX.DataBean> dataBeans) {
+        adapter.notifyDataSetChanged(dataBeans);
+    }
+
+
     @Override
     public void response(MyInviteResponse myInviteResponse) {
         LocalLog.d(TAG, "MyInviteResponse() enter " + myInviteResponse.toString());
@@ -335,7 +354,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
-        }else {
+        } else {
             Toast.makeText(getContext(), myInviteResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -344,7 +363,13 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     public void response(InviteDanResponse inviteDanResponse) {
         LocalLog.d(TAG, "InviteDanResponse() enter " + inviteDanResponse.toString());
         if (inviteDanResponse.getError() == 0) {
-            inviteDanFragment.setDanAdapter(new InviteDanAdapter(getContext(), inviteDanResponse.getData().getData()));
+            pageCountDan = inviteDanResponse.getData().getPagenation().getTotalPage();
+            LocalLog.d(TAG, "pageIndex = " + pageIndexDan + "pageCount = " + pageCountDan);
+            loadMore((ArrayList<InviteDanResponse.DataBeanX.DataBean>) inviteDanResponse.getData().getData());
+            pageIndexDan++;
+            if (pageIndexDan <= pageCountDan) {
+                Presenter.getInstance(getContext()).getInviteDan(pageIndexDan, PAGE_SIZE);
+            }
         } else if (inviteDanResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -352,7 +377,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
-        }else{
+        } else {
             Toast.makeText(getContext(), inviteDanResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }

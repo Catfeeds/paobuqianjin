@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 
 import java.util.List;
@@ -34,6 +35,12 @@ public class InviteDanAdapter extends RecyclerView.Adapter<InviteDanAdapter.Invi
     public void onBindViewHolder(InviteDanViewHolder holder, int position) {
         updateListItem(holder, position);
     }
+
+    public void notifyDataSetChanged(List<InviteDanResponse.DataBeanX.DataBean> data) {
+        this.mData = data;
+        super.notifyDataSetChanged();
+    }
+
 
     private void updateListItem(InviteDanViewHolder holder, int position) {
         if (mData.get(position) instanceof InviteDanResponse.DataBeanX.DataBean) {

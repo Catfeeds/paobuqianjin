@@ -147,7 +147,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
-        }else{
+        } else {
             Toast.makeText(getContext(), releaseDynamicResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -234,7 +234,16 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pic_a:
-                selectPicture();
+                selectPicture(0);
+                break;
+            case R.id.pic_b:
+                selectPicture(1);
+                break;
+            case R.id.pic_c:
+                selectPicture(2);
+                break;
+            case R.id.pic_d:
+                selectPicture(3);
                 break;
             case R.id.location_span:
                 LocalLog.d(TAG, "开启定位");
@@ -243,7 +252,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         }
     }
 
-    private void selectPicture() {
+    private void selectPicture(final int index) {
         popupCircleTypeView = View.inflate(getContext(), R.layout.select_camera_pic, null);
         popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
                 WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
@@ -278,7 +287,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                 LocalLog.d(TAG, "相册");
                 new ImagePicker()
                         .pickType(ImagePickType.MULTI)//设置选取类型(拍照、单选、多选)
-                        .maxNum(4)//设置最大选择数量(拍照和单选都是1，修改后也无效)
+                        .maxNum(4 - index)//设置最大选择数量(拍照和单选都是1，修改后也无效)
                         .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
                         .cachePath(cachePath)//自定义缓存路径
                         .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器

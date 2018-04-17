@@ -26,6 +26,7 @@ public class InviteDanFragment extends BaseFragment {
     @Bind(R.id.invite_dan_recycler)
     RecyclerView inviteDanRecycler;
     LinearLayoutManager layoutManager;
+    InviteDanAdapter inviteDanAdapter;
 
     @Override
     protected int getLayoutResId() {
@@ -41,7 +42,9 @@ public class InviteDanFragment extends BaseFragment {
     }
 
     public void setDanAdapter(InviteDanAdapter inviteDanAdapter) {
-        inviteDanRecycler.setAdapter(inviteDanAdapter);
+        if (inviteDanAdapter != null) {
+            this.inviteDanAdapter = inviteDanAdapter;
+        }
     }
 
     @Override
@@ -51,6 +54,9 @@ public class InviteDanFragment extends BaseFragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         inviteDanRecycler = (RecyclerView) viewRoot.findViewById(R.id.invite_dan_recycler);
         inviteDanRecycler.setLayoutManager(layoutManager);
+        if (inviteDanAdapter != null) {
+            inviteDanRecycler.setAdapter(inviteDanAdapter);
+        }
     }
 
     @Override
