@@ -281,8 +281,8 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         mHandler = new Handler(getMainLooper());
         Presenter.getInstance(this).getCircleTarget();
         qServiceCfg = QServiceCfg.instance(this);
-        createCircleBodyParam.setIs_pwd(0);
-        createCircleBodyParam.setIs_recharge(0);
+        createCircleBodyParam.setIs_pwd(1);
+        createCircleBodyParam.setIs_recharge(1);
 
         dialog = new ProgressDialog(this);
 
@@ -631,16 +631,13 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 break;
             case R.id.create_circle_confim:
                 LocalLog.d(TAG, "创建圈子");
+                if (!checkcreateCircleBodyParam()) {
+                    return;
+                }
                 if (localAvatar != null) {
-                    if (!Utils.isMobile(createCircleBodyParam.getMobile())) {
-                        Toast.makeText(this, "请填写正确的手机号", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
                     LogoUpTask logoUpTask = new LogoUpTask();
                     logoUpTask.execute(localAvatar);
                 }
-
                 break;
             case R.id.logo_circle_pan:
                 LocalLog.d(TAG, "上传圈子logo");
@@ -766,6 +763,11 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             return false;
         }
         createCircleBodyParam.setMobile(circlePhoneNumEditor.getText().toString());
+        if (!Utils.isMobile(createCircleBodyParam.getMobile())) {
+
+            Toast.makeText(this, "请填写正确的手机号", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         if (circlePhoneNumEditor.getText() == null || circlePhoneNumEditor.getText().toString().equals("")) {
             Toast.makeText(this, "请输入正确手机号码", Toast.LENGTH_SHORT).show();
             return false;

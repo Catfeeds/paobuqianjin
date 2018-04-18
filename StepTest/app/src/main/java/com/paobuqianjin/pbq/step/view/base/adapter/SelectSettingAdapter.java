@@ -32,7 +32,7 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
     public SelectSettingAdapter(Context context, ArrayList<String> data) {
         this.context = context;
         this.data = data;
-}
+    }
 
     @Override
     public void onBindViewHolder(SelectItemViewHolder holder, int position) {
@@ -57,7 +57,10 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
     }
 
     public String getSelectContent() {
-        return data.get(selectPosition);
+        if (data != null) {
+            return data.get(selectPosition);
+        }
+        return null;
     }
 
     @TargetApi(19)
@@ -65,11 +68,11 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
     public void onBindViewHolder(SelectItemViewHolder holder, int position, List<Object> payloads) {
         LocalLog.d(TAG, "onBindViewHolder() payloads position " + position + " selectPosition= " + selectPosition);
         if (selectPosition == position) {
-            holder.selectContent.setTextColor(ContextCompat.getColor(context,R.color.color_161727));
+            holder.selectContent.setTextColor(ContextCompat.getColor(context, R.color.color_161727));
             holder.selectContent.setTextSize(19.0f);
             holder.selectContent.setText(data.get(position));
         } else {
-            holder.selectContent.setTextColor(ContextCompat.getColor(context,R.color.color_8a8a8a));
+            holder.selectContent.setTextColor(ContextCompat.getColor(context, R.color.color_8a8a8a));
             holder.selectContent.setTextSize(18.0f);
             holder.selectContent.setText(data.get(position));
         }

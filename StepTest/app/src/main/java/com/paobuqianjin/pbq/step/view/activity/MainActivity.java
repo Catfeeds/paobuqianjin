@@ -13,8 +13,6 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
-import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
@@ -27,7 +25,6 @@ import com.paobuqianjin.pbq.step.view.fragment.task.TaskFragment;
 
 public class MainActivity extends BaseActivity {
     private final static String TAG = MainActivity.class.getSimpleName();
-    private boolean stepServiceBind = false;
     //Fragment页面索引
     private HomePageFragment mHomePageFragment;
     private HonorFragment mHonorFragment;
@@ -129,8 +126,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Presenter.getInstance(this).bindService(StepService.START_STEP_ACTION, StepService.class);
-        stepServiceBind = true;
     }
 
     public void onTabSelect(View view) {
@@ -200,9 +195,6 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (stepServiceBind) {
-            Presenter.getInstance(this).unbindStepService();
-        }
     }
 
 

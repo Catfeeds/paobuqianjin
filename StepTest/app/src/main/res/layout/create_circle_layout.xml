@@ -220,7 +220,7 @@
                     android:gravity="right"
                     android:hint="请输入充值金额"
                     android:inputType="numberDecimal"
-                    android:maxLength="10"
+                    android:maxLength="11"
                     android:maxLines="1"
                     android:textColor="@color/color_161727"
                     android:textCursorDrawable="@null"
