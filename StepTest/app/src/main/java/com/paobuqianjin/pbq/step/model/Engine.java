@@ -121,6 +121,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.view.PicassoTransformation;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -1978,7 +1979,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(addDeleteFollowInterface, COMMAND_ADD_DELETE_FOLLOW));
     }
 
-    public void postAddUserFollow(final InnerCallBack innerCallBack,final int followid) {
+    public void postAddUserFollow(final InnerCallBack innerCallBack, final int followid) {
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))

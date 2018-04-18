@@ -21,50 +21,6 @@
             android:layout_marginTop="-24dp"
             android:fitsSystemWindows="true">
 
-            <!--        <RelativeLayout
-                        android:id="@+id/style_circle_pan"
-                        android:layout_width="match_parent"
-                        android:layout_height="49dp">
-
-                        <TextView
-                            android:id="@+id/circle_style_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="14dp"
-                            android:text="圈子类型"
-                            android:textColor="@color/color_161727"
-                            android:textSize="14sp" />
-
-                        <ImageView
-                            android:id="@+id/switch_style"
-                            android:layout_width="13dp"
-                            android:layout_height="7dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="14dp"
-                            android:src="@drawable/menu_age" />
-
-                        <TextView
-                            android:id="@+id/cir_cle_style"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="14dp"
-                            android:layout_toLeftOf="@+id/switch_style"
-                            android:text="个人圈子"
-                            android:textColor="@color/color_161727"
-                            android:textSize="12sp" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="1dp"
-                            android:layout_alignLeft="@+id/circle_style_text"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentEnd="true"
-                            android:background="@color/color_ebebed" />
-                    </RelativeLayout>-->
-
             <RelativeLayout
                 android:id="@+id/name_circle_span"
                 android:layout_width="wrap_content"
@@ -91,7 +47,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:background="@null"
-                    android:textCursorDrawable="@null"
                     android:cursorVisible="true"
                     android:focusable="true"
                     android:gravity="right"
@@ -99,6 +54,7 @@
                     android:inputType="text"
                     android:lines="1"
                     android:maxLength="32"
+                    android:textCursorDrawable="@null"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -143,7 +99,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:layout_toLeftOf="@+id/switch_stand"
-                    android:text="6000"
+                    android:text=""
                     android:textColor="@color/color_161727"
                     android:textSize="12dp" />
             </RelativeLayout>
@@ -180,16 +136,16 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
-                    android:textCursorDrawable="@null"
-                    android:cursorVisible="true"
                     android:background="@null"
+                    android:cursorVisible="true"
                     android:focusable="true"
                     android:gravity="right"
                     android:hint="必填"
                     android:inputType="phone"
                     android:lines="1"
-                    android:maxLength="14"
+                    android:maxLength="11"
                     android:textColor="@color/color_161727"
+                    android:textCursorDrawable="@null"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -242,8 +198,7 @@
                 android:layout_height="49dp"
                 android:layout_below="@+id/circle_start_money"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:visibility="gone">
+                android:focusableInTouchMode="true">
 
                 <TextView
                     android:id="@+id/money_num_text"
@@ -260,15 +215,15 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
                     android:background="@null"
-                    android:focusable="true"
-                    android:textCursorDrawable="@null"
-                    android:gravity="right"
                     android:cursorVisible="true"
+                    android:focusable="true"
+                    android:gravity="right"
                     android:hint="请输入充值金额"
                     android:inputType="numberDecimal"
-                    android:maxLength="6"
+                    android:maxLength="10"
                     android:maxLines="1"
                     android:textColor="@color/color_161727"
+                    android:textCursorDrawable="@null"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -286,8 +241,7 @@
                 android:layout_height="49dp"
                 android:layout_below="@+id/money_mum_pan"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:visibility="gone">
+                android:focusableInTouchMode="true">
 
                 <TextView
                     android:id="@+id/read_package_num_text"
@@ -303,15 +257,15 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
-                    android:textCursorDrawable="@null"
-                    android:cursorVisible="true"
                     android:background="@null"
+                    android:cursorVisible="true"
                     android:gravity="right"
                     android:hint="请输入每日红包总金额"
                     android:inputType="numberDecimal"
-                    android:maxLength="6"
+                    android:maxLength="11"
                     android:maxLines="1"
                     android:textColor="@color/color_161727"
+                    android:textCursorDrawable="@null"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -329,8 +283,7 @@
                 android:layout_height="49dp"
                 android:layout_below="@+id/read_package_mum_pan"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:visibility="gone">
+                android:focusableInTouchMode="true">
 
                 <TextView
                     android:id="@+id/money_pkg_text"
@@ -345,16 +298,16 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:textCursorDrawable="@null"
-                    android:cursorVisible="true"
                     android:layout_marginRight="14dp"
                     android:background="@null"
+                    android:cursorVisible="true"
                     android:gravity="right"
                     android:hint="请输入每日红包总个数"
                     android:inputType="number"
-                    android:maxLength="8"
+                    android:maxLength="11"
                     android:maxLines="1"
                     android:textColor="@color/color_161727"
+                    android:textCursorDrawable="@null"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -446,7 +399,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="14dp"
-                    android:src="@drawable/switch_bar_a_pass" />
+                    android:src="@drawable/switch_bar_a" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -463,8 +416,7 @@
                 android:layout_height="49dp"
                 android:layout_below="@+id/pass_circle_span"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:visibility="gone">
+                android:focusableInTouchMode="true">
 
                 <TextView
                     android:id="@+id/password_num_text"
@@ -479,10 +431,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:textCursorDrawable="@null"
-                    android:cursorVisible="true"
                     android:layout_marginRight="14dp"
                     android:background="@null"
+                    android:cursorVisible="true"
                     android:focusable="true"
                     android:gravity="right"
                     android:hint="请输入6位密码"
@@ -490,6 +441,7 @@
                     android:lines="1"
                     android:maxLength="6"
                     android:textColor="@color/color_161727"
+                    android:textCursorDrawable="@null"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -588,12 +540,12 @@
                         android:layout_height="160dp"
                         android:layout_marginLeft="14dp"
                         android:background="@null"
-                        android:textCursorDrawable="@null"
                         android:cursorVisible="true"
                         android:focusable="true"
                         android:gravity="left|top"
                         android:hint="请对你的圈子进行描述"
                         android:textColor="@color/color_8a8a8a"
+                        android:textCursorDrawable="@null"
                         android:textSize="14dp" />
                 </FrameLayout>
 

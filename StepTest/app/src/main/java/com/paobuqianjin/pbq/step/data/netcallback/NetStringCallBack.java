@@ -302,501 +302,942 @@ public class NetStringCallBack extends StringCallback {
         if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface) {
 
             if (command == Engine.COMMAND_LOGIN_IN_BY_PHONE) {
-                LoginResponse loginResponse = new Gson().fromJson(s, LoginResponse.class);
-                ((LoginSignCallbackInterface) callBackInterface).response(loginResponse);
+                try {
+                    LoginResponse loginResponse = new Gson().fromJson(s, LoginResponse.class);
+                    ((LoginSignCallbackInterface) callBackInterface).response(loginResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_LOGIN_BY_THIRD) {
                 LocalLog.d(TAG, "三方登录成功");
-                ThirdPartyLoginResponse thirdPartyLoginResponse = new Gson().fromJson(s, ThirdPartyLoginResponse.class);
-                ((LoginSignCallbackInterface) callBackInterface).response(thirdPartyLoginResponse);
+                try {
+                    ThirdPartyLoginResponse thirdPartyLoginResponse = new Gson().fromJson(s, ThirdPartyLoginResponse.class);
+                    ((LoginSignCallbackInterface) callBackInterface).response(thirdPartyLoginResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_REG_BY_PHONE) {
-                SignUserResponse signUserResponse = new Gson().fromJson(s, SignUserResponse.class);
-                ((LoginSignCallbackInterface) callBackInterface).response(signUserResponse);
+                try {
+                    SignUserResponse signUserResponse = new Gson().fromJson(s, SignUserResponse.class);
+                    ((LoginSignCallbackInterface) callBackInterface).response(signUserResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_GET_SIGN_CODE) {
-                GetSignCodeResponse getSignCodeResponse = new Gson().fromJson(s, GetSignCodeResponse.class);
-                ((LoginSignCallbackInterface) callBackInterface).response(getSignCodeResponse);
+                try {
+
+                    GetSignCodeResponse getSignCodeResponse = new Gson().fromJson(s, GetSignCodeResponse.class);
+                    ((LoginSignCallbackInterface) callBackInterface).response(getSignCodeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_PHONE_LOGIN) {
-                LoginRecordResponse loginRecordResponse = new Gson().fromJson(s, LoginRecordResponse.class);
-                ((LoginSignCallbackInterface) callBackInterface).response(loginRecordResponse);
+                try {
+                    LoginRecordResponse loginRecordResponse = new Gson().fromJson(s, LoginRecordResponse.class);
+                    ((LoginSignCallbackInterface) callBackInterface).response(loginRecordResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
 
         } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {
-            UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
-            ((UserInfoInterface) callBackInterface).update(userInfoResponse);
+            try {
+                UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
+                ((UserInfoInterface) callBackInterface).update(userInfoResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null && callBackInterface instanceof SignCodeCallBackInterface) {
-            SignCodeResponse signCodeResponse = new Gson().fromJson(s, SignCodeResponse.class);
-            ((SignCodeCallBackInterface) callBackInterface).signCodeCallBack(signCodeResponse);
+            try {
+                SignCodeResponse signCodeResponse = new Gson().fromJson(s, SignCodeResponse.class);
+                ((SignCodeCallBackInterface) callBackInterface).signCodeCallBack(signCodeResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface
                 && command == Engine.COMMAND_REFRESH_PASSWORD) {
             LocalLog.d(TAG, s);
         } else if (callBackInterface != null && callBackInterface instanceof MyCreatCircleInterface
                 && command == Engine.COMMAND_GET_MY_CREATE_CIRCLE) {
             LocalLog.d(TAG, "获取我创建的圈子");
-            MyCreateCircleResponse myCreateCircleResponse = new Gson().fromJson(s, MyCreateCircleResponse.class);
-            ((MyCreatCircleInterface) callBackInterface).response(myCreateCircleResponse);
+            try {
+                MyCreateCircleResponse myCreateCircleResponse = new Gson().fromJson(s, MyCreateCircleResponse.class);
+                ((MyCreatCircleInterface) callBackInterface).response(myCreateCircleResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null && callBackInterface instanceof UiHotCircleInterface
                 && command == Engine.COMMAND_GET_CHOICE_CIRCLE) {
-            ChoiceCircleResponse choiceCircleResponse = new Gson().fromJson(s, ChoiceCircleResponse.class);
-            ((UiHotCircleInterface) callBackInterface).response(choiceCircleResponse);
+            try {
+                ChoiceCircleResponse choiceCircleResponse = new Gson().fromJson(s, ChoiceCircleResponse.class);
+                ((UiHotCircleInterface) callBackInterface).response(choiceCircleResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof MyJoinCircleInterface
                 && command == Engine.COMMAND_GET_MY_JOIN_CIRCLE) {
             LocalLog.d(TAG, "我加入的圈子");
-            MyJoinCircleResponse myJoinCircleResponse = new Gson().fromJson(s, MyJoinCircleResponse.class);
-            ((MyJoinCircleInterface) callBackInterface).response(myJoinCircleResponse);
+            try {
+                MyJoinCircleResponse myJoinCircleResponse = new Gson().fromJson(s, MyJoinCircleResponse.class);
+                ((MyJoinCircleInterface) callBackInterface).response(myJoinCircleResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof UiHotCircleInterface
                 && command == Engine.COMMAND_GET_MY_HOT) {
-            MyHotCircleResponse myHotCircleResponse = new Gson().fromJson(s, MyHotCircleResponse.class);
-            ((UiHotCircleInterface) callBackInterface).response(myHotCircleResponse);
+            try {
+                MyHotCircleResponse myHotCircleResponse = new Gson().fromJson(s, MyHotCircleResponse.class);
+                ((UiHotCircleInterface) callBackInterface).response(myHotCircleResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof UiCreateCircleInterface
                 && command == Engine.COMMAND_CIRCLE_TYPE) {
             LocalLog.d(TAG, "圈子类型");
-            CircleTypeResponse circleTypeResponse = new Gson().fromJson(s, CircleTypeResponse.class);
-            ((UiCreateCircleInterface) callBackInterface).response(circleTypeResponse);
+            try {
+                CircleTypeResponse circleTypeResponse = new Gson().fromJson(s, CircleTypeResponse.class);
+                ((UiCreateCircleInterface) callBackInterface).response(circleTypeResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof UiStepAndLoveRankInterface
                 && command == Engine.COMMAND_RECHARGE_RANK) {
             LocalLog.d(TAG, "充值排行");
-            ReChargeRankResponse reChargeRankResponse = new Gson().fromJson(s, ReChargeRankResponse.class);
-            ((UiStepAndLoveRankInterface) callBackInterface).response(reChargeRankResponse);
+            try {
+                ReChargeRankResponse reChargeRankResponse = new Gson().fromJson(s, ReChargeRankResponse.class);
+                ((UiStepAndLoveRankInterface) callBackInterface).response(reChargeRankResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof UiStepAndLoveRankInterface
                 && command == Engine.COMMAND_STEP_RANK) {
             LocalLog.d(TAG, "步数排行");
-            StepRankResponse stepRankResponse = new Gson().fromJson(s, StepRankResponse.class);
-            ((UiStepAndLoveRankInterface) callBackInterface).response(stepRankResponse);
+            try {
+                StepRankResponse stepRankResponse = new Gson().fromJson(s, StepRankResponse.class);
+                ((UiStepAndLoveRankInterface) callBackInterface).response(stepRankResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof CircleDetailInterface) {
             if (command == Engine.COMMAND_QUIT_CIRCLE) {
-                LoginOutResponse loginOutResponse = new Gson().fromJson(s, LoginOutResponse.class);
-                ((CircleDetailInterface) callBackInterface).response(loginOutResponse);
+                try {
+                    LoginOutResponse loginOutResponse = new Gson().fromJson(s, LoginOutResponse.class);
+                    ((CircleDetailInterface) callBackInterface).response(loginOutResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
                 LocalLog.d(TAG, "圈子详情");
-                CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
-                ((CircleDetailInterface) callBackInterface).response(circleDetailResponse);
+                try {
+                    CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
+                    ((CircleDetailInterface) callBackInterface).response(circleDetailResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_POST_REV_RED_PKG) {
-                PostRevRedPkgResponse postRevRedPkgResponse = new Gson().fromJson(s, PostRevRedPkgResponse.class);
-                ((CircleDetailInterface) callBackInterface).response(postRevRedPkgResponse);
+                try {
+                    PostRevRedPkgResponse postRevRedPkgResponse = new Gson().fromJson(s, PostRevRedPkgResponse.class);
+                    ((CircleDetailInterface) callBackInterface).response(postRevRedPkgResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_DELETE_CIRCLE) {
-                DeleteCircleResponse deleteCircleResponse = new Gson().fromJson(s, DeleteCircleResponse.class);
-                ((CircleDetailInterface) callBackInterface).response(deleteCircleResponse);
+                try {
+                    DeleteCircleResponse deleteCircleResponse = new Gson().fromJson(s, DeleteCircleResponse.class);
+                    ((CircleDetailInterface) callBackInterface).response(deleteCircleResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
 
         } else if (callBackInterface != null
                 && callBackInterface instanceof TagFragInterface
                 && command == Engine.COMMAND_GET_TAG) {
             LocalLog.d(TAG, "获取标签!");
-            CircleTagResponse circleTagResponse = new Gson().fromJson(s, CircleTagResponse.class);
-            ((TagFragInterface) callBackInterface).response(circleTagResponse);
+            try {
+                CircleTagResponse circleTagResponse = new Gson().fromJson(s, CircleTagResponse.class);
+                ((TagFragInterface) callBackInterface).response(circleTagResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof UiCreateCircleInterface
                 && command == Engine.COMMAND_CREATE_CIRCLE) {
             LocalLog.d(TAG, "创建圈子");
-            CreateCircleResponse createCircleResponse = new Gson().fromJson(s, CreateCircleResponse.class);
-            ((UiCreateCircleInterface) callBackInterface).response(createCircleResponse);
+            try {
+                CreateCircleResponse createCircleResponse = new Gson().fromJson(s, CreateCircleResponse.class);
+                ((UiCreateCircleInterface) callBackInterface).response(createCircleResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof UiCreateCircleInterface
                 && command == Engine.COMMAND_GET_CIRCLE_TARGET) {
             LocalLog.d(TAG, "获取圈子目标");
-            CircleTargetResponse circleTargetResponse = new Gson().fromJson(s, CircleTargetResponse.class);
-            ((UiCreateCircleInterface) callBackInterface).response(circleTargetResponse);
+            try {
+                CircleTargetResponse circleTargetResponse = new Gson().fromJson(s, CircleTargetResponse.class);
+                ((UiCreateCircleInterface) callBackInterface).response(circleTargetResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof ReflashMyCircleInterface
                 && command == Engine.COMMAND_REFLASH_CIRCLE) {
             LocalLog.d(TAG, "获取圈子目标");
-            MyCreateCircleResponse myCreateCircleResponse = new Gson().fromJson(s, MyCreateCircleResponse.class);
-            ((ReflashMyCircleInterface) callBackInterface).response(myCreateCircleResponse);
+            try {
+                MyCreateCircleResponse myCreateCircleResponse = new Gson().fromJson(s, MyCreateCircleResponse.class);
+                ((ReflashMyCircleInterface) callBackInterface).response(myCreateCircleResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null &&
                 callBackInterface instanceof DynamicIndexUiInterface
                 && command == Engine.COMMAND_GET_DYNAMIC_INDEX) {
             LocalLog.d(TAG, "动态列表");
-            DynamicAllIndexResponse dynamicAllIndexResponse = new Gson().fromJson(s, DynamicAllIndexResponse.class);
-            ((DynamicIndexUiInterface) callBackInterface).response(dynamicAllIndexResponse);
+            try {
+                DynamicAllIndexResponse dynamicAllIndexResponse = new Gson().fromJson(s, DynamicAllIndexResponse.class);
+                ((DynamicIndexUiInterface) callBackInterface).response(dynamicAllIndexResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof DynamicDetailInterface) {
             if (command == Engine.COMMAND_DYNAMIC_CONTENTS) {
                 LocalLog.d(TAG, "评论列表");
-                DynamicCommentListResponse dynamicCommentListResponse = new Gson().fromJson(s, DynamicCommentListResponse.class);
-                ((DynamicDetailInterface) callBackInterface).response(dynamicCommentListResponse);
+                try {
+                    DynamicCommentListResponse dynamicCommentListResponse = new Gson().fromJson(s, DynamicCommentListResponse.class);
+                    ((DynamicDetailInterface) callBackInterface).response(dynamicCommentListResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_GET_DYNAMIC_ID_DETAIL) {
                 LocalLog.d(TAG, "动态详情");
-                DynamicIdDetailResponse dynamicIdDetailResponse = new Gson().fromJson(s, DynamicIdDetailResponse.class);
-                ((DynamicDetailInterface) callBackInterface).response(dynamicIdDetailResponse);
+                try {
+                    DynamicIdDetailResponse dynamicIdDetailResponse = new Gson().fromJson(s, DynamicIdDetailResponse.class);
+                    ((DynamicDetailInterface) callBackInterface).response(dynamicIdDetailResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_GET_VOTE_LIST) {
                 LocalLog.d(TAG, "点赞列表");
-                DynamicLikeListResponse dynamicLikeListResponse = new Gson().fromJson(s, DynamicLikeListResponse.class);
-                ((DynamicDetailInterface) callBackInterface).response(dynamicLikeListResponse);
+                try {
+                    DynamicLikeListResponse dynamicLikeListResponse = new Gson().fromJson(s, DynamicLikeListResponse.class);
+                    ((DynamicDetailInterface) callBackInterface).response(dynamicLikeListResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_PUT_VOTE) {
-                PutVoteResponse putVoteResponse = new Gson().fromJson(s, PutVoteResponse.class);
-                ((DynamicDetailInterface) callBackInterface).response(putVoteResponse);
+                try {
+                    PutVoteResponse putVoteResponse = new Gson().fromJson(s, PutVoteResponse.class);
+                    ((DynamicDetailInterface) callBackInterface).response(putVoteResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_POST_DYNAMIC_COMMENT) {
-                PostDynamicContentResponse postDynamicContentResponse = new Gson().fromJson(s, PostDynamicContentResponse.class);
-                ((DynamicDetailInterface) callBackInterface).response(postDynamicContentResponse);
+                try {
+                    PostDynamicContentResponse postDynamicContentResponse = new Gson().fromJson(s, PostDynamicContentResponse.class);
+                    ((DynamicDetailInterface) callBackInterface).response(postDynamicContentResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
 
         } else if (callBackInterface != null
                 && callBackInterface instanceof OwnerUiInterface
                 && command == Engine.COMMAND_OWNER_USER_INFO) {
             LocalLog.d(TAG, "用户信息");
-            UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
-            ((OwnerUiInterface) callBackInterface).response(userInfoResponse);
+            try {
+                UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
+                ((OwnerUiInterface) callBackInterface).response(userInfoResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof PayInterface) {
             if (command == Engine.COMMAND_CIRCLE_ORDER_POST_ALI) {
                 LocalLog.d(TAG, "支付宝支付");
             } else if (command == Engine.COMMAND_CIRCLE_ORDER_POST_WX) {
                 LocalLog.d(TAG, "微信支付");
-                WxPayOrderResponse wxPayOrderResponse = new Gson().fromJson(s, WxPayOrderResponse.class);
-                ((PayInterface) callBackInterface).response(wxPayOrderResponse);
+                try {
+                    WxPayOrderResponse wxPayOrderResponse = new Gson().fromJson(s, WxPayOrderResponse.class);
+                    ((PayInterface) callBackInterface).response(wxPayOrderResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_CIRCLE_ORDER_POST_WALLET) {
                 LocalLog.d(TAG, "钱包支付");
-                WalletPayOrderResponse walletPayOrderResponse = new Gson().fromJson(s, WalletPayOrderResponse.class);
-                ((PayInterface) callBackInterface).response(walletPayOrderResponse);
+                try {
+                    WalletPayOrderResponse walletPayOrderResponse = new Gson().fromJson(s, WalletPayOrderResponse.class);
+                    ((PayInterface) callBackInterface).response(walletPayOrderResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
 
         } else if (callBackInterface != null
                 && callBackInterface instanceof WxPayResultQueryInterface
                 && command == Engine.COMMAND_PAY_RESULT_QUERY_WX) {
             LocalLog.d(TAG, "订单信息");
-            WxPayResultResponse wxPayResultResponse = new Gson().fromJson(s, WxPayResultResponse.class);
-            ((WxPayResultQueryInterface) callBackInterface).response(wxPayResultResponse);
+            try {
+                WxPayResultResponse wxPayResultResponse = new Gson().fromJson(s, WxPayResultResponse.class);
+                ((WxPayResultQueryInterface) callBackInterface).response(wxPayResultResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof CircleMemberManagerInterface) {
             if (command == Engine.COMMAND_GET_MEMBER) {
                 LocalLog.d(TAG, "获取圈子成员");
-                CircleMemberResponse circleMemberResponse = new Gson().fromJson(s, CircleMemberResponse.class);
-                ((CircleMemberManagerInterface) callBackInterface).response(circleMemberResponse);
+                try {
+                    CircleMemberResponse circleMemberResponse = new Gson().fromJson(s, CircleMemberResponse.class);
+                    ((CircleMemberManagerInterface) callBackInterface).response(circleMemberResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_DELETE_MEMBER) {
                 LocalLog.d(TAG, "删除成员成功");
-                MemberDeleteResponse memberDeleteResponse = new Gson().fromJson(s, MemberDeleteResponse.class);
-                ((CircleMemberManagerInterface) callBackInterface).response(memberDeleteResponse);
+                try {
+                    MemberDeleteResponse memberDeleteResponse = new Gson().fromJson(s, MemberDeleteResponse.class);
+                    ((CircleMemberManagerInterface) callBackInterface).response(memberDeleteResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_SET_AS_ADMIN) {
-                AddDeleteAdminResponse addDeleteAdminResponse = new Gson().fromJson(s, AddDeleteAdminResponse.class);
-                ((CircleMemberManagerInterface) callBackInterface).response(addDeleteAdminResponse);
+                try {
+                    AddDeleteAdminResponse addDeleteAdminResponse = new Gson().fromJson(s, AddDeleteAdminResponse.class);
+                    ((CircleMemberManagerInterface) callBackInterface).response(addDeleteAdminResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
 
         } else if (callBackInterface != null
                 && callBackInterface instanceof TaskReleaseInterface
                 && command == Engine.COMMAND_TASK_RELEASE) {
-            TaskReleaseResponse taskReleaseResponse = new Gson().fromJson(s, TaskReleaseResponse.class);
-            ((TaskReleaseInterface) callBackInterface).response(taskReleaseResponse);
+            try {
+                TaskReleaseResponse taskReleaseResponse = new Gson().fromJson(s, TaskReleaseResponse.class);
+                ((TaskReleaseInterface) callBackInterface).response(taskReleaseResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null
                 && callBackInterface instanceof HomePageInterface) {
             if (command == Engine.COMMAND_POST_USER_STEP) {
-                PostUserStepResponse postUserStepResponse = new Gson().fromJson(s, PostUserStepResponse.class);
-                ((HomePageInterface) callBackInterface).response(postUserStepResponse);
+                try {
+                    PostUserStepResponse postUserStepResponse = new Gson().fromJson(s, PostUserStepResponse.class);
+                    ((HomePageInterface) callBackInterface).response(postUserStepResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_WEATHER) {
-                WeatherResponse weatherResponse = new Gson().fromJson(s, WeatherResponse.class);
-                ((HomePageInterface) callBackInterface).responseWeather(weatherResponse);
+                try {
+                    WeatherResponse weatherResponse = new Gson().fromJson(s, WeatherResponse.class);
+                    ((HomePageInterface) callBackInterface).responseWeather(weatherResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_INCOME_TODAY) {
-                IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
-                ((HomePageInterface) callBackInterface).responseTodayIncome(incomeResponse);
+                try {
+                    IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
+                    ((HomePageInterface) callBackInterface).responseTodayIncome(incomeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_INCOME_MONTH) {
-                IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
-                ((HomePageInterface) callBackInterface).responseMonthIncome(incomeResponse);
+                try {
+                    IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
+                    ((HomePageInterface) callBackInterface).responseMonthIncome(incomeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_SPONSOR_PKG) {
                 LocalLog.d(TAG, "商圈红包");
-                SponsorRedPkgResponse sponsorRedPkgResponse = new Gson().fromJson(s, SponsorRedPkgResponse.class);
-                ((HomePageInterface) callBackInterface).response(sponsorRedPkgResponse);
+                try {
+                    SponsorRedPkgResponse sponsorRedPkgResponse = new Gson().fromJson(s, SponsorRedPkgResponse.class);
+                    ((HomePageInterface) callBackInterface).response(sponsorRedPkgResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof NearByInterface
                 && command == Engine.COMMAND_NEARBY_PEOPLE) {
             LocalLog.d(TAG, "附近的人");
-            NearByResponse nearByResponse = new Gson().fromJson(s, NearByResponse.class);
-            ((NearByInterface) callBackInterface).response(nearByResponse);
+            try {
+                NearByResponse nearByResponse = new Gson().fromJson(s, NearByResponse.class);
+                ((NearByInterface) callBackInterface).response(nearByResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null && callBackInterface instanceof UserIncomInterface) {
             if (command == Engine.COMMAND_INCOME_YESTERDAY) {
                 LocalLog.d(TAG, "昨日收益");
-                IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
-                ((UserIncomInterface) callBackInterface).responseYesterday(incomeResponse);
+                try {
+                    IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
+                    ((UserIncomInterface) callBackInterface).responseYesterday(incomeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_INCOME_TODAY) {
                 LocalLog.d(TAG, "今日收益");
-                IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
-                ((UserIncomInterface) callBackInterface).responseToday(incomeResponse);
+                try {
+                    IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
+                    ((UserIncomInterface) callBackInterface).responseToday(incomeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_INCOME_MONTH) {
                 LocalLog.d(TAG, "月收益");
-                IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
-                ((UserIncomInterface) callBackInterface).responseMonth(incomeResponse);
+                try {
+                    IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
+                    ((UserIncomInterface) callBackInterface).responseMonth(incomeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_INCOME_ALL) {
                 LocalLog.d(TAG, "总收益");
-                AllIncomeResponse allIncomeResponse = new Gson().fromJson(s, AllIncomeResponse.class);
-                ((UserIncomInterface) callBackInterface).responseAll(allIncomeResponse);
+                try {
+                    AllIncomeResponse allIncomeResponse = new Gson().fromJson(s, AllIncomeResponse.class);
+                    ((UserIncomInterface) callBackInterface).responseAll(allIncomeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_GET_USER_INFO) {
-                UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
-                ((UserIncomInterface) callBackInterface).response(userInfoResponse);
+                try {
+                    UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
+                    ((UserIncomInterface) callBackInterface).response(userInfoResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof CrashInterface) {
             if (command == Engine.COMMAND_CRASH_BANK_CARD_LIST) {
                 LocalLog.d(TAG, "获取绑定列表");
-                BindCardListResponse bindCardListResponse = new Gson().fromJson(s, BindCardListResponse.class);
-                ((CrashInterface) callBackInterface).response(bindCardListResponse);
+                try {
+                    BindCardListResponse bindCardListResponse = new Gson().fromJson(s, BindCardListResponse.class);
+                    ((CrashInterface) callBackInterface).response(bindCardListResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_CRASH_TO) {
-                CrashResponse crashResponse = new Gson().fromJson(s, CrashResponse.class);
-                ((CrashInterface) callBackInterface).response(crashResponse);
+                try {
+                    CrashResponse crashResponse = new Gson().fromJson(s, CrashResponse.class);
+                    ((CrashInterface) callBackInterface).response(crashResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof SignCodeInterface) {
             if (command == Engine.COMMAND_GET_SIGN_CODE) {
-                GetSignCodeResponse getSignCodeResponse = new Gson().fromJson(s, GetSignCodeResponse.class);
-                ((SignCodeInterface) callBackInterface).response(getSignCodeResponse);
+                try {
+                    GetSignCodeResponse getSignCodeResponse = new Gson().fromJson(s, GetSignCodeResponse.class);
+                    ((SignCodeInterface) callBackInterface).response(getSignCodeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_CHECK_SIGN_CODE) {
-                CheckSignCodeResponse checkSignCodeResponse = new Gson().fromJson(s, CheckSignCodeResponse.class);
-                ((SignCodeInterface) callBackInterface).response(checkSignCodeResponse);
+                try {
+                    CheckSignCodeResponse checkSignCodeResponse = new Gson().fromJson(s, CheckSignCodeResponse.class);
+                    ((SignCodeInterface) callBackInterface).response(checkSignCodeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_BIND_CRASH_ACCOUNT) {
                 LocalLog.d(TAG, "绑定结果...");
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof SelectUserFriendInterface) {
             if (command == Engine.COMMAND_USER_FRIEND) {
-                UserFriendResponse userFriendResponse = new Gson().fromJson(s, UserFriendResponse.class);
-                ((SelectUserFriendInterface) callBackInterface).response(userFriendResponse);
+                try {
+                    UserFriendResponse userFriendResponse = new Gson().fromJson(s, UserFriendResponse.class);
+                    ((SelectUserFriendInterface) callBackInterface).response(userFriendResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof UserHomeInterface) {
             if (command == Engine.COMMAND_GET_USER_INFO) {
-                UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
-                ((UserHomeInterface) callBackInterface).response(userInfoResponse);
+                try {
+                    UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
+                    ((UserHomeInterface) callBackInterface).response(userInfoResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_GET_USER_DYNAMIC) {
-                DynamicPersonResponse dynamicPersonResponse = new Gson().fromJson(s, DynamicPersonResponse.class);
-                ((UserHomeInterface) callBackInterface).response(dynamicPersonResponse);
+                try {
+                    DynamicPersonResponse dynamicPersonResponse = new Gson().fromJson(s, DynamicPersonResponse.class);
+                    ((UserHomeInterface) callBackInterface).response(dynamicPersonResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_QUERY_FOLLOW_STATE) {
-                QueryFollowStateResponse queryFollowStateResponse = new Gson().fromJson(s, QueryFollowStateResponse.class);
-                ((UserHomeInterface) callBackInterface).response(queryFollowStateResponse);
+                try {
+                    QueryFollowStateResponse queryFollowStateResponse = new Gson().fromJson(s, QueryFollowStateResponse.class);
+                    ((UserHomeInterface) callBackInterface).response(queryFollowStateResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof MyDynamicInterface) {
             if (command == Engine.COMMAND_GET_USER_DYNAMIC) {
-                DynamicPersonResponse dynamicPersonResponse = new Gson().fromJson(s, DynamicPersonResponse.class);
-                ((MyDynamicInterface) callBackInterface).response(dynamicPersonResponse);
+                try {
+                    DynamicPersonResponse dynamicPersonResponse = new Gson().fromJson(s, DynamicPersonResponse.class);
+                    ((MyDynamicInterface) callBackInterface).response(dynamicPersonResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof StepDollarDetailInterface) {
             if (command == Engine.COMMAND_GET_USER_STEP_DOLLAR_DETAIL) {
                 LocalLog.d(TAG, "步币明细");
-                StepDollarDetailResponse dollarDetailResponse = new Gson().fromJson(s, StepDollarDetailResponse.class);
-                ((StepDollarDetailInterface) callBackInterface).response(dollarDetailResponse);
+                try {
+                    StepDollarDetailResponse dollarDetailResponse = new Gson().fromJson(s, StepDollarDetailResponse.class);
+                    ((StepDollarDetailInterface) callBackInterface).response(dollarDetailResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
             if (command == Engine.COMMAND_GET_USER_INFO) {
-                UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
-                ((StepDollarDetailInterface) callBackInterface).response(userInfoResponse);
+                try {
+                    UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
+                    ((StepDollarDetailInterface) callBackInterface).response(userInfoResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof InviteInterface) {
             if (command == Engine.COMMAND_GET_INVITE_DAN) {
-                InviteDanResponse inviteDanResponse = new Gson().fromJson(s, InviteDanResponse.class);
-                ((InviteInterface) callBackInterface).response(inviteDanResponse);
+                try {
+                    InviteDanResponse inviteDanResponse = new Gson().fromJson(s, InviteDanResponse.class);
+                    ((InviteInterface) callBackInterface).response(inviteDanResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_GET_MY_INVITE_MSG) {
-                MyInviteResponse myInviteResponse = new Gson().fromJson(s, MyInviteResponse.class);
-                ((InviteInterface) callBackInterface).response(myInviteResponse);
+                try {
+                    MyInviteResponse myInviteResponse = new Gson().fromJson(s, MyInviteResponse.class);
+                    ((InviteInterface) callBackInterface).response(myInviteResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof PostInviteCodeInterface) {
             if (command == Engine.COMMAND_POST_INVITE_CODE) {
-                PostInviteCodeResponse postInviteCodeResponse = new Gson().fromJson(s, PostInviteCodeResponse.class);
-                ((PostInviteCodeInterface) callBackInterface).response(postInviteCodeResponse);
+                try {
+                    PostInviteCodeResponse postInviteCodeResponse = new Gson().fromJson(s, PostInviteCodeResponse.class);
+                    ((PostInviteCodeInterface) callBackInterface).response(postInviteCodeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof MyReleaseTaskInterface) {
             if (command == Engine.COMMAND_GET_MY_RELEASE_TASK) {
-                TaskMyReleaseResponse taskMyReleaseResponse = new Gson().fromJson(s, TaskMyReleaseResponse.class);
-                ((MyReleaseTaskInterface) callBackInterface).response(taskMyReleaseResponse);
+                try {
+                    TaskMyReleaseResponse taskMyReleaseResponse = new Gson().fromJson(s, TaskMyReleaseResponse.class);
+                    ((MyReleaseTaskInterface) callBackInterface).response(taskMyReleaseResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof MyReleaseTaskDetailInterface) {
             if (command == Engine.COMMAND_GET_MY_RELEASE_TASK_DETAIL) {
-                MyReleaseTaskDetailResponse myReleaseTaskDetailResponse = new Gson().fromJson(s, MyReleaseTaskDetailResponse.class);
-                ((MyReleaseTaskDetailInterface) callBackInterface).response(myReleaseTaskDetailResponse);
+                try {
+                    MyReleaseTaskDetailResponse myReleaseTaskDetailResponse = new Gson().fromJson(s, MyReleaseTaskDetailResponse.class);
+                    ((MyReleaseTaskDetailInterface) callBackInterface).response(myReleaseTaskDetailResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof ReleaseRecordInterface) {
             if (command == Engine.COMMAND_GET_MY_RELEASE_RECORD) {
-                ReleaseRecordResponse releaseRecordResponse = new Gson().fromJson(s, ReleaseRecordResponse.class);
-                ((ReleaseRecordInterface) callBackInterface).response(releaseRecordResponse);
+                try {
+                    ReleaseRecordResponse releaseRecordResponse = new Gson().fromJson(s, ReleaseRecordResponse.class);
+                    ((ReleaseRecordInterface) callBackInterface).response(releaseRecordResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof DanInterface) {
             if (command == Engine.COMMAND_GET_DAN_LIST) {
-                DanListResponse danListResponse = new Gson().fromJson(s, DanListResponse.class);
-                ((DanInterface) callBackInterface).response(danListResponse);
+                try {
+                    DanListResponse danListResponse = new Gson().fromJson(s, DanListResponse.class);
+                    ((DanInterface) callBackInterface).response(danListResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_GET_USER_DAN) {
-                UserDanResponse userDanResponse = new Gson().fromJson(s, UserDanResponse.class);
-                ((DanInterface) callBackInterface).response(userDanResponse);
+                try {
+                    UserDanResponse userDanResponse = new Gson().fromJson(s, UserDanResponse.class);
+                    ((DanInterface) callBackInterface).response(userDanResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof UserFollowInterface) {
             if (command == Engine.COMMAND_MY_FOLLOW) {
-                UserIdFollowResponse userIdFollowResponse = new Gson().fromJson(s, UserIdFollowResponse.class);
-                ((UserFollowInterface) callBackInterface).response(userIdFollowResponse);
+                try {
+                    UserIdFollowResponse userIdFollowResponse = new Gson().fromJson(s, UserIdFollowResponse.class);
+                    ((UserFollowInterface) callBackInterface).response(userIdFollowResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_FOLLOW_ME) {
-                FollowUserResponse followUserResponse = new Gson().fromJson(s, FollowUserResponse.class);
-                ((UserFollowInterface) callBackInterface).response(followUserResponse);
+                try {
+                    FollowUserResponse followUserResponse = new Gson().fromJson(s, FollowUserResponse.class);
+                    ((UserFollowInterface) callBackInterface).response(followUserResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_FOLLOW_O_TO_O) {
-                UserFollowOtOResponse followOtOResponse = new Gson().fromJson(s, UserFollowOtOResponse.class);
-                ((UserFollowInterface) callBackInterface).response(followOtOResponse);
+                try {
+                    UserFollowOtOResponse followOtOResponse = new Gson().fromJson(s, UserFollowOtOResponse.class);
+                    ((UserFollowInterface) callBackInterface).response(followOtOResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof ReleaseDynamicInterface) {
             if (command == Engine.COMMAND_POST_DYNAMIC) {
-                ReleaseDynamicResponse releaseDynamicResponse = new Gson().fromJson(s, ReleaseDynamicResponse.class);
-                ((ReleaseDynamicInterface) callBackInterface).response(releaseDynamicResponse);
+                try {
+                    ReleaseDynamicResponse releaseDynamicResponse = new Gson().fromJson(s, ReleaseDynamicResponse.class);
+                    ((ReleaseDynamicInterface) callBackInterface).response(releaseDynamicResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof TaskMyRecInterface) {
             if (command == Engine.COMMAND_GET_MY_RCV_TASK_RECORD) {
                 LocalLog.d(TAG, "我领取的任务");
-                MyRecTaskRecordResponse myRecTaskRecordResponse = new Gson().fromJson(s, MyRecTaskRecordResponse.class);
-                ((TaskMyRecInterface) callBackInterface).response(myRecTaskRecordResponse);
+                try {
+                    MyRecTaskRecordResponse myRecTaskRecordResponse = new Gson().fromJson(s, MyRecTaskRecordResponse.class);
+                    ((TaskMyRecInterface) callBackInterface).response(myRecTaskRecordResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof TaskDetailRecInterface) {
             if (command == Engine.COMMAND_GET_REC_TASK_DETAIL) {
-                TaskRecDetailResponse taskRecDetailResponse = new Gson().fromJson(s, TaskRecDetailResponse.class);
-                ((TaskDetailRecInterface) callBackInterface).response(taskRecDetailResponse);
+                try {
+                    TaskRecDetailResponse taskRecDetailResponse = new Gson().fromJson(s, TaskRecDetailResponse.class);
+                    ((TaskDetailRecInterface) callBackInterface).response(taskRecDetailResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_RECV_TASK_PAY) {
-                RecPayResponse recPayResponse = new Gson().fromJson(s, RecPayResponse.class);
-                ((TaskDetailRecInterface) callBackInterface).response(recPayResponse);
+                try {
+                    RecPayResponse recPayResponse = new Gson().fromJson(s, RecPayResponse.class);
+                    ((TaskDetailRecInterface) callBackInterface).response(recPayResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof ReceiveTaskInterface) {
             if (command == Engine.COMMAND_RECV_TASK) {
-                ReceiveTaskResponse receiveTaskResponse = new Gson().fromJson(s, ReceiveTaskResponse.class);
-                ((ReceiveTaskInterface) callBackInterface).response(receiveTaskResponse);
+                try {
+                    ReceiveTaskResponse receiveTaskResponse = new Gson().fromJson(s, ReceiveTaskResponse.class);
+                    ((ReceiveTaskInterface) callBackInterface).response(receiveTaskResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof CrashRecordInterface) {
-            CrashListDetailResponse crashListDetailResponse = new Gson().fromJson(s, CrashListDetailResponse.class);
-            ((CrashRecordInterface) callBackInterface).response(crashListDetailResponse);
+            try {
+                CrashListDetailResponse crashListDetailResponse = new Gson().fromJson(s, CrashListDetailResponse.class);
+                ((CrashRecordInterface) callBackInterface).response(crashListDetailResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null && callBackInterface instanceof JoinCircleInterface) {
             LocalLog.d(TAG, "加入圈子");
-            JoinCircleResponse joinCircleResponse = new Gson().fromJson(s, JoinCircleResponse.class);
-            ((JoinCircleInterface) callBackInterface).response(joinCircleResponse);
+            try {
+                JoinCircleResponse joinCircleResponse = new Gson().fromJson(s, JoinCircleResponse.class);
+                ((JoinCircleInterface) callBackInterface).response(joinCircleResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null && callBackInterface instanceof SearchCircleInterface) {
             if (command == Engine.COMMAND_GET_CHOICE_CIRCLE) {
-                ChoiceCircleResponse choiceCircleResponse = new Gson().fromJson(s, ChoiceCircleResponse.class);
-                ((SearchCircleInterface) callBackInterface).response(choiceCircleResponse);
+                try {
+                    ChoiceCircleResponse choiceCircleResponse = new Gson().fromJson(s, ChoiceCircleResponse.class);
+                    ((SearchCircleInterface) callBackInterface).response(choiceCircleResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof AddDeleteFollowInterface
                 && command == Engine.COMMAND_ADD_DELETE_FOLLOW) {
             LocalLog.d(TAG, "取消/关注");
-            AddDeleteFollowResponse addDeleteFollowResponse = new Gson().fromJson(s, AddDeleteFollowResponse.class);
-            ((AddDeleteFollowInterface) callBackInterface).response(addDeleteFollowResponse);
+            try {
+                AddDeleteFollowResponse addDeleteFollowResponse = new Gson().fromJson(s, AddDeleteFollowResponse.class);
+                ((AddDeleteFollowInterface) callBackInterface).response(addDeleteFollowResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null && callBackInterface instanceof QueryRedPkgInterface) {
             if (command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
-                CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
-                ((QueryRedPkgInterface) callBackInterface).response(circleDetailResponse);
+                try {
+                    CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
+                    ((QueryRedPkgInterface) callBackInterface).response(circleDetailResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof FriendHonorInterface) {
             if (command == Engine.COMMAND_FRIEND_HONOR) {
-                FriendStepRankDayResponse friendStepRankDayResponse = new Gson().fromJson(s, FriendStepRankDayResponse.class);
-                ((FriendHonorInterface) callBackInterface).response(friendStepRankDayResponse);
+                try {
+                    FriendStepRankDayResponse friendStepRankDayResponse = new Gson().fromJson(s, FriendStepRankDayResponse.class);
+                    ((FriendHonorInterface) callBackInterface).response(friendStepRankDayResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof DanCircleInterface) {
             if (command == Engine.COMMAND_GET_MY_HOT) {
-                MyHotCircleResponse myHotCircleResponse = new Gson().fromJson(s, MyHotCircleResponse.class);
-                ((DanCircleInterface) callBackInterface).response(myHotCircleResponse);
+                try {
+                    MyHotCircleResponse myHotCircleResponse = new Gson().fromJson(s, MyHotCircleResponse.class);
+                    ((DanCircleInterface) callBackInterface).response(myHotCircleResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_STEP_RANK) {
-                CircleStepRankResponse circleStepRankResponse = new Gson().fromJson(s, CircleStepRankResponse.class);
-                ((DanCircleInterface) callBackInterface).response(circleStepRankResponse);
+                try {
+                    CircleStepRankResponse circleStepRankResponse = new Gson().fromJson(s, CircleStepRankResponse.class);
+                    ((DanCircleInterface) callBackInterface).response(circleStepRankResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof FriendHonorDetailInterface) {
             if (command == Engine.COMMAND_FRIEND_HONOR) {
-                FriendStepRankDayResponse friendStepRankDayResponse = new Gson().fromJson(s, FriendStepRankDayResponse.class);
-                ((FriendHonorDetailInterface) callBackInterface).response(friendStepRankDayResponse);
+                try {
+                    FriendStepRankDayResponse friendStepRankDayResponse = new Gson().fromJson(s, FriendStepRankDayResponse.class);
+                    ((FriendHonorDetailInterface) callBackInterface).response(friendStepRankDayResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_FRIEND_HONOR_WEEK) {
-                FriendWeekResponse friendWeekResponse = new Gson().fromJson(s, FriendWeekResponse.class);
-                ((FriendHonorDetailInterface) callBackInterface).response(friendWeekResponse);
+                try {
+                    FriendWeekResponse friendWeekResponse = new Gson().fromJson(s, FriendWeekResponse.class);
+                    ((FriendHonorDetailInterface) callBackInterface).response(friendWeekResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof CircleStepDetailDanInterface) {
             if (command == Engine.COMMAND_STEP_RANK) {
-                CircleStepRankResponse circleStepRankResponse = new Gson().fromJson(s, CircleStepRankResponse.class);
-                ((CircleStepDetailDanInterface) callBackInterface).response(circleStepRankResponse);
+                try {
+                    CircleStepRankResponse circleStepRankResponse = new Gson().fromJson(s, CircleStepRankResponse.class);
+                    ((CircleStepDetailDanInterface) callBackInterface).response(circleStepRankResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
-                CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
-                ((CircleStepDetailDanInterface) callBackInterface).response(circleDetailResponse);
+                try {
+                    CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
+                    ((CircleStepDetailDanInterface) callBackInterface).response(circleDetailResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_HONOR_DAN_DAY_STEP) {
-                StepRankResponse stepRankResponse = new Gson().fromJson(s, StepRankResponse.class);
-                ((CircleStepDetailDanInterface) callBackInterface).response(stepRankResponse);
+                try {
+                    StepRankResponse stepRankResponse = new Gson().fromJson(s, StepRankResponse.class);
+                    ((CircleStepDetailDanInterface) callBackInterface).response(stepRankResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_HONOR_WEEK_STEP) {
-                StepRandWeekResponse stepRandWeekResponse = new Gson().fromJson(s, StepRandWeekResponse.class);
-                ((CircleStepDetailDanInterface) callBackInterface).response(stepRandWeekResponse);
+                try {
+                    StepRandWeekResponse stepRandWeekResponse = new Gson().fromJson(s, StepRandWeekResponse.class);
+                    ((CircleStepDetailDanInterface) callBackInterface).response(stepRandWeekResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_HONOR_WEEK_RANK_NUM) {
-                CircleStepRankWeekResponse circleStepRankWeekResponse = new Gson().fromJson(s, CircleStepRankWeekResponse.class);
-                ((CircleStepDetailDanInterface) callBackInterface).response(circleStepRankWeekResponse);
+                try {
+                    CircleStepRankWeekResponse circleStepRankWeekResponse = new Gson().fromJson(s, CircleStepRankWeekResponse.class);
+                    ((CircleStepDetailDanInterface) callBackInterface).response(circleStepRankWeekResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof RechargeDetailInterface) {
-            RechargeDetailResponse rechargeDetailResponse = new Gson().fromJson(s, RechargeDetailResponse.class);
-            ((RechargeDetailInterface) callBackInterface).response(rechargeDetailResponse);
+            try {
+                RechargeDetailResponse rechargeDetailResponse = new Gson().fromJson(s, RechargeDetailResponse.class);
+                ((RechargeDetailInterface) callBackInterface).response(rechargeDetailResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null && callBackInterface instanceof DearNameModifyInterface) {
-            DearNameResponse dearNameResponse = new Gson().fromJson(s, DearNameResponse.class);
-            ((DearNameModifyInterface) callBackInterface).response(dearNameResponse);
+            try {
+                DearNameResponse dearNameResponse = new Gson().fromJson(s, DearNameResponse.class);
+                ((DearNameModifyInterface) callBackInterface).response(dearNameResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null && callBackInterface instanceof ForgetPassWordInterface) {
             if (command == Engine.COMMAND_GET_SIGN_CODE) {
-                GetSignCodeResponse getSignCodeResponse = new Gson().fromJson(s, GetSignCodeResponse.class);
-                ((ForgetPassWordInterface) callBackInterface).response(getSignCodeResponse);
+                try {
+                    GetSignCodeResponse getSignCodeResponse = new Gson().fromJson(s, GetSignCodeResponse.class);
+                    ((ForgetPassWordInterface) callBackInterface).response(getSignCodeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_CHECK_SIGN_CODE) {
-                CheckSignCodeResponse checkSignCodeResponse = new Gson().fromJson(s, CheckSignCodeResponse.class);
-                ((ForgetPassWordInterface) callBackInterface).response(checkSignCodeResponse);
+                try {
+                    CheckSignCodeResponse checkSignCodeResponse = new Gson().fromJson(s, CheckSignCodeResponse.class);
+                    ((ForgetPassWordInterface) callBackInterface).response(checkSignCodeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_SET_PASS_WORD) {
-                PassWordResponse passWordResponse = new Gson().fromJson(s, PassWordResponse.class);
-                ((ForgetPassWordInterface) callBackInterface).response(passWordResponse);
+                try {
+                    PassWordResponse passWordResponse = new Gson().fromJson(s, PassWordResponse.class);
+                    ((ForgetPassWordInterface) callBackInterface).response(passWordResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof LoginBindPhoneInterface) {
             if (command == Engine.COMMAND_GET_SIGN_CODE) {
-                GetSignCodeResponse getSignCodeResponse = new Gson().fromJson(s, GetSignCodeResponse.class);
-                ((LoginBindPhoneInterface) callBackInterface).response(getSignCodeResponse);
+                try {
+                    GetSignCodeResponse getSignCodeResponse = new Gson().fromJson(s, GetSignCodeResponse.class);
+                    ((LoginBindPhoneInterface) callBackInterface).response(getSignCodeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_CHECK_SIGN_CODE) {
-                CheckSignCodeResponse checkSignCodeResponse = new Gson().fromJson(s, CheckSignCodeResponse.class);
-                ((LoginBindPhoneInterface) callBackInterface).response(checkSignCodeResponse);
+                try {
+                    CheckSignCodeResponse checkSignCodeResponse = new Gson().fromJson(s, CheckSignCodeResponse.class);
+                    ((LoginBindPhoneInterface) callBackInterface).response(checkSignCodeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_THIRD_BIND_PHONE) {
-                LogBindPhoneResponse logBindPhoneResponse = new Gson().fromJson(s, LogBindPhoneResponse.class);
-                ((LoginBindPhoneInterface) callBackInterface).response(logBindPhoneResponse);
+                try {
+                    LogBindPhoneResponse logBindPhoneResponse = new Gson().fromJson(s, LogBindPhoneResponse.class);
+                    ((LoginBindPhoneInterface) callBackInterface).response(logBindPhoneResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof UserInfoLoginSetInterface) {
             if (command == Engine.COMMAND_USER_INFO_SET) {
                 LocalLog.d(TAG, "设置资料返回");
-                UserInfoSetResponse userInfoSetResponse = new Gson().fromJson(s, UserInfoSetResponse.class);
-                ((UserInfoLoginSetInterface) callBackInterface).response(userInfoSetResponse);
+                try {
+                    UserInfoSetResponse userInfoSetResponse = new Gson().fromJson(s, UserInfoSetResponse.class);
+                    ((UserInfoLoginSetInterface) callBackInterface).response(userInfoSetResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof MessageInterface) {
             if (command == Engine.COMMAND_AT_MESSAGE) {
-                MessageAtResponse messageAtResponse = new Gson().fromJson(s, MessageAtResponse.class);
-                ((MessageInterface) callBackInterface).response(messageAtResponse);
+                try {
+                    MessageAtResponse messageAtResponse = new Gson().fromJson(s, MessageAtResponse.class);
+                    ((MessageInterface) callBackInterface).response(messageAtResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_CONTENT_MESSAGE) {
-                MessageContentResponse messageContentResponse = new Gson().fromJson(s, MessageContentResponse.class);
-                ((MessageInterface) callBackInterface).response(messageContentResponse);
+                try {
+                    MessageContentResponse messageContentResponse = new Gson().fromJson(s, MessageContentResponse.class);
+                    ((MessageInterface) callBackInterface).response(messageContentResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_LIKE_MESSAGE) {
-                MessageLikeResponse messageLikeResponse = new Gson().fromJson(s, MessageLikeResponse.class);
-                ((MessageInterface) callBackInterface).response(messageLikeResponse);
+                try {
+                    MessageLikeResponse messageLikeResponse = new Gson().fromJson(s, MessageLikeResponse.class);
+                    ((MessageInterface) callBackInterface).response(messageLikeResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_SYS_MESSAGE) {
-                MessageSystemResponse messageSystemResponse = new Gson().fromJson(s, MessageSystemResponse.class);
-                ((MessageInterface) callBackInterface).response(messageSystemResponse);
+                try {
+                    MessageSystemResponse messageSystemResponse = new Gson().fromJson(s, MessageSystemResponse.class);
+                    ((MessageInterface) callBackInterface).response(messageSystemResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof FriendAddressInterface) {
             if (command == Engine.COMMAND_IVITE_MSG) {
-                InviteMessageResponse inviteMessageResponse = new Gson().fromJson(s, InviteMessageResponse.class);
-                ((FriendAddressInterface) callBackInterface).response(inviteMessageResponse);
+                try {
+                    InviteMessageResponse inviteMessageResponse = new Gson().fromJson(s, InviteMessageResponse.class);
+                    ((FriendAddressInterface) callBackInterface).response(inviteMessageResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_UPDATE_ADDRESS_BOOK) {
-                FriendAddResponse friendAddResponse = new Gson().fromJson(s, FriendAddResponse.class);
-                ((FriendAddressInterface) callBackInterface).response(friendAddResponse);
+                try {
+                    FriendAddResponse friendAddResponse = new Gson().fromJson(s, FriendAddResponse.class);
+                    ((FriendAddressInterface) callBackInterface).response(friendAddResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
 
         } else if (callBackInterface != null && callBackInterface instanceof EditCircleInterface) {
             if (command == Engine.COMMAND_GET_CIRCLE_TARGET) {
-                CircleTargetResponse circleTargetResponse = new Gson().fromJson(s, CircleTargetResponse.class);
-                ((EditCircleInterface) callBackInterface).response(circleTargetResponse);
+                try {
+                    CircleTargetResponse circleTargetResponse = new Gson().fromJson(s, CircleTargetResponse.class);
+                    ((EditCircleInterface) callBackInterface).response(circleTargetResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_EDIT_CIRCLE) {
-                EditCircleResponse editCircleResponse = new Gson().fromJson(s, EditCircleResponse.class);
-                ((EditCircleInterface) callBackInterface).response(editCircleResponse);
+                try {
+                    EditCircleResponse editCircleResponse = new Gson().fromJson(s, EditCircleResponse.class);
+                    ((EditCircleInterface) callBackInterface).response(editCircleResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof SuggestInterface) {
-            SuggestResponse suggestResponse = new Gson().fromJson(s, SuggestResponse.class);
-            ((SuggestInterface) callBackInterface).response(suggestResponse);
+            try {
+                SuggestResponse suggestResponse = new Gson().fromJson(s, SuggestResponse.class);
+                ((SuggestInterface) callBackInterface).response(suggestResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null && callBackInterface instanceof OlderPassInterface) {
-            OldPassChangeResponse oldPassChangeResponse = new Gson().fromJson(s, OldPassChangeResponse.class);
-            ((OlderPassInterface) callBackInterface).response(oldPassChangeResponse);
+            try {
+                OldPassChangeResponse oldPassChangeResponse = new Gson().fromJson(s, OldPassChangeResponse.class);
+                ((OlderPassInterface) callBackInterface).response(oldPassChangeResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null && callBackInterface instanceof ProtocolInterface) {
-            ProtocolResponse protocolResponse = new Gson().fromJson(s, ProtocolResponse.class);
-            ((ProtocolInterface) callBackInterface).response(protocolResponse);
+            try {
+                ProtocolResponse protocolResponse = new Gson().fromJson(s, ProtocolResponse.class);
+                ((ProtocolInterface) callBackInterface).response(protocolResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else if (callBackInterface != null && callBackInterface instanceof BindThirdAccoutInterface) {
-            PostBindResponse postBindResponse = new Gson().fromJson(s, PostBindResponse.class);
-            ((BindThirdAccoutInterface) callBackInterface).response(postBindResponse);
+            try {
+                PostBindResponse postBindResponse = new Gson().fromJson(s, PostBindResponse.class);
+                ((BindThirdAccoutInterface) callBackInterface).response(postBindResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
         } else {
             LocalLog.e(TAG, " dispatch not match");
         }

@@ -23,6 +23,8 @@ import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -62,6 +64,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.PhoneFormatCheckUtils;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
@@ -210,8 +213,8 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     private TranslateAnimation animationCircleType;
     private Handler mHandler;
     private ArrayList<String> targetDefaults = new ArrayList<>();
-    private boolean is_recharge = false;
-    private boolean is_pwd = false;
+    private boolean is_recharge = true;
+    private boolean is_pwd = true;
     private String cachePath;
     private ArrayList<String> circleTypeDefaults = new ArrayList<>();
     private final static int REQUEST_CODE_TAG = 0;
@@ -290,15 +293,38 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         cirNameDesc.setSelection(cirNameDesc.getText().toString().length());
         circlePhoneNumEditor.setSelection(circlePhoneNumEditor.getText().toString().length());
         circleMoneyNumEditor.setSelection(circleMoneyNumEditor.getText().toString().length());
+        circleMoneyNumEditor.addTextChangedListener(textWatcher);
         cirNameDesc.setSelection(cirNameDesc.getText().toString().length());
         circleReadPackageEditor.setSelection(circleReadPackageEditor.getText().toString().length());
+        circleReadPackageEditor.addTextChangedListener(textWatcher);
         moneyPkgNumEditor.setSelection(moneyPkgNumEditor.getText().toString().length());
         passwordNumEditor.setSelection(passwordNumEditor.getText().toString().length());
 
 
     }
 
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String temp = editable.toString();
+            int posDot = temp.indexOf(".");
+            if (posDot <= 0) return;
+            if (temp.length() - posDot - 1 > 2) {
+                editable.delete(posDot + 3, posDot + 4);
+            }
+
+        }
+    };
 /*    public void onStyleSelect(View view) {
         if (view != null) {
             switch (view.getId()) {
@@ -606,6 +632,11 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             case R.id.create_circle_confim:
                 LocalLog.d(TAG, "创建圈子");
                 if (localAvatar != null) {
+                    if (!Utils.isMobile(createCircleBodyParam.getMobile())) {
+                        Toast.makeText(this, "请填写正确的手机号", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     LogoUpTask logoUpTask = new LogoUpTask();
                     logoUpTask.execute(localAvatar);
                 }
@@ -642,7 +673,6 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 }).onDenied(new Action() {
             @Override
             public void onAction(List<String> permissions) {
-                toast(R.string.failure);
                 if (AndPermission.hasAlwaysDeniedPermission(CreateCircleActivity.this, permissions)) {
                     mSetting.showSetting(permissions);
                 }
@@ -714,25 +744,18 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 .onGranted(new Action() {
                     @Override
                     public void onAction(List<String> permissions) {
-                        toast(R.string.successfully);
                         LocalLog.d(TAG, "发起定位");
                         Presenter.getInstance(CreateCircleActivity.this).startService(null, LocalBaiduService.class);
                     }
                 }).onDenied(new Action() {
             @Override
             public void onAction(List<String> permissions) {
-                toast(R.string.failure);
                 if (AndPermission.hasAlwaysDeniedPermission(CreateCircleActivity.this, permissions)) {
                     mSetting.showSetting(permissions);
                 }
             }
         }).start();
     }
-
-    protected void toast(@StringRes int message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
 
     public boolean checkcreateCircleBodyParam() {
         createCircleBodyParam.setUserid(Presenter.getInstance(this).getId());
@@ -768,9 +791,19 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             return false;
         }
         if (createCircleBodyParam.isIs_recharge() == 1) {
+            if (moneyPkgNumEditor.getText().toString().startsWith("0")) {
+                Toast.makeText(this, "红包个数非法", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            if (Float.parseFloat(circleReadPackageEditor.getText().toString()) >
+                    Float.parseFloat(circleMoneyNumEditor.getText().toString())) {
+                Toast.makeText(this, "红包个数非法", Toast.LENGTH_SHORT).show();
+                return false;
+            }
             createCircleBodyParam.setRed_packet(Integer.parseInt(moneyPkgNumEditor.getText().toString()));
             createCircleBodyParam.setRed_packet_amount(Float.parseFloat(circleReadPackageEditor.getText().toString()));
             createCircleBodyParam.setTotal_amount(Float.parseFloat(circleMoneyNumEditor.getText().toString()));
+
         }
 
         if (createCircleBodyParam.isIs_pwd() == 1) {
