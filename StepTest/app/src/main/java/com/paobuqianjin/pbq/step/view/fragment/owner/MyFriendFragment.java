@@ -1,12 +1,16 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.DisplayMetrics;
@@ -88,6 +92,12 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
     private int pageIndexFollowOto = 1, pageIndexFollowMe = 1, pageIndexMyFollow = 1;
     private int pageFollowOtoCount = 0, pageFollowMeCount = 0, pageMyFollowCount = 0;
     private int selectPage = 0;
+    private IntentFilter intentFilter;
+    private LocalBroadcastManager localBroadcastManager;
+    private LocalReceiver localReceiver;
+    private final static String FOLLOW_OTO_ACTION = "com.paobuqianjin.pbq.action.OTO_ACTION";
+    private final static String MY_FOLLOW_ACTION = "com.paobuqianjin.pbq.action.MY_FOLLOW_ACTION";
+    private final static String FOLLOW_ME_ACTION = "com.paobuqianjin.pbq.action.FOLLOME_ACTION";
 
     @Override
 
@@ -115,6 +125,40 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
         Presenter.getInstance(getContext()).getFollows("my", pageIndexMyFollow, PAGE_SIZE_DEFAULT);
         Presenter.getInstance(getContext()).getFollows("me", pageIndexFollowMe, PAGE_SIZE_DEFAULT);
         return rootView;
+    }
+
+    private class LocalReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            LocalLog.d(TAG, "收到本地广播 ");
+            if (intent != null) {
+                switch (intent.getAction()) {
+                    case FOLLOW_ME_ACTION:
+
+                        UserFollowOtOResponse.DataBeanX.DataBean dataBean = (UserFollowOtOResponse.DataBeanX.DataBean) intent.getSerializableExtra("friendinfo");
+                        if (dataBean != null) {
+                            LocalLog.d(TAG, "关注我的的人变互相关注");
+                            followOtoData.add(dataBean);
+                            // notifyItemRangeInserted()或者notifyDataSetChanged().
+                            followOtoAdapter.notifyItemRangeInserted(followOtoData.size() - 1, 1);
+                        }
+                        break;
+                    case FOLLOW_OTO_ACTION:
+
+                        FollowUserResponse.DataBeanX.DataBean dataBeanOt = (FollowUserResponse.DataBeanX.DataBean) intent.getSerializableExtra("friendinfo");
+                        if (dataBeanOt != null) {
+                            LocalLog.d(TAG, "互相关注的变成关注我的");
+                            followMeData.add(dataBeanOt);
+                            // notifyItemRangeInserted()或者notifyDataSetChanged().
+                            followMeAdapter.notifyItemRangeInserted(followMeData.size() - 1, 1);
+                        }
+                        break;
+                    case MY_FOLLOW_ACTION:
+                        LocalLog.d(TAG, "不再关注");
+                        break;
+                }
+            }
+        }
     }
 
     @Override
@@ -186,6 +230,7 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
                     default:
                         break;
                 }
+
             }
 
             @Override
@@ -199,6 +244,14 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
             }
         });
 
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(FOLLOW_OTO_ACTION);
+        intentFilter.addAction(FOLLOW_ME_ACTION);
+        intentFilter.addAction(MY_FOLLOW_ACTION);
+
+        localReceiver = new LocalReceiver();
+        localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
+        localBroadcastManager.registerReceiver(localReceiver, intentFilter);
     }
 
     /**
@@ -241,6 +294,14 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
     private void loadFollowOtOMore(ArrayList<UserFollowOtOResponse.DataBeanX.DataBean> newData) {
         LocalLog.d(TAG, "loadFollowOtOMore() enter");
         /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        for (int i = 0; i < newData.size(); i++) {
+            for (int j = 0; j < followOtoData.size(); j++) {
+                if (followOtoData.get(j).getUserid() == newData.get(i).getUserid()) {
+                    LocalLog.d(TAG, "重复数据");
+                    newData.remove(i);
+                }
+            }
+        }
         followOtoData.addAll(newData);
         // notifyItemRangeInserted()或者notifyDataSetChanged().
         followOtoAdapter.notifyItemRangeInserted(followOtoData.size() - newData.size(), newData.size());
@@ -275,6 +336,14 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
     private void loadFollowMeMore(ArrayList<FollowUserResponse.DataBeanX.DataBean> newData) {
         LocalLog.d(TAG, "loadFollowMeMore() enter");
         /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        for (int i = 0; i < newData.size(); i++) {
+            for (int j = 0; j < followMeData.size(); j++) {
+                if (followMeData.get(j).getUserid() == newData.get(i).getUserid()) {
+                    LocalLog.d(TAG, "重复数据");
+                    newData.remove(i);
+                }
+            }
+        }
         followMeData.addAll(newData);
         // notifyItemRangeInserted()或者notifyDataSetChanged().
         followMeAdapter.notifyItemRangeInserted(followMeData.size() - newData.size(), newData.size());
@@ -423,6 +492,12 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
         super.onDestroyView();
         ButterKnife.unbind(this);
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        localBroadcastManager.unregisterReceiver(localReceiver);
     }
 
     private BaseBarImageViewFragment.ToolBarListener toolBarListener = new BaseBarImageViewFragment.ToolBarListener() {

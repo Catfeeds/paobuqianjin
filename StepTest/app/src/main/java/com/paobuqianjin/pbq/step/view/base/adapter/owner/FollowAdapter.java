@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,10 +36,15 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
     private final static String TAG = FollowAdapter.class.getSimpleName();
     Context context;
     List<?> mData;
+    private final static String FOLLOW_OTO_ACTION = "com.paobuqianjin.pbq.action.OTO_ACTION";
+    private final static String MY_FOLLOW_ACTION = "com.paobuqianjin.pbq.action.MY_FOLLOW_ACTION";
+    private final static String FOLLOW_ME_ACTION = "com.paobuqianjin.pbq.action.FOLLOME_ACTION";
+    private LocalBroadcastManager localBroadcastManager;
 
     public FollowAdapter(Context context, List<?> data) {
         this.context = context;
         mData = data;
+        localBroadcastManager = LocalBroadcastManager.getInstance(context);
     }
 
 
@@ -131,16 +137,35 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
                                 notifyItemRemoved(getAdapterPosition());
                                 break;
                             case "互相关注":
+                                Intent intent = new Intent(FOLLOW_OTO_ACTION);
+                                FollowUserResponse.DataBeanX.DataBean dataBean = new FollowUserResponse.DataBeanX.DataBean();
+                                dataBean.setUserid(((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getUserid());
+                                dataBean.setId(((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getUserid());
+                                dataBean.setNickname(((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getNickname());
+                                dataBean.setAvatar(((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getAvatar());
+                                dataBean.setSex(((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getSex());
+                                intent.putExtra("friendinfo", dataBean);
                                 mData.remove(getAdapterPosition());
                                 notifyItemRemoved(getAdapterPosition());
+                                localBroadcastManager.sendBroadcast(intent);
                                 break;
                         }
                     } else {
                         LocalLog.d(TAG, "关注");
                         switch (btFollow.getText().toString()) {
                             case "关注":
+                                Intent intent = new Intent(FOLLOW_ME_ACTION);
+                                UserFollowOtOResponse.DataBeanX.DataBean dataBean = new UserFollowOtOResponse.DataBeanX.DataBean();
+                                dataBean.setUserid(((FollowUserResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getUserid());
+                                dataBean.setNickname(((FollowUserResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getNickname());
+                                dataBean.setAvatar(((FollowUserResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getAvatar());
+                                dataBean.setSex(((FollowUserResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getSex());
+                                dataBean.setFollowid(((FollowUserResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getUserid());
+                                intent.putExtra("friendinfo", dataBean);
+
                                 mData.remove(getAdapterPosition());
                                 notifyItemRemoved(getAdapterPosition());
+                                localBroadcastManager.sendBroadcast(intent);
                                 break;
                             case "已关注":
                                 mData.remove(getAdapterPosition());

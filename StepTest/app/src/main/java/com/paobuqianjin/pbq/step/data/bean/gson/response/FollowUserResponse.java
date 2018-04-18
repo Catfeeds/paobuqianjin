@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -144,7 +145,7 @@ public class FollowUserResponse {
             }
         }
 
-        public static class DataBean {
+        public static class DataBean implements Serializable {
             /**
              * id : 9
              * userid : 8
