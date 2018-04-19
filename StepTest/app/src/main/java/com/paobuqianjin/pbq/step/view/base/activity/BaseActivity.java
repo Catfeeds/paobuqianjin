@@ -31,7 +31,6 @@ import butterknife.ButterKnife;
 
 public class BaseActivity extends AppCompatActivity {
     private final static String TAG = BaseActivity.class.getSimpleName();
-    private boolean stepServiceBind = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,8 +43,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Presenter.getInstance(this).bindService(StepService.START_STEP_ACTION, StepService.class);
-        stepServiceBind = true;
+
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -81,9 +79,6 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (stepServiceBind) {
-            Presenter.getInstance(this).unbindStepService();
-        }
     }
 
     public void startActivity(Class<? extends Activity> target, Bundle bundle, boolean finish) {

@@ -98,4 +98,5 @@ dependencies {
         exclude(group: 'com.github.bumptech.glide', module: 'glide')
     }
     implementation files('libs/SocialSDK_QQ_Simplify.jar')
+    compile project(':todaystepcounterlib')
 }

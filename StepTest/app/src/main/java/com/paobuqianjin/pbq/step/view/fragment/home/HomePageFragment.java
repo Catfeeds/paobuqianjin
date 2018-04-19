@@ -40,6 +40,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
+import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -53,6 +54,7 @@ import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.StepProcessDrawable;
 import com.paobuqianjin.pbq.step.view.base.view.WaveView;
+import com.today.step.lib.TodayStepService;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
@@ -311,7 +313,12 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public void onResume() {
         super.onResume();
+        Presenter.getInstance(getContext()).bindService(null, TodayStepService.class);
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -319,6 +326,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         super.onDestroyView();
         ButterKnife.unbind(this);
         getContext().unregisterReceiver(stepLocationReciver);
+        Presenter.getInstance(getContext()).unbindStepService();
     }
 
     public void popRedPkg(SponsorRedPkgResponse sponsorRedPkgResponse) {

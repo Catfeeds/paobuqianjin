@@ -80,6 +80,10 @@ public final class Presenter {
         engine.bindService(action, clazz);
     }
 
+    public void refreshStep() {
+        engine.refreshStep();
+    }
+
     public void unbindStepService() {
         engine.unbindStepService();
     }

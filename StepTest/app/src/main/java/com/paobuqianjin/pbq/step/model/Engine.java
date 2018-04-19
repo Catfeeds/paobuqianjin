@@ -126,6 +126,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
+import com.today.step.lib.ISportStepInterface;
 
 import java.io.File;
 import java.io.IOException;
@@ -217,6 +218,7 @@ public final class Engine {
     private BindThirdAccoutInterface bindThirdAccoutInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
+    private ISportStepInterface iSportStepInterface;
     private Picasso picasso = null;
     public final static int COMMAND_REQUEST_SIGN = 0;
     public final static int COMMAND_REG_BY_PHONE = 1;
@@ -376,7 +378,9 @@ public final class Engine {
 
     public void unbindStepService() {
         LocalLog.d(TAG, "unbindStepService() enter");
-        mContext.unbindService(connection);
+        if (connection != null) {
+            mContext.unbindService(connection);
+        }
     }
 
     private class LocationServerConnection implements ServiceConnection {
@@ -401,19 +405,32 @@ public final class Engine {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             LocalLog.d(TAG, "onServiceConnected() = " + componentName);
-            if (iBinder != null) {
-                messengerStep = new Messenger(iBinder);
-                sendToService(new Bundle(), MSG_SEND_DATA_TO_SETP_SERVICE);
-            } else {
-                LocalLog.d(TAG, "iBinder is null");
+            //Activity和Service通过aidl进行通信
+            iSportStepInterface = ISportStepInterface.Stub.asInterface(iBinder);
+            try {
+                homePageInterface.responseStepToday(iSportStepInterface.getCurrentTimeSportStep());
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
-
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
             LocalLog.d(TAG, "onServiceDisconnected() 断开连接！");
+            iSportStepInterface = null;
         }
+    }
+
+    public void refreshStep() {
+        if (null != iSportStepInterface) {
+            try {
+                homePageInterface.responseStepToday(iSportStepInterface.getCurrentTimeSportStep());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+
+        }
+
     }
 
     public void sendToService(Bundle bundle, int what) {
@@ -1978,7 +1995,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(addDeleteFollowInterface, COMMAND_ADD_DELETE_FOLLOW));
     }
 
-    public void postAddUserFollow(final InnerCallBack innerCallBack,final int followid) {
+    public void postAddUserFollow(final InnerCallBack innerCallBack, final int followid) {
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))

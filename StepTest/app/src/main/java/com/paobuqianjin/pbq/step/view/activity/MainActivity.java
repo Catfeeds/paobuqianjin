@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
@@ -21,6 +22,8 @@ import com.paobuqianjin.pbq.step.view.fragment.home.HomePageFragment;
 import com.paobuqianjin.pbq.step.view.fragment.honor.HonorFragment;
 import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerFragment;
 import com.paobuqianjin.pbq.step.view.fragment.task.TaskFragment;
+import com.today.step.lib.ISportStepInterface;
+import com.today.step.lib.TodayStepService;
 
 
 public class MainActivity extends BaseActivity {
@@ -44,6 +47,7 @@ public class MainActivity extends BaseActivity {
             {R.drawable.task_n, R.drawable.task_s},
             {R.drawable.list_n, R.drawable.list_s}, {R.drawable.me_n, R.drawable.me_s}};
     private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.SCAN_ACTION";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +130,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
     }
 
     public void onTabSelect(View view) {

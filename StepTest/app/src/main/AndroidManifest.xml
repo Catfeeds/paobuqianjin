@@ -353,37 +353,26 @@
             android:name="UMENG_APPKEY"
             android:value="5a5718adf43e482eb000012a" />
         <!--  -->
-        <receiver
-            android:name=".model.broadcast.BootStepReceiver"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_MOUNTED" />
-                <action android:name="android.intent.action.MEDIA_UNMOUNTED" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name=".model.broadcast.ShutDownReceiver"
-            android:exported="false" />
 
         <service
-            android:name=".model.services.local.StepService"
+            android:name="com.today.step.lib.TodayStepService"
+            android:enabled="true"
             android:exported="false"
-            android:process=":stepservice" />
-
-        <receiver
-            android:name=".model.broadcast.TimeReceiver"
-            android:exported="false">
+            android:process=":todaystep"
+            android:launchMode="singleInstance"
+            android:priority="1000">
             <intent-filter>
-                <action android:name="android.intent.action.TIME_SET" />
-                <action android:name="android.intent.action.TIME_TICK" />
-                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
-                <action android:name="android.intent.action.DATE_CHANGED" />
-            </intent-filter>
-        </receiver>
 
+                <!-- 系统启动完成后会调用 -->
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.ACTION_TIME_TICK" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </service>
         <activity
             android:name=".view.activity.FillInviteCodeActivity"
             android:launchMode="singleTask"

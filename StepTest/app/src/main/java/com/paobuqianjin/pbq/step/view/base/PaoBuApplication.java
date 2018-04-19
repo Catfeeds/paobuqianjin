@@ -1,7 +1,9 @@
 package com.paobuqianjin.pbq.step.view.base;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.Looper;
 import android.support.multidex.MultiDex;
@@ -28,6 +30,8 @@ import com.paobuqianjin.pbq.step.view.emoji.IImageLoader;
 import com.paobuqianjin.pbq.step.view.emoji.LQREmotionKit;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.today.step.lib.TodayStepManager;
+import com.today.step.lib.TodayStepService;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -57,6 +61,8 @@ public class PaoBuApplication extends MultiDexApplication {
     public LocationService locationService;
     private static boolean isAsyncRun = false;
     private static final long cacheSize = 1024 * 1024 * 200;
+    private static PaoBuApplication sApplication;
+    private int appCount = 0;
 
     @Override
     public void onCreate() {
@@ -64,6 +70,59 @@ public class PaoBuApplication extends MultiDexApplication {
         initTencentBugly();
         initHttpOk();
         initSDKService();
+        sApplication = this;
+        TodayStepManager.init(this);
+
+        registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+                appCount++;
+            }
+
+            @Override
+            public void onActivityResumed(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+                appCount--;
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+
+            }
+        });
+    }
+
+
+    /**
+     * app是否在前台
+     *
+     * @return true前台，false后台
+     */
+    public boolean isForeground() {
+        return appCount > 0;
+    }
+
+    public static PaoBuApplication getApplication() {
+        return sApplication;
     }
 
     private void initTencentBugly() {
@@ -119,8 +178,7 @@ public class PaoBuApplication extends MultiDexApplication {
             if (app != null) {
                 UMShareAPI.get(app);
                 LocalLog.d(TAG, "DetectThread run() 初始化网络、计步服务、定位SDK、三方登陆注册、三方支付SDK等");
-                Presenter.getInstance(app).startService(StepService.START_STEP_ACTION, StepService.class);
-                //Presenter.getInstance(app).startService(null, LocalBaiduService.class);
+                Presenter.getInstance(app).startService(null, TodayStepService.class);
                 app.initWXapi(app);
                 app.loadCitySelect(app);
             }
