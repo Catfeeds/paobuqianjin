@@ -161,12 +161,13 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private final static int MSG_UPDATE_STEP = 0;
+    private final static int MSG_UPDATE_STEP_LOCAL = 1;
     private UpdateHandler updateHandler = new UpdateHandler(this);
 
     private static Map<String, Integer> weatherMap = new LinkedHashMap<>();
     private Rationale mRationale;
     private PermissionSetting mSetting;
-
+    private int lastStep = 0;
     private int PERMISSION_REQUEST = 100;
 
     static {
@@ -251,13 +252,11 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 .onGranted(new Action() {
                     @Override
                     public void onAction(List<String> permissions) {
-                        toast(R.string.successfully);
                         Presenter.getInstance(getContext()).startService(null, LocalBaiduService.class);
                     }
                 }).onDenied(new Action() {
             @Override
             public void onAction(List<String> permissions) {
-                toast(R.string.failure);
                 if (AndPermission.hasAlwaysDeniedPermission(getActivity(), permissions)) {
                     mSetting.showSetting(permissions);
                 }
@@ -428,14 +427,20 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public void responseStepToday(int stepToday) {
         LocalLog.d(TAG, "responseStepToday() enter");
+        if (lastStep >= stepToday) {
+            return;
+        }
+        lastStep = stepToday;
         if (toayStep != null) {
             toayStep.setText(String.valueOf(stepToday));
         }
         LocalLog.d(TAG, "stepToday = " + stepToday);
-        Message message = Message.obtain();
-        message.what = MSG_UPDATE_STEP;
-        message.arg1 = stepToday;
-        updateHandler.sendMessageDelayed(message, 10000);
+        Message messageNet = Message.obtain();
+        messageNet.what = MSG_UPDATE_STEP;
+        messageNet.arg1 = stepToday;
+        updateHandler.sendMessageDelayed(messageNet, 10000);
+        updateHandler.sendEmptyMessageDelayed(MSG_UPDATE_STEP_LOCAL, 500);
+
     }
 
     @Override
@@ -572,19 +577,22 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         @Override
         public void handleMessage(Message msg) {
             HomePageFragment homePageFragment = weakReference.get();
-            if (homePageFragment != null) {
+            if (homePageFragment != null && homePageFragment.getContext() != null) {
                 switch (msg.what) {
                     case MSG_UPDATE_STEP:
                         //ava.lang.NullPointerException: Attempt to invoke virtual method 'android.content.Context android.content.Context.getApplicationContext()' on a null obje
                         LocalLog.d(TAG, "MSG_UPDATE_STEP msg " + msg.arg1);
-                        if (homePageFragment.getContext() != null) {
-                            if (msg.arg1 > 0) {
-                                Presenter.getInstance(homePageFragment.getContext()).postUserStep(msg.arg1);
-                            }
+
+                        if (msg.arg1 > 0) {
+                            Presenter.getInstance(homePageFragment.getContext()).postUserStep(msg.arg1);
                         }
+
                         if (hasMessages(MSG_UPDATE_STEP)) {
                             removeMessages(MSG_UPDATE_STEP);
                         }
+                        break;
+                    case MSG_UPDATE_STEP_LOCAL:
+                        Presenter.getInstance(homePageFragment.getContext()).refreshStep();
                         break;
                     default:
                         break;
