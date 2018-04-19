@@ -1,12 +1,13 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
-import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskFragment;
+import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskContainFragment;
+import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskPersonFragment;
+import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
 
 /**
  * Created by pbq on 2018/1/26.
@@ -14,7 +15,7 @@ import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskFragment;
 
 public class TaskReleaseActivity extends BaseActivity {
     private final static String TAG = TaskReleaseActivity.class.getSimpleName();
-    private ReleaseTaskFragment releaseTaskFragment = new ReleaseTaskFragment();
+    private ReleaseTaskContainFragment releaseTaskContainFragment = new ReleaseTaskContainFragment();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,8 +27,8 @@ public class TaskReleaseActivity extends BaseActivity {
     protected void initView() {
         super.initView();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.task_release_container, releaseTaskFragment)
-                .show(releaseTaskFragment)
+                .add(R.id.task_release_container, releaseTaskContainFragment)
+                .show(releaseTaskContainFragment)
                 .commit();
     }
 }

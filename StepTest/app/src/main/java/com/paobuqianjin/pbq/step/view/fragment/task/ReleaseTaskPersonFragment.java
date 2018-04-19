@@ -17,9 +17,7 @@ import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
-import com.paobuqianjin.pbq.step.data.bean.bundle.LikeBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
@@ -29,7 +27,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.SelectFriendForTaskActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import java.util.ArrayList;
 
@@ -41,21 +39,20 @@ import butterknife.OnClick;
  * Created by pbq on 2018/1/26.
  */
 /*
-@className :ReleaseTaskFragment
+@className :ReleaseTaskPersonFragment
 *@date 2018/1/26
 *@author
 *@description 发布任务界面
 */
-public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
-    private final static String TAG = ReleaseTaskFragment.class.getSimpleName();
-    @Bind(R.id.bar_return_drawable)
-    ImageView barReturnDrawable;
-    @Bind(R.id.button_return_bar)
-    RelativeLayout buttonReturnBar;
-    @Bind(R.id.bar_title)
-    TextView barTitle;
-    @Bind(R.id.bar_tv_right)
-    TextView barTvRight;
+public class ReleaseTaskPersonFragment extends BaseFragment {
+    private final static String TAG = ReleaseTaskPersonFragment.class.getSimpleName();
+
+    private final static String PAY_FOR_STYLE = "pay_for_style";
+    private final static String PAY_ACTION = "android.intent.action.PAY";
+    private final static String TASK_NO = "taskno";
+    private final static String CIRCLE_RECHARGE = "pay";
+    private static final int SELECT_FRIENDS = 0;
+    ArrayList<UserFriendResponse.DataBeanX.DataBean> dataBeans = null;
     @Bind(R.id.line1)
     ImageView line1;
     @Bind(R.id.target_step_des)
@@ -104,22 +101,11 @@ public class ReleaseTaskFragment extends BaseBarStyleTextViewFragment {
     TextView attention;
     @Bind(R.id.confirm)
     Button confirm;
-
-    private final static String PAY_FOR_STYLE = "pay_for_style";
-    private final static String PAY_ACTION = "android.intent.action.PAY";
-    private final static String TASK_NO = "taskno";
-    private final static String CIRCLE_RECHARGE = "pay";
-    private static final int SELECT_FRIENDS = 0;
-    ArrayList<UserFriendResponse.DataBeanX.DataBean> dataBeans = null;
     private TaskReleaseParam taskReleaseParam = new TaskReleaseParam();
     private String friends;
     LinearLayoutManager layoutManager;
     FriendBundleData friendBundleData = null;
 
-    @Override
-    protected String title() {
-        return "发布任务";
-    }
 
     @Override
     protected int getLayoutResId() {

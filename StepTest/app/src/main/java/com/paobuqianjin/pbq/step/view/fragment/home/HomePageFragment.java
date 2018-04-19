@@ -592,6 +592,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         }
                         break;
                     case MSG_UPDATE_STEP_LOCAL:
+                        LocalLog.d(TAG, "MSG_UPDATE_STEP_LOCAL enter");
                         Presenter.getInstance(homePageFragment.getContext()).refreshStep();
                         break;
                     default:
