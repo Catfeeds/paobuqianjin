@@ -147,7 +147,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     RelativeLayout contentDetails;
     @Bind(R.id.dynamic_time)
     TextView dynamicTime;
-    private ArrayList<DynamicLikeListResponse.DataBeanX.DataBean> likeData;
+    private ArrayList<DynamicLikeListResponse.DataBeanX.DataBean> likeData = new ArrayList<>();
     private EmotionKeyboard mEmotionKeyboard;
     private List<View> Mview = new ArrayList<>();
     private List<View> dots;
@@ -161,7 +161,6 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     int dynamicid = -1;
     int userid = -1;
     int is_vote = 0;
-
     private View popRedPkgView;
     private PopupWindow popupRedPkgWindow;
     private TranslateAnimation animationCircleType;
@@ -173,6 +172,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     private PopupWindow popupSelectWindow;
     private int mScreenWidth;
     private int mScreenHeight;
+    LikeUserAdapter likeUserAdapter = null;
 
     @Override
     protected int getLayoutResId() {
@@ -507,6 +507,13 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
             adapter = new ImageViewPagerAdapter(getContext(), Mview);
             imageViewpager.setAdapter(adapter);
+            PostDynamicContentParam postDynamicContentParam = new PostDynamicContentParam();
+            postDynamicContentParam.
+                    setDynamicid(dynamicid)
+                    .setParent_id(0)
+                    .setUserid(Presenter.getInstance(getContext())
+                            .getId()).setReply_userid(userid);
+            postDynamicAction(postDynamicContentParam, dynamicUserName.getText().toString(), reflashTopInterface);
         } else if (dynamicIdDetailResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -526,7 +533,10 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             }
 
             likeData = (ArrayList<DynamicLikeListResponse.DataBeanX.DataBean>) dynamicLikeListResponse.getData().getData();
-            supportIconRecycler.setAdapter(new LikeUserAdapter(getContext(), dynamicLikeListResponse.getData().getData()));
+            if (likeUserAdapter == null) {
+                likeUserAdapter = new LikeUserAdapter(getContext(), likeData);
+            }
+            supportIconRecycler.setAdapter(likeUserAdapter);
         } else if (dynamicLikeListResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -566,10 +576,22 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_s));
                 likeNum += 1;
                 contentSupports.setText(String.valueOf(likeNum));
+                DynamicLikeListResponse.DataBeanX.DataBean dataBean = new DynamicLikeListResponse.DataBeanX.DataBean();
+                dataBean.setId(Presenter.getInstance(getContext()).getId());
+                dataBean.setAvatar(Presenter.getInstance(getContext()).getAvatar(getContext()));
+                likeData.add(dataBean);
+                likeUserAdapter.notifyItemRangeInserted(likeData.size() - 1, 1);
+
             } else {
                 likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_n));
                 likeNum -= 1;
                 contentSupports.setText(String.valueOf(likeNum));
+                for (int i = 0; i < likeData.size(); i++) {
+                    if (likeData.get(i).getId() == Presenter.getInstance(getContext()).getId()) {
+                        likeData.remove(i);
+                        likeUserAdapter.notifyItemRemoved(i);
+                    }
+                }
             }
         } else if (putVoteResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");

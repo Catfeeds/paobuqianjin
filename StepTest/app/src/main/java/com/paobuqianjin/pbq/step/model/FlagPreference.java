@@ -76,6 +76,20 @@ public final class FlagPreference {
         editor.commit();
     }
 
+    public static String getAvatar(Context context) {
+        LocalLog.d(TAG, "getAvatar() 获取最新订单号");
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        String mobile = flagPreference.getString("avatar", "");
+        return mobile;
+    }
+
+    public static void setAvatar(Context context, String avatar) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putString("avatar", avatar);
+        editor.commit();
+    }
+
     public static String getMobile(Context context) {
         LocalLog.d(TAG, "getMobile() 获取最新订单号");
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);

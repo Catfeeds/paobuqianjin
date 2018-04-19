@@ -187,6 +187,10 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             if (circleDetailResponse == null) {
                 return;
             }
+            if (circleDetailResponse.getData().getIs_join() == 0) {
+                LocalLog.d(TAG, "没有加入圈子，无法操作");
+                return;
+            }
             if (circleDetailResponse.getData().getIs_admin() == 1) {
                 LocalLog.d(TAG, "管理员界面");
                 popAdminSelect();

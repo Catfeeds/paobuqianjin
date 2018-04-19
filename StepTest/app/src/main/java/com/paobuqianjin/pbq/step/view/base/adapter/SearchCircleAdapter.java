@@ -102,6 +102,7 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
         String sAgeFormat = mContext.getResources().getString(R.string.member_number);
         String sFinalMember = String.format(sAgeFormat, tmpData.getMember_number());
         holder.searchCircleDesListNum.setText(sFinalMember);
+        holder.circleMember = tmpData.getMember_number();
         if (tmpData.getIs_pwd() == 1) {
             holder.lock.setVisibility(View.VISIBLE);
             holder.needPass = true;
@@ -129,6 +130,7 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
         Button joinIn;
         int circleId;
         boolean is_password;
+        int circleMember = 0;
 
         public SearchCirCleViewHolder(View view) {
             super(view);
@@ -145,6 +147,9 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
                     if (inOutCallBackInterface != null) {
                         inOutCallBackInterface.inCallBack();
                     }
+                    String sAgeFormat = mContext.getResources().getString(R.string.member_number);
+                    String sFinalMember = String.format(sAgeFormat, circleMember + 1);
+                    searchCircleDesListNum.setText(sFinalMember);
                 } else if (joinCircleResponse.getError() == -1) {
                     Toast.makeText(mContext, joinCircleResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }

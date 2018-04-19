@@ -435,7 +435,6 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                 }).onDenied(new Action() {
             @Override
             public void onAction(List<String> permissions) {
-                toast(R.string.failure);
                 if (AndPermission.hasAlwaysDeniedPermission(getActivity(), permissions)) {
                     mSetting.showSetting(permissions);
                 }
@@ -463,6 +462,8 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
     public void response(EditCircleResponse editCircleResponse) {
         if (editCircleResponse.getError() == 0) {
             LocalLog.d(TAG, "编辑成功，通知详情界面更新");
+            Toast.makeText(getContext(), "编辑成功", Toast.LENGTH_SHORT).show();
+            getActivity().finish();
         }
     }
 

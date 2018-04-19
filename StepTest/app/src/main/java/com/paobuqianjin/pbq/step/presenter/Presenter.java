@@ -142,6 +142,14 @@ public final class Presenter {
         engine.setId(mContext, id);
     }
 
+    public String getAvatar(Context context) {
+        return engine.getAvatar(context);
+    }
+
+    public void setAvatar(Context context, String avatar) {
+        engine.setAvatar(context, avatar);
+    }
+
     public void setMobile(Context context, String mobile) {
         engine.setMobile(context, mobile);
     }

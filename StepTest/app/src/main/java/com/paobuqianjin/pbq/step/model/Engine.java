@@ -505,6 +505,14 @@ public final class Engine {
         FlagPreference.setUid(context, id);
     }
 
+    public String getAvatar(Context context) {
+        return FlagPreference.getAvatar(context);
+    }
+
+    public void setAvatar(Context context, String avatar) {
+        FlagPreference.setAvatar(context, avatar);
+    }
+
     public String getMobile(Context context) {
         return FlagPreference.getMobile(context);
     }

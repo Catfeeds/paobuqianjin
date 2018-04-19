@@ -36,6 +36,11 @@ public class LikeUserAdapter extends RecyclerView.Adapter<LikeUserAdapter.LikeUs
         mData = data;
     }
 
+    public void notifyDataSetChanged(List<?> data) {
+        mData = data;
+        super.notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(LikeUserViewHolder holder, int position) {
         updateListItem(holder, position);

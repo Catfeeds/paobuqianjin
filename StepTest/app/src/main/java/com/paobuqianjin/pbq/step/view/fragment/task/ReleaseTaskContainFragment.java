@@ -74,7 +74,7 @@ public class ReleaseTaskContainFragment extends BaseFragment {
         releaseChoiceTab.post(new Runnable() {
             @Override
             public void run() {
-                setIndicator(releaseChoiceTab, 40, 40);
+                setIndicator(releaseChoiceTab, 60, 60);
             }
         });
     }

@@ -134,6 +134,9 @@ public class OwnerJoinFragment extends BaseFragment {
 
         adapter.notifyDataSetChanged(dataBeans);
 
+        if (joinCircleSwipe == null) {
+            return;
+        }
         joinCircleSwipe.setRefreshing(false);
 
         // 第一次加载数据：一定要掉用这个方法。

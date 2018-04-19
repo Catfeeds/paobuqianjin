@@ -331,6 +331,7 @@ public final class OwnerFragment extends BaseFragment {
                 LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
                 OwnerFragment.this.userInfoResponse = userInfoResponse;
                 userAvatar = userInfoResponse.getData().getAvatar();
+                Presenter.getInstance(getContext()).setAvatar(getContext(), userAvatar);
                 if (headIcon == null) {
                     LocalLog.d(TAG, "vvvvvvvv");
                     return;

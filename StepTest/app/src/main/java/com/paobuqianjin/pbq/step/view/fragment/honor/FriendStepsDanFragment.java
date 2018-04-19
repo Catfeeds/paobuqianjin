@@ -249,6 +249,10 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                 Presenter.getInstance(getContext()).getImage(headIconUser, friendStepRankDayResponse.getData().getData().getMydata().getAvatar());
                 adapter = new HonorDetailAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember());
                 danDetailRecycler.setAdapter(adapter);
+                if (friendStepRankDayResponse.getData().getData().getMember().size() > 0) {
+                    Presenter.getInstance(getContext()).getImage(kingHeadIcon, friendStepRankDayResponse.getData().getData().getMember().get(0).getAvatar());
+                    kingName.setText(friendStepRankDayResponse.getData().getData().getMember().get(0).getNickname());
+                }
                 if (pageIndexDay == pageCountDay) {
 
                 } else if (pageIndexDay < pageCountDay) {
@@ -312,7 +316,6 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                 LocalLog.d(TAG, "pageIndexWeek = " + pageIndexWeek + "pageCountWeek = " + pageCountWeek);
                 //adapter.notifyDataSetChanged(friendWeekResponse.getData().getData().getMember());
                 adapter = new HonorDetailAdapter(getContext(), friendWeekResponse.getData().getData().getMember());
-                danDetailRecycler.setAdapter(adapter);
                 danDetailRecycler.setAdapter(adapter);
                 if (pageIndexWeek == pageCountWeek) {
 
