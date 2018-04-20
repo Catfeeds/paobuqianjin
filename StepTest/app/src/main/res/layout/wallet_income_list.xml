@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
-            android:text="11-18"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="14dp" />
 
@@ -26,7 +26,10 @@
             android:layout_marginLeft="14dp"
             android:layout_marginRight="22dp"
             android:layout_toRightOf="@+id/date"
-            android:text="人人乐红包"
+            android:ellipsize="end"
+            android:maxEms="12"
+            android:maxLines="1"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
@@ -37,7 +40,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="14dp"
-            android:text="+5元"
+            android:text=""
             android:textColor="@color/coloe_fec742"
             android:textSize="15dp" />
 

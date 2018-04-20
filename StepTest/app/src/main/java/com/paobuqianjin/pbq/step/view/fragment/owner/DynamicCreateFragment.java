@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,7 +15,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -70,9 +68,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implements ReleaseDynamicInterface {
     private final static String TAG = DynamicCreateFragment.class.getSimpleName();
-    private View popupCircleTypeView;
-    private PopupWindow popupCircleTypeWindow;
-    private TranslateAnimation animationCircleType;
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -101,10 +96,12 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     ImageView locationIco;
     @Bind(R.id.location_span)
     RelativeLayout locationSpan;
-    @Bind(R.id.line_width)
-    ImageView lineWidth;
-    @Bind(R.id.at)
-    ImageView at;
+    @Bind(R.id.dynamic_create)
+    RelativeLayout dynamicCreate;
+    private View popupCircleTypeView;
+    private PopupWindow popupCircleTypeWindow;
+    private TranslateAnimation animationCircleType;
+
     private final static int CAMERA_PIC = 0;
     @Bind(R.id.location_str)
     TextView locationStr;

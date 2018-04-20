@@ -12,10 +12,11 @@ import java.util.List;
 *@description 昨日收益接口返回
 */
 public class IncomeResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":5},"data":[{"id":1,"amount":"0.50","name":"圈子红包","create_time":1517818067},{"id":2,"amount":"0.80","name":"圈子红包","create_time":1517818067},{"id":3,"amount":"0.15","name":"圈子红包","create_time":1517818067},{"id":4,"amount":"0.28","name":"圈子红包","create_time":1517818067},{"id":5,"amount":"1.28","name":"圈子红包","create_time":1517818067}],"total_amount":3.01}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":2},"data":[{"id":237,"amount":"0.16","name":"圈子红包","create_time":1522811299,"typeid":1,"source_id":100360,"circleid":100360,"circlename":"一样一样咿呀咿呀哟以后呀呀呀"},{"id":236,"amount":"1.00","name":"圈子红包","create_time":1522810702,"typeid":1,"source_id":100361,"circleid":100361,"circlename":"一样一样咿呀咿呀哟以后呀呀呀前"}],"total_amount":1.16}
      */
 
     private int error;
@@ -57,9 +58,9 @@ public class IncomeResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":5}
-         * data : [{"id":1,"amount":"0.50","name":"圈子红包","create_time":1517818067},{"id":2,"amount":"0.80","name":"圈子红包","create_time":1517818067},{"id":3,"amount":"0.15","name":"圈子红包","create_time":1517818067},{"id":4,"amount":"0.28","name":"圈子红包","create_time":1517818067},{"id":5,"amount":"1.28","name":"圈子红包","create_time":1517818067}]
-         * total_amount : 3.01
+         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":2}
+         * data : [{"id":237,"amount":"0.16","name":"圈子红包","create_time":1522811299,"typeid":1,"source_id":100360,"circleid":100360,"circlename":"一样一样咿呀咿呀哟以后呀呀呀"},{"id":236,"amount":"1.00","name":"圈子红包","create_time":1522810702,"typeid":1,"source_id":100361,"circleid":100361,"circlename":"一样一样咿呀咿呀哟以后呀呀呀前"}]
+         * total_amount : 1.16
          */
 
         private PagenationBean pagenation;
@@ -104,13 +105,13 @@ public class IncomeResponse {
              * page : 1
              * pageSize : 10
              * totalPage : 1
-             * totalCount : 5
+             * totalCount : 2
              */
 
             private int page;
             private int pageSize;
             private int totalPage;
-            private float totalCount;
+            private int totalCount;
 
             public int getPage() {
                 return page;
@@ -136,11 +137,11 @@ public class IncomeResponse {
                 this.totalPage = totalPage;
             }
 
-            public float getTotalCount() {
+            public int getTotalCount() {
                 return totalCount;
             }
 
-            public void setTotalCount(float totalCount) {
+            public void setTotalCount(int totalCount) {
                 this.totalCount = totalCount;
             }
 
@@ -157,16 +158,24 @@ public class IncomeResponse {
 
         public static class DataBean {
             /**
-             * id : 1
-             * amount : 0.50
+             * id : 237
+             * amount : 0.16
              * name : 圈子红包
-             * create_time : 1517818067
+             * create_time : 1522811299
+             * typeid : 1
+             * source_id : 100360
+             * circleid : 100360
+             * circlename : 一样一样咿呀咿呀哟以后呀呀呀
              */
 
             private int id;
-            private float amount;
+            private String amount;
             private String name;
             private int create_time;
+            private int typeid;
+            private int source_id;
+            private int circleid;
+            private String circlename;
 
             public int getId() {
                 return id;
@@ -176,11 +185,11 @@ public class IncomeResponse {
                 this.id = id;
             }
 
-            public float getAmount() {
+            public String getAmount() {
                 return amount;
             }
 
-            public void setAmount(float amount) {
+            public void setAmount(String amount) {
                 this.amount = amount;
             }
 
@@ -200,6 +209,38 @@ public class IncomeResponse {
                 this.create_time = create_time;
             }
 
+            public int getTypeid() {
+                return typeid;
+            }
+
+            public void setTypeid(int typeid) {
+                this.typeid = typeid;
+            }
+
+            public int getSource_id() {
+                return source_id;
+            }
+
+            public void setSource_id(int source_id) {
+                this.source_id = source_id;
+            }
+
+            public int getCircleid() {
+                return circleid;
+            }
+
+            public void setCircleid(int circleid) {
+                this.circleid = circleid;
+            }
+
+            public String getCirclename() {
+                return circlename;
+            }
+
+            public void setCirclename(String circlename) {
+                this.circlename = circlename;
+            }
+
             @Override
             public String toString() {
                 return "DataBean{" +
@@ -207,6 +248,10 @@ public class IncomeResponse {
                         ", amount='" + amount + '\'' +
                         ", name='" + name + '\'' +
                         ", create_time=" + create_time +
+                        ", typeid=" + typeid +
+                        ", source_id=" + source_id +
+                        ", circleid=" + circleid +
+                        ", circlename='" + circlename + '\'' +
                         '}';
             }
         }

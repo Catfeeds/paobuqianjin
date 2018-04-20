@@ -12,10 +12,11 @@ import java.util.List;
 *@description 总收益
 */
 public class AllIncomeResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":2,"totalCount":20},"data":[{"id":1,"amount":"0.50","name":"圈子红包","create_time":1517818067},{"id":2,"amount":"0.80","name":"圈子红包","create_time":1517818067},{"id":3,"amount":"0.15","name":"圈子红包","create_time":1517818067},{"id":4,"amount":"0.28","name":"圈子红包","create_time":1517818067},{"id":5,"amount":"1.28","name":"圈子红包","create_time":1517818067},{"id":6,"amount":"6.66","name":"圈子红包","create_time":1517673605},{"id":7,"amount":"8.88","name":"邀请红包","create_time":1517673605},{"id":8,"amount":"8.88","name":"圈子红包","create_time":1517673605},{"id":9,"amount":"99.99","name":"邀请红包","create_time":1517673605},{"id":58,"amount":"1.59","name":"商户广告","create_time":1515394608},{"id":73,"amount":"4.55","name":"商户广告","create_time":1515480276},{"id":74,"amount":"4.55","name":"商户广告","create_time":1515480744},{"id":75,"amount":"4.55","name":"商户广告","create_time":1515481027},{"id":77,"amount":"5.76","name":"商户广告","create_time":1515482311},{"id":80,"amount":"4.55","name":"商户广告","create_time":1515482693},{"id":81,"amount":"4.55","name":"商户广告","create_time":1515482740},{"id":82,"amount":"7.45","name":"商户广告","create_time":1515737786},{"id":83,"amount":"22.29","name":"商户广告","create_time":0},{"id":85,"amount":"14.94","name":"商户广告","create_time":0},{"id":86,"amount":"2.07","name":"商户广告","create_time":0}],"total_amount":204.27}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":2,"totalCount":17},"data":[{"id":237,"amount":"0.16","name":"圈子红包","create_time":1522811299,"typeid":1,"source_id":100360,"circleid":100360,"circlename":"一样一样咿呀咿呀哟以后呀呀呀"},{"id":236,"amount":"1.00","name":"圈子红包","create_time":1522810702,"typeid":1,"source_id":100361,"circleid":100361,"circlename":"一样一样咿呀咿呀哟以后呀呀呀前"},{"id":234,"amount":"1.00","name":"圈子红包","create_time":1522297949,"typeid":1,"source_id":100355,"circleid":100355,"circlename":"钱包支付"},{"id":233,"amount":"1.00","name":"圈子红包","create_time":1522294271,"typeid":1,"source_id":100361,"circleid":100361,"circlename":"一样一样咿呀咿呀哟以后呀呀呀前"},{"id":232,"amount":"0.12","name":"圈子红包","create_time":1522226267,"typeid":1,"source_id":100360,"circleid":100360,"circlename":"一样一样咿呀咿呀哟以后呀呀呀"},{"id":231,"amount":"0.10","name":"圈子红包","create_time":1522225515,"typeid":1,"source_id":100356,"circleid":100356,"circlename":"1毛"},{"id":230,"amount":"1.00","name":"圈子红包","create_time":1522225485,"typeid":1,"source_id":100357,"circleid":100357,"circlename":" 钱包"},{"id":229,"amount":"1.00","name":"圈子红包","create_time":1522225474,"typeid":1,"source_id":100358,"circleid":100358,"circlename":"更好"},{"id":222,"amount":"0.01","name":"任务退款","create_time":1521799207,"typeid":6,"source_id":545},{"id":211,"amount":"1.00","name":"任务退款","create_time":1521799207,"typeid":6,"source_id":361}],"total_amount":7.63}
      */
 
     private int error;
@@ -57,9 +58,9 @@ public class AllIncomeResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":2,"totalCount":20}
-         * data : [{"id":1,"amount":"0.50","name":"圈子红包","create_time":1517818067},{"id":2,"amount":"0.80","name":"圈子红包","create_time":1517818067},{"id":3,"amount":"0.15","name":"圈子红包","create_time":1517818067},{"id":4,"amount":"0.28","name":"圈子红包","create_time":1517818067},{"id":5,"amount":"1.28","name":"圈子红包","create_time":1517818067},{"id":6,"amount":"6.66","name":"圈子红包","create_time":1517673605},{"id":7,"amount":"8.88","name":"邀请红包","create_time":1517673605},{"id":8,"amount":"8.88","name":"圈子红包","create_time":1517673605},{"id":9,"amount":"99.99","name":"邀请红包","create_time":1517673605},{"id":58,"amount":"1.59","name":"商户广告","create_time":1515394608},{"id":73,"amount":"4.55","name":"商户广告","create_time":1515480276},{"id":74,"amount":"4.55","name":"商户广告","create_time":1515480744},{"id":75,"amount":"4.55","name":"商户广告","create_time":1515481027},{"id":77,"amount":"5.76","name":"商户广告","create_time":1515482311},{"id":80,"amount":"4.55","name":"商户广告","create_time":1515482693},{"id":81,"amount":"4.55","name":"商户广告","create_time":1515482740},{"id":82,"amount":"7.45","name":"商户广告","create_time":1515737786},{"id":83,"amount":"22.29","name":"商户广告","create_time":0},{"id":85,"amount":"14.94","name":"商户广告","create_time":0},{"id":86,"amount":"2.07","name":"商户广告","create_time":0}]
-         * total_amount : 204.27
+         * pagenation : {"page":1,"pageSize":10,"totalPage":2,"totalCount":17}
+         * data : [{"id":237,"amount":"0.16","name":"圈子红包","create_time":1522811299,"typeid":1,"source_id":100360,"circleid":100360,"circlename":"一样一样咿呀咿呀哟以后呀呀呀"},{"id":236,"amount":"1.00","name":"圈子红包","create_time":1522810702,"typeid":1,"source_id":100361,"circleid":100361,"circlename":"一样一样咿呀咿呀哟以后呀呀呀前"},{"id":234,"amount":"1.00","name":"圈子红包","create_time":1522297949,"typeid":1,"source_id":100355,"circleid":100355,"circlename":"钱包支付"},{"id":233,"amount":"1.00","name":"圈子红包","create_time":1522294271,"typeid":1,"source_id":100361,"circleid":100361,"circlename":"一样一样咿呀咿呀哟以后呀呀呀前"},{"id":232,"amount":"0.12","name":"圈子红包","create_time":1522226267,"typeid":1,"source_id":100360,"circleid":100360,"circlename":"一样一样咿呀咿呀哟以后呀呀呀"},{"id":231,"amount":"0.10","name":"圈子红包","create_time":1522225515,"typeid":1,"source_id":100356,"circleid":100356,"circlename":"1毛"},{"id":230,"amount":"1.00","name":"圈子红包","create_time":1522225485,"typeid":1,"source_id":100357,"circleid":100357,"circlename":" 钱包"},{"id":229,"amount":"1.00","name":"圈子红包","create_time":1522225474,"typeid":1,"source_id":100358,"circleid":100358,"circlename":"更好"},{"id":222,"amount":"0.01","name":"任务退款","create_time":1521799207,"typeid":6,"source_id":545},{"id":211,"amount":"1.00","name":"任务退款","create_time":1521799207,"typeid":6,"source_id":361}]
+         * total_amount : 7.63
          */
 
         private PagenationBean pagenation;
@@ -104,7 +105,7 @@ public class AllIncomeResponse {
              * page : 1
              * pageSize : 10
              * totalPage : 2
-             * totalCount : 20
+             * totalCount : 17
              */
 
             private int page;
@@ -157,16 +158,24 @@ public class AllIncomeResponse {
 
         public static class DataBean {
             /**
-             * id : 1
-             * amount : 0.50
+             * id : 237
+             * amount : 0.16
              * name : 圈子红包
-             * create_time : 1517818067
+             * create_time : 1522811299
+             * typeid : 1
+             * source_id : 100360
+             * circleid : 100360
+             * circlename : 一样一样咿呀咿呀哟以后呀呀呀
              */
 
             private int id;
             private String amount;
             private String name;
             private int create_time;
+            private int typeid;
+            private int source_id;
+            private int circleid;
+            private String circlename;
 
             public int getId() {
                 return id;
@@ -200,6 +209,38 @@ public class AllIncomeResponse {
                 this.create_time = create_time;
             }
 
+            public int getTypeid() {
+                return typeid;
+            }
+
+            public void setTypeid(int typeid) {
+                this.typeid = typeid;
+            }
+
+            public int getSource_id() {
+                return source_id;
+            }
+
+            public void setSource_id(int source_id) {
+                this.source_id = source_id;
+            }
+
+            public int getCircleid() {
+                return circleid;
+            }
+
+            public void setCircleid(int circleid) {
+                this.circleid = circleid;
+            }
+
+            public String getCirclename() {
+                return circlename;
+            }
+
+            public void setCirclename(String circlename) {
+                this.circlename = circlename;
+            }
+
             @Override
             public String toString() {
                 return "DataBean{" +
@@ -207,6 +248,10 @@ public class AllIncomeResponse {
                         ", amount='" + amount + '\'' +
                         ", name='" + name + '\'' +
                         ", create_time=" + create_time +
+                        ", typeid=" + typeid +
+                        ", source_id=" + source_id +
+                        ", circleid=" + circleid +
+                        ", circlename='" + circlename + '\'' +
                         '}';
             }
         }

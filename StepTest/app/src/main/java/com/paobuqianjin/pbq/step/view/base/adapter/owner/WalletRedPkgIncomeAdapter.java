@@ -63,6 +63,11 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
             holder.date.setText(dateStr);
             holder.addIncome.setText(String.valueOf(((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getAmount()));
             holder.incomeFrom.setText(String.valueOf(((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
+            if (((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getTypeid() == 1) {
+                holder.incomeFrom.setText(String.valueOf(((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getCirclename()));
+            } else if (((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getTypeid() == 6) {
+                holder.incomeFrom.setText(String.valueOf(((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
+            }
         } else if (mData.get(position) instanceof AllIncomeResponse.DataBeanX.DataBean) {
             long createTime = ((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
             LocalLog.d(TAG, "createTime = " + createTime);
@@ -70,7 +75,11 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
             LocalLog.d(TAG, "dateStr = " + dateStr);
             holder.date.setText(dateStr);
             holder.addIncome.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getAmount()));
-            holder.incomeFrom.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
+            if (((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getTypeid() == 1) {
+                holder.incomeFrom.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getCirclename()));
+            } else if (((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getTypeid() == 6) {
+                holder.incomeFrom.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
+            }
         }
     }
 
