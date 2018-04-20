@@ -368,12 +368,12 @@ public final class Engine {
         mContext.stopService(intent);
     }
 
-    public void bindService(String action, Class<? extends Service> clazz) {
+    public boolean bindService(String action, Class<? extends Service> clazz) {
         LocalLog.d(TAG, "bindService() enter");
         Intent intent = new Intent();
         intent.setAction(action);
         intent.setClass(mContext, clazz);
-        mContext.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        return mContext.bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
     public void unbindStepService() {

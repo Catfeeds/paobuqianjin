@@ -76,8 +76,8 @@ public final class Presenter {
         engine.stopService(clazz);
     }
 
-    public void bindService(String action, Class<? extends Service> clazz) {
-        engine.bindService(action, clazz);
+    public boolean bindService(String action, Class<? extends Service> clazz) {
+        return engine.bindService(action, clazz);
     }
 
     public void refreshStep() {

@@ -169,6 +169,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     private PermissionSetting mSetting;
     private int lastStep = 0;
     private int PERMISSION_REQUEST = 100;
+    private boolean isBind = false;
 
     static {
         weatherMap.put("0", R.drawable.weather_0);
@@ -307,12 +308,13 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         targetCircle.getWidth(), targetCircle.getHeight()).setmAngle(360));
             }
         });
+        isBind = Presenter.getInstance(getContext()).bindService(null, TodayStepService.class);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Presenter.getInstance(getContext()).bindService(null, TodayStepService.class);
+
     }
 
     @Override
@@ -325,7 +327,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         super.onDestroyView();
         ButterKnife.unbind(this);
         getContext().unregisterReceiver(stepLocationReciver);
-        Presenter.getInstance(getContext()).unbindStepService();
+        if (isBind) {
+            Presenter.getInstance(getContext()).unbindStepService();
+        }
     }
 
     public void popRedPkg(SponsorRedPkgResponse sponsorRedPkgResponse) {
