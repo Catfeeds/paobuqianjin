@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentResponse;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -36,12 +37,14 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdap
     private Context context;
     List<?> mData;
     DynamicDetailInterface dynamicDetailInterface;
+    ReflashInterface reflashInterfaceTop;
 
-    public MiddleContentAdapter(Context context, List<?> data, DynamicDetailInterface dynamicDetailInterface) {
+    public MiddleContentAdapter(Context context, List<?> data, DynamicDetailInterface dynamicDetailInterface, ReflashInterface reflashInterface) {
         super();
         this.context = context;
         mData = data;
         this.dynamicDetailInterface = dynamicDetailInterface;
+        this.reflashInterfaceTop = reflashInterface;
     }
 
     @Override
@@ -65,7 +68,7 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdap
             String reply = "回复";
             String content = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getContent();
             int[] emj = context.getResources().getIntArray(R.array.emjio_list);
-            if(content != null){
+            if (content != null) {
                 for (int i = 0; i < emj.length; i++) {
                     content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
                 }
@@ -103,14 +106,43 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdap
         String dearName;
         ReflashInterface reflashInterface = new ReflashInterface() {
             @Override
-            public void notifyReflash() {
+            public void notifyReflash(Object object) {
                 LocalLog.d(TAG, "刷新二级评论");
+                PostDynamicContentResponse postDynamicContentResponse = (PostDynamicContentResponse) object;
+                if (reflashInterfaceTop != null) {
+
+                    DynamicCommentListResponse.DataBeanX.DataBean.ChildBean childBean = new DynamicCommentListResponse.DataBeanX.DataBean.ChildBean();
+                    childBean.setAvatar(postDynamicContentResponse.getData().getAvatar());
+                    childBean.setContent(postDynamicContentResponse.getData().getContent());
+                    childBean.setCreate_time(postDynamicContentResponse.getData().getCreate_time());
+                    childBean.setDynamicid(Integer.parseInt(postDynamicContentResponse.getData().getDynamicid()));
+                    childBean.setId(Integer.parseInt(postDynamicContentResponse.getData().getUserid()));
+                    childBean.setParent_id(Integer.parseInt(postDynamicContentResponse.getData().getParent_id()));
+                    childBean.setReply_userid(Integer.parseInt(postDynamicContentResponse.getData().getReply_userid()));
+                    childBean.setId(Integer.parseInt(postDynamicContentResponse.getData().getId()));
+                    childBean.setReply_nickname(postDynamicContentResponse.getData().getReply_nickname());
+                    childBean.setNickname(postDynamicContentResponse.getData().getNickname());
+                    reflashInterfaceTop.notifyReflash(childBean);
+                }
             }
         };
 
         public MiddleContentViewHolder(View view) {
             super(view);
             initView(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LocalLog.d(TAG, "回复第二层 :parent_id = " + parent_id
+                            + ",reply_userid = " + reply_userid + ",userid= " + userid + ", dynamicid = " + dynamicid);
+                    if (dynamicDetailInterface != null) {
+                        PostDynamicContentParam postDynamicContentParam = new PostDynamicContentParam()
+                                .setParent_id(parent_id)
+                                .setReply_userid(reply_userid).setDynamicid(dynamicid);
+                        dynamicDetailInterface.postDynamicAction(postDynamicContentParam, dearName, reflashInterface);
+                    }
+                }
+            });
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {

@@ -36,6 +36,73 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/line"></RelativeLayout>
+        android:layout_height="41dp"
+        android:layout_below="@+id/line">
+
+        <ImageView
+            android:id="@+id/select_circle"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:background="@drawable/circle_outline" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toEndOf="@+id/select_circle"
+            android:text="默认商铺"
+            android:textColor="@color/color_161727"
+            android:textSize="12dp" />
+
+        <ImageView
+            android:id="@+id/delete_sponsor"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:layout_toStartOf="@+id/delete_sponsor_des"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sponsor_delete" />
+
+        <TextView
+            android:id="@+id/delete_sponsor_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:text="删除"
+            android:textColor="@color/color_161727"
+            android:textSize="12dp" />
+
+        <ImageView
+            android:id="@+id/edit_sponsor"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:layout_toStartOf="@+id/edit_sponsor_des"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sponsor_edit" />
+
+        <TextView
+            android:id="@+id/edit_sponsor_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="16dp"
+            android:layout_toStartOf="@+id/delete_sponsor"
+            android:text="编辑"
+            android:textColor="@color/color_161727"
+            android:textSize="12dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_d9d9d9" />
+    </RelativeLayout>
 </RelativeLayout>

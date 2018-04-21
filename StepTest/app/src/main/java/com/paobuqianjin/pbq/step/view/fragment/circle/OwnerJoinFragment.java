@@ -54,7 +54,6 @@ public class OwnerJoinFragment extends BaseFragment {
         super.onAttach(context);
         mContext = context;
         Presenter.getInstance(context).attachUiInterface(myJoinCircleInterface);
-        Presenter.getInstance(context).getMyJoinCircle(1, 10, keyWord);
     }
 
     @Override

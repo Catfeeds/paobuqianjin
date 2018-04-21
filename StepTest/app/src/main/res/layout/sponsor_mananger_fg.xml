@@ -7,5 +7,35 @@
         android:id="@+id/bar_sponsor_manager_bar"
         layout="@layout/bar_return_a_style"></include>
 
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar_sponsor_manager_bar">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/deault_spnsor"
+                layout="@layout/sponsor_manager_list_item"></include>
+
+            <ImageView
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_below="@+id/deault_spnsor"
+                android:background="@color/color_d9d9d9" />
+
+            <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+                android:id="@+id/sponsor_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line">
+
+            </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+            
+        </RelativeLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 </RelativeLayout>

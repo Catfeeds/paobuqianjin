@@ -50,7 +50,7 @@
                 android:layout_below="@+id/king_head_icon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
-                android:text="跑步钱进"
+                android:text=""
                 android:textColor="@color/color_f8"
                 android:textSize="16dp" />
 
@@ -65,7 +65,7 @@
                     android:id="@+id/num_des"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="成员: 12345"
+                    android:text=""
                     android:textColor="@color/color_f8"
                     android:textSize="12dp" />
 
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
                     android:layout_toEndOf="@+id/num_des"
-                    android:text="目标步数: 30000"
+                    android:text=""
                     android:textColor="@color/color_f8"
                     android:textSize="12dp" />
             </RelativeLayout>

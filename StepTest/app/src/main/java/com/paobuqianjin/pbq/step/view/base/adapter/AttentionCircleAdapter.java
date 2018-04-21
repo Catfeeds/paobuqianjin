@@ -172,7 +172,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         LocalLog.d(TAG, "content = " + contentL);
                         if (contentL != null) {
                             for (int i = 0; i < emj.length; i++) {
-                                content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                                contentL = contentL.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
                             }
                         }
                         LocalLog.d(TAG, "name =  " + data.get(position).getOne_comment().getNickname());

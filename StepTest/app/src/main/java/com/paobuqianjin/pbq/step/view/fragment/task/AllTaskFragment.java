@@ -87,7 +87,7 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
         if (receiveTaskResponse.getError() == 0) {
             LocalLog.d(TAG, "领取任务成功");
             if (this.reflashInterface != null) {
-                this.reflashInterface.notifyReflash();
+                this.reflashInterface.notifyReflash(receiveTaskResponse);
             }
         } else if (receiveTaskResponse.getError() == 1) {
             Toast.makeText(getContext(), receiveTaskResponse.getMessage(), Toast.LENGTH_SHORT).show();

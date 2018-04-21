@@ -139,7 +139,7 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
         }
         final View circle = LayoutInflater.from(getContext()).inflate(R.layout.circle_honor_fg, container, false);
         TextView rankHonor = (TextView) circle.findViewById(R.id.rank_honor);
-        rankHonor.setText(String.valueOf(circleStepRankResponse.getData().getRank()));
+        rankHonor.setText(String.valueOf(circleStepRankResponse.getData().getData().getRank()));
         TextView stepNum = (TextView) circle.findViewById(R.id.step_num);
         //stepNum.setText(String.valueOf(circleStepRankResponse.getData().getStep_number()));
         CircleImageView circleLogo = (CircleImageView) circle.findViewById(R.id.circle_logo);
@@ -149,12 +149,12 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
         //myName.setText(circleStepRankResponse.getData().getNickname());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rankRecyclerView.setLayoutManager(layoutManager);
-        rankRecyclerView.setAdapter(new HonorAdapter(getContext(), circleStepRankResponse.getData().getCircle()));
+        rankRecyclerView.setAdapter(new HonorAdapter(getContext(), circleStepRankResponse.getData().getData().getCircle()));
         RelativeLayout relativeLayout = (RelativeLayout) circle.findViewById(R.id.more_span);
         TextView circleIndex = (TextView) circle.findViewById(R.id.circle_index);
         TextView timeToday = (TextView) circle.findViewById(R.id.times_today);
         timeToday.setText(DateTimeUtil.getLocalTime());
-        relativeLayout.setTag(circleStepRankResponse.getData().getCircleid());
+        relativeLayout.setTag(circleStepRankResponse.getData().getData().getCircleid());
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -168,7 +168,7 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
 
             }
         });
-        upDateCircleDetail(myName, circleLogo, stepNum, circleStepRankResponse.getData().getCircleid());
+        upDateCircleDetail(myName, circleLogo, stepNum, circleStepRankResponse.getData().getData().getCircleid());
         mView.add(circle);
         circleIndex.setText(String.valueOf(mView.size()) + "/" + totalCircle);
         if (mView.size() < totalCircle) {

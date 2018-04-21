@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/sponsor_goods_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></RelativeLayout>
+    <include
+        android:id="@+id/bar_cancel_confirm"
+        layout="@layout/bar_cancle_confirm"></include>
+    
 </RelativeLayout>

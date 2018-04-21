@@ -21,7 +21,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="14dp"
         android:layout_toEndOf="@+id/select_user_icon"
-        android:src="@drawable/logo" />
+        android:src="@drawable/default_head_ico" />
 
     <EditText
         android:visibility="visible"

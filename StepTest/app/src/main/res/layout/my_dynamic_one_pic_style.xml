@@ -15,7 +15,7 @@
             android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
-            android:src="@drawable/logo" />
+            android:src="@drawable/default_head_ico" />
 
         <TextView
             android:id="@+id/dynamic_user_name"

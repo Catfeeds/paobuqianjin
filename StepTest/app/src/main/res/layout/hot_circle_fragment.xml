@@ -84,7 +84,6 @@
                     android:layout_weight="3">
 
                     <RelativeLayout
-                        android:visibility="gone"
                         android:id="@+id/circle_hot_a_span"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -94,8 +93,7 @@
                             android:id="@+id/circle_hot_a_img"
                             android:layout_width="58dp"
                             android:layout_height="58dp"
-                            android:layout_centerHorizontal="true"
-                            android:src="@drawable/default_head_ico" />
+                            android:layout_centerHorizontal="true" />
 
                         <ImageView
                             android:id="@+id/red_pack_a"
@@ -123,7 +121,6 @@
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:visibility="gone"
                         android:id="@+id/hot_circle_b"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

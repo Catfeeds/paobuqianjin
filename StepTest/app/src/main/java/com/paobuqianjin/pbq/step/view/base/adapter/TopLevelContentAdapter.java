@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
@@ -18,6 +20,7 @@ import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -36,11 +39,17 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
     private Context context;
     DynamicDetailInterface dynamicDetailInterface;
 
+
     public TopLevelContentAdapter(Context context, List<?> data, DynamicDetailInterface dynamicDetailInterface) {
         super();
         this.context = context;
         mData = data;
         this.dynamicDetailInterface = dynamicDetailInterface;
+    }
+
+    public void notifyDataSetChanged(List<?> data) {
+        this.mData = data;
+        super.notifyDataSetChanged();
     }
 
     @Override
@@ -78,8 +87,13 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
             holder.userContentRanka.setText(content);
 
             if (((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild() != null) {
+                if (holder.middleContentAdapter == null) {
+                    holder.childBeans.addAll(((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild());
+                    holder.middleContentAdapter = new MiddleContentAdapter(context, holder.childBeans, dynamicDetailInterface, holder.reflashInterface);
+
+                }
                 LocalLog.d(TAG, "有子评论" + ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild().size());
-                holder.contendAllRecycler.setAdapter(new MiddleContentAdapter(context, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild(), dynamicDetailInterface));
+                holder.contendAllRecycler.setAdapter(holder.middleContentAdapter);
             }
 
             holder.parent_id = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getId();
@@ -112,10 +126,35 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
         TextView timeContentB;
         @Bind(R.id.contend_all_recycler)
         RecyclerView contendAllRecycler;
+        MiddleContentAdapter middleContentAdapter;
+        ArrayList<DynamicCommentListResponse.DataBeanX.DataBean.ChildBean> childBeans = new ArrayList<>();
         ReflashInterface reflashInterface = new ReflashInterface() {
             @Override
-            public void notifyReflash() {
-                LocalLog.d(TAG, "刷新一级评论");
+            public void notifyReflash(Object object) {
+
+                if (object instanceof PostDynamicContentResponse) {
+                    LocalLog.d(TAG, "刷新一级评论");
+                    PostDynamicContentResponse postDynamicContentResponse = (PostDynamicContentResponse) object;
+                    LocalLog.d(TAG, postDynamicContentResponse.toString());
+                    DynamicCommentListResponse.DataBeanX.DataBean.ChildBean dataBean = new DynamicCommentListResponse.DataBeanX.DataBean.ChildBean();
+                    dataBean.setAvatar(postDynamicContentResponse.getData().getAvatar());
+                    dataBean.setContent(postDynamicContentResponse.getData().getContent());
+                    dataBean.setCreate_time(postDynamicContentResponse.getData().getCreate_time());
+                    dataBean.setDynamicid(Integer.parseInt(postDynamicContentResponse.getData().getDynamicid()));
+                    dataBean.setId(Integer.parseInt(postDynamicContentResponse.getData().getUserid()));
+                    dataBean.setParent_id(Integer.parseInt(postDynamicContentResponse.getData().getParent_id()));
+                    dataBean.setReply_userid(Integer.parseInt(postDynamicContentResponse.getData().getReply_userid()));
+                    dataBean.setId(Integer.parseInt(postDynamicContentResponse.getData().getId()));
+                    int size = childBeans.size();
+                    childBeans.add(size, dataBean);
+                    middleContentAdapter.notifyItemChanged(childBeans.size() - 1);
+                } else if (object instanceof DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) {
+                    LocalLog.d(TAG, "刷新二级评论");
+                    int size = childBeans.size();
+                    childBeans.add(size, (DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) object);
+                    middleContentAdapter.notifyItemChanged(childBeans.size() - 1);
+                }
+
             }
         };
 

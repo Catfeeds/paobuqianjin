@@ -237,6 +237,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         if (friendStepRankDayResponse.getError() == 0) {
             if (this.friendStepRankDayResponse == null) {
                 this.friendStepRankDayResponse = friendStepRankDayResponse;
+
                 pageCountDay = friendStepRankDayResponse.getData().getPagenation().getTotalPage();
                 LocalLog.d(TAG, "pageIndexDay = " + pageIndexDay + "pageIndexDay = " + pageCountDay);
                 //adapter.notifyDataSetChanged(friendStepRankDayResponse.getData().getData().getMember());

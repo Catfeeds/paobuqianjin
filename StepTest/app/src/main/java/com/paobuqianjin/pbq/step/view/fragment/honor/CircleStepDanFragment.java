@@ -239,10 +239,10 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
 
     private void updateCircleStepRank(CircleStepRankResponse circleStepRankResponse) {
         if (circleStepRankResponse != null) {
-            userNameRank.setText(String.valueOf(circleStepRankResponse.getData().getNickname()));
-            yourDan.setText(String.valueOf(circleStepRankResponse.getData().getRank()));
-            stepNumMy.setText(String.valueOf(circleStepRankResponse.getData().getStep_number()));
-            Presenter.getInstance(getContext()).getImage(headIconUser, circleStepRankResponse.getData().getAvatar());
+            userNameRank.setText(String.valueOf(circleStepRankResponse.getData().getData().getNickname()));
+            yourDan.setText(String.valueOf(circleStepRankResponse.getData().getData().getRank()));
+            stepNumMy.setText(String.valueOf(circleStepRankResponse.getData().getData().getStep_number()));
+            Presenter.getInstance(getContext()).getImage(headIconUser, circleStepRankResponse.getData().getData().getAvatar());
         }
     }
 
@@ -303,7 +303,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                 this.stepRandWeekResponse = stepRandWeekResponse;
             }
             //updateWeekRank(stepRandWeekResponse);
-        }else if(stepRandWeekResponse.getError() == -100){
+        } else if (stepRandWeekResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
             Presenter.getInstance(getContext()).steLogFlg(false);
@@ -316,10 +316,10 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     private void updateWeekRank(StepRandWeekResponse stepRandWeekResponse) {
         if (stepRandWeekResponse != null) {
             if (stepRandWeekResponse.getData().getPagenation().getTotalCount() > 0) {
-                Presenter.getInstance(getContext()).getImage(kingHeadIcon, stepRandWeekResponse.getData().getData().get(0).getAvatar());
-                kingName.setText(stepRandWeekResponse.getData().getData().get(0).getNickname());
+                Presenter.getInstance(getContext()).getImage(kingHeadIcon, stepRandWeekResponse.getData().getData().getMember().get(0).getAvatar());
+                kingName.setText(stepRandWeekResponse.getData().getData().getMember().get(0).getNickname());
             }
-            danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), stepRandWeekResponse.getData().getData()));
+            danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), stepRandWeekResponse.getData().getData().getMember()));
         }
     }
 
@@ -331,7 +331,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                 this.circleStepRankWeekResponse = circleStepRankWeekResponse;
             }
             //updateCircleStepWeekRank(circleStepRankWeekResponse);
-        }else if(circleStepRankWeekResponse.getError() == -100){
+        } else if (circleStepRankWeekResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
             Presenter.getInstance(getContext()).steLogFlg(false);

@@ -7,16 +7,15 @@ import java.util.List;
  */
 
 public class CircleStepRankResponse {
-
     /**
      * error : 0
      * message : success
-     * data : {"id":1,"wx_openid":"","qq_openid":"","mobile":"18588278880","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额","levelid":3,"sex":0,"birthyear":2018,"birthmonth":2,"birthday":26,"height":166,"weight":120,"type":1,"province":"安徽省","city":"安庆市","balance":"68.07","target_step":10000,"credit":60,"status":0,"is_perfect":1,"create_time":1512699325,"delete_time":null,"circleid":100302,"circle":[{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":13360},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":9474},{"userid":61,"nickname":"俊","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","step_number":6000},{"userid":67,"nickname":"rm_13828873978","avatar":"","step_number":39}],"step_number":13360,"rank":1}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":2},"data":{"id":30,"wx_unionid":"","wx_openid":"oPd5d0SDHRV1oZF8dB80Jq0kH_tY","qq_unionid":"","qq_openid":"","mobile":"13424156029","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","levelid":4,"sex":0,"education":0,"birthyear":1924,"birthmonth":7,"birthday":1,"height":200,"weight":"45.00","type":1,"province":"广东","city":"深圳","balance":"9865.28","target_step":5000,"credit":0,"status":0,"is_perfect":1,"create_time":1521794437,"delete_id":0,"delete_time":null,"logintimes":129,"h_long":null,"h_lat":null,"h_updatetime":0,"c_long":"0.000000","c_lat":"0.000000","c_updatetime":0,"n_long":"113.874750","n_lat":"22.575980","n_updatetime":1523984709,"circleid":100382,"circle":[{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"2462"},{"userid":206,"nickname":"（^O^）","avatar":"https://wx.qlogo.cn/mmopen/vi_32/qoicvAvQjJPE3r0EZSVbZ0dziaYklJialD5r4aN61yDGVtotUy4F1DWYib2ic6WLTbOTMJ7OI1OWdX0QFMS2Dq6GBAQ/0","step_number":"2019"}],"step_number":"2462","rank":1}}
      */
 
     private int error;
     private String message;
-    private DataBean data;
+    private DataBeanX data;
 
     public int getError() {
         return error;
@@ -34,11 +33,11 @@ public class CircleStepRankResponse {
         this.message = message;
     }
 
-    public DataBean getData() {
+    public DataBeanX getData() {
         return data;
     }
 
-    public void setData(DataBean data) {
+    public void setData(DataBeanX data) {
         this.data = data;
     }
 
@@ -51,341 +50,228 @@ public class CircleStepRankResponse {
                 '}';
     }
 
-    public static class DataBean {
+    public static class DataBeanX {
         /**
-         * id : 1
-         * wx_openid :
-         * qq_openid :
-         * mobile : 18588278880
-         * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg
-         * nickname : 嗯额
-         * levelid : 3
-         * sex : 0
-         * birthyear : 2018
-         * birthmonth : 2
-         * birthday : 26
-         * height : 166
-         * weight : 120
-         * type : 1
-         * province : 安徽省
-         * city : 安庆市
-         * balance : 68.07
-         * target_step : 10000
-         * credit : 60
-         * status : 0
-         * is_perfect : 1
-         * create_time : 1512699325
-         * delete_time : null
-         * circleid : 100302
-         * circle : [{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":13360},{"userid":66,"nickname":"小沙","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/DYAIOgq83er2Axe2WAXB2EwX2NjgJN6Lt2l36I1ibSRM01qjExBgbaMSkoFEapyrvUjwnicic4gVtW92SUeXoddOw/132","step_number":9474},{"userid":61,"nickname":"俊","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","step_number":6000},{"userid":67,"nickname":"rm_13828873978","avatar":"","step_number":39}]
-         * step_number : 13360
-         * rank : 1
+         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":2}
+         * data : {"id":30,"wx_unionid":"","wx_openid":"oPd5d0SDHRV1oZF8dB80Jq0kH_tY","qq_unionid":"","qq_openid":"","mobile":"13424156029","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","levelid":4,"sex":0,"education":0,"birthyear":1924,"birthmonth":7,"birthday":1,"height":200,"weight":"45.00","type":1,"province":"广东","city":"深圳","balance":"9865.28","target_step":5000,"credit":0,"status":0,"is_perfect":1,"create_time":1521794437,"delete_id":0,"delete_time":null,"logintimes":129,"h_long":null,"h_lat":null,"h_updatetime":0,"c_long":"0.000000","c_lat":"0.000000","c_updatetime":0,"n_long":"113.874750","n_lat":"22.575980","n_updatetime":1523984709,"circleid":100382,"circle":[{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"2462"},{"userid":206,"nickname":"（^O^）","avatar":"https://wx.qlogo.cn/mmopen/vi_32/qoicvAvQjJPE3r0EZSVbZ0dziaYklJialD5r4aN61yDGVtotUy4F1DWYib2ic6WLTbOTMJ7OI1OWdX0QFMS2Dq6GBAQ/0","step_number":"2019"}],"step_number":"2462","rank":1}
          */
 
-        private int id;
-        private String wx_openid;
-        private String qq_openid;
-        private String mobile;
-        private String avatar;
-        private String nickname;
-        private int levelid;
-        private int sex;
-        private int birthyear;
-        private int birthmonth;
-        private int birthday;
-        private String height;
-        private String  weight;
-        private int type;
-        private String province;
-        private String city;
-        private String balance;
-        private int target_step;
-        private int credit;
-        private int status;
-        private int is_perfect;
-        private int create_time;
-        private Object delete_time;
-        private int circleid;
-        private int step_number;
-        private int rank;
-        private List<CircleBean> circle;
+        private PagenationBean pagenation;
+        private DataBean data;
 
-        public int getId() {
-            return id;
+        public PagenationBean getPagenation() {
+            return pagenation;
         }
 
-        public void setId(int id) {
-            this.id = id;
+        public void setPagenation(PagenationBean pagenation) {
+            this.pagenation = pagenation;
         }
 
-        public String getWx_openid() {
-            return wx_openid;
+        public DataBean getData() {
+            return data;
         }
 
-        public void setWx_openid(String wx_openid) {
-            this.wx_openid = wx_openid;
-        }
-
-        public String getQq_openid() {
-            return qq_openid;
-        }
-
-        public void setQq_openid(String qq_openid) {
-            this.qq_openid = qq_openid;
-        }
-
-        public String getMobile() {
-            return mobile;
-        }
-
-        public void setMobile(String mobile) {
-            this.mobile = mobile;
-        }
-
-        public String getAvatar() {
-            return avatar;
-        }
-
-        public void setAvatar(String avatar) {
-            this.avatar = avatar;
-        }
-
-        public String getNickname() {
-            return nickname;
-        }
-
-        public void setNickname(String nickname) {
-            this.nickname = nickname;
-        }
-
-        public int getLevelid() {
-            return levelid;
-        }
-
-        public void setLevelid(int levelid) {
-            this.levelid = levelid;
-        }
-
-        public int getSex() {
-            return sex;
-        }
-
-        public void setSex(int sex) {
-            this.sex = sex;
-        }
-
-        public int getBirthyear() {
-            return birthyear;
-        }
-
-        public void setBirthyear(int birthyear) {
-            this.birthyear = birthyear;
-        }
-
-        public int getBirthmonth() {
-            return birthmonth;
-        }
-
-        public void setBirthmonth(int birthmonth) {
-            this.birthmonth = birthmonth;
-        }
-
-        public int getBirthday() {
-            return birthday;
-        }
-
-        public void setBirthday(int birthday) {
-            this.birthday = birthday;
-        }
-
-        public String getHeight() {
-            return height;
-        }
-
-        public void setHeight(String height) {
-            this.height = height;
-        }
-
-        public String getWeight() {
-            return weight;
-        }
-
-        public void setWeight(String weight) {
-            this.weight = weight;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
-
-        public String getProvince() {
-            return province;
-        }
-
-        public void setProvince(String province) {
-            this.province = province;
-        }
-
-        public String getCity() {
-            return city;
-        }
-
-        public void setCity(String city) {
-            this.city = city;
-        }
-
-        public String getBalance() {
-            return balance;
-        }
-
-        public void setBalance(String balance) {
-            this.balance = balance;
-        }
-
-        public int getTarget_step() {
-            return target_step;
-        }
-
-        public void setTarget_step(int target_step) {
-            this.target_step = target_step;
-        }
-
-        public int getCredit() {
-            return credit;
-        }
-
-        public void setCredit(int credit) {
-            this.credit = credit;
-        }
-
-        public int getStatus() {
-            return status;
-        }
-
-        public void setStatus(int status) {
-            this.status = status;
-        }
-
-        public int getIs_perfect() {
-            return is_perfect;
-        }
-
-        public void setIs_perfect(int is_perfect) {
-            this.is_perfect = is_perfect;
-        }
-
-        public int getCreate_time() {
-            return create_time;
-        }
-
-        public void setCreate_time(int create_time) {
-            this.create_time = create_time;
-        }
-
-        public Object getDelete_time() {
-            return delete_time;
-        }
-
-        public void setDelete_time(Object delete_time) {
-            this.delete_time = delete_time;
-        }
-
-        public int getCircleid() {
-            return circleid;
-        }
-
-        public void setCircleid(int circleid) {
-            this.circleid = circleid;
-        }
-
-        public int getStep_number() {
-            return step_number;
-        }
-
-        public void setStep_number(int step_number) {
-            this.step_number = step_number;
-        }
-
-        public int getRank() {
-            return rank;
-        }
-
-        public void setRank(int rank) {
-            this.rank = rank;
-        }
-
-        public List<CircleBean> getCircle() {
-            return circle;
-        }
-
-        public void setCircle(List<CircleBean> circle) {
-            this.circle = circle;
+        public void setData(DataBean data) {
+            this.data = data;
         }
 
         @Override
         public String toString() {
-            return "DataBean{" +
-                    "id=" + id +
-                    ", wx_openid='" + wx_openid + '\'' +
-                    ", qq_openid='" + qq_openid + '\'' +
-                    ", mobile='" + mobile + '\'' +
-                    ", avatar='" + avatar + '\'' +
-                    ", nickname='" + nickname + '\'' +
-                    ", levelid=" + levelid +
-                    ", sex=" + sex +
-                    ", birthyear=" + birthyear +
-                    ", birthmonth=" + birthmonth +
-                    ", birthday=" + birthday +
-                    ", height=" + height +
-                    ", weight=" + weight +
-                    ", type=" + type +
-                    ", province='" + province + '\'' +
-                    ", city='" + city + '\'' +
-                    ", balance='" + balance + '\'' +
-                    ", target_step=" + target_step +
-                    ", credit=" + credit +
-                    ", status=" + status +
-                    ", is_perfect=" + is_perfect +
-                    ", create_time=" + create_time +
-                    ", delete_time=" + delete_time +
-                    ", circleid=" + circleid +
-                    ", step_number=" + step_number +
-                    ", rank=" + rank +
-                    ", circle=" + circle +
+            return "DataBeanX{" +
+                    "pagenation=" + pagenation +
+                    ", data=" + data +
                     '}';
         }
 
-        public static class CircleBean {
+        public static class PagenationBean {
             /**
-             * userid : 30
-             * nickname : 黄钦平
-             * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
-             * step_number : 13360
+             * page : 1
+             * pageSize : 10
+             * totalPage : 1
+             * totalCount : 2
              */
 
-            private int userid;
-            private String nickname;
+            private int page;
+            private int pageSize;
+            private int totalPage;
+            private int totalCount;
+
+            public int getPage() {
+                return page;
+            }
+
+            public void setPage(int page) {
+                this.page = page;
+            }
+
+            public int getPageSize() {
+                return pageSize;
+            }
+
+            public void setPageSize(int pageSize) {
+                this.pageSize = pageSize;
+            }
+
+            public int getTotalPage() {
+                return totalPage;
+            }
+
+            public void setTotalPage(int totalPage) {
+                this.totalPage = totalPage;
+            }
+
+            public int getTotalCount() {
+                return totalCount;
+            }
+
+            public void setTotalCount(int totalCount) {
+                this.totalCount = totalCount;
+            }
+
+            @Override
+            public String toString() {
+                return "PagenationBean{" +
+                        "page=" + page +
+                        ", pageSize=" + pageSize +
+                        ", totalPage=" + totalPage +
+                        ", totalCount=" + totalCount +
+                        '}';
+            }
+        }
+
+        public static class DataBean {
+            /**
+             * id : 30
+             * wx_unionid :
+             * wx_openid : oPd5d0SDHRV1oZF8dB80Jq0kH_tY
+             * qq_unionid :
+             * qq_openid :
+             * mobile : 13424156029
+             * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
+             * nickname : 黄钦平
+             * levelid : 4
+             * sex : 0
+             * education : 0
+             * birthyear : 1924
+             * birthmonth : 7
+             * birthday : 1
+             * height : 200
+             * weight : 45.00
+             * type : 1
+             * province : 广东
+             * city : 深圳
+             * balance : 9865.28
+             * target_step : 5000
+             * credit : 0
+             * status : 0
+             * is_perfect : 1
+             * create_time : 1521794437
+             * delete_id : 0
+             * delete_time : null
+             * logintimes : 129
+             * h_long : null
+             * h_lat : null
+             * h_updatetime : 0
+             * c_long : 0.000000
+             * c_lat : 0.000000
+             * c_updatetime : 0
+             * n_long : 113.874750
+             * n_lat : 22.575980
+             * n_updatetime : 1523984709
+             * circleid : 100382
+             * circle : [{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"2462"},{"userid":206,"nickname":"（^O^）","avatar":"https://wx.qlogo.cn/mmopen/vi_32/qoicvAvQjJPE3r0EZSVbZ0dziaYklJialD5r4aN61yDGVtotUy4F1DWYib2ic6WLTbOTMJ7OI1OWdX0QFMS2Dq6GBAQ/0","step_number":"2019"}]
+             * step_number : 2462
+             * rank : 1
+             */
+
+            private int id;
+            private String wx_unionid;
+            private String wx_openid;
+            private String qq_unionid;
+            private String qq_openid;
+            private String mobile;
             private String avatar;
-            private int step_number;
+            private String nickname;
+            private int levelid;
+            private int sex;
+            private int education;
+            private int birthyear;
+            private int birthmonth;
+            private int birthday;
+            private int height;
+            private String weight;
+            private int type;
+            private String province;
+            private String city;
+            private String balance;
+            private int target_step;
+            private int credit;
+            private int status;
+            private int is_perfect;
+            private int create_time;
+            private int delete_id;
+            private Object delete_time;
+            private int logintimes;
+            private Object h_long;
+            private Object h_lat;
+            private int h_updatetime;
+            private String c_long;
+            private String c_lat;
+            private int c_updatetime;
+            private String n_long;
+            private String n_lat;
+            private int n_updatetime;
+            private int circleid;
+            private String step_number;
+            private int rank;
+            private List<CircleBean> circle;
 
-            public int getUserid() {
-                return userid;
+            public int getId() {
+                return id;
             }
 
-            public void setUserid(int userid) {
-                this.userid = userid;
+            public void setId(int id) {
+                this.id = id;
             }
 
-            public String getNickname() {
-                return nickname;
+            public String getWx_unionid() {
+                return wx_unionid;
             }
 
-            public void setNickname(String nickname) {
-                this.nickname = nickname;
+            public void setWx_unionid(String wx_unionid) {
+                this.wx_unionid = wx_unionid;
+            }
+
+            public String getWx_openid() {
+                return wx_openid;
+            }
+
+            public void setWx_openid(String wx_openid) {
+                this.wx_openid = wx_openid;
+            }
+
+            public String getQq_unionid() {
+                return qq_unionid;
+            }
+
+            public void setQq_unionid(String qq_unionid) {
+                this.qq_unionid = qq_unionid;
+            }
+
+            public String getQq_openid() {
+                return qq_openid;
+            }
+
+            public void setQq_openid(String qq_openid) {
+                this.qq_openid = qq_openid;
+            }
+
+            public String getMobile() {
+                return mobile;
+            }
+
+            public void setMobile(String mobile) {
+                this.mobile = mobile;
             }
 
             public String getAvatar() {
@@ -396,22 +282,379 @@ public class CircleStepRankResponse {
                 this.avatar = avatar;
             }
 
-            public int getStep_number() {
+            public String getNickname() {
+                return nickname;
+            }
+
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
+            }
+
+            public int getLevelid() {
+                return levelid;
+            }
+
+            public void setLevelid(int levelid) {
+                this.levelid = levelid;
+            }
+
+            public int getSex() {
+                return sex;
+            }
+
+            public void setSex(int sex) {
+                this.sex = sex;
+            }
+
+            public int getEducation() {
+                return education;
+            }
+
+            public void setEducation(int education) {
+                this.education = education;
+            }
+
+            public int getBirthyear() {
+                return birthyear;
+            }
+
+            public void setBirthyear(int birthyear) {
+                this.birthyear = birthyear;
+            }
+
+            public int getBirthmonth() {
+                return birthmonth;
+            }
+
+            public void setBirthmonth(int birthmonth) {
+                this.birthmonth = birthmonth;
+            }
+
+            public int getBirthday() {
+                return birthday;
+            }
+
+            public void setBirthday(int birthday) {
+                this.birthday = birthday;
+            }
+
+            public int getHeight() {
+                return height;
+            }
+
+            public void setHeight(int height) {
+                this.height = height;
+            }
+
+            public String getWeight() {
+                return weight;
+            }
+
+            public void setWeight(String weight) {
+                this.weight = weight;
+            }
+
+            public int getType() {
+                return type;
+            }
+
+            public void setType(int type) {
+                this.type = type;
+            }
+
+            public String getProvince() {
+                return province;
+            }
+
+            public void setProvince(String province) {
+                this.province = province;
+            }
+
+            public String getCity() {
+                return city;
+            }
+
+            public void setCity(String city) {
+                this.city = city;
+            }
+
+            public String getBalance() {
+                return balance;
+            }
+
+            public void setBalance(String balance) {
+                this.balance = balance;
+            }
+
+            public int getTarget_step() {
+                return target_step;
+            }
+
+            public void setTarget_step(int target_step) {
+                this.target_step = target_step;
+            }
+
+            public int getCredit() {
+                return credit;
+            }
+
+            public void setCredit(int credit) {
+                this.credit = credit;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+
+            public int getIs_perfect() {
+                return is_perfect;
+            }
+
+            public void setIs_perfect(int is_perfect) {
+                this.is_perfect = is_perfect;
+            }
+
+            public int getCreate_time() {
+                return create_time;
+            }
+
+            public void setCreate_time(int create_time) {
+                this.create_time = create_time;
+            }
+
+            public int getDelete_id() {
+                return delete_id;
+            }
+
+            public void setDelete_id(int delete_id) {
+                this.delete_id = delete_id;
+            }
+
+            public Object getDelete_time() {
+                return delete_time;
+            }
+
+            public void setDelete_time(Object delete_time) {
+                this.delete_time = delete_time;
+            }
+
+            public int getLogintimes() {
+                return logintimes;
+            }
+
+            public void setLogintimes(int logintimes) {
+                this.logintimes = logintimes;
+            }
+
+            public Object getH_long() {
+                return h_long;
+            }
+
+            public void setH_long(Object h_long) {
+                this.h_long = h_long;
+            }
+
+            public Object getH_lat() {
+                return h_lat;
+            }
+
+            public void setH_lat(Object h_lat) {
+                this.h_lat = h_lat;
+            }
+
+            public int getH_updatetime() {
+                return h_updatetime;
+            }
+
+            public void setH_updatetime(int h_updatetime) {
+                this.h_updatetime = h_updatetime;
+            }
+
+            public String getC_long() {
+                return c_long;
+            }
+
+            public void setC_long(String c_long) {
+                this.c_long = c_long;
+            }
+
+            public String getC_lat() {
+                return c_lat;
+            }
+
+            public void setC_lat(String c_lat) {
+                this.c_lat = c_lat;
+            }
+
+            public int getC_updatetime() {
+                return c_updatetime;
+            }
+
+            public void setC_updatetime(int c_updatetime) {
+                this.c_updatetime = c_updatetime;
+            }
+
+            public String getN_long() {
+                return n_long;
+            }
+
+            public void setN_long(String n_long) {
+                this.n_long = n_long;
+            }
+
+            public String getN_lat() {
+                return n_lat;
+            }
+
+            public void setN_lat(String n_lat) {
+                this.n_lat = n_lat;
+            }
+
+            public int getN_updatetime() {
+                return n_updatetime;
+            }
+
+            public void setN_updatetime(int n_updatetime) {
+                this.n_updatetime = n_updatetime;
+            }
+
+            public int getCircleid() {
+                return circleid;
+            }
+
+            public void setCircleid(int circleid) {
+                this.circleid = circleid;
+            }
+
+            public String getStep_number() {
                 return step_number;
             }
 
-            public void setStep_number(int step_number) {
+            public void setStep_number(String step_number) {
                 this.step_number = step_number;
+            }
+
+            public int getRank() {
+                return rank;
+            }
+
+            public void setRank(int rank) {
+                this.rank = rank;
+            }
+
+            public List<CircleBean> getCircle() {
+                return circle;
+            }
+
+            public void setCircle(List<CircleBean> circle) {
+                this.circle = circle;
             }
 
             @Override
             public String toString() {
-                return "CircleBean{" +
-                        "userid=" + userid +
-                        ", nickname='" + nickname + '\'' +
+                return "DataBean{" +
+                        "id=" + id +
+                        ", wx_unionid='" + wx_unionid + '\'' +
+                        ", wx_openid='" + wx_openid + '\'' +
+                        ", qq_unionid='" + qq_unionid + '\'' +
+                        ", qq_openid='" + qq_openid + '\'' +
+                        ", mobile='" + mobile + '\'' +
                         ", avatar='" + avatar + '\'' +
-                        ", step_number=" + step_number +
+                        ", nickname='" + nickname + '\'' +
+                        ", levelid=" + levelid +
+                        ", sex=" + sex +
+                        ", education=" + education +
+                        ", birthyear=" + birthyear +
+                        ", birthmonth=" + birthmonth +
+                        ", birthday=" + birthday +
+                        ", height=" + height +
+                        ", weight='" + weight + '\'' +
+                        ", type=" + type +
+                        ", province='" + province + '\'' +
+                        ", city='" + city + '\'' +
+                        ", balance='" + balance + '\'' +
+                        ", target_step=" + target_step +
+                        ", credit=" + credit +
+                        ", status=" + status +
+                        ", is_perfect=" + is_perfect +
+                        ", create_time=" + create_time +
+                        ", delete_id=" + delete_id +
+                        ", delete_time=" + delete_time +
+                        ", logintimes=" + logintimes +
+                        ", h_long=" + h_long +
+                        ", h_lat=" + h_lat +
+                        ", h_updatetime=" + h_updatetime +
+                        ", c_long='" + c_long + '\'' +
+                        ", c_lat='" + c_lat + '\'' +
+                        ", c_updatetime=" + c_updatetime +
+                        ", n_long='" + n_long + '\'' +
+                        ", n_lat='" + n_lat + '\'' +
+                        ", n_updatetime=" + n_updatetime +
+                        ", circleid=" + circleid +
+                        ", step_number='" + step_number + '\'' +
+                        ", rank=" + rank +
+                        ", circle=" + circle +
                         '}';
+            }
+
+            public static class CircleBean {
+                /**
+                 * userid : 30
+                 * nickname : 黄钦平
+                 * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
+                 * step_number : 2462
+                 */
+
+                private int userid;
+                private String nickname;
+                private String avatar;
+                private String step_number;
+
+                public int getUserid() {
+                    return userid;
+                }
+
+                public void setUserid(int userid) {
+                    this.userid = userid;
+                }
+
+                public String getNickname() {
+                    return nickname;
+                }
+
+                public void setNickname(String nickname) {
+                    this.nickname = nickname;
+                }
+
+                public String getAvatar() {
+                    return avatar;
+                }
+
+                public void setAvatar(String avatar) {
+                    this.avatar = avatar;
+                }
+
+                public String getStep_number() {
+                    return step_number;
+                }
+
+                public void setStep_number(String step_number) {
+                    this.step_number = step_number;
+                }
+
+                @Override
+                public String toString() {
+                    return "CircleBean{" +
+                            "userid=" + userid +
+                            ", nickname='" + nickname + '\'' +
+                            ", avatar='" + avatar + '\'' +
+                            ", step_number='" + step_number + '\'' +
+                            '}';
+                }
             }
         }
     }

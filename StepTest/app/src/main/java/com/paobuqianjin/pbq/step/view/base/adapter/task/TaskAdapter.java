@@ -109,7 +109,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         int taskId = -1;
         ReflashInterface reflashInterface = new ReflashInterface() {
             @Override
-            public void notifyReflash() {
+            public void notifyReflash(Object object) {
                 LocalLog.d(TAG,"ID = " + taskId + "领取成功");
             }
         };

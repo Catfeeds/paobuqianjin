@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -237,7 +238,8 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
             Toast.makeText(getContext(), "请输入任务天数", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (friends.equals("")) {
+        if (TextUtils.isEmpty(friends)) {
+            Toast.makeText(getContext(), "请选择好友", Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

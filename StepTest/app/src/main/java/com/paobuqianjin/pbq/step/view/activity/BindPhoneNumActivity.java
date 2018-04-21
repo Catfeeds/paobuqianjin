@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class BindPhoneNumActivity extends BaseActivity {
-    private final static String TAG = ForgotPasswordActivity.class.getSimpleName();
+    private final static String TAG = BindPhoneNumActivity.class.getSimpleName();
 
     private boolean showLoginPass = false, showSignPass = false;
     @Bind(R.id.img_back)

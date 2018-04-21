@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.task;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,17 +10,22 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.SponsorSelectActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/4/19.
  */
 
 public class ReleaseTaskSponsorFragment extends BaseFragment {
+    private final static String TAG = ReleaseTaskSponsorFragment.class.getSimpleName();
     @Bind(R.id.target_step_des)
     TextView targetStepDes;
     @Bind(R.id.target_task_step_num)
@@ -68,6 +74,15 @@ public class ReleaseTaskSponsorFragment extends BaseFragment {
     RelativeLayout sponorMsgSpan;
     @Bind(R.id.confirm)
     Button confirm;
+    @Bind(R.id.target_people_detail)
+    TextView targetPeopleDetail;
+    @Bind(R.id.sponor_msg_des_detail)
+    TextView sponorMsgDesDetail;
+
+    private static String TARGET_PEOPLE_ACTION = "com.paobuqianjin.pbq.step.TARGET_ACTION";
+    private static String SPONSOR_INFO_ACTION = "com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION";
+    private final static int REQUEST_TARGET_PEOPLE = 0;
+    private final static int REQUEST_SPONSOR_MSG = 1;
 
     @Override
     protected int getLayoutResId() {
@@ -86,5 +101,24 @@ public class ReleaseTaskSponsorFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @OnClick({R.id.people_target_span, R.id.sponor_msg_span})
+    public void onClick(View view) {
+        Intent intent = new Intent();
+        switch (view.getId()) {
+            case R.id.people_target_span:
+                LocalLog.d(TAG, "目标人群筛选");
+                intent.setClass(getContext(), SponsorSelectActivity.class);
+                intent.setAction(TARGET_PEOPLE_ACTION);
+                startActivityForResult(intent, REQUEST_TARGET_PEOPLE);
+                break;
+            case R.id.sponor_msg_span:
+                LocalLog.d(TAG, "商铺信息");
+                intent.setClass(getContext(), SponsorSelectActivity.class);
+                intent.setAction(SPONSOR_INFO_ACTION);
+                startActivityForResult(intent, REQUEST_SPONSOR_MSG);
+                break;
+        }
     }
 }

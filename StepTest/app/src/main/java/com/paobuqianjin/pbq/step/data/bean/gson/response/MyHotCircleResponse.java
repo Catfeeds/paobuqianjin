@@ -11,7 +11,7 @@ public class MyHotCircleResponse {
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":4},"data":[{"id":100330,"name":"发红包","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg","city":"深圳福田","is_recharge":1,"total_amount":"1.00","red_packet_amount":"0.20","target":5000,"member_number":2,"is_red_packet":1},{"id":100306,"name":"哈哈","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180111_085245_HDR.jpg","city":"深圳福田","is_recharge":0,"total_amount":"0.01","red_packet_amount":"0.00","target":5000,"member_number":3},{"id":100305,"name":"到下面玩跑步","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171002_161235.jpg","city":"深圳福田","is_recharge":1,"total_amount":"0.01","red_packet_amount":"0.10","target":5000,"member_number":1,"is_red_packet":0},{"id":100304,"name":"藕勒","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171002_161235.jpg","city":"深圳福田","is_recharge":0,"total_amount":"0.02","red_packet_amount":"0.00","target":5000,"member_number":1}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":4,"totalCount":38},"data":[{"id":100382,"name":"一回国","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/Screenshot_2018-04-18-10-20-16-985_com.paobuqianjin.pbq.step.png","city":"深圳市","is_recharge":0,"total_amount":"0.00","red_packet_amount":"0.00","target":40000,"member_number":2,"is_red_time":0},{"id":100380,"name":"好几块","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180326_230829_HDR.jpg","city":"深圳市","is_recharge":1,"total_amount":"1.00","red_packet_amount":"0.10","target":5000,"member_number":1,"is_red_packet":0,"is_red_time":0},{"id":100377,"name":"红包圈子监控","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/03BB8424-F74A-45DC-AA0A-71F4F678C9D6.jpg","city":"深圳市","is_recharge":1,"total_amount":"0.01","red_packet_amount":"0.01","target":5000,"member_number":2,"is_red_packet":0,"is_red_time":0},{"id":100376,"name":"uhjj","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180326_230829_HDR.jpg","city":"深圳市","is_recharge":0,"total_amount":"0.00","red_packet_amount":"0.00","target":5000,"member_number":1,"is_red_time":0},{"id":100375,"name":"jjjjj","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180326_230829_HDR.jpg","city":"深圳市","is_recharge":0,"total_amount":"0.00","red_packet_amount":"0.00","target":5000,"member_number":1,"is_red_time":0},{"id":100374,"name":"jkk","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180326_230829_HDR.jpg","city":"深圳市","is_recharge":0,"total_amount":"0.00","red_packet_amount":"0.00","target":5000,"member_number":1,"is_red_time":0},{"id":100372,"name":"圈子a","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg","city":"深圳市","is_recharge":0,"total_amount":"0.00","red_packet_amount":"0.00","target":5000,"member_number":1,"is_red_time":0},{"id":100371,"name":"2233","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg","city":"深圳市","is_recharge":1,"total_amount":"1.00","red_packet_amount":"0.20","target":8000,"member_number":1,"is_red_packet":0,"is_red_time":0},{"id":100370,"name":"测试红苦痛噜啦啦啦啦啦","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/091C8B29-0AF0-4C4F-AC20-825103A2831E.jpg","city":"深圳市","is_recharge":1,"total_amount":"2.13","red_packet_amount":"0.10","target":5000,"member_number":3,"is_red_packet":0,"is_red_time":0},{"id":100366,"name":"立刻就会","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/973CAF20-D19E-4B9E-ABE4-173EA035E653.jpg","city":"深圳市","is_recharge":0,"total_amount":"0.00","red_packet_amount":"0.00","target":10000,"member_number":2,"is_red_time":0}]}
      */
 
     private int error;
@@ -53,8 +53,8 @@ public class MyHotCircleResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":4}
-         * data : [{"id":100330,"name":"发红包","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg","city":"深圳福田","is_recharge":1,"total_amount":"1.00","red_packet_amount":"0.20","target":5000,"member_number":2,"is_red_packet":1},{"id":100306,"name":"哈哈","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180111_085245_HDR.jpg","city":"深圳福田","is_recharge":0,"total_amount":"0.01","red_packet_amount":"0.00","target":5000,"member_number":3},{"id":100305,"name":"到下面玩跑步","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171002_161235.jpg","city":"深圳福田","is_recharge":1,"total_amount":"0.01","red_packet_amount":"0.10","target":5000,"member_number":1,"is_red_packet":0},{"id":100304,"name":"藕勒","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20171002_161235.jpg","city":"深圳福田","is_recharge":0,"total_amount":"0.02","red_packet_amount":"0.00","target":5000,"member_number":1}]
+         * pagenation : {"page":1,"pageSize":10,"totalPage":4,"totalCount":38}
+         * data : [{"id":100382,"name":"一回国","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/Screenshot_2018-04-18-10-20-16-985_com.paobuqianjin.pbq.step.png","city":"深圳市","is_recharge":0,"total_amount":"0.00","red_packet_amount":"0.00","target":40000,"member_number":2,"is_red_time":0},{"id":100380,"name":"好几块","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180326_230829_HDR.jpg","city":"深圳市","is_recharge":1,"total_amount":"1.00","red_packet_amount":"0.10","target":5000,"member_number":1,"is_red_packet":0,"is_red_time":0},{"id":100377,"name":"红包圈子监控","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/03BB8424-F74A-45DC-AA0A-71F4F678C9D6.jpg","city":"深圳市","is_recharge":1,"total_amount":"0.01","red_packet_amount":"0.01","target":5000,"member_number":2,"is_red_packet":0,"is_red_time":0},{"id":100376,"name":"uhjj","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180326_230829_HDR.jpg","city":"深圳市","is_recharge":0,"total_amount":"0.00","red_packet_amount":"0.00","target":5000,"member_number":1,"is_red_time":0},{"id":100375,"name":"jjjjj","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180326_230829_HDR.jpg","city":"深圳市","is_recharge":0,"total_amount":"0.00","red_packet_amount":"0.00","target":5000,"member_number":1,"is_red_time":0},{"id":100374,"name":"jkk","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180326_230829_HDR.jpg","city":"深圳市","is_recharge":0,"total_amount":"0.00","red_packet_amount":"0.00","target":5000,"member_number":1,"is_red_time":0},{"id":100372,"name":"圈子a","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg","city":"深圳市","is_recharge":0,"total_amount":"0.00","red_packet_amount":"0.00","target":5000,"member_number":1,"is_red_time":0},{"id":100371,"name":"2233","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg","city":"深圳市","is_recharge":1,"total_amount":"1.00","red_packet_amount":"0.20","target":8000,"member_number":1,"is_red_packet":0,"is_red_time":0},{"id":100370,"name":"测试红苦痛噜啦啦啦啦啦","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/091C8B29-0AF0-4C4F-AC20-825103A2831E.jpg","city":"深圳市","is_recharge":1,"total_amount":"2.13","red_packet_amount":"0.10","target":5000,"member_number":3,"is_red_packet":0,"is_red_time":0},{"id":100366,"name":"立刻就会","logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/973CAF20-D19E-4B9E-ABE4-173EA035E653.jpg","city":"深圳市","is_recharge":0,"total_amount":"0.00","red_packet_amount":"0.00","target":10000,"member_number":2,"is_red_time":0}]
          */
 
         private PagenationBean pagenation;
@@ -88,8 +88,8 @@ public class MyHotCircleResponse {
             /**
              * page : 1
              * pageSize : 10
-             * totalPage : 1
-             * totalCount : 4
+             * totalPage : 4
+             * totalCount : 38
              */
 
             private int page;
@@ -142,16 +142,17 @@ public class MyHotCircleResponse {
 
         public static class DataBean {
             /**
-             * id : 100330
-             * name : 发红包
-             * logo : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg
-             * city : 深圳福田
-             * is_recharge : 1
-             * total_amount : 1.00
-             * red_packet_amount : 0.20
-             * target : 5000
+             * id : 100382
+             * name : 一回国
+             * logo : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/Screenshot_2018-04-18-10-20-16-985_com.paobuqianjin.pbq.step.png
+             * city : 深圳市
+             * is_recharge : 0
+             * total_amount : 0.00
+             * red_packet_amount : 0.00
+             * target : 40000
              * member_number : 2
-             * is_red_packet : 1
+             * is_red_time : 0
+             * is_red_packet : 0
              */
 
             private int id;
@@ -163,6 +164,7 @@ public class MyHotCircleResponse {
             private String red_packet_amount;
             private int target;
             private int member_number;
+            private int is_red_time;
             private int is_red_packet;
 
             public int getId() {
@@ -237,6 +239,14 @@ public class MyHotCircleResponse {
                 this.member_number = member_number;
             }
 
+            public int getIs_red_time() {
+                return is_red_time;
+            }
+
+            public void setIs_red_time(int is_red_time) {
+                this.is_red_time = is_red_time;
+            }
+
             public int getIs_red_packet() {
                 return is_red_packet;
             }
@@ -257,6 +267,7 @@ public class MyHotCircleResponse {
                         ", red_packet_amount='" + red_packet_amount + '\'' +
                         ", target=" + target +
                         ", member_number=" + member_number +
+                        ", is_red_time=" + is_red_time +
                         ", is_red_packet=" + is_red_packet +
                         '}';
             }

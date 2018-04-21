@@ -9,7 +9,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="14dp"
         android:layout_marginTop="20dp"
-        android:src="@drawable/logo" />
+        android:src="@drawable/default_head_ico" />
 
     <RelativeLayout
         android:layout_width="match_parent"

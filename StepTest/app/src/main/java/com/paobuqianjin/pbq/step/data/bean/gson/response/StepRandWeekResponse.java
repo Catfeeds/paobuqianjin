@@ -7,10 +7,11 @@ import java.util.List;
  */
 
 public class StepRandWeekResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":4},"data":[{"userid":61,"step_number":"18000","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","nickname":"俊"},{"userid":63,"step_number":"18000","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/8042CCF8-59DD-475D-A79D-09E40F6F5CA5.jpg","nickname":"旺旺xwy"},{"userid":30,"step_number":"16562","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平"},{"userid":1,"step_number":"14354","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额"}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":5},"data":{"member":[{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"245458"},{"userid":57,"nickname":"周手机","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/FFE8A7E1-0D24-49B2-A6FB-1AE77F2C5CF8.jpg","step_number":"83828"},{"userid":160,"nickname":"海尔兄弟","avatar":"","step_number":"24000"},{"userid":185,"nickname":"何盼","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/1518467817664.jpg","step_number":"20820"},{"userid":193,"nickname":"李","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/YXr2VhxJpdg2dcIZMrju42mmGXmLabwpbTiaoKq9lP5WbdkhcTkkZ6pjuBwLIQdC0u68UhqUkpb5yZ89PoyMiarA/132","step_number":"476"}],"mydata":{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"245458","rank":1}}}
      */
 
     private int error;
@@ -52,12 +53,12 @@ public class StepRandWeekResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":4}
-         * data : [{"userid":61,"step_number":"18000","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg","nickname":"俊"},{"userid":63,"step_number":"18000","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/8042CCF8-59DD-475D-A79D-09E40F6F5CA5.jpg","nickname":"旺旺xwy"},{"userid":30,"step_number":"16562","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平"},{"userid":1,"step_number":"14354","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额"}]
+         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":5}
+         * data : {"member":[{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"245458"},{"userid":57,"nickname":"周手机","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/FFE8A7E1-0D24-49B2-A6FB-1AE77F2C5CF8.jpg","step_number":"83828"},{"userid":160,"nickname":"海尔兄弟","avatar":"","step_number":"24000"},{"userid":185,"nickname":"何盼","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/1518467817664.jpg","step_number":"20820"},{"userid":193,"nickname":"李","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/YXr2VhxJpdg2dcIZMrju42mmGXmLabwpbTiaoKq9lP5WbdkhcTkkZ6pjuBwLIQdC0u68UhqUkpb5yZ89PoyMiarA/132","step_number":"476"}],"mydata":{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"245458","rank":1}}
          */
 
         private PagenationBean pagenation;
-        private List<DataBean> data;
+        private DataBean data;
 
         public PagenationBean getPagenation() {
             return pagenation;
@@ -67,11 +68,11 @@ public class StepRandWeekResponse {
             this.pagenation = pagenation;
         }
 
-        public List<DataBean> getData() {
+        public DataBean getData() {
             return data;
         }
 
-        public void setData(List<DataBean> data) {
+        public void setData(DataBean data) {
             this.data = data;
         }
 
@@ -88,7 +89,7 @@ public class StepRandWeekResponse {
              * page : 1
              * pageSize : 10
              * totalPage : 1
-             * totalCount : 4
+             * totalCount : 5
              */
 
             private int page;
@@ -141,57 +142,158 @@ public class StepRandWeekResponse {
 
         public static class DataBean {
             /**
-             * userid : 61
-             * step_number : 18000
-             * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D6125934-AB04-4203-95F9-C023746A1C08.jpg
-             * nickname : 俊
+             * member : [{"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"245458"},{"userid":57,"nickname":"周手机","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/FFE8A7E1-0D24-49B2-A6FB-1AE77F2C5CF8.jpg","step_number":"83828"},{"userid":160,"nickname":"海尔兄弟","avatar":"","step_number":"24000"},{"userid":185,"nickname":"何盼","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/1518467817664.jpg","step_number":"20820"},{"userid":193,"nickname":"李","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/YXr2VhxJpdg2dcIZMrju42mmGXmLabwpbTiaoKq9lP5WbdkhcTkkZ6pjuBwLIQdC0u68UhqUkpb5yZ89PoyMiarA/132","step_number":"476"}]
+             * mydata : {"userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","step_number":"245458","rank":1}
              */
 
-            private int userid;
-            private String step_number;
-            private String avatar;
-            private String nickname;
+            private MydataBean mydata;
+            private List<MemberBean> member;
 
-            public int getUserid() {
-                return userid;
+            public MydataBean getMydata() {
+                return mydata;
             }
 
-            public void setUserid(int userid) {
-                this.userid = userid;
+            public void setMydata(MydataBean mydata) {
+                this.mydata = mydata;
             }
 
-            public String getStep_number() {
-                return step_number;
+            public List<MemberBean> getMember() {
+                return member;
             }
 
-            public void setStep_number(String step_number) {
-                this.step_number = step_number;
-            }
-
-            public String getAvatar() {
-                return avatar;
-            }
-
-            public void setAvatar(String avatar) {
-                this.avatar = avatar;
-            }
-
-            public String getNickname() {
-                return nickname;
-            }
-
-            public void setNickname(String nickname) {
-                this.nickname = nickname;
+            public void setMember(List<MemberBean> member) {
+                this.member = member;
             }
 
             @Override
             public String toString() {
                 return "DataBean{" +
-                        "userid=" + userid +
-                        ", step_number='" + step_number + '\'' +
-                        ", avatar='" + avatar + '\'' +
-                        ", nickname='" + nickname + '\'' +
+                        "mydata=" + mydata +
+                        ", member=" + member +
                         '}';
+            }
+
+            public static class MydataBean {
+                /**
+                 * userid : 30
+                 * nickname : 黄钦平
+                 * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
+                 * step_number : 245458
+                 * rank : 1
+                 */
+
+                private int userid;
+                private String nickname;
+                private String avatar;
+                private String step_number;
+                private int rank;
+
+                public int getUserid() {
+                    return userid;
+                }
+
+                public void setUserid(int userid) {
+                    this.userid = userid;
+                }
+
+                public String getNickname() {
+                    return nickname;
+                }
+
+                public void setNickname(String nickname) {
+                    this.nickname = nickname;
+                }
+
+                public String getAvatar() {
+                    return avatar;
+                }
+
+                public void setAvatar(String avatar) {
+                    this.avatar = avatar;
+                }
+
+                public String getStep_number() {
+                    return step_number;
+                }
+
+                public void setStep_number(String step_number) {
+                    this.step_number = step_number;
+                }
+
+                public int getRank() {
+                    return rank;
+                }
+
+                public void setRank(int rank) {
+                    this.rank = rank;
+                }
+
+                @Override
+                public String toString() {
+                    return "MydataBean{" +
+                            "userid=" + userid +
+                            ", nickname='" + nickname + '\'' +
+                            ", avatar='" + avatar + '\'' +
+                            ", step_number='" + step_number + '\'' +
+                            ", rank=" + rank +
+                            '}';
+                }
+            }
+
+            public static class MemberBean {
+                /**
+                 * userid : 30
+                 * nickname : 黄钦平
+                 * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
+                 * step_number : 245458
+                 */
+
+                private int userid;
+                private String nickname;
+                private String avatar;
+                private String step_number;
+
+                public int getUserid() {
+                    return userid;
+                }
+
+                public void setUserid(int userid) {
+                    this.userid = userid;
+                }
+
+                public String getNickname() {
+                    return nickname;
+                }
+
+                public void setNickname(String nickname) {
+                    this.nickname = nickname;
+                }
+
+                public String getAvatar() {
+                    return avatar;
+                }
+
+                public void setAvatar(String avatar) {
+                    this.avatar = avatar;
+                }
+
+                public String getStep_number() {
+                    return step_number;
+                }
+
+                public void setStep_number(String step_number) {
+                    this.step_number = step_number;
+                }
+
+                @Override
+                public String toString() {
+                    return "MemberBean{" +
+                            "userid=" + userid +
+                            ", nickname='" + nickname + '\'' +
+                            ", avatar='" + avatar + '\'' +
+                            ", step_number='" + step_number + '\'' +
+                            '}';
+                }
             }
         }
     }

@@ -173,6 +173,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     private int mScreenWidth;
     private int mScreenHeight;
     LikeUserAdapter likeUserAdapter = null;
+    TopLevelContentAdapter topLevelContentAdapter = null;
+    ArrayList<DynamicCommentListResponse.DataBeanX.DataBean> topContentData = new ArrayList<>();
 
     @Override
     protected int getLayoutResId() {
@@ -290,8 +292,31 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
     private ReflashInterface reflashTopInterface = new ReflashInterface() {
         @Override
-        public void notifyReflash() {
+        public void notifyReflash(Object object) {
             LocalLog.d(TAG, "更新顶层动态UI");
+            if (object != null) {
+                PostDynamicContentResponse postDynamicContentResponse = (PostDynamicContentResponse) object;
+                LocalLog.d(TAG, postDynamicContentResponse.toString());
+                DynamicCommentListResponse.DataBeanX.DataBean dataBean = new DynamicCommentListResponse.DataBeanX.DataBean();
+                dataBean.setAvatar(postDynamicContentResponse.getData().getAvatar());
+                dataBean.setContent(postDynamicContentResponse.getData().getContent());
+                dataBean.setCreate_time(postDynamicContentResponse.getData().getCreate_time());
+                dataBean.setDynamicid(Integer.parseInt(postDynamicContentResponse.getData().getDynamicid()));
+                dataBean.setId(Integer.parseInt(postDynamicContentResponse.getData().getUserid()));
+                dataBean.setParent_id(Integer.parseInt(postDynamicContentResponse.getData().getParent_id()));
+                dataBean.setReply_userid(Integer.parseInt(postDynamicContentResponse.getData().getReply_userid()));
+                dataBean.setNickname(postDynamicContentResponse.getData().getNickname());
+
+                if (topLevelContentAdapter == null) {
+                    topContentData.add(dataBean);
+                    topLevelContentAdapter = new TopLevelContentAdapter(getContext(), topContentData, DynamicDetailFragment.this);
+                    contentDetailsListItem.setAdapter(topLevelContentAdapter);
+
+                } else {
+                    topContentData.add(0, dataBean);
+                    topLevelContentAdapter.notifyItemInserted(0);
+                }
+            }
         }
     };
 
@@ -352,7 +377,11 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             if (contentDetailsListItem == null) {
                 return;
             }
-            contentDetailsListItem.setAdapter(new TopLevelContentAdapter(getContext(), dynamicCommentListResponse.getData().getData(), this));
+            if (topLevelContentAdapter == null) {
+                topContentData.addAll(dynamicCommentListResponse.getData().getData());
+                topLevelContentAdapter = new TopLevelContentAdapter(getContext(), topContentData, this);
+            }
+            contentDetailsListItem.setAdapter(topLevelContentAdapter);
         } else if (dynamicCommentListResponse.getError() == 1) {
 
         } else if (dynamicCommentListResponse.getError() == -1) {
@@ -554,9 +583,11 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         if (postDynamicContentResponse.getError() == 0) {
             LocalLog.d(TAG, "评论成功");
             if (reflashInterface != null) {
-                reflashInterface.notifyReflash();
+                reflashInterface.notifyReflash(postDynamicContentResponse);
             }
-            popupRedPkgWindow.dismiss();
+            if (popupRedPkgWindow != null) {
+                popupRedPkgWindow.dismiss();
+            }
         } else if (postDynamicContentResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -580,6 +611,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 dataBean.setId(Presenter.getInstance(getContext()).getId());
                 dataBean.setAvatar(Presenter.getInstance(getContext()).getAvatar(getContext()));
                 likeData.add(dataBean);
+                if (likeUserAdapter == null) {
+                    likeUserAdapter = new LikeUserAdapter(getContext(), likeData);
+                }
                 likeUserAdapter.notifyItemRangeInserted(likeData.size() - 1, 1);
 
             } else {
