@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.sponsor;
 
+import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 /**
@@ -9,11 +10,11 @@ import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment
 public class SponsorGoodFragment extends BaseBarStyleTextViewFragment {
     @Override
     protected int getLayoutResId() {
-        return 0;
+        return R.layout.sponsor_detail_pic_fg;
     }
 
     @Override
     protected String title() {
-        return null;
+        return "商品图片";
     }
 }

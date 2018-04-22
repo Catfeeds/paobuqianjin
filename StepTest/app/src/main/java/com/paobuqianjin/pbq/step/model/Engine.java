@@ -60,6 +60,7 @@ import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.AllPayOrderInterface;
+import com.paobuqianjin.pbq.step.presenter.im.BaiduMapInterface;
 import com.paobuqianjin.pbq.step.presenter.im.BindThirdAccoutInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
@@ -121,6 +122,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.view.PicassoTransformation;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -216,6 +218,7 @@ public final class Engine {
     private OlderPassInterface olderPassInterface;
     private ProtocolInterface protocolInterface;
     private BindThirdAccoutInterface bindThirdAccoutInterface;
+    private BaiduMapInterface baiduMapInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private ISportStepInterface iSportStepInterface;
@@ -2607,6 +2610,10 @@ public final class Engine {
                     return;
 
                 }
+                if (baiduMapInterface != null) {
+                    baiduMapInterface.response(city, la, lb);
+                    return;
+                }
                 if (releaseDynamicInterface != null) {
                     releaseDynamicInterface.response(city, la, lb);
                     return;
@@ -2735,6 +2742,8 @@ public final class Engine {
             protocolInterface = (ProtocolInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof BindThirdAccoutInterface) {
             bindThirdAccoutInterface = (BindThirdAccoutInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof BaiduMapInterface) {
+            baiduMapInterface = (BaiduMapInterface) uiCallBackInterface;
         }
     }
 
@@ -2854,6 +2863,8 @@ public final class Engine {
             protocolInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof BindThirdAccoutInterface) {
             bindThirdAccoutInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof BaiduMapInterface) {
+            baiduMapInterface = null;
         }
     }
 }

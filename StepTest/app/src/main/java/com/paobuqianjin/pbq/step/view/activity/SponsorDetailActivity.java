@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
-import com.paobuqianjin.pbq.step.view.fragment.home.SponsorDetailFragment;
+import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorDetailFragment;
 
 /**
  * Created by pbq on 2018/1/23.

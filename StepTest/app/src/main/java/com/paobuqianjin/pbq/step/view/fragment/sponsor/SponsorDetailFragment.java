@@ -1,4 +1,4 @@
-package com.paobuqianjin.pbq.step.view.fragment.home;
+package com.paobuqianjin.pbq.step.view.fragment.sponsor;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -89,6 +90,7 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.goods_b)
     ImageView goodsB;
     List<View> Mview = new ArrayList<>();
+    private final static String SHOW_SPONSOR_PICS_ACTION = "com.paobuqianjin.pbq.step.SHOW_PIC_ACTION";
 
     @Override
     protected String title() {
@@ -129,6 +131,10 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "查看更多");
+                Intent intent = new Intent();
+                intent.setAction(SHOW_SPONSOR_PICS_ACTION);
+                intent.setClass(getContext(), SponsorGoodsPicLookActivity.class);
+                startActivity(intent);
             }
         });
         Intent intent = getActivity().getIntent();

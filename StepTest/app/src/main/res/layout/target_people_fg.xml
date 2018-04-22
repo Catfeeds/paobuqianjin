@@ -92,6 +92,7 @@
             android:textSize="14dp" />
 
         <ImageView
+            android:background="@color/color_d9d9d9"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignLeft="@+id/sex"
@@ -171,6 +172,7 @@
             android:textSize="15dp" />
 
         <ImageView
+            android:background="@color/color_d9d9d9"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignLeft="@+id/age"
@@ -181,7 +183,8 @@
         android:id="@+id/location_pan"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/age_pan">
+        android:layout_below="@+id/age_pan"
+        android:background="@color/color_f8">
 
         <TextView
             android:id="@+id/location"
@@ -215,13 +218,16 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignLeft="@+id/location"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_d9d9d9" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/location_radius"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@+id/location_pan">
+        android:layout_below="@+id/location_pan"
+        android:background="@color/color_f8">
 
         <TextView
             android:id="@+id/target_pan"

@@ -264,6 +264,9 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
             unFinishTaskFragment.setData(doingTaskList);
             finishedTaskFragment.setData(finishTaskList);
         } else if (myRecvTaskRecordResponse.getError() == 1) {
+            if (getActivity() == null) {
+                return;
+            }
             FragmentTransaction trx = getActivity().getSupportFragmentManager().beginTransaction();
             trx.hide(mFragments[mCurrentIndex]);
             if (!emptyTaskFragment.isAdded()) {

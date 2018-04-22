@@ -9,7 +9,7 @@ import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment
  * Created by pbq on 2018/4/21.
  */
 
-public class SponsorPicFragment extends BaseBarStyleTextViewFragment {
+public class SponsorUpPicFragment extends BaseBarStyleTextViewFragment {
     private final static String ACTION_INNER_PIC = "com.paobuqianjin.pbq.step.INNER_ACTION";
     private final static String ACTION_OUT_PIC = "com.paobuqianjin.pbq.step.OUT_ACTION";
 

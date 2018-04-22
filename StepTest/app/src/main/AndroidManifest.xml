@@ -235,8 +235,13 @@
         <!-- 商品图片详情 -->
         <activity
             android:name=".view.activity.SponsorGoodsPicLookActivity"
-            android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme" />
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.SHOW_PIC_ACTION"></action>
+                <action android:name="com.paobuqianjin.pbq.step.INNER_ACTION"></action>
+                <action android:name="com.paobuqianjin.pbq.step.OUT_ACTION"></action>
+            </intent-filter>
+        </activity>
         <!-- 查看评论 -->
         <activity
             android:name=".view.activity.UserCenterContentActivity"
