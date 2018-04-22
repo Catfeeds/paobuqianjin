@@ -29,7 +29,7 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
     @Bind(R.id.near_by_recycler)
     RecyclerView nearByRecycler;
     private LinearLayoutManager layoutManager;
-    private int pageIndex = 0;
+    private int pageIndex = 1;
 
     private final static int PAGE_SIZE_DEFAULT = 10;
 

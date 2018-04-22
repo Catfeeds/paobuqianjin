@@ -120,7 +120,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
 
     @Override
     protected String title() {
-        return "编辑动态";
+        return "发布动态";
     }
 
     @Override
