@@ -145,6 +145,8 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
                     dataBean.setParent_id(Integer.parseInt(postDynamicContentResponse.getData().getParent_id()));
                     dataBean.setReply_userid(Integer.parseInt(postDynamicContentResponse.getData().getReply_userid()));
                     dataBean.setId(Integer.parseInt(postDynamicContentResponse.getData().getId()));
+                    dataBean.setReply_nickname(postDynamicContentResponse.getData().getReply_nickname());
+                    dataBean.setNickname(postDynamicContentResponse.getData().getNickname());
                     int size = childBeans.size();
                     childBeans.add(size, dataBean);
                     middleContentAdapter.notifyItemChanged(childBeans.size() - 1);
