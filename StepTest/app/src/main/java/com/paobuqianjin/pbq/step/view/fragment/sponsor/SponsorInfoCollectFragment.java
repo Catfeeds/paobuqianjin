@@ -28,6 +28,7 @@ public class SponsorInfoCollectFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = SponsorInfoCollectFragment.class.getSimpleName();
     private final static String ACTION_INNER_PIC = "com.paobuqianjin.pbq.step.INNER_ACTION";
     private final static String ACTION_OUT_PIC = "com.paobuqianjin.pbq.step.OUT_ACTION";
+    private final static String ACTION_WORK_TIME_ACTION = "com.paobuqianjin.pbq.setp.WORK_TIME_ACTION";
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -96,6 +97,10 @@ public class SponsorInfoCollectFragment extends BaseBarStyleTextViewFragment {
         switch (view.getId()) {
             case R.id.sponsor_time_pan:
                 LocalLog.d(TAG, "设定营业时间");
+                Intent intentTime = new Intent();
+                intentTime.setAction(ACTION_WORK_TIME_ACTION);
+                intentTime.setClass(getContext(), SponsorGoodsPicLookActivity.class);
+                startActivity(intentTime);
                 break;
             case R.id.sponsor_location_pan:
                 LocalLog.d(TAG, "设定商铺地区");

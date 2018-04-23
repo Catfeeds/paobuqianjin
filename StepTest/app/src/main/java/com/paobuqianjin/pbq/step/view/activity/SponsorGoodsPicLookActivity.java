@@ -8,6 +8,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorGoodFragment;
 import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorRedLocationFragment;
+import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorTimeFragment;
 import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorUpPicFragment;
 
 /**
@@ -25,9 +26,11 @@ public class SponsorGoodsPicLookActivity extends BaseActivity {
     private final static String ACTION_INNER_PIC = "com.paobuqianjin.pbq.step.INNER_ACTION";
     private final static String ACTION_OUT_PIC = "com.paobuqianjin.pbq.step.OUT_ACTION";
     private final static String ACTION_RED_PACK_LOCATION = "com.paobuqianjin.pbq.step.RED_PKG_ACTION";
+    private final static String ACTION_WORK_TIME_ACTION = "com.paobuqianjin.pbq.setp.WORK_TIME_ACTION";
     private SponsorUpPicFragment sponsorUpPicFragment = new SponsorUpPicFragment();
     private SponsorGoodFragment sponsorGoodFragment = new SponsorGoodFragment();
     private SponsorRedLocationFragment sponsorRedLocationFragment = new SponsorRedLocationFragment();
+    private SponsorTimeFragment sponsorTimeFragment = new SponsorTimeFragment();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +57,11 @@ public class SponsorGoodsPicLookActivity extends BaseActivity {
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.sponsor_goods_container, sponsorRedLocationFragment)
                         .show(sponsorRedLocationFragment)
+                        .commit();
+            } else if (ACTION_WORK_TIME_ACTION.equals(intent.getAction())) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.sponsor_goods_container, sponsorTimeFragment)
+                        .show(sponsorTimeFragment)
                         .commit();
             }
         }

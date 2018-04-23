@@ -75,12 +75,10 @@
         </activity>
         <activity
             android:name=".view.activity.LoginActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".view.activity.UserFitActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.USER_FIT_ACTION_BIND" />
@@ -89,15 +87,12 @@
         </activity>
         <activity
             android:name=".view.activity.CreateCircleActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.SearchCircleActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.MemberManagerActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAMBER_MANAGER_ACTION" />
@@ -105,7 +100,6 @@
         </activity>
         <activity
             android:name=".view.activity.OwnerCircleActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.ACTION.GOTO_MYCIRCLE" />
@@ -113,24 +107,19 @@
         </activity>
         <activity
             android:name=".view.activity.LoveRankActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.DynamicActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.LikeSupportActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.QrCodeMakeActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <activity android:name=".view.activity.QrCodeScanActivity" />
         <activity
             android:name=".view.activity.CirCleDetailActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.SCAN_ACTION" />
@@ -139,19 +128,15 @@
         </activity>
         <activity
             android:name=".view.activity.UserCenterActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.CirCleTagActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.CreateDynamicActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.PaoBuPayActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="android.intent.action.PAY" />
@@ -172,46 +157,37 @@
         <!-- 选择提现账号 -->
         <activity
             android:name=".view.activity.UserBindBankListActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 提现绑定微信 -->
         <activity
             android:name=".view.activity.BindWeChatActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 任务发布 -->
         <activity
             android:name=".view.activity.TaskReleaseActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 选择任务发布对象 -->
         <activity
             android:name=".view.activity.SelectFriendForTaskActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 任务详情 -->
         <activity
             android:name=".view.activity.TaskDetailActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 我的发布 -->
         <activity
             android:name=".view.activity.MyReleaseActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.MyReleaseDetailActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
 
         <activity
             android:name=".view.fragment.owner.ReleaseRecordActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 个人榜单 -->
         <activity
             android:name=".view.activity.FriendStepDanActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.ACTION_FRIEND_HONOR" />
@@ -221,16 +197,13 @@
         <!-- 我的钱包 -->
         <activity
             android:name=".view.activity.MyWalletActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 商家详情 -->
         <activity
             android:name=".view.activity.SponsorDetailActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.DearNameModifyActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 商品图片详情 -->
         <activity
@@ -240,12 +213,15 @@
                 <action android:name="com.paobuqianjin.pbq.step.SHOW_PIC_ACTION"></action>
                 <action android:name="com.paobuqianjin.pbq.step.INNER_ACTION"></action>
                 <action android:name="com.paobuqianjin.pbq.step.OUT_ACTION"></action>
+                <action android:name="com.paobuqianjin.pbq.setp.WORK_TIME_ACTION"></action>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.activity.SponsorTimeSelectActivity"
+            android:theme="@style/ImageTranslucentTheme" />
         <!-- 查看评论 -->
         <activity
             android:name=".view.activity.UserCenterContentActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.LIKE_MESSAGE_ACTION" />
@@ -256,16 +232,13 @@
         <!-- 提现 -->
         <activity
             android:name=".view.activity.CrashActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 邀请有礼 -->
         <activity
             android:name=".view.activity.InviteActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.StepDollarActivity"
-            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 充值到钱包 -->
         <activity

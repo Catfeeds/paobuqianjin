@@ -1,7 +1,8 @@
 package com.paobuqianjin.pbq.step.view.fragment.sponsor;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,37 +11,38 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.view.activity.SponsorSelectActivity;
-import com.paobuqianjin.pbq.step.view.activity.SponsorTimeSelectActivity;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.adapter.TimeAdapter;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by pbq on 2018/4/23.
+ * Created by pbq on 2018/4/21.
  */
 
-public class SponsorTimeFragment extends BaseFragment {
+public class SponsorTimeSelectFragment extends BaseBarStyleTextViewFragment {
+
+    LinearLayoutManager layoutManager;
+    @Bind(R.id.bar_return_drawable)
+    ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
-    TextView buttonReturnBar;
+    RelativeLayout buttonReturnBar;
     @Bind(R.id.bar_title)
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
-    @Bind(R.id.time)
-    TextView time;
-    @Bind(R.id.go_to)
-    ImageView goTo;
-    @Bind(R.id.work_time_des)
-    TextView workTimeDes;
-    @Bind(R.id.time_pan)
-    RelativeLayout timePan;
-    private final static int REQUEST_TIME = 0;
+    @Bind(R.id.time_recycler)
+    RecyclerView timeRecycler;
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.sponsor_time_fg;
+        return R.layout.sponsor_time_select_fg;
+    }
+
+    @Override
+    protected String title() {
+        return "自定义";
     }
 
     @Override
@@ -54,16 +56,10 @@ public class SponsorTimeFragment extends BaseFragment {
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        timePan = (RelativeLayout) viewRoot.findViewById(R.id.time_pan);
-        timePan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //
-                Intent intent = new Intent();
-                intent.setClass(getContext(), SponsorTimeSelectActivity.class);
-                startActivityForResult(intent, REQUEST_TIME);
-            }
-        });
+        timeRecycler = (RecyclerView) viewRoot.findViewById(R.id.time_recycler);
+        layoutManager = new LinearLayoutManager(getContext());
+        timeRecycler.setLayoutManager(layoutManager);
+        timeRecycler.setAdapter(new TimeAdapter(getContext()));
     }
 
     @Override

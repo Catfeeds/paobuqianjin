@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/bar_cancel_confirm"
+        layout="@layout/bar_return_a_style"></include>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/time_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar_cancel_confirm"
+        android:overScrollMode="never">
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>
