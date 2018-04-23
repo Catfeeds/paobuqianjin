@@ -196,14 +196,21 @@ public class SponsorRedLocationFragment extends BaseBarStyleTextViewFragment imp
             mPoiSearch = PoiSearch.newInstance();
             mPoiSearch.setOnGetPoiSearchResultListener(poiLister);
             mPoiSearch.searchInCity(new PoiCitySearchOption().city(city)
-                    .keyword("美食").pageNum(10));
+                    .keyword("火车站").pageNum(20));
         }
     }
 
     OnGetPoiSearchResultListener poiLister = new OnGetPoiSearchResultListener() {
         @Override
         public void onGetPoiResult(PoiResult poiResult) {
-            LocalLog.d(TAG, "获得POI结果" + poiResult.toString());
+            LocalLog.d(TAG, "获得POI结果");
+
+            for (int i = 0; i < poiResult.getAllPoi().size(); i++) {
+                LocalLog.d(TAG, poiResult.getAllPoi().get(i).name);
+                LocalLog.d(TAG,"la = " + poiResult.getAllPoi().get(i).location.latitude);
+                LocalLog.d(TAG,"lb = " + poiResult.getAllPoi().get(i).location.longitude);
+            }
+
         }
 
         @Override
