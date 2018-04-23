@@ -127,7 +127,7 @@ public class PaoBuApplication extends MultiDexApplication {
 
     private void initTencentBugly() {
         LocalLog.d(TAG, "initTencentBugly() enter");
-        Bugly.init(getApplicationContext(), "db0094a50c", true);
+        Bugly.init(getApplicationContext(), "a7472c9378", true);
     }
 
     private boolean initBaiDuSDK(Context context) {

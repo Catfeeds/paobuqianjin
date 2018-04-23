@@ -66,10 +66,11 @@ public class AndroidIosAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         RelativeLayout rl = new RelativeLayout(mContext);
-        rl.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, (int) mPerHeight));
+        rl.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, (int) 25));
 //        rl.setBackgroundColor(Color.RED);
 
         TextView emojiThumb = new TextView(mContext);
+        emojiThumb.setGravity(Gravity.CENTER);
         int count = emjCode.length;
         int index = mStartIndex + position;
         if (position == EmotionLayout.EMOJI_PER_PAGE || index == count) {

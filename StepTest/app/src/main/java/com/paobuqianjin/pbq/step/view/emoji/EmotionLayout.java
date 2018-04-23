@@ -25,7 +25,7 @@ import com.paobuqianjin.pbq.step.view.base.view.CustomEdit;
 public class EmotionLayout extends LinearLayout implements View.OnClickListener {
 
     public static final int EMOJI_COLUMNS = 7;
-    public static final int EMOJI_ROWS = 4;
+    public static final int EMOJI_ROWS = 3;
     public static final int EMOJI_PER_PAGE = EMOJI_COLUMNS * EMOJI_ROWS - 1;//最后一个是删除键
 
     public static final int STICKER_COLUMNS = 4;
@@ -246,7 +246,7 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
 
     private void setCurPageCommon(int position) {
         if (mTabPosi == 0)
-            setCurPage(position, (int) Math.ceil(80/ (float) EmotionLayout.EMOJI_PER_PAGE));
+            setCurPage(position, (int) Math.ceil(80 / (float) EmotionLayout.EMOJI_PER_PAGE));
         else {
             StickerCategory category = StickerManager.getInstance().getStickerCategories().get(mTabPosi - 1);
             setCurPage(position, (int) Math.ceil(category.getStickers().size() / (float) EmotionLayout.STICKER_PER_PAGE));

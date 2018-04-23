@@ -612,9 +612,15 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 dataBean.setAvatar(Presenter.getInstance(getContext()).getAvatar(getContext()));
                 likeData.add(dataBean);
                 if (likeUserAdapter == null) {
+                    if (supportPics.getVisibility() == View.GONE) {
+                        supportPics.setVisibility(View.VISIBLE);
+                    }
                     likeUserAdapter = new LikeUserAdapter(getContext(), likeData);
+                    supportIconRecycler.setAdapter(likeUserAdapter);
+                    likeUserAdapter.notifyDataSetChanged(likeData);
+                } else {
+                    likeUserAdapter.notifyItemRangeInserted(likeData.size() - 1, 1);
                 }
-                likeUserAdapter.notifyItemRangeInserted(likeData.size() - 1, 1);
 
             } else {
                 likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_n));
