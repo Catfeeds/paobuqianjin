@@ -66,7 +66,7 @@ public class AndroidIosAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         RelativeLayout rl = new RelativeLayout(mContext);
-        rl.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, (int) 25));
+        rl.setLayoutParams(new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, (int) mPerHeight));
 //        rl.setBackgroundColor(Color.RED);
 
         TextView emojiThumb = new TextView(mContext);

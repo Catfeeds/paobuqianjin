@@ -9,186 +9,185 @@
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/wallet_refresh"
-        android:layout_below="@+id/bar_wallet_detail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-<!--        <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
-            android:id="@+id/scroll_view_income"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">-->
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar_wallet_detail">
+        <!--        <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+                    android:id="@+id/scroll_view_income"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">-->
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
+                android:id="@+id/income_rel"
+                android:layout_width="match_parent"
+                android:layout_height="209dp"
+                android:background="@drawable/wallet_bg">
+
+                <TextView
+                    android:id="@+id/all_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="14dp"
+                    android:includeFontPadding="false"
+                    android:text="当前收益(元)"
+                    android:textColor="@color/color_ccfffffff"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/income_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/all_income"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="18dp"
+                    android:includeFontPadding="false"
+                    android:text="暂无收益"
+                    android:textColor="@color/color_f8"
+                    android:textSize="36dp" />
+
+                <TextView
+                    android:id="@+id/income_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/income_des"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="27dp"
+                    android:includeFontPadding="false"
+                    android:text="总金额0.00元"
+                    android:textColor="@color/color_f8"
+                    android:textSize="15dp" />
 
                 <RelativeLayout
-                    android:id="@+id/income_rel"
+                    android:id="@+id/income_outline"
                     android:layout_width="match_parent"
-                    android:layout_height="209dp"
-                    android:background="@drawable/wallet_bg">
-
-                    <TextView
-                        android:id="@+id/all_income"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="14dp"
-                        android:includeFontPadding="false"
-                        android:text="当前收益(元)"
-                        android:textColor="@color/color_ccfffffff"
-                        android:textSize="12dp" />
-
-                    <TextView
-                        android:id="@+id/income_des"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/all_income"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="18dp"
-                        android:includeFontPadding="false"
-                        android:text="暂无收益"
-                        android:textColor="@color/color_f8"
-                        android:textSize="36dp" />
-
-                    <TextView
-                        android:id="@+id/income_money"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/income_des"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="27dp"
-                        android:includeFontPadding="false"
-                        android:text="总金额0.00元"
-                        android:textColor="@color/color_f8"
-                        android:textSize="15dp" />
+                    android:layout_height="65dp"
+                    android:layout_below="@+id/income_money"
+                    android:layout_marginTop="25dp"
+                    android:background="@color/color_33f8">
 
                     <RelativeLayout
-                        android:id="@+id/income_outline"
-                        android:layout_width="match_parent"
-                        android:layout_height="65dp"
-                        android:layout_below="@+id/income_money"
-                        android:layout_marginTop="25dp"
-                        android:background="@color/color_33f8">
+                        android:id="@+id/month_span"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true">
 
-                        <RelativeLayout
-                            android:id="@+id/month_span"
+                        <TextView
+                            android:id="@+id/month_income_des"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true">
+                            android:text="当月收益(元)"
+                            android:textColor="@color/color_f8"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/month_income_des"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:text="当月收益(元)"
-                                android:textColor="@color/color_f8"
-                                android:textSize="12dp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/month_income_num"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/month_income_des"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="5dp"
-                                android:includeFontPadding="false"
-                                android:text="0.00"
-                                android:textColor="@color/color_f8"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/yesterday_span"
+                        <TextView
+                            android:id="@+id/month_income_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="29dp">
+                            android:layout_below="@+id/month_income_des"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="5dp"
+                            android:includeFontPadding="false"
+                            android:text="0.00"
+                            android:textColor="@color/color_f8"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
 
-                            <TextView
-                                android:id="@+id/yesterday_income_des"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:text="昨日收益(元)"
-                                android:textColor="@color/color_f8"
-                                android:textSize="12dp"
-                                android:textStyle="bold" />
+                    <RelativeLayout
+                        android:id="@+id/yesterday_span"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="29dp">
 
-                            <TextView
-                                android:id="@+id/yesterday_income_num"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/yesterday_income_des"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="5dp"
-                                android:includeFontPadding="false"
-                                android:text="0.00"
-                                android:textColor="@color/color_f8"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:id="@+id/total_span"
+                        <TextView
+                            android:id="@+id/yesterday_income_des"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="29dp">
+                            android:layout_centerHorizontal="true"
+                            android:text="当前收益(元)"
+                            android:textColor="@color/color_f8"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:id="@+id/total_income_des"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:text="累计收益(元)"
-                                android:textColor="@color/color_f8"
-                                android:textSize="12dp"
-                                android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/yesterday_income_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/yesterday_income_des"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="5dp"
+                            android:includeFontPadding="false"
+                            android:text="0.00"
+                            android:textColor="@color/color_f8"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
 
-                            <TextView
-                                android:id="@+id/total_income_num"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/total_income_des"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="5dp"
-                                android:includeFontPadding="false"
-                                android:text="0.00"
-                                android:textColor="@color/color_f8"
-                                android:textSize="15dp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/total_span"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="29dp">
+
+                        <TextView
+                            android:id="@+id/total_income_des"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:text="累计收益(元)"
+                            android:textColor="@color/color_f8"
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/total_income_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/total_income_des"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="5dp"
+                            android:includeFontPadding="false"
+                            android:text="0.00"
+                            android:textColor="@color/color_f8"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
                     </RelativeLayout>
                 </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/income_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/income_rel">
-
-                </RelativeLayout>
-                <!--            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/income_recycler"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/income_rel">
-
-                            </android.support.v7.widget.RecyclerView>-->
-
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/income_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/income_rel">
 
-<!--        </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>-->
+            </RelativeLayout>
+            <!--            <android.support.v7.widget.RecyclerView
+                            android:id="@+id/income_recycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/income_rel">
+
+                        </android.support.v7.widget.RecyclerView>-->
+
+        </RelativeLayout>
+
+
+        <!--        </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>-->
     </android.support.v4.widget.SwipeRefreshLayout>
-
 
 
     <LinearLayout

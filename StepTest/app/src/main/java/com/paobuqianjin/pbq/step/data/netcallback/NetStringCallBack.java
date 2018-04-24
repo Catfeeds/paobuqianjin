@@ -677,13 +677,13 @@ public class NetStringCallBack extends StringCallback {
             }
         } else if (callBackInterface != null && callBackInterface instanceof UserIncomInterface) {
             if (command == Engine.COMMAND_INCOME_YESTERDAY) {
-                LocalLog.d(TAG, "昨日收益");
+               /* LocalLog.d(TAG, "昨日收益");
                 try {
                     IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
                     ((UserIncomInterface) callBackInterface).responseYesterday(incomeResponse);
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
-                }
+                }*/
             } else if (command == Engine.COMMAND_INCOME_TODAY) {
                 LocalLog.d(TAG, "今日收益");
                 try {

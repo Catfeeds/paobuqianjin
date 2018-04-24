@@ -10,7 +10,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 
 public interface UserIncomInterface extends CallBackInterface {
 
-    public void responseYesterday(IncomeResponse yesterdayIncomeResponse);
+    /*public void responseYesterday(IncomeResponse yesterdayIncomeResponse);*/
 
     public void responseToday(IncomeResponse incomeResponse);
 

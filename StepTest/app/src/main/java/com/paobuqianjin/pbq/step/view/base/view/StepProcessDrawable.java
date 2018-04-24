@@ -62,7 +62,6 @@ public class StepProcessDrawable extends Drawable {
             switch (msg.what) {
                 case REDRAW:
                     mCurrentAngle += mAngle / 500;
-                    LocalLog.d(TAG, "mCurrentAngle = " + mCurrentAngle);
                     if (mCurrentAngle <= mAngle) {
                         StepProcessDrawable.this.invalidateSelf();
                         sendEmptyMessage(REDRAW);
@@ -101,7 +100,6 @@ public class StepProcessDrawable extends Drawable {
 
     @Override
     public void draw(@NonNull Canvas canvas) {
-        LocalLog.d(TAG, "draw() enter");
         if (mCurrentAngle > 15) {
             canvas.drawArc(oval, 90, mCurrentAngle - 1, false, mPaint);
         }

@@ -186,7 +186,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         loadMonthData(monthData);
         loadAllData(allData);
         walletRefresh.setOnRefreshListener(mRefreshListener);
-        Presenter.getInstance(getContext()).getIncome("yesterday", pageIndexYD, PAGE_SIZE_DEFAULT);
+        Presenter.getInstance(getContext()).getIncome("today", pageIndexYD, PAGE_SIZE_DEFAULT);
         Presenter.getInstance(getContext()).getIncome("month", pageIndexMonth, PAGE_SIZE_DEFAULT);
         Presenter.getInstance(getContext()).getIncome("all", pageIndexAll, PAGE_SIZE_DEFAULT);
         mIndex = 0;
@@ -487,6 +487,14 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 return;
             }
             incomeDes.setText(String.valueOf(incomeResponse.getData().getTotal_amount()));
+            yesterdayIncomeNum.setText(String.valueOf(incomeResponse.getData().getTotal_amount()));
+            pageYDCount = incomeResponse.getData().getPagenation().getTotalPage();
+            LocalLog.d(TAG, "pageIndexAll = " + pageIndexYD + " ,pageAllCount = " + pageYDCount);
+            loadYesterDayMore((ArrayList<IncomeResponse.DataBeanX.DataBean>) incomeResponse.getData().getData());
+            if (pageIndexYD == 1) {
+                yesterDayIncomeFragment.scrollTop();
+            }
+            pageIndexYD++;
         } else if (incomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -498,7 +506,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
 
     }
 
-
+/* 改为显示今日收益
     @Override
     public void responseYesterday(IncomeResponse yesterdayIncomeResponse) {
         LocalLog.d(TAG, "昨日收益 responseYesterday() enter" + yesterdayIncomeResponse.toString());
@@ -522,7 +530,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
             getActivity().finish();
             System.exit(0);
         }
-    }
+    }*/
 
     @Override
     public void response(UserInfoResponse userInfoResponse) {
