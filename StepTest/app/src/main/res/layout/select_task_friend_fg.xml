@@ -16,6 +16,7 @@
         android:layout_marginTop="0dp"></include>
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:id="@+id/friend_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/search_pan">
@@ -32,4 +33,14 @@
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+    <TextView
+        android:id="@+id/not_found_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/search_pan"
+        android:gravity="center"
+        android:text="没有找到相关好友"
+        android:textSize="15dp"
+        android:visibility="gone" />
 </RelativeLayout>

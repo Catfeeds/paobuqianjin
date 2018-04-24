@@ -8,6 +8,7 @@
         layout="@layout/bar_return_a_style"></include>
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:id="@+id/content_scroll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/contents_bar">
@@ -24,4 +25,14 @@
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+    <TextView
+        android:id="@+id/not_found_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/contents_bar"
+        android:gravity="center"
+        android:text="没有消息！"
+        android:textSize="15dp"
+        android:visibility="gone" />
 </RelativeLayout>

@@ -272,7 +272,7 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
             if (!emptyTaskFragment.isAdded()) {
                 trx.add(R.id.fragment_container, emptyTaskFragment);
             }
-            trx.show(emptyTaskFragment).commit();
+            trx.show(emptyTaskFragment).commitAllowingStateLoss();
         } else if (myRecvTaskRecordResponse.getError() == -1) {
             Toast.makeText(getContext(), myRecvTaskRecordResponse.getMessage(), Toast.LENGTH_SHORT).show();
         } else if (myRecvTaskRecordResponse.getError() == -100) {

@@ -149,6 +149,9 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
 
         addFriendDes = (TextView) viewRoot.findViewById(R.id.add_friend_des);
         recvRecycler.addItemDecoration(new LikeUserAdapter.SpaceItemDecoration(10));
+        targetTaskDayNum.setSelection(targetTaskDayNum.getText().toString().length());
+        targetTaskMoneyNum.setSelection(targetTaskMoneyNum.getText().toString().length());
+        targetTaskStepNum.setSelection(targetTaskStepNum.getText().toString().length());
     }
 
     private TaskReleaseInterface taskReleaseInterface = new TaskReleaseInterface() {
@@ -191,19 +194,22 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
 
     @OnClick({R.id.target_task_span, R.id.add_task_friend, R.id.add_ico, R.id.confirm})
     public void onClick(View view) {
+        Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.target_task_span:
                 LocalLog.d(TAG, "设置任务目标步数");
                 break;
             case R.id.add_task_friend:
                 LocalLog.d(TAG, "添加任务好友");
-                Intent intent = new Intent();
                 intent.putExtra(getActivity().getPackageName(), friendBundleData);
                 intent.setClass(getActivity(), SelectFriendForTaskActivity.class);
                 startActivityForResult(intent, SELECT_FRIENDS);
                 break;
             case R.id.add_ico:
                 LocalLog.d(TAG, "查看所有接入任务的好友");
+                intent.putExtra(getActivity().getPackageName(), friendBundleData);
+                intent.setClass(getActivity(), SelectFriendForTaskActivity.class);
+                startActivityForResult(intent, SELECT_FRIENDS);
                 break;
             case R.id.confirm:
                 LocalLog.d(TAG, "发布任务");

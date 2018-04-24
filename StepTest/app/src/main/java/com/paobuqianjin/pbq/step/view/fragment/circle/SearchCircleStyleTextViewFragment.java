@@ -59,6 +59,12 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     EditText searchCircleText;
     @Bind(R.id.search_hot_circle)
     RelativeLayout searchHotCircle;
+    @Bind(R.id.cancel_icon)
+    RelativeLayout cancelIcon;
+    @Bind(R.id.search_choose_circle_recycler)
+    SwipeMenuRecyclerView searchChooseCircleRecycler;
+    @Bind(R.id.refresh_layout)
+    SwipeRefreshLayout refreshLayout;
     private LinearLayoutManager layoutManager;
     private SwipeMenuRecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;

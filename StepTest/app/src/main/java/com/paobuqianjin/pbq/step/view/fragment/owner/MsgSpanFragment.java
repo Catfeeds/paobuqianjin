@@ -126,7 +126,13 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
             case R.id.message_span:
                 LocalLog.d(TAG, "评论");
                 //TODO null判断
-                MessageContentBundleData messageContentBundleData = new MessageContentBundleData((ArrayList<MessageContentResponse.DataBeanX.DataBean>) messageContentResponse.getData().getData());
+                MessageContentBundleData messageContentBundleData;
+                if (messageLikeResponse == null || messageLikeResponse.getData() == null) {
+                    messageContentBundleData = null;
+                } else {
+                    messageContentBundleData = new MessageContentBundleData((ArrayList<MessageContentResponse.DataBeanX.DataBean>) messageContentResponse.getData().getData());
+                }
+
                 intent.putExtra(getActivity().getPackageName(), messageContentBundleData);
                 intent.setAction(CONTENT_MESSAGE_ACTION);
                 intent.setClass(getContext(), UserCenterContentActivity.class);
@@ -134,7 +140,13 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
                 break;
             case R.id.like_span:
                 LocalLog.d(TAG, "点赞");
-                MessageLikeBundleData messageLikeBundleData = new MessageLikeBundleData((ArrayList<MessageLikeResponse.DataBeanX.DataBean>) messageLikeResponse.getData().getData());
+                MessageLikeBundleData messageLikeBundleData;
+                if (messageLikeResponse == null || messageLikeResponse.getData() == null) {
+                    messageLikeBundleData = null;
+                } else {
+                    messageLikeBundleData = new MessageLikeBundleData((ArrayList<MessageLikeResponse.DataBeanX.DataBean>) messageLikeResponse.getData().getData());
+                }
+
                 intent.putExtra(getActivity().getPackageName(), messageLikeBundleData);
                 intent.setAction(LIKE_MESSAGE_ACTION);
                 intent.setClass(getContext(), UserCenterContentActivity.class);
@@ -142,7 +154,14 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
                 break;
             case R.id.system_span:
                 LocalLog.d(TAG, "系统消息");
-                MessageSystemBundleData messageSystemBundleData = new MessageSystemBundleData((ArrayList<MessageSystemResponse.DataBeanX.DataBean>) messageSystemResponse.getData().getData());
+                MessageSystemBundleData messageSystemBundleData;
+                if (messageSystemResponse == null || messageSystemResponse.getData() == null) {
+                    messageSystemBundleData = null;
+                } else {
+                    messageSystemBundleData = new MessageSystemBundleData((ArrayList<MessageSystemResponse.DataBeanX.DataBean>) messageSystemResponse.getData().getData());
+                    ;
+                }
+
                 intent.putExtra(getActivity().getPackageName(), messageSystemBundleData);
                 intent.setAction(SYS_MESSAGE_ACTION);
                 intent.setClass(getContext(), UserCenterContentActivity.class);

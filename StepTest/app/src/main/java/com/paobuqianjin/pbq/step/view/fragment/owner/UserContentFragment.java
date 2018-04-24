@@ -15,6 +15,7 @@ import com.paobuqianjin.pbq.step.data.bean.bundle.MessageContentBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.MessageLikeBundleData;
 import com.paobuqianjin.pbq.step.view.base.adapter.MessageAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,6 +38,10 @@ public class UserContentFragment extends BaseBarStyleTextViewFragment {
     MessageLikeBundleData messageLikeBundleData;
     MessageContentBundleData messageContentBundleData;
     LinearLayoutManager layoutManager;
+    @Bind(R.id.content_scroll)
+    BounceScrollView contentScroll;
+    @Bind(R.id.not_found_data)
+    TextView notFoundData;
     private String title;
 
     @Override
@@ -74,6 +79,11 @@ public class UserContentFragment extends BaseBarStyleTextViewFragment {
         layoutManager = new LinearLayoutManager(getContext());
         contentRecycler = (RecyclerView) viewRoot.findViewById(R.id.content_recycler);
         contentRecycler.setLayoutManager(layoutManager);
+        notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
+        if (messageLikeBundleData == null && messageContentBundleData == null) {
+            notFoundData.setVisibility(View.VISIBLE);
+            return;
+        }
         if (messageContentBundleData != null) {
             title = "评论";
             contentRecycler.setAdapter(new MessageAdapter(getContext(), messageContentBundleData.getMessageContentBundleData()));
@@ -82,6 +92,7 @@ public class UserContentFragment extends BaseBarStyleTextViewFragment {
             title = "点赞";
             contentRecycler.setAdapter(new MessageAdapter(getContext(), messageLikeBundleData.getMessageLikeBundleData()));
         }
+
     }
 
     @Override

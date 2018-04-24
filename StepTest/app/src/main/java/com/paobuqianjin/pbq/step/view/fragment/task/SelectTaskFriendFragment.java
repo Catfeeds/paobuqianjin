@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +21,6 @@ import android.widget.Toast;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendSearchResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -27,9 +29,9 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.SelectTaskFriendAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -54,13 +56,21 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     EditText searchCircleText;
     @Bind(R.id.friend_recycler)
     RecyclerView friendRecycler;
+    @Bind(R.id.cancel_icon)
+    RelativeLayout cancelIcon;
+    @Bind(R.id.friend_scroll)
+    BounceScrollView friendScroll;
+    @Bind(R.id.not_found_data)
+    TextView notFoundData;
     private LinearLayoutManager layoutManager;
     private static final int SELECT_FRIENDS = 0;
     FriendBundleData friendBundleData = null;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGE_SIZE = 10;
     private String keyWord = "";
+    private boolean isSearch = false;
     private ArrayList<UserFriendResponse.DataBeanX.DataBean> friendAll = new ArrayList<>();
+    private ArrayList<UserFriendResponse.DataBeanX.DataBean> searchData = new ArrayList<>();
 
     @Override
     protected int getLayoutResId() {
@@ -83,8 +93,11 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     }
 
     public void searchKeyWord(String keyWord) {
+        isSearch = true;
         this.keyWord = keyWord;
         pageIndex = 1;
+        searchData.removeAll(searchData);
+        loadData(searchData);
         Presenter.getInstance(getContext()).getUserFiends(pageIndex, PAGE_SIZE, keyWord);
     }
 
@@ -108,8 +121,11 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
                 return false;
             }
         });
+        searchCircleText.addTextChangedListener(textWatcher);
         barReturnLeft.setOnClickListener(onClickListener);
         barTvRight.setOnClickListener(onClickListener);
+        cancelIcon = (RelativeLayout) viewRoot.findViewById(R.id.cancel_icon);
+        cancelIcon.setOnClickListener(onClickListener);
         friendRecycler = (RecyclerView) viewRoot.findViewById(R.id.friend_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         friendRecycler.setLayoutManager(layoutManager);
@@ -128,6 +144,38 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
 
     }
 
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String temp = s.toString();
+            if (!TextUtils.isEmpty(temp)) {
+                LocalLog.d(TAG, "显示取消搜索界面");
+                cancelIcon.setVisibility(View.VISIBLE);
+                cancelIcon.setOnClickListener(onClickListener);
+            } else {
+                LocalLog.d(TAG, "隐藏搜索界面");
+                cancelIcon.setVisibility(View.GONE);
+                if (friendAll.size() > 0) {
+                    if (friendScroll.getVisibility() == View.GONE) {
+                        notFoundData.setVisibility(View.GONE);
+                        friendScroll.setVisibility(View.VISIBLE);
+                    }
+                    loadData(friendAll);
+                }
+            }
+        }
+    };
+
     /**
      * 第一次加载数据。
      */
@@ -140,6 +188,11 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
         friendAll.addAll(newData);
         // notifyItemRangeInserted()或者notifyDataSetChanged().
         selectTaskFriendAdapter.notifyItemRangeInserted(friendAll.size() - newData.size(), newData.size());
+    }
+
+    private void searchMore(ArrayList<UserFriendResponse.DataBeanX.DataBean> newData) {
+        searchData.addAll(newData);
+        selectTaskFriendAdapter.notifyItemRangeInserted(searchData.size() - newData.size(), newData.size());
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -162,6 +215,10 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
                         getActivity().finish();
                     }
                     break;
+                case R.id.cancel_icon:
+                    LocalLog.d(TAG, "取消搜索,显示原来的数据");
+                    searchCircleText.setText(null);
+                    break;
             }
         }
     };
@@ -177,12 +234,33 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     public void response(UserFriendResponse userFriendResponse) {
         LocalLog.d(TAG, "UserFriendResponse() enter " + userFriendResponse.toString());
         if (userFriendResponse.getError() == 0) {
-            pageCount = userFriendResponse.getData().getPagenation().getTotalPage();
-            LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
-            loadMore((ArrayList<UserFriendResponse.DataBeanX.DataBean>) userFriendResponse.getData().getData());
-            pageIndex++;
-            if (pageIndex <= pageCount) {
-                Presenter.getInstance(getContext()).getUserFiends(pageIndex, PAGE_SIZE, keyWord);
+
+            if (friendScroll != null && friendScroll.getVisibility() == View.GONE) {
+                notFoundData.setVisibility(View.GONE);
+                friendScroll.setVisibility(View.VISIBLE);
+            }
+            if (!isSearch) {
+                pageCount = userFriendResponse.getData().getPagenation().getTotalPage();
+                LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
+                loadMore((ArrayList<UserFriendResponse.DataBeanX.DataBean>) userFriendResponse.getData().getData());
+                pageIndex++;
+                if (pageIndex <= pageCount) {
+                    Presenter.getInstance(getContext()).getUserFiends(pageIndex, PAGE_SIZE, keyWord);
+                }
+            } else {
+                pageCount = userFriendResponse.getData().getPagenation().getTotalPage();
+                LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
+                searchMore((ArrayList<UserFriendResponse.DataBeanX.DataBean>) userFriendResponse.getData().getData());
+                pageIndex++;
+                if (pageIndex <= pageCount) {
+                    Presenter.getInstance(getContext()).getUserFiends(pageIndex, PAGE_SIZE, keyWord);
+                }
+            }
+        } else if (userFriendResponse.getError() == 1) {
+            LocalLog.d(TAG, "Not found data");
+            if (friendScroll != null && friendScroll.getVisibility() == View.VISIBLE) {
+                friendScroll.setVisibility(View.GONE);
+                notFoundData.setVisibility(View.VISIBLE);
             }
         } else if (userFriendResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
