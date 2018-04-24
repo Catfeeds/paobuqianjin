@@ -150,6 +150,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
 
     String titleStr = "";
+    private boolean is_join = false;
 
     @Override
     protected int getLayoutResId() {
@@ -187,7 +188,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             if (circleDetailResponse == null) {
                 return;
             }
-            if (circleDetailResponse.getData().getIs_join() == 0) {
+            if (!is_join) {
                 LocalLog.d(TAG, "没有加入圈子，无法操作");
                 return;
             }
@@ -230,11 +231,6 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         popCircleOpBar.startAnimation(animationCircleType);
     }
 
-
-    private void popCircleRedPkg() {
-        LocalLog.d(TAG, "popCircleRedPkg() enter");
-
-    }
 
     public void popPassWordEdit() {
         if (popupOpWindow != null) {
@@ -583,6 +579,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             if (joinCircleResponse.getError() == 0) {
                 LocalLog.d(TAG, "加入成功");
                 joinIn.setVisibility(View.GONE);
+                is_join = true;
                 //TODO 通知源UI更新
                 if (circleId != -1) {
                     Presenter.getInstance(getContext()).getCircleStepRank(circleId);
@@ -697,6 +694,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 LocalLog.d(TAG, "还没有加入圈子");
                 joinIn.setVisibility(View.VISIBLE);
                 joinIn.setOnClickListener(onClickListener);
+                is_join = false;
+            } else if (circleDetailResponse.getData().getIs_join() == 1) {
+                is_join = true;
             }
             total_money = Float.parseFloat(circleDetailResponse.getData().getTotal_amount());
             red_pack_money = Float.parseFloat(circleDetailResponse.getData().getRed_packet_amount());

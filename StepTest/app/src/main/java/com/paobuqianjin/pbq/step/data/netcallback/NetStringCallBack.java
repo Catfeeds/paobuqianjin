@@ -283,6 +283,9 @@ public class NetStringCallBack extends StringCallback {
                 } else if (callBackInterface != null && callBackInterface instanceof JoinCircleInterface) {
                     LocalLog.d(TAG, "加入圈子错误");
                     ((JoinCircleInterface) callBackInterface).response(errorCode);
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof PayInterface) {
+                    callBackInterface.response(errorCode);
                 } else {
                     LocalLog.e(TAG, " dispatch not match");
                 }

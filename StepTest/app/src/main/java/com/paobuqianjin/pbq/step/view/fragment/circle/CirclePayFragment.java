@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -168,6 +170,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         walletPaySelect = (ImageView) viewRoot.findViewById(R.id.wallet_pay_select);
         moneyNum = (TextView) viewRoot.findViewById(R.id.money_num);
         rechargeEdit = (EditText) viewRoot.findViewById(R.id.recharge_edit);
+        rechargeEdit.addTextChangedListener(textWatcher);
         if (PAY_RECHARGE.equals(intent.getAction())) {
             LocalLog.d(TAG, PAY_RECHARGE + "ENTER");
             moneyNum.setVisibility(View.GONE);
@@ -186,6 +189,30 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         }
 
     }
+
+
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String temp = editable.toString();
+            int posDot = temp.indexOf(".");
+            if (posDot <= 0) return;
+            if (temp.length() - posDot - 1 > 2) {
+                editable.delete(posDot + 3, posDot + 4);
+            }
+
+        }
+    };
 
     @Override
     public void onDestroyView() {
@@ -268,7 +295,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                     } else {
                         money = Float.parseFloat(pay);
                     }
-                    dialog = ProgressDialog.show(getContext(), "提示" + "支付方式" + String.valueOf(style),
+                    dialog = ProgressDialog.show(getContext(), "微信支付",
                             "正在提交订单");
                     PayOrderParam wxPayOrderParam = new PayOrderParam();
                     if ("circle".equals(payAction)) {
@@ -317,7 +344,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                     } else {
                         money = Float.parseFloat(pay);
                     }
-                    dialog = ProgressDialog.show(getContext(), "提示" + "支付方式" + String.valueOf(style),
+                    dialog = ProgressDialog.show(getContext(), "钱包支付",
                             "正在提交订单");
                     PayOrderParam wxPayOrderParam = new PayOrderParam();
                     if ("circle".equals(payAction)) {
@@ -377,7 +404,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             Presenter.getInstance(getContext()).setTradeStyle(payAction);
             msgApi.registerApp(req.appId);
             msgApi.sendReq(req);
-        }else if(wxPayOrderResponse.getError() == -100){
+        } else if (wxPayOrderResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
             Presenter.getInstance(getContext()).steLogFlg(false);
@@ -396,7 +423,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         }
         if (walletPayOrderResponse.getError() == 0) {
             ((PaoBuPayActivity) getActivity()).showPaySuccessWallet(walletPayOrderResponse);
-        }else if(walletPayOrderResponse.getError() == -100){
+        } else if (walletPayOrderResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
             Presenter.getInstance(getContext()).steLogFlg(false);
@@ -415,6 +442,11 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            Toast.makeText(getContext(), errorCode.getMessage(), Toast.LENGTH_SHORT).show();
+            if (dialog != null && dialog.isShowing()) {
+                dialog.dismiss();
+            }
         }
     }
 }

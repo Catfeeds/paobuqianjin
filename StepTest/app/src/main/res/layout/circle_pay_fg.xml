@@ -187,7 +187,7 @@
                 android:background="@null"
                 android:hint="0.00元"
                 android:inputType="numberDecimal"
-                android:maxLength="6"
+                android:maxLength="11"
                 android:maxLines="1"
                 android:textColor="@color/color_161727"
                 android:textSize="15dp"
