@@ -14,6 +14,7 @@ import com.paobuqianjin.pbq.step.view.base.adapter.RankAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -24,10 +25,10 @@ public class LoveRankFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = LoveRankFragment.class.getSimpleName();
     RecyclerView rankRecycler;
     LinearLayoutManager layoutManager;
-    ArrayList<ReChargeRankResponse.DataBeanX.DataBean> mData;
+    List<?> mData;
 
     // 设置数据
-    public void setRankData(ArrayList<ReChargeRankResponse.DataBeanX.DataBean> data) {
+    public void setRankData(List<?> data) {
         mData = data;
     }
 
@@ -49,7 +50,7 @@ public class LoveRankFragment extends BaseBarStyleTextViewFragment {
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rankRecycler.setLayoutManager(layoutManager);
-        rankRecycler.setAdapter(new RankAdapter(getContext(),mData));
+        rankRecycler.setAdapter(new RankAdapter(getContext(), mData));
     }
 
     @Override

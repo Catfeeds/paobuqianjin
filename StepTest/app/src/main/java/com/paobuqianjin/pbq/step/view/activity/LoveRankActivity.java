@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.MyCreateCircleBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.RechargeRankBundleData;
+import com.paobuqianjin.pbq.step.data.bean.bundle.StepBundleData;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.fragment.circle.LoveRankFragment;
 
@@ -18,6 +19,9 @@ public class LoveRankActivity extends BaseActivity {
     private final static String TAG = LoveRankActivity.class.getSimpleName();
     private LoveRankFragment loveRankFragment = new LoveRankFragment();
     private RechargeRankBundleData rechargeRankBundleData;
+    private StepBundleData stepBundleData;
+    private final static String ACTION_STEP_RANK = "com.paobuqian.pbq.step.STEP_ACTION";
+    private final static String ACTION_LOVE_RANK = "com.paobuqian.pbq.step.LOVE_ACTION";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,9 +34,12 @@ public class LoveRankActivity extends BaseActivity {
         super.initView();
         Intent intent = getIntent();
         if (intent != null) {
-            if (intent != null && intent.getParcelableExtra(getPackageName() + "circle_detail") != null) {
+            if (ACTION_LOVE_RANK.equals(intent.getAction()) && intent.getParcelableExtra(getPackageName() + "circle_detail") != null) {
                 rechargeRankBundleData = (RechargeRankBundleData) intent.getParcelableExtra(getPackageName() + "circle_detail");
                 loveRankFragment.setRankData(rechargeRankBundleData.getRechargeRankData());
+            } else if (ACTION_STEP_RANK.equals(intent.getAction())) {
+                stepBundleData = (StepBundleData) intent.getParcelableExtra(getPackageName() + "circle_detail");
+                loveRankFragment.setRankData(stepBundleData.getStepRankData());
             }
         }
         getSupportFragmentManager().beginTransaction()

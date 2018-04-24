@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -142,7 +143,7 @@ public class StepRankResponse {
             }
         }
 
-        public static class DataBean {
+        public static class DataBean implements Serializable {
             /**
              * userid : 1
              * nickname : 嗯额

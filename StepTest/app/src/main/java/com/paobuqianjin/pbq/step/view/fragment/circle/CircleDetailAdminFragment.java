@@ -14,9 +14,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,6 +25,7 @@ import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.RechargeRankBundleData;
+import com.paobuqianjin.pbq.step.data.bean.bundle.StepBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
@@ -116,6 +115,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     Button reChargeBt;
     @Bind(R.id.circle_detail_fg)
     RelativeLayout circleDetailFg;
+    @Bind(R.id.scan_more)
+    TextView scanMore;
 
     private boolean is_password = false;
 
@@ -125,6 +126,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private LinearLayoutManager reChargeLayoutManager;
     private LinearLayoutManager stepLayoutManager;
     private RechargeRankBundleData rechargeRankBundleData;
+    private StepBundleData stepBundleData;
     private String target;
     private float total_money;
     private float red_pack_money;
@@ -148,6 +150,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.SCAN_ACTION";
     private final static String PAY_ACTION = "android.intent.action.PAY";
     private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
+    private final static String ACTION_STEP_RANK = "com.paobuqian.pbq.step.STEP_ACTION";
+    private final static String ACTION_LOVE_RANK = "com.paobuqian.pbq.step.LOVE_ACTION";
 
     String titleStr = "";
     private boolean is_join = false;
@@ -465,7 +469,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         memberNumDes = (TextView) viewRoot.findViewById(R.id.member_num_des);
         imageButton = (RelativeLayout) viewRoot.findViewById(R.id.image_button);
         imageButton.setOnClickListener(onClickListener);
-
+        scanMore = (TextView) viewRoot.findViewById(R.id.scan_more);
+        scanMore.setOnClickListener(onClickListener);
         setToolBarListener(toolBarListener);
         moneyRet = (TextView) viewRoot.findViewById(R.id.money_ret);
         circleCover = (ImageView) viewRoot.findViewById(R.id.circle_cover);
@@ -486,6 +491,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     LocalLog.d(TAG, "进入爱心榜单行情");
                     Intent intent = new Intent();
                     intent.putExtra(getActivity().getPackageName() + "circle_detail", rechargeRankBundleData);
+                    intent.setAction(ACTION_LOVE_RANK);
                     intent.setClass(getContext(), LoveRankActivity.class);
                     startActivity(intent);
                     break;
@@ -566,6 +572,15 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     popOpWindowRedButton.dismiss();
                     popRedPkgPick();
                     break;
+                case R.id.scan_more:
+                    LocalLog.d(TAG, "查看更多");
+
+                    Intent intentStep = new Intent();
+                    intentStep.setAction(ACTION_STEP_RANK);
+                    intentStep.putExtra(getActivity().getPackageName() + "circle_detail", stepBundleData);
+                    intentStep.setClass(getContext(), LoveRankActivity.class);
+                    startActivity(intentStep);
+                    break;
                 default:
                     break;
             }
@@ -637,6 +652,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 String sAgeFormat = mContext.getResources().getString(R.string.member_total);
                 String sFinalMember = String.format(sAgeFormat, stepRankResponse.getData().getPagenation().getTotalCount());
                 memberNumDes.setText(sFinalMember);
+                stepBundleData = new StepBundleData(
+                        (ArrayList<StepRankResponse.DataBeanX.DataBean>)
+                                stepRankResponse.getData().getData());
             } else if (stepRankResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 Presenter.getInstance(getContext()).setId(-1);
