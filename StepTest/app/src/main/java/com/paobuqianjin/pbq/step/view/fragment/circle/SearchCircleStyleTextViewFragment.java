@@ -8,11 +8,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -65,16 +70,22 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     SwipeMenuRecyclerView searchChooseCircleRecycler;
     @Bind(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
+    @Bind(R.id.not_found_data)
+    TextView notFoundData;
     private LinearLayoutManager layoutManager;
     private SwipeMenuRecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Context mContext;
     private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData;
+    private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> searchData;
     SearchCircleAdapter adapter;
-    int pageIndex = 1;
+    int pageIndex = 2;
     int pageCount = 0;
     boolean addCircle = false;
+    private boolean isSearch = false;
     private static int SEARCH_ADD = 0;
+    private String keyWord = "";
+    private int mCurrentAllPageIndex = 2;
 
     public void setChoiceCircleData(ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData) {
         this.choiceCircleData = choiceCircleData;
@@ -128,6 +139,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         swipeRefreshLayout = (SwipeRefreshLayout) viewRoot.findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(mRefreshListener);
         recyclerView.setSwipeItemClickListener(mItemClickListener);
+        notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
 
         // 自定义的核心就是DefineLoadMoreView类。
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());
@@ -136,19 +148,100 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         recyclerView.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
         adapter = new SearchCircleAdapter(this.getContext(), getActivity(), inOutCallBackInterface);
         recyclerView.setAdapter(adapter);
-        loadData();
+        loadData(choiceCircleData);
         Presenter.getInstance(getContext()).attachUiInterface(this);
         searchIcon = (RelativeLayout) viewRoot.findViewById(R.id.search_icon);
         searchCircleText = (EditText) viewRoot.findViewById(R.id.search_circle_text);
-        searchIcon.setOnClickListener(new View.OnClickListener() {
+        searchCircleText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    searchKeyWord(searchCircleText.getText().toString());
+                    Utils.hideInput(getContext());
+                }
+                return false;
+            }
+        });
+        searchCircleText.addTextChangedListener(textWatcher);
+        cancelIcon = (RelativeLayout) viewRoot.findViewById(R.id.cancel_icon);
+        cancelIcon.setOnClickListener(onClickListener);
+
+        /*searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Presenter.getInstance(getContext()).getMoreCircle(1, Utils.PAGE_SIZE_DEFAULT, searchCircleText.getText().toString());
             }
-        });
+        });*/
     }
 
+    public void searchKeyWord(String keyWord) {
+        if (TextUtils.isEmpty(keyWord)) {
+            Toast.makeText(getContext(), "搜索关键字不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        isSearch = true;
+        this.keyWord = keyWord;
+        LocalLog.d(TAG, "pageIndex = " + pageIndex);
+        pageIndex = 1;
+        searchData = new ArrayList<>();
+        loadData(searchData);
+        Presenter.getInstance(getContext()).getMoreCircle(pageIndex, Utils.PAGE_SIZE_DEFAULT, keyWord);
+    }
 
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String temp = s.toString();
+            if (!TextUtils.isEmpty(temp)) {
+                LocalLog.d(TAG, "显示取消搜索界面");
+                cancelIcon.setVisibility(View.VISIBLE);
+                cancelIcon.setOnClickListener(onClickListener);
+            } else {
+                LocalLog.d(TAG, "隐藏搜索界面");
+                cancelIcon.setVisibility(View.GONE);
+                if (notFoundData != null && notFoundData.getVisibility() == View.VISIBLE) {
+                    swipeRefreshLayout.setVisibility(View.VISIBLE);
+                    notFoundData.setVisibility(View.GONE);
+                }
+                if (choiceCircleData != null) {
+                    loadData(choiceCircleData);
+                }
+                pageIndex = mCurrentAllPageIndex;
+                keyWord = "";
+                pageCount = 0;
+            }
+        }
+    };
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.cancel_icon:
+                    LocalLog.d(TAG, "取消搜索,显示原来的数据");
+                    searchCircleText.setText(null);
+                    isSearch = false;
+                    keyWord = "";
+                    pageCount = 0;
+                    pageIndex = mCurrentAllPageIndex;
+                    if (notFoundData != null && notFoundData.getVisibility() == View.VISIBLE) {
+                        swipeRefreshLayout.setVisibility(View.VISIBLE);
+                        notFoundData.setVisibility(View.GONE);
+                    }
+                    break;
+            }
+        }
+    };
     private InOutCallBackInterface inOutCallBackInterface = new InOutCallBackInterface() {
         @Override
         public void inCallBack() {
@@ -164,8 +257,8 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     /**
      * 第一次加载数据。
      */
-    private void loadData() {
-        adapter.notifyDataSetChanged(choiceCircleData);
+    private void loadData(ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data) {
+        adapter.notifyDataSetChanged(data);
 
         swipeRefreshLayout.setRefreshing(false);
 
@@ -190,6 +283,9 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
                         LocalLog.d(TAG, "第一次刷新");
                     } else {
                         if (pageIndex > pageCount) {
+                            if (getContext() == null) {
+                                return;
+                            }
                             Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
                             recyclerView.loadMoreFinish(false, true);
                             return;
@@ -198,13 +294,18 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
                     if (getContext() == null) {
                         return;
                     }
-                    Presenter.getInstance(getContext()).getMoreCircle(pageIndex, Utils.PAGE_SIZE_DEFAULT, "");
-
+                    LocalLog.d(TAG, "pageIndex = " + pageIndex + ", keyWord = " + keyWord);
+                    Presenter.getInstance(getContext()).getMoreCircle(pageIndex, Utils.PAGE_SIZE_DEFAULT, keyWord);
                 }
             }, 1000);
         }
     };
 
+    private void searchMore(ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> newData) {
+        searchData.addAll(newData);
+        adapter.notifyItemRangeInserted(searchData.size() - newData.size(), newData.size());
+        recyclerView.loadMoreFinish(false, true);
+    }
 
     private void loadMore(ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> newData) {
         /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
@@ -277,7 +378,6 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         public void onLoadFinish(boolean dataEmpty, boolean hasMore) {
             if (!hasMore) {
                 setVisibility(VISIBLE);
-
                 if (dataEmpty) {
                     mLoadingView.setVisibility(GONE);
                     mTvMessage.setVisibility(VISIBLE);
@@ -349,7 +449,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
             recyclerView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    loadData();
+                    loadData(choiceCircleData);
                     LocalLog.d(TAG, "加载数据");
                 }
             }, 1000); // 延时模拟请求服务器。
@@ -369,12 +469,29 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     @Override
     public void response(ChoiceCircleResponse choiceCircleResponse) {
         if (choiceCircleResponse.getError() == 0) {
-            pageCount = choiceCircleResponse.getData().getPagenation().getTotalPage();
-            pageIndex++;
-            LocalLog.d(TAG, "加载到更多数据 pageCount = " + pageCount);
-            loadMore((ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData());
+            if (notFoundData != null && notFoundData.getVisibility() == View.VISIBLE) {
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
+                notFoundData.setVisibility(View.GONE);
+            }
+            if (!isSearch) {
+                pageCount = choiceCircleResponse.getData().getPagenation().getTotalPage();
+                LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
+                loadMore((ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData());
+                pageIndex++;
+                mCurrentAllPageIndex = pageIndex;
+            } else {
+                pageCount = choiceCircleResponse.getData().getPagenation().getTotalPage();
+                LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
+                searchMore((ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData());
+                pageIndex++;
+            }
+
         } else if (choiceCircleResponse.getError() == 1) {
-            recyclerView.loadMoreFinish(false, true);
+            if (pageIndex == 1) {
+                recyclerView.loadMoreFinish(false, true);
+                swipeRefreshLayout.setVisibility(View.GONE);
+                notFoundData.setVisibility(View.VISIBLE);
+            }
         } else if (choiceCircleResponse.getError() == -1) {
             recyclerView.loadMoreFinish(false, true);
         } else if (choiceCircleResponse.getError() == -100) {

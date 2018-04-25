@@ -155,6 +155,17 @@ public class UserFriendResponse {
             private int followid;
             private int is_distribute;
 
+            public boolean isSelected() {
+                return isSelected;
+            }
+
+            public void setSelected(boolean selected) {
+                isSelected = selected;
+            }
+
+            //增加一个选中状态
+            private boolean isSelected = false;
+
             public int getId() {
                 return id;
             }
@@ -195,6 +206,7 @@ public class UserFriendResponse {
                 this.is_distribute = is_distribute;
             }
 
+
             @Override
             public String toString() {
                 return "DataBean{" +
@@ -203,6 +215,7 @@ public class UserFriendResponse {
                         ", nickname='" + nickname + '\'' +
                         ", followid=" + followid +
                         ", is_distribute=" + is_distribute +
+                        ", isSelected=" + isSelected +
                         '}';
             }
         }

@@ -329,6 +329,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         getContext().unregisterReceiver(stepLocationReciver);
         if (isBind) {
             Presenter.getInstance(getContext()).unbindStepService();
+            isBind = false;
         }
     }
 

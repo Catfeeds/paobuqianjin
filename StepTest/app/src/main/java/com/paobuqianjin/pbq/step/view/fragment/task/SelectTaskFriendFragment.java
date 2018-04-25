@@ -70,7 +70,7 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     private String keyWord = "";
     private boolean isSearch = false;
     private ArrayList<UserFriendResponse.DataBeanX.DataBean> friendAll = new ArrayList<>();
-    private ArrayList<UserFriendResponse.DataBeanX.DataBean> searchData = new ArrayList<>();
+    private ArrayList<UserFriendResponse.DataBeanX.DataBean> searchData;
 
     @Override
     protected int getLayoutResId() {
@@ -93,10 +93,14 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     }
 
     public void searchKeyWord(String keyWord) {
+        if (TextUtils.isEmpty(keyWord)) {
+            Toast.makeText(getContext(), "搜索不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
         isSearch = true;
         this.keyWord = keyWord;
         pageIndex = 1;
-        searchData.removeAll(searchData);
+        searchData = new ArrayList<>();
         loadData(searchData);
         Presenter.getInstance(getContext()).getUserFiends(pageIndex, PAGE_SIZE, keyWord);
     }
@@ -258,10 +262,14 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
             }
         } else if (userFriendResponse.getError() == 1) {
             LocalLog.d(TAG, "Not found data");
-            if (friendScroll != null && friendScroll.getVisibility() == View.VISIBLE) {
-                friendScroll.setVisibility(View.GONE);
-                notFoundData.setVisibility(View.VISIBLE);
+            if (pageIndex == 1) {
+                LocalLog.d(TAG, "第一页无数据");
+                if (friendScroll != null && friendScroll.getVisibility() == View.VISIBLE) {
+                    friendScroll.setVisibility(View.GONE);
+                    notFoundData.setVisibility(View.VISIBLE);
+                }
             }
+
         } else if (userFriendResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

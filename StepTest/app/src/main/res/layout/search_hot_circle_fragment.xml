@@ -32,4 +32,13 @@
         </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <TextView
+        android:id="@+id/not_found_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/search_pan"
+        android:gravity="center"
+        android:text="没有找到你要的圈子"
+        android:textSize="15dp"
+        android:visibility="gone" />
 </RelativeLayout>

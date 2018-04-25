@@ -28,11 +28,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFriendAdapter.SelectTaskFriendViewHolder> {
     private final static String TAG = SelectTaskFriendAdapter.class.getSimpleName();
-    private final static int defaultCount = 7;
     private Context context;
     private List<UserFriendResponse.DataBeanX.DataBean> mData;
-    private List<UserFriendResponse.DataBeanX.DataBean> resultData = new ArrayList<>();
-    private List<UserFriendResponse.DataBeanX.DataBean> sourceData;
+    private List<UserFriendResponse.DataBeanX.DataBean> resultData;
 
     public List<UserFriendResponse.DataBeanX.DataBean> getResultData() {
         return resultData;
@@ -42,7 +40,7 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
         super();
         this.context = context;
         mData = data;
-        this.sourceData = sourceData;
+        this.resultData = sourceData;
     }
 
     public void notifyDataSetChanged(List<UserFriendResponse.DataBeanX.DataBean> data) {
@@ -53,26 +51,35 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
     @Override
     public void onBindViewHolder(SelectTaskFriendAdapter.SelectTaskFriendViewHolder holder, int position) {
         if (mData.get(position) instanceof UserFriendResponse.DataBeanX.DataBean) {
+            LocalLog.d(TAG, " before mData.get(position) " + mData.get(position).toString());
             Presenter.getInstance(context).getImage(holder.dearIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
             holder.dearName.setText(((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.position = position;
             holder.is_distrubute = mData.get(position).getIs_distribute();
-            if (holder.is_distrubute == 1) {
+            if (mData.get(position).getIs_distribute() == 1) {
+                LocalLog.d(TAG, "不可发布");
+                holder.selectIcon.setImageDrawable(null);
                 holder.selectIcon.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_out_uncheck));
             } else {
-                holder.setOnClickListener();
+                LocalLog.d(TAG, "可发布");
+                holder.selectIcon.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_outline));
+                if (mData.get(position).isSelected()) {
+                    holder.selectIcon.setImageResource(R.drawable.selected_icon);
+                }
             }
-            if (sourceData != null) {
-                for (int i = 0; i < sourceData.size(); i++) {
-                    if (mData.get(position).getId() == sourceData.get(i).getId()) {
+            if (resultData != null) {
+                for (int i = 0; i < resultData.size(); i++) {
+                    if (mData.get(position).getId() == resultData.get(i).getId()) {
                         LocalLog.d(TAG, "id =" + mData.get(position).getId() + "被选中过");
                         holder.selectIcon.setImageResource(R.drawable.selected_icon);
-                        holder.isSelected = true;
-                        LocalLog.d(TAG, "非选中状态变为选中");
-                        resultData.add(mData.get(position));
+                        mData.get(position).setSelected(true);
+                        LocalLog.d(TAG, resultData.get(i).toString());
+                        resultData.remove(i);
+                        resultData.add(i, mData.get(position));
                     }
                 }
             }
+            LocalLog.d(TAG, "after mData.get(position) " + mData.get(position).toString());
         }
     }
 
@@ -98,7 +105,6 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
         CircleImageView dearIcon;
         //@Bind(R.id.dear_name)
         TextView dearName;
-        boolean isSelected = false;
         int position = -1;
         int is_distrubute = 0;
 
@@ -111,16 +117,28 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
                     if (is_distrubute == 1) {
                         return;
                     }
-                    if (isSelected) {
-                        selectIcon.setImageDrawable(null);
-                        isSelected = false;
+                    if (mData.get(position).isSelected()) {
                         LocalLog.d(TAG, "选中状态变为非选中");
-                        resultData.remove(mData.get(position));
+                        selectIcon.setImageDrawable(null);
+                        LocalLog.d(TAG, mData.get(position).toString());
+                        if (resultData.contains(mData.get(position))) {
+                            LocalLog.d(TAG, "删除!");
+                            resultData.remove(mData.get(position));
+                        }
+                        mData.get(position).setSelected(false);
                     } else {
-                        selectIcon.setImageResource(R.drawable.selected_icon);
-                        isSelected = true;
                         LocalLog.d(TAG, "非选中状态变为选中");
-                        resultData.add(mData.get(position));
+                        selectIcon.setImageResource(R.drawable.selected_icon);
+                        mData.get(position).setSelected(true);
+                        if (resultData == null) {
+                            resultData = new ArrayList<>();
+                        }
+
+                        if (!resultData.contains(mData.get(position))) {
+                            LocalLog.d(TAG, "添加");
+                            resultData.add(mData.get(position));
+                        }
+
                     }
                 }
             });
@@ -132,29 +150,5 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
             dearName = (TextView) view.findViewById(R.id.dear_name);
         }
 
-        private void setOnClickListener() {
-            selectIcon.setOnClickListener(onClickListener);
-        }
-
-        private View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.select_icon:
-                        if (isSelected) {
-                            selectIcon.setImageDrawable(null);
-                            isSelected = false;
-                            LocalLog.d(TAG, "选中状态变为非选中");
-                            resultData.remove(mData.get(position));
-                        } else {
-                            selectIcon.setImageResource(R.drawable.selected_icon);
-                            isSelected = true;
-                            LocalLog.d(TAG, "非选中状态变为选中");
-                            resultData.add(mData.get(position));
-                        }
-                        break;
-                }
-            }
-        };
     }
 }
