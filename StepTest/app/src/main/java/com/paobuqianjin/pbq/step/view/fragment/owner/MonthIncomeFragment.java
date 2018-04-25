@@ -14,9 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.base.adapter.owner.WalletRedPkgIncomeAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.yanzhenjie.loading.LoadingView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
@@ -32,6 +30,8 @@ public class MonthIncomeFragment extends BaseFragment {
     private final static String TAG = MonthIncomeFragment.class.getSimpleName();
     @Bind(R.id.month_income_recycler)
     SwipeMenuRecyclerView todayIncomeRecycler;
+    @Bind(R.id.not_found_data)
+    TextView notFoundData;
     private LinearLayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
     DefineLoadMoreView loadMoreView;
@@ -86,6 +86,18 @@ public class MonthIncomeFragment extends BaseFragment {
                     todayIncomeRecycler.scrollToPosition(0);
                 }
             }, 10);
+        }
+    }
+
+    public void nullDataVisibleSet(int visible) {
+        if (notFoundData != null) {
+            if (visible == View.VISIBLE) {
+                notFoundData.setVisibility(View.VISIBLE);
+                todayIncomeRecycler.setVisibility(View.GONE);
+            } else if (visible == View.GONE) {
+                notFoundData.setVisibility(View.GONE);
+                todayIncomeRecycler.setVisibility(View.VISIBLE);
+            }
         }
     }
 

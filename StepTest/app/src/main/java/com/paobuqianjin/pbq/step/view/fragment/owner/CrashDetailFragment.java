@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,14 +17,11 @@ import android.widget.Toast;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashListDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CrashRecordInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.base.adapter.OwnerCreateAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.IncomeAdater;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
-import com.paobuqianjin.pbq.step.view.fragment.circle.AttentionCircleFragment;
 import com.yanzhenjie.loading.LoadingView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
@@ -45,6 +41,8 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
     SwipeMenuRecyclerView incomeRecycler;
     @Bind(R.id.in_come_refresh)
     SwipeRefreshLayout inComeRefresh;
+    @Bind(R.id.not_found_data)
+    TextView notFoundData;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGE_SIZE_DEFAULT = 10;
     ArrayList<CrashListDetailResponse.DataBeanX.DataBean> myCrashAllData = new ArrayList<>();
@@ -76,6 +74,7 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
         incomeRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.income_recycler);
         inComeRefresh = (SwipeRefreshLayout) viewRoot.findViewById(R.id.in_come_refresh);
         incomeRecycler.setLayoutManager(layoutManager);
+        notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
         // 自定义的核心就是DefineLoadMoreView类。
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());
         incomeRecycler.addFooterView(loadMoreView); // 添加为Footer。
@@ -296,6 +295,8 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
         LocalLog.d(TAG, "CrashListDetailResponse() enter " + crashListDetailResponse.toString());
         if (crashListDetailResponse.getError() == 0) {
             LocalLog.d(TAG, crashListDetailResponse.getMessage());
+            notFoundData.setVisibility(View.GONE);
+            inComeRefresh.setVisibility(View.VISIBLE);
             pageCount = crashListDetailResponse.getData().getPagenation().getTotalPage();
             LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
             loadMore((ArrayList<CrashListDetailResponse.DataBeanX.DataBean>) crashListDetailResponse.getData().getData());
@@ -310,6 +311,11 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
             }
             pageIndex++;
 
+        } else if (crashListDetailResponse.getError() == 1) {
+            if (pageIndex == 1) {
+                notFoundData.setVisibility(View.VISIBLE);
+                inComeRefresh.setVisibility(View.GONE);
+            }
         } else if (crashListDetailResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

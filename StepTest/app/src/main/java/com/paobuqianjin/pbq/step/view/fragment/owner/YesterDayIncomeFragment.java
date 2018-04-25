@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,9 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.base.adapter.owner.WalletRedPkgIncomeAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.yanzhenjie.loading.LoadingView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
@@ -32,6 +31,8 @@ public class YesterDayIncomeFragment extends BaseFragment {
     private final static String TAG = YesterDayIncomeFragment.class.getSimpleName();
     @Bind(R.id.yesterday_income_recycler)
     SwipeMenuRecyclerView yesterdayIncomeRecycler;
+    @Bind(R.id.not_found_data)
+    TextView notFoundData;
     private LinearLayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
     DefineLoadMoreView loadMoreView;
@@ -57,6 +58,7 @@ public class YesterDayIncomeFragment extends BaseFragment {
         layoutManager = new LinearLayoutManager(getContext());
         yesterdayIncomeRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.yesterday_income_recycler);
         yesterdayIncomeRecycler.setLayoutManager(layoutManager);
+        notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
         if (adapter != null) {
             yesterdayIncomeRecycler.setAdapter(adapter);
         }
@@ -86,6 +88,18 @@ public class YesterDayIncomeFragment extends BaseFragment {
                     yesterdayIncomeRecycler.scrollToPosition(0);
                 }
             }, 10);
+        }
+    }
+
+    public void nullDataVisibleSet(int visible) {
+        if (notFoundData != null) {
+            if (visible == View.VISIBLE) {
+                notFoundData.setVisibility(View.VISIBLE);
+                yesterdayIncomeRecycler.setVisibility(View.GONE);
+            } else if (visible == View.GONE) {
+                notFoundData.setVisibility(View.GONE);
+                yesterdayIncomeRecycler.setVisibility(View.VISIBLE);
+            }
         }
     }
 

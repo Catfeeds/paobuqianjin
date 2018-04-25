@@ -441,6 +441,10 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 allIncomeFragment.scrollTop();
             }
             pageIndexAll++;
+        } else if (allIncomeResponse.getError() == 1) {
+            if (pageIndexAll == 1) {
+                allIncomeFragment.nullDataVisibleSet(View.VISIBLE);
+            }
         } else if (allIncomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -455,6 +459,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     public void responseMonth(IncomeResponse incomeResponse) {
         LocalLog.d(TAG, " 月收益 responseMonth() enter" + incomeResponse.toString());
         if (incomeResponse.getError() == 0) {
+            monthIncomeFragment.nullDataVisibleSet(View.GONE);
             if (incomeResponse.getData() != null) {
                 if (monthIncomeNum == null) {
                     return;
@@ -468,6 +473,10 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 monthIncomeFragment.scrollTop();
             }
             pageIndexMonth++;
+        } else if (incomeResponse.getError() == 1) {
+            if (pageIndexMonth == 1) {
+                monthIncomeFragment.nullDataVisibleSet(View.VISIBLE);
+            }
         } else if (incomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -483,6 +492,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     public void responseToday(IncomeResponse incomeResponse) {
         LocalLog.d(TAG, "今天收益 responseToday() enter" + incomeResponse.toString());
         if (incomeResponse.getError() == 0) {
+            yesterDayIncomeFragment.nullDataVisibleSet(View.GONE);
             if (incomeDes == null) {
                 return;
             }
@@ -495,6 +505,10 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 yesterDayIncomeFragment.scrollTop();
             }
             pageIndexYD++;
+        } else if (incomeResponse.getError() == 1) {
+            if (pageIndexYD == 1) {
+                yesterDayIncomeFragment.nullDataVisibleSet(View.VISIBLE);
+            }
         } else if (incomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

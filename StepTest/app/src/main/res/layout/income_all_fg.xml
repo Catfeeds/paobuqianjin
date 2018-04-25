@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-        android:overScrollMode="never"
         android:id="@+id/all_income_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:overScrollMode="never">
 
     </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+
+    <TextView
+        android:id="@+id/not_found_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="你暂时没有收益，继续加油!"
+        android:textSize="15dp"
+        android:visibility="gone" />
 </RelativeLayout>

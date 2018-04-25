@@ -1063,7 +1063,7 @@ public final class Engine {
     //TODO 发表评论
     public void postContent(PostDynamicContentParam postDynamicContentParam) {
         LocalLog.d(TAG, "postContent() enter " + postDynamicContentParam.paramString());
-        if (String.valueOf(getId(mContext)).equals(postDynamicContentParam.getReply_userid())) {
+        if (String.valueOf(getId(mContext)).equals(String.valueOf(postDynamicContentParam.getReply_userid()))) {
             Toast.makeText(mContext, "不能评论自己", Toast.LENGTH_SHORT).show();
             return;
         }

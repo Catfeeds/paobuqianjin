@@ -14,10 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.base.adapter.owner.WalletRedPkgIncomeAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.yanzhenjie.loading.LoadingView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
@@ -33,6 +30,8 @@ public class AllIncomeFragment extends BaseFragment {
     private final static String TAG = AllIncomeFragment.class.getSimpleName();
     @Bind(R.id.all_income_recycler)
     SwipeMenuRecyclerView allIncomeRecycler;
+    @Bind(R.id.not_found_data)
+    TextView notFoundData;
     private LinearLayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
 
@@ -53,14 +52,13 @@ public class AllIncomeFragment extends BaseFragment {
     }
 
 
-
-
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         LocalLog.d(TAG, "initView() enter");
         layoutManager = new LinearLayoutManager(getContext());
         allIncomeRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.all_income_recycler);
+        notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
         allIncomeRecycler.setLayoutManager(layoutManager);
         if (adapter != null) {
             allIncomeRecycler.setAdapter(adapter);
@@ -81,6 +79,17 @@ public class AllIncomeFragment extends BaseFragment {
         }
     }
 
+    public void nullDataVisibleSet(int visible) {
+        if (notFoundData != null) {
+            if (visible == View.VISIBLE) {
+                notFoundData.setVisibility(View.VISIBLE);
+                allIncomeRecycler.setVisibility(View.GONE);
+            } else if (visible == View.GONE) {
+                notFoundData.setVisibility(View.GONE);
+                allIncomeRecycler.setVisibility(View.VISIBLE);
+            }
+        }
+    }
 
     public void scrollTop() {
         if (allIncomeRecycler != null) {

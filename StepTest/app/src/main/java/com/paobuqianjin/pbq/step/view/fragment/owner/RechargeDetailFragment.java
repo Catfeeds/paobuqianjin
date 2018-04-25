@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashListDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RechargeDetailResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -43,6 +42,8 @@ public class RechargeDetailFragment extends BaseFragment implements RechargeDeta
     SwipeMenuRecyclerView outDetailRecycler;
     @Bind(R.id.out_come_refresh)
     SwipeRefreshLayout outComeRefresh;
+    @Bind(R.id.not_found_data)
+    TextView notFoundData;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGE_SIZE_DEFAULT = 10;
     ArrayList<RechargeDetailResponse.DataBeanX.DataBean> myRechargeAllData = new ArrayList<>();
@@ -74,6 +75,7 @@ public class RechargeDetailFragment extends BaseFragment implements RechargeDeta
         layoutManager = new LinearLayoutManager(getContext());
         outDetailRecycler.setLayoutManager(layoutManager);
         outComeRefresh = (SwipeRefreshLayout) viewRoot.findViewById(R.id.out_come_refresh);
+        notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
         // 自定义的核心就是DefineLoadMoreView类。
         CrashDetailFragment.DefineLoadMoreView loadMoreView = new CrashDetailFragment.DefineLoadMoreView(getContext());
         outDetailRecycler.addFooterView(loadMoreView); // 添加为Footer。
@@ -293,6 +295,8 @@ public class RechargeDetailFragment extends BaseFragment implements RechargeDeta
         if (rechargeDetailResponse.getError() == 0) {
             //outDetailRecycler.setAdapter(new IncomeAdater(getContext(), rechargeDetailResponse.getData().getData()));
             LocalLog.d(TAG, rechargeDetailResponse.getMessage());
+            notFoundData.setVisibility(View.GONE);
+            outComeRefresh.setVisibility(View.VISIBLE);
             pageCount = rechargeDetailResponse.getData().getPagenation().getTotalPage();
             LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
             loadMore((ArrayList<RechargeDetailResponse.DataBeanX.DataBean>) rechargeDetailResponse.getData().getData());
@@ -306,6 +310,9 @@ public class RechargeDetailFragment extends BaseFragment implements RechargeDeta
                 }, 10);
             }
             pageIndex++;
+        } else if (rechargeDetailResponse.getError() == 1) {
+            notFoundData.setVisibility(View.VISIBLE);
+            outComeRefresh.setVisibility(View.GONE);
         } else if (rechargeDetailResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

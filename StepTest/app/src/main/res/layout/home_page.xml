@@ -164,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/income_today"
                 android:text="￥0.00"
-                android:layout_marginLeft="10dp"
+                android:layout_alignLeft="@+id/income_today"
                 android:textColor="@color/color_f8"
                 android:textSize="16dp" />
         </RelativeLayout>
@@ -189,7 +189,7 @@
                 android:id="@+id/income_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" 累计钱进"
+                android:text="累计钱进"
                 android:textColor="@color/color_f8"
                 android:textSize="18dp" />
 
@@ -198,7 +198,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/income_month"
-                android:layout_marginLeft="10dp"
+                android:layout_alignLeft="@+id/income_month"
                 android:text="￥0.00"
                 android:textColor="@color/color_f8"
                 android:textSize="16dp" />
