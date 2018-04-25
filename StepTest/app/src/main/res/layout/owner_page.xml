@@ -70,7 +70,7 @@
                         android:ellipsize="end"
                         android:maxEms="16"
                         android:singleLine="true"
-                        android:text="xxxxxx"
+                        android:text=""
                         android:textColor="@color/color_161727"
                         android:textSize="16dp" />
 
