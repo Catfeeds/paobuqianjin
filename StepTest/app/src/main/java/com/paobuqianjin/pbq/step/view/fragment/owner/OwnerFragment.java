@@ -1,6 +1,5 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,7 +34,7 @@ import com.paobuqianjin.pbq.step.view.activity.SettingActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
 import com.paobuqianjin.pbq.step.view.activity.SuggestionActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
-import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
+import com.paobuqianjin.pbq.step.view.activity.VipActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -168,6 +167,14 @@ public final class OwnerFragment extends BaseFragment {
     RelativeLayout qrcodeRel;
     @Bind(R.id.friend_scan)
     RelativeLayout friendScan;
+    @Bind(R.id.vip_icon)
+    ImageView vipIcon;
+    @Bind(R.id.vip_desc)
+    TextView vipDesc;
+    @Bind(R.id.go_to_vip)
+    ImageView goToVip;
+    @Bind(R.id.vip_span)
+    RelativeLayout vipSpan;
     private String userAvatar;
 
     private UserInfoResponse userInfoResponse;
@@ -233,7 +240,7 @@ public final class OwnerFragment extends BaseFragment {
 
     @OnClick({R.id.bar_tv_right, R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span,
             R.id.dan_span, R.id.suggestion_span, R.id.friend_rel, R.id.circle_rel,
-            R.id.bar_return_drawable, R.id.task_release_span, R.id.setting_span, R.id.qrcode_rel})
+            R.id.bar_return_drawable, R.id.task_release_span, R.id.setting_span, R.id.qrcode_rel, R.id.vip_span})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -301,7 +308,6 @@ public final class OwnerFragment extends BaseFragment {
                 startActivity(MyReleaseActivity.class, null);
                 break;
             case R.id.setting_span:
-
                 if (this.userInfoResponse != null && this.userInfoResponse.getData() != null) {
                     intent.putExtra("userinfo", this.userInfoResponse.getData());
                     intent.setClass(getContext(), SettingActivity.class);
@@ -316,6 +322,10 @@ public final class OwnerFragment extends BaseFragment {
                 intent.putExtra("username", userName.getText().toString());
                 intent.putExtra("userid", String.valueOf(Presenter.getInstance(getContext()).getId()));
                 intent.setClass(getContext(), QrCodeMakeActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.vip_span:
+                intent.setClass(getContext(), VipActivity.class);
                 startActivity(intent);
                 break;
             default:
