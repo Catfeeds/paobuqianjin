@@ -74,8 +74,7 @@ public class ProcessDanDrawable extends Drawable {
             switch (msg.what) {
                 case REDRAW:
                     currentLength += processLength / 500;
-                    LocalLog.d(TAG, "currentLength = " + currentLength);
-                    if (currentLength <= processLength) {
+                    if (currentLength < processLength) {
                         ProcessDanDrawable.this.invalidateSelf();
                         sendEmptyMessage(REDRAW);
                     }
