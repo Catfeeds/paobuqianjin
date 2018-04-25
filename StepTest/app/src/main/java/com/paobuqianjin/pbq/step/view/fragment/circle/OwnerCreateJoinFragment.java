@@ -6,10 +6,15 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,6 +23,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -53,6 +59,9 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
     ImageView lineView;
     @Bind(R.id.owner_create_join_pager)
     ViewPager ownerCreateJoinPager;
+    @Bind(R.id.cancel_icon)
+    RelativeLayout cancelIcon;
+    private String keyWord = "";
 
     private OwnerCreateFragment ownerCreateFragment = new OwnerCreateFragment();
     private OwnerJoinFragment ownerJoinFragment = new OwnerJoinFragment();
@@ -88,17 +97,23 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
         createOrJoin.setupWithViewPager(ownerCreateJoinPager);
         searchCircleText = (EditText) viewRoot.findViewById(R.id.search_circle_text);
         searchIcon = (RelativeLayout) viewRoot.findViewById(R.id.search_icon);
-        searchIcon.setOnClickListener(new View.OnClickListener() {
+        searchCircleText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View view) {
-                String keyword = searchCircleText.getText().toString();
-                if (selectPage == 0 ){
-                    ownerCreateFragment.searchKeyWord(keyword);
-                }else if(selectPage == 1){
-                    ownerJoinFragment.searchKeyWord(keyword);
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    if (selectPage == 0) {
+                        ownerCreateFragment.searchKeyWord(searchCircleText.getText().toString());
+                    } else if (selectPage == 1) {
+                        ownerJoinFragment.searchKeyWord(searchCircleText.getText().toString());
+                    }
+                    Utils.hideInput(getContext());
                 }
+                return false;
             }
         });
+        searchCircleText.addTextChangedListener(textWatcher);
+        cancelIcon = (RelativeLayout) viewRoot.findViewById(R.id.cancel_icon);
+        cancelIcon.setOnClickListener(onClickListener);
         for (int i = 0; i < createOrJoin.getTabCount(); i++) {
             LocalLog.d(TAG, "initView() i = " + i);
             //createOrJoin.getTabAt(i).setCustomView(pageAdapter.getTabView(i));
@@ -137,6 +152,36 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
         });
     }
 
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String temp = s.toString();
+            if (!TextUtils.isEmpty(temp)) {
+                LocalLog.d(TAG, "显示取消搜索界面");
+                cancelIcon.setVisibility(View.VISIBLE);
+                cancelIcon.setOnClickListener(onClickListener);
+            } else {
+                LocalLog.d(TAG, "隐藏搜索界面");
+                cancelIcon.setVisibility(View.GONE);
+                keyWord = "";
+                if (selectPage == 0) {
+                    ownerCreateFragment.searchKeyWord("");
+                } else if (selectPage == 1) {
+                    ownerJoinFragment.searchKeyWord("");
+                }
+            }
+        }
+    };
 
     public void setIndicator(TabLayout tab, int leftDip, int rightDip) {
         Class<?> tabLayout = tab.getClass();
@@ -167,6 +212,19 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
             child.invalidate();
         }
     }
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.cancel_icon:
+                    LocalLog.d(TAG, "取消搜索,显示原来的数据");
+                    searchCircleText.setText(null);
+                    keyWord = "";
+                    break;
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

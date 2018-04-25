@@ -4,14 +4,15 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.MyJoinCircleInterface;
@@ -35,6 +36,8 @@ public class OwnerJoinFragment extends BaseFragment {
     SwipeMenuRecyclerView ownerJoinCircleLists;
     @Bind(R.id.join_circle_swipe)
     SwipeRefreshLayout joinCircleSwipe;
+    @Bind(R.id.not_found_data)
+    TextView notFoundData;
     private LinearLayoutManager layoutManager;
     private Context mContext;
     private int pageIndex = 1;
@@ -43,6 +46,9 @@ public class OwnerJoinFragment extends BaseFragment {
     OwnerCreateAdapter adapter;
     private final static int PAGE_SIZE_DEFAULT = 10;
     private String keyWord = "";
+    ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> searchData;
+    private boolean isSearch = false;
+    private int mCurrentIndex = 1;
 
     @Override
     protected int getLayoutResId() {
@@ -66,7 +72,20 @@ public class OwnerJoinFragment extends BaseFragment {
 
     public void searchKeyWord(String keyWord) {
         this.keyWord = keyWord;
-        pageIndex = 0;
+        if (TextUtils.isEmpty(keyWord)) {
+            LocalLog.d(TAG, "显示旧数据");
+            isSearch = false;
+            notFoundData.setVisibility(View.GONE);
+            joinCircleSwipe.setVisibility(View.VISIBLE);
+            pageIndex = mCurrentIndex;
+            loadData(myJoinAllData);
+            pageCount = 0;
+            return;
+        }
+        isSearch = true;
+        searchData = new ArrayList<>();
+        loadData(searchData);
+        pageIndex = 1;
         Presenter.getInstance(getContext()).getMyJoinCircle(pageIndex, PAGE_SIZE_DEFAULT, keyWord);
     }
 
@@ -79,7 +98,7 @@ public class OwnerJoinFragment extends BaseFragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         ownerJoinCircleLists.setLayoutManager(layoutManager);
         joinCircleSwipe = (SwipeRefreshLayout) viewRoot.findViewById(R.id.join_circle_swipe);
-
+        notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
         // 自定义的核心就是DefineLoadMoreView类。
         AttentionCircleFragment.DefineLoadMoreView loadMoreView = new AttentionCircleFragment.DefineLoadMoreView(getContext());
         ownerJoinCircleLists.addFooterView(loadMoreView); // 添加为Footer。
@@ -164,6 +183,20 @@ public class OwnerJoinFragment extends BaseFragment {
         }
     };
 
+    private void searchMore(ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> newData) {
+        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        searchData.addAll(newData);
+        // notifyItemRangeInserted()或者notifyDataSetChanged().
+        adapter.notifyItemRangeInserted(searchData.size() - newData.size(), newData.size());
+
+        // 数据完更多数据，一定要掉用这个方法。
+        // 第一个参数：表示此次数据是否为空。
+        // 第二个参数：表示是否还有更多数据。
+        if (ownerJoinCircleLists == null) {
+            return;
+        }
+        ownerJoinCircleLists.loadMoreFinish(false, true);
+    }
 
     private void loadMore(ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> newData) {
         /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
@@ -187,20 +220,46 @@ public class OwnerJoinFragment extends BaseFragment {
         public void response(MyJoinCircleResponse myJoinCircleResponse) {
             if (myJoinCircleResponse.getError() == 0) {
                 LocalLog.d(TAG, myJoinCircleResponse.getMessage());
-                pageCount = myJoinCircleResponse.getData().getPagenation().getTotalPage();
-                LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
-                loadMore((ArrayList<MyJoinCircleResponse.DataBeanX.DataBean>) myJoinCircleResponse.getData().getData());
-                if (pageIndex == 1) {
-                    ownerJoinCircleLists.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            LocalLog.d(TAG, "滑动到顶端");
-                            ownerJoinCircleLists.scrollToPosition(0);
-                        }
-                    }, 10);
+                notFoundData.setVisibility(View.GONE);
+                joinCircleSwipe.setVisibility(View.VISIBLE);
+                if (!isSearch) {
+                    pageCount = myJoinCircleResponse.getData().getPagenation().getTotalPage();
+                    LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
+                    loadMore((ArrayList<MyJoinCircleResponse.DataBeanX.DataBean>) myJoinCircleResponse.getData().getData());
+                    if (pageIndex == 1) {
+                        ownerJoinCircleLists.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                LocalLog.d(TAG, "滑动到顶端");
+                                ownerJoinCircleLists.scrollToPosition(0);
+                            }
+                        }, 10);
+                    }
+                    pageIndex++;
+                    mCurrentIndex = pageIndex;
+                } else {
+                    pageCount = myJoinCircleResponse.getData().getPagenation().getTotalPage();
+                    LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
+                    searchMore((ArrayList<MyJoinCircleResponse.DataBeanX.DataBean>) myJoinCircleResponse.getData().getData());
+                    if (pageIndex == 1) {
+                        ownerJoinCircleLists.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                LocalLog.d(TAG, "滑动到顶端");
+                                ownerJoinCircleLists.scrollToPosition(0);
+                            }
+                        }, 10);
+                    }
+                    pageIndex++;
                 }
-                pageIndex++;
-
+            } else if (myJoinCircleResponse.getError() == 1) {
+                if (pageIndex == 1) {
+                    LocalLog.d(TAG, "显示无数据界面");
+                    notFoundData.setVisibility(View.VISIBLE);
+                    joinCircleSwipe.setVisibility(View.GONE);
+                } else {
+                    LocalLog.d(TAG, "其他页无数据!");
+                }
             } else if (myJoinCircleResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 Presenter.getInstance(getContext()).setId(-1);

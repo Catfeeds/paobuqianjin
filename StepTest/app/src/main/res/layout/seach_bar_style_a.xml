@@ -53,13 +53,28 @@
                 android:layout_toEndOf="@+id/search_icon"
                 android:layout_toRightOf="@+id/search_cancel"
                 android:background="@null"
-                android:imeOptions="actionSearch"
                 android:hint="搜索"
+                android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:maxLines="1"
                 android:singleLine="false"
                 android:textColorHint="@color/color_8a8a8a"
                 android:textSize="15dp" />
+
+            <RelativeLayout
+                android:id="@+id/cancel_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/cancel" />
+            </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>
