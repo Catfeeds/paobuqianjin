@@ -106,7 +106,8 @@
         android:layout_below="@+id/vip_pkg_pan"
         android:layout_marginLeft="27dp"
         android:layout_marginRight="27dp"
-        android:layout_marginTop="25dp">
+        android:layout_marginTop="25dp"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/vip_time_ico"
@@ -159,7 +160,7 @@
             android:layout_alignTop="@+id/vip_data_ico"
             android:layout_marginLeft="17dp"
             android:layout_toEndOf="@+id/vip_data_ico"
-            android:text="按时提醒"
+            android:text="数据保存"
             android:textColor="@color/color_161727"
             android:textSize="14dp" />
 
@@ -179,6 +180,7 @@
         android:layout_alignParentBottom="true">
 
         <Button
+            android:id="@+id/vip_friend"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -189,6 +191,7 @@
             android:textSize="18dp" />
 
         <Button
+            android:id="@+id/vip_self"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

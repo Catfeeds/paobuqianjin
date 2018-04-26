@@ -11,13 +11,13 @@ import com.paobuqianjin.pbq.step.view.fragment.task.SelectTaskFriendFragment;
  * Created by pbq on 2018/1/26.
  */
 /*
-@className :SelectFriendForTaskActivity
+@className :SelectFriendActivity
 *@date 2018/1/26
 *@author
 *@description 选择任务发布对象
 */
-public class SelectFriendForTaskActivity extends BaseActivity {
-    private final static String TAG = SelectFriendForTaskActivity.class.getSimpleName();
+public class SelectFriendActivity extends BaseActivity {
+    private final static String TAG = SelectFriendActivity.class.getSimpleName();
     private SelectTaskFriendFragment selectTaskFriendFragment = new SelectTaskFriendFragment();
 
     @Override

@@ -26,7 +26,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
-import com.paobuqianjin.pbq.step.view.activity.SelectFriendForTaskActivity;
+import com.paobuqianjin.pbq.step.view.activity.SelectFriendActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -202,13 +202,13 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
             case R.id.add_task_friend:
                 LocalLog.d(TAG, "添加任务好友");
                 intent.putExtra(getActivity().getPackageName(), friendBundleData);
-                intent.setClass(getActivity(), SelectFriendForTaskActivity.class);
+                intent.setClass(getActivity(), SelectFriendActivity.class);
                 startActivityForResult(intent, SELECT_FRIENDS);
                 break;
             case R.id.add_ico:
                 LocalLog.d(TAG, "查看所有接入任务的好友");
                 intent.putExtra(getActivity().getPackageName(), friendBundleData);
-                intent.setClass(getActivity(), SelectFriendForTaskActivity.class);
+                intent.setClass(getActivity(), SelectFriendActivity.class);
                 startActivityForResult(intent, SELECT_FRIENDS);
                 break;
             case R.id.confirm:

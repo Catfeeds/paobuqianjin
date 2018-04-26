@@ -173,7 +173,7 @@
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 选择任务发布对象 -->
         <activity
-            android:name=".view.activity.SelectFriendForTaskActivity"
+            android:name=".view.activity.SelectFriendActivity"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 任务详情 -->
         <activity
@@ -417,6 +417,7 @@
         <activity android:name=".view.activity.ForgotPasswordActivity" />
         <activity android:name=".view.activity.BindPhoneNumActivity" />
         <activity android:name=".view.activity.VipActivity"></activity>
+        <activity android:name=".view.activity.VipPayFriendActivity"></activity>
         <activity android:name=".view.activity.SponsorSelectActivity">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.TARGET_ACTION"></action>
