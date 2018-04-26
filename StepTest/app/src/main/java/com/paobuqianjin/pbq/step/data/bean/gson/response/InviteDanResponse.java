@@ -161,6 +161,16 @@ public class InviteDanResponse {
             private int create_time;
             private float sum_credit;
 
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
+            private int vip;
+
             public int getInviterid() {
                 return inviterid;
             }
@@ -218,6 +228,7 @@ public class InviteDanResponse {
                         ", nickname='" + nickname + '\'' +
                         ", create_time=" + create_time +
                         ", sum_credit=" + sum_credit +
+                        ", vip=" + vip +
                         '}';
             }
         }

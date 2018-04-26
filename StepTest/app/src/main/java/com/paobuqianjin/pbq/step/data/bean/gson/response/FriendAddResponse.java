@@ -95,6 +95,16 @@ public class FriendAddResponse {
             private String avatar;
             private int follow_type;
 
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
+            private int vip;
+
             public String getName() {
                 return name;
             }
@@ -152,6 +162,7 @@ public class FriendAddResponse {
                         ", nickname='" + nickname + '\'' +
                         ", avatar='" + avatar + '\'' +
                         ", follow_type=" + follow_type +
+                        ", vip=" + vip +
                         '}';
             }
         }

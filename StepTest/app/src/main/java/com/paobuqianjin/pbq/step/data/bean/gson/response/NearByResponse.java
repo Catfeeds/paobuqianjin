@@ -71,6 +71,15 @@ public class NearByResponse {
         private int user_step;
         private int is_follow;
 
+        public int getVip() {
+            return vip;
+        }
+
+        public void setVip(int vip) {
+            this.vip = vip;
+        }
+
+        private int vip;
         public int getUserid() {
             return userid;
         }
@@ -149,6 +158,23 @@ public class NearByResponse {
 
         public void setIs_follow(int is_follow) {
             this.is_follow = is_follow;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "userid=" + userid +
+                    ", avatar='" + avatar + '\'' +
+                    ", nickname='" + nickname + '\'' +
+                    ", sex=" + sex +
+                    ", longitude='" + longitude + '\'' +
+                    ", latitude='" + latitude + '\'' +
+                    ", login_time=" + login_time +
+                    ", distance=" + distance +
+                    ", user_step=" + user_step +
+                    ", is_follow=" + is_follow +
+                    ", vip=" + vip +
+                    '}';
         }
     }
 }

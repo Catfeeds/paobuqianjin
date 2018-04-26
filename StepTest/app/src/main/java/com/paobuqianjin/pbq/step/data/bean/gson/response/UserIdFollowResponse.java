@@ -160,6 +160,16 @@ public class UserIdFollowResponse {
             private String nickname;
             private int sex;
 
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
+            private int vip;
+
             public int getId() {
                 return id;
             }
@@ -208,6 +218,7 @@ public class UserIdFollowResponse {
                         ", avatar='" + avatar + '\'' +
                         ", nickname='" + nickname + '\'' +
                         ", sex=" + sex +
+                        ", vip=" + vip +
                         '}';
             }
         }

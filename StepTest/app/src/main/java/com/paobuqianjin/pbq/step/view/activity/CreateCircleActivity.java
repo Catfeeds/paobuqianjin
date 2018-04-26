@@ -1,14 +1,12 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.annotation.TargetApi;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -19,23 +17,19 @@ import android.os.Handler;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -59,10 +53,8 @@ import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.presenter.im.CreateAndJoinCirclesInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.utils.PhoneFormatCheckUtils;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
@@ -75,7 +67,6 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -505,7 +496,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             }
         });
 
-        popupCircleTypeView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+        popupCircleTypeView.findViewById(R.id.btn_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "onClick() 确定");

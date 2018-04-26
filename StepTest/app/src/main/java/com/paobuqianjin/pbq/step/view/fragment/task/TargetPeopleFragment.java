@@ -2,9 +2,13 @@ package com.paobuqianjin.pbq.step.view.fragment.task;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -13,6 +17,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
+import com.paobuqianjin.pbq.step.view.activity.SponsorSelectActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
@@ -36,16 +41,10 @@ public class TargetPeopleFragment extends BaseBarStyleTextViewFragment {
     TextView barTvRight;
     @Bind(R.id.sex)
     TextView sex;
-    @Bind(R.id.nv_select)
-    ImageView nvSelect;
     @Bind(R.id.nv_text)
-    TextView nvText;
-    @Bind(R.id.man_select)
-    ImageView manSelect;
+    CheckBox nvText;
     @Bind(R.id.man_text)
-    TextView manText;
-    @Bind(R.id.unknown_select)
-    ImageView unknownSelect;
+    CheckBox manText;
     @Bind(R.id.sex_unselect_text)
     TextView sexUnselectText;
     @Bind(R.id.sex_pan)
@@ -78,6 +77,14 @@ public class TargetPeopleFragment extends BaseBarStyleTextViewFragment {
     TextView targetSelect;
     @Bind(R.id.location_radius)
     RelativeLayout locationRadius;
+    @Bind(R.id.min_age)
+    EditText minAge;
+    @Bind(R.id.btn_confirm)
+    Button btnConfirm;
+    private String sexStr;
+    private String minAgeStr;
+    private String maxAgeStr;
+    private String targetSelectStr;
 
     @Override
     protected int getLayoutResId() {
@@ -98,12 +105,35 @@ public class TargetPeopleFragment extends BaseBarStyleTextViewFragment {
     }
 
     @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+        nvText = (CheckBox) viewRoot.findViewById(R.id.nv_text);
+        manText = (CheckBox) viewRoot.findViewById(R.id.man_text);
+        nvText.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked && manText.isChecked()) {
+                    manText.setChecked(false);
+                }
+            }
+        });
+        manText.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked && nvText.isChecked()) {
+                    nvText.setChecked(false);
+                }
+            }
+        });
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.location_pan, R.id.location_radius})
+    @OnClick({R.id.location_pan, R.id.location_radius, R.id.btn_confirm})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.location_pan:
@@ -115,6 +145,35 @@ public class TargetPeopleFragment extends BaseBarStyleTextViewFragment {
                 break;
             case R.id.location_radius:
                 break;
+            case R.id.btn_confirm:
+
+                sexStr = getSex();
+                minAgeStr = minAge.getText().toString();
+                maxAgeStr = maxAge.getText().toString();
+                targetSelectStr = targetSelect.getText().toString();
+                String longitudeStr = ((SponsorSelectActivity) getActivity()).longitudeStr;
+                String latitudeStr = ((SponsorSelectActivity) getActivity()).latitudeStr;
+
+                Intent intentResult = new Intent();
+                intentResult.putExtra("sexStr", sexStr);
+                intentResult.putExtra("minAgeStr", minAgeStr);
+                intentResult.putExtra("maxAgeStr", maxAgeStr);
+                intentResult.putExtra("targetSelectStr", targetSelectStr);
+                if(!TextUtils.isEmpty(longitudeStr)) intentResult.putExtra("targetSelectStr", longitudeStr);
+                if(!TextUtils.isEmpty(latitudeStr)) intentResult.putExtra("targetSelectStr", latitudeStr);
+                getActivity().setResult(1, intentResult);
+                getActivity().finish();
+                break;
         }
+    }
+
+    private String getSex() {
+        if (nvText.isChecked()) {
+            return "2";
+        }
+        if (manText.isChecked()) {
+            return "1";
+        }
+        return "0";
     }
 }

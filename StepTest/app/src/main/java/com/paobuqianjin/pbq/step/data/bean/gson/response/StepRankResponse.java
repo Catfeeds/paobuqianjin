@@ -156,6 +156,16 @@ public class StepRankResponse {
             private String avatar;
             private int step_number;
 
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
+            private int vip;
+
             public int getUserid() {
                 return userid;
             }
@@ -195,6 +205,7 @@ public class StepRankResponse {
                         ", nickname='" + nickname + '\'' +
                         ", avatar='" + avatar + '\'' +
                         ", step_number=" + step_number +
+                        ", vip=" + vip +
                         '}';
             }
         }

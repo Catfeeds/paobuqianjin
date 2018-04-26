@@ -56,7 +56,7 @@ public class UserInfoResponse {
                 '}';
     }
 
-    public static class DataBean implements Serializable{
+    public static class DataBean implements Serializable {
         /**
          * id : 30
          * wx_openid : oPd5d0SDHRV1oZF8dB80Jq0kH_tY
@@ -118,6 +118,16 @@ public class UserInfoResponse {
         private int circleCount;
         private int authentication_status;
         private int messagesCount;
+
+        public int getVip() {
+            return vip;
+        }
+
+        public void setVip(int vip) {
+            this.vip = vip;
+        }
+
+        private int vip;
 
         public int getId() {
             return id;
@@ -383,6 +393,7 @@ public class UserInfoResponse {
                     ", circleCount=" + circleCount +
                     ", authentication_status=" + authentication_status +
                     ", messagesCount=" + messagesCount +
+                    ", vip=" + vip +
                     '}';
         }
     }

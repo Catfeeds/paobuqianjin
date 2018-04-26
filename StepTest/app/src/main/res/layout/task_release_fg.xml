@@ -46,12 +46,15 @@
             android:layout_marginRight="6dp"
             android:layout_toLeftOf="@+id/go_to_target_step"
             android:background="@null"
+            android:cursorVisible="true"
+            android:focusable="true"
             android:gravity="right"
             android:hint="输入目标步数"
             android:inputType="number"
             android:maxLength="6"
             android:maxLines="1"
             android:textColor="@color/color_161727"
+            android:textCursorDrawable="@null"
             android:textSize="15dp" />
 
         <ImageView
@@ -97,12 +100,15 @@
             android:layout_marginRight="6dp"
             android:layout_toLeftOf="@+id/task_pay"
             android:background="@null"
+            android:cursorVisible="true"
+            android:focusable="true"
             android:gravity="right"
             android:hint="输入奖励金额"
             android:inputType="numberDecimal"
             android:maxLength="6"
             android:maxLines="1"
             android:textColor="@color/color_161727"
+            android:textCursorDrawable="@null"
             android:textSize="15dp" />
 
         <ImageView
@@ -148,12 +154,15 @@
             android:layout_marginRight="6dp"
             android:layout_toLeftOf="@+id/task_day"
             android:background="@null"
+            android:cursorVisible="true"
+            android:focusable="true"
             android:gravity="right"
             android:hint="输入任务天数"
             android:inputType="number"
             android:maxLength="3"
             android:maxLines="1"
             android:textColor="@color/color_161727"
+            android:textCursorDrawable="@null"
             android:textSize="15dp" />
     </RelativeLayout>
 
@@ -278,7 +287,7 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/confirm"
+        android:id="@+id/btn_confirm"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"

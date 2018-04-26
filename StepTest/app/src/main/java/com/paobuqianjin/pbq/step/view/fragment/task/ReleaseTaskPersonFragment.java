@@ -100,7 +100,7 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
     ImageView addIco;
     @Bind(R.id.attention)
     TextView attention;
-    @Bind(R.id.confirm)
+    @Bind(R.id.btn_confirm)
     Button confirm;
     private TaskReleaseParam taskReleaseParam = new TaskReleaseParam();
     private String friends;
@@ -192,7 +192,7 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
         }
     };
 
-    @OnClick({R.id.target_task_span, R.id.add_task_friend, R.id.add_ico, R.id.confirm})
+    @OnClick({R.id.target_task_span, R.id.add_task_friend, R.id.add_ico, R.id.btn_confirm})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -211,7 +211,7 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                 intent.setClass(getActivity(), SelectFriendActivity.class);
                 startActivityForResult(intent, SELECT_FRIENDS);
                 break;
-            case R.id.confirm:
+            case R.id.btn_confirm:
                 LocalLog.d(TAG, "发布任务");
                 if (checkReleaseParams()) {
                     taskReleaseParam

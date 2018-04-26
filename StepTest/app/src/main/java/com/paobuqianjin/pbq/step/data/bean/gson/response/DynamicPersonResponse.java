@@ -174,6 +174,16 @@ public class DynamicPersonResponse {
             private int is_vote;
             private List<String> images;
 
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
+            private int vip;
+
             public int getId() {
                 return id;
             }
@@ -285,6 +295,7 @@ public class DynamicPersonResponse {
                         ", one_comment=" + one_comment +
                         ", is_vote=" + is_vote +
                         ", images=" + images +
+                        ", vip=" + vip +
                         '}';
             }
 

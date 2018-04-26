@@ -166,6 +166,7 @@ public class MyRecTaskRecordResponse {
             private int task_days;
             private int is_receive;
             private int is_finished;
+            private int vip;
 
             public int getId() {
                 return id;
@@ -251,6 +252,7 @@ public class MyRecTaskRecordResponse {
                         ", task_days=" + task_days +
                         ", is_receive=" + is_receive +
                         ", is_finished=" + is_finished +
+                        ", vip=" + vip +
                         '}';
             }
         }

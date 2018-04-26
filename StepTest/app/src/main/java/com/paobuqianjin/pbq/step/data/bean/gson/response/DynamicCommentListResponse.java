@@ -146,6 +146,32 @@ public class DynamicCommentListResponse {
         }
 
         public static class DataBean {
+            @Override
+            public String toString() {
+                return "DataBean{" +
+                        "vip=" + vip +
+                        ", id=" + id +
+                        ", parent_id=" + parent_id +
+                        ", reply_userid=" + reply_userid +
+                        ", userid=" + userid +
+                        ", dynamicid=" + dynamicid +
+                        ", content='" + content + '\'' +
+                        ", create_time=" + create_time +
+                        ", nickname='" + nickname + '\'' +
+                        ", avatar='" + avatar + '\'' +
+                        ", reply_nickname='" + reply_nickname + '\'' +
+                        ", child=" + child +
+                        '}';
+            }
+
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
             /**
              * id : 2
              * parent_id : 0
@@ -160,6 +186,7 @@ public class DynamicCommentListResponse {
              * reply_nickname : 孤央
              */
 
+            private int vip;
             private int id;
             private int parent_id;
             private int reply_userid;
@@ -258,23 +285,6 @@ public class DynamicCommentListResponse {
 
             public void setChild(List<ChildBean> child) {
                 this.child = child;
-            }
-
-            @Override
-            public String toString() {
-                return "DataBean{" +
-                        "id=" + id +
-                        ", parent_id=" + parent_id +
-                        ", reply_userid=" + reply_userid +
-                        ", userid=" + userid +
-                        ", dynamicid=" + dynamicid +
-                        ", content='" + content + '\'' +
-                        ", create_time=" + create_time +
-                        ", nickname='" + nickname + '\'' +
-                        ", avatar='" + avatar + '\'' +
-                        ", reply_nickname='" + reply_nickname + '\'' +
-                        ", child=" + child +
-                        '}';
             }
 
             public static class ChildBean {

@@ -29,7 +29,9 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginOutResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
@@ -501,6 +503,10 @@ public final class Presenter {
         engine.postWxPayOrder(wxPayOrderParam);
     }
 
+    public void postVipNo(VipPostParam vipPostParam, InnerCallBack innerCallBack) {
+        engine.postVipNo(vipPostParam, innerCallBack);
+    }
+
     //TODO 获取订单详情 WX
     public void getWxPayResultByOrderNo(String orderTradeNo, String payment_type) {
         engine.getWxPayResultByOrderNo(orderTradeNo, payment_type);
@@ -669,6 +675,9 @@ public final class Presenter {
 
     public void inviteMsg(String phoneNum) {
         engine.inviteMsg(phoneNum);
+    }
+    public void postTaskSponsorRelease(TaskSponsorParam taskSponsorParam) {
+        engine.postTaskSponsorRelease(taskSponsorParam);
     }
 
     public void setNetworkPolicy(NetworkPolicy networkPolicy) {

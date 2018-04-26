@@ -49,13 +49,17 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.FeedBackParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostIncomeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostMessageParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteDynamicResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.VipNoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
@@ -112,6 +116,7 @@ import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskDetailRecInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
+import com.paobuqianjin.pbq.step.presenter.im.TaskSponsorInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
@@ -219,6 +224,7 @@ public final class Engine {
     private ProtocolInterface protocolInterface;
     private BindThirdAccoutInterface bindThirdAccoutInterface;
     private BaiduMapInterface baiduMapInterface;
+    private TaskSponsorInterface taskSponsorInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private ISportStepInterface iSportStepInterface;
@@ -384,6 +390,17 @@ public final class Engine {
         if (connection != null) {
             mContext.unbindService(connection);
         }
+    }
+
+    public void postTaskSponsorRelease(TaskSponsorParam taskSponsorParam) {
+        LocalLog.d(TAG, "商家发红包");
+        OkHttpUtils
+                .post()
+                .addHeader("headtoken", getToken(mContext))
+                .url(NetApi.urlSendTaskRedBag)
+                .params(taskSponsorParam.getParams())
+                .build()
+                .execute(new NetStringCallBack(taskSponsorInterface));
     }
 
     private class LocationServerConnection implements ServiceConnection {
@@ -2163,6 +2180,34 @@ public final class Engine {
                 });*/
     }
 
+    //TODO VIP  op
+    public void postVipNo(VipPostParam vipPostParam, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "vipPostParam " + vipPostParam.paramString());
+        OkHttpUtils
+                .post()
+                .addHeader("headtoken", getToken(mContext))
+                .url(NetApi.urlVip)
+                .params(vipPostParam.getParams())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                        if (innerCallBack != null) {
+                            innerCallBack.innerCallBack(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        VipNoResponse vipNoResponse = new Gson().fromJson(s, VipNoResponse.class);
+                        if (innerCallBack != null) {
+                            innerCallBack.innerCallBack(vipNoResponse);
+                        }
+                    }
+                });
+    }
+
     //TODO 圈子订单 WX
     public void postWxPayOrder(PayOrderParam wxPayOrderParam) {
         LocalLog.d(TAG, wxPayOrderParam.paramString());
@@ -2748,6 +2793,8 @@ public final class Engine {
             bindThirdAccoutInterface = (BindThirdAccoutInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof BaiduMapInterface) {
             baiduMapInterface = (BaiduMapInterface) uiCallBackInterface;
+        }else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskSponsorInterface) {
+            taskSponsorInterface = (TaskSponsorInterface) uiCallBackInterface;
         }
     }
 
@@ -2869,6 +2916,8 @@ public final class Engine {
             bindThirdAccoutInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof BaiduMapInterface) {
             baiduMapInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskSponsorInterface) {
+            taskSponsorInterface = null;
         }
     }
 }

@@ -56,6 +56,16 @@ public class UserInviterResponse {
         private String avatar;
         private String nickname;
 
+        public int getVip() {
+            return vip;
+        }
+
+        public void setVip(int vip) {
+            this.vip = vip;
+        }
+
+        private int vip;
+
         public int getInviternum() {
             return inviternum;
         }
@@ -94,6 +104,18 @@ public class UserInviterResponse {
 
         public void setNickname(String nickname) {
             this.nickname = nickname;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "inviternum=" + inviternum +
+                    ", inviterid=" + inviterid +
+                    ", creattime=" + creattime +
+                    ", avatar='" + avatar + '\'' +
+                    ", nickname='" + nickname + '\'' +
+                    ", vip=" + vip +
+                    '}';
         }
     }
 }

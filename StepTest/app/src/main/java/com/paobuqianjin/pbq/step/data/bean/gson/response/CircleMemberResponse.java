@@ -145,6 +145,14 @@ public class CircleMemberResponse {
         }
 
         public static class DataBean {
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
             /**
              * id : 406
              * user_id : 30
@@ -153,7 +161,7 @@ public class CircleMemberResponse {
              * circlenickname :
              * is_admin : 2
              */
-
+            private int vip;
             private int id;
             private int user_id;
             private String nickname;
@@ -212,7 +220,8 @@ public class CircleMemberResponse {
             @Override
             public String toString() {
                 return "DataBean{" +
-                        "id=" + id +
+                        "vip=" + vip +
+                        ", id=" + id +
                         ", user_id=" + user_id +
                         ", nickname='" + nickname + '\'' +
                         ", avatar='" + avatar + '\'' +

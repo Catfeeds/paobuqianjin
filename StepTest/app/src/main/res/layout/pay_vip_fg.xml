@@ -30,7 +30,7 @@
             android:layout_alignLeft="@+id/pay_money"
             android:layout_below="@+id/pay_money"
             android:layout_marginTop="18dp"
-            android:text="￥1.99"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 

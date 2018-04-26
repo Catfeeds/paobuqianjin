@@ -30,4 +30,10 @@
     <style name="MyTabLayoutTextAppearanceStyle_17" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="ButtonPurple" >
+        <item name="android:background">@drawable/create_button</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textColor">@color/color_fefefe</item>
+    </style>
 </resources>

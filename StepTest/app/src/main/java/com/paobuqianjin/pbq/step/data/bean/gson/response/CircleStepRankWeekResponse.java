@@ -72,6 +72,30 @@ public class CircleStepRankWeekResponse {
         private int sum_step;
         private int avg_step;
 
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "userid=" + userid +
+                    ", step_number='" + step_number + '\'' +
+                    ", avatar='" + avatar + '\'' +
+                    ", nickname='" + nickname + '\'' +
+                    ", rank=" + rank +
+                    ", sum_step=" + sum_step +
+                    ", avg_step=" + avg_step +
+                    ", vip=" + vip +
+                    '}';
+        }
+
+        public int getVip() {
+            return vip;
+        }
+
+        public void setVip(int vip) {
+            this.vip = vip;
+        }
+
+        private int vip;
+
         public int getUserid() {
             return userid;
         }
@@ -128,17 +152,5 @@ public class CircleStepRankWeekResponse {
             this.avg_step = avg_step;
         }
 
-        @Override
-        public String toString() {
-            return "DataBean{" +
-                    "userid=" + userid +
-                    ", step_number='" + step_number + '\'' +
-                    ", avatar='" + avatar + '\'' +
-                    ", nickname='" + nickname + '\'' +
-                    ", rank=" + rank +
-                    ", sum_step=" + sum_step +
-                    ", avg_step=" + avg_step +
-                    '}';
-        }
     }
 }

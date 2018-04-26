@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWxQqBindPhoneParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -26,7 +25,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.LoginBindPhoneInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.UserFitActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -59,7 +57,7 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
     TextView passWord;
     @Bind(R.id.password_span)
     RelativeLayout passwordSpan;
-    @Bind(R.id.confirm)
+    @Bind(R.id.btn_confirm)
     Button confirm;
     @Bind(R.id.sign_code_t)
     TextView signCodeT;
@@ -162,7 +160,7 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
         }
     }
 
-    @OnClick({R.id.pass_y, R.id.confirm, R.id.sign_code_t})
+    @OnClick({R.id.pass_y, R.id.btn_confirm, R.id.sign_code_t})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pass_y:
@@ -178,7 +176,7 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
                     passY.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_no));
                 }
                 break;
-            case R.id.confirm:
+            case R.id.btn_confirm:
                 LocalLog.d(TAG, "确认");
                 /*CheckSignCodeParam checkSignCodeParam = new CheckSignCodeParam();
                 if (signCodeEdit.getText().toString() == null || signCodeEdit.getText().toString().equals("")) {

@@ -45,7 +45,7 @@ public class SelectDialogFragment extends DialogFragment {
     private void initView(View rootView) {
         if (rootView != null) {
             bt_cancelTV = (TextView) rootView.findViewById(R.id.cancel);
-            bt_confirmTV = (TextView) rootView.findViewById(R.id.confirm);
+            bt_confirmTV = (TextView) rootView.findViewById(R.id.btn_confirm);
             bt_cancelTV.setOnClickListener(onClickListener);
             bt_confirmTV.setOnClickListener(onClickListener);
 
@@ -86,7 +86,7 @@ public class SelectDialogFragment extends DialogFragment {
                 switch (view.getId()) {
                     case R.id.cancel:
                         break;
-                    case R.id.confirm:
+                    case R.id.btn_confirm:
                         break;
                     default:
                         break;

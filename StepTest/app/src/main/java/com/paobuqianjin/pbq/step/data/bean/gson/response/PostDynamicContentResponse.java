@@ -77,6 +77,15 @@ public class PostDynamicContentResponse {
         private String avatar;
         private String nickname;
 
+        public int getVip() {
+            return vip;
+        }
+
+        public void setVip(int vip) {
+            this.vip = vip;
+        }
+
+        private int vip;
         public String getReply_nickname() {
             return reply_nickname;
         }
@@ -171,6 +180,7 @@ public class PostDynamicContentResponse {
                     ", id='" + id + '\'' +
                     ", avatar='" + avatar + '\'' +
                     ", nickname='" + nickname + '\'' +
+                    ", vip=" + vip +
                     ", reply_nickname='" + reply_nickname + '\'' +
                     '}';
         }

@@ -188,13 +188,18 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             selectPay[0] = true;
         }
 
+        if ("user".equals(payAction)) {
+            LocalLog.d(TAG, "用户充值到钱包");
+            bankPaySpan = (RelativeLayout) viewRoot.findViewById(R.id.bank_pay_span);
+            bankPaySpan.setVisibility(View.GONE);
+        }
     }
 
 
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            
         }
 
         @Override
@@ -288,7 +293,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                             Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        if (money < 0.01) {
+                        if (money < 0.01f) {
                             Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
                             return;
                         }

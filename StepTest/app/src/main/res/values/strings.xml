@@ -117,4 +117,5 @@
     </string>
     <string name="title_activity_uitets">UitetsActivity</string>
     <string name="action_settings">Settings</string>
+    <string name="confirm">确认</string>
 </resources>

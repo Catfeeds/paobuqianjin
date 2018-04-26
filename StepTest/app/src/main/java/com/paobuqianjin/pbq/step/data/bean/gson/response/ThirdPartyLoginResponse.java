@@ -42,7 +42,7 @@ public class ThirdPartyLoginResponse {
         this.data = data;
     }
 
-    public static class DataBean implements Serializable{
+    public static class DataBean implements Serializable {
         /**
          * id : 30
          * wx_openid : oPd5d0SDHRV1oZF8dB80Jq0kH_tY
@@ -114,6 +114,16 @@ public class ThirdPartyLoginResponse {
         private String n_lat;
         private int n_updatetime;
         private String user_token;
+
+        public int getVip() {
+            return vip;
+        }
+
+        public void setVip(int vip) {
+            this.vip = vip;
+        }
+
+        private int vip;
 
         public int getId() {
             return id;
@@ -424,6 +434,7 @@ public class ThirdPartyLoginResponse {
                     ", n_lat='" + n_lat + '\'' +
                     ", n_updatetime=" + n_updatetime +
                     ", user_token='" + user_token + '\'' +
+                    ", vip=" + vip +
                     '}';
         }
     }

@@ -21,6 +21,8 @@ public class SponsorSelectActivity extends BaseActivity {
     private static String TARGET_PEOPLE_ACTION = "com.paobuqianjin.pbq.step.TARGET_ACTION";
     private static String SPONSOR_INFO_ACTION = "com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION";
 
+    public String longitudeStr = "";
+    public String latitudeStr = "";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,5 +46,11 @@ public class SponsorSelectActivity extends BaseActivity {
                         .show(sponsorManagerFragment).commit();
             }
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
     }
 }

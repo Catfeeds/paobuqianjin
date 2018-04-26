@@ -132,5 +132,19 @@ public class WalletPayOrderResponse {
         public void setBody(String body) {
             this.body = body;
         }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "userid='" + userid + '\'' +
+                    ", payment_type=" + payment_type +
+                    ", order_no='" + order_no + '\'' +
+                    ", total_fee='" + total_fee + '\'' +
+                    ", status=" + status +
+                    ", create_time=" + create_time +
+                    ", order_type=" + order_type +
+                    ", body='" + body + '\'' +
+                    '}';
+        }
     }
 }

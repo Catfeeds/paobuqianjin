@@ -147,6 +147,16 @@ public class ReChargeRankResponse {
             private String avatar;
             private String total_fee;
 
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
+            private int vip;
+
             public int getUserid() {
                 return userid;
             }
@@ -186,6 +196,7 @@ public class ReChargeRankResponse {
                         ", nickname='" + nickname + '\'' +
                         ", avatar='" + avatar + '\'' +
                         ", total_fee='" + total_fee + '\'' +
+                        ", vip=" + vip +
                         '}';
             }
         }

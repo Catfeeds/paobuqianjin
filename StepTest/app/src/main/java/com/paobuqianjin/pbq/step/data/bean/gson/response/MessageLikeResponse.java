@@ -179,6 +179,16 @@ public class MessageLikeResponse {
             private DynamicdataBean dynamicdata;
             private List<String> images;
 
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
+            private int vip;
+
             public int getId() {
                 return id;
             }
@@ -308,6 +318,7 @@ public class MessageLikeResponse {
                         ", create_time=" + create_time +
                         ", dynamicdata=" + dynamicdata +
                         ", images=" + images +
+                        ", vip=" + vip +
                         '}';
             }
 
@@ -337,6 +348,16 @@ public class MessageLikeResponse {
                 private int create_time;
                 private int is_vote;
                 private List<String> images;
+
+                public int getVip() {
+                    return vip;
+                }
+
+                public void setVip(int vip) {
+                    this.vip = vip;
+                }
+
+                private int vip;
 
                 public int getId() {
                     return id;
@@ -440,6 +461,7 @@ public class MessageLikeResponse {
                             ", create_time=" + create_time +
                             ", is_vote=" + is_vote +
                             ", images=" + images +
+                            ", vip=" + vip +
                             '}';
                 }
             }

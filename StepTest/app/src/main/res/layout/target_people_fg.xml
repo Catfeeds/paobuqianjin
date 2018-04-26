@@ -26,17 +26,7 @@
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
-        <ImageView
-            android:id="@+id/nv_select"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="4dp"
-            android:layout_toStartOf="@+id/nv_text"
-            android:background="@drawable/circle_outline"
-            android:scaleType="centerCrop" />
-
-        <TextView
+        <CheckBox
             android:id="@+id/nv_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,41 +34,21 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:text="女"
+            android:button="@drawable/circle_purple_selector"
             android:textColor="@color/color_8a8a8a"
             android:textSize="14dp" />
 
-
-        <ImageView
-            android:id="@+id/man_select"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="4dp"
-            android:layout_toStartOf="@+id/man_text"
-            android:background="@drawable/circle_outline"
-            android:scaleType="centerCrop" />
-
-        <TextView
+        <CheckBox
             android:id="@+id/man_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="30dp"
-            android:layout_toStartOf="@+id/nv_select"
             android:text="男"
+            android:layout_toLeftOf="@id/nv_text"
             android:textColor="@color/color_8a8a8a"
+            android:button="@drawable/circle_purple_selector"
             android:textSize="14dp" />
-
-
-        <ImageView
-            android:id="@+id/unknown_select"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="4dp"
-            android:layout_toStartOf="@+id/man_text"
-            android:background="@drawable/circle_outline"
-            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/sex_unselect_text"
@@ -86,23 +56,18 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="30dp"
-            android:layout_toStartOf="@+id/man_select"
+            android:layout_toLeftOf="@id/man_text"
             android:text="不限"
             android:textColor="@color/color_8a8a8a"
             android:textSize="14dp" />
 
-        <ImageView
-            android:background="@color/color_d9d9d9"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignLeft="@+id/sex"
-            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/age_pan"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/sex_pan"
         android:background="@color/color_f8">
 
@@ -133,10 +98,12 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="4dp"
             android:layout_toStartOf="@+id/age_quto"
+            android:gravity="center"
             android:hint="0"
             android:inputType="number"
             android:maxEms="3"
             android:maxLines="1"
+            android:minWidth="30dp"
             android:textSize="15dp" />
 
         <TextView
@@ -160,23 +127,26 @@
             android:textSize="15dp" />
 
         <EditText
+            android:id="@+id/min_age"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="4dp"
             android:layout_toStartOf="@+id/age_quto_left"
+            android:gravity="center"
             android:hint="0"
             android:inputType="number"
             android:maxEms="3"
             android:maxLines="1"
+            android:minWidth="30dp"
             android:textSize="15dp" />
 
         <ImageView
-            android:background="@color/color_d9d9d9"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignLeft="@+id/age"
-            android:layout_alignParentBottom="true" />
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_d9d9d9" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -258,5 +228,14 @@
             android:text="3km" />
 
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        style="@style/ButtonPurple"
+        android:text="@string/confirm"
+        android:layout_alignParentBottom="true"
+        />
+
 
 </RelativeLayout>

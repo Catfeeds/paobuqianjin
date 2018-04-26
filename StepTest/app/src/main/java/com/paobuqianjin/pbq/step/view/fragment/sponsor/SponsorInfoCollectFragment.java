@@ -65,7 +65,7 @@ public class SponsorInfoCollectFragment extends BaseBarStyleTextViewFragment {
     TextView editSponsorInnerPics;
     @Bind(R.id.sponsor_inner_pics_pan)
     RelativeLayout sponsorInnerPicsPan;
-    @Bind(R.id.confirm)
+    @Bind(R.id.btn_confirm)
     Button confirm;
 
     @Override

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.VipPayFriendActivity;
+import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -101,14 +101,14 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
         Intent payIntent = new Intent();
         switch (view.getId()) {
             case R.id.vip_friend:
-                payIntent.setAction(ACTION_VIP_SELF);
-                payIntent.setClass(getContext(), VipPayFriendActivity.class);
-                startActivityForResult(payIntent, PAY_VIP_SELF_RESULT);
+                payIntent.setAction(ACTION_VIP_FRIEND);
+                payIntent.setClass(getContext(), PaoBuPayActivity.class);
+                startActivityForResult(payIntent, PAY_VIP_FRIEND_RESULT);
                 break;
             case R.id.vip_self:
-                payIntent.setAction(ACTION_VIP_FRIEND);
-                payIntent.setClass(getContext(), VipPayFriendActivity.class);
-                startActivityForResult(payIntent, PAY_VIP_FRIEND_RESULT);
+                payIntent.setAction(ACTION_VIP_SELF);
+                payIntent.setClass(getContext(), PaoBuPayActivity.class);
+                startActivityForResult(payIntent, PAY_VIP_SELF_RESULT);
                 break;
         }
     }

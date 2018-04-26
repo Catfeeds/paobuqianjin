@@ -154,4 +154,8 @@ public class NetApi {
     public final static String urlLocation = "http://119.29.10.64/v1/UserLocation/setLocation";
     //TODO share
     public final static String urlShare = "http://share.runmoneyin.com/in.html?";
+    //TODO 商户发红包
+    public final static String urlSendTaskRedBag = url+"v1/Redpacket";
+	 //TODO VIP
+    public final static String urlVip =  "http://119.29.10.64/v1/UserVip";
 }

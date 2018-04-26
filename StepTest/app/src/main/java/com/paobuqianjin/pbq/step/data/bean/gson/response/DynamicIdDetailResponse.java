@@ -6,7 +6,7 @@ import java.util.List;
  * Created by pbq on 2018/3/3.
  */
 
-public class DynamicIdDetailResponse  {
+public class DynamicIdDetailResponse {
     /**
      * error : 0
      * message : success
@@ -51,6 +51,14 @@ public class DynamicIdDetailResponse  {
     }
 
     public static class DataBean {
+        public int getVip() {
+            return vip;
+        }
+
+        public void setVip(int vip) {
+            this.vip = vip;
+        }
+
         /**
          * id : 8
          * userid : 8
@@ -63,7 +71,7 @@ public class DynamicIdDetailResponse  {
          * comment : 3
          * create_time : 1513393712
          */
-
+        private int vip;
         private int id;
         private int userid;
         private String avatar;
@@ -158,7 +166,8 @@ public class DynamicIdDetailResponse  {
         @Override
         public String toString() {
             return "DataBean{" +
-                    "id=" + id +
+                    "vip=" + vip +
+                    ", id=" + id +
                     ", userid=" + userid +
                     ", avatar='" + avatar + '\'' +
                     ", nickname='" + nickname + '\'' +

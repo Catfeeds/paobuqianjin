@@ -93,9 +93,9 @@ public class PaySuccessFragment extends BaseBarStyleTextViewFragment {
     public void onClick() {
         LocalLog.d(TAG, "已确认支付结果");
         String payAction = Presenter.getInstance(getContext()).getTradeStyle();
-        if ("user".equals(payAction) || "task".equals(payAction)) {
+        if ("user".equals(payAction) || "task".equals(payAction) || "vip".equals(payAction)) {
             getActivity().finish();
-        }else{
+        } else {
             ((PaoBuPayActivity) getActivity()).showQrCodeFragment(this);
         }
 

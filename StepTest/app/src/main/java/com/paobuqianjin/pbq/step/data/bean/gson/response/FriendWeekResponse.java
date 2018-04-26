@@ -192,6 +192,15 @@ public class FriendWeekResponse {
                 private String step_number;
                 private int rank;
 
+                public int getVip() {
+                    return vip;
+                }
+
+                public void setVip(int vip) {
+                    this.vip = vip;
+                }
+
+                private int vip;
                 public int getUserid() {
                     return userid;
                 }
@@ -240,6 +249,7 @@ public class FriendWeekResponse {
                             ", avatar='" + avatar + '\'' +
                             ", step_number='" + step_number + '\'' +
                             ", rank=" + rank +
+                            ", vip=" + vip +
                             '}';
                 }
             }
@@ -257,6 +267,26 @@ public class FriendWeekResponse {
                 private String avatar;
                 private String step_number;
 
+                @Override
+                public String toString() {
+                    return "MemberBean{" +
+                            "userid=" + userid +
+                            ", nickname='" + nickname + '\'' +
+                            ", avatar='" + avatar + '\'' +
+                            ", step_number='" + step_number + '\'' +
+                            ", vip=" + vip +
+                            '}';
+                }
+
+                public int getVip() {
+                    return vip;
+                }
+
+                public void setVip(int vip) {
+                    this.vip = vip;
+                }
+
+                private int vip;
                 public int getUserid() {
                     return userid;
                 }
@@ -289,15 +319,6 @@ public class FriendWeekResponse {
                     this.step_number = step_number;
                 }
 
-                @Override
-                public String toString() {
-                    return "MemberBean{" +
-                            "userid=" + userid +
-                            ", nickname='" + nickname + '\'' +
-                            ", avatar='" + avatar + '\'' +
-                            ", step_number='" + step_number + '\'' +
-                            '}';
-                }
             }
         }
     }

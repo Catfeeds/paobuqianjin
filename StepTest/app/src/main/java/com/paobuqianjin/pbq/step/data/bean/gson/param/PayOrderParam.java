@@ -43,6 +43,18 @@ taskid	任务ID	false	int
     private int circleid;
     private float total_fee;
 
+    public String getVip_no() {
+        return vip_no;
+    }
+
+    public PayOrderParam setVip_no(String vip_no) {
+        this.vip_no = vip_no;
+        params.put("vip_no", vip_no);
+        return this;
+    }
+
+    private String vip_no;
+
     public String getOrder_type() {
         return order_type;
     }
@@ -69,7 +81,7 @@ taskid	任务ID	false	int
 
     public PayOrderParam setTaskno(String taskno) {
         this.taskno = taskno;
-        params.put("taskno",taskno);
+        params.put("taskno", taskno);
         return this;
     }
 
@@ -97,18 +109,7 @@ taskid	任务ID	false	int
         return total_fee;
     }
 
-    @Override
-    public String toString() {
-        return "PayOrderParam{" +
-                "payment_type='" + payment_type + '\'' +
-                ", taskid=" + taskno +
-                ", userid=" + userid +
-                ", circleid=" + circleid +
-                ", total_fee=" + total_fee +
-                ", order_type='" + order_type + '\'' +
-                ", params=" + params +
-                '}';
-    }
+
 
     public Map<String, String> getParams() {
         return params;
@@ -130,5 +131,19 @@ taskid	任务ID	false	int
             temp = temp + key + ":" + params.get(key) + "\n";
         }
         return temp;
+    }
+
+    @Override
+    public String toString() {
+        return "PayOrderParam{" +
+                "payment_type='" + payment_type + '\'' +
+                ", taskno='" + taskno + '\'' +
+                ", userid=" + userid +
+                ", circleid=" + circleid +
+                ", total_fee=" + total_fee +
+                ", vip_no='" + vip_no + '\'' +
+                ", order_type='" + order_type + '\'' +
+                ", params=" + params +
+                '}';
     }
 }

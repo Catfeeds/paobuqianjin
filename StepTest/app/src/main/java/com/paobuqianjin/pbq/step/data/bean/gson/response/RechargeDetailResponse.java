@@ -167,6 +167,16 @@ public class RechargeDetailResponse {
             private String total_fee;
             private int create_time;
 
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
+            private int vip;
+
             public int getId() {
                 return id;
             }
@@ -251,6 +261,7 @@ public class RechargeDetailResponse {
                         ", avatar='" + avatar + '\'' +
                         ", total_fee='" + total_fee + '\'' +
                         ", create_time=" + create_time +
+                        ", vip=" + vip +
                         '}';
             }
         }

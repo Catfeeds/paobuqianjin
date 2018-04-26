@@ -140,6 +140,14 @@ public class CircleStepRankResponse {
         }
 
         public static class DataBean {
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
             /**
              * id : 30
              * wx_unionid :
@@ -183,7 +191,7 @@ public class CircleStepRankResponse {
              * step_number : 2462
              * rank : 1
              */
-
+            private int vip;
             private int id;
             private String wx_unionid;
             private String wx_openid;
@@ -614,6 +622,16 @@ public class CircleStepRankResponse {
                 private String avatar;
                 private String step_number;
 
+                public int getVip() {
+                    return vip;
+                }
+
+                public void setVip(int vip) {
+                    this.vip = vip;
+                }
+
+                private int vip;
+
                 public int getUserid() {
                     return userid;
                 }
@@ -653,6 +671,7 @@ public class CircleStepRankResponse {
                             ", nickname='" + nickname + '\'' +
                             ", avatar='" + avatar + '\'' +
                             ", step_number='" + step_number + '\'' +
+                            ", vip=" + vip +
                             '}';
                 }
             }

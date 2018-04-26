@@ -31,7 +31,6 @@
             android:background="@null"
             android:gravity="right"
             android:hint="输入任务名称"
-            android:inputType="number"
             android:maxLength="6"
             android:maxLines="1"
             android:textColor="@color/color_161727"
@@ -332,7 +331,7 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/confirm"
+        android:id="@+id/btn_confirm"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"

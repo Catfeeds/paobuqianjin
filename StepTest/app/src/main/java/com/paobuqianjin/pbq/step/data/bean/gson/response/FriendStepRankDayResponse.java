@@ -188,6 +188,16 @@ public class FriendStepRankDayResponse {
                 private String step_number;
                 private int rank;
 
+                public int getVip() {
+                    return vip;
+                }
+
+                public void setVip(int vip) {
+                    this.vip = vip;
+                }
+
+                private int vip;
+
                 public int getUserid() {
                     return userid;
                 }
@@ -236,6 +246,7 @@ public class FriendStepRankDayResponse {
                             ", avatar='" + avatar + '\'' +
                             ", step_number='" + step_number + '\'' +
                             ", rank=" + rank +
+                            ", vip=" + vip +
                             '}';
                 }
             }
@@ -252,6 +263,16 @@ public class FriendStepRankDayResponse {
                 private String nickname;
                 private String avatar;
                 private String step_number;
+
+                public int getVip() {
+                    return vip;
+                }
+
+                public void setVip(int vip) {
+                    this.vip = vip;
+                }
+
+                private int vip;
 
                 public int getUserid() {
                     return userid;
@@ -292,6 +313,7 @@ public class FriendStepRankDayResponse {
                             ", nickname='" + nickname + '\'' +
                             ", avatar='" + avatar + '\'' +
                             ", step_number='" + step_number + '\'' +
+                            ", vip=" + vip +
                             '}';
                 }
             }

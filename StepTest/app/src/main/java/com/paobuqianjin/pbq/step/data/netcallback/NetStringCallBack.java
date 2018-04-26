@@ -77,6 +77,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.SuggestResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskMyReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskRecDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskSponsorRespone;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserDanResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
@@ -144,6 +145,7 @@ import com.paobuqianjin.pbq.step.presenter.im.TagFragInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskDetailRecInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
+import com.paobuqianjin.pbq.step.presenter.im.TaskSponsorInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
@@ -285,6 +287,9 @@ public class NetStringCallBack extends StringCallback {
                     ((JoinCircleInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null
                         && callBackInterface instanceof PayInterface) {
+                    callBackInterface.response(errorCode);
+                } else if (callBackInterface != null
+                        && callBackInterface instanceof TaskSponsorInterface) {
                     callBackInterface.response(errorCode);
                 } else {
                     LocalLog.e(TAG, " dispatch not match");
@@ -1238,6 +1243,13 @@ public class NetStringCallBack extends StringCallback {
             try {
                 PostBindResponse postBindResponse = new Gson().fromJson(s, PostBindResponse.class);
                 ((BindThirdAccoutInterface) callBackInterface).response(postBindResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
+            }
+        } else if (callBackInterface != null && callBackInterface instanceof TaskSponsorInterface) {
+            try {
+                TaskSponsorRespone taskSponsorRespone = new Gson().fromJson(s, TaskSponsorRespone.class);
+                ((TaskSponsorInterface) callBackInterface).response(taskSponsorRespone);
             } catch (JsonSyntaxException e) {
                 e.printStackTrace();
             }

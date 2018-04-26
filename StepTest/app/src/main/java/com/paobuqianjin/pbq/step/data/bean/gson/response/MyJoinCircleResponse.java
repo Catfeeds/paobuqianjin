@@ -131,6 +131,14 @@ public class MyJoinCircleResponse {
         }
 
         public static class DataBean implements Serializable {
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
             /**
              * id : 100003
              * name : 测试圈子4
@@ -138,7 +146,7 @@ public class MyJoinCircleResponse {
              * city : 东莞市
              * member_number : 4
              */
-
+            private int vip;
             private int id;
             private String name;
             private String logo;
@@ -188,7 +196,8 @@ public class MyJoinCircleResponse {
             @Override
             public String toString() {
                 return "DataBean{" +
-                        "id=" + id +
+                        "vip=" + vip +
+                        ", id=" + id +
                         ", name='" + name + '\'' +
                         ", logo='" + logo + '\'' +
                         ", city='" + city + '\'' +

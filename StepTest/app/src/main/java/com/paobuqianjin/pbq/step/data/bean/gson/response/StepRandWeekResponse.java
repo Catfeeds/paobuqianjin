@@ -188,6 +188,28 @@ public class StepRandWeekResponse {
                 private String step_number;
                 private int rank;
 
+                @Override
+                public String toString() {
+                    return "MydataBean{" +
+                            "userid=" + userid +
+                            ", nickname='" + nickname + '\'' +
+                            ", avatar='" + avatar + '\'' +
+                            ", step_number='" + step_number + '\'' +
+                            ", rank=" + rank +
+                            ", vip=" + vip +
+                            '}';
+                }
+
+                public int getVip() {
+                    return vip;
+                }
+
+                public void setVip(int vip) {
+                    this.vip = vip;
+                }
+
+                private int vip;
+
                 public int getUserid() {
                     return userid;
                 }
@@ -228,16 +250,6 @@ public class StepRandWeekResponse {
                     this.rank = rank;
                 }
 
-                @Override
-                public String toString() {
-                    return "MydataBean{" +
-                            "userid=" + userid +
-                            ", nickname='" + nickname + '\'' +
-                            ", avatar='" + avatar + '\'' +
-                            ", step_number='" + step_number + '\'' +
-                            ", rank=" + rank +
-                            '}';
-                }
             }
 
             public static class MemberBean {
@@ -252,6 +264,16 @@ public class StepRandWeekResponse {
                 private String nickname;
                 private String avatar;
                 private String step_number;
+
+                public int getVip() {
+                    return vip;
+                }
+
+                public void setVip(int vip) {
+                    this.vip = vip;
+                }
+
+                private int vip;
 
                 public int getUserid() {
                     return userid;
@@ -292,6 +314,7 @@ public class StepRandWeekResponse {
                             ", nickname='" + nickname + '\'' +
                             ", avatar='" + avatar + '\'' +
                             ", step_number='" + step_number + '\'' +
+                            ", vip=" + vip +
                             '}';
                 }
             }

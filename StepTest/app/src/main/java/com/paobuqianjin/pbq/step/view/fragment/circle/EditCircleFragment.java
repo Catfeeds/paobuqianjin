@@ -372,7 +372,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
             }
         });
 
-        popupCircleTypeView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+        popupCircleTypeView.findViewById(R.id.btn_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "onClick() 确定");

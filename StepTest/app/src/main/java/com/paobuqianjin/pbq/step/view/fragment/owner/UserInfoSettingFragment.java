@@ -48,7 +48,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoSetResponse;
-import com.paobuqianjin.pbq.step.data.bean.table.User;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
@@ -61,7 +60,6 @@ import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.WheelPicker;
 import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.widgets.WheelDatePicker;
-import com.paobuqianjin.pbq.step.view.fragment.login.PersonInfoSettingFragment;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -669,7 +667,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 popupSelectWindow = null;
             }
         });
-        Button confirmBt = (Button) popBirthSelectView.findViewById(R.id.confirm);
+        Button confirmBt = (Button) popBirthSelectView.findViewById(R.id.btn_confirm);
         Button cancelBt = (Button) popBirthSelectView.findViewById(R.id.cancel);
         final WheelDatePicker wheelDatePicker = (WheelDatePicker) popBirthSelectView.findViewById(R.id.date_picker);
         wheelDatePicker.setOnDateSelectedListener(new WheelDatePicker.OnDateSelectedListener() {
@@ -729,7 +727,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             }
         });
 
-        Button confirmBt = (Button) popWeighSelectView.findViewById(R.id.confirm);
+        Button confirmBt = (Button) popWeighSelectView.findViewById(R.id.btn_confirm);
         Button cancelBt = (Button) popWeighSelectView.findViewById(R.id.cancel);
         final WheelPicker wheelWeigthPicker = (WheelPicker) popWeighSelectView.findViewById(R.id.weigth_picker);
         wheelWeigthPicker.setData(weightList);
@@ -783,7 +781,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             }
         });
 
-        Button confirmBt = (Button) popHighSelectView.findViewById(R.id.confirm);
+        Button confirmBt = (Button) popHighSelectView.findViewById(R.id.btn_confirm);
         Button cancelBt = (Button) popHighSelectView.findViewById(R.id.cancel);
         final WheelPicker wheelHighPicker = (WheelPicker) popHighSelectView.findViewById(R.id.high_picker);
         wheelHighPicker.setData(heightList);
@@ -865,7 +863,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             }
         });
 
-        popupCircleTypeView.findViewById(R.id.confirm).setOnClickListener(new View.OnClickListener() {
+        popupCircleTypeView.findViewById(R.id.btn_confirm).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "onClick() 确定");

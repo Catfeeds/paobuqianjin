@@ -164,6 +164,16 @@ public class DynamicLikeListResponse {
             private int create_time;
             private int is_follow;
 
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
+            private int vip;
+
             public int getId() {
                 return id;
             }
@@ -230,6 +240,7 @@ public class DynamicLikeListResponse {
                         ", dynamicid=" + dynamicid +
                         ", create_time=" + create_time +
                         ", is_follow=" + is_follow +
+                        ", vip=" + vip +
                         '}';
             }
         }

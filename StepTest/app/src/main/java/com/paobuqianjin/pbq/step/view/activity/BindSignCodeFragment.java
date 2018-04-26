@@ -55,7 +55,7 @@ public class BindSignCodeFragment extends BaseBarStyleTextViewFragment implement
     TextView signCodeGet;
     @Bind(R.id.line2)
     ImageView line2;
-    @Bind(R.id.confirm)
+    @Bind(R.id.btn_confirm)
     Button confirm;
     @Bind(R.id.phone_nums)
     TextView phoneNums;
@@ -134,14 +134,14 @@ public class BindSignCodeFragment extends BaseBarStyleTextViewFragment implement
         LocalLog.d(TAG, "BindAccountResponse() enter");
     }
 
-    @OnClick({R.id.sign_code_get, R.id.confirm})
+    @OnClick({R.id.sign_code_get, R.id.btn_confirm})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sign_code_get:
                 LocalLog.d(TAG, "获取验证码");
                 Presenter.getInstance(getContext()).getSignCode(Presenter.getInstance(getContext()).getMobile(getContext()));
                 break;
-            case R.id.confirm:
+            case R.id.btn_confirm:
                 LocalLog.d(TAG, "下一步");
                 if (signCode.getText() == null || signCode.getText().toString().equals("")) {
                     Toast.makeText(getContext(), "请输入验证码", Toast.LENGTH_SHORT).show();

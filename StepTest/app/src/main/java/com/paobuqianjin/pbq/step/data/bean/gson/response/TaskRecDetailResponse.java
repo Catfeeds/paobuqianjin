@@ -81,6 +81,15 @@ public class TaskRecDetailResponse {
         private int user_step;
         private int is_finished;
 
+        public int getVip() {
+            return vip;
+        }
+
+        public void setVip(int vip) {
+            this.vip = vip;
+        }
+
+        private int vip;
         public int getId() {
             return id;
         }
@@ -210,6 +219,7 @@ public class TaskRecDetailResponse {
                     ", task_desc='" + task_desc + '\'' +
                     ", user_step=" + user_step +
                     ", is_finished=" + is_finished +
+                    ", vip=" + vip +
                     '}';
         }
     }

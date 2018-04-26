@@ -35,7 +35,6 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.utils.SocializeUtils;
 
-import java.util.Date;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -156,7 +155,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                 popupSelectWindow = null;
             }
         });
-        Button confirmBt = (Button) popBirthSelectView.findViewById(R.id.confirm);
+        Button confirmBt = (Button) popBirthSelectView.findViewById(R.id.btn_confirm);
         Button cancelBt = (Button) popBirthSelectView.findViewById(R.id.cancel);
         confirmBt.setOnClickListener(new View.OnClickListener() {
             @Override

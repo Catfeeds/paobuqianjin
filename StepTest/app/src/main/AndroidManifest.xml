@@ -147,6 +147,8 @@
                 <action android:name="android.intent.action.PAY" />
                 <action android:name="android.intent.action.QRCODE" />
                 <action android:name="coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION" />
+                <action android:name="com.paobuqianjin.pbq.setp.VIP_SELF_ACTION" />
+                <action android:name="com.paobuqianjin.pbq.step.VIP_FRIEND_ACTION" />
             </intent-filter>
         </activity>
         <activity
@@ -417,7 +419,6 @@
         <activity android:name=".view.activity.ForgotPasswordActivity" />
         <activity android:name=".view.activity.BindPhoneNumActivity" />
         <activity android:name=".view.activity.VipActivity"></activity>
-        <activity android:name=".view.activity.VipPayFriendActivity"></activity>
         <activity android:name=".view.activity.SponsorSelectActivity">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.TARGET_ACTION"></action>

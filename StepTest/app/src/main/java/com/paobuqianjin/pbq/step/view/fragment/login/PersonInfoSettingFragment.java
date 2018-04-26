@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,7 +15,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,14 +49,12 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.MainActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.WheelPicker;
 import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.widgets.WheelDatePicker;
-import com.paobuqianjin.pbq.step.view.fragment.owner.UserInfoSettingFragment;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
@@ -147,7 +143,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     LoginResponse.DataBean phoneLoginDataBean;
     SignUserResponse.DataBean signUserDataBean;
     private final static String USER_FIT_ACTION_SETTING = "com.paobuqianjin.pbq.USER_FIT_ACTION_USER_SETTING";
-    @Bind(R.id.confirm)
+    @Bind(R.id.btn_confirm)
     Button confirm;
     @Bind(R.id.person_message_fg)
     RelativeLayout personMessageFg;
@@ -344,7 +340,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 popupSelectWindow = null;
             }
         });
-        Button confirmBt = (Button) popBirthSelectView.findViewById(R.id.confirm);
+        Button confirmBt = (Button) popBirthSelectView.findViewById(R.id.btn_confirm);
         Button cancelBt = (Button) popBirthSelectView.findViewById(R.id.cancel);
         final WheelDatePicker wheelDatePicker = (WheelDatePicker) popBirthSelectView.findViewById(R.id.date_picker);
         wheelDatePicker.setOnDateSelectedListener(new WheelDatePicker.OnDateSelectedListener() {
@@ -402,7 +398,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             }
         });
 
-        Button confirmBt = (Button) popWeighSelectView.findViewById(R.id.confirm);
+        Button confirmBt = (Button) popWeighSelectView.findViewById(R.id.btn_confirm);
         Button cancelBt = (Button) popWeighSelectView.findViewById(R.id.cancel);
         final WheelPicker wheelWeigthPicker = (WheelPicker) popWeighSelectView.findViewById(R.id.weigth_picker);
         wheelWeigthPicker.setData(weightList);
@@ -456,7 +452,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             }
         });
 
-        Button confirmBt = (Button) popHighSelectView.findViewById(R.id.confirm);
+        Button confirmBt = (Button) popHighSelectView.findViewById(R.id.btn_confirm);
         Button cancelBt = (Button) popHighSelectView.findViewById(R.id.cancel);
         final WheelPicker wheelHighPicker = (WheelPicker) popHighSelectView.findViewById(R.id.high_picker);
         wheelHighPicker.setData(heightList);
@@ -604,7 +600,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     }
 
     @OnClick({R.id.user_icon, R.id.use_gender_man_select, R.id.use_gender_nv_select, R.id.birth_day_span, R.id.height_span, R.id.weight_span,
-            R.id.confirm})
+            R.id.btn_confirm})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.user_icon:
@@ -647,7 +643,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 LocalLog.d(TAG, "设置体重");
                 setWeight();
                 break;
-            case R.id.confirm:
+            case R.id.btn_confirm:
                 LocalLog.d(TAG, "修改确认");
                 if (userid != -1) {
                     if (useName.getText().toString() == null || "".equals(useName.getText().toString())) {
