@@ -91,7 +91,7 @@ public class CircleDetailResponse {
         private String total_amount;
         private int is_recharge;
         private String red_packet_amount;
-        private int red_packet;
+        private float red_packet;
         private int create_time;
         private int is_join;
         private int is_admin;
@@ -217,11 +217,11 @@ public class CircleDetailResponse {
             this.red_packet_amount = red_packet_amount;
         }
 
-        public int getRed_packet() {
+        public float getRed_packet() {
             return red_packet;
         }
 
-        public void setRed_packet(int red_packet) {
+        public void setRed_packet(float red_packet) {
             this.red_packet = red_packet;
         }
 

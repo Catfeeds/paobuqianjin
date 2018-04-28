@@ -15,6 +15,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,9 +34,12 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.RedPkgRecParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
@@ -43,6 +47,7 @@ import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
@@ -52,6 +57,7 @@ import com.paobuqianjin.pbq.step.view.base.adapter.SponsorRedPakAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
+import com.paobuqianjin.pbq.step.view.base.view.Rotate3dAnimation;
 import com.paobuqianjin.pbq.step.view.base.view.StepProcessDrawable;
 import com.paobuqianjin.pbq.step.view.base.view.WaveView;
 import com.today.step.lib.TodayStepService;
@@ -61,6 +67,7 @@ import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -152,7 +159,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     RelativeLayout targetStepsSpan;
     @Bind(R.id.step_desc_span)
     RelativeLayout stepDescSpan;
-
+    ImageView openRedPkgView;
     private View popRedPkgView;
     private View popTargetView;
     private PopupWindow popupRedPkgWindow;
@@ -170,6 +177,12 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     private int lastStep = 0;
     private int PERMISSION_REQUEST = 100;
     private boolean isBind = false;
+    private boolean redPkgEnable = true;
+    SponsorRedPakAdapter sponsorRedPakAdapter;
+    TextView totalRedPkg;
+    RecyclerView redPkgRecycler;
+    TextView errorTextView;
+    TextView desPkgTextView;
 
     static {
         weatherMap.put("0", R.drawable.weather_0);
@@ -335,36 +348,74 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
     public void popRedPkg(SponsorRedPkgResponse sponsorRedPkgResponse) {
         LocalLog.d(TAG, "popRedPkg() enter");
+        String canRevPkg = "";
         popRedPkgView = View.inflate(getContext(), R.layout.red_pkg_pop_window, null);
-        TextView totalRedPkg = (TextView) popRedPkgView.findViewById(R.id.total_red_pkg);
-        RecyclerView redPkgRecycler = (RecyclerView) popRedPkgView.findViewById(R.id.red_pkg_recycler);
-        Button recRedPkg = (Button) popRedPkgView.findViewById(R.id.rec_red_pkg);
+        totalRedPkg = (TextView) popRedPkgView.findViewById(R.id.total_red_pkg);
+        redPkgRecycler = (RecyclerView) popRedPkgView.findViewById(R.id.red_pkg_recycler);
+        openRedPkgView = (ImageView) popRedPkgView.findViewById(R.id.open_red_pkg);
         popupRedPkgWindow = new PopupWindow(popRedPkgView,
                 WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        errorTextView = (TextView) popRedPkgView.findViewById(R.id.error_text);
+        desPkgTextView = (TextView) popRedPkgView.findViewById(R.id.des_pkg);
         popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
+                redPkgEnable = true;
                 popupRedPkgWindow = null;
             }
         });
-        totalRedPkg.setText("￥" + String.valueOf(sponsorRedPkgResponse.getData().getTotal_red_packet()));
         popupRedPkgWindow.setFocusable(true);
         popupRedPkgWindow.setOutsideTouchable(true);
         popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         redPkgRecycler.setLayoutManager(layoutManager);
-        redPkgRecycler.setAdapter(new SponsorRedPakAdapter(getContext(), sponsorRedPkgResponse.getData().getData()));
+        ArrayList<?> sponsorData = new ArrayList<>();
+        if (sponsorRedPkgResponse.getData().getLedredpacket() != null) {
+            if (sponsorRedPkgResponse.getData().getLedredpacket().size() > 0) {
+                sponsorData.addAll((ArrayList) sponsorRedPkgResponse.getData().getLedredpacket());
+            }
+        }
+        if (sponsorRedPkgResponse.getData().getCanredpacket() != null) {
+            /*if (sponsorRedPkgResponse.getData().getCanredpacket().size() > 0) {
+                sponsorData.addAll((ArrayList) sponsorRedPkgResponse.getData().getCanredpacket());
+            }*/
+            int size = sponsorRedPkgResponse.getData().getCanredpacket().size();
+            for (int i = 0; i < size; i++) {
+                if (i == size - 1) {
+                    canRevPkg += sponsorRedPkgResponse.getData().getCanredpacket().get(i).getRed_id();
+                } else {
+                    canRevPkg += sponsorRedPkgResponse.getData().getCanredpacket().get(i).getRed_id() + ",";
+                }
+            }
+            sponsorData.addAll((ArrayList) sponsorRedPkgResponse.getData().getCanredpacket());
+        }
+
+        if (sponsorRedPakAdapter == null) {
+            sponsorRedPakAdapter = new SponsorRedPakAdapter(getContext(), sponsorData);
+        }
+        redPkgRecycler.setAdapter(sponsorRedPakAdapter);
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
                 1, Animation.RELATIVE_TO_PARENT, 0);
         animationCircleType.setInterpolator(new AccelerateInterpolator());
         animationCircleType.setDuration(200);
-
-        recRedPkg.setOnClickListener(new View.OnClickListener() {
+        final String redids = canRevPkg;
+        openRedPkgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "领取商户红包");
-
+                final Rotate3dAnimation animation = new Rotate3dAnimation(0, 359, view.getWidth() / 2f, view.getHeight() / 2f, 30, true);
+                animation.setDuration(500);
+                animation.setRepeatCount(Animation.INFINITE);
+                animation.setFillAfter(true);
+                view.setAnimation(animation);
+                view.startAnimation(animation);
+                LocalLog.d(TAG, "可领红包的 " + redids);
+                if (TextUtils.isEmpty(redids)) {
+                    Toast.makeText(getContext(), "没有可领取的红包", Toast.LENGTH_SHORT).show();
+                }
+                RedPkgRecParam redPkgRecParam = new RedPkgRecParam().setRedids(redids);
+                Presenter.getInstance(getContext()).postRedPkgRec(redPkgRecParam, innerRecRedCallBack);
             }
         });
         popupRedPkgWindow.showAtLocation(getActivity().findViewById(R.id.home_page), Gravity.CENTER, 0, 0);
@@ -372,11 +423,39 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         popRedPkgView.startAnimation(animationCircleType);
     }
 
-    private void popTargetView() {
+    private final InnerCallBack innerRecRedCallBack = new InnerCallBack() {
+        @Override
+        public void innerCallBack(Object object) {
+            openRedPkgView.clearAnimation();
+            openRedPkgView.setVisibility(View.INVISIBLE);
+            if (object instanceof ErrorCode) {
+                LocalLog.d(TAG, "领取红包出错" + ((ErrorCode) object).getMessage());
+            } else if (object instanceof RecRedPkgResponse) {
+                if (((RecRedPkgResponse) object).getError() == 0) {
+                    if (((RecRedPkgResponse) object).getData().getAllmoney() > 0.0f) {
+                        totalRedPkg.setVisibility(View.VISIBLE);
+                        totalRedPkg.setText(String.valueOf(((RecRedPkgResponse) object).getData().getAllmoney()));
+                    } else {
+                        errorTextView.setVisibility(View.VISIBLE);
+                    }
+                    desPkgTextView.setVisibility(View.VISIBLE);
+                    ArrayList<?> sponsorData = new ArrayList<>();
+                    sponsorData.addAll((ArrayList) ((RecRedPkgResponse) object).getData().getResult());
+                    if (sponsorRedPakAdapter != null) {
+                        sponsorRedPakAdapter.notifyDataSetChanged(sponsorData);
+                    }
+                }
+            }
+        }
+    };
+
+    private void popTargetView(String titleContent) {
         popTargetView = View.inflate(getContext(), R.layout.target_dest_popwindow, null);
         TextView confirm = (TextView) popTargetView.findViewById(R.id.read_des);
         popupRedPkgWindow = new PopupWindow(popTargetView,
                 WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        TextView textView = (TextView) popTargetView.findViewById(R.id.quit_title);
+        textView.setText(titleContent);
         popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -515,6 +594,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         } else {
             Toast.makeText(getContext(), sponsorRedPkgResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        redPkgEnable = false;
     }
 
     @Override
@@ -541,8 +621,11 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     break;
                 case R.id.income_red_pkg_image:
                     LocalLog.d(TAG, "领红包");
-                    Presenter.getInstance(getContext()).getSponsorRedPkg();
+                    if (redPkgEnable) {
+                        redPkgEnable = false;
+                        Presenter.getInstance(getContext()).getSponsorRedPkg();
                     /*((MainActivity) getActivity()).tabToTask();*/
+                    }
                     break;
                 case R.id.add_friend_image:
                     LocalLog.d(TAG, "邀请好友");
@@ -557,7 +640,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     break;
                 case R.id.step_desc_span:
                     LocalLog.d(TAG, "目标说明");
-                    popTargetView();
+                    popTargetView(getString(R.string.target_desc));
                     break;
             }
         }

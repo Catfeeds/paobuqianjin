@@ -71,6 +71,7 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
     private final static String ACTION_VIP_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_ACTION";
     private final static int PAY_VIP_SELF_RESULT = 1;
     private final static int PAY_VIP_FRIEND_RESULT = 2;
+    private int vip;
 
     @Override
     protected int getLayoutResId() {
@@ -80,6 +81,19 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
     @Override
     protected String title() {
         return "会员专享";
+    }
+
+    @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+        vipSelf = (Button) viewRoot.findViewById(R.id.vip_self);
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            vip = intent.getIntExtra("vip", 0);
+            if (vip == 1) {
+                vipSelf.setText("已购买");
+            }
+        }
     }
 
     @Override
@@ -106,6 +120,10 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
                 startActivityForResult(payIntent, PAY_VIP_FRIEND_RESULT);
                 break;
             case R.id.vip_self:
+                if (vip == 1) {
+                    LocalLog.d(TAG, "已经是VIP");
+                    return;
+                }
                 payIntent.setAction(ACTION_VIP_SELF);
                 payIntent.setClass(getContext(), PaoBuPayActivity.class);
                 startActivityForResult(payIntent, PAY_VIP_SELF_RESULT);

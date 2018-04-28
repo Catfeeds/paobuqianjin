@@ -14,13 +14,13 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
@@ -42,6 +42,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.RedPkgRecParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.DynamicContentParam;
@@ -59,6 +60,8 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.VipNoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -127,7 +130,6 @@ import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
-import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.view.PicassoTransformation;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -1697,15 +1699,19 @@ public final class Engine {
 
                     @Override
                     public void onResponse(String s, int i) {
-                        CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
-                        if (myName != null) {
-                            myName.setText(circleDetailResponse.getData().getName());
-                        }
-                        if (imageView != null) {
-                            Presenter.getInstance(mContext).getImage(imageView, circleDetailResponse.getData().getLogo());
-                        }
-                        if (stepNum != null) {
-                            stepNum.setText(String.valueOf(circleDetailResponse.getData().getTarget()));
+                        try {
+                            CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
+                            if (myName != null) {
+                                myName.setText(circleDetailResponse.getData().getName());
+                            }
+                            if (imageView != null) {
+                                Presenter.getInstance(mContext).getImage(imageView, circleDetailResponse.getData().getLogo());
+                            }
+                            if (stepNum != null) {
+                                stepNum.setText(String.valueOf(circleDetailResponse.getData().getTarget()));
+                            }
+                        } catch (JsonSyntaxException exception) {
+                            exception.printStackTrace();
                         }
                     }
                 });
@@ -1830,13 +1836,97 @@ public final class Engine {
     }
 
     public void getSponsorRedPkg() {
-        String url = NetApi.urlBusiness + "?userid=" + String.valueOf(getId(mContext));
+        String[] location = FlagPreference.getLocation(mContext);
+        if (location != null && location.length >= 2) {
+            if (TextUtils.isEmpty(location[0]) || TextUtils.isEmpty(location[1])) {
+                LocalLog.d(TAG, "开启位置获取红包!");
+                return;
+            }
+        }
+        String url = NetApi.urlRedpacket + "?userid=" + String.valueOf(getId(mContext)) +
+                "&latitude=" + location[0] + "&longitude=" + location[1];
         OkHttpUtils
                 .get()
                 .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(homePageInterface, COMMAND_SPONSOR_PKG));
+    }
+
+    //TODO 商户详情
+    public void businessDetail(int businessid, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "businessDetail() enter");
+        String url = NetApi.urlBusiness + "/" + String.valueOf(businessid);
+        OkHttpUtils
+                .get()
+                .addHeader("headtoken", getToken(mContext))
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (innerCallBack != null) {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            innerCallBack.innerCallBack(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        if (innerCallBack != null) {
+                            LocalLog.d(TAG, "s = " + s);
+                            try {
+                                SponsorDetailResponse sponsorDetailResponse = new Gson().fromJson(s, SponsorDetailResponse.class);
+                                innerCallBack.innerCallBack(sponsorDetailResponse);
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+    }
+
+    //TODO 领取商户红包
+    public void postRedPkgRec(RedPkgRecParam pkgRecParam, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "postRedPkgRec() enter");
+        String[] location = FlagPreference.getLocation(mContext);
+        if (location != null && location.length >= 2) {
+            if (TextUtils.isEmpty(location[0]) || TextUtils.isEmpty(location[1])) {
+                LocalLog.d(TAG, "开启位置获取红包!");
+                return;
+            }
+        }
+        pkgRecParam.setUserid(getId(mContext)).setLatitude(location[0]).setLongitude(location[1]);
+        OkHttpUtils
+                .post()
+                .addHeader("headtoken", getToken(mContext))
+                .url(NetApi.urlRevRedPkg)
+                .params(pkgRecParam.getParams())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (innerCallBack != null) {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            if (innerCallBack != null) {
+                                innerCallBack.innerCallBack(errorCode);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        if (innerCallBack != null) {
+                            LocalLog.d(TAG, "s = " + s);
+                            try {
+                                RecRedPkgResponse recRedPkgResponse = new Gson().fromJson(s, RecRedPkgResponse.class);
+                                innerCallBack.innerCallBack(recRedPkgResponse);
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
     }
 
     //TODO
@@ -2651,6 +2741,7 @@ public final class Engine {
                 String city = intent.getStringExtra("city");
                 double la = intent.getDoubleExtra("latitude", 0d);
                 double lb = intent.getDoubleExtra("longitude", 0d);
+                FlagPreference.setLocation(mContext, String.valueOf(la), String.valueOf(lb));
                 this.la = la;
                 this.lb = lb;
                 postLocation(la, lb);
@@ -2793,7 +2884,7 @@ public final class Engine {
             bindThirdAccoutInterface = (BindThirdAccoutInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof BaiduMapInterface) {
             baiduMapInterface = (BaiduMapInterface) uiCallBackInterface;
-        }else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskSponsorInterface) {
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskSponsorInterface) {
             taskSponsorInterface = (TaskSponsorInterface) uiCallBackInterface;
         }
     }

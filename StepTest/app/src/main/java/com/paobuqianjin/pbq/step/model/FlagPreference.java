@@ -38,6 +38,22 @@ public final class FlagPreference {
         return errorCode;
     }
 
+    public static String[] getLocation(Context context) {
+        String[] location = new String[2];
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        location[0] = flagPreference.getString("latitude", "");
+        location[1] = flagPreference.getString("longitude", "");
+        return location;
+    }
+
+    public static void setLocation(Context context, String latitude, String longitude) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putString("latitude", latitude);
+        editor.putString("longitude", longitude);
+        editor.commit();
+    }
+
     public static void setOutTradeNo(Context context, String outTradeNo) {
         LocalLog.d(TAG, "setOutTradeNo() 保存最新订单号");
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);

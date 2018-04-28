@@ -2,7 +2,6 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DanListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -88,6 +86,8 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
+    @Bind(R.id.vip_flg)
+    ImageView vipFlg;
     private long userStep;
     LinearLayoutManager layoutManager;
     RelativeLayout relativeLayout;
@@ -123,6 +123,7 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
         layoutManager = new LinearLayoutManager(getContext());
         danRecycler = (RecyclerView) viewRoot.findViewById(R.id.dan_recycler);
         danRecycler.setLayoutManager(layoutManager);
+        vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             String usrIcon = intent.getStringExtra("usericon");
@@ -193,7 +194,6 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
             String processDanFormat = getString(R.string.steps_should_add_to);
             String processDanStr = String.format(processDanFormat, userDanResponse.getData().getTarget());
             processDan.setText(processDanStr);
-
             final float percents = (float) userDanResponse.getData().getTotal_step_number() / userDanResponse.getData().getTarget();
             processBar.post(new Runnable() {
                 @Override

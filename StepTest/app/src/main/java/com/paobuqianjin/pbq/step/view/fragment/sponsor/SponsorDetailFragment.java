@@ -11,8 +11,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
@@ -76,7 +79,6 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
     RelativeLayout gotoSponsor;
     @Bind(R.id.center_pic)
     ImageView centerPic;
-    SponsorRedPkgResponse.DataBeanX.DataBean dataBean;
     @Bind(R.id.sponsor_tel_num_str)
     TextView sponsorTelNumStr;
     @Bind(R.id.sponsor_time_num_str)
@@ -94,7 +96,7 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected String title() {
-        return "商家详情";
+        return "";
     }
 
     @Override
@@ -107,9 +109,6 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        if (dataBean != null) {
-            setTitle(dataBean.getName());
-        }
         return rootView;
     }
 
@@ -138,58 +137,89 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
             }
         });
         Intent intent = getActivity().getIntent();
-        Mview.clear();
         if (intent != null) {
-            dataBean = (SponsorRedPkgResponse.DataBeanX.DataBean) intent.getSerializableExtra(getContext().getPackageName());
-            if (dataBean != null) {
-                LocalLog.d(TAG, "dataBean  =  " + dataBean.toString());
-                sponsorTelNumStr.setText(dataBean.getTel());
-                sponsorTimeNumStr.setText(dataBean.getHours());
-                locationStr.setText(dataBean.getAddress());
-
-                int sizeEnv = 0;
-
-
-                if (dataBean.getEnvironment_images() != null) {
-                    sizeEnv = dataBean.getEnvironment_images().size();
-                    for (int i = 0; i < sizeEnv; i++) {
-                        View view = LayoutInflater.from(getContext()).inflate(R.layout.sponsor_image_view, null);
-                        ImageView imageView = (ImageView) view.findViewById(R.id.sponsor_env_img);
-                        Presenter.getInstance(getContext()).getImage(imageView, dataBean.getEnvironment_images().get(i));
-                        Mview.add(view);
-                    }
-                }
-                if (Mview.size() > 0) {
-
-                    sponsorImages.setAdapter(new ImageViewPagerAdapter(getContext(), Mview));
-                    sponsorImages.addOnPageChangeListener(onPageChangeListener);
-                }
-                int size = 0;
-                if (dataBean.getGoods_images() != null) {
-                    size = dataBean.getGoods_images().size();
-                    if (size == 1) {
-                        goodsA.setVisibility(View.VISIBLE);
-                        Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getGoods_images().get(0));
-                    } else if (size == 2) {
-                        goodsA.setVisibility(View.VISIBLE);
-                        centerPic.setVisibility(View.VISIBLE);
-                        Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getGoods_images().get(0));
-                        Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getGoods_images().get(1));
-                    } else if (size >= 3) {
-
-                        goodsA.setVisibility(View.VISIBLE);
-                        centerPic.setVisibility(View.VISIBLE);
-                        goodsB.setVisibility(View.VISIBLE);
-                        Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getGoods_images().get(0));
-                        Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getGoods_images().get(1));
-                        Presenter.getInstance(getContext()).getImage(goodsB, dataBean.getGoods_images().get(2));
-                    }
-                }
+            int businessid = intent.getIntExtra(getContext().getPackageName() + "businessid", -1);
+            if (businessid != -1) {
+                Presenter.getInstance(getContext()).businessDetail(businessid, sponsorInnerCallBack);
             }
         }
+        Mview.clear();
 
     }
 
+    private InnerCallBack sponsorInnerCallBack = new InnerCallBack() {
+        @Override
+        public void innerCallBack(Object object) {
+            if (object instanceof ErrorCode) {
+
+            } else if (object instanceof SponsorDetailResponse) {
+                if (((SponsorDetailResponse) object).getError() == 0) {
+                    SponsorDetailResponse.DataBean dataBean = ((SponsorDetailResponse) object).getData();
+                    if (dataBean != null) {
+                        LocalLog.d(TAG, "dataBean  =  " + dataBean.toString());
+                        setTitle(dataBean.getName());
+                        sponsorTelNumStr.setText(dataBean.getTel());
+                        String workTimeStr = dataBean.getDo_day();
+                        String displayTime = "";
+                        if (workTimeStr != null) {
+                            String[] workTimeStrList = workTimeStr.split(",");
+                            if (workTimeStrList != null) {
+                                if (workTimeStrList.length >= 7) {
+                                    displayTime = "周一至周日 " + dataBean.getS_do_time() + "-" + dataBean.getE_do_time();
+                                } else {
+                                    displayTime = workTimeStr + " " + dataBean.getS_do_time() + "-" + dataBean.getE_do_time();
+                                }
+                            }
+                        } else {
+                            displayTime = "周一至周日 " + "-" + dataBean.getE_do_time();
+                        }
+                        sponsorTimeNumStr.setText(displayTime);
+                        locationStr.setText(dataBean.getAddress());
+
+                        int sizeEnv = 0;
+
+
+                        if (dataBean.getLogo_imgs() != null) {
+                            sizeEnv = dataBean.getLogo_imgs().size();
+                            for (int i = 0; i < sizeEnv; i++) {
+                                View view = LayoutInflater.from(getContext()).inflate(R.layout.sponsor_image_view, null);
+                                ImageView imageView = (ImageView) view.findViewById(R.id.sponsor_env_img);
+                                Presenter.getInstance(getContext()).getImage(imageView, dataBean.getLogo_imgs().get(i).getUrl());
+                                Mview.add(view);
+                            }
+                        }
+                        if (Mview.size() > 0) {
+
+                            sponsorImages.setAdapter(new ImageViewPagerAdapter(getContext(), Mview));
+                            sponsorImages.addOnPageChangeListener(onPageChangeListener);
+                        }
+                        int size = 0;
+                        if (dataBean.getGoods_imgs() != null) {
+                            size = dataBean.getGoods_imgs().size();
+                            if (size == 1) {
+                                goodsA.setVisibility(View.VISIBLE);
+                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getGoods_imgs().get(0).getUrl());
+                            } else if (size == 2) {
+                                goodsA.setVisibility(View.VISIBLE);
+                                centerPic.setVisibility(View.VISIBLE);
+                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getGoods_imgs().get(0).getUrl());
+                                Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getGoods_imgs().get(1).getUrl());
+                            } else if (size >= 3) {
+
+                                goodsA.setVisibility(View.VISIBLE);
+                                centerPic.setVisibility(View.VISIBLE);
+                                goodsB.setVisibility(View.VISIBLE);
+                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getGoods_imgs().get(0).getUrl());
+                                Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getGoods_imgs().get(1).getUrl());
+                                Presenter.getInstance(getContext()).getImage(goodsB, dataBean.getGoods_imgs().get(2).getUrl());
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    };
 
     private ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override

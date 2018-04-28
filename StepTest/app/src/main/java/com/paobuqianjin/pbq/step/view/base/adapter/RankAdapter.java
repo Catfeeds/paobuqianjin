@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
@@ -60,6 +61,9 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             holder.searchCircleDesListName.setText(dataBean.getNickname());
             holder.loveNumber.setText(dataBean.getTotal_fee() + "元");
             holder.userid = ((ReChargeRankResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
+            if (((ReChargeRankResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
 
         } else if (mData.get(position) instanceof StepRankResponse.DataBeanX.DataBean) {
             StepRankResponse.DataBeanX.DataBean dataBean = (StepRankResponse.DataBeanX.DataBean) mData.get(position);
@@ -67,6 +71,9 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             holder.searchCircleDesListName.setText(dataBean.getNickname());
             holder.loveNumber.setText(dataBean.getStep_number() + "步");
             holder.userid = ((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
+            if (((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -95,6 +102,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
         int viewType;
         TextView rankNum;
         CircleImageView circleLogoSearch;
+        ImageView vipFlg;
         TextView searchCircleDesListName;
         TextView loveNumber;
         int userid;
@@ -112,6 +120,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             circleLogoSearch.setOnClickListener(onClickListener);
             searchCircleDesListName = (TextView) view.findViewById(R.id.search_circle_des_list_name);
             loveNumber = (TextView) view.findViewById(R.id.love_number);
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {

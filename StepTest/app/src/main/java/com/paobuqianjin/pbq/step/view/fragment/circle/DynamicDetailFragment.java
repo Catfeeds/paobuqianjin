@@ -3,14 +3,12 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,15 +17,11 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,12 +32,9 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.LikeBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.DanListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicIdDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
@@ -63,7 +54,6 @@ import com.paobuqianjin.pbq.step.view.emoji.EmotionKeyboard;
 import com.paobuqianjin.pbq.step.view.emoji.EmotionLayout;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionExtClickListener;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionSelectedListener;
-import com.paobuqianjin.pbq.step.view.fragment.owner.MyDynamicFragment;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -147,6 +137,10 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     RelativeLayout contentDetails;
     @Bind(R.id.dynamic_time)
     TextView dynamicTime;
+    @Bind(R.id.vip_flg)
+    ImageView vipFlg;
+    @Bind(R.id.dynamic_id_detail)
+    RelativeLayout dynamicIdDetail;
     private ArrayList<DynamicLikeListResponse.DataBeanX.DataBean> likeData = new ArrayList<>();
     private EmotionKeyboard mEmotionKeyboard;
     private List<View> Mview = new ArrayList<>();
@@ -252,6 +246,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         contentNumberIcon = (ImageView) viewRoot.findViewById(R.id.content_number_icon);
         contentNumberIcon.setOnClickListener(onClickListener);
         supportPics = (RelativeLayout) viewRoot.findViewById(R.id.support_pics);
+        vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             dynamicid = intent.getIntExtra(getContext().getPackageName() + "dynamicId", -1);
@@ -403,6 +398,10 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             Presenter.getInstance(getContext()).getImage(dynamicUserIcon, dynamicIdDetailResponse.getData().getAvatar());
             dynamicUserName.setText(dynamicIdDetailResponse.getData().getNickname());
             long create_time = dynamicIdDetailResponse.getData().getCreate_time();
+
+            if (dynamicIdDetailResponse.getData().getVip() == 1) {
+                vipFlg.setVisibility(View.VISIBLE);
+            }
             //服务器保存到秒级别，本地处理为毫秒级别
             LocalLog.d(TAG, "create_time = " + DateTimeUtil.formatDateTime(create_time * 1000));
             String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));

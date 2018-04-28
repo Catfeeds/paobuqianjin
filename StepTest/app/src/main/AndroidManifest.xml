@@ -176,7 +176,12 @@
         <!-- 选择任务发布对象 -->
         <activity
             android:name=".view.activity.SelectFriendActivity"
-            android:theme="@style/ImageTranslucentTheme" />
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.ACTION_TASK"></action>
+                <action android:name="com.paobuqianjin.pbq.step.ACTION_VIP"></action>
+            </intent-filter>
+        </activity>
         <!-- 任务详情 -->
         <activity
             android:name=".view.activity.TaskDetailActivity"

@@ -98,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:includeFontPadding="true"
-                        android:text="6"
+                        android:text=""
                         android:textColor="@color/color_161727"
                         android:textSize="20dp" />
 

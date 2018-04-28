@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +70,8 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
     CircleImageView userIco;
     @Bind(R.id.cache_size)
     TextView cacheSize;
+    @Bind(R.id.vip_flg)
+    ImageView vipFlg;
     private UserInfoResponse.DataBean userInfo;
 
     @Override
@@ -98,6 +101,10 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
             userInfo = (UserInfoResponse.DataBean) intent.getSerializableExtra("userinfo");
             if (userInfo != null) {
                 Presenter.getInstance(getContext()).getImage(userIco, userInfo.getAvatar());
+                if (userInfo.getVip() == 1) {
+                    vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
+                    vipFlg.setVisibility(View.VISIBLE);
+                }
             }
         }
         cacheSize = (TextView) viewRoot.findViewById(R.id.cache_size);

@@ -143,6 +143,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicPicOne, data.get(position).getImages().get(0));
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar());
 
+
                 String content = data.get(position).getDynamic();
                 LocalLog.d(TAG, "content = " + content);
                 if (content != null) {
@@ -233,6 +234,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             }
             ((OneOrZeroViewHodler) holder).position = position;
+            if (data.get(position).getVip() == 1) {
+                ((OneOrZeroViewHodler) holder).vipFlg.setVisibility(View.VISIBLE);
+            }
         } else if (holder instanceof TwoPicViewHolder) {
             ((TwoPicViewHolder) holder).timeStmp.setText(create_timeStr);
             ((TwoPicViewHolder) holder).dynamicid = data.get(position).getId();
@@ -285,6 +289,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             LocalLog.d(TAG, "2图");
             ((TwoPicViewHolder) holder).position = position;
+            if (data.get(position).getVip() == 1) {
+                ((TwoPicViewHolder) holder).vipFlg.setVisibility(View.VISIBLE);
+            }
         } else if (holder instanceof ThreePicViewHolder) {
             ((ThreePicViewHolder) holder).timeStmp.setText(create_timeStr);
             ((ThreePicViewHolder) holder).dynamicid = data.get(position).getId();
@@ -332,6 +339,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             }
             ((ThreePicViewHolder) holder).position = position;
+            if (data.get(position).getVip() == 1) {
+                ((ThreePicViewHolder) holder).vipFlg.setVisibility(View.VISIBLE);
+            }
         } else {
             LocalLog.e(TAG, " unknown data!");
         }
@@ -376,11 +386,14 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ImageView likeNumIcon;
         @Bind(R.id.time_stmp)
         TextView timeStmp;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
         int dynamicid = -1;
         int userid = -1;
         int is_vote = 0;
         int vote = 0;
         int position = 0;
+
         DynamicAllIndexResponse.DataBeanX.DataBean dataBean;
         private InnerCallBack innerCallBack = new InnerCallBack() {
             @Override
@@ -437,6 +450,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
             likeNumIcon.setOnClickListener(onClickListener);
             timeStmp = (TextView) view.findViewById(R.id.time_stmp);
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -507,6 +521,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ImageView likeNumIcon;
         @Bind(R.id.time_stmp)
         TextView timeStmp;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
         int dynamicid = -1;
         int userid = -1;
         int is_vote = 0;
@@ -557,7 +573,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             timeStmp = (TextView) view.findViewById(R.id.time_stmp);
             scanMore.setOnClickListener(onClickListener);
             likeNumIcon.setOnClickListener(onClickListener);
-
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -625,6 +641,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ImageView likeNumIcon;
         @Bind(R.id.time_stmp)
         TextView timeStmp;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
         int viewType = -1;
         //@Bind(R.id.scan_more)
         TextView scanMore;
@@ -659,6 +677,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
             timeStmp = (TextView) view.findViewById(R.id.time_stmp);
             likeNumIcon.setOnClickListener(onClickListener);
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
 
         }
 

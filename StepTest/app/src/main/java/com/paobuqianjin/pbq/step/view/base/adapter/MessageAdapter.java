@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageContentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageLikeResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -108,6 +107,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     ((MessageContentViewHolder) holder).dynamicId = ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getDynamicid();
                     ((MessageContentViewHolder) holder).is_vote = ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getDynamicdata().getIs_vote();
                 }
+                if (((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                    ((MessageContentViewHolder) holder).vipFlg.setVisibility(View.VISIBLE);
+                }
             } else if (mData.get(position) instanceof MessageLikeResponse.DataBeanX.DataBean) {
                 if (holder instanceof MessageLikeViewHolder) {
                     Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).rectIcon,
@@ -147,6 +149,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     }
                     ((MessageLikeViewHolder) holder).dynamicId = ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getDynamicid();
                     ((MessageLikeViewHolder) holder).is_vote = ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getDynamicdata().getIs_vote();
+                }
+                if (((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                    ((MessageLikeViewHolder) holder).vipFlg.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -191,6 +196,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         RelativeLayout contentSpan;
         @Bind(R.id.time_stmap)
         TextView timeStmap;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
 
         int dynamicId = -1;
         int is_vote = 0;
@@ -221,6 +228,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             imageB = (ImageView) view.findViewById(R.id.image_b);
             imageC = (ImageView) view.findViewById(R.id.image_c);
             timeStmap = (TextView) view.findViewById(R.id.time_stmap);
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
         }
     }
 
@@ -249,7 +257,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         RelativeLayout contentSpan;
         @Bind(R.id.time_stmap)
         TextView timeStmap;
-
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
         int dynamicId = -1;
         int is_vote = 0;
 
@@ -278,6 +287,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             imageB = (ImageView) view.findViewById(R.id.image_b);
             imageC = (ImageView) view.findViewById(R.id.image_c);
             timeStmap = (TextView) view.findViewById(R.id.time_stmap);
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
         }
     }
 }

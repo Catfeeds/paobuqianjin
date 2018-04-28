@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
@@ -65,6 +66,9 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
                 holder.btFollow.setText("未关注");
             }
             holder.phoneNum = ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getPhone();
+            if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
         } else if (mData.get(position) instanceof FriendAddResponse.DataBean.OutSystemBean) {
             holder.dearName.setText(((FriendAddResponse.DataBean.OutSystemBean) mData.get(position)).getName());
             holder.btFollow.setText("邀请");
@@ -85,6 +89,8 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
         @Bind(R.id.bt_follow)
         Button btFollow;
         String phoneNum;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
 
         public LocalContactViewHolder(View view) {
             super(view);
@@ -96,6 +102,7 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
             dearName = (TextView) view.findViewById(R.id.dear_name);
             btFollow = (Button) view.findViewById(R.id.bt_follow);
             btFollow.setOnClickListener(onClickListener);
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {

@@ -17,6 +17,16 @@
             android:layout_marginLeft="14dp"
             android:src="@drawable/default_head_ico" />
 
+        <ImageView
+	    android:id="@+id/vip_flg"
+            android:layout_width="27dp"
+            android:layout_height="13dp"
+            android:layout_alignBottom="@+id/dynamic_user_icon"
+            android:layout_alignRight="@+id/dynamic_user_icon"
+            android:scaleType="centerCrop"
+            android:src="@drawable/vip_flg"
+            android:visibility="gone" />
+
         <TextView
             android:id="@id/dynamic_user_name"
             android:layout_width="wrap_content"
@@ -24,10 +34,10 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="15dp"
             android:layout_toEndOf="@+id/dynamic_user_icon"
-            android:text=""
             android:ellipsize="end"
             android:maxEms="8"
             android:singleLine="true"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="18dp" />
 
@@ -57,12 +67,12 @@
             android:id="@+id/dynamic_content_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/image_span"
+            android:layout_marginTop="15dp"
             android:gravity="left"
             android:text=""
-            android:layout_below="@+id/image_span"
             android:textColor="@color/color_161727"
-            android:textSize="15dp"
-            android:layout_marginTop="15dp"/>
+            android:textSize="15dp" />
 
         <RelativeLayout
             android:id="@+id/image_span"
@@ -77,15 +87,16 @@
                 android:src="@drawable/circle_live_default_a" />
 
             <ImageView
-                android:layout_marginLeft="9dp"
-                android:layout_toEndOf="@+id/dynamic_pic_one"
                 android:id="@+id/dynamic_pic_two"
                 android:layout_width="150dp"
                 android:layout_height="110dp"
+                android:layout_marginLeft="9dp"
+                android:layout_toEndOf="@+id/dynamic_pic_one"
                 android:scaleType="centerCrop"
                 android:src="@drawable/circle_live_default_a" />
         </RelativeLayout>
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/location_support_rel"
         android:layout_width="match_parent"
@@ -183,11 +194,11 @@
     </RelativeLayout>
 
     <ImageView
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/content_des"
-        android:background="@color/color_f6f6f6"
         android:id="@+id/line_content_list"
         android:layout_width="match_parent"
-        android:layout_height="10dp" />
+        android:layout_height="10dp"
+        android:layout_below="@+id/content_des"
+        android:layout_marginTop="20dp"
+        android:background="@color/color_f6f6f6" />
 
 </RelativeLayout>

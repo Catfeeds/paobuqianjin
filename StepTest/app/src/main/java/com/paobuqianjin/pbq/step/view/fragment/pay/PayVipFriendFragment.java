@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -126,6 +127,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     private String spend;
     private boolean isSelfVipPay = false;
     private int number = 0;
+    private final static String ACTION_VIP = "com.paobuqianjin.pbq.step.ACTION_VIP";
 
     public enum PayStyles {
         WxPay,//微信支付
@@ -336,6 +338,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 Intent intent = new Intent();
                 intent.putExtra(getActivity().getPackageName(), friendBundleData);
                 intent.setClass(getActivity(), SelectFriendActivity.class);
+                intent.setAction(ACTION_VIP);
                 startActivityForResult(intent, SELECT_FRIENDS);
                 break;
             case R.id.choice_ico_span:
@@ -367,6 +370,11 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 break;
             case R.id.confirm_pay:
                 vipPostParam.setUserids(userids).setSpend(String.valueOf(payFloat));
+                LocalLog.d(TAG, "参数检查");
+                if (TextUtils.isEmpty(userids)) {
+                    Toast.makeText(getContext(), "请至少选择一个好友", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Presenter.getInstance(getContext()).postVipNo(vipPostParam, innerCallBack);
                 break;
         }

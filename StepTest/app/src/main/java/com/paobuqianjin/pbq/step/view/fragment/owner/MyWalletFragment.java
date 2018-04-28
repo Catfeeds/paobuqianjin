@@ -132,7 +132,6 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         super.onAttach(context);
         Presenter.getInstance(context).attachUiInterface(this);
         Presenter.getInstance(context).getUserPackageMoney();
-        Presenter.getInstance(context).getIncome("today", 1, 10);
     }
 
     @Override
@@ -395,7 +394,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                     }
                 }
 
-                Presenter.getInstance(getContext()).getIncome("yesterday", pageIndexYD, PAGE_SIZE_DEFAULT);
+                Presenter.getInstance(getContext()).getIncome("today", pageIndexYD, PAGE_SIZE_DEFAULT);
             } else if (mCurrentIndex == 1) {
                 if (pageMonthCount == 0) {
                     LocalLog.d(TAG, "第一次刷新");

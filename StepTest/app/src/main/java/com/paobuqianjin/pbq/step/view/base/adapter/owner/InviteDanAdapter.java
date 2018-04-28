@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
@@ -55,6 +56,10 @@ public class InviteDanAdapter extends RecyclerView.Adapter<InviteDanAdapter.Invi
             holder.incomeReadPkg.setText(inviteRedPkgStr);
             holder.inviteNumDes.setText(inviteStr);
             holder.inviteRank.setText(inviteDanStr);
+
+            if (((InviteDanResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -84,6 +89,8 @@ public class InviteDanAdapter extends RecyclerView.Adapter<InviteDanAdapter.Invi
         TextView incomeReadPkg;
         @Bind(R.id.invite_rank)
         TextView inviteRank;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
 
         public InviteDanViewHolder(View view) {
             super(view);
@@ -96,6 +103,7 @@ public class InviteDanAdapter extends RecyclerView.Adapter<InviteDanAdapter.Invi
             inviteNumDes = (TextView) view.findViewById(R.id.invite_num_des);
             incomeReadPkg = (TextView) view.findViewById(R.id.income_read_pkg);
             inviteRank = (TextView) view.findViewById(R.id.invite_rank);
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
         }
     }
 }

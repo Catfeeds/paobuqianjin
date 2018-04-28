@@ -175,8 +175,10 @@ public final class OwnerFragment extends BaseFragment {
     ImageView goToVip;
     @Bind(R.id.vip_span)
     RelativeLayout vipSpan;
+    @Bind(R.id.vip_flg)
+    ImageView vipFlg;
     private String userAvatar;
-
+    private int vip = 0;
     private UserInfoResponse userInfoResponse;
 
     @Override
@@ -227,7 +229,7 @@ public final class OwnerFragment extends BaseFragment {
             LocalLog.d(TAG, "###############");
         }
 
-
+        vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
     }
 
     @Override
@@ -325,6 +327,7 @@ public final class OwnerFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.vip_span:
+                intent.putExtra("vip", vip);
                 intent.setClass(getContext(), VipActivity.class);
                 startActivity(intent);
                 break;
@@ -353,6 +356,11 @@ public final class OwnerFragment extends BaseFragment {
                 circle.setText(String.valueOf(userInfoResponse.getData().getCircleCount()));
                 friends.setText(String.valueOf(userInfoResponse.getData().getFollowCount()));
                 urlIcon = userInfoResponse.getData().getAvatar();
+                vip = userInfoResponse.getData().getVip();
+                if (vip == 1) {
+                    LocalLog.d(TAG, "当前用户为VIP");
+                    vipFlg.setVisibility(View.VISIBLE);
+                }
                 if (userInfoResponse.getData().getSex() == 0) {
                     userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.man_head_back));
                     manWoman.setVisibility(View.GONE);

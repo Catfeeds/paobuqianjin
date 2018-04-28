@@ -68,6 +68,16 @@
                         android:layout_marginLeft="47dp"
                         android:src="@drawable/default_head_ico" />
 
+                    <ImageView
+		        android:id="@+id/vip_flg"
+                        android:layout_width="27dp"
+                        android:layout_height="13dp"
+                        android:layout_alignBottom="@+id/release_use_ico"
+                        android:layout_alignRight="@+id/release_use_ico"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/vip_flg"
+                        android:visibility="gone" />
+
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -313,13 +323,13 @@
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 
     <Button
-        android:stateListAnimator="@null"
         android:id="@+id/button_action"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/color_b8bbbd"
         android:gravity="center"
+        android:stateListAnimator="@null"
         android:text="领取奖励"
         android:textColor="@color/color_f8"
         android:textSize="36dp" />

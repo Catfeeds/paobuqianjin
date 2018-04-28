@@ -21,15 +21,11 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendWeekResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
-
-import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -79,6 +75,8 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     RelativeLayout buttoneLeftBar;
     @Bind(R.id.rank_icon)
     ImageView rankIcon;
+    @Bind(R.id.vip_flg)
+    ImageView vipFlg;
 
     private int pageIndexDay = 1, pageCountDay = 0, pageIndexWeek = 1, pageCountWeek = 0;
     private final static int PAGE_DEFAULT_SIZE = 10;
@@ -131,6 +129,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         timeGo = (TextView) viewRoot.findViewById(R.id.time_go);
         goDownSpan.setOnClickListener(onClickListener);
         buttoneLeftBar = (RelativeLayout) viewRoot.findViewById(R.id.buttone_left_bar);
+        vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
         buttoneLeftBar.setOnClickListener(onClickListener);
 
         Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndexDay, PAGE_DEFAULT_SIZE);
@@ -248,6 +247,9 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                 yourDan.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getRank()));
                 stepNumMy.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
                 Presenter.getInstance(getContext()).getImage(headIconUser, friendStepRankDayResponse.getData().getData().getMydata().getAvatar());
+                if (friendStepRankDayResponse.getData().getData().getMydata().getVip() == 1) {
+                    vipFlg.setVisibility(View.VISIBLE);
+                }
                 adapter = new HonorDetailAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember());
                 danDetailRecycler.setAdapter(adapter);
                 if (friendStepRankDayResponse.getData().getData().getMember().size() > 0) {
@@ -265,6 +267,9 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                 loadMoreDay(friendStepRankDayResponse);
                 if (pageIndexDay < pageCountDay) {
                     pageIndexDay++;
+                    if (getContext() == null) {
+                        return;
+                    }
                     Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndexDay, PAGE_DEFAULT_SIZE);
                 }
             }

@@ -123,7 +123,7 @@ public class NetApi {
     //TODO 用户在圈子中的排名 http://119.29.10.64/v1/Circle/getUserCircleRank?userid=30&circleid=100302
     public final static String urlUserCircleRank = "http://119.29.10.64/v1/Circle/getUserCircleRank?userid=";
     //TODO 获取附近广告商户
-    public final static String urlBusiness = "http://119.29.10.64/v1/Business";
+    public final static String urlRedpacket = "http://119.29.10.64/v1/Redpacket";
     //TODO 根据手机号码修改密码
     public final static String urlPassWord = "http://119.29.10.64/v1/user/modifyPasswordByMobile";
     //TODO 获取登录记录
@@ -155,7 +155,11 @@ public class NetApi {
     //TODO share
     public final static String urlShare = "http://share.runmoneyin.com/in.html?";
     //TODO 商户发红包
-    public final static String urlSendTaskRedBag = url+"v1/Redpacket";
-	 //TODO VIP
-    public final static String urlVip =  "http://119.29.10.64/v1/UserVip";
+    public final static String urlSendTaskRedBag = url + "v1/Redpacket";
+    //TODO VIP
+    public final static String urlVip = "http://119.29.10.64/v1/UserVip";
+    //TODO 用户领取商家红包
+    public final static String urlRevRedPkg = urlRedpacket + "/receiveRed";
+    //TODO 商户详情接口
+    public final static String urlBusiness = "http://119.29.10.64/v1/Business";
 }

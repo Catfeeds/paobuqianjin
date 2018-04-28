@@ -166,6 +166,15 @@ public class MyRecTaskRecordResponse {
             private int task_days;
             private int is_receive;
             private int is_finished;
+
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
             private int vip;
 
             public int getId() {

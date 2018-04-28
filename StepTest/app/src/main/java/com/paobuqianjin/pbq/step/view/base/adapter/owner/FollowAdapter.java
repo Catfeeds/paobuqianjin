@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
@@ -79,6 +80,9 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
             holder.stytle = 0;
             holder.btFollow.setText("关注");
+            if (((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
         } else if (mData.get(position) instanceof UserIdFollowResponse.DataBeanX.DataBean) {
             LocalLog.d(TAG, "我关注的");
             holder.dearName.setText(((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
@@ -88,6 +92,9 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_not_fllow_nearby));
             holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_646464));
             holder.stytle = 1;
+            if (((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
         } else if (mData.get(position) instanceof UserFollowOtOResponse.DataBeanX.DataBean) {
             LocalLog.d(TAG, "互相关注");
             holder.dearName.setText(((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
@@ -97,6 +104,9 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
             holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
             holder.stytle = 2;
+            if (((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
         } else {
             LocalLog.d(TAG, "not match");
         }
@@ -115,6 +125,8 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
         TextView dearName;
         @Bind(R.id.bt_follow)
         Button btFollow;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
         int userid = -1;
         int stytle = -1;
 
@@ -205,6 +217,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             btFollow = (Button) viewRoot.findViewById(R.id.bt_follow);
             btFollow.setOnClickListener(onClickListener);
             userNearIcon.setOnClickListener(onClickListener);
+            vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
         }
     }
 }

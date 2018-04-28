@@ -26,6 +26,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.RedPkgRecParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
@@ -271,6 +272,15 @@ public final class Presenter {
 
     public void getSponsorRedPkg() {
         engine.getSponsorRedPkg();
+    }
+
+    public void businessDetail(int businessid, final InnerCallBack innerCallBack) {
+        engine.businessDetail(businessid, innerCallBack);
+    }
+
+    //TODO 领取商家红包
+    public void postRedPkgRec(RedPkgRecParam pkgRecParam, final InnerCallBack innerCallBack) {
+        engine.postRedPkgRec(pkgRecParam, innerCallBack);
     }
 
     //TODO 获取收益
@@ -676,6 +686,7 @@ public final class Presenter {
     public void inviteMsg(String phoneNum) {
         engine.inviteMsg(phoneNum);
     }
+
     public void postTaskSponsorRelease(TaskSponsorParam taskSponsorParam) {
         engine.postTaskSponsorRelease(taskSponsorParam);
     }

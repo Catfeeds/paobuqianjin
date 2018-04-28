@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
@@ -63,6 +64,9 @@ public class RechargeRankSimpleAdapter extends RecyclerView.Adapter<RechargeRank
         holder.moneyNumDes.setText(mData.get(position).getTotal_fee() + "元");
         holder.userid = mData.get(position).getUserid();
         Presenter.getInstance(context).getImage(holder.userIconMoney, mData.get(position).getAvatar());
+        if (mData.get(position).getVip() == 1) {
+            holder.vipFlg.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -75,6 +79,8 @@ public class RechargeRankSimpleAdapter extends RecyclerView.Adapter<RechargeRank
     public class RechargeRankSimpleViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.user_icon_money)
         CircleImageView userIconMoney;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
         @Bind(R.id.money_num_des)
         TextView moneyNumDes;
         int userid;
@@ -103,6 +109,7 @@ public class RechargeRankSimpleAdapter extends RecyclerView.Adapter<RechargeRank
             moneyNumDes = (TextView) view.findViewById(R.id.money_num_des);
             userIconMoney = (CircleImageView) view.findViewById(R.id.user_icon_money);
             userIconMoney.setOnClickListener(onClickListener);
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
         }
     }
 

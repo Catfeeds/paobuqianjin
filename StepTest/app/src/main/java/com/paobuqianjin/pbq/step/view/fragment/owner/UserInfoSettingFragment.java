@@ -144,6 +144,10 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
     PutUserInfoParam putUserInfoParam = new PutUserInfoParam();
     @Bind(R.id.confirm_setting)
     Button confirmSetting;
+    @Bind(R.id.vip_flg)
+    ImageView vipFlg;
+    @Bind(R.id.line_change_sex)
+    ImageView lineChangeSex;
     private String localAvatar;
 
     private View popBirthSelectView;
@@ -221,10 +225,15 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 } else if (userInfo.getSex() == 1) {
                     maleText.setText("女");
                 }
+                if (userInfo.getVip() == 1) {
+                    vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
+                    vipFlg.setVisibility(View.VISIBLE);
+                }
                 birthDayTV.setText(userInfo.getBirthyear() + "年" + userInfo.getBirthmonth() + "月" + userInfo.getBirthday() + "日");
                 highNum.setText(String.valueOf(userInfo.getHeight()) + "cm");
                 weightNum.setText(String.valueOf(userInfo.getWeight()) + "kg");
                 cityNames.setText(String.valueOf(userInfo.getCity()));
+
                 LocalLog.d(TAG, "ID = " + userInfo.getId());
             }
         }

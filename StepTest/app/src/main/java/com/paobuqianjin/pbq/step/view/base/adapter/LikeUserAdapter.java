@@ -6,13 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
-import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.List;
 
@@ -49,8 +48,14 @@ public class LikeUserAdapter extends RecyclerView.Adapter<LikeUserAdapter.LikeUs
     private void updateListItem(LikeUserViewHolder holder, int position) {
         if (mData.get(position) instanceof DynamicLikeListResponse.DataBeanX.DataBean) {
             Presenter.getInstance(context).getImage(holder.shareIcon, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
+            if (((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
         } else if (mData.get(position) instanceof UserFriendResponse.DataBeanX.DataBean) {
             Presenter.getInstance(context).getImage(holder.shareIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
+            if (((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -79,6 +84,8 @@ public class LikeUserAdapter extends RecyclerView.Adapter<LikeUserAdapter.LikeUs
     public class LikeUserViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.share_icon)
         CircleImageView shareIcon;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
 
         public LikeUserViewHolder(View view, int viewType) {
             super(view);
@@ -87,6 +94,7 @@ public class LikeUserAdapter extends RecyclerView.Adapter<LikeUserAdapter.LikeUs
 
         private void initView(View view) {
             shareIcon = (CircleImageView) view.findViewById(R.id.share_icon);
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
         }
     }
 

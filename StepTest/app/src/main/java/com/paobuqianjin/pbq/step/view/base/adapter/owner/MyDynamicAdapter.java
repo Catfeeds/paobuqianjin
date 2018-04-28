@@ -100,6 +100,9 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
 
     private void upDataListItem(MyDynamicViewHolder holder, int position) {
         if (mData.get(position) instanceof DynamicPersonResponse.DataBeanX.DataBean) {
+            if (((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
             holder.dots = new ArrayList<>();
             holder.Mview = new ArrayList<>();
             LocalLog.d(TAG, "upDataListItem() enter  data " + ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).toString());
@@ -397,6 +400,8 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
         ImageView deleteDynamic;
         @Bind(R.id.create_time)
         TextView createTime;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
 
         List<View> Mview;
         List<View> dots;
@@ -461,7 +466,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
             deleteDynamic = (ImageView) viewRoot.findViewById(R.id.delete_dynamic);
 
             picViewpager = (RelativeLayout) viewRoot.findViewById(R.id.pic_viewpager);
-
+            vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
             dot1 = viewRoot.findViewById(R.id.dot_1);
             dot2 = viewRoot.findViewById(R.id.dot_2);
             dot3 = viewRoot.findViewById(R.id.dot_3);

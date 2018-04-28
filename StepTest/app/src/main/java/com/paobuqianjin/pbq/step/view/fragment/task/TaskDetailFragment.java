@@ -16,11 +16,8 @@ import android.widget.Toast;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskRecDetailResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
-import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.TaskDetailRecInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -94,6 +91,8 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
     Button buttonAction;
     @Bind(R.id.step_des_run)
     TextView stepDesRun;
+    @Bind(R.id.vip_flg)
+    ImageView vipFlg;
     private int taskId = -1;
 
     @Override
@@ -145,6 +144,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
         tryTarget = (TextView) viewRoot.findViewById(R.id.try_target);
         buttonAction = (Button) viewRoot.findViewById(R.id.button_action);
         stepDesRun = (TextView) viewRoot.findViewById(R.id.step_des_run);
+        vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
     }
 
     @Override
@@ -165,7 +165,9 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
             dearName.setText(taskRecDetailResponse.getData().getNickname());
             dearId.setText(String.valueOf(taskRecDetailResponse.getData().getUserid()));
             stepDesRun.setText(String.valueOf(taskRecDetailResponse.getData().getUser_step()) + "/" + String.valueOf(taskRecDetailResponse.getData().getTarget_step()));
-
+            if (taskRecDetailResponse.getData().getVip() == 1){
+                vipFlg.setVisibility(View.VISIBLE);
+            }
             long startTime = taskRecDetailResponse.getData().getActivity_start_time();
             String start_timeStr = DateTimeUtil.formatDateTime(startTime * 1000);
 

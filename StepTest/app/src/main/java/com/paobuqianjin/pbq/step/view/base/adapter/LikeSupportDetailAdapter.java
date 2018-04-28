@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -60,6 +61,10 @@ public class LikeSupportDetailAdapter extends RecyclerView.Adapter<LikeSupportDe
             } else {
                 Presenter.getInstance(context).postFollowStatus(holder.loveNumber, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getUserid());
             }
+
+            if (((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -81,6 +86,8 @@ public class LikeSupportDetailAdapter extends RecyclerView.Adapter<LikeSupportDe
         Button loveNumber;
         @Bind(R.id.like_support_list_rel)
         RelativeLayout likeSupportListRel;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
         int userid = -1;
 
         public LikeSupportViewHolder(View view) {
@@ -94,6 +101,7 @@ public class LikeSupportDetailAdapter extends RecyclerView.Adapter<LikeSupportDe
             searchCircleDesListName = (TextView) view.findViewById(R.id.search_circle_des_list_name);
             loveNumber = (Button) view.findViewById(R.id.love_number);
             loveNumber.setOnClickListener(onClickListener);
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {

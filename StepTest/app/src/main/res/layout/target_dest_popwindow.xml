@@ -26,7 +26,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="20dp"
                 android:maxEms="16"
-                android:text="系统根据您的年龄为您设置每日目标步数，12周岁以下4000步，12至50周岁以内6000步,50周岁以上400步。"
+                android:text=""
                 android:textColor="@color/color_161727"
                 android:textSize="17dp" />
 
@@ -44,10 +44,10 @@
 
                 <TextView
                     android:id="@+id/read_des"
-                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:gravity="center"
                     android:text="好的"
                     android:textColor="@color/color_6c71c4"
                     android:textSize="20dp"

@@ -6,11 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -99,7 +99,9 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
             holder.parent_id = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getId();
             holder.reply_userid = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
             holder.dynamicid = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getDynamicid();
-
+            if (((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -126,6 +128,8 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
         TextView timeContentB;
         @Bind(R.id.contend_all_recycler)
         RecyclerView contendAllRecycler;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
         MiddleContentAdapter middleContentAdapter;
         ArrayList<DynamicCommentListResponse.DataBeanX.DataBean.ChildBean> childBeans = new ArrayList<>();
         ReflashInterface reflashInterface = new ReflashInterface() {
@@ -182,6 +186,7 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
             layoutManager = new LinearLayoutManager(context);
             contendAllRecycler.setLayoutManager(layoutManager);
             userContentRanka.setOnClickListener(onClickListener);
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {

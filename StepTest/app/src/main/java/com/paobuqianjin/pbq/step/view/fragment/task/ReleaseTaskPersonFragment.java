@@ -106,7 +106,7 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
     private String friends;
     LinearLayoutManager layoutManager;
     FriendBundleData friendBundleData = null;
-
+    private final static String ACTION_TASK = "com.paobuqianjin.pbq.step.ACTION_TASK";
 
     @Override
     protected int getLayoutResId() {
@@ -202,6 +202,7 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
             case R.id.add_task_friend:
                 LocalLog.d(TAG, "添加任务好友");
                 intent.putExtra(getActivity().getPackageName(), friendBundleData);
+                intent.setAction(ACTION_TASK);
                 intent.setClass(getActivity(), SelectFriendActivity.class);
                 startActivityForResult(intent, SELECT_FRIENDS);
                 break;
@@ -209,6 +210,7 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                 LocalLog.d(TAG, "查看所有接入任务的好友");
                 intent.putExtra(getActivity().getPackageName(), friendBundleData);
                 intent.setClass(getActivity(), SelectFriendActivity.class);
+                intent.setAction(ACTION_TASK);
                 startActivityForResult(intent, SELECT_FRIENDS);
                 break;
             case R.id.btn_confirm:

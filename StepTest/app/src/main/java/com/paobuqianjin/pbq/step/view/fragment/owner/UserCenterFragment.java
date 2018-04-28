@@ -28,13 +28,9 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.UserDynamicRecordAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -80,6 +76,8 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     TextView targerNum;
     LinearLayoutManager layoutManager;
     QueryFollowStateParam queryFollowStateParam;
+    @Bind(R.id.vip_flg)
+    ImageView vipFlg;
 
     @Override
     protected String title() {
@@ -133,6 +131,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
         layoutManager = new LinearLayoutManager(getContext());
         dynamicRecordRecycler = (RecyclerView) viewRoot.findViewById(R.id.dynamic_record_recycler);
         dynamicRecordRecycler.setLayoutManager(layoutManager);
+        vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
     }
 
     @Override
@@ -162,6 +161,9 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
                 locationCity.setText(userInfoResponse.getData().getCity());
             } else {
                 locationCity.setText(userInfoResponse.getData().getProvince() + "," + userInfoResponse.getData().getCity());
+            }
+            if (userInfoResponse.getData().getVip() == 1) {
+                vipFlg.setVisibility(View.VISIBLE);
             }
         } else if (userInfoResponse.getError() == 0) {
             LocalLog.d(TAG, "Token 过期!");

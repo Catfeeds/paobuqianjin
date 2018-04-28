@@ -11,9 +11,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.List;
 
@@ -29,6 +27,7 @@ public class HonorAdapter extends RecyclerView.Adapter<HonorAdapter.HonorAdapter
     Context context;
     List<?> mData;
     private static int DEFAULT_COUNT = 3;
+
 
     public HonorAdapter(Context context, List<?> data) {
         this.context = context;
@@ -52,6 +51,10 @@ public class HonorAdapter extends RecyclerView.Adapter<HonorAdapter.HonorAdapter
             Presenter.getInstance(context).getImage(holder.headIconUser, ((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar());
             holder.stepNum.setText(String.valueOf(((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getNickname());
+
+            if (((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
         } else if (mData.get(position) instanceof CircleStepRankResponse.DataBeanX.DataBean.CircleBean) {
             if (position == 0) {
                 holder.rankIcon.setImageResource(R.drawable.honor_master);
@@ -63,6 +66,9 @@ public class HonorAdapter extends RecyclerView.Adapter<HonorAdapter.HonorAdapter
             Presenter.getInstance(context).getImage(holder.headIconUser, ((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getAvatar());
             holder.stepNum.setText(String.valueOf(((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getNickname());
+            if (((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -93,6 +99,8 @@ public class HonorAdapter extends RecyclerView.Adapter<HonorAdapter.HonorAdapter
         TextView userNameRank;
         @Bind(R.id.step_num)
         TextView stepNum;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
 
         public HonorAdapterViewHolder(View view) {
             super(view);
@@ -104,6 +112,7 @@ public class HonorAdapter extends RecyclerView.Adapter<HonorAdapter.HonorAdapter
             headIconUser = (CircleImageView) view.findViewById(R.id.head_icon_user);
             userNameRank = (TextView) view.findViewById(R.id.user_name_rank);
             stepNum = (TextView) view.findViewById(R.id.step_num);
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
         }
     }
 }

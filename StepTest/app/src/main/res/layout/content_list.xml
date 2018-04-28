@@ -18,6 +18,16 @@
             android:layout_centerVertical="true"
             android:src="@drawable/default_head_ico" />
 
+        <ImageView
+	    android:id="@+id/vip_flg"
+            android:layout_width="27dp"
+            android:layout_height="13dp"
+            android:layout_alignBottom="@+id/rect_icon"
+            android:layout_alignRight="@+id/rect_icon"
+            android:scaleType="centerCrop"
+            android:src="@drawable/vip_flg"
+            android:visibility="gone" />
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -147,6 +147,8 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     Button confirm;
     @Bind(R.id.person_message_fg)
     RelativeLayout personMessageFg;
+    @Bind(R.id.vip_flg)
+    ImageView vipFlg;
     private View popBirthSelectView;
     private View popWeighSelectView;
     private View popHighSelectView;

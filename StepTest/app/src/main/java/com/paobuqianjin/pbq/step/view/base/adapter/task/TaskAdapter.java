@@ -7,22 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.MyReleaseDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskDetailActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -35,7 +32,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
     private final static String TAG = TaskAdapter.class.getSimpleName();
     private final static int defaultCount = 5;
-
     private Context context;
     private List<?> mData;
     private ReceiveTaskInterface receiveTaskInterface;
@@ -55,11 +51,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     @Override
-    public void onBindViewHolder(TaskAdapter.TaskViewHolder holder, int position) {
+    public void onBindViewHolder(TaskViewHolder holder, int position) {
         updateListItem(holder, position);
     }
 
-    private void updateListItem(TaskAdapter.TaskViewHolder holder, int position) {
+    private void updateListItem(TaskViewHolder holder, int position) {
         if (mData.get(position) instanceof MyRecTaskRecordResponse.DataBeanX.DataBean) {
             Presenter.getInstance(context).getImage(holder.headIcon, ((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
             holder.taskDesc.setText(((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getTask_name());
@@ -74,13 +70,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     holder.releaseDetails.setText("领取奖励");
                 }
             }
+            if (((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
 
             holder.taskId = ((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getId();
         }
     }
 
     @Override
-    public TaskAdapter.TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new TaskViewHolder(LayoutInflater.from(context).inflate(R.layout.task_list_item, parent, false));
     }
 
@@ -96,6 +95,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     public class TaskViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.head_icon)
         CircleImageView headIcon;
+        @Bind(R.id.vip_flg)
+        ImageView vipFlg;
         @Bind(R.id.task_desc)
         TextView taskDesc;
         @Bind(R.id.task_invite)
@@ -110,7 +111,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         ReflashInterface reflashInterface = new ReflashInterface() {
             @Override
             public void notifyReflash(Object object) {
-                LocalLog.d(TAG,"ID = " + taskId + "领取成功");
+                LocalLog.d(TAG, "ID = " + taskId + "领取成功");
             }
         };
 
@@ -125,6 +126,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             taskInvite = (TextView) view.findViewById(R.id.task_invite);
             taskGift = (TextView) view.findViewById(R.id.task_gift);
             releaseDetails = (Button) view.findViewById(R.id.release_details);
+            vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
             releaseDetails.setOnClickListener(onClickListener);
             view.setOnClickListener(onClickListener);
         }
@@ -147,7 +149,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                         switch (releaseDetails.getText().toString()) {
                             case "领取任务":
                                 if (receiveTaskInterface != null) {
-                                    receiveTaskInterface.receiveTask(taskId,reflashInterface);
+                                    receiveTaskInterface.receiveTask(taskId, reflashInterface);
                                 }
                                 break;
                             case "领取奖励":
