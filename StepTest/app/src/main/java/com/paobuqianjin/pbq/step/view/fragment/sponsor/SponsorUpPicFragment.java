@@ -1,7 +1,9 @@
 package com.paobuqianjin.pbq.step.view.fragment.sponsor;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +44,8 @@ public class SponsorUpPicFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.grid_view)
     GridView gridView;
     String title;
+    private int mColumnWidth;
+    private int mColumnNum;
 
     @Override
     protected int getLayoutResId() {
@@ -62,6 +66,27 @@ public class SponsorUpPicFragment extends BaseBarStyleTextViewFragment {
         }
     }
 
+    //计算列数和每列宽度
+    private void calColumn() {
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int screenWidth = metrics.widthPixels;
+        int densityDpi = metrics.densityDpi;
+        int orientation = getResources().getConfiguration().orientation;
+        int minColumn = orientation == Configuration.ORIENTATION_LANDSCAPE ? 4 : 3;
+
+        //计算列数
+        mColumnNum = screenWidth / densityDpi;
+        mColumnNum = mColumnNum < minColumn ? minColumn : mColumnNum;
+        //计算每列宽度
+        int columnSpace = (int) (2 * metrics.density);
+        mColumnWidth = (screenWidth - columnSpace * (mColumnNum - 1)) / mColumnNum;
+
+        if (gridView != null) {
+            gridView.setColumnWidth(mColumnWidth);
+            gridView.setNumColumns(mColumnNum);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
@@ -74,7 +99,8 @@ public class SponsorUpPicFragment extends BaseBarStyleTextViewFragment {
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         gridView = (GridView) viewRoot.findViewById(R.id.grid_view);
-        gridView.setAdapter(new GridAdpter(getContext(), null));
+        calColumn();
+        gridView.setAdapter(new GridAdpter(getContext(), null,mColumnWidth ));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -11,9 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.bundle.GoodImageData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -93,6 +93,7 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
     ImageView goodsB;
     List<View> Mview = new ArrayList<>();
     private final static String SHOW_SPONSOR_PICS_ACTION = "com.paobuqianjin.pbq.step.SHOW_PIC_ACTION";
+    ArrayList<SponsorDetailResponse.DataBean.GoodsImgsBean> goodsImgsBeans = new ArrayList<>();
 
     @Override
     protected String title() {
@@ -132,6 +133,11 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
                 LocalLog.d(TAG, "查看更多");
                 Intent intent = new Intent();
                 intent.setAction(SHOW_SPONSOR_PICS_ACTION);
+                if (goodsImgsBeans.size() < 0) {
+                    return;
+                }
+                GoodImageData goodImageData = new GoodImageData(goodsImgsBeans);
+                intent.putExtra(getActivity().getPackageName() + "goods", goodImageData);
                 intent.setClass(getContext(), SponsorGoodsPicLookActivity.class);
                 startActivity(intent);
             }
@@ -140,7 +146,7 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
         if (intent != null) {
             int businessid = intent.getIntExtra(getContext().getPackageName() + "businessid", -1);
             if (businessid != -1) {
-                Presenter.getInstance(getContext()).businessDetail(businessid, sponsorInnerCallBack);
+                Presenter.getInstance(getContext()).businessDetail(103, sponsorInnerCallBack);
             }
         }
         Mview.clear();
@@ -180,11 +186,17 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
 
 
                         if (dataBean.getLogo_imgs() != null) {
-                            sizeEnv = dataBean.getLogo_imgs().size();
-                            for (int i = 0; i < sizeEnv; i++) {
+                            sizeEnv = dataBean.getEnvironment_imgs().size();
+                            /*for (int i = 0; i < sizeEnv; i++) {
                                 View view = LayoutInflater.from(getContext()).inflate(R.layout.sponsor_image_view, null);
                                 ImageView imageView = (ImageView) view.findViewById(R.id.sponsor_env_img);
-                                Presenter.getInstance(getContext()).getImage(imageView, dataBean.getLogo_imgs().get(i).getUrl());
+                                Presenter.getInstance(getContext()).getImage(imageView, dataBean.getEnvironment_imgs().get(i).getUrl());
+                                Mview.add(view);
+                            }*/
+                            if (sizeEnv >= 1) {
+                                View view = LayoutInflater.from(getContext()).inflate(R.layout.sponsor_image_view, null);
+                                ImageView imageView = (ImageView) view.findViewById(R.id.sponsor_env_img);
+                                Presenter.getInstance(getContext()).getImage(imageView, dataBean.getEnvironment_imgs().get(0).getUrl());
                                 Mview.add(view);
                             }
                         }
@@ -196,6 +208,7 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
                         int size = 0;
                         if (dataBean.getGoods_imgs() != null) {
                             size = dataBean.getGoods_imgs().size();
+                            goodsImgsBeans.addAll(dataBean.getGoods_imgs());
                             if (size == 1) {
                                 goodsA.setVisibility(View.VISIBLE);
                                 Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getGoods_imgs().get(0).getUrl());

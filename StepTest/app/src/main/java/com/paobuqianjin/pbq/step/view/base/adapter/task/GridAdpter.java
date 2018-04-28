@@ -3,10 +3,13 @@ package com.paobuqianjin.pbq.step.view.base.adapter.task;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;;import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 
 import java.util.List;
 
@@ -17,10 +20,12 @@ import java.util.List;
 public class GridAdpter extends BaseAdapter {
     private Context context;
     private List<?> mData;
+    private int mImageLayoutSize;
 
-    public GridAdpter(Context context, List<?> data) {
+    public GridAdpter(Context context, List<?> data, int layoutSize) {
         this.context = context;
         mData = data;
+        this.mImageLayoutSize = layoutSize;
     }
 
     @Override
@@ -33,7 +38,7 @@ public class GridAdpter extends BaseAdapter {
         if (mData != null) {
             return mData.size();
         } else {
-            return 9;
+            return 0;
         }
     }
 
@@ -42,9 +47,11 @@ public class GridAdpter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null) {
             imageView = new ImageView(context);
-            imageView.setLayoutParams(new GridView.LayoutParams(98 * 2, 98 * 2));
-            imageView.setPadding(0, 15, 15, 0);
-            imageView.setImageResource(R.drawable.center_pic);
+            imageView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mImageLayoutSize));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            if (mData.get(position) instanceof SponsorDetailResponse.DataBean.GoodsImgsBean) {
+                Presenter.getInstance(context).getImage(imageView, ((SponsorDetailResponse.DataBean.GoodsImgsBean) mData.get(position)).getUrl());
+            }
         } else {
             imageView = (ImageView) convertView;
         }

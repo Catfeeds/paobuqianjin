@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -300,7 +301,7 @@ public class SponsorDetailResponse {
             }
         }
 
-        public static class GoodsImgsBean {
+        public static class GoodsImgsBean implements Serializable {
             /**
              * img_id : 34
              * type : 2
@@ -343,6 +344,16 @@ public class SponsorDetailResponse {
 
             public void setStatus(int status) {
                 this.status = status;
+            }
+
+            @Override
+            public String toString() {
+                return "GoodsImgsBean{" +
+                        "img_id=" + img_id +
+                        ", type=" + type +
+                        ", url='" + url + '\'' +
+                        ", status=" + status +
+                        '}';
             }
         }
 
@@ -389,6 +400,16 @@ public class SponsorDetailResponse {
 
             public void setStatus(int status) {
                 this.status = status;
+            }
+
+            @Override
+            public String toString() {
+                return "EnvironmentImgsBean{" +
+                        "img_id=" + img_id +
+                        ", type=" + type +
+                        ", url='" + url + '\'' +
+                        ", status=" + status +
+                        '}';
             }
         }
     }
