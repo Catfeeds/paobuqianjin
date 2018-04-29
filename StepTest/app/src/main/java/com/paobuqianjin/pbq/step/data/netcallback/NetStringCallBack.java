@@ -291,6 +291,8 @@ public class NetStringCallBack extends StringCallback {
                 } else if (callBackInterface != null
                         && callBackInterface instanceof TaskSponsorInterface) {
                     callBackInterface.response(errorCode);
+                } else if (callBackInterface != null && callBackInterface instanceof ForgetPassWordInterface) {
+                    ((ForgetPassWordInterface) callBackInterface).response(errorCode);
                 } else {
                     LocalLog.e(TAG, " dispatch not match");
                 }

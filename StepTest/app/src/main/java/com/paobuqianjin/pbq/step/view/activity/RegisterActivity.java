@@ -55,6 +55,7 @@ public class RegisterActivity extends BaseActivity {
     ImageView openPwd;
     @Bind(R.id.read_xieyi)
     TextView read_xieyi;
+    Thread thread;
 
     public int T = 60; //倒计时时长
     private Handler mHandler = new Handler();
@@ -76,7 +77,6 @@ public class RegisterActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                Log.d(TAG, "进来了 ");
                 String newAccountStr = newAccount.getText().toString().trim();
                 if (newAccountStr.length() == 11) {
                     getCode.setEnabled(true);
@@ -127,7 +127,7 @@ public class RegisterActivity extends BaseActivity {
                 String newAccountStr = newAccount.getText().toString().trim();
                 String newPwdStr = newPwd.getText().toString().trim();
                 String indntifyingCodeStr = indntifyingCode.getText().toString().trim();
-                if ((newAccountStr.length() == 11) && (newPwdStr.length() == 6) && (indntifyingCodeStr.length() == 6)) {
+                if ((newAccountStr.length() == 11) && (newPwdStr.length() >= 6) && (newPwdStr.length() <= 12) && (indntifyingCodeStr.length() == 6)) {
                     newBtnRegister.setEnabled(true);
                 } else {
                     newBtnRegister.setEnabled(false);
@@ -150,9 +150,15 @@ public class RegisterActivity extends BaseActivity {
                 startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.get_code:
-                new Thread(new MyCountDownTimer()).start();//开始执行
                 collectSignUserInfo();
-                Presenter.getInstance(this).getMsg(userInfo[0]);
+                if (Presenter.getInstance(this).getMsg(userInfo[0])) {
+                    if (thread != null && thread.isAlive()) {
+                        return;
+                    } else {
+                        thread = new Thread(new MyCountDownTimer());
+                        thread.start();
+                    }
+                }
                 break;
 
             case R.id.register_eyes:

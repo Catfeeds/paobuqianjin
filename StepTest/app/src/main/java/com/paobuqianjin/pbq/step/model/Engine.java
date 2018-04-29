@@ -719,10 +719,10 @@ public final class Engine {
                 .execute(new NetStringCallBack(loginBindPhoneInterface, COMMAND_GET_SIGN_CODE));
     }
 
-    public void getSignCodePassWord(String phone) {
-        if (!isPhone(phone)) {
-            Toast.makeText(mContext, "请输入一个手机号码:", Toast.LENGTH_SHORT).show();
-            return;
+    public boolean getSignCodePassWord(String phone) {
+        if (!Utils.isMobile(phone)) {
+            Toast.makeText(mContext, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
+            return false;
 
         }
         String url = NetApi.urlSignCode + "/?mobile=" + phone;
@@ -733,6 +733,7 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(forgetPassWordInterface, COMMAND_GET_SIGN_CODE));
+        return true;
     }
 
     public void postPassByOlder(PostPassByOldParam postPassByOldParam) {
@@ -839,11 +840,11 @@ public final class Engine {
     }
 
     //获取验证码
-    public void getMsg(String phone) {
+    public boolean getMsg(String phone) {
         LocalLog.d(TAG, "getMsg() enter phone =" + phone);
         if (!Utils.isMobile(phone)) {
-            Toast.makeText(mContext, "请输入一个手机号码:", Toast.LENGTH_SHORT).show();
-            return;
+            Toast.makeText(mContext, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
+            return false;
 
         }
         String url = NetApi.urlSendMsg + phone;
@@ -853,6 +854,7 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_GET_SIGN_CODE));
+        return true;
     }
 
     /**

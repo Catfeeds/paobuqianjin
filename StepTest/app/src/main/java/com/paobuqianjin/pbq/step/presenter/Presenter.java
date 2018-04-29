@@ -205,8 +205,8 @@ public final class Presenter {
           engine.checkSignCodePassWord(checkSignCodeParam);
       }
   */
-    public void getSignCodePassWord(String phone) {
-        engine.getSignCodePassWord(phone);
+    public boolean getSignCodePassWord(String phone) {
+        return engine.getSignCodePassWord(phone);
     }
 
     public void postPassByOlder(PostPassByOldParam postPassByOldParam) {
@@ -221,8 +221,8 @@ public final class Presenter {
         engine.postNewPassWord(postPassWordParam);
     }
 
-    public void getMsg(String phone) {
-        engine.getMsg(phone);
+    public boolean getMsg(String phone) {
+        return engine.getMsg(phone);
     }
 
     public void getNearByPeople(double latitude, double longitude, int page, int pagesize) {
