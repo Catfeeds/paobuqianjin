@@ -236,7 +236,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     @Override
     public void response(GetSignCodeResponse getSignCodeResponse) {
         if (getSignCodeResponse.getError() == 0) {
-            Toast.makeText(this, getSignCodeResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "获取验证码成功", Toast.LENGTH_SHORT).show();
         }
     }
 

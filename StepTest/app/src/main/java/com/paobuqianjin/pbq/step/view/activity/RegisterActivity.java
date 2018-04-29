@@ -103,7 +103,7 @@ public class RegisterActivity extends BaseActivity {
                 String newAccountStr = newAccount.getText().toString().trim();
                 String newPwdStr = newPwd.getText().toString().trim();
                 String indntifyingCodeStr = indntifyingCode.getText().toString().trim();
-                if ((newAccountStr.length() == 11) && (newPwdStr.length() == 6) && (indntifyingCodeStr.length() == 6)) {
+                if ((newAccountStr.length() == 11) && (newPwdStr.length() >= 6) && (newPwdStr.length() <= 12) && (indntifyingCodeStr.length() == 6)) {
                     newBtnRegister.setEnabled(true);
                 } else {
                     newBtnRegister.setEnabled(false);
@@ -147,7 +147,7 @@ public class RegisterActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.register_img_back:
-                startActivity(new Intent(this,LoginActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
             case R.id.get_code:
                 new Thread(new MyCountDownTimer()).start();//开始执行
@@ -198,12 +198,12 @@ public class RegisterActivity extends BaseActivity {
                 break;
         }
     }
+
     /**
-         * 自定义倒计时类，实现Runnable接口
-         */
+     * 自定义倒计时类，实现Runnable接口
+     */
 
     class MyCountDownTimer implements Runnable {
-
 
 
         public void run() {
