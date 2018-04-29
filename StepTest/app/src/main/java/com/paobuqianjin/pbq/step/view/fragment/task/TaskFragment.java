@@ -196,6 +196,9 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
                     }
                     trx.show(emptyTaskFragment).commit();
                 } else {
+                    if (!emptyTaskFragment.isHidden()) {
+                        trx.hide(emptyTaskFragment);
+                    }
                     trx.show(mFragments[fragmentIndex]).commit();
                 }
             } else if (fragmentIndex == 1) {
@@ -205,6 +208,9 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
                     }
                     trx.show(emptyTaskFragment).commit();
                 } else {
+                    if (!emptyTaskFragment.isHidden()) {
+                        trx.hide(emptyTaskFragment);
+                    }
                     trx.show(mFragments[fragmentIndex]).commit();
                 }
             } else if (fragmentIndex == 2) {
@@ -214,6 +220,9 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
                     }
                     trx.show(emptyTaskFragment).commit();
                 } else {
+                    if (!emptyTaskFragment.isHidden()) {
+                        trx.hide(emptyTaskFragment);
+                    }
                     trx.show(mFragments[fragmentIndex]).commit();
                 }
             }

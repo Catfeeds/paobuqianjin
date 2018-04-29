@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity {
             {R.drawable.task_n, R.drawable.task_s},
             {R.drawable.list_n, R.drawable.list_s}, {R.drawable.me_n, R.drawable.me_s}};
     private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.SCAN_ACTION";
-
+    public static final int REQUEST_CODE = 0x0000c0de; // Only use bottom 16 bits
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,13 +212,13 @@ public class MainActivity extends BaseActivity {
     @Override
 // 通过 onActivityResult的方法获取 扫描回来的 值
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (intentResult != null) {
-            if (intentResult.getContents() == null) {
+        if (data != null && resultCode == REQUEST_CODE) {
+            String scanResult =  data.getStringExtra(getPackageName() + "scanresult");
+            if (scanResult == null) {
                 Toast.makeText(this, "内容为空", Toast.LENGTH_LONG).show();
             } else {
                 // ScanResult 为 获取到的字符串
-                String ScanResult = intentResult.getContents();
+                String ScanResult = scanResult;
                 Toast.makeText(this, "扫描成功:" + ScanResult, Toast.LENGTH_LONG).show();
                 LocalLog.d(TAG, ScanResult);
                 if (ScanResult.startsWith("userid:")) {

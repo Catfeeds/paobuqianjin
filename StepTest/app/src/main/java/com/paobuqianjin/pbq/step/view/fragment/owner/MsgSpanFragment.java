@@ -195,6 +195,9 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
     public void response(MessageSystemResponse messageSystemResponse) {
         if (messageSystemResponse.getError() == 0) {
             this.messageSystemResponse = messageSystemResponse;
+            if (likeDesMsg == null) {
+                return;
+            }
             likeDesMsg.setText(String.valueOf(messageSystemResponse.getData().getPagenation().getTotalCount()) + "个赞");
         } else if (messageSystemResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");

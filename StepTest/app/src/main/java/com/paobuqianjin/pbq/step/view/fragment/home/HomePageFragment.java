@@ -640,6 +640,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     break;
                 case R.id.scan_img:
                     new IntentIntegrator(getActivity())
+                            .setBeepEnabled(true)
                             .setOrientationLocked(false)
                             .setCaptureActivity(QrCodeScanActivity.class)
                             .initiateScan();

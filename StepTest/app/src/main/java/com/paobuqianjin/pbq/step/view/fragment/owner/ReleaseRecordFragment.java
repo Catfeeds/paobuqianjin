@@ -156,9 +156,10 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
      * 第一次加载数据。
      */
     private void loadData(ArrayList<ReleaseRecordResponse.DataBeanX.DataBean> dataBeans) {
-
+        if (releaseRefresh == null) {
+            return;
+        }
         adapter.notifyDataSetChanged(dataBeans);
-
         releaseRefresh.setRefreshing(false);
 
         // 第一次加载数据：一定要掉用这个方法。
