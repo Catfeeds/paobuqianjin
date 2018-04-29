@@ -103,6 +103,7 @@
             android:background="@drawable/change_color_btn"
             android:enabled="false"
             android:onClick="onTabLogSign"
+            android:stateListAnimator="@null"
             android:text="@string/action_sign_in_short"
             android:textColor="#ffffff"
             android:textSize="18dp" />

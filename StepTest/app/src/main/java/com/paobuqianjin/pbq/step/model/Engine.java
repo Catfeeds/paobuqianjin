@@ -130,6 +130,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.view.PicassoTransformation;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -840,7 +841,7 @@ public final class Engine {
     //获取验证码
     public void getMsg(String phone) {
         LocalLog.d(TAG, "getMsg() enter phone =" + phone);
-        if (!isPhone(phone)) {
+        if (!Utils.isMobile(phone)) {
             Toast.makeText(mContext, "请输入一个手机号码:", Toast.LENGTH_SHORT).show();
             return;
 
@@ -876,7 +877,7 @@ public final class Engine {
 
     public void userLoginByPhoneNumber(String[] userInfo) {
         LocalLog.d(TAG, "userLoginByPhoneNumber() enter");
-        if (!isPhone(userInfo[0])) {
+        if (!Utils.isMobile(userInfo[0])) {
             Toast.makeText(mContext, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
             return;
         }

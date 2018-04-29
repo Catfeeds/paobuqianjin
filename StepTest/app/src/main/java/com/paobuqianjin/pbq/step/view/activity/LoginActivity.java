@@ -101,9 +101,9 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String loginStr = loginAccount.getText().toString().trim();
                 String pwdStr = loginPwd.getText().toString().trim();
-                if(loginStr.length()==11&&pwdStr.length()==6){
+                if (loginStr.length() == 11 && pwdStr.length() >= 6 && pwdStr.length() <= 12) {
                     btnLogin.setEnabled(true);
-                }else {
+                } else {
                     btnLogin.setEnabled(false);
                 }
             }
@@ -123,9 +123,9 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String pwdStr = loginPwd.getText().toString().trim();
                 String loginStr = loginAccount.getText().toString().trim();
-                if(loginStr.length()==11&&pwdStr.length()==6){
+                if (loginStr.length() == 11 && pwdStr.length() >= 6 && pwdStr.length() <= 12) {
                     btnLogin.setEnabled(true);
-                }else {
+                } else {
                     btnLogin.setEnabled(false);
                 }
             }
