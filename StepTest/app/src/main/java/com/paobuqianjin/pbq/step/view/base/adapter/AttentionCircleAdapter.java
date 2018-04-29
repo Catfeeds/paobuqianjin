@@ -18,9 +18,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
@@ -29,7 +27,6 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +41,7 @@ import static com.paobuqianjin.pbq.step.view.emoji.EmotionViewPagerAdapter.numTo
 
 public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final static String TAG = AttentionCircleAdapter.class.getSimpleName();
-    private final static int defaultCount = 4;
+
 
     private List<DynamicAllIndexResponse.DataBeanX.DataBean> data;
     private Context mContext;
@@ -393,7 +390,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         int is_vote = 0;
         int vote = 0;
         int position = 0;
-
+        @Bind(R.id.like_num_span)
+        RelativeLayout likeNumSpan;
         DynamicAllIndexResponse.DataBeanX.DataBean dataBean;
         private InnerCallBack innerCallBack = new InnerCallBack() {
             @Override
@@ -448,9 +446,10 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             contentSupports = (TextView) view.findViewById(R.id.content_supports);
             firstContent = (TextView) view.findViewById(R.id.first_content);
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
-            likeNumIcon.setOnClickListener(onClickListener);
             timeStmp = (TextView) view.findViewById(R.id.time_stmp);
             vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
+            likeNumSpan = (RelativeLayout) view.findViewById(R.id.like_num_span);
+            likeNumSpan.setOnClickListener(onClickListener);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -458,7 +457,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             public void onClick(View view) {
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
-                    case R.id.like_num_icon:
+                    case R.id.like_num_span:
                         LocalLog.d(TAG, "点赞");
                         PutVoteParam putVoteParam = new PutVoteParam();
                         putVoteParam.setDynamicid(dynamicid).setUserid(Presenter.getInstance(mContext).getId());
@@ -528,6 +527,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         int is_vote = 0;
         int vote = 0;
         int position = 0;
+        @Bind(R.id.like_num_span)
+        RelativeLayout likeNumSpan;
 
         public TwoPicViewHolder(View view, int viewType) {
             super(view);
@@ -572,8 +573,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
             timeStmp = (TextView) view.findViewById(R.id.time_stmp);
             scanMore.setOnClickListener(onClickListener);
-            likeNumIcon.setOnClickListener(onClickListener);
             vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
+            likeNumSpan = (RelativeLayout) view.findViewById(R.id.like_num_span);
+            likeNumSpan.setOnClickListener(onClickListener);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -581,7 +583,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             public void onClick(View view) {
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
-                    case R.id.like_num_icon:
+                    case R.id.like_num_span:
                         LocalLog.d(TAG, "点赞");
                         PutVoteParam putVoteParam = new PutVoteParam();
                         putVoteParam.setDynamicid(dynamicid).setUserid(Presenter.getInstance(mContext).getId());
@@ -646,7 +648,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         int viewType = -1;
         //@Bind(R.id.scan_more)
         TextView scanMore;
-
+        @Bind(R.id.like_num_span)
+        RelativeLayout likeNumSpan;
         int dynamicid = -1;
         int userid = -1;
         int is_vote = 0;
@@ -676,8 +679,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             dynamicUserName = (TextView) view.findViewById(R.id.dynamic_user_name);
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
             timeStmp = (TextView) view.findViewById(R.id.time_stmp);
-            likeNumIcon.setOnClickListener(onClickListener);
             vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
+            likeNumSpan = (RelativeLayout) view.findViewById(R.id.like_num_span);
+            likeNumSpan.setOnClickListener(onClickListener);
 
         }
 
@@ -706,7 +710,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             public void onClick(View view) {
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
-                    case R.id.like_num_icon:
+                    case R.id.like_num_span:
                         LocalLog.d(TAG, "点赞");
                         PutVoteParam putVoteParam = new PutVoteParam();
                         putVoteParam.setDynamicid(dynamicid).setUserid(Presenter.getInstance(mContext).getId());

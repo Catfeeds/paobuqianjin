@@ -114,25 +114,33 @@
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/content_numbers"
+        <RelativeLayout
+            android:id="@+id/like_num_span"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:text=""
-            android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:layout_toStartOf="@+id/content_number_icon">
 
-        <ImageView
-            android:id="@+id/content_number_icon"
-            android:layout_width="16dp"
-            android:layout_height="15dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:layout_toStartOf="@+id/content_numbers"
-            android:background="@drawable/comment_dynimic" />
+            <TextView
+                android:id="@+id/content_supports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="22dp"
+                android:text=""
+                android:textColor="@color/color_161727"
+                android:textSize="15dp" />
 
-        <TextView
+            <ImageView
+                android:id="@+id/like_num_icon"
+                android:layout_width="17dp"
+                android:layout_height="14dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:layout_toStartOf="@+id/content_supports"
+                android:background="@drawable/fabulous_n" />
+        </RelativeLayout>
+
+      <!--  <TextView
 
             android:id="@+id/content_supports"
             android:layout_width="wrap_content"
@@ -150,7 +158,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:layout_toStartOf="@+id/content_supports"
-            android:background="@drawable/fabulous_n" />
+            android:background="@drawable/fabulous_n" />-->
     </RelativeLayout>
 
     <RelativeLayout
