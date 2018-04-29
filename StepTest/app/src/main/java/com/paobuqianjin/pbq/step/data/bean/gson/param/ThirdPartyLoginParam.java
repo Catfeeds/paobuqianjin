@@ -28,6 +28,18 @@ side	用户端：0未知|1ios|2android|3小程序|4web	false	int
     private String unionid;
     private int sex;
 
+    public int getSide() {
+        return side;
+    }
+
+    public ThirdPartyLoginParam setSide(int side) {
+        this.side = side;
+        param.put("side", String.valueOf(side));
+        return this;
+    }
+
+    private int side;
+
 
     public ThirdPartyLoginParam() {
         if (param == null) {

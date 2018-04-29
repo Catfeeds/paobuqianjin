@@ -264,7 +264,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                 startActivity(intent);
                 finish();
             }*/
-            if (thirdPartyLoginResponse.getData().getIs_perfect() == 0) {
+            /*if (thirdPartyLoginResponse.getData().getIs_perfect() == 0) {
                 LocalLog.d(TAG, "没有绑定过手机");
                 Intent intent = new Intent();
                 intent.setClass(this, UserFitActivity.class);
@@ -272,13 +272,13 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                 intent.putExtra("thirdinfo", thirdPartyLoginResponse.getData());
                 startActivity(intent);
                 finish();
-            } else {
-                Presenter.getInstance(this).steLogFlg(true);
-                Presenter.getInstance(this).setId(thirdPartyLoginResponse.getData().getId());
-                Presenter.getInstance(this).setMobile(this, thirdPartyLoginResponse.getData().getMobile());
-                Presenter.getInstance(this).setToken(this, thirdPartyLoginResponse.getData().getUser_token());
-                startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
-            }
+            } else {*/
+            Presenter.getInstance(this).steLogFlg(true);
+            Presenter.getInstance(this).setId(thirdPartyLoginResponse.getData().getId());
+            Presenter.getInstance(this).setMobile(this, thirdPartyLoginResponse.getData().getMobile());
+            Presenter.getInstance(this).setToken(this, thirdPartyLoginResponse.getData().getUser_token());
+            startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+          /*  }*/
         }
 
     }
@@ -306,12 +306,16 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         Toast.makeText(this, signUserResponse.getMessage(), Toast.LENGTH_SHORT).show();
         if (signUserResponse.getError() == 0) {
             LocalLog.d(TAG, "注册成功! 去登陆页");
-            Intent intent = new Intent();
+           /* Intent intent = new Intent();
             intent.setClass(this, UserFitActivity.class);
             intent.setAction(USER_FIT_ACTION_SETTING);
             intent.putExtra("signinfo", signUserResponse.getData());
             startActivity(intent);
-            finish();
+            finish();*/
+            Presenter.getInstance(this).steLogFlg(true);
+            Presenter.getInstance(this).setId(signUserResponse.getData().getUserid());
+            Presenter.getInstance(this).setToken(this, signUserResponse.getData().getUser_token());
+            startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
 
         }
     }
@@ -326,6 +330,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         @Override
         public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
             thirdPartyLoginParam = new ThirdPartyLoginParam();
+            thirdPartyLoginParam.setSide(2);
             LocalLog.d(TAG, "授权成功callback:" + share_media.toString());
             Toast.makeText(LoginActivity.this, "成功：", Toast.LENGTH_LONG).show();
             String temp = "";
@@ -351,9 +356,11 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                             continue;
                         case "gender":
                             if (map.get(key).equals("男")) {
-                                thirdPartyLoginParam.setSex(0);
-                            } else {
                                 thirdPartyLoginParam.setSex(1);
+                            } else if (map.get(key).equals("女")) {
+                                thirdPartyLoginParam.setSex(2);
+                            } else {
+                                thirdPartyLoginParam.setSex(0);
                             }
                             continue;
                         case "unionid":
@@ -386,9 +393,11 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                             continue;
                         case "gender":
                             if (map.get(key).equals("男")) {
-                                thirdPartyLoginParam.setSex(0);
-                            } else {
                                 thirdPartyLoginParam.setSex(1);
+                            } else if (map.get(key).equals("女")) {
+                                thirdPartyLoginParam.setSex(2);
+                            } else {
+                                thirdPartyLoginParam.setSex(0);
                             }
                             continue;
                         case "unionid":

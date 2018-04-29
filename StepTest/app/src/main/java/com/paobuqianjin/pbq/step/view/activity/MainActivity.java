@@ -225,23 +225,30 @@ public class MainActivity extends BaseActivity {
                     LocalLog.d(TAG, "扫描个人");
                     String userid = ScanResult.substring("userid:".length(), ScanResult.length());
                     LocalLog.d(TAG, "userid = " + userid);
-                    Intent intent = new Intent();
-                    //TODO ACTION_SCAN_USERID
-                    intent.putExtra("userid", Integer.parseInt(userid));
-                    intent.setClass(this, UserCenterActivity.class);
-                    startActivity(intent);
+                    try {
+                        Intent intent = new Intent();
+                        //TODO ACTION_SCAN_USERID
+                        intent.putExtra("userid", Integer.parseInt(userid));
+                        intent.setClass(this, UserCenterActivity.class);
+                        startActivity(intent);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
 
                 } else if (ScanResult.startsWith("circleid:")) {
                     LocalLog.d(TAG, "扫描圈子");
                     String circleid = ScanResult.substring("circleid:".length(), ScanResult.length());
                     LocalLog.d(TAG, "circleid = " + circleid);
                     //TODO ACTION_SCAND_CIRCLE_ID
-
-                    Intent intent = new Intent();
-                    intent.setClass(this, CirCleDetailActivity.class);
-                    intent.putExtra(getPackageName() + "circleid", Integer.parseInt(circleid));
-                    intent.setAction(ACTION_SCAN_CIRCLE_ID);
-                    startActivity(intent);
+                    try {
+                        Intent intent = new Intent();
+                        intent.setClass(this, CirCleDetailActivity.class);
+                        intent.putExtra(getPackageName() + "circleid", Integer.parseInt(circleid));
+                        intent.setAction(ACTION_SCAN_CIRCLE_ID);
+                        startActivity(intent);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }

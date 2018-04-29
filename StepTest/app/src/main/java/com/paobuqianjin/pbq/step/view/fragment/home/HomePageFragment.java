@@ -353,6 +353,13 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         totalRedPkg = (TextView) popRedPkgView.findViewById(R.id.total_red_pkg);
         redPkgRecycler = (RecyclerView) popRedPkgView.findViewById(R.id.red_pkg_recycler);
         openRedPkgView = (ImageView) popRedPkgView.findViewById(R.id.open_red_pkg);
+        RelativeLayout relativeLayout = (RelativeLayout) popRedPkgView.findViewById(R.id.cancel_red_span);
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupRedPkgWindow.dismiss();
+            }
+        });
         popupRedPkgWindow = new PopupWindow(popRedPkgView,
                 WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         errorTextView = (TextView) popRedPkgView.findViewById(R.id.error_text);
@@ -612,21 +619,21 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.out_red_pkg_image:
-                    LocalLog.d(TAG, "发红包");
-                    startActivity(TaskReleaseActivity.class, null);
-                    break;
-                case R.id.create_circle_image:
-                    LocalLog.d(TAG, "创建圈子");
-                    startActivity(CreateCircleActivity.class, null);
-                    break;
-                case R.id.income_red_pkg_image:
                     LocalLog.d(TAG, "领红包");
                     if (redPkgEnable) {
                         redPkgEnable = false;
                         Presenter.getInstance(getContext()).getSponsorRedPkg();
-                    /*((MainActivity) getActivity()).tabToTask();*/
                     }
                     break;
+                case R.id.create_circle_image:
+                    LocalLog.d(TAG, "发红包");
+                    startActivity(TaskReleaseActivity.class, null);
+                    break;
+                case R.id.income_red_pkg_image:
+                    LocalLog.d(TAG, "创建圈子");
+                    startActivity(CreateCircleActivity.class, null);
+                    break;
+
                 case R.id.add_friend_image:
                     LocalLog.d(TAG, "邀请好友");
                     startActivity(InviteActivity.class, null);

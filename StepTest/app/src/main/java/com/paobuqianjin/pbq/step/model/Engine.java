@@ -391,7 +391,12 @@ public final class Engine {
     public void unbindStepService() {
         LocalLog.d(TAG, "unbindStepService() enter");
         if (connection != null) {
-            mContext.unbindService(connection);
+            try {
+                mContext.unbindService(connection);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 

@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android"
-   >
-    <item  android:drawable="@drawable/send_red_package">
-    <shape android:shape="rectangle">
-        <!-- 填充的颜色 -->
-        <solid   android:color="@color/white"
-            />
-        <!-- 设置图片的四个角为弧形 -->
-        <!-- android:radius 弧形的半径 -->
-        <corners
-                android:radius="56dp"
-       />
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/income_red_pkg">
+        <shape android:shape="rectangle">
+            <!-- 填充的颜色 -->
+            <solid android:color="@color/white" />
+            <!-- 设置图片的四个角为弧形 -->
+            <!-- android:radius 弧形的半径 -->
+            <corners android:radius="56dp" />
 
-    </shape>
+        </shape>
     </item>
 </selector>
