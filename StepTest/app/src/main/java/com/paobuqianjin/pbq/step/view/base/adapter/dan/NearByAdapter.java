@@ -28,11 +28,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByViewHolder> {
     private final static String TAG = NearByAdapter.class.getSimpleName();
     private Context context;
-    List<NearByResponse.DataBean> mData;
+    List<?> mData;
 
     public NearByAdapter(Context context, List<NearByResponse.DataBean> data) {
         this.context = context;
         mData = data;
+    }
+
+    public void notifyDataSetChanged(List<?> data) {
+        this.mData = data;
+        super.notifyDataSetChanged();
     }
 
     @Override
@@ -48,29 +53,31 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
     @TargetApi(19)
     private void upDateListItem(NearByViewHolder holder, int position) {
         LocalLog.d(TAG, "upDateListItem() enter");
-        Presenter.getInstance(context).getImage(holder.userNearIcon, mData.get(position).getAvatar());
-        holder.dearName.setText(mData.get(position).getNickname());
-        String stepFormat = context.getResources().getString(R.string.near_by_step);
-        String stepNum = String.format(stepFormat, mData.get(position).getUser_step());
-        holder.stepDesc.setText(stepNum);
+        if (mData.get(position) instanceof NearByResponse.DataBean) {
+            Presenter.getInstance(context).getImage(holder.userNearIcon, ((NearByResponse.DataBean) mData.get(position)).getAvatar());
+            holder.dearName.setText(((NearByResponse.DataBean) mData.get(position)).getNickname());
+            String stepFormat = context.getResources().getString(R.string.near_by_step);
+            String stepNum = String.format(stepFormat, ((NearByResponse.DataBean) mData.get(position)).getUser_step());
+            holder.stepDesc.setText(stepNum);
 
-        String distanceFormat = context.getResources().getString(R.string.near_by_distance);
-        String distanceNum = String.format(distanceFormat, mData.get(position).getDistance());
-        holder.distance.setText(distanceNum);
+            String distanceFormat = context.getResources().getString(R.string.near_by_distance);
+            String distanceNum = String.format(distanceFormat, ((NearByResponse.DataBean) mData.get(position)).getDistance());
+            holder.distance.setText(distanceNum);
 
-        if (mData.get(position).getIs_follow() == 0) {
-            LocalLog.d(TAG, "未关注");
-            holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
-            holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
-            holder.btFollow.setText("关注");
-        } else {
-            LocalLog.d(TAG, "已关注");
-            holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_not_fllow_nearby));
-            holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_646464));
-            holder.btFollow.setText("已关注");
-        }
-        if (mData.get(position).getVip() == 1) {
-            holder.vipFlg.setVisibility(View.VISIBLE);
+            if (((NearByResponse.DataBean) mData.get(position)).getIs_follow() == 0) {
+                LocalLog.d(TAG, "未关注");
+                holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
+                holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
+                holder.btFollow.setText("关注");
+            } else {
+                LocalLog.d(TAG, "已关注");
+                holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_not_fllow_nearby));
+                holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_646464));
+                holder.btFollow.setText("已关注");
+            }
+            if (((NearByResponse.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }
         }
     }
 

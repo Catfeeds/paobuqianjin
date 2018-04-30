@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/main_activity_layout"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <ImageView
@@ -37,6 +37,7 @@
                 android:paddingTop="7dip"
                 android:scaleType="matrix"
                 android:text="@string/home_page"
+                android:textColor="@color/color_8a8a8a"
                 android:textSize="12dp" />
 
         </RelativeLayout>
@@ -58,6 +59,7 @@
                 android:paddingTop="7dip"
                 android:scaleType="matrix"
                 android:text="@string/friend_circle"
+                android:textColor="@color/color_8a8a8a"
                 android:textSize="12dp" />
 
         </RelativeLayout>
@@ -81,6 +83,7 @@
                 android:paddingTop="7dip"
                 android:scaleType="matrix"
                 android:text="任务"
+                android:textColor="@color/color_8a8a8a"
                 android:textSize="12dp" />
 
         </RelativeLayout>
@@ -104,6 +107,7 @@
                 android:paddingTop="7dip"
                 android:scaleType="matrix"
                 android:text="@string/try_ones"
+                android:textColor="@color/color_8a8a8a"
                 android:textSize="12dp" />
 
         </RelativeLayout>
@@ -125,6 +129,7 @@
                 android:paddingTop="7dip"
                 android:scaleType="matrix"
                 android:text="@string/owner_center"
+                android:textColor="@color/color_8a8a8a"
                 android:textSize="12dp" />
 
         </RelativeLayout>

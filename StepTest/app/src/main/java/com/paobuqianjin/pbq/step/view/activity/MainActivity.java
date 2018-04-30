@@ -169,12 +169,14 @@ public class MainActivity extends BaseActivity {
         Drawable top = getResources().getDrawable(icon[index][0]);
         top.setBounds(0, 0, 54, 54);
         mTabSelect[index].setCompoundDrawables(null, top, null, null);
+        mTabSelect[index].setTextColor(getResources().getColor(R.color.color_8a8a8a));
     }
 
     private void upDateDrawableTrue(int index) {
         Drawable top = getResources().getDrawable(icon[index][1]);
         top.setBounds(0, 0, 54, 54);
         mTabSelect[index].setCompoundDrawables(null, top, null, null);
+        mTabSelect[index].setTextColor(getResources().getColor(R.color.color_6c71c4));
     }
 
     /*
@@ -213,7 +215,7 @@ public class MainActivity extends BaseActivity {
 // 通过 onActivityResult的方法获取 扫描回来的 值
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null && resultCode == REQUEST_CODE) {
-            String scanResult =  data.getStringExtra(getPackageName() + "scanresult");
+            String scanResult = data.getStringExtra(getPackageName() + "scanresult");
             if (scanResult == null) {
                 Toast.makeText(this, "内容为空", Toast.LENGTH_LONG).show();
             } else {

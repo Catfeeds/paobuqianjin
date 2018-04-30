@@ -282,6 +282,29 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         }).start();
     }
 
+    public void requestPermissionScan(String... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        new IntentIntegrator(getActivity())
+                                .setBeepEnabled(true)
+                                .setOrientationLocked(false)
+                                .setCaptureActivity(QrCodeScanActivity.class)
+                                .initiateScan();
+                        LocalLog.d(TAG, "扫码");
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                if (AndPermission.hasAlwaysDeniedPermission(getActivity(), permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
+    }
 
     protected void toast(@StringRes int message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
@@ -660,12 +683,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     startActivity(InviteActivity.class, null);
                     break;
                 case R.id.scan_img:
-                    new IntentIntegrator(getActivity())
-                            .setBeepEnabled(true)
-                            .setOrientationLocked(false)
-                            .setCaptureActivity(QrCodeScanActivity.class)
-                            .initiateScan();
-                    LocalLog.d(TAG, "扫码");
+                    requestPermissionScan(Permission.Group.CAMERA);
                     break;
                 case R.id.step_desc_span:
                     LocalLog.d(TAG, "目标说明");

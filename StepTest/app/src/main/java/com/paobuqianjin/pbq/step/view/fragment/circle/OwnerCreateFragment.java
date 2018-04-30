@@ -20,6 +20,7 @@ import com.paobuqianjin.pbq.step.presenter.im.ReflashMyCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.OwnerCreateAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.view.DefineLoadMoreView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import org.w3c.dom.Text;
@@ -105,7 +106,7 @@ public class OwnerCreateFragment extends BaseFragment {
         ownerCreateCircleLists.setLayoutManager(layoutManager);
 
         // 自定义的核心就是DefineLoadMoreView类。
-        AttentionCircleFragment.DefineLoadMoreView loadMoreView = new AttentionCircleFragment.DefineLoadMoreView(getContext());
+        DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());
         ownerCreateCircleLists.addFooterView(loadMoreView); // 添加为Footer。
         ownerCreateCircleLists.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         ownerCreateCircleLists.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。

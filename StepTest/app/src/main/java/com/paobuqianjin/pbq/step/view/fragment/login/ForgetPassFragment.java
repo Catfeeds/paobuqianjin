@@ -175,7 +175,7 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
     public void response(GetSignCodeResponse getSignCodeResponse) {
         LocalLog.d(TAG, "GetSignCodeResponse() enter " + getSignCodeResponse.toString());
         if (getSignCodeResponse.getError() == 0) {
-            Toast.makeText(getContext(), "验证码发发送成功", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "验证码发送成功", Toast.LENGTH_SHORT).show();
         } else if (getSignCodeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

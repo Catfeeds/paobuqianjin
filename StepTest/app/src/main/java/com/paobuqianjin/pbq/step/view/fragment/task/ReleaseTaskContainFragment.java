@@ -23,6 +23,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/4/19.
@@ -36,6 +37,8 @@ public class ReleaseTaskContainFragment extends BaseFragment {
     RelativeLayout bar;
     @Bind(R.id.release_choice_pager)
     ViewPager releaseChoicePager;
+    @Bind(R.id.buttone_left_bar)
+    RelativeLayout buttoneLeftBar;
 
     @Override
     protected int getLayoutResId() {
@@ -113,5 +116,10 @@ public class ReleaseTaskContainFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @OnClick(R.id.buttone_left_bar)
+    public void onClick() {
+        getActivity().finish();
     }
 }
