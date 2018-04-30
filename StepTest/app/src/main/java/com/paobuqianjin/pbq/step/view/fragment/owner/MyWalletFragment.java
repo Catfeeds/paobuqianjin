@@ -549,6 +549,9 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     public void response(UserInfoResponse userInfoResponse) {
 
         if (userInfoResponse.getError() == 0) {
+            if (incomeMoney == null) {
+                return;
+            }
             incomeMoney.setText("总金额:" + userInfoResponse.getData().getBalance());
         } else if (userInfoResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
