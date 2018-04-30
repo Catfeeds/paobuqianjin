@@ -199,7 +199,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            
+
         }
 
         @Override
@@ -427,6 +427,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             dialog.dismiss();
         }
         if (walletPayOrderResponse.getError() == 0) {
+            Presenter.getInstance(getContext()).setTradeStyle(payAction);
             ((PaoBuPayActivity) getActivity()).showPaySuccessWallet(walletPayOrderResponse);
         } else if (walletPayOrderResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
