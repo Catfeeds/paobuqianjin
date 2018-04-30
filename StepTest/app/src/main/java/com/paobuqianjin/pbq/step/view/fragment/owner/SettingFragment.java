@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
@@ -20,8 +22,13 @@ import com.paobuqianjin.pbq.step.view.activity.AboutActivity;
 import com.paobuqianjin.pbq.step.view.activity.AccoutManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.utils.SocializeUtils;
 
 import java.io.File;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -73,6 +80,7 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.vip_flg)
     ImageView vipFlg;
     private UserInfoResponse.DataBean userInfo;
+    private ProgressDialog dialog;
 
     @Override
     protected int getLayoutResId() {
@@ -114,6 +122,8 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        dialog = new ProgressDialog(getContext());
     }
 
     @Override
@@ -159,6 +169,19 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                 break;
             case R.id.exit:
                 LocalLog.d(TAG, "退出APP");
+                final boolean isauthWx = UMShareAPI.get(getContext()).isAuthorize(getActivity(), SHARE_MEDIA.WEIXIN);
+                final boolean isauthQq = UMShareAPI.get(getContext()).isAuthorize(getActivity(), SHARE_MEDIA.QQ);
+                if (isauthWx) {
+                    LocalLog.d(TAG, "解除微信授权");
+                    UMShareAPI.get(getActivity()).deleteOauth(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
+                    break;
+                }
+
+                if (isauthQq) {
+                    LocalLog.d(TAG, "解除QQ授权");
+                    UMShareAPI.get(getActivity()).deleteOauth(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
+                    break;
+                }
                 Presenter.getInstance(getContext()).setId(-1);
                 Presenter.getInstance(getContext()).steLogFlg(false);
                 Presenter.getInstance(getContext()).setToken(getContext(), "");
@@ -167,4 +190,73 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                 break;
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(getContext()).onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        UMShareAPI.get(getContext()).release();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        UMShareAPI.get(getContext()).onSaveInstanceState(outState);
+    }
+
+    UMAuthListener authListener = new UMAuthListener() {
+        /**
+         * @desc 授权开始的回调
+         * @param platform 平台名称
+         */
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            SocializeUtils.safeShowDialog(dialog);
+        }
+
+        /**
+         * @desc 授权成功的回调
+         * @param platform 平台名称
+         * @param action 行为序号，开发者用不上
+         * @param data 用户资料返回
+         */
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            SocializeUtils.safeCloseDialog(dialog);
+            LocalLog.d(TAG, "解除授权成功");
+            Presenter.getInstance(getContext()).setId(-1);
+            Presenter.getInstance(getContext()).steLogFlg(false);
+            Presenter.getInstance(getContext()).setToken(getContext(), "");
+            getActivity().finish();
+            System.exit(0);
+        }
+
+        /**
+         * @desc 授权失败的回调
+         * @param platform 平台名称
+         * @param action 行为序号，开发者用不上
+         * @param t 错误原因
+         */
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            SocializeUtils.safeCloseDialog(dialog);
+            Toast.makeText(getContext(), "失败：" + t.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
+        /**
+         * @desc 授权取消的回调
+         * @param platform 平台名称
+         * @param action 行为序号，开发者用不上
+         */
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+            SocializeUtils.safeCloseDialog(dialog);
+            Toast.makeText(getContext(), "取消了", Toast.LENGTH_LONG).show();
+        }
+    };
 }

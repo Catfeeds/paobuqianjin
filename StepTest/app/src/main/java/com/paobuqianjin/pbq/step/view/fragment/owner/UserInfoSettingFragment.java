@@ -220,9 +220,9 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             if (userInfo != null) {
                 Presenter.getInstance(getContext()).getImage(headIco, userInfo.getAvatar());
                 dearNameSetting.setText(userInfo.getNickname());
-                if (userInfo.getSex() == 0) {
+                if (userInfo.getSex() == 1) {
                     maleText.setText("男");
-                } else if (userInfo.getSex() == 1) {
+                } else if (userInfo.getSex() == 2) {
                     maleText.setText("女");
                 }
                 if (userInfo.getVip() == 1) {

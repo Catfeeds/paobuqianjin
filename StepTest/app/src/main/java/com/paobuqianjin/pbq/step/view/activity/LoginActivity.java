@@ -73,7 +73,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     TextView register;
     @Bind(R.id.other_login)
     TextView otherLogin;
-
+    private boolean bStartAuth = false;
 
     private boolean showLoginPass = false, showSignPass = false;
     /*默认显示登入界面*/
@@ -335,6 +335,11 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             Toast.makeText(LoginActivity.this, "成功：", Toast.LENGTH_LONG).show();
             String temp = "";
             if (share_media.ordinal() == SHARE_MEDIA.WEIXIN.ordinal()) {
+                if (!bStartAuth) {
+                    UMShareAPI.get(LoginActivity.this).getPlatformInfo(LoginActivity.this, SHARE_MEDIA.WEIXIN, authListener);
+                    bStartAuth = true;
+                    return;
+                }
                 thirdPartyLoginParam.setAction("wx");
                 for (String key : map.keySet()) {
                     temp = temp + key + ":" + map.get(key) + "\n";
@@ -372,6 +377,11 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                 }
 
             } else if (share_media.ordinal() == SHARE_MEDIA.QQ.ordinal()) {
+                if (!bStartAuth) {
+                    UMShareAPI.get(LoginActivity.this).getPlatformInfo(LoginActivity.this, SHARE_MEDIA.QQ, authListener);
+                    bStartAuth = true;
+                    return;
+                }
                 thirdPartyLoginParam.setAction("qq");
                 for (String key : map.keySet()) {
                     temp = temp + key + ":" + map.get(key) + "\n";
@@ -432,14 +442,14 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                 case R.id.login_weixin:
                     LocalLog.d(TAG, "微信三方登录");
                     LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.WEIXIN));
-                    //UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
-                    UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
+                    UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
+                    //UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.WEIXIN, authListener);
 
                     break;
                 case R.id.login_qq:
                     LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.QQ));
-                    //UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.QQ, authListener);
-                    UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, authListener);
+                    UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.QQ, authListener);
+                    //UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, authListener);
                     break;
 
             }

@@ -344,12 +344,12 @@ public final class OwnerFragment extends BaseFragment {
                 LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
                 OwnerFragment.this.userInfoResponse = userInfoResponse;
                 userAvatar = userInfoResponse.getData().getAvatar();
-                Presenter.getInstance(getContext()).setTarget(getContext(), userInfoResponse.getData().getTarget_step());
-                Presenter.getInstance(getContext()).setAvatar(getContext(), userAvatar);
                 if (headIcon == null) {
                     LocalLog.d(TAG, "vvvvvvvv");
                     return;
                 }
+                Presenter.getInstance(getContext()).setTarget(getContext(), userInfoResponse.getData().getTarget_step());
+                Presenter.getInstance(getContext()).setAvatar(getContext(), userAvatar);
                 Presenter.getInstance(getContext()).getImage(headIcon, userInfoResponse.getData().getAvatar());
                 userName.setText(userInfoResponse.getData().getNickname());
                 userId.setText("ID:" + String.valueOf(userInfoResponse.getData().getId()));
