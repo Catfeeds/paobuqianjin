@@ -344,12 +344,12 @@ public final class OwnerFragment extends BaseFragment {
                 LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
                 OwnerFragment.this.userInfoResponse = userInfoResponse;
                 userAvatar = userInfoResponse.getData().getAvatar();
-
+                Presenter.getInstance(getContext()).setTarget(getContext(), userInfoResponse.getData().getTarget_step());
+                Presenter.getInstance(getContext()).setAvatar(getContext(), userAvatar);
                 if (headIcon == null) {
                     LocalLog.d(TAG, "vvvvvvvv");
                     return;
                 }
-                Presenter.getInstance(getContext()).setAvatar(getContext(), userAvatar);
                 Presenter.getInstance(getContext()).getImage(headIcon, userInfoResponse.getData().getAvatar());
                 userName.setText(userInfoResponse.getData().getNickname());
                 userId.setText("ID:" + String.valueOf(userInfoResponse.getData().getId()));
@@ -361,11 +361,11 @@ public final class OwnerFragment extends BaseFragment {
                     LocalLog.d(TAG, "当前用户为VIP");
                     vipFlg.setVisibility(View.VISIBLE);
                 }
-                if (userInfoResponse.getData().getSex() == 0) {
+                if (userInfoResponse.getData().getSex() == 1) {
                     userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.man_head_back));
                     manWoman.setVisibility(View.GONE);
                     man.setVisibility(View.VISIBLE);
-                } else if (userInfoResponse.getData().getSex() == 1) {
+                } else if (userInfoResponse.getData().getSex() == 2) {
                     userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.women_back));
                     manWoman.setVisibility(View.VISIBLE);
                     man.setVisibility(View.GONE);

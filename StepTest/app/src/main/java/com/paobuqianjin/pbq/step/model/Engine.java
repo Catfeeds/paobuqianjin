@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -539,6 +540,14 @@ public final class Engine {
 
     public void setAvatar(Context context, String avatar) {
         FlagPreference.setAvatar(context, avatar);
+    }
+
+    public void setTarget(Context context, int target) {
+        FlagPreference.setTarget(context, target);
+    }
+
+    public int getTarget(Context context) {
+        return FlagPreference.getTarget(context);
     }
 
     public String getMobile(Context context) {

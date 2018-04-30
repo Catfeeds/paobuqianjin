@@ -106,6 +106,21 @@ public final class FlagPreference {
         editor.commit();
     }
 
+    public static void setTarget(Context context, int target) {
+        LocalLog.d(TAG, "setTarget() 设置目标" + target);
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putInt("target", target);
+        editor.commit();
+    }
+
+    public static int getTarget(Context context) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        int target = flagPreference.getInt("target", 0);
+        LocalLog.d(TAG, "getTarget() 获取目标" + target);
+        return target;
+    }
+
     public static String getMobile(Context context) {
         LocalLog.d(TAG, "getMobile() 获取最新订单号");
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);

@@ -100,8 +100,8 @@ public class StepProcessDrawable extends Drawable {
 
     @Override
     public void draw(@NonNull Canvas canvas) {
-        if (mCurrentAngle > 15) {
-            canvas.drawArc(oval, 90, mCurrentAngle - 1, false, mPaint);
+        if (mCurrentAngle > 0) {
+            canvas.drawArc(oval, 90, mCurrentAngle, false, mPaint);
         }
         canvas.save();
         canvas.rotate(mCurrentAngle, viewParentHeight / 2, viewParentHeight / 2);

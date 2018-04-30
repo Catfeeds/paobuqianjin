@@ -63,7 +63,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
-                        android:text="3689"
+                        android:text=""
                         android:textColor="@color/color_ffc14c"
                         android:textSize="30dp" />
 
@@ -109,7 +109,7 @@
                         android:layout_toEndOf="@+id/mu_biao_text"
                         android:gravity="center"
                         android:includeFontPadding="false"
-                        android:text="10000步"
+                        android:text="步"
                         android:textColor="@color/color_ffc14c"
                         android:textSize="18dp" />
                 </RelativeLayout>

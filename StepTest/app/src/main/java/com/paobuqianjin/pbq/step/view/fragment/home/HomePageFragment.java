@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.home;
 
 import android.content.Context;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -80,7 +81,7 @@ import butterknife.OnClick;
  * Created by pbq on 2017/12/1.
  */
 
-public final class HomePageFragment extends BaseFragment implements HomePageInterface {
+public final class HomePageFragment extends BaseFragment implements HomePageInterface, SharedPreferences.OnSharedPreferenceChangeListener {
     private final static String TAG = HomePageFragment.class.getSimpleName();
     @Bind(R.id.bg_home)
     ImageView bgHome;
@@ -183,6 +184,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     RecyclerView redPkgRecycler;
     TextView errorTextView;
     TextView desPkgTextView;
+    ImageView targetCircle;
+    private boolean canDrawProcess = true;
 
     static {
         weatherMap.put("0", R.drawable.weather_0);
@@ -236,6 +239,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         super.onAttach(context);
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(context);
+        canDrawProcess = true;
     }
 
     @Nullable
@@ -311,17 +315,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         stepDescSpan = (RelativeLayout) viewRoot.findViewById(R.id.step_desc_span);
         stepDescSpan.setOnClickListener(onClickListener);
         scanImg.setOnClickListener(onClickListener);
-        final ImageView targetCircle = (ImageView) viewRoot.findViewById(R.id.target_step_circle);
-        targetCircle.post(new Runnable() {
-            @Override
-            public void run() {
-                int[] location = new int[2];
-                processStepNow.getLocationOnScreen(location);
-                processStepNow.setImageDrawable(new StepProcessDrawable(getContext(), location[0], location[1], processStepNow.getWidth(), processStepNow.getHeight(),
-                        targetCircle.getWidth(), targetCircle.getHeight()).setmAngle(360));
-            }
-        });
         isBind = Presenter.getInstance(getContext()).bindService(null, TodayStepService.class);
+        targetCircle = (ImageView) viewRoot.findViewById(R.id.target_step_circle);
+        targetSteps = (TextView) viewRoot.findViewById(R.id.target_steps);
     }
 
     @Override
@@ -515,15 +511,40 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         }
     }
 
+    public void drawProcess(int target, final int currentStep) {
+        float angle = (float) currentStep * 360.0f / target;
+        if (angle > 360.0f) {
+            angle = 360.0f;
+        }
+        final float angelProcess = angle;
+        if (canDrawProcess) {
+            targetCircle.post(new Runnable() {
+                @Override
+                public void run() {
+                    int[] location = new int[2];
+                    processStepNow.getLocationOnScreen(location);
+                    processStepNow.setImageDrawable(new StepProcessDrawable(getContext(), location[0], location[1], processStepNow.getWidth(), processStepNow.getHeight(),
+                            targetCircle.getWidth(), targetCircle.getHeight()).setmAngle(angelProcess));
+                }
+            });
+            canDrawProcess = false;
+        }
+    }
+
     @Override
     public void responseStepToday(int stepToday) {
-        LocalLog.d(TAG, "responseStepToday() enter");
         if (lastStep >= stepToday) {
             return;
         }
         lastStep = stepToday;
+        LocalLog.d(TAG, "responseStepToday() enter" + stepToday + ",lastStep" + lastStep);
         if (toayStep != null) {
             toayStep.setText(String.valueOf(stepToday));
+            int targetStep = Presenter.getInstance(getContext()).getTarget(getContext());
+            targetSteps.setText(String.valueOf(targetStep));
+            if (targetStep > 0) {
+                drawProcess(targetStep, lastStep);
+            }
         }
         LocalLog.d(TAG, "stepToday = " + stepToday);
         Message messageNet = Message.obtain();
@@ -707,6 +728,17 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if ("target".equals(key)) {
+            canDrawProcess = true;
+            LocalLog.d(TAG, "用户目标值改变");
+            int target = Presenter.getInstance(getContext()).getTarget(getContext());
+            targetSteps.setText(String.valueOf(target));
+            drawProcess(target, lastStep);
         }
     }
 }

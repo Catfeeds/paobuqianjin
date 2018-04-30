@@ -35,6 +35,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginOutResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
+import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -67,7 +68,11 @@ public final class Presenter {
             }
             return instance;
         } else {
-            return null;
+            if (mContext != null) {
+                return instance;
+            } else {
+                return null;
+            }
         }
     }
 
@@ -151,6 +156,14 @@ public final class Presenter {
 
     public void setAvatar(Context context, String avatar) {
         engine.setAvatar(context, avatar);
+    }
+
+    public void setTarget(Context context, int target) {
+        engine.setTarget(context, target);
+    }
+
+    public int getTarget(Context context) {
+        return engine.getTarget(context);
     }
 
     public void setMobile(Context context, String mobile) {
