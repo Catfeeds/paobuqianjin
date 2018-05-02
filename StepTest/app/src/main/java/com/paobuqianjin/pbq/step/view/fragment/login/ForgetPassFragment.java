@@ -262,6 +262,8 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            Toast.makeText(getContext(), errorCode.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -290,8 +292,10 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    forgotpwdGetCode.setClickable(true);
-                    forgotpwdGetCode.setText("获取验证码");
+                    if (forgotpwdGetCode != null) {
+                        forgotpwdGetCode.setClickable(true);
+                        forgotpwdGetCode.setText("获取验证码");
+                    }
                 }
             });
             T = 60; //最后再恢复倒计时时长

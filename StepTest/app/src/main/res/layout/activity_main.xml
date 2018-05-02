@@ -48,28 +48,6 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/btn_friend_circle"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:drawablePadding="0dp"
-                android:drawableTop="@drawable/circle_n"
-                android:gravity="center"
-                android:onClick="onTabSelect"
-                android:paddingBottom="0dip"
-                android:paddingTop="7dip"
-                android:scaleType="matrix"
-                android:text="@string/friend_circle"
-                android:textColor="@color/color_8a8a8a"
-                android:textSize="12dp" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <TextView
                 android:id="@+id/btn_task"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -87,6 +65,29 @@
                 android:textSize="12dp" />
 
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/btn_friend_circle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawablePadding="0dp"
+                android:drawableTop="@drawable/circle_n"
+                android:gravity="center"
+                android:onClick="onTabSelect"
+                android:paddingBottom="0dip"
+                android:paddingTop="7dip"
+                android:scaleType="matrix"
+                android:text="@string/friend_circle"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12dp" />
+
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:layout_width="0dp"

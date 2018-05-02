@@ -316,6 +316,9 @@ public class AttentionCircleFragment extends BaseFragment {
             LocalLog.d(TAG, "DynamicAllIndexResponse() enter" + dynamicAllIndexResponse.toString());
             if (dynamicAllIndexResponse.getError() == 0) {
                 LocalLog.d(TAG, dynamicAllIndexResponse.getMessage());
+                if (dynamicRecyclerView == null) {
+                    return;
+                }
                 pageCount = dynamicAllIndexResponse.getData().getPagenation().getTotalPage();
                 LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
 
