@@ -17,8 +17,8 @@
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:id="@+id/member_span"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/search_mem_bar">
 
         <RelativeLayout
@@ -65,15 +65,15 @@
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 
     <Button
-        android:visibility="gone"
-        android:stateListAnimator="@null"
         android:id="@+id/delete_member_confim"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:background="@drawable/create_button"
+        android:stateListAnimator="@null"
         android:text="删除"
         android:textColor="@color/color_fefefe"
-        android:textSize="16dp" />
+        android:textSize="16dp"
+        android:visibility="gone" />
 </RelativeLayout>

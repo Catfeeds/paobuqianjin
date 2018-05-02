@@ -195,6 +195,9 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
                         @Override
                         public void run() {
                             LocalLog.d(TAG, "滑动到顶端");
+                            if (nearByRecycler == null) {
+                                return;
+                            }
                             nearByRecycler.scrollToPosition(0);
                         }
                     }, 10);

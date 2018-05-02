@@ -217,9 +217,8 @@ public class NetStringCallBack extends StringCallback {
                         && command == Engine.COMMAND_STEP_RANK) {
 
                 } else if (callBackInterface != null
-                        && callBackInterface instanceof CircleDetailInterface
-                        && command == Engine.COMMAND_GET_CIRCLE_DETAIL) {
-
+                        && callBackInterface instanceof CircleDetailInterface) {
+                    callBackInterface.response(errorCode);
                 } else if (callBackInterface != null
                         && callBackInterface instanceof TagFragInterface
                         && command == Engine.COMMAND_GET_TAG) {

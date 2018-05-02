@@ -812,6 +812,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            Toast.makeText(getContext(), errorCode.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }

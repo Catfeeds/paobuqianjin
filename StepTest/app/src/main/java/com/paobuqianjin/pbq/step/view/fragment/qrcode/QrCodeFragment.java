@@ -127,6 +127,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         } else {
             userid = String.valueOf(Presenter.getInstance(getContext()).getId());
             codeInfo = "userid:" + userid;
+            descQrCode.setText("用“跑步钱进”APP扫描二维码关注我");
         }
 
         qrcodeImg.setImageBitmap(encodeBitmap(codeInfo));

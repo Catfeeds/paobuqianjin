@@ -42,7 +42,7 @@
                 android:src="@drawable/default_head_ico" />
 
             <ImageView
-	        android:id="@+id/vip_flg"
+                android:id="@+id/vip_flg"
                 android:layout_width="27dp"
                 android:layout_height="13dp"
                 android:layout_alignBottom="@+id/circle_logo"
@@ -58,8 +58,11 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="13dp"
                 android:layout_toEndOf="@+id/circle_logo"
+                android:ellipsize="end"
                 android:includeFontPadding="false"
-                android:text="跑步钱进"
+                android:maxEms="16"
+                android:maxLines="1"
+                android:text=""
                 android:textColor="@color/color_161727"
                 android:textSize="14dp" />
 
@@ -72,7 +75,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/circle_logo"
                 android:includeFontPadding="false"
-                android:text="ID:156678"
+                android:text=""
                 android:textSize="12dp" />
         </RelativeLayout>
 
