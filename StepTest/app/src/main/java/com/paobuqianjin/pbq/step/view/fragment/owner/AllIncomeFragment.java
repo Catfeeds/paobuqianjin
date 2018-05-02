@@ -96,6 +96,9 @@ public class AllIncomeFragment extends BaseFragment {
             allIncomeRecycler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    if (allIncomeRecycler == null) {
+                        return;
+                    }
                     allIncomeRecycler.scrollToPosition(0);
                 }
             }, 10);

@@ -188,6 +188,9 @@ public class MyReleaseFragment extends BaseBarStyleTextViewFragment implements M
 
         adapter.notifyDataSetChanged(dataBeans);
 
+        if (myReleaseScroll == null) {
+            return;
+        }
         myReleaseScroll.setRefreshing(false);
 
         // 第一次加载数据：一定要掉用这个方法。
