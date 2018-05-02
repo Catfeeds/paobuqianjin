@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.j256.ormlite.stmt.query.In;
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
@@ -61,7 +62,9 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.VipNoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
@@ -2417,7 +2420,7 @@ public final class Engine {
     }
 
     //TODO 领取任务和奖励
-    public void putTask(String action, int taskId) {
+    public void putTask(String action, int taskId, final InnerCallBack innerCallBack) {
         String url = NetApi.urlTaskRecord + "/" + String.valueOf(taskId);
         LocalLog.d(TAG, "url = " + url);
         switch (action) {
@@ -2438,7 +2441,27 @@ public final class Engine {
                             }
                         })
                         .param("action", action)
-                        .build().execute(new NetStringCallBack(receiveTaskInterface, COMMAND_RECV_TASK));
+                        .build().execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (innerCallBack != null) {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            innerCallBack.innerCallBack(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        if (innerCallBack != null) {
+                            try {
+                                ReceiveTaskResponse receiveTaskResponse = new Gson().fromJson(s, ReceiveTaskResponse.class);
+                                innerCallBack.innerCallBack(receiveTaskResponse);
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
                 break;
             case "receive_reward":
                 LocalLog.d(TAG, "领取奖励");
@@ -2458,7 +2481,27 @@ public final class Engine {
                             }
                         })
                         .param("action", action)
-                        .build().execute(new NetStringCallBack(taskDetailRecInterface, COMMAND_RECV_TASK_PAY));
+                        .build().execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (innerCallBack != null) {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            innerCallBack.innerCallBack(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        if (innerCallBack != null) {
+                            try {
+                                RecPayResponse recPayResponse = new Gson().fromJson(s, RecPayResponse.class);
+                                innerCallBack.innerCallBack(recPayResponse);
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
                 break;
         }
 
@@ -2593,8 +2636,9 @@ public final class Engine {
     }
 
     //TODO 获取的我领取任务 http://119.29.10.64/v1/TaskRecord?action=all&userid=1
-    public void getAllMyRecTask() {
-        String url = NetApi.urlTaskRecord + "?action=all&userid=" + String.valueOf(getId(mContext));
+    public void getAllMyRecTask(int pageIndex, int pagesize) {
+        String url = NetApi.urlTaskRecord + "?action=all&userid=" + String.valueOf(getId(mContext)) + "&page=" + String.valueOf(pageIndex)
+                + "&pagesize" + String.valueOf(pagesize);
         LocalLog.d(TAG, "url  =  " + url);
         OkHttpUtils
                 .get()
@@ -2715,7 +2759,6 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
-
                     }
 
                     @Override

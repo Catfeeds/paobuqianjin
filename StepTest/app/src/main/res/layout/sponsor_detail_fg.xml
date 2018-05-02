@@ -71,11 +71,22 @@
 
             </RelativeLayout>
 
+            <TextView
+                android:id="@+id/sponsor_name"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/sponsor_face_span"
+                android:gravity="center_vertical"
+                android:paddingLeft="14dp"
+                android:text=""
+                android:textColor="@color/color_161727"
+                android:textSize="16dp" />
+
             <ImageView
                 android:id="@+id/line"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:layout_below="@+id/sponsor_face_span"
+                android:layout_below="@+id/sponsor_name"
                 android:background="@color/color_ecf0f3" />
 
             <RelativeLayout
@@ -127,15 +138,15 @@
             <RelativeLayout
                 android:id="@+id/sponsor_time_span"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="60dp"
                 android:layout_below="@+id/sponsor_tel_span">
 
                 <ImageView
                     android:id="@+id/sponsor_time_icon"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:layout_centerVertical="true"
                     android:layout_marginLeft="14dp"
+                    android:layout_marginTop="15dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/sponsor_open" />
 
@@ -143,8 +154,8 @@
                     android:id="@+id/sponsor_time_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
                     android:layout_toEndOf="@+id/sponsor_time_icon"
                     android:text="营业时间:"
                     android:textColor="@color/color_161727"
@@ -154,9 +165,8 @@
                     android:id="@+id/sponsor_time_num_str"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginTop="15dp"
                     android:layout_toRightOf="@+id/sponsor_time_num"
                     android:text=""
                     android:textColor="@color/color_8a8a8a"

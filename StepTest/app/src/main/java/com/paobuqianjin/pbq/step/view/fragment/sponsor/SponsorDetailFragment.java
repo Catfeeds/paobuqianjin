@@ -94,6 +94,8 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
     List<View> Mview = new ArrayList<>();
     private final static String SHOW_SPONSOR_PICS_ACTION = "com.paobuqianjin.pbq.step.SHOW_PIC_ACTION";
     ArrayList<SponsorDetailResponse.DataBean.GoodsImgsBean> goodsImgsBeans = new ArrayList<>();
+    @Bind(R.id.sponsor_name)
+    TextView sponsorName;
 
     @Override
     protected String title() {
@@ -126,7 +128,7 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
         goodsB = (ImageView) viewRoot.findViewById(R.id.goods_b);
         gotoSponsor = (RelativeLayout) viewRoot.findViewById(R.id.goto_sponsor);
         sponsorImages = (ViewPager) viewRoot.findViewById(R.id.sponsor_images);
-
+        sponsorName = (TextView) viewRoot.findViewById(R.id.sponsor_name);
         gotoSponsor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,6 +165,10 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
                     SponsorDetailResponse.DataBean dataBean = ((SponsorDetailResponse) object).getData();
                     if (dataBean != null) {
                         LocalLog.d(TAG, "dataBean  =  " + dataBean.toString());
+                        if (sponsorTelNumStr == null) {
+                            return;
+                        }
+                        sponsorName.setText(dataBean.getName());
                         setTitle(dataBean.getName());
                         sponsorTelNumStr.setText(dataBean.getTel());
                         String workTimeStr = dataBean.getDo_day();

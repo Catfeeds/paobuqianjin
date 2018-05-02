@@ -5,10 +5,11 @@ package com.paobuqianjin.pbq.step.data.bean.gson.response;
  */
 
 public class TaskRecDetailResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"id":1,"task_name":"10000步达标赛","task_days":1,"target_step":10000,"reward_amount":"0.02","userid":57,"avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/619AB1F6-84F1-4BF0-8502-309BB584BF98.jpg","nickname":"周周周","activity_start_time":1517328000,"activity_end_time":1517414399,"task_rule":"达标即可获得红包奖励，未达标者无奖励","task_desc":"①任务每天晚上12点重置，未达标者的红包退回到派发人账户;\\n②运动数据以跑步钱进的APP为准;","user_step":6000,"is_finished":0}
+     * data : {"id":770,"task_name":"3820步达标赛","task_days":31,"target_step":3820,"reward_amount":"100.00","userid":193,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/YXr2VhxJpdg2dcIZMrju42mmGXmLabwpbTiaoKq9lP5WbdkhcTkkZ6pjuBwLIQdC0u68UhqUkpb5yZ89PoyMiarA/132","nickname":"李","activity_start_time":1525190400,"activity_end_time":1525276799,"task_rule":"达标即可获得红包奖励，未达标者无奖励","task_desc":"\r\n                <p>\r\n                    ①运动数据以跑步钱进的APP为准；\r\n                <\/p>\r\n                <p>\r\n                    ②任务每天晚上12点重置，未领取的红包退回到派发人账户；\r\n                <\/p>\r\n                <p>\r\n                    ③若任务领取人未领取任务及奖励，属用户自主行为，与跑步钱进无关；\r\n   ","to_userid":30,"is_receive":1,"user_step":3086,"is_finished":0}
      */
 
     private int error;
@@ -50,19 +51,30 @@ public class TaskRecDetailResponse {
 
     public static class DataBean {
         /**
-         * id : 1
-         * task_name : 10000步达标赛
-         * task_days : 1
-         * target_step : 10000
-         * reward_amount : 0.02
-         * userid : 57
-         * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/619AB1F6-84F1-4BF0-8502-309BB584BF98.jpg
-         * nickname : 周周周
-         * activity_start_time : 1517328000
-         * activity_end_time : 1517414399
+         * id : 770
+         * task_name : 3820步达标赛
+         * task_days : 31
+         * target_step : 3820
+         * reward_amount : 100.00
+         * userid : 193
+         * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/YXr2VhxJpdg2dcIZMrju42mmGXmLabwpbTiaoKq9lP5WbdkhcTkkZ6pjuBwLIQdC0u68UhqUkpb5yZ89PoyMiarA/132
+         * nickname : 李
+         * activity_start_time : 1525190400
+         * activity_end_time : 1525276799
          * task_rule : 达标即可获得红包奖励，未达标者无奖励
-         * task_desc : ①任务每天晚上12点重置，未达标者的红包退回到派发人账户;\n②运动数据以跑步钱进的APP为准;
-         * user_step : 6000
+         * task_desc :
+         * <p>
+         * ①运动数据以跑步钱进的APP为准；
+         * </p>
+         * <p>
+         * ②任务每天晚上12点重置，未领取的红包退回到派发人账户；
+         * </p>
+         * <p>
+         * ③若任务领取人未领取任务及奖励，属用户自主行为，与跑步钱进无关；
+         * <p>
+         * to_userid : 30
+         * is_receive : 1
+         * user_step : 3086
          * is_finished : 0
          */
 
@@ -74,10 +86,12 @@ public class TaskRecDetailResponse {
         private int userid;
         private String avatar;
         private String nickname;
-        private long activity_start_time;
-        private long activity_end_time;
+        private int activity_start_time;
+        private int activity_end_time;
         private String task_rule;
         private String task_desc;
+        private int to_userid;
+        private int is_receive;
         private int user_step;
         private int is_finished;
 
@@ -90,6 +104,7 @@ public class TaskRecDetailResponse {
         }
 
         private int vip;
+
         public int getId() {
             return id;
         }
@@ -154,19 +169,19 @@ public class TaskRecDetailResponse {
             this.nickname = nickname;
         }
 
-        public long getActivity_start_time() {
+        public int getActivity_start_time() {
             return activity_start_time;
         }
 
-        public void setActivity_start_time(long activity_start_time) {
+        public void setActivity_start_time(int activity_start_time) {
             this.activity_start_time = activity_start_time;
         }
 
-        public long getActivity_end_time() {
+        public int getActivity_end_time() {
             return activity_end_time;
         }
 
-        public void setActivity_end_time(long activity_end_time) {
+        public void setActivity_end_time(int activity_end_time) {
             this.activity_end_time = activity_end_time;
         }
 
@@ -184,6 +199,22 @@ public class TaskRecDetailResponse {
 
         public void setTask_desc(String task_desc) {
             this.task_desc = task_desc;
+        }
+
+        public int getTo_userid() {
+            return to_userid;
+        }
+
+        public void setTo_userid(int to_userid) {
+            this.to_userid = to_userid;
+        }
+
+        public int getIs_receive() {
+            return is_receive;
+        }
+
+        public void setIs_receive(int is_receive) {
+            this.is_receive = is_receive;
         }
 
         public int getUser_step() {
@@ -217,6 +248,8 @@ public class TaskRecDetailResponse {
                     ", activity_end_time=" + activity_end_time +
                     ", task_rule='" + task_rule + '\'' +
                     ", task_desc='" + task_desc + '\'' +
+                    ", to_userid=" + to_userid +
+                    ", is_receive=" + is_receive +
                     ", user_step=" + user_step +
                     ", is_finished=" + is_finished +
                     ", vip=" + vip +

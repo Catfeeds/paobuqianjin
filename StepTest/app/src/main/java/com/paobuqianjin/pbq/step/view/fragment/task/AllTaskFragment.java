@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -68,9 +69,15 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
 
     }
 
-    public void setData(List<?> data) {
+    public void setData(List<MyRecTaskRecordResponse.DataBeanX.DataBean> data) {
         if (allTaskRecycler != null) {
             adapter.notifyDataSetChanged(data);
+        }
+    }
+
+    public void notifyAddData(MyRecTaskRecordResponse.DataBeanX.DataBean dataBean) {
+        if (allTaskRecycler != null) {
+            adapter.notifyAddData(dataBean);
         }
     }
 
@@ -119,9 +126,5 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
     public void receiveTask(int taskId, ReflashInterface reflashInterface) {
         LocalLog.d(TAG, "领取任务 id = " + taskId);
         this.reflashInterface = reflashInterface;
-        if (taskId != -1) {
-            Presenter.getInstance(getContext()).putTask("receive_task", taskId);
-        }
-
     }
 }

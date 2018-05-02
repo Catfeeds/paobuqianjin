@@ -147,6 +147,9 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     public void response(UserInfoResponse userInfoResponse) {
         LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
         if (userInfoResponse.getError() == 0) {
+            if (sexIcon == null) {
+                return;
+            }
             if (userInfoResponse.getData().getSex() == 1) {
                 sexIcon.setImageResource(R.drawable.man_flag);
             } else if (userInfoResponse.getData().getSex() == 2) {

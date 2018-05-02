@@ -1,11 +1,15 @@
 package com.paobuqianjin.pbq.step.view.fragment.task;
 
 import android.annotation.TargetApi;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +28,7 @@ import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.fragment.owner.MyFriendFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,9 +67,17 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
     private int mCurrentIndex = 0;
     private int mIndex = 0;
     private Fragment[] mFragments;
+    private IntentFilter intentFilter;
+    private LocalBroadcastManager localBroadcastManager;
+    private LocalReceiver localReceiver;
     private ArrayList<MyRecTaskRecordResponse.DataBeanX.DataBean> allTaskList, doingTaskList, finishTaskList;
+    private final static String REC_TASK_ACTION = "com.paobuqianjin.pbq.step.REC_TASK_ACTION";
+    private final static String REC_GIFT_ACTION = "com.paobuqianjin.pbq.step.REC_GIFT_ACTION";
+    private int pageIndex = 1, pageCount = 0;
+    private final static int PAGESIZE = 10;
 
     @Override
+
     protected int getLayoutResId() {
         return R.layout.task_top_fg;
     }
@@ -80,7 +93,7 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getAllMyRecTask();
+        Presenter.getInstance(getContext()).getAllMyRecTask(pageIndex, PAGESIZE);
         return rootView;
     }
 
@@ -106,6 +119,14 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
                 .hide(finishedTaskFragment)
                 .hide(emptyTaskFragment)
                 .commit();
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(REC_GIFT_ACTION);
+        intentFilter.addAction(REC_TASK_ACTION);
+
+        localReceiver = new LocalReceiver();
+        localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
+        localBroadcastManager.registerReceiver(localReceiver, intentFilter);
     }
 
     @Override
@@ -113,6 +134,14 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
         super.onDestroyView();
         ButterKnife.unbind(this);
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (localBroadcastManager != null) {
+            localBroadcastManager.unregisterReceiver(localReceiver);
+        }
     }
 
     @OnClick({R.id.task_all, R.id.task_un_finish, R.id.task_finished, R.id.bar_tv_right})
@@ -233,10 +262,44 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
         setCurrentIndexStateSelected();
     }
 
+    private class LocalReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent != null) {
+                if (REC_TASK_ACTION.equals(intent.getAction())) {
+                    LocalLog.d(TAG, "领取任务成功");
+                    pageIndex = 1;
+                    pageCount = 0;
+                    allTaskList = null;
+                    doingTaskList = null;
+                    finishTaskList = null;
+                    allTaskFragment.setData(null);
+                    unFinishTaskFragment.setData(null);
+                    finishedTaskFragment.setData(null);
+                    Presenter.getInstance(getContext()).getAllMyRecTask(pageIndex, PAGESIZE);
+
+                } else if (REC_GIFT_ACTION.equals(intent.getAction())) {
+                    LocalLog.d(TAG, "领取奖励成功");
+                    pageIndex = 1;
+                    pageCount = 0;
+                    allTaskList = null;
+                    doingTaskList = null;
+                    finishTaskList = null;
+                    allTaskFragment.setData(null);
+                    unFinishTaskFragment.setData(null);
+                    finishedTaskFragment.setData(null);
+                    Presenter.getInstance(getContext()).getAllMyRecTask(pageIndex, PAGESIZE);
+                }
+            }
+        }
+    }
+
     @Override
     public void response(MyRecTaskRecordResponse myRecvTaskRecordResponse) {
         LocalLog.d(TAG, "MyRecTaskRecordResponse() enter" + myRecvTaskRecordResponse.toString());
         if (myRecvTaskRecordResponse.getError() == 0) {
+            pageCount = myRecvTaskRecordResponse.getData().getPagenation().getTotalPage();
+            LocalLog.d(TAG, "pageIndex =  " + pageIndex + ",pageCount =" + pageCount);
             for (int i = 0; i < myRecvTaskRecordResponse.getData().getData().size(); i++) {
                 if (myRecvTaskRecordResponse.getData().getData().get(i).getIs_receive() == 1) {
                     LocalLog.d(TAG, "已接任务");
@@ -247,6 +310,7 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
                         } else {
                             doingTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
                         }
+                        unFinishTaskFragment.notifyAddData(myRecvTaskRecordResponse.getData().getData().get(i));
                     } else {
                         if (finishTaskList == null) {
                             finishTaskList = new ArrayList<>();
@@ -254,6 +318,7 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
                         } else {
                             finishTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
                         }
+                        finishedTaskFragment.notifyAddData(myRecvTaskRecordResponse.getData().getData().get(i));
                     }
                 } else if (myRecvTaskRecordResponse.getData().getData().get(i).getIs_receive() == 0) {
                     LocalLog.d(TAG, "未接任务");
@@ -268,10 +333,14 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
                     allTaskList = new ArrayList<>();
                 }
                 allTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
+                allTaskFragment.notifyAddData(myRecvTaskRecordResponse.getData().getData().get(i));
             }
-            allTaskFragment.setData(allTaskList);
-            unFinishTaskFragment.setData(doingTaskList);
-            finishedTaskFragment.setData(finishTaskList);
+
+            if (pageIndex < pageCount) {
+                LocalLog.d(TAG, "加载更多");
+                Presenter.getInstance(getContext()).getAllMyRecTask(pageIndex, PAGESIZE);
+                pageIndex++;
+            }
         } else if (myRecvTaskRecordResponse.getError() == 1) {
             if (getActivity() == null) {
                 return;

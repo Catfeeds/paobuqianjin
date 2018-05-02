@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskSponsorRespone;
@@ -137,7 +138,7 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                 break;
             case R.id.sponor_msg_span:
                 LocalLog.d(TAG, "商铺信息");
-                intent.setClass(getContext(), SponsorSelectActivity.class);
+                intent.setClass(getContext(), SponsorManagerActivity.class);
                 intent.setAction(SPONSOR_INFO_ACTION);
                 startActivityForResult(intent, REQUEST_SPONSOR_MSG);
                 break;

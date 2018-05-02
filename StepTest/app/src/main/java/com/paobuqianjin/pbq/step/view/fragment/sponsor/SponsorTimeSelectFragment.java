@@ -14,6 +14,9 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.view.base.adapter.TimeAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -35,6 +38,8 @@ public class SponsorTimeSelectFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.time_recycler)
     RecyclerView timeRecycler;
 
+    private boolean[] data = new boolean[7];
+
     @Override
     protected int getLayoutResId() {
         return R.layout.sponsor_time_select_fg;
@@ -49,17 +54,19 @@ public class SponsorTimeSelectFragment extends BaseBarStyleTextViewFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        timeRecycler = (RecyclerView) viewRoot.findViewById(R.id.time_recycler);
+        ButterKnife.bind(this, viewRoot);
+        for (int i = 0; i < 7; i++) {
+            data[i] = false;
+        }
         layoutManager = new LinearLayoutManager(getContext());
         timeRecycler.setLayoutManager(layoutManager);
-        timeRecycler.setAdapter(new TimeAdapter(getContext()));
+        timeRecycler.setAdapter(new TimeAdapter(getContext(), data));
     }
 
     @Override
@@ -67,4 +74,5 @@ public class SponsorTimeSelectFragment extends BaseBarStyleTextViewFragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
 }

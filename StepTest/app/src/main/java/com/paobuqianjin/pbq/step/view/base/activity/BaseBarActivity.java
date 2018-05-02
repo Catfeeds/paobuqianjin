@@ -87,10 +87,10 @@ public abstract class BaseBarActivity extends BaseActivity {
                 case R.id.bar_return_drawable:
                 case R.id.button_return_bar:
                     if (mToolBarListener == null) {
-                        finish();
+                        onBackPressed();
                     } else {
                         //mToolBarListener.clickLeft();
-                        finish();
+                        onBackPressed();
                     }
                     break;
                 case R.id.bar_tv_right:

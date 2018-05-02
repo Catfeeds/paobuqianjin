@@ -5,7 +5,7 @@
 
     <include
         android:id="@+id/bar_cancel_confirm"
-        layout="@layout/bar_return_a_style"></include>
+        layout="@layout/bar_return_a_style"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/time_recycler"

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.TaskAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -50,9 +51,15 @@ public class FinishedTaskFragment extends BaseFragment {
         finishedTaskRecycler.setAdapter(adapter);
     }
 
-    public void setData(List<?> data) {
+    public void setData(List<MyRecTaskRecordResponse.DataBeanX.DataBean> data) {
         if (finishedTaskRecycler != null) {
             adapter.notifyDataSetChanged(data);
+        }
+    }
+
+    public void notifyAddData(MyRecTaskRecordResponse.DataBeanX.DataBean dataBean) {
+        if (finishedTaskRecycler != null) {
+            adapter.notifyAddData(dataBean);
         }
     }
 

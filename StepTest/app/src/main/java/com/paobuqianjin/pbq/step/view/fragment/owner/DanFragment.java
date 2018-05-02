@@ -165,8 +165,10 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
                     danListResponse.getData().get(i).setFinished(true);
                 }
             }
+            if (danRecycler != null) {
+                danRecycler.setAdapter(new DanAdapter(getContext(), danListResponse.getData()));
+            }
 
-            danRecycler.setAdapter(new DanAdapter(getContext(), danListResponse.getData()));
         } else if (danListResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

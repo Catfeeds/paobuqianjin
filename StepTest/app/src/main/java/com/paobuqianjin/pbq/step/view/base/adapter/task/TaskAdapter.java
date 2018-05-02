@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter.task;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +14,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.TaskDetailActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -33,17 +39,39 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private final static String TAG = TaskAdapter.class.getSimpleName();
     private final static int defaultCount = 5;
     private Context context;
-    private List<?> mData;
+    private List<MyRecTaskRecordResponse.DataBeanX.DataBean> mData;
     private ReceiveTaskInterface receiveTaskInterface;
+    private final static String REC_TASK_ACTION = "com.paobuqianjin.pbq.step.REC_TASK_ACTION";
+    private final static String REC_GIFT_ACTION = "com.paobuqianjin.pbq.step.REC_GIFT_ACTION";
+    private LocalBroadcastManager localBroadcastManager;
+
 
     public TaskAdapter(Context context) {
         super();
         this.context = context;
+        localBroadcastManager = LocalBroadcastManager.getInstance(context);
     }
 
-    public void notifyDataSetChanged(List<?> data) {
+    public void notifyDataSetChanged(List<MyRecTaskRecordResponse.DataBeanX.DataBean> data) {
         mData = data;
         super.notifyDataSetChanged();
+    }
+
+    public void notifyAddData(MyRecTaskRecordResponse.DataBeanX.DataBean dataBean) {
+        if (mData != null) {
+            for (int i = 0; i < mData.size(); i++) {
+                if (mData.get(i).getId() != dataBean.getId()) {
+                    mData.add(dataBean);
+                } else {
+                    mData.remove(i);
+                    mData.add(dataBean);
+                }
+            }
+        } else {
+            mData = new ArrayList<>();
+            mData.add(dataBean);
+        }
+        super.notifyItemRangeInserted(mData.size() - 1, 1);
     }
 
     public void setReceiveTaskInterface(ReceiveTaskInterface receiveTaskInterface) {
@@ -131,6 +159,32 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             view.setOnClickListener(onClickListener);
         }
 
+        private InnerCallBack innerCallBack = new InnerCallBack() {
+            @Override
+            public void innerCallBack(Object object) {
+                if (object instanceof ErrorCode) {
+                    LocalLog.d(TAG, "领取任务或者奖励出错");
+                } else if (object instanceof ReceiveTaskResponse) {
+                    LocalLog.d(TAG, "领取任务成功");
+                    if (((ReceiveTaskResponse) object).getError() == 0) {
+                        releaseDetails.setText("进行中");
+                        Intent intent = new Intent();
+                        intent.setAction(REC_TASK_ACTION);
+                        intent.putExtra("taskid", taskId);
+                        localBroadcastManager.sendBroadcast(intent);
+
+                    }
+                } else if (object instanceof RecPayResponse) {
+                    LocalLog.d(TAG, "领取奖励成功");
+                    if (((RecPayResponse) object).getError() == 0) {
+                        Intent intent = new Intent();
+                        intent.setAction(REC_GIFT_ACTION);
+                        intent.putExtra("taskid", taskId);
+                        localBroadcastManager.sendBroadcast(intent);
+                    }
+                }
+            }
+        };
         private View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,11 +202,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                         LocalLog.d(TAG, releaseDetails.getText().toString());
                         switch (releaseDetails.getText().toString()) {
                             case "领取任务":
-                                if (receiveTaskInterface != null) {
+                                /*if (receiveTaskInterface != null) {
                                     receiveTaskInterface.receiveTask(taskId, reflashInterface);
-                                }
+                                }*/
+                                Presenter.getInstance(context).putTask("receive_task", taskId, innerCallBack);
                                 break;
                             case "领取奖励":
+                                LocalLog.d(TAG, "领取奖励");
+                                Presenter.getInstance(context).putTask("receive_reward", taskId, innerCallBack);
                                 break;
                             case "进行中":
                                 LocalLog.d(TAG, "进行中");

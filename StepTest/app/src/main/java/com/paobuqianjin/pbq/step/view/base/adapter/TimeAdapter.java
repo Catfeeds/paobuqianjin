@@ -13,52 +13,71 @@ import com.paobuqianjin.pbq.step.R;
 import butterknife.Bind;
 
 /**
- * Created by pbq on 2018/4/23.
+ * Created by pbq
+ * on 2018/4/23.
  */
 
 public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.TimeViewHolder> {
-    private final static String TAG = TimeAdapter.class.getSimpleName();
+    private boolean[] data = new boolean[7];
     private Context context;
-    private final static int TIME_DEFAULT = 7;
 
-    public TimeAdapter(Context context) {
+    public TimeAdapter(Context context, boolean[] data) {
         this.context = context;
+        this.data = data;
     }
 
     @Override
     public int getItemCount() {
-        return TIME_DEFAULT;
+        return data.length;
     }
 
     @Override
-    public void onBindViewHolder(TimeViewHolder holder, int position) {
+    public void onBindViewHolder(final TimeViewHolder holder, int position) {
         String timeString = "";
         switch (position) {
             case 0:
-                timeString = "周日";
-                break;
-            case 1:
                 timeString = "周一";
                 break;
-            case 2:
+            case 1:
                 timeString = "周二";
                 break;
-            case 3:
+            case 2:
                 timeString = "周三";
                 break;
-            case 4:
+            case 3:
                 timeString = "周四";
                 break;
-            case 5:
+            case 4:
                 timeString = "周五";
                 break;
-            case 6:
+            case 5:
                 timeString = "周六";
+                break;
+            case 6:
+                timeString = "周日";
                 break;
             default:
                 break;
         }
+
         holder.timeDays.setText(timeString);
+        if (data[position]) {
+            holder.selectIco.setImageResource(R.mipmap.selected1);
+        } else {
+            holder.selectIco.setImageResource(R.mipmap.unchecked);
+        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (data[holder.getAdapterPosition()]) {
+                    holder.selectIco.setImageResource(R.mipmap.unchecked);
+                    data[holder.getAdapterPosition()] = false;
+                } else {
+                    holder.selectIco.setImageResource(R.mipmap.selected1);
+                    data[holder.getAdapterPosition()] = true;
+                }
+            }
+        });
     }
 
     @Override
@@ -66,13 +85,13 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.TimeViewHolder
         return new TimeViewHolder(LayoutInflater.from(context).inflate(R.layout.work_time_item, parent, false));
     }
 
-    public class TimeViewHolder extends RecyclerView.ViewHolder {
+    class TimeViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.time_days)
         TextView timeDays;
         @Bind(R.id.select_ico)
         ImageView selectIco;
 
-        public TimeViewHolder(View view) {
+        TimeViewHolder(View view) {
             super(view);
             initView(view);
         }

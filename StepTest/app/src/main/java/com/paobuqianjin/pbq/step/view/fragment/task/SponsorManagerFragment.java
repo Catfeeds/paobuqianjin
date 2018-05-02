@@ -1,21 +1,25 @@
 package com.paobuqianjin.pbq.step.view.fragment.task;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.view.activity.SponsorInfoCollectActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/4/20.
@@ -48,7 +52,11 @@ public class SponsorManagerFragment extends BaseBarStyleTextViewFragment {
     ImageView line;
     @Bind(R.id.sponsor_list)
     SwipeMenuRecyclerView sponsorList;
+    @Bind(R.id.tv_add_sponsor)
+    Button tv_add_sponsor;
+
     LinearLayoutManager layoutManager;
+    private final static int REQUEST_SPONSOR_INFO = 1;
 
     @Override
     protected int getLayoutResId() {
@@ -76,7 +84,18 @@ public class SponsorManagerFragment extends BaseBarStyleTextViewFragment {
         sponsorList.setLayoutManager(layoutManager);
         sponsorList.setAdapter(new SponsorAdapter(getActivity(), null));
 
+    }
 
+    @OnClick({R.id.tv_add_sponsor})
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.tv_add_sponsor:{
+                Intent intent = new Intent();
+                intent.setAction("com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION");
+                intent.setClass(getContext(), SponsorInfoCollectActivity.class);
+                getActivity().startActivityForResult(intent, REQUEST_SPONSOR_INFO);
+            }break;
+        }
     }
 
     @Override

@@ -46,7 +46,7 @@ public class TargetPeopleFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.man_text)
     CheckBox manText;
     @Bind(R.id.sex_unselect_text)
-    TextView sexUnselectText;
+    CheckBox sexUnselectText;
     @Bind(R.id.sex_pan)
     RelativeLayout sexPan;
     @Bind(R.id.age)
@@ -100,15 +100,13 @@ public class TargetPeopleFragment extends BaseBarStyleTextViewFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        nvText = (CheckBox) viewRoot.findViewById(R.id.nv_text);
-        manText = (CheckBox) viewRoot.findViewById(R.id.man_text);
+        ButterKnife.bind(this, viewRoot);
         nvText.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -122,6 +120,14 @@ public class TargetPeopleFragment extends BaseBarStyleTextViewFragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked && nvText.isChecked()) {
                     nvText.setChecked(false);
+                }
+            }
+        });
+        sexUnselectText.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked && sexUnselectText.isChecked()) {
+                    sexUnselectText.setChecked(false);
                 }
             }
         });

@@ -37,7 +37,7 @@
                         android:id="@+id/target_step"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="8000步达标赛"
+                        android:text=""
                         android:textColor="@color/color_f8"
                         android:textSize="24dp" />
 
@@ -48,7 +48,7 @@
                         android:layout_below="@+id/target_step"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="18dp"
-                        android:text="奖励总金额: 200元"
+                        android:text=""
                         android:textColor="@color/color_f8"
                         android:textSize="15dp" />
                 </RelativeLayout>
@@ -69,7 +69,7 @@
                         android:src="@drawable/default_head_ico" />
 
                     <ImageView
-		        android:id="@+id/vip_flg"
+                        android:id="@+id/vip_flg"
                         android:layout_width="27dp"
                         android:layout_height="13dp"
                         android:layout_alignBottom="@+id/release_use_ico"
@@ -89,7 +89,7 @@
                             android:id="@+id/dear_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="用户昵称"
+                            android:text=""
                             android:textColor="@color/color_f8"
                             android:textSize="14dp" />
 
@@ -99,7 +99,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/dear_name"
                             android:layout_marginTop="8dp"
-                            android:text="ID:10000"
+                            android:text=""
                             android:textColor="@color/color_f8"
                             android:textSize="14dp" />
                     </RelativeLayout>
@@ -150,7 +150,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@+id/man_run_ico"
                 android:layout_marginRight="14dp"
-                android:text="4000/10000" />
+                android:text="" />
 
             <ImageView
                 android:id="@+id/process_run"
@@ -197,7 +197,7 @@
                 android:layout_alignLeft="@+id/button_2"
                 android:layout_below="@+id/button_2"
                 android:layout_marginTop="20dp"
-                android:text="开始时间: 2018/01/01 00:00:00"
+                android:text=""
                 android:textColor="@color/color_161727"
                 android:textSize="12dp" />
 
@@ -208,7 +208,7 @@
                 android:layout_alignLeft="@+id/button_2"
                 android:layout_below="@+id/step_target"
                 android:layout_marginTop="8dp"
-                android:text="结束时间: 2018/01/01 23:59:59"
+                android:text=""
                 android:textColor="@color/color_161727"
                 android:textSize="12dp" />
 
@@ -219,7 +219,7 @@
                 android:layout_alignLeft="@+id/button_2"
                 android:layout_below="@+id/target_moneys"
                 android:layout_marginTop="8dp"
-                android:text="目标步数: 10000 步"
+                android:text=""
                 android:textColor="@color/color_161727"
                 android:textSize="12dp" />
 
@@ -230,7 +230,7 @@
                 android:layout_alignLeft="@+id/button_2"
                 android:layout_below="@+id/try_days_des"
                 android:layout_marginTop="8dp"
-                android:text="奖励金额: 20 元"
+                android:text=""
                 android:textColor="@color/color_161727"
                 android:textSize="12dp" />
 
@@ -256,67 +256,18 @@
                 android:textColor="@color/color_161727"
                 android:textSize="12dp" />
 
-            <RelativeLayout
-                android:id="@+id/num_1"
+            <TextView
+                android:id="@+id/task_ruls_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/button_2"
                 android:layout_below="@+id/task_desc"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/flag_1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/num_circle"
-                    android:gravity="center"
-                    android:text="1"
-                    android:textColor="@color/color_161727"
-                    android:textSize="12dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/flag_1"
-                    android:text="任务每天晚上12点重置，未达标者的红包退回到账户;"
-                    android:textColor="@color/color_161727"
-                    android:textSize="12dp" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/num_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/button_2"
-                android:layout_below="@+id/num_1"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/flag_2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/num_circle"
-                    android:gravity="center"
-                    android:text="2"
-                    android:textColor="@color/color_161727"
-                    android:textSize="12dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/flag_2"
-                    android:text="运动数据以跑步钱进的数据为准"
-                    android:textColor="@color/color_161727"
-                    android:textSize="12dp" />
-            </RelativeLayout>
+                android:textColor="@color/color_161727"
+                android:textSize="12dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="80dp"
                 android:layout_below="@+id/num_2"></RelativeLayout>
         </RelativeLayout>
 
@@ -330,7 +281,7 @@
         android:background="@color/color_b8bbbd"
         android:gravity="center"
         android:stateListAnimator="@null"
-        android:text="领取奖励"
+        android:text=""
         android:textColor="@color/color_f8"
         android:textSize="36dp" />
 </RelativeLayout>

@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.activity.sponsor.SponsorTimeActivity;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -99,8 +100,8 @@ public class SponsorInfoCollectFragment extends BaseBarStyleTextViewFragment {
                 LocalLog.d(TAG, "设定营业时间");
                 Intent intentTime = new Intent();
                 intentTime.setAction(ACTION_WORK_TIME_ACTION);
-                intentTime.setClass(getContext(), SponsorGoodsPicLookActivity.class);
-                startActivity(intentTime);
+                intentTime.setClass(getContext(), SponsorTimeActivity.class);
+                getActivity().startActivityForResult(intentTime,1);
                 break;
             case R.id.sponsor_location_pan:
                 LocalLog.d(TAG, "设定商铺地区");

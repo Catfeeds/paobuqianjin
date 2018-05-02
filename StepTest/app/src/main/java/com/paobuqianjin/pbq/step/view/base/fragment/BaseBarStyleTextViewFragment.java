@@ -92,10 +92,10 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
                 case R.id.bar_return_drawable:
                 case R.id.button_return_bar:
                     if (mToolBarListener == null) {
-                        BaseBarStyleTextViewFragment.this.getActivity().finish();
+                        BaseBarStyleTextViewFragment.this.getActivity().onBackPressed();
                     } else {
                         //mToolBarListener.clickLeft();
-                        BaseBarStyleTextViewFragment.this.getActivity().finish();
+                        BaseBarStyleTextViewFragment.this.getActivity().onBackPressed();
                     }
                     break;
                 case R.id.bar_tv_right:

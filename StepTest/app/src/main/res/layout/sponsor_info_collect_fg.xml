@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/sponsor_info_bar"
-        layout="@layout/bar_return_a_style"></include>
+        layout="@layout/bar_return_a_style"/>
 
     <RelativeLayout
         android:id="@+id/sponsor_name_pan"
@@ -99,7 +99,7 @@
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
-        <EditText
+        <TextView
             android:id="@+id/edit_sponsor_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -108,8 +108,6 @@
             android:layout_marginRight="39dp"
             android:background="@null"
             android:hint="输入营业时间"
-            android:maxEms="16"
-            android:maxLines="1"
             android:textSize="15dp" />
 
         <ImageView

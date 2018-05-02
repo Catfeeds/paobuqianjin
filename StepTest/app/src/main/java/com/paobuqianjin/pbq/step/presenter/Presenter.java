@@ -561,12 +561,12 @@ public final class Presenter {
         engine.getTaskDetailRec(taskId);
     }
 
-    public void putTask(String action, int taskId) {
-        engine.putTask(action, taskId);
+    public void putTask(String action, int taskId, InnerCallBack innerCallBack) {
+        engine.putTask(action, taskId, innerCallBack);
     }
 
-    public void getAllMyRecTask() {
-        engine.getAllMyRecTask();
+    public void getAllMyRecTask(int pageIndex, int pagesize) {
+        engine.getAllMyRecTask(pageIndex, pagesize);
     }
 
     //TODO 用户段位

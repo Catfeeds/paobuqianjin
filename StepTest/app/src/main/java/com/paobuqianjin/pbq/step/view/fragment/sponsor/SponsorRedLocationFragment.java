@@ -116,6 +116,7 @@ public class SponsorRedLocationFragment extends BaseBarStyleTextViewFragment imp
             mBaiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
                 @Override
                 public void onMapClick(LatLng latLng) {
+                    LocalLog.d(TAG,",latitude:"+latLng.latitude+";longitude:"+latLng.longitude);
                     mCurrentLat = latLng.latitude;
                     mCurrentLon = latLng.longitude;
 
@@ -188,7 +189,7 @@ public class SponsorRedLocationFragment extends BaseBarStyleTextViewFragment imp
 
     @Override
     public void response(String city, double latitude, double longitude) {
-
+        LocalLog.d(TAG,"city:"+city+",latitude:"+latitude+";longitude:"+longitude);
         if (isFirstLocation) {
             isFirstLocation = false;
             setMarker(latitude, longitude);

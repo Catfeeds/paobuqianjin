@@ -115,8 +115,8 @@ public class MainActivity extends BaseActivity {
         mOwnerFragment = new OwnerFragment();
         mFragments = new Fragment[]{mHomePageFragment, mFriendCircleFragment, taskFragment, mHonorFragment, mOwnerFragment};
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, mHomePageFragment)
-                .add(R.id.fragment_container, mFriendCircleFragment)
+                .add(R.id.fragment_container, mHomePageFragment).
+                add(R.id.fragment_container, mFriendCircleFragment)
                 .add(R.id.fragment_container, taskFragment)
                 .add(R.id.fragment_container, mHonorFragment)
                 .add(R.id.fragment_container, mOwnerFragment)
