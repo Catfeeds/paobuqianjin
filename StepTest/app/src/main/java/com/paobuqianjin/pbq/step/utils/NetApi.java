@@ -173,5 +173,7 @@ public class NetApi {
     public final static String urlDeleteBusImg = urlBusiness+"/deleteBusImg";
     //TODO 删除商户图片
     public final static String urlSetDefaultBusiness = urlBusiness+"/setDefaultBusiness";
-    
+    //TODO 圈子活动
+    public final static String urlLive = url+ "v1/Activity/getActivityList";
+
 }

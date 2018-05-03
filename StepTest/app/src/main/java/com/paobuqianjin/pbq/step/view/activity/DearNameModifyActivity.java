@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
@@ -87,6 +88,8 @@ public class DearNameModifyActivity extends BaseActivity implements DearNameModi
                             .setAction("remark")
                             .setNickname(dearName.getText().toString());
                     Presenter.getInstance(this).modifyDearName(putDearNameParam);
+                } else {
+                    Toast.makeText(this, "昵称不能为空", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }

@@ -99,4 +99,6 @@ dependencies {
     }
     implementation files('libs/SocialSDK_QQ_Simplify.jar')
     compile project(':todaystepcounterlib')
+    compile 'org.jsoup:jsoup:1.10.1'
 }
+

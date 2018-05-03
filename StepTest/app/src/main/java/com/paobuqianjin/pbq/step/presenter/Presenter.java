@@ -428,6 +428,10 @@ public final class Presenter {
         engine.getAllMyCircle(page, pagesize);
     }
 
+    public void getLiveList(final InnerCallBack innerCallBack, int page, int pagesize) {
+        engine.getLiveList(innerCallBack, page, pagesize);
+    }
+
     //TODO 我加入的圈子
     public void getMyJoinCircle(int page, int pagesize, String keyWord) {
         engine.getMyJoinCircle(page, pagesize, keyWord);

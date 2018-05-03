@@ -1,9 +1,12 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,27 +16,33 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.ChoiceBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.LiveResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InOutCallBackInterface;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.QueryRedPkgInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.LiveListActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleChooseGoodAdapter;
+import com.paobuqianjin.pbq.step.view.fragment.task.TaskFragment;
 
 import java.util.ArrayList;
 
@@ -51,7 +60,7 @@ public class HotCircleFragment extends BaseFragment {
     private ImageView createCircleView;
     private CircleImageView myHotCircleIV, secondHotCircleIV;
     private TextView myHotCircleTV, secondHotCircleTV;
-    private TextView moreMyCircleTV, moreChoiceTV;
+    private TextView moreMyCircleTV, moreChoiceTV, moreLiveTV;
     private ImageView readPackAIV, readPackBIV;
     private Context mContext;
     private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData;
@@ -67,12 +76,30 @@ public class HotCircleFragment extends BaseFragment {
     private int PAGE_DEFAULT_SIZE = 10;
     private static int SEARCH_ADD = 0;
     private static int MY_CIRCLE_ADD = 1;
+    private IntentFilter intentFilter;
+    private LocalBroadcastManager localBroadcastManager;
+    private LocalReceiver localReceiver;
+    private final static String ACTION_JOIN = "com.paobuqianjin.step.pbq.ACTION_JOIN";
+    private final static String ACTION_QUIT = "com.paobuqianjin.step.pbq.ACTION_QUIT";
+    private final static String ACTION_CREATE = "com.paobuqianjin.step.pbq.ACTION_CREATE";
+    private final static String ACTION_DELETE_MEMBER = "com.paobuqianjin.step.pbq.ACTION_MEMBER_DELETE";
+    private final static String ACTIONF_DELETE_CIRCLE = "com.paobuqjian.step.pbq.ACTION_DELETE_CIRCLE";
 
     @Override
 
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(ACTION_JOIN);
+        intentFilter.addAction(ACTION_QUIT);
+        intentFilter.addAction(ACTION_CREATE);
+        intentFilter.addAction(ACTION_DELETE_MEMBER);
+        intentFilter.addAction(ACTIONF_DELETE_CIRCLE);
+
+        localReceiver = new LocalReceiver();
+        localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
+        localBroadcastManager.registerReceiver(localReceiver, intentFilter);
     }
 
     @Override
@@ -92,6 +119,14 @@ public class HotCircleFragment extends BaseFragment {
         super.onDestroyView();
         Presenter.getInstance(mContext).dispatchUiInterface(uiHotCircleInterface);
         Presenter.getInstance(mContext).dispatchUiInterface(queryRedPkgInterface);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (localBroadcastManager != null) {
+            localBroadcastManager.unregisterReceiver(localReceiver);
+        }
     }
 
     @Override
@@ -131,11 +166,49 @@ public class HotCircleFragment extends BaseFragment {
         RelativeLayout relativeLayout = (RelativeLayout) rootView.findViewById(R.id.live_choose_good_module);
         moreChoiceTV = (TextView) relativeLayout.findViewById(R.id.find_more_choice);
         moreChoiceTV.setOnClickListener(onClickListener);
+        moreLiveTV = (TextView) rootView.findViewById(R.id.more_lives);
+        moreLiveTV.setOnClickListener(onClickListener);
         Presenter.getInstance(mContext).attachUiInterface(uiHotCircleInterface);
         Presenter.getInstance(mContext).attachUiInterface(queryRedPkgInterface);
         loadingData();
+        Presenter.getInstance(getContext()).getLiveList(innerCallBack, 1, 2);
     }
 
+    private InnerCallBack innerCallBack = new InnerCallBack() {
+        @Override
+        public void innerCallBack(Object object) {
+            if (object instanceof ErrorCode) {
+                Toast.makeText(getContext(), ((ErrorCode) object).getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (object instanceof LiveResponse) {
+                if (((LiveResponse) object).getError() == 0) {
+
+                } else if (((LiveResponse) object).getError() == 1) {
+
+                }
+            }
+        }
+    };
+
+    private class LocalReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (context != null) {
+                if (intent != null) {
+                    if (ACTION_JOIN.equals(intent.getAction())) {
+                        LocalLog.d(TAG, "加入圈子");
+                    } else if (ACTION_QUIT.equals(intent.getAction())) {
+                        LocalLog.d(TAG, "退出圈子");
+                    } else if (ACTION_CREATE.equals(intent.getAction())) {
+                        LocalLog.d(TAG, "创建圈子");
+                    } else if (ACTION_DELETE_MEMBER.equals(intent.getAction())) {
+                        LocalLog.d(TAG, "删除成员");
+                    } else if (ACTIONF_DELETE_CIRCLE.equals(intent.getAction())) {
+                        LocalLog.d(TAG, "解散圈子");
+                    }
+                }
+            }
+        }
+    }
 
     private void loadingData() {
         Presenter.getInstance(mContext).getCircleChoice(PAGE_INDEX_DEFAULT, PAGE_DEFAULT_SIZE);
@@ -194,6 +267,12 @@ public class HotCircleFragment extends BaseFragment {
                     intentSearch.putExtra(getActivity().getPackageName(), choiceBundleData);
                     intentSearch.setClass(getActivity(), SearchCircleActivity.class);
                     startActivityForResult(intentSearch, SEARCH_ADD);
+                    break;
+                case R.id.more_lives:
+                    LocalLog.d(TAG, "查看更多活动");
+                    Intent liveIntent = new Intent();
+                    liveIntent.setClass(getActivity(), LiveListActivity.class);
+                    startActivity(liveIntent);
                     break;
                 default:
                     break;

@@ -63,6 +63,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.LiveResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
@@ -1654,6 +1655,41 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(danCircleInterface, COMMAND_GET_MY_HOT));
+    }
+
+    public void getLiveList(final InnerCallBack innerCallBack, int page, int pagesize) {
+        LocalLog.d(TAG, "getLiveList() enter");
+        String url = NetApi.urlLive;
+        OkHttpUtils
+                .get()
+                .addHeader("headtoken", getToken(mContext))
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (o == null) {
+                            return;
+                        }
+                        ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                        if (innerCallBack != null) {
+                            innerCallBack.innerCallBack(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        try {
+                            LocalLog.d(TAG, "s =" + s);
+                            LiveResponse liveResponse = new Gson().fromJson(s, LiveResponse.class);
+                            if (innerCallBack != null) {
+                                innerCallBack.innerCallBack(liveResponse);
+                            }
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     public void getCircleChoice(int page, int pagesize) {

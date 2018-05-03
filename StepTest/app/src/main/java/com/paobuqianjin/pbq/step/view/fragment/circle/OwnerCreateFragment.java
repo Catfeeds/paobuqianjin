@@ -228,6 +228,9 @@ public class OwnerCreateFragment extends BaseFragment {
         public void response(MyCreateCircleResponse myCreateCircleResponse) {
             if (myCreateCircleResponse.getError() == 0) {
                 LocalLog.d(TAG, myCreateCircleResponse.getMessage());
+                if (createCircleSwipe == null) {
+                    return;
+                }
                 notFoundData.setVisibility(View.GONE);
                 createCircleSwipe.setVisibility(View.VISIBLE);
                 if (!isSearch) {

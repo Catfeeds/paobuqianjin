@@ -23,6 +23,18 @@
         android:textColor="@color/color_161727"
         android:textSize="14dp" />
 
+    <TextView
+        android:id="@+id/more_lives"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/circle_live_desc"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/circle_live_desc"
+        android:layout_marginRight="14dp"
+        android:text="查看更多"
+        android:textColor="@color/color_8a8a8a"
+        android:textSize="12dp" />
+
     <LinearLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
