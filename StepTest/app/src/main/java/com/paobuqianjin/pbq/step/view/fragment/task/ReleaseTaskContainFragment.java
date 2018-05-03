@@ -39,6 +39,7 @@ public class ReleaseTaskContainFragment extends BaseFragment {
     ViewPager releaseChoicePager;
     @Bind(R.id.buttone_left_bar)
     RelativeLayout buttoneLeftBar;
+    private ReleaseTaskSponsorFragment releaseTaskSponsorFragment;
 
     @Override
     protected int getLayoutResId() {
@@ -57,7 +58,7 @@ public class ReleaseTaskContainFragment extends BaseFragment {
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         ReleaseTaskPersonFragment releaseTaskPersonFragment = new ReleaseTaskPersonFragment();
-        ReleaseTaskSponsorFragment releaseTaskSponsorFragment = new ReleaseTaskSponsorFragment();
+        releaseTaskSponsorFragment = new ReleaseTaskSponsorFragment();
         String[] titles = {"个人", "商家"};
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(releaseTaskPersonFragment);

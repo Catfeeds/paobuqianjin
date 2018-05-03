@@ -47,7 +47,7 @@ public class SponsorInfoCollectFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.sponsor_phone_pan)
     RelativeLayout sponsorPhonePan;
     @Bind(R.id.edit_sponsor_time)
-    EditText editSponsorTime;
+    TextView editSponsorTime;
     @Bind(R.id.sponsor_time_pan)
     RelativeLayout sponsorTimePan;
     @Bind(R.id.edit_sponsor_location_pan)

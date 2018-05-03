@@ -1,50 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <include
         android:id="@+id/bar_sponsor_manager_bar"
-        layout="@layout/bar_return_a_style"/>
+        layout="@layout/bar_return_a_style" />
 
     <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/bar_sponsor_manager_bar">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <include
-                android:id="@+id/deault_spnsor"
-                layout="@layout/sponsor_manager_list_item"/>
+                android:id="@+id/default_sponsor"
+                layout="@layout/sponsor_manager_list_item"
+                android:visibility="gone" />
 
-            <ImageView
+            <View
                 android:id="@+id/line"
                 android:layout_width="match_parent"
                 android:layout_height="15dp"
-                android:layout_below="@+id/deault_spnsor"
+                android:layout_below="@+id/default_sponsor"
                 android:background="@color/color_d9d9d9" />
 
             <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
                 android:id="@+id/sponsor_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_above="@+id/tv_add_sponsor"
-                android:layout_below="@+id/line">
-            </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+                android:layout_below="@+id/line" />
+
             <Button
                 android:id="@+id/tv_add_sponsor"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
                 android:background="@drawable/create_button"
                 android:stateListAnimator="@null"
+                android:text="添加商铺"
                 android:textColor="@color/color_fefefe"
-                android:textSize="16dp"
-                android:text="添加商铺"/>
-        </RelativeLayout>
+                android:textSize="16sp" />
+        </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
-</RelativeLayout>
+</LinearLayout>

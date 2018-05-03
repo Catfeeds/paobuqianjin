@@ -440,7 +440,9 @@
             android:label="@string/title_activity_sponsor_date"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.sponsor.SponsorManagerActivity" />
-        <activity android:name=".activity.sponsor.SponsorInfoActivity"></activity>
+        <activity android:name=".activity.sponsor.SponsorInfoActivity" />
+        <activity android:name=".activity.sponsor.SponsorRedLocationActivity" />
+        <activity android:name=".activity.sponsor.TargetPeopleActivity"></activity>
     </application>
 
 </manifest>

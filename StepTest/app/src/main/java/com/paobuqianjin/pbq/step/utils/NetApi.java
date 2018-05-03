@@ -163,4 +163,15 @@ public class NetApi {
     public final static String urlRevRedPkg = urlRedpacket + "/receiveRed";
     //TODO 商户详情接口
     public final static String urlBusiness = url+"v1/Business";
+    //TODO 创建商户
+    public final static String urlAddBusiness = urlBusiness+"/addBusiness";
+    //TODO 获取用户商户列表
+    public final static String urlGetUserBusiness = urlBusiness+"/getUserBusiness";
+    //TODO 修改商户信息
+    public final static String urlUpdateBusiness = urlBusiness+"/updateBusiness";
+    //TODO 删除商户图片
+    public final static String urlDeleteBusImg = urlBusiness+"/deleteBusImg";
+    //TODO 删除商户图片
+    public final static String urlSetDefaultBusiness = urlBusiness+"/setDefaultBusiness";
+    
 }

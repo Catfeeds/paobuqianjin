@@ -1,11 +1,9 @@
-package com.paobuqianjin.pbq.step.view.fragment.task;
+package com.paobuqianjin.pbq.step.activity.sponsor;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,32 +12,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.activity.sponsor.SponsorRedLocationActivity;
 import com.paobuqianjin.pbq.step.customview.ChooseTargetWheel;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
-import com.paobuqianjin.pbq.step.view.activity.SponsorSelectActivity;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by pbq on 2018/4/19.
- */
-
-public class TargetPeopleFragment extends BaseBarStyleTextViewFragment implements ChooseTargetWheel.OnTargetChangeListener {
-    private final static String TAG = TargetPeopleFragment.class.getSimpleName();
+public class TargetPeopleActivity extends BaseBarActivity implements ChooseTargetWheel.OnTargetChangeListener {
+    private final static String TAG = TargetPeopleActivity.class.getSimpleName();
     private final static String ACTION_RED_PACK_LOCATION = "com.paobuqianjin.pbq.step.RED_PKG_ACTION";
-    @Bind(R.id.bar_return_drawable)
-    ImageView barReturnDrawable;
-    @Bind(R.id.button_return_bar)
-    RelativeLayout buttonReturnBar;
-    @Bind(R.id.bar_title)
-    TextView barTitle;
-    @Bind(R.id.bar_tv_right)
-    TextView barTvRight;
     @Bind(R.id.sex)
     TextView sex;
     @Bind(R.id.nv_text)
@@ -94,32 +77,50 @@ public class TargetPeopleFragment extends BaseBarStyleTextViewFragment implement
     private double latitude, longitude;
 
     @Override
-    protected int getLayoutResId() {
-        return R.layout.target_people_fg;
-    }
-
-    @Override
     protected String title() {
         return "目标人群";
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        return rootView;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.target_people_fg);
+        ButterKnife.bind(this);
+        init();
     }
 
-    @Override
-    protected void initView(View viewRoot) {
-        super.initView(viewRoot);
-        ButterKnife.bind(this, viewRoot);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+    private void init() {
+        chooseTargetWheel = new ChooseTargetWheel(this);
+        chooseTargetWheel.setOnTargetChangeListener(this);
+        Intent data = getIntent();
+        sexStr = data.getStringExtra("sexStr");
+        if (!TextUtils.isEmpty(sexStr)) {
+            switch (sexStr) {
+                case "2":
+                    nvText.setChecked(true);
+                    break;
+                case "1":
+                    manText.setChecked(true);
+                    break;
+                default:
+                    sexUnselectText.setChecked(true);
+                    break;
+            }
+        }
+        minAgeStr = data.getStringExtra("minAgeStr");
+        if (!(TextUtils.isEmpty(minAgeStr)||"0".equals(minAgeStr)))
+            minAge.setText(minAgeStr);
+        maxAgeStr = data.getStringExtra("maxAgeStr");
+        if (!(TextUtils.isEmpty(maxAgeStr)||"0".equals(maxAgeStr)))
+            maxAge.setText(maxAgeStr);
+        longitude = data.getDoubleExtra("longitudeStr", 0);
+        latitude = data.getDoubleExtra("latitudeStr", 0);
+        targetSelectStr = data.getStringExtra("targetSelectStr");
+        if (!TextUtils.isEmpty(targetSelectStr))
+            targetSelect.setText(chooseTargetWheel.getContentByDistance(targetSelectStr));
+        city = data.getStringExtra("city");
+        if (!TextUtils.isEmpty(city))
+            locationSelect.setText(city);
     }
 
     @OnClick({R.id.location_pan, R.id.location_radius, R.id.btn_confirm})
@@ -129,14 +130,10 @@ public class TargetPeopleFragment extends BaseBarStyleTextViewFragment implement
                 LocalLog.d(TAG, "位置选择");
                 Intent intent = new Intent();
                 intent.setAction(ACTION_RED_PACK_LOCATION);
-                intent.setClass(getContext(), SponsorRedLocationActivity.class);
+                intent.setClass(this, SponsorRedLocationActivity.class);
                 startActivityForResult(intent, REQ_POSITION);
                 break;
             case R.id.location_radius:
-                if (chooseTargetWheel == null) {
-                    chooseTargetWheel = new ChooseTargetWheel(getActivity());
-                    chooseTargetWheel.setOnTargetChangeListener(this);
-                }
                 chooseTargetWheel.setSelectByDistance(targetSelectStr);
                 chooseTargetWheel.show(locationRadius);
                 break;
@@ -158,8 +155,8 @@ public class TargetPeopleFragment extends BaseBarStyleTextViewFragment implement
                     intentResult.putExtra("longitudeStr", longitude);
                 if (0 != latitude)
                     intentResult.putExtra("latitudeStr", latitude);
-                getActivity().setResult(1, intentResult);
-                getActivity().finish();
+                setResult(1, intentResult);
+                finish();
                 break;
         }
     }

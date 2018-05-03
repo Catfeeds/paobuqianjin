@@ -25,6 +25,7 @@ import com.google.gson.JsonSyntaxException;
 import com.j256.ormlite.stmt.query.In;
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.AddBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
@@ -61,6 +62,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
@@ -144,6 +146,8 @@ import com.today.step.lib.ISportStepInterface;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1941,6 +1945,170 @@ public final class Engine {
                             try {
                                 RecRedPkgResponse recRedPkgResponse = new Gson().fromJson(s, RecRedPkgResponse.class);
                                 innerCallBack.innerCallBack(recRedPkgResponse);
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+    }
+
+    //TODO 创建商户
+    public void AddBusiness(AddBusinessParam addBusinessParam, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "AddBusiness() enter");
+        OkHttpUtils
+                .post()
+                .addHeader("headtoken", getToken(mContext))
+                .url(NetApi.urlAddBusiness)
+                .params(addBusinessParam.getParams())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (innerCallBack != null) {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            innerCallBack.innerCallBack(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        if (innerCallBack != null) {
+                            LocalLog.d(TAG, "s = " + s);
+                            try {
+                                innerCallBack.innerCallBack(s);
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+    }
+
+    //TODO  获取用户商户列表
+    public void getUserBusiness(int userId, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "getUserBusiness() enter");
+        String url = NetApi.urlGetUserBusiness + "/" + String.valueOf(userId);
+        OkHttpUtils
+                .post()
+                .addHeader("headtoken", getToken(mContext))
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (innerCallBack != null) {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            innerCallBack.innerCallBack(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        if (innerCallBack != null) {
+                            LocalLog.d(TAG, "s = " + s);
+                            try {
+                                GetUserBusinessResponse getUserBusinessResponse = new Gson().fromJson(s, GetUserBusinessResponse.class);
+                                innerCallBack.innerCallBack(getUserBusinessResponse);
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+    }
+
+    //TODO  删除商户
+    public void deleteBusiness(int businessId, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "deleteBusiness() enter");
+        String url = NetApi.urlBusiness + "/" + String.valueOf(businessId);
+        OkHttpUtils
+                .delete()
+                .addHeader("headtoken", getToken(mContext))
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (innerCallBack != null) {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            innerCallBack.innerCallBack(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        if (innerCallBack != null) {
+                            LocalLog.d(TAG, "s = " + s);
+                            try {
+                                  innerCallBack.innerCallBack(s);
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+    }
+
+    //TODO  更新商户信息
+    public void updateBusiness(AddBusinessParam addBusinessParam, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "updateBusiness() enter");
+        OkHttpUtils
+                .post()
+                .addHeader("headtoken", getToken(mContext))
+                .url(NetApi.urlUpdateBusiness)
+                .params(addBusinessParam.getParams())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (innerCallBack != null) {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            innerCallBack.innerCallBack(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        if (innerCallBack != null) {
+                            LocalLog.d(TAG, "s = " + s);
+                            try {
+                                innerCallBack.innerCallBack(s);
+                            } catch (JsonSyntaxException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+    }
+
+
+    //TODO   设置默认商户
+    public void setDefaultBusiness(int businessId, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "setDefaultBusiness() enter");
+        Map<String, String> map = new HashMap<>();
+        map.put("businessid", businessId + "");
+        OkHttpUtils
+                .post()
+                .addHeader("headtoken", getToken(mContext))
+                .url(NetApi.urlSetDefaultBusiness)
+                .params(map)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (innerCallBack != null) {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            innerCallBack.innerCallBack(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        if (innerCallBack != null) {
+                            LocalLog.d(TAG, "s = " + s);
+                            try {
+                                  innerCallBack.innerCallBack(s);
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                             }

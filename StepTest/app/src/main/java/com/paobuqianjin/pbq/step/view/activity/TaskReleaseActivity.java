@@ -1,12 +1,13 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskContainFragment;
-import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskPersonFragment;
 import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
 
 /**

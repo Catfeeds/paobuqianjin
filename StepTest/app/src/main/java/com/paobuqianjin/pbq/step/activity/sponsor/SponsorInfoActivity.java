@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.activity.sponsor;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,12 +11,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.l.okhttppaobu.okhttp.OkHttpUtils;
+import com.l.okhttppaobu.okhttp.callback.StringCallback;
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.ChooseAddressWheel;
 import com.paobuqianjin.pbq.step.customview.Utils;
 import com.paobuqianjin.pbq.step.data.bean.AddressDtailsEntity;
 import com.paobuqianjin.pbq.step.data.bean.AddressModel;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.AddBusinessParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorInfoCollectFragment;
@@ -23,8 +34,9 @@ import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorInfoCollectFragmen
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Call;
 
-public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddressWheel.OnAddressChangeListener {
+public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddressWheel.OnAddressChangeListener, InnerCallBack {
     private final static String TAG = SponsorInfoCollectFragment.class.getSimpleName();
     public final static int REQ_TIME = 1;
     public final static int RES_TIME = 2;
@@ -70,6 +82,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     private String province;
     private String city;
     private String district;
+    private int businessId = -1;
 
     @Override
     protected String title() {
@@ -81,6 +94,75 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sponsor_info_collect_fg);
         ButterKnife.bind(this);
+        init();
+    }
+
+    private void init() {
+        businessId = getIntent().getIntExtra("businessId", -1);
+        if (businessId != -1) {
+            Presenter.getInstance(this).businessDetail(businessId, new InnerCallBack() {
+                @Override
+                public void innerCallBack(Object object) {
+                    if (object instanceof SponsorDetailResponse) {
+                        if (((SponsorDetailResponse) object).getError() == 0) {
+                            SponsorDetailResponse.DataBean dataBean = ((SponsorDetailResponse) object).getData();
+                            if (dataBean != null) {
+                                editSponsorName.setText(dataBean.getName());
+                                editSponsorPhone.setText(dataBean.getTel());
+                                String workTimeStr = dataBean.getDo_day();
+                                if (!TextUtils.isEmpty(workTimeStr)) {
+                                    editSponsorTime.setText("已设置");
+                                    String[] workTimeStrList = workTimeStr.split(",");
+                                    String date = "";
+                                    for (String time : workTimeStrList) {
+                                        if (!"".equals(date)) {
+                                            date += ",";
+                                        }
+                                        switch (time) {
+                                            case "周一": {
+                                                date += "1";
+                                            }
+                                            break;
+                                            case "周二": {
+                                                date += "2";
+                                            }
+                                            break;
+                                            case "周三": {
+                                                date += "3";
+                                            }
+                                            break;
+                                            case "周四": {
+                                                date += "4";
+                                            }
+                                            break;
+                                            case "周五": {
+                                                date += "5";
+                                            }
+                                            break;
+                                            case "周六": {
+                                                date += "6";
+                                            }
+                                            break;
+                                            case "周日": {
+                                                date += "7";
+                                            }
+                                            break;
+                                        }
+                                    }
+                                    sponsor_time = date;
+                                    start_time = dataBean.getS_do_time();
+                                    end_time = dataBean.getE_do_time();
+
+                                }
+                                if (!TextUtils.isEmpty(dataBean.getAddra()))
+                                    editSponsorLocationPan.setText(dataBean.getAddra());
+                                editSponsorLocationDetailPan.setText(dataBean.getAddress());
+                            }
+                        }
+                    }
+                }
+            });
+        }
     }
 
     @OnClick({R.id.sponsor_time_pan, R.id.sponsor_location_pan, R.id.sponsor_out_pics_pan,
@@ -131,9 +213,35 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                 chooseAddressWheel.show(editSponsorLocationPan);
                 break;
             case R.id.btn_confirm: {
-
+                commit();
             }
             break;
+        }
+    }
+
+    private void commit() {
+        String name = editSponsorName.getText().toString();
+        if (TextUtils.isEmpty(name.trim())) {
+            ToastUtils.showShortToast(this, "请输入店铺名称");
+            return;
+        }
+        AddBusinessParam param = new AddBusinessParam();
+        param.setName(name);
+        if (!TextUtils.isEmpty(editSponsorPhone.getText().toString().trim())) {
+            param.setTel(editSponsorPhone.getText().toString());
+        }
+        if (!TextUtils.isEmpty(editSponsorTime.getText().toString())) {
+            param.setDo_day(sponsor_time).setS_do_time(start_time).setE_do_time(end_time);
+        }
+        if (!"_省_市_区".equals(editSponsorLocationPan.getText().toString())) {
+            param.setAddra(editSponsorLocationPan.getText().toString())
+                    .setAddress(editSponsorLocationDetailPan.getText().toString());
+        }
+        if (businessId != -1) {
+            param.setBusinessId(businessId);
+            Presenter.getInstance(this).updateBusiness(param, this);
+        } else {
+            Presenter.getInstance(this).AddBusiness(param, this);
         }
     }
 
@@ -154,7 +262,6 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -164,7 +271,6 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                 sponsor_time = data.getStringExtra("time");
                 start_time = data.getStringExtra("startTime");
                 end_time = data.getStringExtra("endTime");
-                LocalLog.d("-------", sponsor_time + "====" + start_time + "===" + end_time);
             }
             break;
         }
@@ -177,5 +283,12 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
         this.district = district;
         editSponsorLocationPan.setText(province + city + district);
         // isDifferent = true;
+    }
+
+    @Override
+    public void innerCallBack(Object object) {
+        if (!(object instanceof ErrorCode)) {
+            onBackPressed();
+        }
     }
 }

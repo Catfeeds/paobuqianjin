@@ -107,6 +107,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         qrcodeImg = (ImageView) viewRoot.findViewById(R.id.qrcode_img);
+        descQrCode = (TextView) viewRoot.findViewById(R.id.desc_qr_code);
         Intent intent = getActivity().getIntent();
         Bundle bundle = intent.getBundleExtra(getContext().getPackageName());
         if (bundle != null) {

@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/target_people_bar"
-        layout="@layout/bar_return_a_style"></include>
+        layout="@layout/bar_return_a_style" />
 
     <RelativeLayout
         android:id="@+id/sex_pan"
@@ -26,41 +26,44 @@
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
-        <CheckBox
-            android:id="@+id/nv_text"
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
-            android:text="女"
-            android:button="@drawable/circle_purple_selector"
-            android:textColor="@color/color_8a8a8a"
-            android:textSize="14dp" />
+            android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/man_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="30dp"
-            android:text="男"
-            android:layout_toLeftOf="@id/nv_text"
-            android:textColor="@color/color_8a8a8a"
-            android:button="@drawable/circle_purple_selector"
-            android:textSize="14dp" />
-        <CheckBox
-            android:id="@+id/sex_unselect_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="30dp"
-            android:text="不限"
-            android:layout_toLeftOf="@id/man_text"
-            android:textColor="@color/color_8a8a8a"
-            android:button="@drawable/circle_purple_selector"
-            android:textSize="14dp" />
+            <RadioButton
+                android:id="@+id/sex_unselect_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:button="@drawable/circle_purple_selector"
+                android:checked="true"
+                android:text="不限"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="14sp" />
 
+            <RadioButton
+                android:id="@+id/man_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:button="@drawable/circle_purple_selector"
+                android:text="男"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="14sp" />
+
+            <RadioButton
+                android:id="@+id/nv_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="14dp"
+                android:button="@drawable/circle_purple_selector"
+                android:text="女"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="14sp" />
+        </RadioGroup>
     </RelativeLayout>
 
     <RelativeLayout
@@ -89,7 +92,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:text="岁"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/max_age"
@@ -104,7 +107,7 @@
             android:maxEms="3"
             android:maxLines="1"
             android:minWidth="30dp"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/to"
@@ -114,7 +117,7 @@
             android:layout_marginRight="14dp"
             android:layout_toStartOf="@+id/max_age"
             android:text="至"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/age_quto_left"
@@ -124,7 +127,7 @@
             android:layout_marginRight="14dp"
             android:layout_toStartOf="@+id/to"
             android:text="岁"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/min_age"
@@ -139,7 +142,7 @@
             android:maxEms="3"
             android:maxLines="1"
             android:minWidth="30dp"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -225,17 +228,17 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="4dp"
             android:layout_toStartOf="@+id/go_to_pan"
-            android:text="选择目标" />
-
+            android:hint="选择目标"
+            android:textColor="@color/color_161727"
+            android:textColorHint="#8a8a8a" />
     </RelativeLayout>
 
     <Button
         android:id="@+id/btn_confirm"
-        android:layout_width="match_parent"
         style="@style/ButtonPurple"
-        android:text="@string/confirm"
+        android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
-        />
+        android:text="@string/confirm" />
 
 
 </RelativeLayout>

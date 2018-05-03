@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.paobuqianjin.pbq.step.data.bean.gson.param.AddBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
@@ -289,6 +290,26 @@ public final class Presenter {
 
     public void businessDetail(int businessid, final InnerCallBack innerCallBack) {
         engine.businessDetail(businessid, innerCallBack);
+    }
+
+    public void AddBusiness(AddBusinessParam addBusinessParam, final InnerCallBack innerCallBack) {
+        engine.AddBusiness(addBusinessParam, innerCallBack);
+    }
+
+    public void getUserBusiness(int userId, final InnerCallBack innerCallBack) {
+        engine.getUserBusiness(userId, innerCallBack);
+    }
+
+    public void deleteBusiness(int businessId, final InnerCallBack innerCallBack) {
+        engine.deleteBusiness(businessId, innerCallBack);
+    }
+
+    public void updateBusiness(AddBusinessParam addBusinessParam, final InnerCallBack innerCallBack) {
+        engine.updateBusiness(addBusinessParam, innerCallBack);
+    }
+
+    public void setDefaultBusiness(int businessId, final InnerCallBack innerCallBack) {
+        engine.setDefaultBusiness(businessId, innerCallBack);
     }
 
     //TODO 领取商家红包

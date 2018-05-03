@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -80,7 +81,7 @@ public class DearNameModifyActivity extends BaseActivity implements DearNameModi
             case R.id.bar_tv_right:
                 LocalLog.d(TAG, "修改昵称");
                 PutDearNameParam putDearNameParam = new PutDearNameParam();
-                if (id != -1 && dearName.getText().toString() != null && !"".equals(dearName.getText())) {
+                if (id != -1 && !TextUtils.isEmpty(dearName.getText())) {
                     putDearNameParam
                             .setId(id)
                             .setAction("remark")

@@ -82,19 +82,20 @@ public class SponsorManagerFragment extends BaseBarStyleTextViewFragment {
         sponsorList = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.sponsor_list);
         layoutManager = new LinearLayoutManager(getContext());
         sponsorList.setLayoutManager(layoutManager);
-        sponsorList.setAdapter(new SponsorAdapter(getActivity(), null));
+        sponsorList.setAdapter(new SponsorAdapter(getActivity(), null, null));
 
     }
 
     @OnClick({R.id.tv_add_sponsor})
     public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.tv_add_sponsor:{
+        switch (view.getId()) {
+            case R.id.tv_add_sponsor: {
                 Intent intent = new Intent();
                 intent.setAction("com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION");
                 intent.setClass(getContext(), SponsorInfoCollectActivity.class);
                 getActivity().startActivityForResult(intent, REQUEST_SPONSOR_INFO);
-            }break;
+            }
+            break;
         }
     }
 

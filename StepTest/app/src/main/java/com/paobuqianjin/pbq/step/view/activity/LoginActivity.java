@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -345,19 +346,29 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                     temp = temp + key + ":" + map.get(key) + "\n";
                     switch (key) {
                         case "openid":
-                            thirdPartyLoginParam.setOpenid(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key))) {
+                                thirdPartyLoginParam.setOpenid(map.get(key));
+                            }
                             continue;
                         case "screen_name":
-                            thirdPartyLoginParam.setNickname(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key))) {
+                                thirdPartyLoginParam.setNickname(map.get(key));
+                            }
                             continue;
                         case "iconurl":
-                            thirdPartyLoginParam.setAvatar(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key))) {
+                                thirdPartyLoginParam.setAvatar(map.get(key));
+                            }
                             continue;
                         case "province":
-                            thirdPartyLoginParam.setProvince(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key))) {
+                                thirdPartyLoginParam.setProvince(map.get(key));
+                            }
                             continue;
                         case "city":
-                            thirdPartyLoginParam.setCity(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key))) {
+                                thirdPartyLoginParam.setCity(map.get(key));
+                            }
                             continue;
                         case "gender":
                             if (map.get(key).equals("男")) {
@@ -369,7 +380,9 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                             }
                             continue;
                         case "unionid":
-                            thirdPartyLoginParam.setUnionid(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key))) {
+                                thirdPartyLoginParam.setUnionid(map.get(key));
+                            }
                             continue;
                         default:
                             continue;
@@ -387,21 +400,32 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                     temp = temp + key + ":" + map.get(key) + "\n";
                     switch (key) {
                         case "openid":
-                            thirdPartyLoginParam.setOpenid(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key))) {
+                                thirdPartyLoginParam.setOpenid(map.get(key));
+                            }
                             continue;
                         case "screen_name":
-                            thirdPartyLoginParam.setNickname(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key))) {
+                                thirdPartyLoginParam.setNickname(map.get(key));
+                            }
                             continue;
                         case "iconurl":
-                            thirdPartyLoginParam.setAvatar(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key))) {
+                                thirdPartyLoginParam.setAvatar(map.get(key));
+                            }
                             continue;
                         case "province":
-                            thirdPartyLoginParam.setProvince(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key))) {
+                                thirdPartyLoginParam.setProvince(map.get(key));
+                            }
                             continue;
                         case "city":
-                            thirdPartyLoginParam.setCity(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key))) {
+                                thirdPartyLoginParam.setCity(map.get(key));
+                            }
                             continue;
                         case "gender":
+
                             if (map.get(key).equals("男")) {
                                 thirdPartyLoginParam.setSex(1);
                             } else if (map.get(key).equals("女")) {
@@ -411,7 +435,9 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                             }
                             continue;
                         case "unionid":
-                            thirdPartyLoginParam.setUnionid(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key))) {
+                                thirdPartyLoginParam.setUnionid(map.get(key));
+                            }
                             continue;
                         default:
                             continue;

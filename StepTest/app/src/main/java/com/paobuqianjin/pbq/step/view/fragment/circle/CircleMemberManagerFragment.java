@@ -77,6 +77,9 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     ArrayList<CircleMemberBarAdapter.AdapterCallInterface> adapterCallInterface;
     ArrayList<String> deleteArrList;
     private static final int DEAR_NAME_MODIFY = 0;
+    private int pageIndex = 1;
+    private final static int PAGESIZE = 10;
+    private boolean hasDelete = false;
 
     @Override
     protected int getLayoutResId() {
@@ -93,7 +96,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                 Bundle bundle = intent.getBundleExtra(getContext().getPackageName());
                 id = bundle.getString(CIRCLE_ID, "");
                 LocalLog.d(TAG, "成员管理 circleid = " + id);
-                Presenter.getInstance(context).getCircleMemberAll(Integer.parseInt(id), 1, 10);
+                Presenter.getInstance(context).getCircleMemberAll(Integer.parseInt(id), pageIndex, PAGESIZE);
             }
         }
 
@@ -296,8 +299,9 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     public void response(AddDeleteAdminResponse addDeleteAdminResponse) {
         LocalLog.d(TAG, "AddDeleteAdminResponse() enter " + addDeleteAdminResponse.toString());
         if (addDeleteAdminResponse.getError() == 0) {
+            hasDelete = true;
             Toast.makeText(getContext(), addDeleteAdminResponse.getMessage(), Toast.LENGTH_SHORT).show();
-            Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), 1, 10);
+            Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), pageIndex, PAGESIZE);
         } else if (addDeleteAdminResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -314,7 +318,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
         //TODO 更新本地UI
         if (memberDeleteResponse.getError() == 0) {
             deleteMemberConfim.setVisibility(View.GONE);
-            Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), 1, 10);
+            Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), pageIndex, PAGESIZE);
         } else if (memberDeleteResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -332,7 +336,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
             case DEAR_NAME_MODIFY:
                 LocalLog.d(TAG, "昵称修改成功!");
                 Toast.makeText(getContext(), "昵称修改成功", Toast.LENGTH_SHORT).show();
-                Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), 1, 10);
+                Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), pageIndex, PAGESIZE);
                 break;
         }
     }

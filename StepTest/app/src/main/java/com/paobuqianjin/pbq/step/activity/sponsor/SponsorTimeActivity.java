@@ -46,7 +46,7 @@ public class SponsorTimeActivity extends BaseCancelConfirmBarActivity implements
         intent = getIntent();
         String sponsor_time = intent.getStringExtra("time");
         if (!TextUtils.isEmpty(sponsor_time)) {
-            String[] times = sponsor_time.split("，");
+            String[] times = sponsor_time.split(",");
             for (String time : times) {
                 data[Integer.parseInt(time) - 1] = true;
             }
@@ -155,7 +155,7 @@ public class SponsorTimeActivity extends BaseCancelConfirmBarActivity implements
         for (int i = 0; i < data.length; i++) {
             if (data[i]) {
                 if (!"".equals(date)) {
-                    date += "，";
+                    date += ",";
                 }
                 date += i + 1 + "";
             }

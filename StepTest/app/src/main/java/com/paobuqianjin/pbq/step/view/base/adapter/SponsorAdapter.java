@@ -1,7 +1,6 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,8 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.view.activity.SponsorInfoCollectActivity;
+import com.paobuqianjin.pbq.step.activity.sponsor.SponsorInfoActivity;
+import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -24,22 +30,71 @@ import butterknife.Bind;
 public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorViewHolder> {
     private final static String TAG = SponsorAdapter.class.getSimpleName();
     Activity context;
-    List<?> mData;
+    private List<GetUserBusinessResponse.DataBeanX.DataBean> mData = new ArrayList<>();
     private final static int REQUEST_SPONSOR_INFO = 1;
+    private Intent intent;
 
-    public SponsorAdapter(Activity context, List<?> data) {
+    public SponsorAdapter(Activity context, List<GetUserBusinessResponse.DataBeanX.DataBean> data, Intent intent) {
         this.context = context;
         mData = data;
+        this.intent = intent;
     }
 
-    public void notifyDataSetChanged(List<?> data) {
+    public void notifyDataSetChanged(List<GetUserBusinessResponse.DataBeanX.DataBean> data) {
         this.mData = data;
         super.notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(SponsorViewHolder holder, int position) {
+        final GetUserBusinessResponse.DataBeanX.DataBean dataBean = mData.get(position);
+        holder.name.setText(dataBean.getName());
+        holder.locationDes.setText(dataBean.getAddra() + dataBean.getAddress());
+        holder.editSponsorDes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setAction("com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION");
+                intent.setClass(context, SponsorInfoActivity.class);
+                intent.putExtra("businessId", dataBean.getBusinessid());
+                context.startActivityForResult(intent, REQUEST_SPONSOR_INFO);
+            }
+        });
+        holder.deleteSponsorDes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Presenter.getInstance(context).deleteBusiness(dataBean.getBusinessid(), new InnerCallBack() {
+                    @Override
+                    public void innerCallBack(Object object) {
+                        if (!(object instanceof ErrorCode)) {
+                            ((SponsorManagerActivity) context).refresh();
+                        }
+                    }
+                });
+            }
+        });
 
+        holder.tvDefault.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Presenter.getInstance(context).setDefaultBusiness(dataBean.getBusinessid(), new InnerCallBack() {
+                    @Override
+                    public void innerCallBack(Object object) {
+                        if (!(object instanceof ErrorCode)) {
+                            ((SponsorManagerActivity) context).refresh();
+                        }
+                    }
+                });
+            }
+        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intent.putExtra("businessId", dataBean.getBusinessid());
+                context.setResult(ReleaseTaskSponsorFragment.RESULT_SPONSOR_MSG, intent);
+                context.finish();
+            }
+        });
     }
 
     @Override
@@ -49,7 +104,7 @@ public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorV
 
     @Override
     public int getItemCount() {
-        return 5;
+        return mData.size();
     }
 
     public class SponsorViewHolder extends RecyclerView.ViewHolder {
@@ -69,6 +124,9 @@ public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorV
         ImageView editSponsor;
         @Bind(R.id.edit_sponsor_des)
         TextView editSponsorDes;
+        @Bind(R.id.tv_default)
+        TextView tvDefault;
+
 
         public SponsorViewHolder(View view) {
             super(view);
@@ -83,21 +141,7 @@ public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorV
             deleteSponsorDes = (TextView) view.findViewById(R.id.delete_sponsor_des);
             editSponsor = (ImageView) view.findViewById(R.id.edit_sponsor);
             editSponsorDes = (TextView) view.findViewById(R.id.edit_sponsor_des);
-            editSponsor.setOnClickListener(onClickListener);
+            tvDefault = (TextView) view.findViewById(R.id.tv_default);
         }
-
-        private View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.edit_sponsor:
-                        Intent intent = new Intent();
-                        intent.setAction("com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION");
-                        intent.setClass(context, SponsorInfoCollectActivity.class);
-                        context.startActivityForResult(intent, REQUEST_SPONSOR_INFO);
-                        break;
-                }
-            }
-        };
     }
 }
