@@ -83,6 +83,8 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     private int pageIndex = 1;
     private final static int PAGESIZE = 10;
     private boolean hasDelete = false;
+    private int currentMember = 0;
+    private int position = -1;
 
     @Override
     protected int getLayoutResId() {
@@ -100,6 +102,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                 id = bundle.getString(CIRCLE_ID, "");
                 LocalLog.d(TAG, "成员管理 circleid = " + id);
                 Presenter.getInstance(context).getCircleMemberAll(Integer.parseInt(id), pageIndex, PAGESIZE);
+                position = intent.getIntExtra(getContext().getPackageName() + "position", -1);
             }
         }
 
@@ -210,10 +213,21 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     @Override
     public void response(CircleMemberResponse circleMemberResponse) {
         if (circleMemberResponse.getError() == 0) {
+            if (currentMember != 0 && circleMemberResponse.getData().getPagenation().getTotalCount() != currentMember) {
+                Intent intent = new Intent();
+                if (position != -1) {
+                    intent.putExtra(getContext().getPackageName() + "memberNum", circleMemberResponse.getData().getPagenation().getTotalCount());
+                    intent.putExtra(getContext().getPackageName() + "position", position);
+                }
+                getActivity().setResult(RESULT_OK, intent);
+            }
+            currentMember = circleMemberResponse.getData().getPagenation().getTotalCount();
             LocalLog.d(TAG, "circleMemberResponse() enter" + circleMemberResponse.toString());
             ArrayList<CircleMemberResponse.DataBeanX.DataBean>[] data = getAdminList(circleMemberResponse);
             MemberManagerAdapter adminAdapter = new MemberManagerAdapter(getContext(), data[0], data[1], opCallBackInterface);
-
+            if (adminRecyclerView == null) {
+                return;
+            }
             adminRecyclerView.setAdapter(adminAdapter);
 
             MemberManagerAdapter normalAdapter = new MemberManagerAdapter(getContext(), data[2], opCallBackInterface);
@@ -325,7 +339,6 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
             if (deleteMemberConfim == null) {
                 return;
             }
-            getActivity().setResult(RESULT_OK);
             deleteMemberConfim.setVisibility(View.GONE);
             Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), pageIndex, PAGESIZE);
         } else if (memberDeleteResponse.getError() == -100) {

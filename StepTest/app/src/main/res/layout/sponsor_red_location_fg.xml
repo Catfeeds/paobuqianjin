@@ -5,22 +5,32 @@
 
     <include
         android:id="@+id/bar_location"
-        layout="@layout/bar_return_a_style"></include>
+        layout="@layout/bar_return_a_style" />
 
     <include
         android:id="@+id/search_location"
         layout="@layout/serch_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bar_location"></include>
+        android:layout_below="@+id/bar_location" />
 
     <com.baidu.mapapi.map.MapView
-        android:clickable="true"
         android:id="@+id/mv_foreground"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/search_location">
+        android:layout_below="@+id/search_location"
+        android:clickable="true">
 
     </com.baidu.mapapi.map.MapView>
 
+    <ImageView
+        android:id="@+id/iv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="100dp"
+        android:layout_marginRight="5dp"
+        android:background="@color/white"
+        android:src="@mipmap/ic_func_location" />
 </RelativeLayout>

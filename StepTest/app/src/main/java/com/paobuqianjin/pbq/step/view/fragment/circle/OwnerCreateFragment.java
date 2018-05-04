@@ -59,6 +59,10 @@ public class OwnerCreateFragment extends BaseFragment {
     private int mCurrentIndex = 1;
     private final int REQUEST_MEMBER = 200;
     private final int REQUEST_DETAIL = 100;
+    private final static String QUIT_ACTION = "com.paobuqianjin.pbq.step.QUIT";
+    private final static String DELETE_ACTION = "com.paobuqianjin.pbq.step.DELETE_CIRCLE";
+    private final static String DELETE_MEMBER = "com.paobuqianjin.pbq.step.DELETE_MEMBER";
+    private final static String CIRCLE_EDIT = "com.paobuqianjin.pbq.step.EDIT_CIRCLE";
 
     @Override
     public void onAttach(Context context) {
@@ -339,8 +343,48 @@ public class OwnerCreateFragment extends BaseFragment {
             case RESULT_OK:
                 if (requestCode == REQUEST_MEMBER) {
                     LocalLog.d(TAG, "执行过删除成员的操作1");
+                    if (data != null) {
+                        int position = -1, memberNum = -1;
+                        position = data.getIntExtra(getContext().getPackageName() + "position", -1);
+                        memberNum = data.getIntExtra(getContext().getPackageName() + "memberNum", -1);
+                        LocalLog.d(TAG, "删除圈子 position =  " + position + "memberNum = " + memberNum);
+                        if (position != -1) {
+                            adapter.notifyItemDataChange(position, memberNum);
+                        }
+                    }
                 } else if (requestCode == REQUEST_DETAIL) {
                     LocalLog.d(TAG, "执行过删除成员的操作2");
+                    if (data != null) {
+                        LocalLog.d(TAG, "action =  " + data.getAction());
+                        int position = -1, memberNum = -1;
+                        String circleName = "";
+                        switch (data.getAction()) {
+                            case QUIT_ACTION:
+                                position = data.getIntExtra(getContext().getPackageName() + "position", -1);
+                                LocalLog.d(TAG, "退出");
+                                adapter.notifyItemRemove(position);
+                                break;
+                            case DELETE_ACTION:
+                                position = data.getIntExtra(getContext().getPackageName() + "position", -1);
+                                LocalLog.d(TAG, "删除圈子 position =  " + position);
+                                adapter.notifyItemRemove(position);
+                                break;
+                            case DELETE_MEMBER:
+                                position = data.getIntExtra(getContext().getPackageName() + "position", -1);
+                                memberNum = data.getIntExtra(getContext().getPackageName() + "memberNum", -1);
+                                LocalLog.d(TAG, "删除圈子 position =  " + position + "memberNum = " + memberNum);
+                                adapter.notifyItemDataChange(position, memberNum);
+                                break;
+                            case CIRCLE_EDIT:
+                                position = data.getIntExtra(getContext().getPackageName() + "position", -1);
+                                circleName = data.getStringExtra(getContext().getPackageName() + "changeName");
+                                LocalLog.d(TAG, "删除圈子 position =  " + position + "circleName = " + circleName);
+                                adapter.notifyItemDataChange(position, circleName);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                 }
                 break;
             default:

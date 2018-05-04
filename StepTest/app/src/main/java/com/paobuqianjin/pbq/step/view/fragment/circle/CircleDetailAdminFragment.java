@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -155,8 +156,17 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private final static String ACTION_STEP_RANK = "com.paobuqian.pbq.step.STEP_ACTION";
     private final static String ACTION_LOVE_RANK = "com.paobuqian.pbq.step.LOVE_ACTION";
     private final int REQUEST_MEMBER = 201;
+    private final int REQUEST_EDIT = 202;
     String titleStr = "";
     private boolean is_join = false;
+    private int pageIndex = 1, PAGESIZE = 200;
+    private int position = -1;
+    private final static String QUIT_ACTION = "com.paobuqianjin.pbq.step.QUIT";
+    private final static String DELETE_ACTION = "com.paobuqianjin.pbq.step.DELETE_CIRCLE";
+    private final static String DELETE_MEMBER = "com.paobuqianjin.pbq.step.DELETE_MEMBER";
+    private final static String CIRCLE_EDIT = "com.paobuqianjin.pbq.step.EDIT_CIRCLE";
+    private String changeName;
+    private int memberNum = 0;
 
     @Override
     protected int getLayoutResId() {
@@ -447,6 +457,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             if (ACTION_ENTER_CIRCLE.equals(intent.getAction())) {
                 LocalLog.d(TAG, "logo 进入");
                 circleId = intent.getIntExtra(getContext().getPackageName() + "circleid", -1);
+                position = intent.getIntExtra(getContext().getPackageName() + "position", -1);
 
             } else if (ACTION_SCAN_CIRCLE_ID.equals(intent.getAction())) {
                 LocalLog.d(TAG, "扫码 进入");
@@ -513,7 +524,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                         Intent intentEdit = new Intent();
                         intentEdit.setClass(getContext(), EditCircleActivity.class);
                         intentEdit.putExtra("circle_detail", circleDetailResponse.getData());
-                        startActivity(intentEdit);
+                        startActivityForResult(intentEdit, REQUEST_EDIT);
                     }
                     break;
                 case R.id.mananger_text:
@@ -580,7 +591,6 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     break;
                 case R.id.scan_more:
                     LocalLog.d(TAG, "查看更多");
-
                     Intent intentStep = new Intent();
                     intentStep.setAction(ACTION_STEP_RANK);
                     intentStep.putExtra(getActivity().getPackageName() + "circle_detail", stepBundleData);
@@ -603,7 +613,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 is_join = true;
                 //TODO 通知源UI更新
                 if (circleId != -1) {
-                    Presenter.getInstance(getContext()).getCircleStepRank(circleId);
+                    Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndex, PAGESIZE);
                 }
             } else if (joinCircleResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
@@ -658,6 +668,17 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 String sAgeFormat = mContext.getResources().getString(R.string.member_total);
                 String sFinalMember = String.format(sAgeFormat, stepRankResponse.getData().getPagenation().getTotalCount());
                 memberNumDes.setText(sFinalMember);
+                if (memberNum != 0 && stepRankResponse.getData().getPagenation().getTotalCount() != memberNum) {
+                    LocalLog.d(TAG, "人数有变化");
+                    Intent intent = new Intent();
+                    intent.setAction(DELETE_MEMBER);
+                    if (position != -1) {
+                        intent.putExtra(mContext.getPackageName() + "position", position);
+                        intent.putExtra(mContext.getPackageName() + "memberNum", stepRankResponse.getData().getPagenation().getTotalCount());
+                    }
+                    getActivity().setResult(RESULT_OK, intent);
+                }
+                memberNum = stepRankResponse.getData().getPagenation().getTotalCount();
                 stepBundleData = new StepBundleData(
                         (ArrayList<StepRankResponse.DataBeanX.DataBean>)
                                 stepRankResponse.getData().getData());
@@ -740,6 +761,19 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             if (circleDetailResponse.getData().getIs_pwd() == 1) {
                 is_password = true;
             }
+            if (!TextUtils.isEmpty(titleStr) && !titleStr.equals(circleDetailResponse.getData().getName())) {
+                LocalLog.d(TAG, "圈子名称更改");
+                changeName = titleStr;
+                if (position != -1) {
+                    Intent intent = new Intent();
+                    if (!TextUtils.isEmpty(changeName)) {
+                        intent.setAction(CIRCLE_EDIT);
+                        intent.putExtra(mContext.getPackageName() + "position", position);
+                        intent.putExtra(mContext.getPackageName() + "changeName", circleDetailResponse.getData().getName());
+                        getActivity().setResult(RESULT_OK, intent);
+                    }
+                }
+            }
             titleStr = circleDetailResponse.getData().getName();
             if (circleDetailResponse.getData().getIs_recharge() == 1) {
                 rankMoney.setVisibility(View.VISIBLE);
@@ -747,8 +781,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             Log.d(TAG, "titleStr = " + titleStr);
             setTitle(titleStr);
             /*Presenter.getInstance(getContext()).getImage(circleCover, circleDetailResponse.getData().getLogo());*/
-            Presenter.getInstance(getContext()).getCircleRechargeRand(circleId);
-            Presenter.getInstance(getContext()).getCircleStepRank(circleId);
+            Presenter.getInstance(getContext()).getCircleRechargeRand(circleId, pageIndex, PAGESIZE);
+            Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndex, PAGESIZE);
 
             if (circleDetailResponse.getData().getIs_red_packet() == 1) {
                 LocalLog.d(TAG, "弹出红包,用户可以点击领取");
@@ -778,6 +812,12 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 popupOpWindow.dismiss();
                 popupOpWindowTop.dismiss();
                 popupOpWindowTop = null;
+                Intent intent = new Intent();
+                intent.setAction(QUIT_ACTION);
+                if (position != -1) {
+                    intent.putExtra(mContext.getPackageName() + "position", position);
+                }
+                getActivity().setResult(RESULT_OK, intent);
                 getActivity().finish();
             }
         }
@@ -805,6 +845,12 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             popupOpWindowTop.dismiss();
             popupOpWindowTop = null;
             //TODO 通知上一层UI更新
+            Intent intent = new Intent();
+            intent.setAction(DELETE_ACTION);
+            if (position != -1) {
+                intent.putExtra(mContext.getPackageName() + "position", position);
+            }
+            getActivity().setResult(RESULT_OK, intent);
             getActivity().finish();
         }
     }
@@ -830,7 +876,14 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             case RESULT_OK:
                 if (requestCode == REQUEST_MEMBER) {
                     LocalLog.d(TAG, "执行过成员删除操作!");
-                    getActivity().setResult(RESULT_OK);
+                    if (circleId != -1) {
+                        Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndex, PAGESIZE);
+                    }
+                } else if (requestCode == REQUEST_EDIT) {
+                    LocalLog.d(TAG, "编辑过圈子");
+                    if (circleId != -1) {
+                        Presenter.getInstance(getContext()).getCircleDetail(circleId);
+                    }
                 }
                 break;
             default:

@@ -112,7 +112,7 @@ public class ChooseAddressWheel implements View.OnClickListener {
     }
 
     private void initPopupWindow() {
-        popupWindow = new PopupWindow(parentView, WindowManager.LayoutParams.MATCH_PARENT, (int)(Utils.getScreenHeight(context)*2.0/5));
+        popupWindow = new PopupWindow(parentView, WindowManager.LayoutParams.MATCH_PARENT, (int)(ProUtils.getScreenHeight(context)*2.0/5));
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         popupWindow.setAnimationStyle(R.style.anim_push_bottom);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());

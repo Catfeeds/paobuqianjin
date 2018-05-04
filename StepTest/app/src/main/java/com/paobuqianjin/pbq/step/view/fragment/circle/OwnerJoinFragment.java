@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by pbq on 2017/12/28.
  */
@@ -49,6 +52,8 @@ public class OwnerJoinFragment extends BaseFragment {
     ArrayList<MyJoinCircleResponse.DataBeanX.DataBean> searchData;
     private boolean isSearch = false;
     private int mCurrentIndex = 1;
+    private final int REQUEST_DETAIL = 100;
+    private final static String QUIT_ACTION = "com.paobuqianjin.pbq.step.QUIT";
 
     @Override
     protected int getLayoutResId() {
@@ -293,5 +298,32 @@ public class OwnerJoinFragment extends BaseFragment {
         super.onDestroyView();
         Presenter.getInstance(getContext()).dispatchUiInterface(myJoinCircleInterface);
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case RESULT_OK:
+                if (requestCode == REQUEST_DETAIL) {
+                    LocalLog.d(TAG, "执行过删除成员的操作2");
+                    if (data != null) {
+                        LocalLog.d(TAG, "action =  " + data.getAction());
+                        int position = -1;
+                        switch (data.getAction()) {
+                            case QUIT_ACTION:
+                                position = data.getIntExtra(getContext().getPackageName() + "position", -1);
+                                LocalLog.d(TAG, "退出");
+                                adapter.notifyItemRemove(position);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

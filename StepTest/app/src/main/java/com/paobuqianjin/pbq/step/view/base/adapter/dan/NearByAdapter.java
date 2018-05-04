@@ -30,7 +30,7 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
     private Context context;
     List<?> mData;
 
-    public NearByAdapter(Context context, List<NearByResponse.DataBean> data) {
+    public NearByAdapter(Context context, List<NearByResponse.DataBeanX.DataBean> data) {
         this.context = context;
         mData = data;
     }
@@ -53,18 +53,18 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
     @TargetApi(19)
     private void upDateListItem(NearByViewHolder holder, int position) {
         LocalLog.d(TAG, "upDateListItem() enter");
-        if (mData.get(position) instanceof NearByResponse.DataBean) {
-            Presenter.getInstance(context).getImage(holder.userNearIcon, ((NearByResponse.DataBean) mData.get(position)).getAvatar());
-            holder.dearName.setText(((NearByResponse.DataBean) mData.get(position)).getNickname());
+        if (mData.get(position) instanceof NearByResponse.DataBeanX.DataBean) {
+            Presenter.getInstance(context).getImage(holder.userNearIcon, ((NearByResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
+            holder.dearName.setText(((NearByResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             String stepFormat = context.getResources().getString(R.string.near_by_step);
-            String stepNum = String.format(stepFormat, ((NearByResponse.DataBean) mData.get(position)).getUser_step());
+            String stepNum = String.format(stepFormat, ((NearByResponse.DataBeanX.DataBean) mData.get(position)).getStep_number());
             holder.stepDesc.setText(stepNum);
 
             String distanceFormat = context.getResources().getString(R.string.near_by_distance);
-            String distanceNum = String.format(distanceFormat, ((NearByResponse.DataBean) mData.get(position)).getDistance());
+            String distanceNum = String.format(distanceFormat, ((NearByResponse.DataBeanX.DataBean) mData.get(position)).getDistance());
             holder.distance.setText(distanceNum);
 
-            if (((NearByResponse.DataBean) mData.get(position)).getIs_follow() == 0) {
+            if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getIs_follow() == 0) {
                 LocalLog.d(TAG, "未关注");
                 holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
                 holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
@@ -75,7 +75,7 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
                 holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_646464));
                 holder.btFollow.setText("已关注");
             }
-            if (((NearByResponse.DataBean) mData.get(position)).getVip() == 1) {
+            if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
             }
         }

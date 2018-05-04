@@ -69,6 +69,42 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
         super.notifyDataSetChanged();
     }
 
+    public void notifyItemDataChange(int position, String name) {
+        if (data != null) {
+            if (data.size() > position) {
+                if (data.get(position) instanceof MyCreateCircleResponse.DataBeanX.DataBean) {
+                    ((MyCreateCircleResponse.DataBeanX.DataBean) data.get(position)).setName(name);
+                    super.notifyItemChanged(position);
+                }
+            }
+        }
+    }
+
+    public void notifyItemDataChange(int position, int memberNum) {
+        if (data != null) {
+            if (data.size() > position) {
+                if (data.get(position) instanceof MyCreateCircleResponse.DataBeanX.DataBean) {
+                    ((MyCreateCircleResponse.DataBeanX.DataBean) data.get(position)).setMember_number(memberNum);
+                    super.notifyItemChanged(position);
+                }
+            }
+        }
+    }
+
+    public void notifyItemRemove(int position) {
+        if (data != null) {
+            if (data.size() > position) {
+                if (data.get(position) instanceof MyCreateCircleResponse.DataBeanX.DataBean) {
+                    data.remove(position);
+                    super.notifyItemRemoved(position);
+                } else if (data.get(position) instanceof MyJoinCircleResponse.DataBeanX.DataBean) {
+                    data.remove(position);
+                    super.notifyItemRemoved(position);
+                }
+            }
+        }
+    }
+
     @Override
     public void onBindViewHolder(OwnerCreateViewHolder holder, int position) {
 
@@ -183,6 +219,7 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
                         Bundle bundle = new Bundle();
                         bundle.putString(CIRCLE_ID, String.valueOf(getCircleid()));
                         intentManager.putExtra(mContext.getPackageName(), bundle);
+                        intentManager.putExtra(mContext.getPackageName() + "position", getAdapterPosition());
                         fragment.startActivityForResult(intentManager, REQUEST_MEMBER);
                         break;
                     case R.id.circle_logo_search:
@@ -190,7 +227,9 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
                         Intent intent = new Intent();
                         intent.setClass(mContext, CirCleDetailActivity.class);
                         intent.setAction(ACTION_ENTER_ICON);
+                        LocalLog.d(TAG, "getAdapterPosition() = " + getAdapterPosition());
                         intent.putExtra(mContext.getPackageName() + "circleid", getCircleid());
+                        intent.putExtra(mContext.getPackageName() + "position", getAdapterPosition());
                         fragment.startActivityForResult(intent, REQUEST_DETAIL);
                         break;
                     default:

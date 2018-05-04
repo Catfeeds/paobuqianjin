@@ -7,7 +7,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import java.io.InputStream;
 
-public class Utils {
+public class ProUtils {
 
     public static void hideKeyBoard(Activity context) {
         if (context != null && context.getCurrentFocus() != null) {

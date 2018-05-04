@@ -205,7 +205,7 @@
             android:layout_marginLeft="14dp"
             android:text="门店照片"
             android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/edit_sponsor_out_pics"
@@ -214,8 +214,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="39dp"
-            android:text="已上传2张"
-            android:textSize="15dp" />
+            android:text="请上传照片"
+            android:textSize="15sp" />
 
         <ImageView
             android:layout_width="7dp"
@@ -249,7 +249,7 @@
             android:layout_marginLeft="14dp"
             android:text="店内环境照片"
             android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/edit_sponsor_inner_pics"
@@ -260,8 +260,8 @@
             android:layout_marginRight="39dp"
             android:maxEms="16"
             android:maxLines="1"
-            android:text="已上传2张"
-            android:textSize="15dp" />
+            android:text="请上传照片"
+            android:textSize="15sp" />
 
         <ImageView
             android:layout_width="7dp"

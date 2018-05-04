@@ -13,6 +13,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.FeedBackParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.GetUserBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
@@ -39,6 +40,7 @@ import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.squareup.picasso.NetworkPolicy;
 
@@ -239,8 +241,8 @@ public final class Presenter {
         return engine.getMsg(phone);
     }
 
-    public void getNearByPeople(double latitude, double longitude, int page, int pagesize) {
-        engine.getNearByPeople(latitude, longitude, page, pagesize);
+    public void getNearByPeople(double latitude, double longitude, int page, int pagesize, final NearByInterface nearByInterface) {
+        engine.getNearByPeople(latitude, longitude, page, pagesize, nearByInterface);
     }
 
     public void registerByPhoneNumber(String[] userInfo) {
@@ -296,8 +298,8 @@ public final class Presenter {
         engine.AddBusiness(addBusinessParam, innerCallBack);
     }
 
-    public void getUserBusiness(int userId, final InnerCallBack innerCallBack) {
-        engine.getUserBusiness(userId, innerCallBack);
+    public void getUserBusiness(GetUserBusinessParam param, final InnerCallBack innerCallBack) {
+        engine.getUserBusiness(param, innerCallBack);
     }
 
     public void deleteBusiness(int businessId, final InnerCallBack innerCallBack) {
@@ -457,6 +459,13 @@ public final class Presenter {
         engine.getImage(view, urlImg);
     }
 
+    public void getImage(ImageView view, String urlImg, int targetWidth, int targetHeight) {
+        if ("".equals(urlImg)) {
+            return;
+        }
+        engine.getImage(view, urlImg, targetWidth, targetHeight);
+    }
+
     public void getImage(String fileUrl, final ImageView imageView, int targetWidth, int targetHeight) {
         if ("".equals(fileUrl)) {
             return;
@@ -482,8 +491,8 @@ public final class Presenter {
         engine.loginOutCircle(loginOutParam);
     }
 
-    public void getCircleStepRank(int circleId) {
-        engine.getCircleStepRank(circleId, 1, 10);
+    public void getCircleStepRank(int circleId, int page, int pagesize) {
+        engine.getCircleStepRank(circleId, page, pagesize);
     }
 
     public void getUserCircleRank(int circleId) {
@@ -510,8 +519,8 @@ public final class Presenter {
         engine.getUserCircleRankDetail(circleId);
     }
 
-    public void getCircleRechargeRand(int circleId) {
-        engine.getCircleRechargeRank(circleId, 1, 10);
+    public void getCircleRechargeRand(int circleId, int page, int pagesize) {
+        engine.getCircleRechargeRank(circleId, page, pagesize);
     }
 
     public void joinCircle(int circleId, String password) {

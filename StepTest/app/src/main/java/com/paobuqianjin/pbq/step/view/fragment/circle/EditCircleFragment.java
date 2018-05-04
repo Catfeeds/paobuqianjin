@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
+import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -463,6 +464,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         if (editCircleResponse.getError() == 0) {
             LocalLog.d(TAG, "编辑成功，通知详情界面更新");
             Toast.makeText(getContext(), "编辑成功", Toast.LENGTH_SHORT).show();
+            getActivity().setResult(Activity.RESULT_OK);
             getActivity().finish();
         }
     }

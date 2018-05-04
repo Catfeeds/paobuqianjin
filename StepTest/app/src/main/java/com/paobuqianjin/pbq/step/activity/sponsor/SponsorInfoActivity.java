@@ -1,7 +1,6 @@
 package com.paobuqianjin.pbq.step.activity.sponsor;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,13 +10,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.l.okhttppaobu.okhttp.OkHttpUtils;
-import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.ChooseAddressWheel;
-import com.paobuqianjin.pbq.step.customview.Utils;
+import com.paobuqianjin.pbq.step.customview.ProUtils;
 import com.paobuqianjin.pbq.step.data.bean.AddressDtailsEntity;
 import com.paobuqianjin.pbq.step.data.bean.AddressModel;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddBusinessParam;
@@ -26,22 +22,24 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorInfoCollectFragment;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.Call;
 
 public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddressWheel.OnAddressChangeListener, InnerCallBack {
     private final static String TAG = SponsorInfoCollectFragment.class.getSimpleName();
     public final static int REQ_TIME = 1;
     public final static int RES_TIME = 2;
-    private final static String ACTION_INNER_PIC = "com.paobuqianjin.pbq.step.INNER_ACTION";
-    private final static String ACTION_OUT_PIC = "com.paobuqianjin.pbq.step.OUT_ACTION";
+    public final static int REQ_PIC = 3;
+    public final static int REQ_PIC_IN = 4;
+    public final static String ACTION_INNER_PIC = "com.paobuqianjin.pbq.step.INNER_ACTION";
+    public final static String ACTION_OUT_PIC = "com.paobuqianjin.pbq.step.OUT_ACTION";
     private final static String ACTION_WORK_TIME_ACTION = "com.paobuqianjin.pbq.setp.WORK_TIME_ACTION";
     @Bind(R.id.edit_sponsor_name)
     EditText editSponsorName;
@@ -83,6 +81,8 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     private String city;
     private String district;
     private int businessId = -1;
+    private String images;
+    private String imagesIn;
 
     @Override
     protected String title() {
@@ -99,6 +99,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
 
     private void init() {
         businessId = getIntent().getIntExtra("businessId", -1);
+//        businessId = 103;
         if (businessId != -1) {
             Presenter.getInstance(this).businessDetail(businessId, new InnerCallBack() {
                 @Override
@@ -157,6 +158,33 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                                 if (!TextUtils.isEmpty(dataBean.getAddra()))
                                     editSponsorLocationPan.setText(dataBean.getAddra());
                                 editSponsorLocationDetailPan.setText(dataBean.getAddress());
+                                List<SponsorDetailResponse.DataBean.EnvironmentImgsBean> imagesBean = dataBean.getEnvironment_imgs();
+                                if (imagesBean.size() == 0) {
+                                    editSponsorOutPics.setText("请上传照片");
+                                } else {
+                                    images = "";
+                                    for (SponsorDetailResponse.DataBean.EnvironmentImgsBean image : imagesBean) {
+                                        if (!TextUtils.isEmpty(images)) {
+                                            images += ",";
+                                        }
+                                        images += image.getUrl();
+                                    }
+                                    editSponsorOutPics.setText("已上传" + imagesBean.size() + "张");
+                                }
+                                List<SponsorDetailResponse.DataBean.GoodsImgsBean> goodsImgsBean = dataBean.getGoods_imgs();
+                                if (goodsImgsBean.size() == 0) {
+                                    editSponsorInnerPics.setText("请上传照片");
+                                } else {
+                                    imagesIn = "";
+                                    for (SponsorDetailResponse.DataBean.GoodsImgsBean image : goodsImgsBean) {
+                                        if (!TextUtils.isEmpty(imagesIn)) {
+                                            imagesIn += ",";
+                                        }
+                                        imagesIn += image.getUrl();
+                                    }
+                                    editSponsorInnerPics.setText("已上传" + goodsImgsBean.size() + "张");
+                                }
+
                             }
                         }
                     }
@@ -185,21 +213,23 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
             case R.id.sponsor_out_pics_pan:
                 LocalLog.d(TAG, "门店照片");
                 Intent intent = new Intent();
-                intent.setAction(ACTION_INNER_PIC);
-                intent.setClass(this, SponsorGoodsPicLookActivity.class);
-                startActivity(intent);
+                intent.setAction(ACTION_OUT_PIC);
+                intent.setClass(this, SponsorSelectPicActivity.class);
+                intent.putExtra("images", images);
+                startActivityForResult(intent, REQ_PIC);
                 break;
             case R.id.sponsor_inner_pics_pan:
                 LocalLog.d(TAG, "店内环境照片");
                 Intent intentOut = new Intent();
-                intentOut.setAction(ACTION_OUT_PIC);
-                intentOut.setClass(this, SponsorGoodsPicLookActivity.class);
-                startActivity(intentOut);
+                intentOut.setAction(ACTION_INNER_PIC);
+                intentOut.setClass(this, SponsorSelectPicActivity.class);
+                intentOut.putExtra("images", imagesIn);
+                startActivityForResult(intentOut, REQ_PIC_IN);
                 break;
             case R.id.edit_sponsor_location_pan:
                 if (chooseAddressWheel == null) {
                     initWheel();
-                    String address = Utils.readAssert(this, "address.txt");
+                    String address = ProUtils.readAssert(this, "address.txt");
                     AddressModel model = new Gson().fromJson(address, AddressModel.class);
                     if (model != null) {
                         data = model.Result;
@@ -237,6 +267,14 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
             param.setAddra(editSponsorLocationPan.getText().toString())
                     .setAddress(editSponsorLocationDetailPan.getText().toString());
         }
+        if (!TextUtils.isEmpty(images)) {
+            param.setEnvironment_images(images);
+            LocalLog.d(TAG, "out----" + images);
+        }
+        if (!TextUtils.isEmpty(imagesIn)) {
+            param.setGoods_images(imagesIn);
+            LocalLog.d(TAG, "in----" + imagesIn);
+        }
         if (businessId != -1) {
             param.setBusinessId(businessId);
             Presenter.getInstance(this).updateBusiness(param, this);
@@ -265,6 +303,26 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_PIC && resultCode > 0) {
+            images = data.getStringExtra("images");
+            int size = data.getIntExtra("size", 0);
+            if (size == 0) {
+                editSponsorOutPics.setText("请上传照片");
+            } else {
+                editSponsorOutPics.setText("已上传" + size + "张");
+            }
+            return;
+        }
+        if (requestCode == REQ_PIC_IN && resultCode > 0) {
+            imagesIn = data.getStringExtra("images");
+            int size = data.getIntExtra("size", 0);
+            if (size == 0) {
+                editSponsorInnerPics.setText("请上传照片");
+            } else {
+                editSponsorInnerPics.setText("已上传" + size + "张");
+            }
+            return;
+        }
         switch (resultCode) {
             case RES_TIME: {
                 editSponsorTime.setText("已设置");

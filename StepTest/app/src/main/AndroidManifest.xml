@@ -442,7 +442,8 @@
         <activity android:name=".activity.sponsor.SponsorManagerActivity" />
         <activity android:name=".activity.sponsor.SponsorInfoActivity" />
         <activity android:name=".activity.sponsor.SponsorRedLocationActivity" />
-        <activity android:name=".activity.sponsor.TargetPeopleActivity"></activity>
+        <activity android:name=".activity.sponsor.TargetPeopleActivity" />
+        <activity android:name=".activity.sponsor.SponsorSelectPicActivity"></activity>
         <activity android:name=".view.activity.LiveListActivity" />
         <activity android:name=".view.activity.LiveDetailActivity" />
     </application>

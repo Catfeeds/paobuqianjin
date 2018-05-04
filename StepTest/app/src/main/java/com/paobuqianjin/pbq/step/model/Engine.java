@@ -30,6 +30,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.GetUserBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
@@ -64,6 +65,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LiveResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
@@ -700,16 +702,37 @@ public final class Engine {
     }
 
     //TODO 获取附近的人http://119.29.10.64/v1/user/getNearbyPeople?userid=1&longitude=86.26000&latitude=35.17000
-    public void getNearByPeople(double latitude, double longitude, int page, int pagesize) {
-        String url = urlNearByPeople + "/userid=" + String.valueOf(getId(mContext)) + "&longitude=" + String.valueOf(latitude)
-                + "&latitude=" + String.valueOf(longitude) + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+    public void getNearByPeople(double latitude, double longitude, int page, int pagesize, final NearByInterface nearByInterface) {
+        String url = urlNearByPeople + "/userid=" + String.valueOf(getId(mContext)) + "&latitude=" + String.valueOf(latitude)
+                + "&longitude=" + String.valueOf(longitude) + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         LocalLog.d(TAG, "url = " + url);
         OkHttpUtils
                 .get()
                 .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(nearByInterface, COMMAND_NEARBY_PEOPLE));
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (nearByInterface != null) {
+                            ErrorCode errorCode = new ErrorCode();
+                            nearByInterface.response(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        try {
+                            LocalLog.d(TAG, "S = " + s);
+                            if (nearByInterface != null) {
+                                NearByResponse nearByResponse = new Gson().fromJson(s, NearByResponse.class);
+                                nearByInterface.response(nearByResponse);
+                            }
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     //TODO 获取验证码 http://119.29.10.64/v1/ThirdParty/sendMsg/?mobile=13424156029
@@ -2022,13 +2045,13 @@ public final class Engine {
     }
 
     //TODO  获取用户商户列表
-    public void getUserBusiness(int userId, final InnerCallBack innerCallBack) {
+    public void getUserBusiness(GetUserBusinessParam param, final InnerCallBack innerCallBack) {
         LocalLog.d(TAG, "getUserBusiness() enter");
-        String url = NetApi.urlGetUserBusiness + "/" + String.valueOf(userId);
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
-                .url(url)
+                .url(NetApi.urlGetUserBusiness)
+                .params(param.getParams())
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -2077,7 +2100,7 @@ public final class Engine {
                         if (innerCallBack != null) {
                             LocalLog.d(TAG, "s = " + s);
                             try {
-                                  innerCallBack.innerCallBack(s);
+                                innerCallBack.innerCallBack(s);
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                             }
@@ -2099,6 +2122,7 @@ public final class Engine {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
                         if (innerCallBack != null) {
+                            LocalLog.d("---------------", o.toString());
                             ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                             innerCallBack.innerCallBack(errorCode);
                         }
@@ -2144,7 +2168,7 @@ public final class Engine {
                         if (innerCallBack != null) {
                             LocalLog.d(TAG, "s = " + s);
                             try {
-                                  innerCallBack.innerCallBack(s);
+                                innerCallBack.innerCallBack(s);
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                             }
@@ -2460,7 +2484,7 @@ public final class Engine {
     }
 
     //网络图片获取接口
-    public void getImage(final ImageView imageView, String urlImage) {
+    public void getImage(ImageView imageView, String urlImage) {
         LocalLog.d(TAG, "getImage() enter");
         Picasso picasso = Picasso.with(mContext);
         //picasso.setIndicatorsEnabled(true);
@@ -2492,6 +2516,20 @@ public final class Engine {
                         imageView.setImageBitmap(bitmap);}
                     }
                 });*/
+    }
+
+    //网络图片获取接口
+    public void getImage(ImageView imageView, String urlImage, int targetWidth, int targetHeight) {
+        LocalLog.d(TAG, "getImage() enter");
+        Picasso picasso = Picasso.with(mContext);
+        //picasso.setIndicatorsEnabled(true);
+        //picasso.setLoggingEnabled(true);
+        LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
+        if (networkPolicy == NetworkPolicy.OFFLINE) {
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).networkPolicy(networkPolicy).into(imageView);
+        } else {
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).resize(targetWidth, targetHeight).into(imageView);
+        }
     }
 
     //TODO VIP  op

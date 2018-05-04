@@ -43,8 +43,8 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
     private LinearLayoutManager layoutManager;
     private int pageIndex = 1, pageCount = 0;
     NearByAdapter nearByAdapter;
-    private final static int PAGE_SIZE_DEFAULT = 10;
-    private ArrayList<NearByResponse.DataBean> nearByData = new ArrayList<>();
+    private final static int PAGE_SIZE_DEFAULT = 200;
+    private ArrayList<NearByResponse.DataBeanX.DataBean> nearByData = new ArrayList<>();
 
     @Override
     protected int getLayoutResId() {
@@ -80,8 +80,10 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
         nearByRecycler.addFooterView(loadMoreView); // 添加为Footer。
         nearByRecycler.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         nearByRecycler.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
+        loadData(nearByData);
+        nearByRecycler.setAdapter(nearByAdapter);
         Presenter.getInstance(getContext()).getNearByPeople(Presenter.getInstance(getContext()).getLocation()[0],
-                Presenter.getInstance(getContext()).getLocation()[1], pageIndex, PAGE_SIZE_DEFAULT);
+                Presenter.getInstance(getContext()).getLocation()[1], pageIndex, PAGE_SIZE_DEFAULT, this);
     }
 
     /**
@@ -152,7 +154,7 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
         }
     }
 
-    private void loadMore(ArrayList<NearByResponse.DataBean> newData) {
+    private void loadMore(ArrayList<NearByResponse.DataBeanX.DataBean> newData) {
         /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
         nearByData.addAll(newData);
         // notifyItemRangeInserted()或者notifyDataSetChanged().
@@ -181,7 +183,7 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
 
     @Override
     public void response(NearByResponse nearByResponse) {
-        LocalLog.d(TAG, "NearByResponse() enter");
+        LocalLog.d(TAG, "NearByResponse() enter" + nearByResponse);
         if (nearByResponse.getError() == 0) {
             if (nearByRecycler != null) {
                 notFoundData.setVisibility(View.GONE);
@@ -189,7 +191,7 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
                 //TODO 数据结构更换
                 /*pageCount = nearByResponse.getData().getPagenation().getTotalPage();*/
                 LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
-                loadMore((ArrayList<NearByResponse.DataBean>) nearByResponse.getData());
+                loadMore((ArrayList<NearByResponse.DataBeanX.DataBean>) nearByResponse.getData().getData());
                 if (pageIndex == 1) {
                     nearByRecycler.postDelayed(new Runnable() {
                         @Override
@@ -203,6 +205,8 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
                     }, 10);
                 }
                 pageIndex++;
+            } else {
+                LocalLog.d(TAG, "不显示");
             }
         } else if (nearByResponse.getError() == 1) {
             if (pageIndex == 1) {

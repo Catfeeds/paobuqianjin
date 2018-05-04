@@ -111,8 +111,8 @@ public class CircleDetailNoAdminMainFragment extends BaseBarImageViewFragment {
         super.onAttach(context);
         mContext = context;
         Presenter.getInstance(getContext()).attachUiInterface(uiStepAndLoveRankInterface);
-        Presenter.getInstance(getContext()).getCircleRechargeRand(circleId);
-        Presenter.getInstance(getContext()).getCircleStepRank(circleId);
+        Presenter.getInstance(getContext()).getCircleRechargeRand(circleId,1,100);
+        Presenter.getInstance(getContext()).getCircleStepRank(circleId,1,100);
     }
 
 

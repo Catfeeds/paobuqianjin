@@ -2,7 +2,6 @@ package com.paobuqianjin.pbq.step.customview;
 
 import android.app.Activity;
 import android.graphics.drawable.BitmapDrawable;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +11,9 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.AddressDtailsEntity;
 import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.WheelPicker;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 
 public class ChooseTargetWheel implements View.OnClickListener {
@@ -71,7 +67,7 @@ public class ChooseTargetWheel implements View.OnClickListener {
     }
 
     private void initPopupWindow() {
-        popupWindow = new PopupWindow(parentView, WindowManager.LayoutParams.MATCH_PARENT, (int) (Utils.getScreenHeight(context) * 2.0 / 5));
+        popupWindow = new PopupWindow(parentView, WindowManager.LayoutParams.MATCH_PARENT, (int) (ProUtils.getScreenHeight(context) * 2.0 / 5));
         popupWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         popupWindow.setAnimationStyle(R.style.anim_push_bottom);
         popupWindow.setBackgroundDrawable(new BitmapDrawable());

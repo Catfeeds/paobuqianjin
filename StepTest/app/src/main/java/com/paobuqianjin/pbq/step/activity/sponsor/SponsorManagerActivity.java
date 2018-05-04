@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.GetUserBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -63,7 +65,9 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
     private List<GetUserBusinessResponse.DataBeanX.DataBean> data = new ArrayList<>();
     private SponsorAdapter adapter;
     public boolean isRefresh;
+    private boolean isLoad;
     private Intent intent;
+    private int pageNum = 1;
 
     @Override
     protected String title() {
@@ -76,7 +80,6 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
         setContentView(R.layout.sponsor_mananger_fg);
         ButterKnife.bind(this);
         init();
-      //  refresh();
     }
 
     @Override
@@ -87,6 +90,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
 
     public void refresh() {
         isRefresh = true;
+        pageNum = 1;
         getData();
     }
 
@@ -102,11 +106,32 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                 refresh();
             }
         });
+        sponsorList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    int lastVisiblePosition = layoutManager.findLastVisibleItemPosition();
+                    if (lastVisiblePosition >= layoutManager.getItemCount() - 1 && !isLoad) {
+                        isRefresh = false;
+                        getData();
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
 
 
     private void getData() {
-        Presenter.getInstance(this).getUserBusiness(Presenter.getInstance(this).getId(), this);
+        isLoad = true;
+        GetUserBusinessParam param = new GetUserBusinessParam();
+        param.setUserid(Presenter.getInstance(this).getId()).setPage(pageNum);
+        Presenter.getInstance(this).getUserBusiness(param, this);
     }
 
     @OnClick({R.id.tv_add_sponsor})
@@ -131,19 +156,22 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                 if (isRefresh) {
                     data.clear();
                     refreshLayout.setRefreshing(false);
-                    isRefresh = false;
-                    data.addAll(((GetUserBusinessResponse) object).getData().getData());
                 }
-                if (data.size() > 0 && data.get(0).getDefaultX() == 1) {
-                    default_sponsor.setVisibility(View.VISIBLE);
-                    line.setVisibility(View.VISIBLE);
-                    setDefaultView(data.get(0));
-                    data.remove(0);
-                } else {
-                    default_sponsor.setVisibility(View.GONE);
-                    line.setVisibility(View.INVISIBLE);
+                data.addAll(((GetUserBusinessResponse) object).getData().getData());
+                if (isRefresh) {
+                    if (data.size() > 0 && data.get(0).getDefaultX() == 1) {
+                        default_sponsor.setVisibility(View.VISIBLE);
+                        line.setVisibility(View.VISIBLE);
+                        setDefaultView(data.get(0));
+                        data.remove(0);
+                    } else {
+                        default_sponsor.setVisibility(View.GONE);
+                        line.setVisibility(View.INVISIBLE);
+                    }
                 }
                 adapter.notifyDataSetChanged();
+                pageNum++;
+                isLoad = false;
             }
         }
     }
@@ -193,7 +221,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
             @Override
             public void onClick(View view) {
                 intent.putExtra("businessId", dataBean.getBusinessid());
-                setResult(ReleaseTaskSponsorFragment.RESULT_SPONSOR_MSG,intent);
+                setResult(ReleaseTaskSponsorFragment.RESULT_SPONSOR_MSG, intent);
                 finish();
             }
         });

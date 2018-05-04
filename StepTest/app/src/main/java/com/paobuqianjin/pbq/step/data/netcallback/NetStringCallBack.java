@@ -677,7 +677,7 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null
                 && callBackInterface instanceof NearByInterface
                 && command == Engine.COMMAND_NEARBY_PEOPLE) {
-            LocalLog.d(TAG, "附近的人");
+            LocalLog.d(TAG, "附近的人"  + s);
             try {
                 NearByResponse nearByResponse = new Gson().fromJson(s, NearByResponse.class);
                 ((NearByInterface) callBackInterface).response(nearByResponse);
