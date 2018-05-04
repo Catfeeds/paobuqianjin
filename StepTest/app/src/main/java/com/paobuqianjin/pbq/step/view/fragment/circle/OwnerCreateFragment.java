@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by pbq on 2017/12/28.
  */
@@ -54,6 +57,8 @@ public class OwnerCreateFragment extends BaseFragment {
     private String keyWord = "";
     private boolean isSearch = false;
     private int mCurrentIndex = 1;
+    private final int REQUEST_MEMBER = 200;
+    private final int REQUEST_DETAIL = 100;
 
     @Override
     public void onAttach(Context context) {
@@ -111,7 +116,7 @@ public class OwnerCreateFragment extends BaseFragment {
         ownerCreateCircleLists.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         ownerCreateCircleLists.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
 
-        adapter = new OwnerCreateAdapter(getContext(), null);
+        adapter = new OwnerCreateAdapter(getContext(), this, null);
         ownerCreateCircleLists.setAdapter(adapter);
 
         createCircleSwipe.setOnRefreshListener(mRefreshListener);
@@ -325,5 +330,21 @@ public class OwnerCreateFragment extends BaseFragment {
         Presenter.getInstance(getContext()).dispatchUiInterface(reflashMyCircleInterface);
         Presenter.getInstance(getContext()).dispatchUiInterface(myCreatCircleInterface);
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case RESULT_OK:
+                if (requestCode == REQUEST_MEMBER) {
+                    LocalLog.d(TAG, "执行过删除成员的操作1");
+                } else if (requestCode == REQUEST_DETAIL) {
+                    LocalLog.d(TAG, "执行过删除成员的操作2");
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,8 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by pbq on 2017/12/18.
@@ -151,7 +154,9 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                             idStr += deleteArrList.get(i) + ",";
                         }
                     }
-                    Presenter.getInstance(getContext()).deleteCircleMember(idStr);
+                    if (!TextUtils.isEmpty(idStr)) {
+                        Presenter.getInstance(getContext()).deleteCircleMember(idStr);
+                    }
                     break;
             }
         }
@@ -314,9 +319,13 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
 
     @Override
     public void response(MemberDeleteResponse memberDeleteResponse) {
-        LocalLog.d(TAG, "AddDeleteAdminResponse() enter" + memberDeleteResponse.toString());
+        LocalLog.d(TAG, "MemberDeleteResponse() enter" + memberDeleteResponse.toString());
         //TODO 更新本地UI
         if (memberDeleteResponse.getError() == 0) {
+            if (deleteMemberConfim == null) {
+                return;
+            }
+            getActivity().setResult(RESULT_OK);
             deleteMemberConfim.setVisibility(View.GONE);
             Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), pageIndex, PAGESIZE);
         } else if (memberDeleteResponse.getError() == -100) {
@@ -332,11 +341,17 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case DEAR_NAME_MODIFY:
-                LocalLog.d(TAG, "昵称修改成功!");
-                Toast.makeText(getContext(), "昵称修改成功", Toast.LENGTH_SHORT).show();
-                Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), pageIndex, PAGESIZE);
+        LocalLog.d(TAG, "resultCode = " + requestCode);
+        switch (resultCode) {
+            case RESULT_OK:
+                if (requestCode == DEAR_NAME_MODIFY) {
+                    LocalLog.d(TAG, "昵称修改成功!");
+                    Toast.makeText(getContext(), "昵称修改成功", Toast.LENGTH_SHORT).show();
+                    Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), pageIndex, PAGESIZE);
+                    break;
+                }
+            default:
+                LocalLog.d(TAG, "unknown");
                 break;
         }
     }

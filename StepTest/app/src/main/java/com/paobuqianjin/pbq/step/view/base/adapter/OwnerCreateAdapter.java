@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,17 +32,20 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
     private final static String TAG = OwnerCreateAdapter.class.getSimpleName();
     private Context mContext;
     private List<?> data;
+    private Fragment fragment;
     private final static String CIRCLE_ID = "id";
     private final static String MEMBER_MANANGER_ACTION = "android.intent.action.MAMBER_MANAGER_ACTION";
-
+    private final int REQUEST_MEMBER = 200;
+    private final int REQUEST_DETAIL = 100;
     private MyCreateCircleResponse.DataBeanX.DataBean tmpData;
     private MyJoinCircleResponse.DataBeanX.DataBean tmpData1;
     private final static String ACTION_ENTER_ICON = "coma.paobuqian.pbq.step.ICON_ACTION";
 
-    public OwnerCreateAdapter(Context context, List<?> data) {
+    public OwnerCreateAdapter(Context context, final Fragment fragment, List<?> data) {
         super();
         this.data = data;
         mContext = context;
+        this.fragment = fragment;
     }
 
     @Override
@@ -179,7 +183,7 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
                         Bundle bundle = new Bundle();
                         bundle.putString(CIRCLE_ID, String.valueOf(getCircleid()));
                         intentManager.putExtra(mContext.getPackageName(), bundle);
-                        mContext.startActivity(intentManager);
+                        fragment.startActivityForResult(intentManager, REQUEST_MEMBER);
                         break;
                     case R.id.circle_logo_search:
                         LocalLog.d(TAG, " 点击圈子头像进入圈子");
@@ -187,7 +191,7 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
                         intent.setClass(mContext, CirCleDetailActivity.class);
                         intent.setAction(ACTION_ENTER_ICON);
                         intent.putExtra(mContext.getPackageName() + "circleid", getCircleid());
-                        mContext.startActivity(intent);
+                        fragment.startActivityForResult(intent, REQUEST_DETAIL);
                         break;
                     default:
                         break;

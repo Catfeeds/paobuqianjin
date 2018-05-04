@@ -211,12 +211,17 @@ public class SelectVipFragment extends BaseFragment implements SelectUserFriendI
                     LocalLog.d(TAG, "确定");
                     if (selectVipFriendAdapter != null) {
                         //反馈选中结果到上一个Activity
-                        FriendBundleData friendBundleData = new FriendBundleData((ArrayList<UserFriendResponse.DataBeanX.DataBean>) selectVipFriendAdapter.getResultData());
-                        LocalLog.d(TAG, selectVipFriendAdapter.getResultData().toString());
-                        Intent intent = new Intent();
-                        intent.putExtra(getActivity().getPackageName(), friendBundleData);
-                        getActivity().setResult(SELECT_FRIENDS, intent);
-                        getActivity().finish();
+                        if (selectVipFriendAdapter.getResultData() == null) {
+                            getActivity().finish();
+                        } else {
+                            FriendBundleData friendBundleData = new FriendBundleData((ArrayList<UserFriendResponse.DataBeanX.DataBean>) selectVipFriendAdapter.getResultData());
+                            LocalLog.d(TAG, selectVipFriendAdapter.getResultData().toString());
+                            Intent intent = new Intent();
+                            intent.putExtra(getActivity().getPackageName(), friendBundleData);
+                            getActivity().setResult(SELECT_FRIENDS, intent);
+                            getActivity().finish();
+                        }
+
                     }
                     break;
                 case R.id.cancel_icon:

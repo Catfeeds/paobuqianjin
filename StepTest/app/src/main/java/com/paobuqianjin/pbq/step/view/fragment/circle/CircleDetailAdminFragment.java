@@ -57,6 +57,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by pbq on 2018/2/2.
  */
@@ -152,7 +154,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
     private final static String ACTION_STEP_RANK = "com.paobuqian.pbq.step.STEP_ACTION";
     private final static String ACTION_LOVE_RANK = "com.paobuqian.pbq.step.LOVE_ACTION";
-
+    private final int REQUEST_MEMBER = 201;
     String titleStr = "";
     private boolean is_join = false;
 
@@ -516,9 +518,13 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     break;
                 case R.id.mananger_text:
                     LocalLog.d(TAG, "成员管理");
+                    Intent intentMember = new Intent();
                     Bundle bundle = new Bundle();
                     bundle.putString(CIRCLE_ID, String.valueOf(circleDetailResponse.getData().getId()));
-                    startActivity(MemberManagerActivity.class, bundle, false, MEMBER_MANANGER_ACTION);
+                    intentMember.putExtra(getContext().getPackageName(), bundle);
+                    intentMember.setClass(getContext(), MemberManagerActivity.class);
+                    intentMember.setAction(MEMBER_MANANGER_ACTION);
+                    startActivityForResult(intentMember, REQUEST_MEMBER);
                     break;
                 case R.id.cancle_text:
                     LocalLog.d(TAG, "解散");
@@ -814,6 +820,21 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             System.exit(0);
         } else {
             Toast.makeText(getContext(), errorCode.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case RESULT_OK:
+                if (requestCode == REQUEST_MEMBER) {
+                    LocalLog.d(TAG, "执行过成员删除操作!");
+                    getActivity().setResult(RESULT_OK);
+                }
+                break;
+            default:
+                break;
         }
     }
 }

@@ -41,7 +41,6 @@ public class DearNameModifyActivity extends BaseActivity implements DearNameModi
     @Bind(R.id.dear_name)
     EditText dearName;
     private int id = -1;
-    private final static int DEAR_NAME_MODIFY = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,7 +99,7 @@ public class DearNameModifyActivity extends BaseActivity implements DearNameModi
         LocalLog.d(TAG, "dearNameResponse() enter " + dearNameResponse.toString());
         if (dearNameResponse.getError() == 0) {
             Intent intent = new Intent();
-            setResult(DEAR_NAME_MODIFY, intent);
+            setResult(RESULT_OK, intent);
             finish();
         }
     }
