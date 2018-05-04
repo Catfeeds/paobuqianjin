@@ -703,7 +703,7 @@ public final class Engine {
 
     //TODO 获取附近的人http://119.29.10.64/v1/user/getNearbyPeople?userid=1&longitude=86.26000&latitude=35.17000
     public void getNearByPeople(double latitude, double longitude, int page, int pagesize, final NearByInterface nearByInterface) {
-        String url = urlNearByPeople + "/userid=" + String.valueOf(getId(mContext)) + "&latitude=" + String.valueOf(latitude)
+        String url = urlNearByPeople + "?userid=" + String.valueOf(getId(mContext)) + "&latitude=" + String.valueOf(latitude)
                 + "&longitude=" + String.valueOf(longitude) + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         LocalLog.d(TAG, "url = " + url);
         OkHttpUtils

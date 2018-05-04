@@ -79,24 +79,24 @@
                 android:textSize="12dp" />
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/qrcode_img"
-            android:layout_width="175dp"
-            android:layout_height="175dp"
-            android:layout_below="@+id/circle_simple_info"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="38dp"
-            android:scaleType="centerCrop" />
-
         <TextView
             android:id="@+id/desc_qr_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/qrcode_img"
+            android:layout_below="@+id/circle_simple_info"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="14dp"
             android:text="用“跑步钱进”APP扫描二维码加入团队"
             android:textSize="12dp" />
+
+        <ImageView
+            android:id="@+id/qrcode_img"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
+            android:layout_below="@+id/desc_qr_code"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="38dp"
+            android:scaleType="centerCrop" />
 
     </RelativeLayout>
 
@@ -111,21 +111,23 @@
         android:text="点击分享至"
         android:textColor="@color/color_161727" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/qr_bg"
-        android:layout_alignRight="@+id/qr_bg"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
         android:layout_below="@+id/text_share_text"
         android:layout_marginTop="20dp">
 
         <TextView
             android:id="@+id/weixin_circle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:layout_gravity="left"
             android:layout_marginStart="30dp"
+            android:layout_weight="1"
             android:drawableTop="@drawable/circle_friend"
             android:gravity="center"
             android:text="朋友圈"
@@ -134,10 +136,10 @@
 
         <TextView
             android:id="@+id/weixin"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="30dp"
+            android:layout_weight="1"
             android:drawableTop="@drawable/wet_char_ico"
             android:gravity="center"
             android:text="微信"
@@ -146,16 +148,17 @@
 
         <TextView
             android:id="@+id/qq"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_gravity="right"
             android:layout_marginRight="30dp"
-            android:drawablePadding="5dp"
+            android:layout_weight="1"
             android:drawableTop="@drawable/qq_ico"
             android:gravity="center"
             android:text="QQ"
             android:textColor="@color/color_161727"
             android:textSize="14dp" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

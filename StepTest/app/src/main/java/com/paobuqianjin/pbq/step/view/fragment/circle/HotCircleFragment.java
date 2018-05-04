@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.ChoiceBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
@@ -42,7 +41,6 @@ import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleChooseGoodAdapter;
-import com.paobuqianjin.pbq.step.view.fragment.task.TaskFragment;
 
 import java.util.ArrayList;
 
@@ -76,6 +74,8 @@ public class HotCircleFragment extends BaseFragment {
     private int PAGE_DEFAULT_SIZE = 10;
     private static int SEARCH_ADD = 0;
     private static int MY_CIRCLE_ADD = 1;
+    private final static int REQUEST_A = 203;
+    private final static int REQUEST_B = 204;
     private IntentFilter intentFilter;
     private LocalBroadcastManager localBroadcastManager;
     private LocalReceiver localReceiver;
@@ -240,7 +240,7 @@ public class HotCircleFragment extends BaseFragment {
                     intentA.setClass(getContext(), CirCleDetailActivity.class);
                     intentA.putExtra(mContext.getPackageName() + "circleid", circleIdA);
                     intentA.setAction(ACTION_ENTER_ICON);
-                    startActivity(intentA);
+                    startActivityForResult(intentA, REQUEST_A);
                     break;
                 case R.id.circle_hot_b_img:
                     LocalLog.d(TAG, "onClick() 我的第二个圈子被点击");
@@ -248,7 +248,7 @@ public class HotCircleFragment extends BaseFragment {
                     intentB.setClass(getContext(), CirCleDetailActivity.class);
                     intentB.putExtra(mContext.getPackageName() + "circleid", circleIdB);
                     intentB.setAction(ACTION_ENTER_ICON);
-                    startActivity(intentB);
+                    startActivityForResult(intentB, REQUEST_B);
                     break;
                 case R.id.find_more_my_circle:
                     LocalLog.d(TAG, "查看更多我的圈子");
@@ -478,7 +478,9 @@ public class HotCircleFragment extends BaseFragment {
         if (requestCode == SEARCH_ADD) {
             LocalLog.d(TAG, "SEARCH_ADD ++++");
             LocalLog.d(TAG, "进行过加入圈子的操作");
-            updateMyHotCircle();
+            if (circleIdA == -1 || circleIdB == -1) {
+                updateMyHotCircle();
+            }
         }
     }
 }

@@ -148,7 +148,7 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
         if (intent != null) {
             int businessid = intent.getIntExtra(getContext().getPackageName() + "businessid", -1);
             if (businessid != -1) {
-                Presenter.getInstance(getContext()).businessDetail(103, sponsorInnerCallBack);
+                Presenter.getInstance(getContext()).businessDetail(businessid, sponsorInnerCallBack);
             }
         }
         Mview.clear();

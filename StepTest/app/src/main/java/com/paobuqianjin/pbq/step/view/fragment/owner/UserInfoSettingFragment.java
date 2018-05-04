@@ -15,6 +15,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -149,6 +150,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
     @Bind(R.id.line_change_sex)
     ImageView lineChangeSex;
     private String localAvatar;
+    private String strChangeIco = null;
 
     private View popBirthSelectView;
     private View popWeighSelectView;
@@ -494,6 +496,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             super.onPostExecute(s);
             //SocializeUtils.safeCloseDialog(dialog);
             putUserInfoParam.setAvatar(s);
+            strChangeIco = localAvatar;
             Presenter.getInstance(getContext()).putUserInfo(userInfo.getId(), putUserInfoParam);
         }
     }
@@ -919,7 +922,12 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
     @Override
     public void response(UserInfoSetResponse userInfoSetResponse) {
         if (userInfoSetResponse.getError() == 0) {
-            Toast.makeText(getContext(), userInfoSetResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "修改资料成功", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            if (!TextUtils.isEmpty(strChangeIco)) {
+                intent.putExtra(getContext().getPackageName() + "avatar", strChangeIco);
+            }
+            getActivity().setResult(RESULT_OK, intent);
             getActivity().finish();
         } else if (userInfoSetResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");

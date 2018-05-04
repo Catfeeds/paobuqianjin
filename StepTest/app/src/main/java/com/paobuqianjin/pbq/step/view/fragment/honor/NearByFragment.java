@@ -82,6 +82,7 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
         nearByRecycler.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
         loadData(nearByData);
         nearByRecycler.setAdapter(nearByAdapter);
+        nearRefresh.setOnRefreshListener(mRefreshListener);
         Presenter.getInstance(getContext()).getNearByPeople(Presenter.getInstance(getContext()).getLocation()[0],
                 Presenter.getInstance(getContext()).getLocation()[1], pageIndex, PAGE_SIZE_DEFAULT, this);
     }
@@ -97,7 +98,8 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
                 public void run() {
                     LocalLog.d(TAG, "加载更多! pageIndex = " + pageIndex + "pageCount = " + pageCount);
                     if (pageCount == 0) {
-                        LocalLog.d(TAG, "第一次刷新");
+                        LocalLog.d(TAG, "第一次刷新 暂时无分页");
+                        nearByRecycler.loadMoreFinish(false, true);
                     } else {
                         if (pageIndex > pageCount) {
                             if (getContext() == null) {
@@ -111,6 +113,7 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
                     if (getContext() == null) {
                         return;
                     }
+
                    /* Presenter.getInstance(getContext()).getMyCreateCirlce(pageIndex, PAGE_SIZE_DEFAULT, keyWord);*/
 
                 }
@@ -128,7 +131,8 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
             nearByRecycler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    loadData(nearByData);
+                    //loadData(nearByData);
+                    nearRefresh.setRefreshing(false);
                     LocalLog.d(TAG, "加载数据");
                 }
             }, 1000); // 延时模拟请求服务器。

@@ -70,10 +70,10 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.LiveViewHolder
         TextView liveDesc;
         @Bind(R.id.live_states)
         TextView liveStates;
-        @Bind(R.id.live_long_desc)
+/*        @Bind(R.id.live_long_desc)
         TextView liveLongDesc;
         @Bind(R.id.join_mum)
-        TextView joinMum;
+        TextView joinMum;*/
         String url = "";
 
         public LiveViewHolder(View view) {
@@ -85,8 +85,8 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.LiveViewHolder
             liveImag = (ImageView) view.findViewById(R.id.live_imag);
             liveDesc = (TextView) view.findViewById(R.id.live_desc);
             liveStates = (TextView) view.findViewById(R.id.live_states);
-            liveLongDesc = (TextView) view.findViewById(R.id.live_long_desc);
-            joinMum = (TextView) view.findViewById(R.id.join_mum);
+      /*      liveLongDesc = (TextView) view.findViewById(R.id.live_long_desc);
+            joinMum = (TextView) view.findViewById(R.id.join_mum);*/
             liveImag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

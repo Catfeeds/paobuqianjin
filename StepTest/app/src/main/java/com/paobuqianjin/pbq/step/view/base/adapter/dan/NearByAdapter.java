@@ -12,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.List;
@@ -75,9 +77,17 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
                 holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_646464));
                 holder.btFollow.setText("已关注");
             }
-            if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
-                holder.vipFlg.setVisibility(View.VISIBLE);
+            if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getSex() == 1) {
+                holder.sexIcon.setImageResource(R.drawable.man);
+                holder.sexIcon.setVisibility(View.VISIBLE);
+            } else if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getSex() == 2) {
+                holder.sexIcon.setImageResource(R.drawable.woman_flag);
+                holder.sexIcon.setVisibility(View.VISIBLE);
             }
+/*            if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                holder.vipFlg.setVisibility(View.VISIBLE);
+            }*/
+            holder.userid = ((NearByResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
         }
     }
 
@@ -104,11 +114,34 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
         @Bind(R.id.bt_follow)
         Button btFollow;
         boolean followFlag;
+        @Bind(R.id.sex_icon)
+        ImageView sexIcon;
+        int userid = -1;
 
         public NearByViewHolder(View view) {
             super(view);
             initView(view);
         }
+
+        private InnerCallBack innerCallBack = new InnerCallBack() {
+            @Override
+            public void innerCallBack(Object object) {
+                if (object instanceof AddDeleteFollowResponse) {
+                    switch (btFollow.getText().toString()) {
+                        case "关注":
+                            btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_not_fllow_nearby));
+                            btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_646464));
+                            btFollow.setText("已关注");
+                            break;
+                        case "已关注":
+                            btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
+                            btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
+                            btFollow.setText("关注");
+                            break;
+                    }
+                }
+            }
+        };
 
         private void initView(View view) {
             userNearIcon = (CircleImageView) view.findViewById(R.id.user_near_icon);
@@ -117,6 +150,13 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
             distance = (TextView) view.findViewById(R.id.distance);
             btFollow = (Button) view.findViewById(R.id.bt_follow);
             vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
+            sexIcon = (ImageView) view.findViewById(R.id.sex_icon);
+            btFollow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Presenter.getInstance(context).postAddUserFollow(innerCallBack, userid);
+                }
+            });
         }
     }
 }

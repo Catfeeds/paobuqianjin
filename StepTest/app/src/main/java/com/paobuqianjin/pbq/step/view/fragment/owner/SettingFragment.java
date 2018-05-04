@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by pbq on 2018/3/30.
@@ -81,6 +84,7 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
     ImageView vipFlg;
     private UserInfoResponse.DataBean userInfo;
     private ProgressDialog dialog;
+    private final static int REQUEST_ICON = 204;
 
     @Override
     protected int getLayoutResId() {
@@ -141,7 +145,7 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                     Intent userInfoIntent = new Intent();
                     userInfoIntent.putExtra("userinfo", userInfo);
                     userInfoIntent.setClass(getContext(), UserInfoSettingActivity.class);
-                    startActivity(userInfoIntent);
+                    startActivityForResult(userInfoIntent, REQUEST_ICON);
                 }
                 break;
             case R.id.user_name_change:
@@ -195,6 +199,21 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(getContext()).onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case RESULT_OK:
+                if (requestCode == REQUEST_ICON) {
+                    if (data != null) {
+                        String ico = data.getStringExtra(getContext().getPackageName() + "avatar");
+                        LocalLog.d(TAG, "ico = " + ico);
+                        if (!TextUtils.isEmpty(ico)) {
+                            Presenter.getInstance(getContext()).getImage(ico, userIco);
+                        }
+                    }
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
