@@ -455,7 +455,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             openRedPkgView.clearAnimation();
             openRedPkgView.setVisibility(View.INVISIBLE);
             if (object instanceof ErrorCode) {
-                LocalLog.d(TAG, "领取红包出错" + ((ErrorCode) object).getMessage());
+                LocalLog.d(TAG, "领取红包出错 " + ((ErrorCode) object).getMessage());
+
             } else if (object instanceof RecRedPkgResponse) {
                 if (((RecRedPkgResponse) object).getError() == 0) {
                     if (((RecRedPkgResponse) object).getData().getAllmoney() > 0.0f) {

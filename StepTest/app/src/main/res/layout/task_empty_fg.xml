@@ -24,7 +24,7 @@
         android:layout_below="@+id/no_record"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="27dp"
-        android:text="暂时没有任务哦，要不给好友派发一个任务吧！"
+        android:text="暂时没有任务奖励哦！要不给好友派发一个任务吧！"
         android:textColor="@color/color_9999"
         android:textSize="14dp" />
 
