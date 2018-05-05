@@ -152,11 +152,17 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                 case R.id.today_text:
                     LocalLog.d(TAG, "今日");
                     timeGo.setText("今日");
+                    if (popupOpWindowTop != null) {
+                        popupOpWindowTop.dismiss();
+                    }
                     updateFriendStepRankDayResponse(friendStepRankDayResponse);
                     break;
                 case R.id.week_text:
                     LocalLog.d(TAG, "本周");
                     timeGo.setText("本周");
+                    if (popupOpWindowTop != null) {
+                        popupOpWindowTop.dismiss();
+                    }
                     updateFriendWeekResponse(friendWeekResponse);
                     break;
             }

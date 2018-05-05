@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/sponsor_info_bar"
-        layout="@layout/bar_return_a_style"/>
+        layout="@layout/bar_return_a_style" />
 
     <RelativeLayout
         android:id="@+id/sponsor_name_pan"
@@ -31,8 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
+            android:layout_marginRight="14dp"
             android:background="@null"
+            android:gravity="right"
             android:hint="输入店铺名称"
             android:maxEms="16"
             android:maxLines="1"
@@ -68,8 +69,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
+            android:layout_marginRight="14dp"
             android:background="@null"
+            android:gravity="right"
             android:hint="输入真实电话号码"
             android:maxEms="16"
             android:maxLines="1"
@@ -105,10 +107,36 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
+            android:layout_marginRight="30dp"
             android:background="@null"
-            android:hint="输入营业时间"
+            android:gravity="right"
+            android:hint="选择营业时间"
             android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/edit_sponsor_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="3dp"
+            android:background="@null"
+            android:gravity="right"
+            android:textSize="14sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/edit_sponsor_hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/edit_sponsor_day"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="3dp"
+            android:background="@null"
+            android:gravity="right"
+            android:textSize="14sp"
+            android:visibility="gone" />
 
         <ImageView
             android:layout_width="7dp"
@@ -144,7 +172,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
+            android:layout_marginRight="14dp"
+            android:gravity="right"
             android:maxEms="16"
             android:maxLines="1"
             android:text="_省_市_区"
@@ -180,9 +209,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
+            android:layout_marginRight="14dp"
             android:background="@null"
             android:ellipsize="end"
+            android:gravity="right"
             android:hint="输入详情地址"
             android:maxEms="32"
             android:maxLines="1"
@@ -213,7 +243,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
+            android:layout_marginRight="30dp"
+            android:gravity="right"
             android:text="请上传照片"
             android:textSize="15sp" />
 
@@ -257,7 +288,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
+            android:layout_marginRight="30dp"
+            android:gravity="right"
             android:maxEms="16"
             android:maxLines="1"
             android:text="请上传照片"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/dynamic_create"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include
@@ -25,13 +25,14 @@
                 android:layout_marginRight="14dp">
 
                 <EditText
-                    android:paddingTop="5dp"
                     android:id="@+id/dynamic_content"
                     android:layout_width="match_parent"
                     android:layout_height="95dp"
                     android:background="@null"
                     android:gravity="left"
                     android:hint="这一刻的想法..."
+                    android:maxLength="2000"
+                    android:paddingTop="5dp"
                     android:textColorHint="@color/color_8a8a8a"
                     android:textSize="15dp" />
 
@@ -55,7 +56,7 @@
                         android:layout_marginLeft="8dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/add_pic"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                     <ImageView
                         android:id="@+id/pic_c"
@@ -64,7 +65,7 @@
                         android:layout_marginLeft="8dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/add_pic"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                     <ImageView
                         android:id="@+id/pic_d"
@@ -114,47 +115,47 @@
                     android:textSize="15dp" />
             </RelativeLayout>
 
-<!--
-            <ImageView
-                android:id="@+id/line_width"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_below="@+id/location_span"
-                android:background="@color/color_f6f6f6" />
--->
+            <!--
+                        <ImageView
+                            android:id="@+id/line_width"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:layout_below="@+id/location_span"
+                            android:background="@color/color_f6f6f6" />
+            -->
 
- <!--           <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_below="@+id/line_width">
+            <!--           <RelativeLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="44dp"
+                           android:layout_below="@+id/line_width">
 
-                <ImageView
-                    android:id="@+id/at"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/at" />
+                           <ImageView
+                               android:id="@+id/at"
+                               android:layout_width="15dp"
+                               android:layout_height="15dp"
+                               android:layout_centerVertical="true"
+                               android:layout_marginLeft="20dp"
+                               android:scaleType="centerCrop"
+                               android:src="@drawable/at" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toEndOf="@+id/at"
-                    android:text="提醒谁看"
-                    android:textColor="@color/color_161727"
-                    android:textSize="15dp" />
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_centerVertical="true"
+                               android:layout_marginLeft="20dp"
+                               android:layout_toEndOf="@+id/at"
+                               android:text="提醒谁看"
+                               android:textColor="@color/color_161727"
+                               android:textSize="15dp" />
 
-                <ImageView
-                    android:layout_width="7dp"
-                    android:layout_height="13dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:src="@drawable/go_to" />
-            </RelativeLayout>-->
+                           <ImageView
+                               android:layout_width="7dp"
+                               android:layout_height="13dp"
+                               android:layout_alignParentEnd="true"
+                               android:layout_centerVertical="true"
+                               android:layout_marginRight="20dp"
+                               android:src="@drawable/go_to" />
+                       </RelativeLayout>-->
         </RelativeLayout>
 
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>

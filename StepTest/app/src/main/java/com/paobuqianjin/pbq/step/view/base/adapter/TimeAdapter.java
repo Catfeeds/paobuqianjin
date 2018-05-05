@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,10 @@ import butterknife.Bind;
  */
 
 public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.TimeViewHolder> {
-    private boolean[] data = new boolean[7];
+    private String[] data = new String[7];
     private Context context;
 
-    public TimeAdapter(Context context, boolean[] data) {
+    public TimeAdapter(Context context, String[] data) {
         this.context = context;
         this.data = data;
     }
@@ -61,20 +62,21 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.TimeViewHolder
         }
 
         holder.timeDays.setText(timeString);
-        if (data[position]) {
+        if (!TextUtils.isEmpty(data[position])) {
             holder.selectIco.setImageResource(R.mipmap.selected1);
         } else {
             holder.selectIco.setImageResource(R.mipmap.unchecked);
         }
+        final String finalTimeString = timeString;
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (data[holder.getAdapterPosition()]) {
+                if (!TextUtils.isEmpty(data[holder.getAdapterPosition()])) {
                     holder.selectIco.setImageResource(R.mipmap.unchecked);
-                    data[holder.getAdapterPosition()] = false;
+                    data[holder.getAdapterPosition()] = "";
                 } else {
                     holder.selectIco.setImageResource(R.mipmap.selected1);
-                    data[holder.getAdapterPosition()] = true;
+                    data[holder.getAdapterPosition()] = finalTimeString;
                 }
             }
         });

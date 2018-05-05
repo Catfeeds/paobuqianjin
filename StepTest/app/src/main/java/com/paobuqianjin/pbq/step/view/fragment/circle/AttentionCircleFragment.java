@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,6 +41,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by pbq on 2017/12/11.
  */
@@ -55,7 +58,7 @@ public class AttentionCircleFragment extends BaseFragment {
     int pageCount = 0;
     ArrayList<DynamicAllIndexResponse.DataBeanX.DataBean> dynamicAllData = new ArrayList<>();
     AttentionCircleAdapter adapter;
-    private final static int REQUEST_DETAIL = 0;
+    private final static int DYNAMIC_DETAIL = 205;
 
     @Nullable
     @Override
@@ -83,7 +86,7 @@ public class AttentionCircleFragment extends BaseFragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         dynamicRecyclerView.setLayoutManager(layoutManager);
         dynamicRecyclerView.setSwipeItemClickListener(mItemClickListener);
-        adapter = new AttentionCircleAdapter(getContext(), null);
+        adapter = new AttentionCircleAdapter(getContext(), null, getRootFragment());
 
         // 自定义的核心就是DefineLoadMoreView类。
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());
@@ -238,8 +241,9 @@ public class AttentionCircleFragment extends BaseFragment {
             intent.putExtra(getContext().getPackageName() + "dynamicId", dynamicAllData.get(position).getId());
             intent.putExtra(getContext().getPackageName() + "userId", dynamicAllData.get(position).getUserid());
             intent.putExtra(getContext().getPackageName() + "is_vote", dynamicAllData.get(position).getIs_vote());
+            intent.putExtra(getContext().getPackageName() + "position", position);
             intent.setClass(getContext(), DynamicActivity.class);
-            startActivityForResult(intent, REQUEST_DETAIL);
+            getRootFragment().startActivityForResult(intent, DYNAMIC_DETAIL);
         }
     };
 
@@ -370,5 +374,57 @@ public class AttentionCircleFragment extends BaseFragment {
             case R.id.attention_swipe:
                 break;
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case RESULT_OK:
+                if (requestCode == DYNAMIC_DETAIL) {
+                    LocalLog.d(TAG, "DYNAMIC_DETAIL() enter");
+                    if (data != null) {
+                        int position = data.getIntExtra(getContext().getPackageName() + "position", -1);
+                        if (position != -1) {
+                            int is_vote = data.getIntExtra(getContext().getPackageName() + "is_vote", -1);
+                            if (is_vote != -1) {
+                                dynamicAllData.get(position).setIs_vote(is_vote);
+                            }
+                            int likeNum = data.getIntExtra(getContext().getPackageName() + "likeNum", -1);
+                            if (likeNum != -1) {
+                                dynamicAllData.get(position).setVote(likeNum);
+                            }
+                            int contentNum = data.getIntExtra(getContext().getPackageName() + "contentNum", -1);
+                            if (contentNum != -1) {
+                                dynamicAllData.get(position).setComment(contentNum);
+                            }
+                            LocalLog.d(TAG, "详情操作 is_vote = " + is_vote + ",likeNum = " + likeNum + ",contentNum = " + contentNum);
+                            if (is_vote != -1 || likeNum != -1 || contentNum != -1) {
+                                adapter.notifyItemChanged(position);
+                            }
+                        }
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 得到根Fragment
+     *
+     * @return
+     */
+    private Fragment getRootFragment() {
+        Fragment fragment = getParentFragment();
+        if (fragment == null) {
+            return this;
+        }
+        while (fragment.getParentFragment() != null) {
+            fragment = fragment.getParentFragment();
+        }
+        return fragment;
+
     }
 }

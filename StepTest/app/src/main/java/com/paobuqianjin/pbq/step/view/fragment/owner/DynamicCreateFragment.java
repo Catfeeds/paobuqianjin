@@ -137,6 +137,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     public void response(ReleaseDynamicResponse releaseDynamicResponse) {
         LocalLog.d(TAG, "ReleaseDynamicResponse() enter" + releaseDynamicResponse.toString());
         if (releaseDynamicResponse.getError() == 0) {
+            Toast.makeText(getContext(), "发布成功", Toast.LENGTH_SHORT).show();
             getActivity().finish();
         } else if (releaseDynamicResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
@@ -325,23 +326,35 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
             LocalLog.d(TAG, "content = " + content);
             if (resultList != null) {
                 int size = resultList.size();
-                LocalLog.d(TAG, "size = " + size + ",mResultList size = " + mResultList.size());
-                mResultList = resultList;
-                if (size == 1) {
+                int resultSize = mResultList.size();
+                LocalLog.d(TAG, "size = " + size + ",resultSize = " + resultSize);
+                if (resultSize == 0) {
+                    mResultList = resultList;
+                } else {
+                    for (int i = 0; i < size; i++) {
+                        if (resultSize > picIndex + i) {
+                            mResultList.get(picIndex + i).setImagePath(resultList.get(i).getImagePath());
+                        } else {
+                            mResultList.add(resultList.get(i));
+                        }
+                    }
+                }
+                resultSize = mResultList.size();
+                if (resultSize == 1) {
                     //TODO a bug
-                    showA(resultList.get(0).getImagePath());
-                } else if (size == 2) {
-                    showA(resultList.get(0).getImagePath());
-                    showB(resultList.get(1).getImagePath());
-                } else if (size == 3) {
-                    showA(resultList.get(0).getImagePath());
-                    showB(resultList.get(1).getImagePath());
-                    showC(resultList.get(2).getImagePath());
-                } else if (size == 4) {
-                    showA(resultList.get(0).getImagePath());
-                    showB(resultList.get(1).getImagePath());
-                    showC(resultList.get(2).getImagePath());
-                    showD(resultList.get(3).getImagePath());
+                    showA(mResultList.get(0).getImagePath());
+                } else if (resultSize == 2) {
+                    showA(mResultList.get(0).getImagePath());
+                    showB(mResultList.get(1).getImagePath());
+                } else if (resultSize == 3) {
+                    showA(mResultList.get(0).getImagePath());
+                    showB(mResultList.get(1).getImagePath());
+                    showC(mResultList.get(2).getImagePath());
+                } else if (resultSize == 4) {
+                    showA(mResultList.get(0).getImagePath());
+                    showB(mResultList.get(1).getImagePath());
+                    showC(mResultList.get(2).getImagePath());
+                    showD(mResultList.get(3).getImagePath());
                     picD.setVisibility(View.VISIBLE);
                 }
             }

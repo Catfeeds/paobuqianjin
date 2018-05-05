@@ -51,6 +51,12 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     RelativeLayout sponsorPhonePan;
     @Bind(R.id.edit_sponsor_time)
     TextView editSponsorTime;
+    @Bind(R.id.edit_sponsor_day)
+    TextView editSponsorDay;
+    @Bind(R.id.edit_sponsor_hour)
+    TextView editSponsorHour;
+
+
     @Bind(R.id.sponsor_time_pan)
     RelativeLayout sponsorTimePan;
     @Bind(R.id.edit_sponsor_location_pan)
@@ -112,45 +118,12 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                                 editSponsorPhone.setText(dataBean.getTel());
                                 String workTimeStr = dataBean.getDo_day();
                                 if (!TextUtils.isEmpty(workTimeStr)) {
-                                    editSponsorTime.setText("已设置");
-                                    String[] workTimeStrList = workTimeStr.split(",");
-                                    String date = "";
-                                    for (String time : workTimeStrList) {
-                                        if (!"".equals(date)) {
-                                            date += ",";
-                                        }
-                                        switch (time) {
-                                            case "周一": {
-                                                date += "1";
-                                            }
-                                            break;
-                                            case "周二": {
-                                                date += "2";
-                                            }
-                                            break;
-                                            case "周三": {
-                                                date += "3";
-                                            }
-                                            break;
-                                            case "周四": {
-                                                date += "4";
-                                            }
-                                            break;
-                                            case "周五": {
-                                                date += "5";
-                                            }
-                                            break;
-                                            case "周六": {
-                                                date += "6";
-                                            }
-                                            break;
-                                            case "周日": {
-                                                date += "7";
-                                            }
-                                            break;
-                                        }
-                                    }
-                                    sponsor_time = date;
+                                    editSponsorTime.setVisibility(View.GONE);
+                                    editSponsorDay.setVisibility(View.VISIBLE);
+                                    editSponsorHour.setVisibility(View.VISIBLE);
+                                    editSponsorDay.setText(workTimeStr);
+                                    editSponsorHour.setText(dataBean.getS_do_time() + "-" + dataBean.getE_do_time());
+                                    sponsor_time = workTimeStr;
                                     start_time = dataBean.getS_do_time();
                                     end_time = dataBean.getE_do_time();
 
@@ -260,8 +233,45 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
         if (!TextUtils.isEmpty(editSponsorPhone.getText().toString().trim())) {
             param.setTel(editSponsorPhone.getText().toString());
         }
-        if (!TextUtils.isEmpty(editSponsorTime.getText().toString())) {
-            param.setDo_day(sponsor_time).setS_do_time(start_time).setE_do_time(end_time);
+        if (!editSponsorTime.isShown()) {
+            String[] workTimeStrList = sponsor_time.split(",");
+            String date = "";
+            for (String time : workTimeStrList) {
+                if (!"".equals(date)) {
+                    date += ",";
+                }
+                switch (time) {
+                    case "周一": {
+                        date += "1";
+                    }
+                    break;
+                    case "周二": {
+                        date += "2";
+                    }
+                    break;
+                    case "周三": {
+                        date += "3";
+                    }
+                    break;
+                    case "周四": {
+                        date += "4";
+                    }
+                    break;
+                    case "周五": {
+                        date += "5";
+                    }
+                    break;
+                    case "周六": {
+                        date += "6";
+                    }
+                    break;
+                    case "周日": {
+                        date += "7";
+                    }
+                    break;
+                }
+            }
+            param.setDo_day(date).setS_do_time(start_time).setE_do_time(end_time);
         }
         if (!"_省_市_区".equals(editSponsorLocationPan.getText().toString())) {
             param.setAddra(editSponsorLocationPan.getText().toString())
@@ -325,10 +335,16 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
         }
         switch (resultCode) {
             case RES_TIME: {
-                editSponsorTime.setText("已设置");
                 sponsor_time = data.getStringExtra("time");
                 start_time = data.getStringExtra("startTime");
                 end_time = data.getStringExtra("endTime");
+                if (!TextUtils.isEmpty(sponsor_time)) {
+                    editSponsorTime.setVisibility(View.GONE);
+                    editSponsorDay.setVisibility(View.VISIBLE);
+                    editSponsorHour.setVisibility(View.VISIBLE);
+                    editSponsorDay.setText(sponsor_time);
+                    editSponsorHour.setText(start_time + "-" + end_time);
+                }
             }
             break;
         }

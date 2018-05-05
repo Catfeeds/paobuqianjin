@@ -350,6 +350,7 @@ public final class OwnerFragment extends BaseFragment {
                 }
                 Presenter.getInstance(getContext()).setTarget(getContext(), userInfoResponse.getData().getTarget_step());
                 Presenter.getInstance(getContext()).setAvatar(getContext(), userAvatar);
+                Presenter.getInstance(getContext()).setNickName(getContext(), userInfoResponse.getData().getNickname());
                 Presenter.getInstance(getContext()).getImage(headIcon, userInfoResponse.getData().getAvatar());
                 userName.setText(userInfoResponse.getData().getNickname());
                 userId.setText("ID:" + String.valueOf(userInfoResponse.getData().getId()));

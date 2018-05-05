@@ -18,11 +18,25 @@ public final class LocalLog {
     */
     public static void d(String className, String msg) {
         if (Log.isLoggable(TAG, DEBUG) && msg != null) {
-            Log.d(TAG, " ->" + className + " :" + msg);
+
+            int strLength = msg.length();
+            int start = 0;
+            int end = 2000;
+            for (int i = 0; i < 100; i++) {
+                
+                if (strLength > end) {
+                    Log.d(TAG, " ->" + className + i + " :" + msg.substring(start, end));
+                    start = end;
+                    end = end + 2000;
+                } else {
+                    Log.d(TAG, " ->" + className + " :" + msg.substring(start, strLength));
+                    break;
+                }
+            }
         }
     }
 
-    public static void e(String className ,String msg) {
+    public static void e(String className, String msg) {
         if (Log.isLoggable(TAG, ERROR) && msg != null) {
             Log.e(TAG, " ->" + className + " :" + msg);
         }

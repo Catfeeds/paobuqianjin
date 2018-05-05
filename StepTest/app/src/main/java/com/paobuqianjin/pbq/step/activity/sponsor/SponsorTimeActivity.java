@@ -34,8 +34,8 @@ public class SponsorTimeActivity extends BaseCancelConfirmBarActivity implements
     @Bind(R.id.view_end_time)
     WheelTimePicker viewEndTime;
     private final static int REQUEST_TIME = 0;
-    private boolean[] data = new boolean[7];
     private Intent intent;
+    private String sponsor_time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,21 +44,15 @@ public class SponsorTimeActivity extends BaseCancelConfirmBarActivity implements
         ButterKnife.bind(this);
         setToolBarListener(this);
         intent = getIntent();
-        String sponsor_time = intent.getStringExtra("time");
-        if (!TextUtils.isEmpty(sponsor_time)) {
-            String[] times = sponsor_time.split(",");
-            for (String time : times) {
-                data[Integer.parseInt(time) - 1] = true;
-            }
-        }
-        setDate(data);
+        sponsor_time = intent.getStringExtra("time");
+        workTimeDes.setText(TextUtils.isEmpty(sponsor_time) ? "请选择" : sponsor_time);
         String startTime = intent.getStringExtra("startTime");
-        if (!TextUtils.isEmpty(startTime)){
+        if (!TextUtils.isEmpty(startTime)) {
             viewStartTime.setSelectedTime(startTime);
         }
         String endTime = intent.getStringExtra("endTime");
-        LocalLog.d("---",endTime);
-        if (!TextUtils.isEmpty(endTime)){
+        LocalLog.d("---", endTime);
+        if (!TextUtils.isEmpty(endTime)) {
             viewEndTime.setSelectedTime(endTime);
         }
     }
@@ -69,7 +63,7 @@ public class SponsorTimeActivity extends BaseCancelConfirmBarActivity implements
             case R.id.time_pan: {
                 Intent intent = new Intent();
                 intent.setClass(this, SponsorDateActivity.class);
-                intent.putExtra("data", data);
+                intent.putExtra("data", sponsor_time);
                 startActivityForResult(intent, REQUEST_TIME);
             }
             break;
@@ -79,45 +73,10 @@ public class SponsorTimeActivity extends BaseCancelConfirmBarActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        boolean[] intentData = intent.getBooleanArrayExtra("data");
-        setDate(intentData);
+        sponsor_time = intent.getStringExtra("data");
+        workTimeDes.setText(TextUtils.isEmpty(sponsor_time) ? "请选择" : sponsor_time);
     }
 
-    private void setDate(boolean[] intentData) {
-        String date = "";
-        for (int i = 0; i < intentData.length; i++) {
-            data[i] = intentData[i];
-            if (intentData[i]) {
-                if (!"".equals(date)) {
-                    date += "，";
-                }
-                switch (i) {
-                    case 0:
-                        date += "周一";
-                        break;
-                    case 1:
-                        date += "周二";
-                        break;
-                    case 2:
-                        date += "周三";
-                        break;
-                    case 3:
-                        date += "周四";
-                        break;
-                    case 4:
-                        date += "周五";
-                        break;
-                    case 5:
-                        date += "周六";
-                        break;
-                    case 6:
-                        date += "周日";
-                        break;
-                }
-            }
-        }
-        workTimeDes.setText(TextUtils.isEmpty(date) ? "请选择" : date);
-    }
 
     @Override
     protected String title() {
@@ -151,16 +110,7 @@ public class SponsorTimeActivity extends BaseCancelConfirmBarActivity implements
         }*/
         intent.putExtra("startTime", viewStartTime.getCurrentTime());
         intent.putExtra("endTime", viewEndTime.getCurrentTime());
-        String date = "";
-        for (int i = 0; i < data.length; i++) {
-            if (data[i]) {
-                if (!"".equals(date)) {
-                    date += ",";
-                }
-                date += i + 1 + "";
-            }
-        }
-        intent.putExtra("time", date);
+        intent.putExtra("time", sponsor_time);
         setResult(SponsorInfoActivity.RES_TIME, intent);
         finish();
     }

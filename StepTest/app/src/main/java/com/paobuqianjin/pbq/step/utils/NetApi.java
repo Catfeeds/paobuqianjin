@@ -147,6 +147,7 @@ public class NetApi {
     public final static String urlProtocol = url+"v1/Zfile/getFile";
     //TODO 绑定解绑三方借口
     public final static String urlBindThird = url+"v1/user/bindOpenid";
+    public final static String urlGetBindStates = url + "v1/user/checkUserStatus";
     //TODO 退出APP接口
     public final static String urlLogOut = url+"v1/user/logOut";
     //TODO 查询关注关系

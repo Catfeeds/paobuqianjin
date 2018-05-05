@@ -180,6 +180,16 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
         name.setText(dataBean.getName());
         locationDes.setText(dataBean.getAddra() + dataBean.getAddress());
         selectCircle.setImageResource(R.mipmap.choose);
+        editSponsor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setAction("com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION");
+                intent.setClass(SponsorManagerActivity.this, SponsorInfoActivity.class);
+                intent.putExtra("businessId", dataBean.getBusinessid());
+                startActivityForResult(intent, REQUEST_SPONSOR_INFO);
+            }
+        });
         editSponsorDes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -188,6 +198,19 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                 intent.setClass(SponsorManagerActivity.this, SponsorInfoActivity.class);
                 intent.putExtra("businessId", dataBean.getBusinessid());
                 startActivityForResult(intent, REQUEST_SPONSOR_INFO);
+            }
+        });
+        deleteSponsor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Presenter.getInstance(SponsorManagerActivity.this).deleteBusiness(dataBean.getBusinessid(), new InnerCallBack() {
+                    @Override
+                    public void innerCallBack(Object object) {
+                        if (!(object instanceof ErrorCode)) {
+                            refresh();
+                        }
+                    }
+                });
             }
         });
         deleteSponsorDes.setOnClickListener(new View.OnClickListener() {

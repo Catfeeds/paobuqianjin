@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.mapapi.search.core.PoiInfo;
 import com.paobuqianjin.pbq.step.R;
 
 import java.util.ArrayList;
@@ -21,10 +22,10 @@ import java.util.List;
 public class SearchPositionAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
-    private List<String> data = new ArrayList<>();
+    private List<PoiInfo> data = new ArrayList<>();
     private int position = -1;
 
-    public SearchPositionAdapter(Context context, List<String> data) {
+    public SearchPositionAdapter(Context context, List<PoiInfo> data) {
         this.data = data;
         inflater = LayoutInflater.from(context);
     }
@@ -58,7 +59,8 @@ public class SearchPositionAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.tvPosition.setText(data.get(i));
+        holder.tvPosition.setText(data.get(i).name);
+        holder.tvInfo.setText(data.get(i).address);
         if (position == i) {
             holder.ivSelect.setVisibility(View.VISIBLE);
         } else {
@@ -71,10 +73,12 @@ public class SearchPositionAdapter extends BaseAdapter {
 
         private ImageView ivSelect;
         private TextView tvPosition;
+        private TextView tvInfo;
 
         public ViewHolder(View view) {
             tvPosition = ((TextView) view.findViewById(R.id.tv_position));
             ivSelect = ((ImageView) view.findViewById(R.id.iv_select));
+            tvInfo = (TextView) view.findViewById(R.id.tv_info);
         }
     }
 }

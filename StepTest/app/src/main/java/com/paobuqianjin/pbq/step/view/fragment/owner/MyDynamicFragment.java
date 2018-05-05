@@ -65,7 +65,7 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
     private final static int REQUEST_DETAIL = 0;
     LinearLayoutManager layoutManager;
     int pageIndex = 1;
-    int pageCount;
+    int pageCount = 0;
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -311,6 +311,7 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
             intent.putExtra(getContext().getPackageName() + "dynamicId", dynamicAllData.get(position).getId());
             intent.putExtra(getContext().getPackageName() + "userId", dynamicAllData.get(position).getUserid());
             intent.putExtra(getContext().getPackageName() + "is_vote", dynamicAllData.get(position).getIs_vote());
+            intent.putExtra(getContext().getPackageName() + "position", position);
             intent.setClass(getContext(), DynamicActivity.class);
             startActivityForResult(intent, REQUEST_DETAIL);
         }

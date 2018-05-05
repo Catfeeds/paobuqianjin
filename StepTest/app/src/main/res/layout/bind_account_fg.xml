@@ -53,10 +53,65 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/address_weichat_layer"
+        android:id="@+id/address_phone_layer"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@+id/pass_word_layer"
+        android:background="@color/color_f8">
+
+        <ImageView
+            android:id="@+id/account_phone"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:src="@drawable/phone_account" />
+
+        <TextView
+            android:id="@+id/phone_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@+id/account_phone"
+            android:text="手机号码"
+            android:textColor="@color/color_161727"
+            android:textSize="17dp" />
+
+        <TextView
+            android:id="@+id/phone_chat_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:layout_toStartOf="@+id/go_to_phone"
+            android:text=""
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="14dp" />
+
+        <ImageView
+            android:id="@+id/go_to_phone"
+            android:layout_width="7dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/go_to" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignLeft="@+id/account_phone"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="14dp"
+            android:background="@color/color_ebebed" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/address_weichat_layer"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/address_phone_layer"
         android:background="@color/color_f8">
 
         <ImageView
@@ -85,7 +140,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:layout_toStartOf="@+id/go_to_we_chat"
-            android:text="尚未绑定"
+            android:text=""
             android:textColor="@color/color_8a8a8a"
             android:textSize="14dp" />
 
@@ -129,7 +184,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
             android:layout_toRightOf="@+id/address_qq"
-            android:text="QQ登陆"
+            android:text="QQ账号"
             android:textColor="@color/color_161727"
             android:textSize="17dp" />
 
@@ -140,7 +195,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:layout_toStartOf="@+id/go_to_qq"
-            android:text="尚未绑定"
+            android:text=""
             android:textColor="@color/color_8a8a8a"
             android:textSize="14dp" />
 

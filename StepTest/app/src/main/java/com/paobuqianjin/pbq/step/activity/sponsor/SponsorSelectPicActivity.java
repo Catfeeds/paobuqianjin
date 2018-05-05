@@ -22,8 +22,11 @@ import android.widget.TextView;
 
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
+import com.lwkandroid.imagepicker.data.ImageDataModel;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
+import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
+import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.GridAddPicAdapter;
 import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
@@ -41,7 +44,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class SponsorSelectPicActivity extends BaseBarActivity {
+public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBarActivity.ToolBarListener {
 
     @Bind(R.id.desc)
     TextView desc;
@@ -58,10 +61,11 @@ public class SponsorSelectPicActivity extends BaseBarActivity {
     private final int REQUEST_CODE = 111;
     private TranslateAnimation animationCircleType;
     private QServiceCfg qServiceCfg;
+    private Intent intent;
 
     @Override
     protected String title() {
-        Intent intent = getIntent();
+        intent = getIntent();
         if (SponsorInfoActivity.ACTION_OUT_PIC.equals(intent.getAction())) {
             title = "门店照片";
             return title;
@@ -74,10 +78,16 @@ public class SponsorSelectPicActivity extends BaseBarActivity {
     }
 
     @Override
+    public Object right() {
+        return "确定";
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sponsor_select_pic);
         ButterKnife.bind(this);
+        setToolBarListener(this);
         qServiceCfg = QServiceCfg.instance(this);
         cachePath = getExternalCacheDir().getAbsolutePath();
         initAdapter();
@@ -86,7 +96,11 @@ public class SponsorSelectPicActivity extends BaseBarActivity {
 
     private void initAdapter() {
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
-        adapter = new GridAddPicAdapter(this, 12);
+        if (SponsorInfoActivity.ACTION_OUT_PIC.equals(intent.getAction())) {
+            adapter = new GridAddPicAdapter(this, 1);
+        } else {
+            adapter = new GridAddPicAdapter(this, 12);
+        }
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -96,10 +110,7 @@ public class SponsorSelectPicActivity extends BaseBarActivity {
                     selectPicture();
                 } else {
                     //点击图片查看大图
-              /*      Intent intent = new Intent(AddDynamicActivity.this, GalleryActivity.class);
-                    intent.putExtra("position", "1");
-                    intent.putExtra("ID", position);
-                    startActivity(intent);*/
+                    popImageView(adapter.getData().get(position).getImageUrl());
                 }
             }
         });
@@ -114,6 +125,38 @@ public class SponsorSelectPicActivity extends BaseBarActivity {
             }
             adapter.setDatas(list);
         }
+    }
+
+    public void popImageView(String url) {
+        LocalLog.d(TAG, "查看大图");
+        int mScreenWidth = ImagePickerComUtils.getScreenWidth(this);
+        int mScreenHeight = ImagePickerComUtils.getScreenHeight(this);
+        View popBirthSelectView = View.inflate(this, R.layout.image_big_view, null);
+        PhotoView photoView = (PhotoView) popBirthSelectView.findViewById(R.id.photo_view);
+        ImageDataModel.getInstance().getDisplayer().display(this, url, photoView, mScreenWidth, mScreenHeight);
+        PopupWindow popupSelectWindow = new PopupWindow(popBirthSelectView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+      /*  popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popImageVie dismiss() ");
+                popupSelectWindow = null;
+            }
+        });*/
+
+        popupSelectWindow.setFocusable(true);
+        popupSelectWindow.setOutsideTouchable(true);
+        popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupSelectWindow.showAtLocation(findViewById(R.id.layout_select_pic), Gravity.CENTER, 0, 0);
+        popBirthSelectView.startAnimation(animationCircleType);
     }
 
     private void selectPicture() {
@@ -195,9 +238,13 @@ public class SponsorSelectPicActivity extends BaseBarActivity {
         }
     }
 
+    @Override
+    public void clickLeft() {
+        onBackPressed();
+    }
 
     @Override
-    public void onBackPressed() {
+    public void clickRight() {
         String images = "";
         for (SelectPicBean bean : adapter.getData()) {
             if (!TextUtils.isEmpty(images)) {

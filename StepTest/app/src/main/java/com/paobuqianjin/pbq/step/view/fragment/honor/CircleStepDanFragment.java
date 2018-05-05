@@ -173,12 +173,18 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                 case R.id.today_text:
                     LocalLog.d(TAG, "今日");
                     timeGo.setText("今日");
+                    if (popupOpWindowTop != null) {
+                        popupOpWindowTop.dismiss();
+                    }
                     updateCircleStepRank(circleStepRankResponse);
                     updateDayRank(stepRankResponse);
                     break;
                 case R.id.week_text:
                     LocalLog.d(TAG, "本周");
                     timeGo.setText("本周");
+                    if (popupOpWindowTop != null) {
+                        popupOpWindowTop.dismiss();
+                    }
                     updateCircleStepWeekRank(circleStepRankWeekResponse);
                     updateWeekRank(stepRandWeekResponse);
                     break;

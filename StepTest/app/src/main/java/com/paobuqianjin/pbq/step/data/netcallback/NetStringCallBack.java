@@ -56,6 +56,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.OldPassChangeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PassWordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostBindResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PostBindStateResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostDynamicContentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostInviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostRevRedPkgResponse;
@@ -1241,11 +1242,20 @@ public class NetStringCallBack extends StringCallback {
                 e.printStackTrace();
             }
         } else if (callBackInterface != null && callBackInterface instanceof BindThirdAccoutInterface) {
-            try {
-                PostBindResponse postBindResponse = new Gson().fromJson(s, PostBindResponse.class);
-                ((BindThirdAccoutInterface) callBackInterface).response(postBindResponse);
-            } catch (JsonSyntaxException e) {
-                e.printStackTrace();
+            if (command == Engine.COMMAND_BIND_THIRD) {
+                try {
+                    PostBindResponse postBindResponse = new Gson().fromJson(s, PostBindResponse.class);
+                    ((BindThirdAccoutInterface) callBackInterface).response(postBindResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
+            } else if (command == Engine.COMMAND_BIND_THIRD_STATE) {
+                try {
+                    PostBindStateResponse postBindStateResponse = new Gson().fromJson(s, PostBindStateResponse.class);
+                    ((BindThirdAccoutInterface) callBackInterface).response(postBindStateResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             }
         } else if (callBackInterface != null && callBackInterface instanceof TaskSponsorInterface) {
             try {

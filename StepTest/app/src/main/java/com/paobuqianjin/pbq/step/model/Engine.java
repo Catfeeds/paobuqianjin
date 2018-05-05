@@ -341,6 +341,7 @@ public final class Engine {
     public final static int COMMAND_CHANGE_OLD_PASS = 93;
     public final static int COMMAND_PROTOCOL = 94;
     public final static int COMMAND_BIND_THIRD = 95;
+    public final static int COMMAND_BIND_THIRD_STATE = 97;
     public final static int COMMAND_IVITE_MSG = 96;
     private Transformation transformation;
     private double la = 0;
@@ -550,6 +551,13 @@ public final class Engine {
 
     public void setAvatar(Context context, String avatar) {
         FlagPreference.setAvatar(context, avatar);
+    }
+
+    public void setNickName(Context context, String nickname) {
+        FlagPreference.setNickName(context, nickname);
+    }
+    public String getNickName(Context context){
+        return FlagPreference.getNickName(context);
     }
 
     public void setTarget(Context context, int target) {
@@ -1013,8 +1021,9 @@ public final class Engine {
     }
 
     //TODO 获取个人动态列表
-    public void getUserDynamic(String userid) {
-        String url = NetApi.urlDynamic + "/getUserDynamic?userid=" + userid;
+    public void getUserDynamic(String userid, int page, int pagesize) {
+        String url = NetApi.urlDynamic + "/getUserDynamic?userid=" + userid + "&page=" + String.valueOf(page)
+                + "&pagesize=" + pagesize;
         LocalLog.d(TAG, "getUserDynamic() enter url = " + url);
         OkHttpUtils
                 .get()
@@ -2111,7 +2120,7 @@ public final class Engine {
 
     //TODO  更新商户信息
     public void updateBusiness(AddBusinessParam addBusinessParam, final InnerCallBack innerCallBack) {
-        LocalLog.d(TAG, "updateBusiness() enter");
+        LocalLog.d(TAG, "updateBusiness() enter:" + addBusinessParam.paramString());
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
@@ -2960,6 +2969,15 @@ public final class Engine {
                 .execute(new NetStringCallBack(bindThirdAccoutInterface, COMMAND_BIND_THIRD));
     }
 
+    //TODO 查询绑定状态
+    public void getBindStates() {
+        OkHttpUtils
+                .get()
+                .addHeader("headtoken", getToken(mContext))
+                .url(NetApi.urlGetBindStates)
+                .build()
+                .execute(new NetStringCallBack(bindThirdAccoutInterface, COMMAND_BIND_THIRD_STATE));
+    }
 
     public void postFollowStatus(final Button button, int followId) {
         OkHttpUtils
@@ -3063,7 +3081,9 @@ public final class Engine {
                 if (homePageInterface != null) {
                     homePageInterface.responseLocation(city, la, lb);
                 }
-
+                if (taskSponsorInterface != null) {
+                    taskSponsorInterface.responseLocation(city, la, lb);
+                }
             }
         }
     }

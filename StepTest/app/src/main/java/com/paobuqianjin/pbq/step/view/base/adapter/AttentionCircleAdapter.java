@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -45,6 +46,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private List<DynamicAllIndexResponse.DataBeanX.DataBean> data;
     private Context mContext;
+    private Fragment fragment;
+    private final static int DYNAMIC_DETAIL = 205;
 
     public enum ITEM_TYPE {
         ITEM_TYPE_NO_IMG,
@@ -53,10 +56,11 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ITEM_TYPE_THREE_IMG
     }
 
-    public AttentionCircleAdapter(Context context, List<DynamicAllIndexResponse.DataBeanX.DataBean> data) {
+    public AttentionCircleAdapter(Context context, List<DynamicAllIndexResponse.DataBeanX.DataBean> data, Fragment fragment) {
         super();
         mContext = context;
         this.data = data;
+        this.fragment = fragment;
     }
 
     public void notifyDataSetChanged(List<DynamicAllIndexResponse.DataBeanX.DataBean> data) {
@@ -471,7 +475,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         intent.putExtra(mContext.getPackageName() + "userId", userid);
                         intent.putExtra(mContext.getPackageName() + "is_vote", is_vote);
                         intent.setClass(mContext, DynamicActivity.class);
-                        mContext.startActivity(intent);
+                        fragment.startActivityForResult(intent, DYNAMIC_DETAIL);
                         break;
                 }
             }
@@ -597,7 +601,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         intent.putExtra(mContext.getPackageName() + "userId", userid);
                         intent.putExtra(mContext.getPackageName() + "is_vote", is_vote);
                         intent.setClass(mContext, DynamicActivity.class);
-                        mContext.startActivity(intent);
+                        fragment.startActivityForResult(intent, DYNAMIC_DETAIL);
                         break;
                 }
             }
@@ -724,7 +728,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         intent.putExtra(mContext.getPackageName() + "userId", userid);
                         intent.putExtra(mContext.getPackageName() + "is_vote", is_vote);
                         intent.setClass(mContext, DynamicActivity.class);
-                        mContext.startActivity(intent);
+                        fragment.startActivityForResult(intent, DYNAMIC_DETAIL);
                         break;
                 }
             }

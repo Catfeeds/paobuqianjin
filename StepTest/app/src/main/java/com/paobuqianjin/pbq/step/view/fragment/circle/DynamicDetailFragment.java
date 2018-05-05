@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -160,7 +161,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     private TranslateAnimation animationCircleType;
 
     private int currentIndexPage = 1;
-    private int likeNum, contentNum;
+    private int likeNum = -1, contentNum = -1, sourceLikeNum = -1, sourceContentNum = -1;
     private ReflashInterface reflashInterface;
     private View popBirthSelectView;
     private PopupWindow popupSelectWindow;
@@ -169,6 +170,10 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     LikeUserAdapter likeUserAdapter = null;
     TopLevelContentAdapter topLevelContentAdapter = null;
     ArrayList<DynamicCommentListResponse.DataBeanX.DataBean> topContentData = new ArrayList<>();
+    Intent intent = new Intent();
+    private int pageIndex = 1, pageCount = 0;
+    private final static int PAGESIZE = 300;
+    private int position = -1;
 
     @Override
     protected int getLayoutResId() {
@@ -252,11 +257,13 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             dynamicid = intent.getIntExtra(getContext().getPackageName() + "dynamicId", -1);
             userid = intent.getIntExtra(getContext().getPackageName() + "userId", -1);
             is_vote = intent.getIntExtra(getContext().getPackageName() + "is_vote", 0);
-            LocalLog.d(TAG, "dynamicid= " + dynamicid + "userid = " + userid + "is_vote = " + is_vote);
+            position = intent.getIntExtra(getContext().getPackageName() + "position", -1);
+            LocalLog.d(TAG, "dynamicid= " + dynamicid + "userid = " + userid + "is_vote = " + is_vote + ",position =" + position);
+            this.intent.putExtra(getContext().getPackageName() + "position", position);
             if (dynamicid != -1) {
-                Presenter.getInstance(getContext()).getDynamicCommentList(dynamicid, currentIndexPage, 10);
+                Presenter.getInstance(getContext()).getDynamicCommentList(dynamicid, currentIndexPage, PAGESIZE);
                 Presenter.getInstance(getContext()).getDynamicDetail(dynamicid);
-                Presenter.getInstance(getContext()).getDynamicVoteList(dynamicid, userid, 1, 10);
+                Presenter.getInstance(getContext()).getDynamicVoteList(dynamicid, userid, pageIndex, 10);
             }
         }
 
@@ -369,6 +376,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     public void response(DynamicCommentListResponse dynamicCommentListResponse) {
         LocalLog.d(TAG, "DynamicCommentListResponse() enter " + dynamicCommentListResponse.toString());
         if (dynamicCommentListResponse.getError() == 0) {
+            pageCount = dynamicCommentListResponse.getData().getPagenation().getPage();
             if (contentDetailsListItem == null) {
                 return;
             }
@@ -423,9 +431,11 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 dynamicLocationCity.setText(dynamicIdDetailResponse.getData().getCity());
             }
             likeNum = dynamicIdDetailResponse.getData().getVote();
+            sourceLikeNum = likeNum;
             contentNum = dynamicIdDetailResponse.getData().getComment();
             contentNumbers.setText(String.valueOf(contentNum));
             contentSupports.setText(String.valueOf(likeNum));
+            sourceContentNum = contentNum;
 
             int likeNums = dynamicIdDetailResponse.getData().getVote();
             if (likeNums == 0) {
@@ -456,8 +466,6 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                     showBigImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
                 }
             } else if (imageSize == 2) {
-
-
                 dots.add(dot1);
                 dots.add(dot2);
 
@@ -559,12 +567,12 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             if (supportPics.getVisibility() == View.GONE) {
                 supportPics.setVisibility(View.VISIBLE);
             }
-
             likeData = (ArrayList<DynamicLikeListResponse.DataBeanX.DataBean>) dynamicLikeListResponse.getData().getData();
             if (likeUserAdapter == null) {
                 likeUserAdapter = new LikeUserAdapter(getContext(), likeData);
             }
             supportIconRecycler.setAdapter(likeUserAdapter);
+
         } else if (dynamicLikeListResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -581,12 +589,16 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         LocalLog.d(TAG, "PostDynamicContentResponse() enter " + postDynamicContentResponse.toString());
         if (postDynamicContentResponse.getError() == 0) {
             LocalLog.d(TAG, "评论成功");
+            contentNum++;
             if (reflashInterface != null) {
                 reflashInterface.notifyReflash(postDynamicContentResponse);
             }
             if (popupRedPkgWindow != null) {
                 popupRedPkgWindow.dismiss();
             }
+            contentNumbers.setText(String.valueOf(contentNum));
+            intent.putExtra(getContext().getPackageName() + "contentNum", contentNum);
+            getActivity().setResult(Activity.RESULT_OK, intent);
         } else if (postDynamicContentResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -607,9 +619,10 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 likeNum += 1;
                 contentSupports.setText(String.valueOf(likeNum));
                 DynamicLikeListResponse.DataBeanX.DataBean dataBean = new DynamicLikeListResponse.DataBeanX.DataBean();
-                dataBean.setId(Presenter.getInstance(getContext()).getId());
+                dataBean.setUserid(Presenter.getInstance(getContext()).getId());
                 dataBean.setAvatar(Presenter.getInstance(getContext()).getAvatar(getContext()));
-                likeData.add(dataBean);
+                dataBean.setNickname(Presenter.getInstance(getContext()).getNickName(getContext()));
+                likeData.add(0, dataBean);
                 if (likeUserAdapter == null) {
                     if (supportPics.getVisibility() == View.GONE) {
                         supportPics.setVisibility(View.VISIBLE);
@@ -618,20 +631,30 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                     supportIconRecycler.setAdapter(likeUserAdapter);
                     likeUserAdapter.notifyDataSetChanged(likeData);
                 } else {
-                    likeUserAdapter.notifyItemRangeInserted(likeData.size() - 1, 1);
+                    likeUserAdapter.notifyItemInserted(0);
                 }
-
+                String likePeopleNumFormat = getContext().getString(R.string.like_people);
+                String peopleNumStr = String.format(likePeopleNumFormat, likeNum);
+                supportPeoples.setText(peopleNumStr);
+                intent.putExtra(getContext().getPackageName() + "is_vote", 1);
             } else {
                 likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_n));
                 likeNum -= 1;
+                String likePeopleNumFormat = getContext().getString(R.string.like_people);
+                String peopleNumStr = String.format(likePeopleNumFormat, likeNum);
+                supportPeoples.setText(peopleNumStr);
                 contentSupports.setText(String.valueOf(likeNum));
                 for (int i = 0; i < likeData.size(); i++) {
-                    if (likeData.get(i).getId() == Presenter.getInstance(getContext()).getId()) {
+                    LocalLog.d(TAG, "id = " + likeData.get(i).toString());
+                    if (likeData.get(i).getUserid() == Presenter.getInstance(getContext()).getId()) {
                         likeData.remove(i);
                         likeUserAdapter.notifyItemRemoved(i);
                     }
                 }
+                intent.putExtra(getContext().getPackageName() + "is_vote", 0);
             }
+            intent.putExtra(getContext().getPackageName() + "likeNum", likeNum);
+            getActivity().setResult(Activity.RESULT_OK, intent);
         } else if (putVoteResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -804,5 +827,11 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         public void afterTextChanged(Editable editable) {
             LocalLog.d(TAG, "afterTextChanged() enter ");
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().finish();
     }
 }

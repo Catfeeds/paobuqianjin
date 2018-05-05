@@ -38,7 +38,7 @@ public class SponsorTimeSelectFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.time_recycler)
     RecyclerView timeRecycler;
 
-    private boolean[] data = new boolean[7];
+    private String[] data = new String[7];
 
     @Override
     protected int getLayoutResId() {
@@ -61,9 +61,6 @@ public class SponsorTimeSelectFragment extends BaseBarStyleTextViewFragment {
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         ButterKnife.bind(this, viewRoot);
-        for (int i = 0; i < 7; i++) {
-            data[i] = false;
-        }
         layoutManager = new LinearLayoutManager(getContext());
         timeRecycler.setLayoutManager(layoutManager);
         timeRecycler.setAdapter(new TimeAdapter(getContext(), data));

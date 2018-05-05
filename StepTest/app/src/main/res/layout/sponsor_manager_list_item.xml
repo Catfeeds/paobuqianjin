@@ -43,6 +43,7 @@
             android:id="@+id/select_circle"
             android:layout_width="20dp"
             android:layout_height="20dp"
+            android:scaleType="fitXY"
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
             android:src="@drawable/circle_outline" />
@@ -63,7 +64,6 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
             android:layout_toStartOf="@+id/delete_sponsor_des"
             android:scaleType="centerCrop"
             android:src="@drawable/sponsor_delete" />
@@ -71,9 +71,11 @@
         <TextView
             android:id="@+id/delete_sponsor_des"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:layout_centerVertical="true"
+            android:paddingLeft="8dp"
             android:layout_marginRight="14dp"
             android:text="删除"
             android:textColor="@color/color_161727"
@@ -84,7 +86,6 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_centerVertical="true"
-            android:layout_marginRight="8dp"
             android:layout_toStartOf="@+id/edit_sponsor_des"
             android:scaleType="centerCrop"
             android:src="@drawable/sponsor_edit" />
@@ -92,8 +93,10 @@
         <TextView
             android:id="@+id/edit_sponsor_des"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:layout_centerVertical="true"
+            android:paddingLeft="8dp"
             android:layout_marginRight="16dp"
             android:layout_toStartOf="@+id/delete_sponsor"
             android:text="编辑"

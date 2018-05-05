@@ -78,6 +78,8 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     QueryFollowStateParam queryFollowStateParam;
     @Bind(R.id.vip_flg)
     ImageView vipFlg;
+    private int pageIndex = 1, pageCount = 0;
+    private final static int PAGESIZE = 50;
 
     @Override
     protected String title() {
@@ -118,7 +120,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
                     Presenter.getInstance(getContext()).postQueryFollowState(queryFollowStateParam);
                 }
                 Presenter.getInstance(getContext()).getUserInfo(String.valueOf(userid));
-                Presenter.getInstance(getContext()).getUserDynamic(String.valueOf(userid));
+                Presenter.getInstance(getContext()).getUserDynamic(String.valueOf(userid), pageIndex, PAGESIZE);
             }
         }
         userHeadIco = (CircleImageView) viewRoot.findViewById(R.id.user_head_ico);
@@ -182,6 +184,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     public void response(DynamicPersonResponse dynamicPersonResponse) {
         if (dynamicPersonResponse.getError() == 0) {
             LocalLog.d(TAG, "DynamicPersonResponse() enter " + dynamicPersonResponse.toString());
+            pageCount = dynamicPersonResponse.getData().getPagenation().getTotalPage();
             List<List> map = checkDaysDynamic(dynamicPersonResponse);
             dynamicRecordRecycler.addItemDecoration(new UserDynamicRecordAdapter.SpaceItemDecoration(45));
             dynamicRecordRecycler.setAdapter(new UserDynamicRecordAdapter(getContext(), map));

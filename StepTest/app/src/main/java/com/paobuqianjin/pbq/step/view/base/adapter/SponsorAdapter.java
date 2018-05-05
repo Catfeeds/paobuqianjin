@@ -50,6 +50,16 @@ public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorV
         final GetUserBusinessResponse.DataBeanX.DataBean dataBean = mData.get(position);
         holder.name.setText(dataBean.getName());
         holder.locationDes.setText(dataBean.getAddra() + dataBean.getAddress());
+        holder.editSponsor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setAction("com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION");
+                intent.setClass(context, SponsorInfoActivity.class);
+                intent.putExtra("businessId", dataBean.getBusinessid());
+                context.startActivityForResult(intent, REQUEST_SPONSOR_INFO);
+            }
+        });
         holder.editSponsorDes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,6 +68,19 @@ public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorV
                 intent.setClass(context, SponsorInfoActivity.class);
                 intent.putExtra("businessId", dataBean.getBusinessid());
                 context.startActivityForResult(intent, REQUEST_SPONSOR_INFO);
+            }
+        });
+        holder.deleteSponsor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Presenter.getInstance(context).deleteBusiness(dataBean.getBusinessid(), new InnerCallBack() {
+                    @Override
+                    public void innerCallBack(Object object) {
+                        if (!(object instanceof ErrorCode)) {
+                            ((SponsorManagerActivity) context).refresh();
+                        }
+                    }
+                });
             }
         });
         holder.deleteSponsorDes.setOnClickListener(new View.OnClickListener() {

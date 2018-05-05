@@ -160,6 +160,13 @@ public final class Presenter {
     public void setAvatar(Context context, String avatar) {
         engine.setAvatar(context, avatar);
     }
+    public String getNickName(Context context) {
+        return engine.getNickName(context);
+    }
+
+    public void setNickName(Context context, String avatar) {
+        engine.setNickName(context, avatar);
+    }
 
     public void setTarget(Context context, int target) {
         engine.setTarget(context, target);
@@ -330,8 +337,8 @@ public final class Presenter {
     }
 
     //TODO  获取用户动态
-    public void getUserDynamic(String userid) {
-        engine.getUserDynamic(userid);
+    public void getUserDynamic(String userid, int page, int pagesize) {
+        engine.getUserDynamic(userid, page, pagesize);
     }
 
     public void getMyDynamic(int pageIndex, int pageSize) {
@@ -713,6 +720,9 @@ public final class Presenter {
         engine.postBindWq(postBindUnBindWqParam);
     }
 
+    public void getBindStates() {
+        engine.getBindStates();
+    }
 
     public void postFollowStatus(final Button button, int followId) {
         engine.postFollowStatus(button, followId);

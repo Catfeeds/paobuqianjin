@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.model;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 /**
@@ -93,7 +94,7 @@ public final class FlagPreference {
     }
 
     public static String getAvatar(Context context) {
-        LocalLog.d(TAG, "getAvatar() 获取最新订单号");
+        LocalLog.d(TAG, "getAvatar() ");
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
         String mobile = flagPreference.getString("avatar", "");
         return mobile;
@@ -104,6 +105,19 @@ public final class FlagPreference {
         SharedPreferences.Editor editor = flagPreference.edit();
         editor.putString("avatar", avatar);
         editor.commit();
+    }
+
+    public static void setNickName(Context context, String nickname) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putString("nickname", nickname);
+        editor.commit();
+    }
+
+    public static String getNickName(Context context) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        String mobile = flagPreference.getString("nickname", "");
+        return mobile;
     }
 
     public static void setTarget(Context context, int target) {

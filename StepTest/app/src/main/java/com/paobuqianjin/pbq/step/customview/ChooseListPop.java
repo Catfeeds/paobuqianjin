@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -14,6 +15,7 @@ import android.widget.PopupWindow;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.adapter.SearchPositionAdapter;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +32,10 @@ public class ChooseListPop {
     private PopupWindow popupWindow = null;
     private LinearLayout parentView;
     private SearchPositionAdapter adapter;
-    private List<String> mData = new ArrayList<>();
     private OnListSelectListener listener;
     private List<PoiInfo> list = new ArrayList<>();
+    private ListView listView;
+    private boolean isLoad;
 
     public ChooseListPop(Activity context, OnListSelectListener listener) {
         this.context = context;
@@ -48,8 +51,8 @@ public class ChooseListPop {
 
     private void initView() {
         parentView = (LinearLayout) View.inflate(context, R.layout.layout_choose_list, null);
-        ListView listView = (ListView) parentView.findViewById(R.id.list);
-        adapter = new SearchPositionAdapter(context, mData);
+        listView = (ListView) parentView.findViewById(R.id.list);
+        adapter = new SearchPositionAdapter(context, list);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -57,6 +60,19 @@ public class ChooseListPop {
                 adapter.setSelect(i);
                 adapter.notifyDataSetChanged();
                 listener.onListSelect(list.get(i));
+            }
+        });
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+                if (i + i1 == i2 && !isLoad) {
+                    isLoad = true;
+                    listener.onBottom();
+                }
             }
         });
     }
@@ -78,14 +94,21 @@ public class ChooseListPop {
     }
 
     public void setData(List<PoiInfo> list) {
-        mData.clear();
         this.list.clear();
         this.list.addAll(list);
-        for (PoiInfo poi : list) {
-            mData.add(poi.name);
-        }
+        listView.setSelection(0);
         adapter.setSelect(-1);
         adapter.notifyDataSetChanged();
+    }
+
+    public void setLoad(boolean isLoad) {
+        this.isLoad = isLoad;
+    }
+
+    public void setMoreData(List<PoiInfo> list) {
+        this.list.addAll(list);
+        adapter.notifyDataSetChanged();
+        isLoad = false;
     }
 
     public void show(View v) {
@@ -100,6 +123,8 @@ public class ChooseListPop {
 
     public interface OnListSelectListener {
         void onListSelect(PoiInfo info);
+
+        void onBottom();
     }
 
 }

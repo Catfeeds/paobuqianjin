@@ -24,6 +24,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostBindUnBindWqParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostBindResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PostBindStateResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.BindThirdAccoutInterface;
@@ -81,6 +82,18 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
     TextView qqChatDes;
     @Bind(R.id.go_to_qq)
     ImageView goToQq;
+    @Bind(R.id.account_phone)
+    ImageView accountPhone;
+    @Bind(R.id.phone_account)
+    TextView phoneAccount;
+    @Bind(R.id.phone_chat_des)
+    TextView phoneChatDes;
+    @Bind(R.id.go_to_phone)
+    ImageView goToPhone;
+    @Bind(R.id.address_phone_layer)
+    RelativeLayout addressPhoneLayer;
+    @Bind(R.id.bind_account)
+    RelativeLayout bindAccount;
     private UserInfoResponse.DataBean userInfo;
     private View popBirthSelectView;
     private PopupWindow popupSelectWindow;
@@ -129,16 +142,17 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             userInfo = (UserInfoResponse.DataBean) intent.getSerializableExtra("userinfo");
-            if (userInfo != null) {
-
+            LocalLog.d(TAG, "userInfo = " + userInfo.toString());
+            /*if (userInfo != null) {
                 if (userInfo.getWx_openid() != null && !"".equals(userInfo.getWx_openid())) {
                     weChatDes.setText("已绑定账号");
                 }
                 if (userInfo.getQq_openid() != null && !"".equals(userInfo.getQq_openid())) {
                     qqChatDes.setText("已绑定账号");
                 }
-            }
+            }*/
         }
+        Presenter.getInstance(getContext()).getBindStates();
     }
 
 
@@ -217,7 +231,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
         popBirthSelectView.startAnimation(animationCircleType);
     }
 
-    @OnClick({R.id.pass_word_layer, R.id.address_weichat_layer, R.id.qq_address_layer})
+    @OnClick({R.id.pass_word_layer, R.id.address_weichat_layer, R.id.qq_address_layer, R.id.phone_chat_des})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pass_word_layer:
@@ -231,6 +245,11 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
             case R.id.qq_address_layer:
                 LocalLog.d(TAG, "绑定或解绑");
                 bindUnbindConfirm("qq");
+                break;
+            case R.id.phone_chat_des:
+                LocalLog.d(TAG, "手机号码绑定");
+                break;
+            default:
                 break;
         }
     }
@@ -254,10 +273,6 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                     temp = temp + key + ":" + map.get(key) + "\n";
                     switch (key) {
                         case "openid":
-                            PostBindUnBindWqParam postBindUnBindWqParam = new PostBindUnBindWqParam();
-                            postBindUnBindWqParam.setAction("wx").setOpenid(map.get(key));
-                            Presenter.getInstance(getContext()).postBindWq(postBindUnBindWqParam);
-                            LocalLog.d(TAG, "绑定当前手机微信");
                             break;
                         case "screen_name":
 
@@ -274,6 +289,12 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                         case "gender":
 
                             continue;
+                        case "unionid":
+                            PostBindUnBindWqParam postBindUnBindWqParam = new PostBindUnBindWqParam();
+                            postBindUnBindWqParam.setAction("wx").setOpenid(map.get(key));
+                            Presenter.getInstance(getContext()).postBindWq(postBindUnBindWqParam);
+                            LocalLog.d(TAG, "绑定当前手机微信");
+                            break;
                         default:
                             continue;
                     }
@@ -312,6 +333,25 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
     @Override
     public void response(ErrorCode errorCode) {
 
+    }
+
+    @Override
+    public void response(PostBindStateResponse postBindStateResponse) {
+        if (postBindStateResponse.getError() == 0) {
+            if (weChatDes == null) {
+                return;
+            }
+            if (postBindStateResponse.getData().getWx() == 1) {
+                weChatDes.setText("已绑定账号");
+            } else {
+                weChatDes.setText("尚未绑定");
+            }
+            if (postBindStateResponse.getData().getQq() == 1) {
+                qqChatDes.setText("已绑定账号");
+            } else {
+                qqChatDes.setText("尚未绑定");
+            }
+        }
     }
 
     @Override

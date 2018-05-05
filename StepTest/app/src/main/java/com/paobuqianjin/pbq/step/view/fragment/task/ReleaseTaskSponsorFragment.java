@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.task;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -21,6 +22,7 @@ import com.paobuqianjin.pbq.step.activity.sponsor.TargetPeopleActivity;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskSponsorRespone;
+import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.TaskSponsorInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -90,9 +92,12 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
 
     private static String TARGET_PEOPLE_ACTION = "com.paobuqianjin.pbq.step.TARGET_ACTION";
     private static String SPONSOR_INFO_ACTION = "com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION";
+    private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private final static int REQUEST_TARGET_PEOPLE = 0;
     public final static int REQUEST_SPONSOR_MSG = 1;
     public final static int RESULT_SPONSOR_MSG = 2;
+    private boolean isFirstLocal = true;
+    private StepLocationReciver stepLocationReciver = new StepLocationReciver();
     private TaskSponsorParam taskSponsorParam;
     private String sexStr;
     private String ageMinStr;
@@ -113,6 +118,9 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(LOCATION_ACTION);
+        getContext().registerReceiver(stepLocationReciver, intentFilter);
         return rootView;
     }
 
@@ -171,14 +179,18 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                         || TextUtils.isEmpty(targetTaskDayNumStr)
                         || TextUtils.isEmpty(packDayNumStr)
                         || TextUtils.isEmpty(targetStepDayNumStr)
-                        || 0 == latitudeStr
-                        || 0 == longitudeStr
-                        || businessId == -1
                         ) {
                     Toast.makeText(getActivity(), "请完善消息！", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                try {
+                    if (Integer.parseInt(targetTaskMoneyNumStr) < 5) {
+                        ToastUtils.showShortToast(getActivity(), "红包数额不能少于5元");
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
                 if (taskSponsorParam == null) {
                     taskSponsorParam = new TaskSponsorParam();
                 }
@@ -188,9 +200,12 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                 taskSponsorParam.setDay(targetTaskDayNumStr);
                 taskSponsorParam.setRed_name(targetTaskStepNumStr);
                 taskSponsorParam.setStep(targetStepDayNumStr);
-                taskSponsorParam.setLatitude(((float) latitudeStr));
-                taskSponsorParam.setLongitude(((float) longitudeStr));
-                taskSponsorParam.setBusinessid(businessId + "");
+                if (latitudeStr != 0d)
+                    taskSponsorParam.setLatitude(((float) latitudeStr));
+                if (longitudeStr != 0d)
+                    taskSponsorParam.setLongitude(((float) longitudeStr));
+                if (businessId != -1)
+                    taskSponsorParam.setBusinessid(businessId + "");
                 if (!TextUtils.isEmpty(sexStr))
                     taskSponsorParam.setSex(sexStr);
                 if (!TextUtils.isEmpty(distanceStr))
@@ -216,6 +231,16 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
         ToastUtils.showShortToast(getActivity(), taskSponsorRespone.getMessage());
         if (taskSponsorRespone.getError() == 0) {
             getActivity().finish();
+        }
+    }
+
+    @Override
+    public void responseLocation(String city, double latitude, double longitude) {
+        if (isFirstLocal) {
+            latitudeStr = latitude;
+            longitudeStr = longitude;
+            this.city = city;
+            isFirstLocal = false;
         }
     }
 

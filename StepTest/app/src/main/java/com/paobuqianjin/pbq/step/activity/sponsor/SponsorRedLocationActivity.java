@@ -26,13 +26,7 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.model.inner.GeoPoint;
 import com.baidu.mapapi.search.core.PoiInfo;
-import com.baidu.mapapi.search.geocode.GeoCodeResult;
-import com.baidu.mapapi.search.geocode.GeoCoder;
-import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
@@ -49,7 +43,6 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.BaiduMapInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
-import com.paobuqianjin.pbq.step.view.fragment.task.TargetPeopleFragment;
 
 import java.io.IOException;
 import java.util.List;
@@ -80,6 +73,7 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
 
     private String city;
     private double latitude, longitude;
+    private int pageNum = 0;
 
     @Override
     protected String title() {
@@ -107,8 +101,9 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     if (!TextUtils.isEmpty(city)) {
+                        pageNum = 0;
                         mPoiSearch.searchInCity(new PoiCitySearchOption().city(city)
-                                .keyword(searchCircleText.getText().toString()).pageNum(20));
+                                .keyword(searchCircleText.getText().toString()).pageNum(pageNum));
                     }
                     return true;
                 }
@@ -152,7 +147,7 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
         mBaiduMap.clear();
         LatLng point = new LatLng(mCurrentLat, mCurrentLon);
         MarkerOptions options = new MarkerOptions().position(point)
-                .icon(bitmap).anchor(0.5f, 0.5f);
+                .icon(bitmap).anchor(0.5f, 1f);
         mBaiduMap.addOverlay(options);
         // 实例化一个地理编码查询对象
         Geocoder geocoder = new Geocoder(SponsorRedLocationActivity.this, Locale.getDefault());
@@ -235,22 +230,38 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
             LocalLog.d(TAG, "获得POI结果");
             if (poiResult.getAllPoi() == null || poiResult.getAllPoi().size() == 0) {
                 ToastUtils.showShortToast(SponsorRedLocationActivity.this, "暂无搜索结果");
+                if (pageNum != 0) {
+                    pop.setLoad(false);
+                }
                 return;
             }
-            if (pop == null) {
-                pop = new ChooseListPop(SponsorRedLocationActivity.this, new ChooseListPop.OnListSelectListener() {
-                    @Override
-                    public void onListSelect(PoiInfo info) {
-                        SponsorRedLocationActivity.this.city = info.city;
-                        SponsorRedLocationActivity.this.latitude = info.location.latitude;
-                        SponsorRedLocationActivity.this.longitude = info.location.longitude;
-                        setMarker(latitude, longitude);
-                        setUserMapCenter(latitude, longitude);
-                    }
-                });
+            if (pageNum == 0) {
+                if (pop == null) {
+                    pop = new ChooseListPop(SponsorRedLocationActivity.this, new ChooseListPop.OnListSelectListener() {
+                        @Override
+                        public void onListSelect(PoiInfo info) {
+                            SponsorRedLocationActivity.this.city = info.city;
+                            SponsorRedLocationActivity.this.latitude = info.location.latitude;
+                            SponsorRedLocationActivity.this.longitude = info.location.longitude;
+                            setMarker(latitude, longitude);
+                            setUserMapCenter(latitude, longitude);
+                        }
+
+                        @Override
+                        public void onBottom() {
+                            if (!TextUtils.isEmpty(city)) {
+                                pageNum++;
+                                mPoiSearch.searchInCity(new PoiCitySearchOption().city(city)
+                                        .keyword(searchCircleText.getText().toString()).pageNum(pageNum));
+                            }
+                        }
+                    });
+                }
+                pop.setData(poiResult.getAllPoi());
+                pop.show(searchCircleText);
+            } else {
+                pop.setMoreData(poiResult.getAllPoi());
             }
-            pop.setData(poiResult.getAllPoi());
-            pop.show(searchCircleText);
             for (int i = 0; i < poiResult.getAllPoi().size(); i++) {
                 LocalLog.d(TAG, poiResult.getAllPoi().get(i).name);
                 LocalLog.d(TAG, "la = " + poiResult.getAllPoi().get(i).location.latitude);
@@ -286,7 +297,7 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
         OverlayOptions options = new MarkerOptions()
                 .position(point)
                 .icon(bitmap)
-                .anchor(0.5f, 0.5f);
+                .anchor(0.5f, 1.0f);
         mBaiduMap.addOverlay(options);
     }
 

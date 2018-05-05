@@ -455,8 +455,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             openRedPkgView.clearAnimation();
             openRedPkgView.setVisibility(View.INVISIBLE);
             if (object instanceof ErrorCode) {
-                LocalLog.d(TAG, "领取红包出错 " + ((ErrorCode) object).getMessage());
-
+                LocalLog.d(TAG, "领取红包出错" + ((ErrorCode) object).getMessage());
             } else if (object instanceof RecRedPkgResponse) {
                 if (((RecRedPkgResponse) object).getError() == 0) {
                     if (((RecRedPkgResponse) object).getData().getAllmoney() > 0.0f) {
@@ -588,6 +587,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     public void responseTodayIncome(IncomeResponse incomeResponse) {
         if (incomeResponse.getError() == 0) {
             LocalLog.d(TAG, "responseTodayIncome() enter " + incomeResponse.toString());
+            if (getContext() == null) {
+                return;
+            }
             String moneyFormat = getContext().getResources().getString(R.string.today_income);
             String moneyStr = String.format(moneyFormat, incomeResponse.getData().getTotal_amount());
             todayIncomeNum.setText(moneyStr);

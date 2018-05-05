@@ -8,7 +8,7 @@
         android:id="@+id/target_task_span"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@color/color_f8">
 
         <TextView
@@ -205,7 +205,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/day_pack_num_span"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@color/color_f8">
 
         <TextView
@@ -277,7 +277,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="39dp"
-            android:text="立即筛选"
+            android:text="立即筛选（选填）"
             android:textColor="@color/color_8a8a8a"
             android:textSize="14dp" />
 
@@ -296,7 +296,8 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_below="@+id/people_target_span"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:background="@color/color_f8">
 
         <TextView
@@ -327,8 +328,32 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:src="@drawable/go_to" />
-
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sponor_msg_span"
+        android:layout_marginLeft="14dp"
+        android:text="温馨提示：" />
+
+    <TextView
+        android:id="@+id/tv_tip1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sponor_msg_span"
+        android:layout_marginRight="14dp"
+        android:layout_toRightOf="@+id/tv_tip"
+        android:text="商家红包总金额不能低于5元，每日红包不能少于5个；" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_tip1"
+        android:layout_marginRight="14dp"
+        android:layout_toRightOf="@+id/tv_tip"
+        android:text="软件上线初期，商家在跑步钱进平台派发红包，不收取手续费；" />
 
     <Button
         android:id="@+id/btn_confirm"

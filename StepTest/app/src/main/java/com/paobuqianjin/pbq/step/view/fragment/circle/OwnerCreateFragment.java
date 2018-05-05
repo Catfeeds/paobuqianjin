@@ -276,6 +276,9 @@ public class OwnerCreateFragment extends BaseFragment {
             } else if (myCreateCircleResponse.getError() == 1) {
                 if (pageIndex == 1) {
                     LocalLog.d(TAG, "显示无数据界面");
+                    if (notFoundData == null) {
+                        return;
+                    }
                     notFoundData.setVisibility(View.VISIBLE);
                     createCircleSwipe.setVisibility(View.GONE);
                 } else {
