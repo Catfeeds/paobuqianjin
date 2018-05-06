@@ -39,7 +39,8 @@
             android:layout_height="13dp"
             android:layout_alignBottom="@+id/head_ico"
             android:layout_alignRight="@+id/head_ico"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
+            android:paddingEnd="5dp"
             android:src="@drawable/vip_flg"
             android:visibility="gone" />
 

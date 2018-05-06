@@ -153,7 +153,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
                 return;
             }
             if (userInfoResponse.getData().getSex() == 1) {
-                sexIcon.setImageResource(R.drawable.man_flag);
+                sexIcon.setImageResource(R.drawable.man);
             } else if (userInfoResponse.getData().getSex() == 2) {
                 sexIcon.setImageResource(R.drawable.woman_flag);
             }

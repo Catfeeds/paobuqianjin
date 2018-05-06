@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -298,7 +299,7 @@ public class DynamicAllIndexResponse {
                         '}';
             }
 
-            public static class OneCommentBean {
+            public static class OneCommentBean implements Serializable {
                 /**
                  * id : 327
                  * parent_id : 0

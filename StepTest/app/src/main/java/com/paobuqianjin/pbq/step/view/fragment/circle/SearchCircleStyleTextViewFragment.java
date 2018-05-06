@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ import com.yanzhenjie.loading.LoadingView;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -83,9 +85,9 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     int pageCount = 0;
     boolean addCircle = false;
     private boolean isSearch = false;
-    private static int SEARCH_ADD = 0;
     private String keyWord = "";
     private int mCurrentAllPageIndex = 2;
+    private ArrayList<Integer> circleIdArray = new ArrayList<>();
 
     public void setChoiceCircleData(ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData) {
         this.choiceCircleData = choiceCircleData;
@@ -146,9 +148,9 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         recyclerView.addFooterView(loadMoreView); // 添加为Footer。
         recyclerView.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         recyclerView.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
-        adapter = new SearchCircleAdapter(this.getContext(), getActivity(), inOutCallBackInterface);
+        adapter = new SearchCircleAdapter(this.getContext(), getActivity(), inOutCallBackInterface, this);
         recyclerView.setAdapter(adapter);
-        loadData(choiceCircleData);
+
         Presenter.getInstance(getContext()).attachUiInterface(this);
         searchIcon = (RelativeLayout) viewRoot.findViewById(R.id.search_icon);
         searchCircleText = (EditText) viewRoot.findViewById(R.id.search_circle_text);
@@ -165,7 +167,13 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         searchCircleText.addTextChangedListener(textWatcher);
         cancelIcon = (RelativeLayout) viewRoot.findViewById(R.id.cancel_icon);
         cancelIcon.setOnClickListener(onClickListener);
-
+        if (choiceCircleData == null) {
+            LocalLog.d(TAG, "choiceCircleData null");
+            pageIndex = 1;
+            choiceCircleData = new ArrayList<>();
+            Presenter.getInstance(getContext()).getMoreCircle(pageIndex, Utils.PAGE_SIZE_DEFAULT, keyWord);
+        }
+        loadData(choiceCircleData);
         /*searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -244,7 +252,9 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     };
     private InOutCallBackInterface inOutCallBackInterface = new InOutCallBackInterface() {
         @Override
-        public void inCallBack() {
+        public void inCallBack(int circleid) {
+            LocalLog.d(TAG, "circleid = " + circleid);
+            circleIdArray.add(circleid);
             addCircle = true;
         }
 
@@ -309,6 +319,14 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
 
     private void loadMore(ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> newData) {
         /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        if (choiceCircleData.size() == 0) {
+            recyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerView.scrollToPosition(0);
+                }
+            }, 100);
+        }
         choiceCircleData.addAll(newData);
         // notifyItemRangeInserted()或者notifyDataSetChanged().
         adapter.notifyItemRangeInserted(choiceCircleData.size() - newData.size(), newData.size());
@@ -513,7 +531,16 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         if (addCircle) {
             LocalLog.d(TAG, "进行过加入圈子的操作");
             Intent intent = new Intent();
-            getActivity().setResult(SEARCH_ADD, intent);
+            int size = circleIdArray.size();
+            LocalLog.d(TAG, "size = " + size);
+            if (size > 0) {
+                int[] circleIds = new int[size];
+                for (int i = 0; i < size; i++) {
+                    circleIds[i] = circleIdArray.get(i);
+                }
+                intent.putExtra(getContext().getPackageName() + "circleids", circleIds);
+            }
+            getActivity().setResult(Activity.RESULT_OK, intent);
             getActivity().finish();
         }
     }

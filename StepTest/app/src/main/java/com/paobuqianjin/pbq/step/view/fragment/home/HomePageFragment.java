@@ -637,6 +637,10 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     public void response(SponsorRedPkgResponse sponsorRedPkgResponse) {
         LocalLog.d(TAG, "SponsorRedPkgResponse() enter " + sponsorRedPkgResponse.toString());
         if (sponsorRedPkgResponse.getError() == 0) {
+            if (sponsorRedPkgResponse.getData().getCanredpacket().size() == 0 && sponsorRedPkgResponse.getData().getLedredpacket().size() == 0) {
+                //TODO 领红包错误提示
+                //popTargetView();
+            }
             popRedPkg(sponsorRedPkgResponse);
         } else if (sponsorRedPkgResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");

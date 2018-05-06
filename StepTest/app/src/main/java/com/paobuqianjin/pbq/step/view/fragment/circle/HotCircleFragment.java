@@ -427,7 +427,7 @@ public class HotCircleFragment extends BaseFragment {
 
     private InOutCallBackInterface inOutCallBackInterface = new InOutCallBackInterface() {
         @Override
-        public void inCallBack() {
+        public void inCallBack(int circleId) {
             updateMyHotCircle();
         }
 

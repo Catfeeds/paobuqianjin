@@ -14,7 +14,7 @@
             android:layout_width="167dp"
             android:layout_height="167dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/circle_live_default_a" />
+            android:src="@drawable/bitmap_null" />
 
         <ImageView
             android:id="@+id/goods_right"
@@ -23,6 +23,6 @@
             android:layout_marginLeft="13dp"
             android:layout_toRightOf="@+id/goods_left"
             android:scaleType="centerCrop"
-            android:src="@drawable/circle_live_default_a" />
+            android:src="@drawable/bitmap_null" />
     </RelativeLayout>
 </RelativeLayout>

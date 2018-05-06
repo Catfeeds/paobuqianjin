@@ -293,7 +293,9 @@ public class AttentionCircleFragment extends BaseFragment {
      */
     private void loadData(ArrayList<DynamicAllIndexResponse.DataBeanX.DataBean> dataBeans) {
         adapter.notifyDataSetChanged(dataBeans);
-
+        if (swipeRefreshLayout == null) {
+            return;
+        }
         swipeRefreshLayout.setRefreshing(false);
 
         // 第一次加载数据：一定要掉用这个方法。
@@ -397,6 +399,11 @@ public class AttentionCircleFragment extends BaseFragment {
                             int contentNum = data.getIntExtra(getContext().getPackageName() + "contentNum", -1);
                             if (contentNum != -1) {
                                 dynamicAllData.get(position).setComment(contentNum);
+                            }
+                            DynamicAllIndexResponse.DataBeanX.DataBean.OneCommentBean oneCommentBean =
+                                    (DynamicAllIndexResponse.DataBeanX.DataBean.OneCommentBean) data.getSerializableExtra((getContext().getPackageName() + "oneCommentBean"));
+                            if (oneCommentBean != null) {
+                                dynamicAllData.get(position).setOne_comment(oneCommentBean);
                             }
                             LocalLog.d(TAG, "详情操作 is_vote = " + is_vote + ",likeNum = " + likeNum + ",contentNum = " + contentNum);
                             if (is_vote != -1 || likeNum != -1 || contentNum != -1) {

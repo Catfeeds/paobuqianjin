@@ -41,6 +41,7 @@ public class IncomeAdater extends RecyclerView.Adapter<IncomeAdater.IncomeDetail
             return 0;
         }
     }
+
     public void notifyDataSetChanged(List<?> data) {
         this.mData = data;
         super.notifyDataSetChanged();
@@ -83,7 +84,7 @@ public class IncomeAdater extends RecyclerView.Adapter<IncomeAdater.IncomeDetail
             String date = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_YYYY_MM_DD_HH_MM);
             String dateStr = date.replace("-", "/");
             holder.incomeDetailTime.setText(dateStr);
-            holder.data.setText("￥:" + ((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getTotal_fee() + "元");
+            holder.data.setText("￥" + ((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getTotal_fee());
         }
     }
 

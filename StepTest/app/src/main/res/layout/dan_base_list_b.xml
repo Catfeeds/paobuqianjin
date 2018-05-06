@@ -28,8 +28,9 @@
         android:layout_height="13dp"
         android:layout_alignBottom="@+id/head_icon_user"
         android:layout_alignRight="@+id/head_icon_user"
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
         android:src="@drawable/vip_flg"
+        android:paddingEnd="5dp"
         android:visibility="gone" />
 
     <TextView
@@ -39,7 +40,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
         android:layout_toEndOf="@+id/head_icon_user"
-        android:text="跑步钱进"
+        android:text=""
         android:textColor="@color/color_161727"
         android:textSize="16dp" />
 

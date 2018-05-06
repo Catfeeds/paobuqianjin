@@ -16,7 +16,8 @@
         android:layout_height="13dp"
         android:layout_alignBottom="@+id/user_near_icon"
         android:layout_alignRight="@+id/user_near_icon"
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
+        android:paddingEnd="5dp"
         android:src="@drawable/vip_flg"
         android:visibility="gone" />
 

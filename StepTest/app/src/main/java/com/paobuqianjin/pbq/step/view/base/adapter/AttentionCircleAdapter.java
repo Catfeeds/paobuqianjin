@@ -160,8 +160,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
                 ((OneOrZeroViewHodler) holder).vote = data.get(position).getVote();
                 if (data.get(position).getIs_vote() == 1) {
-                    LocalLog.d(TAG, "赞过");
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
+                }else{
+                    ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
                 }
                 if (data.get(position).getComment() <= 0) {
                     LocalLog.d(TAG, "updateItem() 无人评论");
@@ -208,6 +209,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).vote = data.get(position).getVote();
                 if (data.get(position).getIs_vote() == 1) {
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
+                }else{
+                    ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
                 }
                 if (data.get(position).getComment() <= 0) {
                     LocalLog.d(TAG, "updateItem() 无人评论");
@@ -262,6 +265,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((TwoPicViewHolder) holder).vote = data.get(position).getVote();
             if (data.get(position).getIs_vote() == 1) {
                 ((TwoPicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
+            }else{
+                ((TwoPicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
             }
             if (data.get(position).getComment() <= 0) {
                 LocalLog.d(TAG, "updateItem() 无人评论");
@@ -310,6 +315,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((ThreePicViewHolder) holder).vote = data.get(position).getVote();
             if (data.get(position).getIs_vote() == 1) {
                 ((ThreePicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
+            }else{
+                ((ThreePicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
             }
             LocalLog.d(TAG, "3图");
             if (data.get(position).getComment() <= 0) {

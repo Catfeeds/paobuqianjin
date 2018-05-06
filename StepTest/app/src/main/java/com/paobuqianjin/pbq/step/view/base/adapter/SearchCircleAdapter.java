@@ -2,7 +2,9 @@ package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,6 +31,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InOutCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 
 import java.util.ArrayList;
 
@@ -56,12 +59,16 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
     TextView confirmText;
     RelativeLayout partTwo;
     InOutCallBackInterface inOutCallBackInterface;
+    private final static int REQUEST_DETAIL = 278;
+    private final static String ACTION_ENTER_ICON = "coma.paobuqian.pbq.step.ICON_ACTION";
+    private Fragment fragment;
 
-    public SearchCircleAdapter(Context context, final Activity activity, InOutCallBackInterface inOutCallBackInterface) {
+    public SearchCircleAdapter(Context context, final Activity activity, InOutCallBackInterface inOutCallBackInterface, final Fragment fragment) {
         super();
         mContext = context;
         this.activity = activity;
         this.inOutCallBackInterface = inOutCallBackInterface;
+        this.fragment = fragment;
     }
 
 
@@ -145,7 +152,7 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
                     LocalLog.d(TAG, "加入成功");
                     joinIn.setText("已加入");
                     if (inOutCallBackInterface != null) {
-                        inOutCallBackInterface.inCallBack();
+                        inOutCallBackInterface.inCallBack(circleId);
                     }
                     String sAgeFormat = mContext.getResources().getString(R.string.member_number);
                     String sFinalMember = String.format(sAgeFormat, circleMember + 1);
@@ -169,6 +176,7 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
 
         private void init(View view) {
             circleLogoSearch = (ImageView) view.findViewById(R.id.circle_logo_search);
+            circleLogoSearch.setOnClickListener(onClickListener);
             searchCircleDesListName = (TextView) view.findViewById(R.id.search_circle_des_list_name);
             lock = (ImageView) view.findViewById(R.id.lock);
             searchCircleDesListNum = (TextView) view.findViewById(R.id.search_circle_des_list_num);
@@ -181,6 +189,15 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
             @Override
             public void onClick(View view) {
                 switch (view.getId()) {
+                    case R.id.circle_logo_search:
+                        Intent intent = new Intent();
+                        intent.setClass(mContext, CirCleDetailActivity.class);
+                        intent.setAction(ACTION_ENTER_ICON);
+                        LocalLog.d(TAG, "getAdapterPosition() = " + getAdapterPosition());
+                        intent.putExtra(mContext.getPackageName() + "circleid", circleId);
+                        intent.putExtra(mContext.getPackageName() + "position", getAdapterPosition());
+                        fragment.startActivityForResult(intent, REQUEST_DETAIL);
+                        break;
                     case R.id.join_in:
                         switch (joinIn.getText().toString()) {
                             case "加入":

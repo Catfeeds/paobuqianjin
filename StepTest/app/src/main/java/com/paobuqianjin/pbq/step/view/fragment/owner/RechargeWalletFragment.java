@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
@@ -159,6 +160,7 @@ public class RechargeWalletFragment extends BaseBarStyleTextViewFragment impleme
 
     @Override
     public void response(ErrorCode errorCode) {
+
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -166,6 +168,8 @@ public class RechargeWalletFragment extends BaseBarStyleTextViewFragment impleme
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            Toast.makeText(getContext(), errorCode.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -33,6 +33,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.LikeBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicContentParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutVoteParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicIdDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
@@ -313,7 +314,10 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                     topContentData.add(dataBean);
                     topLevelContentAdapter = new TopLevelContentAdapter(getContext(), topContentData, DynamicDetailFragment.this);
                     contentDetailsListItem.setAdapter(topLevelContentAdapter);
-
+                    DynamicAllIndexResponse.DataBeanX.DataBean.OneCommentBean oneCommentBean = new DynamicAllIndexResponse.DataBeanX.DataBean.OneCommentBean();
+                    oneCommentBean.setNickname(postDynamicContentResponse.getData().getNickname());
+                    oneCommentBean.setContent(postDynamicContentResponse.getData().getContent());
+                    intent.putExtra(getContext().getPackageName() + "oneCommentBean", oneCommentBean);
                 } else {
                     topContentData.add(0, dataBean);
                     topLevelContentAdapter.notifyItemInserted(0);
@@ -403,6 +407,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     public void response(DynamicIdDetailResponse dynamicIdDetailResponse) {
         if (dynamicIdDetailResponse.getError() == 0) {
             LocalLog.d(TAG, "DynamicIdDetailResponse() enter " + dynamicIdDetailResponse.toString());
+            if (dynamicUserIcon == null) {
+                return;
+            }
             Presenter.getInstance(getContext()).getImage(dynamicUserIcon, dynamicIdDetailResponse.getData().getAvatar());
             dynamicUserName.setText(dynamicIdDetailResponse.getData().getNickname());
             long create_time = dynamicIdDetailResponse.getData().getCreate_time();
@@ -416,6 +423,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             dynamicTime.setText(create_timeStr);
             if (is_vote == 1) {
                 likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_s));
+            } else {
+                likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_n));
             }
             int[] emj = getContext().getResources().getIntArray(R.array.emjio_list);
             String content = dynamicIdDetailResponse.getData().getDynamic();
@@ -564,6 +573,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     public void response(DynamicLikeListResponse dynamicLikeListResponse) {
         LocalLog.d(TAG, "DynamicIdDetailResponse() enter " + dynamicLikeListResponse.toString());
         if (dynamicLikeListResponse.getError() == 0) {
+            if (supportPics == null) {
+                return;
+            }
             if (supportPics.getVisibility() == View.GONE) {
                 supportPics.setVisibility(View.VISIBLE);
             }
@@ -636,6 +648,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 String likePeopleNumFormat = getContext().getString(R.string.like_people);
                 String peopleNumStr = String.format(likePeopleNumFormat, likeNum);
                 supportPeoples.setText(peopleNumStr);
+                is_vote = 1;
                 intent.putExtra(getContext().getPackageName() + "is_vote", 1);
             } else {
                 likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_n));
@@ -651,7 +664,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                         likeUserAdapter.notifyItemRemoved(i);
                     }
                 }
-                intent.putExtra(getContext().getPackageName() + "is_vote", 0);
+                is_vote = 0;
+                intent.putExtra(getContext().getPackageName() + "is_vote", is_vote);
             }
             intent.putExtra(getContext().getPackageName() + "likeNum", likeNum);
             getActivity().setResult(Activity.RESULT_OK, intent);

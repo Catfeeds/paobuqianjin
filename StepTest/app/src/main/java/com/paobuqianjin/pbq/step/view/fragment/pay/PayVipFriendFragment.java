@@ -220,7 +220,10 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
         public void innerCallBack(Object object) {
             if (object instanceof ErrorCode) {
                 LocalLog.e(TAG, ((ErrorCode) object).getMessage());
-
+                Toast.makeText(getContext(), ((ErrorCode) object).getMessage(), Toast.LENGTH_SHORT).show();
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
             } else if (object instanceof VipNoResponse) {
                 LocalLog.d(TAG, ((VipNoResponse) object).toString());
                 if (((VipNoResponse) object).getError() == 0) {
@@ -420,6 +423,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
         }
         if (walletPayOrderResponse.getError() == 0) {
             LocalLog.d(TAG, walletPayOrderResponse.toString());
+            Presenter.getInstance(getContext()).setTradeStyle("vip");
             ((PaoBuPayActivity) getActivity()).showPaySuccessWallet(walletPayOrderResponse);
         } else if (walletPayOrderResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
@@ -433,6 +437,11 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
 
     @Override
     public void response(ErrorCode errorCode) {
-
+        if (errorCode.getError() != 100) {
+            if (dialog != null) {
+                dialog.dismiss();
+            }
+            Toast.makeText(getContext(), errorCode.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

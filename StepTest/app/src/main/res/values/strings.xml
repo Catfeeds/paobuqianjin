@@ -120,4 +120,7 @@
     <string name="confirm">确认</string>
     <string name="target_desc">根据国家卫生部门指导建议，系统为您设置每日目标步数，10周岁以下5000步，10至60周岁以内10000步，60周岁以上5000步。</string>
     <string name="title_activity_sponsor_date">SponsorDateActivity</string>
+    <string name="red_pkg_error_nopk">很遗憾，您周边没有商家派发红包</string>
+    <string name="un_match_obj">未达标，还需继续努力哦!</string>
+    <string name="too_slow">手慢了，商家红包已领完</string>
 </resources>

@@ -24,7 +24,8 @@
             android:layout_height="13dp"
             android:layout_alignBottom="@+id/circle_logo_search"
             android:layout_alignRight="@+id/circle_logo_search"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
+            android:paddingEnd="5dp"
             android:src="@drawable/vip_flg"
             android:visibility="gone" />
 

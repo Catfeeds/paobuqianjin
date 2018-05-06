@@ -236,8 +236,9 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
                 if (joinCircleResponse.getError() == 0) {
                     LocalLog.d(TAG, "加入成功");
                     circleJoin.setText("已加入");
+                    is_join = true;
                     if (inOutCallBackInterface != null) {
-                        inOutCallBackInterface.inCallBack();
+                        inOutCallBackInterface.inCallBack(circleId);
                     }
                 } else if (joinCircleResponse.getError() == -1) {
                     Toast.makeText(mContext, joinCircleResponse.getMessage(), Toast.LENGTH_SHORT).show();

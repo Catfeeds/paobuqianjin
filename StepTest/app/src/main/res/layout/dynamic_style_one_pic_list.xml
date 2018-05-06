@@ -23,7 +23,8 @@
             android:layout_height="13dp"
             android:layout_alignBottom="@+id/dynamic_user_icon"
             android:layout_alignRight="@+id/dynamic_user_icon"
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
+            android:paddingEnd="5dp"
             android:src="@drawable/vip_flg"
             android:visibility="gone" />
 
@@ -79,7 +80,7 @@
             android:layout_width="190dp"
             android:layout_height="130dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/circle_live_default_a" />
+            android:src="@drawable/bitmap_null" />
     </RelativeLayout>
 
     <RelativeLayout

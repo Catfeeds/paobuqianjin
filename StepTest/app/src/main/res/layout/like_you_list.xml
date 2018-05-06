@@ -95,28 +95,28 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/circle_live_default_b" />
+                    android:src="@drawable/bitmap_null" />
 
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginLeft="10dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/circle_live_default_b" />
+                    android:src="@drawable/bitmap_null" />
 
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginLeft="10dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/circle_live_default_b" />
+                    android:src="@drawable/bitmap_null" />
 
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginLeft="10dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/circle_live_default_b"
+                    android:src="@drawable/bitmap_null"
                     android:visibility="gone" />
             </LinearLayout>
         </RelativeLayout>

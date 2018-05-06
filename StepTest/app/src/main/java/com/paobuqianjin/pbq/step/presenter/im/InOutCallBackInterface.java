@@ -5,7 +5,7 @@ package com.paobuqianjin.pbq.step.presenter.im;
  */
 
 public interface InOutCallBackInterface {
-    public void inCallBack();
+    public void inCallBack(int circleId);
 
     public void outCallBack();
 }

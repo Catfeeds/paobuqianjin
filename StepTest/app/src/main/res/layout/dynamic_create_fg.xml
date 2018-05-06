@@ -100,7 +100,7 @@
                     android:layout_height="19dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
-                    android:scaleType="centerCrop"
+                    android:scaleType="centerInside"
                     android:src="@drawable/sponsor_location" />
 
                 <TextView

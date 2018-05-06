@@ -9,4 +9,48 @@
         android:layout_height="wrap_content">
 
     </android.support.v4.view.ViewPager>
+
+    <RelativeLayout
+        android:id="@+id/empty_circle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/no_add_icon"
+            android:layout_width="101dp"
+            android:layout_height="101dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="150dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_in_any_cirlce" />
+
+        <TextView
+            android:id="@+id/add_circle_attention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/no_add_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="30dp"
+            android:text="你还没有任何圈子哦"
+            android:textColor="@color/color_33333"
+            android:textSize="14dp" />
+
+        <Button
+            android:id="@+id/add_circle"
+            android:layout_width="300dp"
+            android:layout_height="45dp"
+            android:layout_below="@+id/add_circle_attention"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="60dp"
+            android:background="@drawable/rect_angle_background"
+            android:gravity="center"
+            android:stateListAnimator="@null"
+            android:text="加入圈子"
+            android:textColor="@color/color_f8"
+            android:textSize="18dp" />
+    </RelativeLayout>
 </RelativeLayout>

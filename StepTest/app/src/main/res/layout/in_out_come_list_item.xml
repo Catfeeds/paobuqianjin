@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="14dp"
         android:layout_marginTop="33dp"
-        android:text="微信充值"
+        android:text=""
         android:textColor="@color/color_161727"
         android:textSize="14dp" />
 
@@ -28,7 +28,7 @@
             android:layout_alignBottom="@+id/data"
             android:layout_alignTop="@+id/data"
             android:gravity="center"
-            android:text="2017/10/7 14:12"
+            android:text=""
             android:textColor="@color/color_8a8a8a"
             android:textSize="12dp" />
 
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="14dp"
-            android:text="￥:10.00元"
+            android:text=""
             android:textColor="@color/color_161727"
             android:textSize="14dp" />
     </RelativeLayout>
