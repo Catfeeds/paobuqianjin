@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,7 +24,7 @@ import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.TaskSponsorInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.SponsorSelectActivity;
+import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
@@ -93,6 +91,12 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     private static String TARGET_PEOPLE_ACTION = "com.paobuqianjin.pbq.step.TARGET_ACTION";
     private static String SPONSOR_INFO_ACTION = "com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
+    private final static String CIRCLE_ID = "id";
+    private final static String CIRCLE_NAME = "name";
+    private final static String CIRCLE_LOGO = "logo";
+    private final static String CIRCLE_RECHARGE = "pay";
+    private final static String PAY_FOR_STYLE = "pay_for_style";
+    private final static String PAY_ACTION = "android.intent.action.PAY";
     private final static int REQUEST_TARGET_PEOPLE = 0;
     public final static int REQUEST_SPONSOR_MSG = 1;
     public final static int RESULT_SPONSOR_MSG = 2;
@@ -135,6 +139,7 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        getActivity().unregisterReceiver(stepLocationReciver);
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
@@ -228,9 +233,16 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
 
     @Override
     public void response(TaskSponsorRespone taskSponsorRespone) {
-        ToastUtils.showShortToast(getActivity(), taskSponsorRespone.getMessage());
         if (taskSponsorRespone.getError() == 0) {
-            getActivity().finish();
+            Bundle bundle = new Bundle();
+            bundle.putString(CIRCLE_ID, taskSponsorRespone.getData().getRed_id());
+            bundle.putString(CIRCLE_NAME, targetTaskStepNum.getText().toString());
+            LocalLog.d(TAG, "创建成功,跳转支付");
+            bundle.putString(PAY_FOR_STYLE, "redpacket");
+            bundle.putString(CIRCLE_RECHARGE, targetTaskMoneyNum.getText().toString());
+            startActivity(PaoBuPayActivity.class, bundle, true, PAY_ACTION);
+        } else {
+            ToastUtils.showShortToast(getContext(), "创建失败");
         }
     }
 

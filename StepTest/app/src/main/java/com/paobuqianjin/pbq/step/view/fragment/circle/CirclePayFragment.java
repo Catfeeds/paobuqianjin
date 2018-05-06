@@ -329,6 +329,15 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                                     .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
                             Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
                         }
+                    }else if("redpacket".equals(payAction)){
+                        LocalLog.d(TAG, "红包订单");
+                        if (!"".equals(id)) {
+                            wxPayOrderParam.setRed_id(Integer.parseInt(id))
+                                    .setPayment_type("wx")
+                                    .setOrder_type(payAction)
+                                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                        }
                     }
 
                 } else if (style == 1) {
@@ -378,8 +387,16 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                                     .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
                             Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
                         }
+                    }else if("redpacket".equals(payAction)){
+                        LocalLog.d(TAG, "红包订单");
+                        if (!"".equals(id)) {
+                            wxPayOrderParam.setRed_id(Integer.parseInt(id))
+                                    .setPayment_type("wallet")
+                                    .setOrder_type(payAction)
+                                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                        }
                     }
-
                 } else {
                     Toast.makeText(getContext(), "其他支付方式暂时未开通,请选择微信", Toast.LENGTH_SHORT).show();
                 }

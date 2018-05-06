@@ -19,7 +19,7 @@
             android:layout_marginLeft="14dp"
             android:text="任务名称"
             android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/target_task_step_num"
@@ -34,7 +34,7 @@
             android:maxLength="6"
             android:maxLines="1"
             android:textColor="@color/color_161727"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -59,7 +59,7 @@
             android:layout_marginLeft="14dp"
             android:text="红包总额"
             android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/task_pay"
@@ -70,7 +70,7 @@
             android:layout_marginRight="14dp"
             android:text="元"
             android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/target_task_money_num"
@@ -86,7 +86,7 @@
             android:maxLength="6"
             android:maxLines="1"
             android:textColor="@color/color_161727"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -111,7 +111,7 @@
             android:layout_marginLeft="14dp"
             android:text="任务天数"
             android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/task_day"
@@ -122,7 +122,7 @@
             android:layout_marginRight="14dp"
             android:text="天"
             android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/target_task_day_num"
@@ -138,7 +138,7 @@
             android:maxLength="3"
             android:maxLines="1"
             android:textColor="@color/color_161727"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -163,7 +163,7 @@
             android:layout_marginLeft="14dp"
             android:text="每日红包个数"
             android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/pack_num_day_des"
@@ -174,7 +174,7 @@
             android:layout_marginRight="14dp"
             android:text="个"
             android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/pack_day_num"
@@ -190,7 +190,7 @@
             android:maxLength="3"
             android:maxLines="1"
             android:textColor="@color/color_161727"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -216,7 +216,7 @@
             android:layout_marginLeft="14dp"
             android:text="目标步数"
             android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/target_step_num_des"
@@ -227,7 +227,7 @@
             android:layout_marginRight="14dp"
             android:text="步"
             android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/target_step_day_num"
@@ -243,7 +243,7 @@
             android:maxLength="3"
             android:maxLines="1"
             android:textColor="@color/color_161727"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -268,7 +268,7 @@
             android:layout_marginLeft="14dp"
             android:text="目标人群"
             android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/target_people_detail"
@@ -277,16 +277,16 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="39dp"
-            android:text="立即筛选（选填）"
+            android:text="立即筛选(选填)"
             android:textColor="@color/color_8a8a8a"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="7dp"
             android:layout_height="14dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
+            android:layout_marginRight="19dp"
             android:src="@drawable/go_to" />
 
     </RelativeLayout>
@@ -308,7 +308,7 @@
             android:layout_marginLeft="14dp"
             android:text="商铺信息"
             android:textColor="@color/color_161727"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/sponor_msg_des_detail"
@@ -319,14 +319,14 @@
             android:layout_marginRight="39dp"
             android:text="立即完善"
             android:textColor="@color/color_8a8a8a"
-            android:textSize="14dp" />
+            android:textSize="14sp" />
 
         <ImageView
             android:layout_width="7dp"
             android:layout_height="14dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
+            android:layout_marginRight="19dp"
             android:src="@drawable/go_to" />
     </RelativeLayout>
 
@@ -363,7 +363,7 @@
         android:layout_alignParentStart="true"
         android:background="@drawable/create_button"
         android:stateListAnimator="@null"
-        android:text="确认"
+        android:text="确认支付"
         android:textColor="@color/color_fefefe"
-        android:textSize="16dp" />
+        android:textSize="16sp" />
 </RelativeLayout>

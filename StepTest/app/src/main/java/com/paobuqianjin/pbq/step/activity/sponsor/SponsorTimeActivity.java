@@ -73,6 +73,9 @@ public class SponsorTimeActivity extends BaseCancelConfirmBarActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
+        if (resultCode <= 0) {
+            return;
+        }
         sponsor_time = intent.getStringExtra("data");
         workTimeDes.setText(TextUtils.isEmpty(sponsor_time) ? "请选择" : sponsor_time);
     }

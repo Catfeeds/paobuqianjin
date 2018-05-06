@@ -8,11 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.GetUserBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
@@ -21,7 +23,6 @@ import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorAdapter;
 import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
-import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
@@ -37,12 +38,18 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
     TextView name;
     @Bind(R.id.location_des)
     TextView locationDes;
+    @Bind(R.id.layout_default)
+    LinearLayout layoutDefault;
     @Bind(R.id.select_circle)
     ImageView selectCircle;
+    @Bind(R.id.layout_delete)
+    LinearLayout layoutDelete;
     @Bind(R.id.delete_sponsor)
     ImageView deleteSponsor;
     @Bind(R.id.delete_sponsor_des)
     TextView deleteSponsorDes;
+    @Bind(R.id.layout_edit)
+    LinearLayout layoutEdit;
     @Bind(R.id.edit_sponsor)
     ImageView editSponsor;
     @Bind(R.id.edit_sponsor_des)
@@ -68,6 +75,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
     private boolean isLoad;
     private Intent intent;
     private int pageNum = 1;
+    private NormalDialog deleteNormal;
 
     @Override
     protected String title() {
@@ -172,6 +180,13 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                 adapter.notifyDataSetChanged();
                 pageNum++;
                 isLoad = false;
+            } else {
+                if (isRefresh) {
+                    data.clear();
+                    refreshLayout.setRefreshing(false);
+                    default_sponsor.setVisibility(View.GONE);
+                    line.setVisibility(View.INVISIBLE);
+                }
             }
         }
     }
@@ -180,7 +195,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
         name.setText(dataBean.getName());
         locationDes.setText(dataBean.getAddra() + dataBean.getAddress());
         selectCircle.setImageResource(R.mipmap.choose);
-        editSponsor.setOnClickListener(new View.OnClickListener() {
+        layoutEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
@@ -190,54 +205,16 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                 startActivityForResult(intent, REQUEST_SPONSOR_INFO);
             }
         });
-        editSponsorDes.setOnClickListener(new View.OnClickListener() {
+        layoutDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setAction("com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION");
-                intent.setClass(SponsorManagerActivity.this, SponsorInfoActivity.class);
-                intent.putExtra("businessId", dataBean.getBusinessid());
-                startActivityForResult(intent, REQUEST_SPONSOR_INFO);
+                showDeleteDialog(dataBean.getBusinessid());
             }
         });
-        deleteSponsor.setOnClickListener(new View.OnClickListener() {
+        layoutDefault.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Presenter.getInstance(SponsorManagerActivity.this).deleteBusiness(dataBean.getBusinessid(), new InnerCallBack() {
-                    @Override
-                    public void innerCallBack(Object object) {
-                        if (!(object instanceof ErrorCode)) {
-                            refresh();
-                        }
-                    }
-                });
-            }
-        });
-        deleteSponsorDes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Presenter.getInstance(SponsorManagerActivity.this).deleteBusiness(dataBean.getBusinessid(), new InnerCallBack() {
-                    @Override
-                    public void innerCallBack(Object object) {
-                        if (!(object instanceof ErrorCode)) {
-                            refresh();
-                        }
-                    }
-                });
-            }
-        });
 
-        tvDefault.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Presenter.getInstance(SponsorManagerActivity.this).setDefaultBusiness(dataBean.getBusinessid(), new InnerCallBack() {
-                    @Override
-                    public void innerCallBack(Object object) {
-                        if (!(object instanceof ErrorCode)) {
-                            refresh();
-                        }
-                    }
-                });
             }
         });
         default_sponsor.setOnClickListener(new View.OnClickListener() {
@@ -248,5 +225,32 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                 finish();
             }
         });
+    }
+
+    private void showDeleteDialog(final int businessid) {
+        if (deleteNormal == null) {
+            deleteNormal = new NormalDialog(SponsorManagerActivity.this);
+            deleteNormal.setMessage("确认删除商铺信息");
+            deleteNormal.setNoOnclickListener("取消", new NormalDialog.onNoOnclickListener() {
+                @Override
+                public void onNoClick() {
+                    deleteNormal.dismiss();
+                }
+            });
+        }
+        deleteNormal.setYesOnclickListener("删除", new NormalDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                Presenter.getInstance(SponsorManagerActivity.this).deleteBusiness(businessid, new InnerCallBack() {
+                    @Override
+                    public void innerCallBack(Object object) {
+                        if (!(object instanceof ErrorCode)) {
+                            refresh();
+                        }
+                    }
+                });
+            }
+        });
+        deleteNormal.show();
     }
 }

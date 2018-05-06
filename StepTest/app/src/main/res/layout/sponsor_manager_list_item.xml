@@ -11,9 +11,8 @@
         android:layout_marginTop="15dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="跑步钱进网络科技有限公司"
         android:textColor="@color/color_161727"
-        android:textSize="16dp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/location_des"
@@ -22,9 +21,8 @@
         android:layout_alignLeft="@+id/name"
         android:layout_below="@+id/name"
         android:layout_marginTop="4dp"
-        android:text="广东省深圳市南山区马家龙金龙创业园"
         android:textColor="@color/color_161727"
-        android:textSize="14dp" />
+        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/line"
@@ -39,69 +37,87 @@
         android:layout_height="41dp"
         android:layout_below="@+id/line">
 
-        <ImageView
-            android:id="@+id/select_circle"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:scaleType="fitXY"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:src="@drawable/circle_outline" />
-
-        <TextView
-            android:id="@+id/tv_default"
+        <LinearLayout
+            android:id="@+id/layout_default"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:layout_toEndOf="@+id/select_circle"
-            android:text="默认商铺"
-            android:textColor="@color/color_161727"
-            android:textSize="12dp" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="14dp">
 
-        <ImageView
-            android:id="@+id/delete_sponsor"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/delete_sponsor_des"
-            android:scaleType="centerCrop"
-            android:src="@drawable/sponsor_delete" />
+            <ImageView
+                android:id="@+id/select_circle"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/circle_outline" />
 
-        <TextView
-            android:id="@+id/delete_sponsor_des"
+            <TextView
+                android:id="@+id/tv_default"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="默认商铺"
+                android:textColor="@color/color_161727"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_delete"
             android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
             android:gravity="center"
-            android:layout_centerVertical="true"
-            android:paddingLeft="8dp"
-            android:layout_marginRight="14dp"
-            android:text="删除"
-            android:textColor="@color/color_161727"
-            android:textSize="12dp" />
+            android:orientation="horizontal"
+            android:paddingRight="14dp">
 
-        <ImageView
-            android:id="@+id/edit_sponsor"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/edit_sponsor_des"
-            android:scaleType="centerCrop"
-            android:src="@drawable/sponsor_edit" />
+            <ImageView
+                android:id="@+id/delete_sponsor"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/sponsor_delete" />
 
-        <TextView
-            android:id="@+id/edit_sponsor_des"
+            <TextView
+                android:id="@+id/delete_sponsor_des"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:text="删除"
+                android:textColor="@color/color_161727"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_edit"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:layout_centerVertical="true"
-            android:paddingLeft="8dp"
-            android:layout_marginRight="16dp"
-            android:layout_toStartOf="@+id/delete_sponsor"
-            android:text="编辑"
-            android:textColor="@color/color_161727"
-            android:textSize="12dp" />
+            android:layout_toStartOf="@+id/layout_delete"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginRight="16dp">
+
+            <ImageView
+                android:id="@+id/edit_sponsor"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/sponsor_edit" />
+
+            <TextView
+                android:id="@+id/edit_sponsor_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:text="编辑"
+                android:textColor="@color/color_161727"
+                android:textSize="12sp" />
+        </LinearLayout>
 
         <ImageView
             android:layout_width="match_parent"

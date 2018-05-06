@@ -26,7 +26,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class SponsorDateActivity extends BaseBarActivity {
+public class SponsorDateActivity extends BaseBarActivity implements BaseBarActivity.ToolBarListener {
 
     LinearLayoutManager layoutManager;
     @Bind(R.id.time_recycler)
@@ -40,10 +40,16 @@ public class SponsorDateActivity extends BaseBarActivity {
     }
 
     @Override
+    public Object right() {
+        return "确定";
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sponsor_time_select_fg);
         ButterKnife.bind(this);
+        setToolBarListener(this);
         String datas = getIntent().getStringExtra("data");
         if (!TextUtils.isEmpty(datas)) {
             String[] workTimeStrList = datas.split(",");
@@ -87,7 +93,12 @@ public class SponsorDateActivity extends BaseBarActivity {
     }
 
     @Override
-    public void onBackPressed() {
+    public void clickLeft() {
+        onBackPressed();
+    }
+
+    @Override
+    public void clickRight() {
         Intent intent = getIntent();
         String date = "";
         for (String time : data) {

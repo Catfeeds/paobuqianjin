@@ -123,4 +123,5 @@
     <string name="red_pkg_error_nopk">很遗憾，您周边没有商家派发红包</string>
     <string name="un_match_obj">未达标，还需继续努力哦!</string>
     <string name="too_slow">手慢了，商家红包已领完</string>
+    <string name="tip_title">提示</string>
 </resources>

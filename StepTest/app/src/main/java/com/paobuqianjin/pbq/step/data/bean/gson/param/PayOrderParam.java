@@ -42,6 +42,7 @@ taskid	任务ID	false	int
     private int userid;
     private int circleid;
     private float total_fee;
+    private int red_id;
 
     public String getVip_no() {
         return vip_no;
@@ -105,6 +106,16 @@ taskid	任务ID	false	int
         return this;
     }
 
+    public int getRed_id() {
+        return red_id;
+    }
+
+    public PayOrderParam setRed_id(int red_id) {
+        this.red_id = red_id;
+        params.put("red_id", String.valueOf(red_id));
+        return this;
+    }
+
     public float getTotal_fee() {
         return total_fee;
     }
@@ -140,6 +151,7 @@ taskid	任务ID	false	int
                 ", taskno='" + taskno + '\'' +
                 ", userid=" + userid +
                 ", circleid=" + circleid +
+                ", red_id=" + red_id +
                 ", total_fee=" + total_fee +
                 ", vip_no='" + vip_no + '\'' +
                 ", order_type='" + order_type + '\'' +

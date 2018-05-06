@@ -31,6 +31,7 @@ import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiIndoorResult;
+import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
@@ -74,6 +75,7 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
     private String city;
     private double latitude, longitude;
     private int pageNum = 0;
+    private boolean isNear;
 
     @Override
     protected String title() {
@@ -101,6 +103,7 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     if (!TextUtils.isEmpty(city)) {
+                        isNear = false;
                         pageNum = 0;
                         mPoiSearch.searchInCity(new PoiCitySearchOption().city(city)
                                 .keyword(searchCircleText.getText().toString()).pageNum(pageNum));
@@ -142,18 +145,18 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
 
     private void setPosition(LatLng latLng) {
         LocalLog.d(TAG, ",latitude:" + latLng.latitude + ";longitude:" + latLng.longitude);
-        mCurrentLat = latLng.latitude;
-        mCurrentLon = latLng.longitude;
+        latitude = latLng.latitude;
+        longitude = latLng.longitude;
         mBaiduMap.clear();
-        LatLng point = new LatLng(mCurrentLat, mCurrentLon);
+        LatLng point = new LatLng(latitude, longitude);
         MarkerOptions options = new MarkerOptions().position(point)
                 .icon(bitmap).anchor(0.5f, 1f);
         mBaiduMap.addOverlay(options);
         // 实例化一个地理编码查询对象
         Geocoder geocoder = new Geocoder(SponsorRedLocationActivity.this, Locale.getDefault());
         try {
-            List<Address> addresses = geocoder.getFromLocation(mCurrentLat,
-                    mCurrentLon, 1);
+            List<Address> addresses = geocoder.getFromLocation(latitude,
+                    longitude, 1);
             StringBuilder sb = new StringBuilder();
             if (addresses.size() > 0) {
                 Address address = addresses.get(0);
@@ -217,9 +220,14 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
             this.city = city;
             this.latitude = latitude;
             this.longitude = longitude;
+            mCurrentLat = latitude;
+            mCurrentLon = longitude;
             setMarker(latitude, longitude);
             setUserMapCenter(latitude, longitude);
             isFirstLocation = false;
+            pageNum = 0;
+            isNear = true;
+            mPoiSearch.searchNearby(new PoiNearbySearchOption().location(new LatLng(latitude, longitude)).keyword("").pageNum(pageNum));
         }
     }
 
@@ -251,8 +259,12 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
                         public void onBottom() {
                             if (!TextUtils.isEmpty(city)) {
                                 pageNum++;
-                                mPoiSearch.searchInCity(new PoiCitySearchOption().city(city)
-                                        .keyword(searchCircleText.getText().toString()).pageNum(pageNum));
+                                if (isNear) {
+                                    mPoiSearch.searchNearby(new PoiNearbySearchOption().location(new LatLng(mCurrentLat, mCurrentLon)).keyword("").pageNum(pageNum));
+                                } else {
+                                    mPoiSearch.searchInCity(new PoiCitySearchOption().city(city)
+                                            .keyword(searchCircleText.getText().toString()).pageNum(pageNum));
+                                }
                             }
                         }
                     });
