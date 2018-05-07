@@ -96,15 +96,15 @@ public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorV
     private void showDeleteDialog(final int businessid) {
         if (deleteNormal == null) {
             deleteNormal = new NormalDialog(context);
-            deleteNormal.setMessage("确认删除商铺信息");
-            deleteNormal.setNoOnclickListener("取消", new NormalDialog.onNoOnclickListener() {
+            deleteNormal.setMessage("纭鍒犻櫎鍟嗛摵淇℃伅");
+            deleteNormal.setNoOnclickListener("鍙栨秷", new NormalDialog.onNoOnclickListener() {
                 @Override
                 public void onNoClick() {
                     deleteNormal.dismiss();
                 }
             });
         }
-        deleteNormal.setYesOnclickListener("删除", new NormalDialog.onYesOnclickListener() {
+        deleteNormal.setYesOnclickListener("鍒犻櫎", new NormalDialog.onYesOnclickListener() {
             @Override
             public void onYesClick() {
                 Presenter.getInstance(context).deleteBusiness(businessid, new InnerCallBack() {

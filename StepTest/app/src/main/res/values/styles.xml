@@ -44,17 +44,17 @@
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
     </style>
 
-    <!--自定义dialog背景全透明无边框theme -->
+    <!--鑷畾涔塪ialog鑳屾櫙鍏ㄩ�忔槑鏃犺竟妗唗heme -->
     <style name="MyDialog" parent="android:style/Theme.Dialog">
-        <!--背景颜色及和透明程度-->
+        <!--鑳屾櫙棰滆壊鍙婂拰閫忔槑绋嬪害-->
         <item name="android:windowBackground">@android:color/transparent</item>
-        <!--是否去除标题 -->
+        <!--鏄惁鍘婚櫎鏍囬 -->
         <item name="android:windowNoTitle">true</item>
-        <!--是否去除边框-->
+        <!--鏄惁鍘婚櫎杈规-->
         <item name="android:windowFrame">@null</item>
-        <!--是否浮现在activity之上-->
+        <!--鏄惁娴幇鍦╝ctivity涔嬩笂-->
         <item name="android:windowIsFloating">true</item>
-        <!--是否模糊-->
+        <!--鏄惁妯＄硦-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 

@@ -186,6 +186,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     TextView desPkgTextView;
     ImageView targetCircle;
     private boolean canDrawProcess = true;
+    private int pageIndex = 1;
+    private final static int PAGESIZE = 10;
 
     static {
         weatherMap.put("0", R.drawable.weather_0);
@@ -253,8 +255,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         getContext().registerReceiver(stepLocationReciver, intentFilter);
         Presenter.getInstance(getContext()).attachUiInterface(this);
         requestPermission(Permission.Group.LOCATION);
-        Presenter.getInstance(getContext()).getHomePageIncome("today", 1, 10);
-        Presenter.getInstance(getContext()).getHomePageIncome("month", 1, 10);
+        Presenter.getInstance(getContext()).getHomePageIncome("today", pageIndex, PAGESIZE);
+        Presenter.getInstance(getContext()).getHomePageIncome("month", pageIndex, PAGESIZE);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -341,12 +343,14 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         isBind = Presenter.getInstance(getContext()).bindService(null, TodayStepService.class);
         targetCircle = (ImageView) viewRoot.findViewById(R.id.target_step_circle);
         targetSteps = (TextView) viewRoot.findViewById(R.id.target_steps);
+        int targetStep = Presenter.getInstance(getContext()).getTarget(getContext());
+        targetSteps.setText(String.valueOf(targetStep));
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
+        updateHandler.sendEmptyMessageDelayed(MSG_UPDATE_STEP_LOCAL, 500);
     }
 
     @Override
@@ -557,6 +561,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public void responseStepToday(int stepToday) {
         if (lastStep >= stepToday) {
+            toayStep.setText(String.valueOf(lastStep));
             return;
         }
         lastStep = stepToday;
@@ -659,6 +664,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     public void onDestroy() {
         super.onDestroy();
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
+        updateHandler.removeCallbacksAndMessages(null);
         if (popupRedPkgWindow != null) {
             popupRedPkgWindow.dismiss();
             popupRedPkgWindow = null;
@@ -699,11 +705,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             }
         }
     };
-
-
-    private void popTargetDesc() {
-
-    }
 
     @OnClick(R.id.today_income_num)
     public void onClick() {

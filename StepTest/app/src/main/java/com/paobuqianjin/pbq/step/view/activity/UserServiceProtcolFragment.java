@@ -30,6 +30,7 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
     private final static String TAG = UserServiceProtcolFragment.class.getSimpleName();
     private final static String USER_SERVICE_AGREEMENT_ACTION = "com.paobuqianjin.pbq.step.SERVICE_ACTION";
     private final static String USER_CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
+    private final static String USER_INVITE_AGREEMENT_ACTION = "com.paobuqianjin.step.pbq.INVITE_ACTION";
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -77,6 +78,8 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
             } else if (USER_CRASH_ACTION.equals(intent.getAction())) {
                 LocalLog.d(TAG, "用户提现协议");
                 Presenter.getInstance(getContext()).protocol("4");
+            } else if (USER_INVITE_AGREEMENT_ACTION.equals(intent.getAction())) {
+                Presenter.getInstance(getContext()).protocol("2");
             }
         }
     }
@@ -101,7 +104,7 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
             }
             protcol.setText(Html.fromHtml(protocolResponse.getData().getContent()));
             setTitle(protocolResponse.getData().getTitle());
-        }else if(protocolResponse.getError() == -100){
+        } else if (protocolResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
             Presenter.getInstance(getContext()).steLogFlg(false);

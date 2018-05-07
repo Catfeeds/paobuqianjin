@@ -3,15 +3,22 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,6 +83,11 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     TextView moneyNum;
     @Bind(R.id.confirm_pay)
     Button confirmPay;
+    private View popCircleOpBar;
+    private PopupWindow popupOpWindow;
+    TextView cancelText;
+    TextView confirmText;
+    private TranslateAnimation animationCircleType;
     private final static String CIRCLE_ID = "id";
     private final static String CIRCLE_NAME = "name";
     private final static String CIRCLE_LOGO = "logo";
@@ -229,6 +241,10 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (popupOpWindow != null) {
+            popupOpWindow.dismiss();
+            popupOpWindow = null;
+        }
     }
 
     private void UpdateUnSelect(int i) {
@@ -329,7 +345,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                                     .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
                             Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
                         }
-                    }else if("redpacket".equals(payAction)){
+                    } else if ("redpacket".equals(payAction)) {
                         LocalLog.d(TAG, "红包订单");
                         if (!"".equals(id)) {
                             wxPayOrderParam.setRed_id(Integer.parseInt(id))
@@ -341,68 +357,119 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                     }
 
                 } else if (style == 1) {
-                    LocalLog.d(TAG, "钱包支付");
-                    float money = 0.0f;
-                    if (rechargeEdit.getVisibility() == View.VISIBLE) {
-                        try {
-                            money = Float.parseFloat(rechargeEdit.getText().toString());
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                            Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        if (money < 0.01) {
-                            Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    } else {
-                        money = Float.parseFloat(pay);
-                    }
-                    dialog = ProgressDialog.show(getContext(), "钱包支付",
-                            "正在提交订单");
-                    PayOrderParam wxPayOrderParam = new PayOrderParam();
-                    if ("circle".equals(payAction)) {
-                        LocalLog.d(TAG, "圈子支付");
-                        if (!"".equals(id)) {
-                            wxPayOrderParam.setCircleid(Integer.parseInt(id))
-                                    .setPayment_type("wallet")
-                                    .setOrder_type(payAction)
-                                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
-                            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
-                        }
-                    } else if ("user".equals(payAction)) {
-                        LocalLog.d(TAG, "用户订单");
-                        wxPayOrderParam
-                                .setPayment_type("wallet")
-                                .setOrder_type(payAction)
-                                .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
-                        Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
-                    } else if ("task".equals(payAction)) {
-                        LocalLog.d(TAG, "任务订单");
-                        if (!"".equals(taskno)) {
-                            wxPayOrderParam
-                                    .setPayment_type("wallet")
-                                    .setOrder_type(payAction)
-                                    .setTaskno(taskno)
-                                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
-                            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
-                        }
-                    }else if("redpacket".equals(payAction)){
-                        LocalLog.d(TAG, "红包订单");
-                        if (!"".equals(id)) {
-                            wxPayOrderParam.setRed_id(Integer.parseInt(id))
-                                    .setPayment_type("wallet")
-                                    .setOrder_type(payAction)
-                                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
-                            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
-                        }
-                    }
+                    popPayConfirm(getString(R.string.wallet_pay_confirm));
                 } else {
                     Toast.makeText(getContext(), "其他支付方式暂时未开通,请选择微信", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
 
+    }
+
+    private void payWallet() {
+        LocalLog.d(TAG, "钱包支付");
+        float money = 0.0f;
+        if (rechargeEdit.getVisibility() == View.VISIBLE) {
+            try {
+                money = Float.parseFloat(rechargeEdit.getText().toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (money < 0.01) {
+                Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } else {
+            money = Float.parseFloat(pay);
+        }
+        dialog = ProgressDialog.show(getContext(), "钱包支付",
+                "正在提交订单");
+        PayOrderParam wxPayOrderParam = new PayOrderParam();
+        if ("circle".equals(payAction)) {
+            LocalLog.d(TAG, "圈子支付");
+            if (!"".equals(id)) {
+                wxPayOrderParam.setCircleid(Integer.parseInt(id))
+                        .setPayment_type("wallet")
+                        .setOrder_type(payAction)
+                        .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+            }
+        } else if ("user".equals(payAction)) {
+            LocalLog.d(TAG, "用户订单");
+            wxPayOrderParam
+                    .setPayment_type("wallet")
+                    .setOrder_type(payAction)
+                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+        } else if ("task".equals(payAction)) {
+            LocalLog.d(TAG, "任务订单");
+            if (!"".equals(taskno)) {
+                wxPayOrderParam
+                        .setPayment_type("wallet")
+                        .setOrder_type(payAction)
+                        .setTaskno(taskno)
+                        .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+            }
+        } else if ("redpacket".equals(payAction)) {
+            LocalLog.d(TAG, "红包订单");
+            if (!"".equals(id)) {
+                wxPayOrderParam.setRed_id(Integer.parseInt(id))
+                        .setPayment_type("wallet")
+                        .setOrder_type(payAction)
+                        .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+            }
+        }
+    }
+
+    private void popPayConfirm(String string) {
+        LocalLog.d(TAG, "popPayConfirm() enter 确认钱包支付");
+        popCircleOpBar = View.inflate(getContext(), R.layout.quit_circle_confirm, null);
+        TextView textViewTitle = (TextView) popCircleOpBar.findViewById(R.id.quit_title);
+        textViewTitle.setText(string);
+        popupOpWindow = new PopupWindow(popCircleOpBar, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupOpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupOpWindow = null;
+            }
+        });
+
+        cancelText = (TextView) popCircleOpBar.findViewById(R.id.cancel_quit_text);
+        cancelText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "取消支付");
+                popupOpWindow.dismiss();
+            }
+        });
+        confirmText = (TextView) popCircleOpBar.findViewById(R.id.confirm_quit_text);
+        confirmText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupOpWindow.dismiss();
+                payWallet();
+            }
+        });
+
+
+        popupOpWindow.setFocusable(true);
+        popupOpWindow.setOutsideTouchable(true);
+        popupOpWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new
+
+                AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+        popupOpWindow.showAtLocation(getActivity().findViewById(R.id.circle_pay_fg), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        popCircleOpBar.startAnimation(animationCircleType);
     }
 
     @Override

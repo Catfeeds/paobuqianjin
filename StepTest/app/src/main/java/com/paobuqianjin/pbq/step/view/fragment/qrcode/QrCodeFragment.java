@@ -278,6 +278,11 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
                 break;
             case R.id.qq:
                 LocalLog.d(TAG, "分享到qq");
+                share_media = SHARE_MEDIA.QQ;
+                imageCircleQr = new UMImage(getContext(), bitmap);
+                new ShareAction(getActivity()).withMedia(imageCircleQr)
+                        .setPlatform(share_media)
+                        .setCallback(shareListener).share();
                 break;
         }
     }

@@ -253,6 +253,10 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
                             .setCallback(shareListener).share();
                     break;
                 case R.id.qq_icon:
+                    share_media = SHARE_MEDIA.QQ;
+                    new ShareAction(getActivity()).withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(shareListener).share();
                     break;
                 default:
                     break;

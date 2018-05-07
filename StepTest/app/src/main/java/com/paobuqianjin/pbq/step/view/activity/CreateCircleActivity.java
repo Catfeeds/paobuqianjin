@@ -21,6 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
@@ -362,8 +363,10 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                             String.valueOf(targetResponse.getData().get(i).getId()));
                     targetDefaults.add(String.valueOf(targetResponse.getData().get(i).getTarget()));
                 }
-                circleStandNum.setText(String.valueOf(targetResponse.getData().get(0).getTarget()));
-                createCircleBodyParam.setTargetid(targetResponse.getData().get(0).getId());
+                if (size > 1) {
+                    circleStandNum.setText(String.valueOf(targetResponse.getData().get(size - 1).getTarget()));
+                    createCircleBodyParam.setTargetid(targetResponse.getData().get(size - 1).getId());
+                }
             }
         }
 
@@ -625,6 +628,10 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 if (!checkcreateCircleBodyParam()) {
                     return;
                 }
+                if (TextUtils.isEmpty(localAvatar)) {
+                    Toast.makeText(this, "请选择圈子头像", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (localAvatar != null) {
                     LogoUpTask logoUpTask = new LogoUpTask();
                     logoUpTask.execute(localAvatar);
@@ -808,7 +815,6 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         }
         createCircleBodyParam.setDescription(circleDescOfYour.getText().toString());
         createCircleBodyParam.setCoverid(1);
-        //createCircleBodyParam.setLogo("http://pic.qqtn.com/up/2017-12/2017120912081824953.jpg");
         return true;
     }
 

@@ -20,6 +20,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,6 +39,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lwkandroid.imagepicker.ImagePicker;
+import com.lwkandroid.imagepicker.data.ImageBean;
+import com.lwkandroid.imagepicker.data.ImagePickType;
+import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
@@ -51,6 +56,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.EditCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
+import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
@@ -72,6 +78,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by pbq on 2018/3/28.
@@ -189,6 +197,9 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
     private HashMap<String, String> selectB = new HashMap<>();
     private CreateCircleBodyParam createCircleBodyParam = new CreateCircleBodyParam();
     private Handler mHandler;
+    private String cachePath;
+    private final int REQUEST_CODE = 111;
+    private String localAvatar;
 
     @Override
     protected int getLayoutResId() {
@@ -233,6 +244,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         mSetting = new PermissionSetting(getContext());
         Presenter.getInstance(getContext()).getCircleTargetEdit();
         qServiceCfg = QServiceCfg.instance(getContext());
+        cachePath = getContext().getExternalCacheDir().getAbsolutePath();
         if (intent != null) {
             dataBean = (CircleDetailResponse.DataBean) intent.getSerializableExtra("circle_detail");
             if (dataBean != null) {
@@ -421,6 +433,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
 
 
     /*权限适配*/
+
     private void requestPermission(String... permissions) {
         AndPermission.with(this)
                 .permission(permissions)
@@ -428,10 +441,8 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                 .onGranted(new Action() {
                     @Override
                     public void onAction(List<String> permissions) {
-                        toast(R.string.successfully);
                         LocalLog.d(TAG, "获取权限成功");
-                        Intent picture = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(picture, CAMERA_PIC);
+                        selectPicture();
                     }
                 }).onDenied(new Action() {
             @Override
@@ -443,6 +454,60 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         }).start();
     }
 
+    private void selectPicture() {
+        popupCircleTypeView = View.inflate(getActivity(), R.layout.select_camera_pic, null);
+        popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupCircleTypeWindow onDismiss() enter");
+                popupCircleTypeWindow = null;
+            }
+        });
+        popupCircleTypeWindow.setFocusable(true);
+        popupCircleTypeWindow.setOutsideTouchable(true);
+        popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
+        ((RelativeLayout) popupCircleTypeView.findViewById(R.id.select_camera)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "相机");
+                new ImagePicker()
+                        .pickType(ImagePickType.ONLY_CAMERA)//设置选取类型(拍照、单选、多选)
+                        .maxNum(1)//设置最大选择数量(拍照和单选都是1，修改后也无效)
+                        .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
+                        .cachePath(cachePath)//自定义缓存路径
+                        .doCrop(1, 1, 0, 0)//裁剪功能需要调用这个方法，多选模式下无效
+                        .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
+                        .start(getActivity(), REQUEST_CODE);
+                popupCircleTypeWindow.dismiss();
+            }
+        });
+        ((RelativeLayout) popupCircleTypeView.findViewById(R.id.xiangche_camera)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "相册");
+                new ImagePicker()
+                        .pickType(ImagePickType.MULTI)//设置选取类型(拍照、单选、多选)
+                        .maxNum(1)//设置最大选择数量(拍照和单选都是1，修改后也无效)
+                        .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
+                        .cachePath(cachePath)//自定义缓存路径
+                        .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
+                        .start(getActivity(), REQUEST_CODE);
+                popupCircleTypeWindow.dismiss();
+            }
+        });
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
+                , 0, Animation.RELATIVE_TO_PARENT, 0,
+                Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupCircleTypeWindow.showAtLocation(getActivity().findViewById(R.id.edit_circle), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
+                , 0, 0);
+        popupCircleTypeView.startAnimation(animationCircleType);
+    }
 
     protected void toast(@StringRes int message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
@@ -501,79 +566,22 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_PIC) {
-            LocalLog.d(TAG, "PICTURE OK");
-            if (data != null) {
-
-                //TODO 线程中上传保存*/
-                Uri selectedImage = data.getData();
-
-                final String pathResult = getPath(selectedImage);
-                LocalLog.d(TAG, "pathResult = " + pathResult);
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inJustDecodeBounds = true;
-                Bitmap docodeFile = BitmapFactory.decodeFile(pathResult, options);
-
-
-                // 获取到这个图片的原始宽度和高度
-                int picWidth = options.outWidth;
-                int picHeight = options.outHeight;
-                LocalLog.d(TAG, "options.outWidth = " + options.outWidth + "options.outHeight = " + options.outHeight);
-
-                // 获取屏的宽度和高度
-                WindowManager windowManager = getActivity().getWindowManager();
-                Display display = windowManager.getDefaultDisplay();
-                int screenWidth = display.getWidth();
-                int screenHeight = display.getHeight();
-
-                LocalLog.d(TAG, "screenWidth =  " + screenWidth + ",screenHeight = " + screenHeight);
-                // isSampleSize是表示对图片的缩放程度，比如值为2图片的宽度和高度都变为以前的1/2
-                options.inSampleSize = 1;
-                // 根据屏的大小和图片大小计算出缩放比例
-                if (picWidth > picHeight) {
-                    if (picWidth > screenWidth)
-                        options.inSampleSize = picWidth / screenWidth;
-                } else {
-                    if (picHeight > screenHeight)
-                        options.inSampleSize = picHeight / screenHeight;
-                }
-
-                // 这次再真正地生成一个有像素的，经过缩放了的bitmap
-                options.inJustDecodeBounds = false;
-                //docodeFile = BitmapFactory.decodeFile(pathResult, options);
-                Presenter.getInstance(getContext()).getImage(pathResult, logoCirclePic);
-                //logoCirclePic.setImageBitmap(docodeFile);
-                LogoUpTask logoUpTask = new LogoUpTask();
-                logoUpTask.execute(pathResult);
+        LocalLog.d(TAG, "onActivityResult() enter");
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            List<ImageBean> resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);
+            String content = "";
+            for (ImageBean imageBean : resultList) {
+                content = content + imageBean.toString() + "\n";
             }
-/*        if (requestCode == REQUEST_CODE_TAG) {
-                if (data != null) {
-                    ArrayList<String> tags = data.getStringArrayListExtra("tag");
-                    if (tags != null) {
-                        if (tags.size() == 2) {
-                            flagA1.setText(tags.get(0));
-                            flagA0.setText(tags.get(1));
-                            flagA1.setVisibility(View.VISIBLE);
-                            flagA0.setVisibility(View.VISIBLE);
-                        } else if (tags.size() == 1) {
-                            flagA1.setText(tags.get(0));
-                            flagA1.setVisibility(View.VISIBLE);
-                        }
-                    }
-                    ArrayList<String> ids = data.getStringArrayListExtra("id");
-                    if (ids != null) {
-                        if (ids.size() == 2) {
-                            LocalLog.d(TAG, ids.get(0));
-                            LocalLog.d(TAG, ids.get(1));
-                            createCircleBodyParam.setTags(ids.get(0) + "," + ids.get(1));
-                        } else if (ids.size() == 1) {
-                            LocalLog.d(TAG, ids.get(0));
-                            createCircleBodyParam.setTags(ids.get(0));
-                        }
-                    }
-
-                }
-        }*/
+            LocalLog.d(TAG, "content = " + content);
+            if (resultList != null && resultList.size() == 1) {
+                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), logoCirclePic, resultList.get(0).getWidth() / 4
+                        , resultList.get(0).getHeight() / 4);
+                localAvatar = resultList.get(0).getImagePath();
+            } else {
+                LocalLog.d(TAG, "未知操作");
+            }
+            return;
         }
     }
 
@@ -591,7 +599,13 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
             case R.id.edit_circle_confim:
                 LocalLog.d(TAG, "保存");
                 if (checkcreateCircleBodyParam()) {
-                    Presenter.getInstance(getContext()).putCircle(createCircleBodyParam, dataBean.getId());
+                    if (!TextUtils.isEmpty(localAvatar)) {
+                        LogoUpTask logoUpTask = new LogoUpTask();
+                        logoUpTask.execute(localAvatar);
+                    } else {
+                        Presenter.getInstance(getContext()).putCircle(createCircleBodyParam, dataBean.getId());
+                    }
+
                 }
                 break;
         }
@@ -627,6 +641,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
             LocalLog.d(TAG, "onPostExecute() enter");
             super.onPostExecute(s);
             createCircleBodyParam.setLogo(s);
+            Presenter.getInstance(getContext()).putCircle(createCircleBodyParam, dataBean.getId());
             //SocializeUtils.safeCloseDialog(dialog);
         }
     }

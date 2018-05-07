@@ -3,21 +3,29 @@ package com.paobuqianjin.pbq.step.view.fragment.pay;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -107,6 +115,11 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     RelativeLayout bankPaySpan;
     @Bind(R.id.confirm_pay)
     Button confirmPay;
+    private View popCircleOpBar;
+    private PopupWindow popupOpWindow;
+    TextView cancelText;
+    TextView confirmText;
+    private TranslateAnimation animationCircleType;
     private final static String ACTION_VIP_SELF = "com.paobuqianjin.pbq.setp.VIP_SELF_ACTION";
     private final static String ACTION_VIP_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_ACTION";
     FriendBundleData friendBundleData = null;
@@ -372,15 +385,72 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 }
                 break;
             case R.id.confirm_pay:
-                vipPostParam.setUserids(userids).setSpend(String.valueOf(payFloat));
-                LocalLog.d(TAG, "参数检查");
-                if (TextUtils.isEmpty(userids)) {
-                    Toast.makeText(getContext(), "请至少选择一个好友", Toast.LENGTH_SHORT).show();
-                    return;
+                int style = getSelect();
+                if (style == 1) {
+                    popPayConfirm(getString(R.string.wallet_pay_confirm));
+                } else if (style == 0) {
+                    pay();
                 }
-                Presenter.getInstance(getContext()).postVipNo(vipPostParam, innerCallBack);
+
                 break;
         }
+    }
+
+    private void popPayConfirm(String string) {
+        LocalLog.d(TAG, "popPayConfirm() enter 确认钱包支付");
+        popCircleOpBar = View.inflate(getContext(), R.layout.quit_circle_confirm, null);
+        TextView textViewTitle = (TextView) popCircleOpBar.findViewById(R.id.quit_title);
+        textViewTitle.setText(string);
+        popupOpWindow = new PopupWindow(popCircleOpBar, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupOpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupOpWindow = null;
+            }
+        });
+
+        cancelText = (TextView) popCircleOpBar.findViewById(R.id.cancel_quit_text);
+        cancelText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "取消支付");
+                popupOpWindow.dismiss();
+            }
+        });
+        confirmText = (TextView) popCircleOpBar.findViewById(R.id.confirm_quit_text);
+        confirmText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupOpWindow.dismiss();
+                pay();
+            }
+        });
+
+
+        popupOpWindow.setFocusable(true);
+        popupOpWindow.setOutsideTouchable(true);
+        popupOpWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new
+
+                AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+        popupOpWindow.showAtLocation(getActivity().findViewById(R.id.pay_vip_fg), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+        popCircleOpBar.startAnimation(animationCircleType);
+    }
+
+    public void pay() {
+        vipPostParam.setUserids(userids).setSpend(String.valueOf(payFloat));
+        LocalLog.d(TAG, "参数检查");
+        if (TextUtils.isEmpty(userids)) {
+            Toast.makeText(getContext(), "请至少选择一个好友", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Presenter.getInstance(getContext()).postVipNo(vipPostParam, innerCallBack);
     }
 
 
@@ -442,6 +512,15 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 dialog.dismiss();
             }
             Toast.makeText(getContext(), errorCode.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (popupOpWindow != null) {
+            popupOpWindow.dismiss();
+            popupOpWindow = null;
         }
     }
 }

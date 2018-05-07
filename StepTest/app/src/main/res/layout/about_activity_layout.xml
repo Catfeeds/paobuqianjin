@@ -111,19 +111,19 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="8dp"
                 android:layout_toStartOf="@+id/go_to"
-                android:text="全民跑步钱进"
-                android:textColor="@color/color_161727"
+                android:text="跑步钱进Lite"
+                android:textColor="@color/color_8a8a8a"
                 android:textSize="14dp" />
 
             <ImageView
-                android:visibility="invisible"
                 android:id="@+id/go_to"
                 android:layout_width="8dp"
                 android:layout_height="14dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="14dp"
-                android:src="@drawable/go_to" />
+                android:src="@drawable/go_to"
+                android:visibility="invisible" />
         </RelativeLayout>
     </RelativeLayout>
 

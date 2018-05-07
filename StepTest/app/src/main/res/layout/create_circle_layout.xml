@@ -140,7 +140,7 @@
                     android:cursorVisible="true"
                     android:focusable="true"
                     android:gravity="right"
-                    android:hint="必填"
+                    android:hint="维护圈友利益，请务必填写真实号码"
                     android:inputType="phone"
                     android:lines="1"
                     android:maxLength="11"
@@ -205,7 +205,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp" />
+                    android:layout_marginLeft="14dp"
+                    android:text="充值金额"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14dp" />
 
                 <EditText
                     android:id="@+id/circle_money_num_editor"
@@ -248,7 +251,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp" />
+                    android:layout_marginLeft="14dp"
+                    android:text="每日红包总金额"
+                    android:textColor="@color/color_161727" />
 
                 <EditText
                     android:id="@+id/circle_read_package_editor"
@@ -290,7 +295,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp" />
+                    android:layout_marginLeft="14dp"
+                    android:text="每日红包个数"
+                    android:textColor="@color/color_161727" />
 
                 <EditText
                     android:id="@+id/money_pkg_num_editor"

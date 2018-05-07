@@ -9,10 +9,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/2/27.
@@ -33,7 +35,7 @@ public class MyInviteFragment extends BaseFragment {
     RelativeLayout inviteCodeRel;
     @Bind(R.id.invite_code)
     TextView inviteCode;
-
+    private final static String USER_INVITE_AGREEMENT_ACTION = "com.paobuqianjin.step.pbq.INVITE_ACTION";
     @Override
     protected int getLayoutResId() {
         return R.layout.my_invite_fg;
@@ -69,5 +71,10 @@ public class MyInviteFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @OnClick(R.id.go_rule_span)
+    public void onClick() {
+        startActivity(AgreementActivity.class, null, false, USER_INVITE_AGREEMENT_ACTION);
     }
 }

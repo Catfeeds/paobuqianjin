@@ -124,4 +124,8 @@
     <string name="un_match_obj">未达标，还需继续努力哦!</string>
     <string name="too_slow">手慢了，商家红包已领完</string>
     <string name="tip_title">提示</string>
+    <string name="confirm_yes">确定</string>
+    <string name="cancel_no">取消</string>
+    <string name="wallet_pay_confirm">确定使用钱包支付?</string>
+    <string name="invite_string">①邀请越多好友使用跑步钱进，将获得更多的商家红包；\n②公司每月奖励前50名邀请达人，将有可能获得参加电视节目的机会；</string>
 </resources>
