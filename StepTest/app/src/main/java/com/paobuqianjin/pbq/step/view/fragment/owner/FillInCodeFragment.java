@@ -109,14 +109,15 @@ public class FillInCodeFragment extends BaseBarStyleTextViewFragment implements 
     }
 
     @Override
-    public void responseError(ErrorCode errorCode) {
-        Toast.makeText(getContext(), errorCode.getMessage(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
     public void response(PostInviteCodeResponse postInviteCodeResponse) {
         LocalLog.d(TAG, "PostInviteCodeResponse() enter " + postInviteCodeResponse.toString());
-        getActivity().finish();
+        if (postInviteCodeResponse.getError() == 0) {
+            Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
+            getActivity().finish();
+        } else {
+
+        }
+
     }
 
     @Override
@@ -128,6 +129,8 @@ public class FillInCodeFragment extends BaseBarStyleTextViewFragment implements 
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+
         }
     }
 }

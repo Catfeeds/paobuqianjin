@@ -40,7 +40,6 @@ public class MyInviteFragment extends BaseFragment {
     @Bind(R.id.invite_code)
     TextView inviteCode;
     private final static String USER_INVITE_AGREEMENT_ACTION = "com.paobuqianjin.step.pbq.INVITE_ACTION";
-
     @Override
     protected int getLayoutResId() {
         return R.layout.my_invite_fg;

@@ -258,7 +258,7 @@ public class NetStringCallBack extends StringCallback {
                 } else if (callBackInterface != null
                         && callBackInterface instanceof PostInviteCodeInterface) {
                     if (command == Engine.COMMAND_POST_INVITE_CODE) {
-                        ((PostInviteCodeInterface) callBackInterface).responseError(errorCode);
+                        ((PostInviteCodeInterface) callBackInterface).response(errorCode);
                     }
                 } else if (callBackInterface != null
                         && callBackInterface instanceof MyReleaseTaskInterface) {

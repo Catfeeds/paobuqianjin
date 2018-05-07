@@ -9,6 +9,4 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.PostInviteCodeResponse;
 
 public interface PostInviteCodeInterface extends CallBackInterface {
     public void response(PostInviteCodeResponse postInviteCodeResponse);
-
-    public void responseError(ErrorCode errorCode);
 }
