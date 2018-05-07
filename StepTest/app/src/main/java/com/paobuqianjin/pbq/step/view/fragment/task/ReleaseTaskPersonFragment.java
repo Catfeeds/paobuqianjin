@@ -262,6 +262,9 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                 LocalLog.d(TAG, "添加数据成功");
                 if (data != null) {
                     friendBundleData = (FriendBundleData) data.getParcelableExtra(getActivity().getPackageName());
+                    if (friendBundleData == null) {
+                        return;
+                    }
                     dataBeans = friendBundleData.getFriendData();
                     recvRecycler.setAdapter(new LikeUserAdapter(getContext(), dataBeans));
                     String friends = "";

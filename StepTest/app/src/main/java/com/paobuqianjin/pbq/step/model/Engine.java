@@ -13,7 +13,6 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.j256.ormlite.stmt.query.In;
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddBusinessParam;
@@ -64,6 +62,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LiveResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
@@ -556,7 +555,8 @@ public final class Engine {
     public void setNickName(Context context, String nickname) {
         FlagPreference.setNickName(context, nickname);
     }
-    public String getNickName(Context context){
+
+    public String getNickName(Context context) {
         return FlagPreference.getNickName(context);
     }
 
@@ -1719,6 +1719,36 @@ public final class Engine {
                             }
                         } catch (JsonSyntaxException e) {
                             e.printStackTrace();
+                        }
+                    }
+                });
+    }
+
+    public void getMyCode(final InnerCallBack innerCallBack) {
+        String url = NetApi.urlMyCode + "?userid=" + String.valueOf(getId(mContext));
+        OkHttpUtils
+                .get()
+                .addHeader("headtoken", getToken(mContext))
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (innerCallBack != null) {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            innerCallBack.innerCallBack(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        if (innerCallBack != null) {
+                            try {
+                                InviteCodeResponse inviteCodeResponse = new Gson().fromJson(s, InviteCodeResponse.class);
+                                innerCallBack.innerCallBack(inviteCodeResponse);
+                            } catch (JsonSyntaxException e) {
+
+                            }
                         }
                     }
                 });

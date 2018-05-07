@@ -83,6 +83,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
     private SHARE_MEDIA share_media;
     private ProgressDialog dialog;
     private UMImage imageCircleQr;
+    private String title = "";
 
     @Override
     protected int getLayoutResId() {
@@ -99,6 +100,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         //ButterKnife.bind(this, rootView);
+        setTitle(title);
         ButterKnife.bind(this, rootView);
         return rootView;
     }
@@ -125,10 +127,12 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         String codeInfo = "";
         if (id != null && !id.equals("")) {
             codeInfo = "circleid:" + id;
+            title = "圈子二维码";
         } else {
             userid = String.valueOf(Presenter.getInstance(getContext()).getId());
             codeInfo = "userid:" + userid;
             descQrCode.setText("用“跑步钱进”APP扫描二维码关注我");
+            title = "我的二维码";
         }
 
         qrcodeImg.setImageBitmap(encodeBitmap(codeInfo));

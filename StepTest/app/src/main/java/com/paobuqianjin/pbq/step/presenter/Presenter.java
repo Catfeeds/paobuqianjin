@@ -160,6 +160,7 @@ public final class Presenter {
     public void setAvatar(Context context, String avatar) {
         engine.setAvatar(context, avatar);
     }
+
     public String getNickName(Context context) {
         return engine.getNickName(context);
     }
@@ -439,6 +440,10 @@ public final class Presenter {
 
     public void getLiveList(final InnerCallBack innerCallBack, int page, int pagesize) {
         engine.getLiveList(innerCallBack, page, pagesize);
+    }
+
+    public void getMyCode(InnerCallBack innerCallBack) {
+        engine.getMyCode(innerCallBack);
     }
 
     //TODO 我加入的圈子

@@ -9,6 +9,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteCodeResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -36,6 +40,7 @@ public class MyInviteFragment extends BaseFragment {
     @Bind(R.id.invite_code)
     TextView inviteCode;
     private final static String USER_INVITE_AGREEMENT_ACTION = "com.paobuqianjin.step.pbq.INVITE_ACTION";
+
     @Override
     protected int getLayoutResId() {
         return R.layout.my_invite_fg;
@@ -49,14 +54,14 @@ public class MyInviteFragment extends BaseFragment {
         return rootView;
     }
 
-    public void setMsg(int inviteNum, int stepDollar, String code) {
+    public void setMsg(int inviteNum, int stepDollar) {
         if (isDetached()) {
             return;
         } else {
             String inviteStrformat = getString(R.string.invite_msg);
             String inviteStr = String.format(inviteStrformat, inviteNum, stepDollar);
             inviteResult.setText(inviteStr);
-            inviteCode.setText("我的邀请码:" + code);
+            /*inviteCode.setText("我的邀请码:" + code);*/
         }
     }
 
@@ -65,7 +70,29 @@ public class MyInviteFragment extends BaseFragment {
         super.initView(viewRoot);
         inviteResult = (TextView) viewRoot.findViewById(R.id.invite_result);
         inviteCode = (TextView) viewRoot.findViewById(R.id.invite_code);
+        Presenter.getInstance(getContext()).getMyCode(innerCallBack);
     }
+
+    private InnerCallBack innerCallBack = new InnerCallBack() {
+        @Override
+        public void innerCallBack(Object object) {
+            if (object instanceof ErrorCode) {
+
+            } else if (object instanceof InviteCodeResponse) {
+                if (inviteCode != null) {
+                    if (((InviteCodeResponse) object).getError() == 0) {
+                        if (((InviteCodeResponse) object).getData() != null) {
+                            int size = ((InviteCodeResponse) object).getData().size();
+                            if (size >= 1) {
+                                inviteCode.setText("我的邀请码:" + ((InviteCodeResponse) object).getData().get(1));
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+    };
 
     @Override
     public void onDestroyView() {

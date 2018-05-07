@@ -349,8 +349,9 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     public void response(MyInviteResponse myInviteResponse) {
         LocalLog.d(TAG, "MyInviteResponse() enter " + myInviteResponse.toString());
         if (myInviteResponse.getError() == 0) {
-            myInviteFragment.setMsg(myInviteResponse.getData().getNumber(), myInviteResponse.getData().getSum_credit(),
-                    myInviteResponse.getData().getMobile());
+            myInviteFragment.setMsg(myInviteResponse.getData().getNumber(), myInviteResponse.getData().getSum_credit());
+        } else if (myInviteResponse.getError() == 1) {
+            myInviteFragment.setMsg(0, 0);
         } else if (myInviteResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

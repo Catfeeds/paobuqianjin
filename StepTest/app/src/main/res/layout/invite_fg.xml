@@ -68,11 +68,12 @@
                     android:layout_marginRight="65dp"
                     app:tabIndicatorColor="@color/color_ffc14c"
                     app:tabIndicatorHeight="2dp"></android.support.design.widget.TabLayout>
+
                 <ImageView
-                    android:background="@color/color_f3f3f5"
-                    android:layout_alignParentBottom="true"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp" />
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_f3f3f5" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -80,12 +81,12 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/invite_no_span">
 
-                <com.paobuqianjin.pbq.step.view.base.view.CustomViewPager
+                <android.support.v4.view.ViewPager
                     android:id="@+id/step_dollar_viewpager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                </com.paobuqianjin.pbq.step.view.base.view.CustomViewPager>
+                </android.support.v4.view.ViewPager>
             </RelativeLayout>
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>

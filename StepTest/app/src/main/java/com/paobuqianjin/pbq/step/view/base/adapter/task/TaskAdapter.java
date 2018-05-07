@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter.task;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -62,16 +63,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             for (int i = 0; i < mData.size(); i++) {
                 if (mData.get(i).getId() != dataBean.getId()) {
                     mData.add(dataBean);
+                    super.notifyItemRangeInserted(mData.size() - 1, 1);
                 } else {
-                    mData.remove(i);
+                    /*mData.remove(i);
                     mData.add(dataBean);
+                    super.notifyItemChanged(i);*/
+                    return;
                 }
             }
         } else {
             mData = new ArrayList<>();
             mData.add(dataBean);
+            super.notifyItemRangeInserted(mData.size() - 1, 1);
         }
-        super.notifyItemRangeInserted(mData.size() - 1, 1);
+
     }
 
     public void setReceiveTaskInterface(ReceiveTaskInterface receiveTaskInterface) {
@@ -96,6 +101,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     holder.releaseDetails.setText("进行中");
                 } else {
                     holder.releaseDetails.setText("领取奖励");
+                    holder.releaseDetails.setTextColor(ContextCompat.getColor(context, R.color.color_f8));
+                    holder.releaseDetails.setBackground(ContextCompat.getDrawable(context, R.drawable.task_reward_bg));
                 }
             }
             if (((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
