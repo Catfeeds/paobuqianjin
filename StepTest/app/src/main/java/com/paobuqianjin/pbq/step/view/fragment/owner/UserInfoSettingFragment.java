@@ -32,19 +32,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lljjcoder.Interface.OnCityItemClickListener;
-import com.lljjcoder.bean.CityBean;
-import com.lljjcoder.bean.DistrictBean;
-import com.lljjcoder.bean.ProvinceBean;
-import com.lljjcoder.citywheel.CityConfig;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
-import com.lljjcoder.style.citylist.utils.CityListLoader;
-import com.lljjcoder.style.citypickerview.CityPickerView;
+import com.google.gson.Gson;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.ChooseAddressWheel;
+import com.paobuqianjin.pbq.step.customview.ChooseProviceCity;
+import com.paobuqianjin.pbq.step.customview.ProUtils;
+import com.paobuqianjin.pbq.step.data.bean.AddressDtailsEntity;
+import com.paobuqianjin.pbq.step.data.bean.AddressModel;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
@@ -78,7 +76,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by pbq on 2018/1/5.
  */
 
-public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implements UserInfoLoginSetInterface {
+public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implements UserInfoLoginSetInterface, ChooseAddressWheel.OnAddressChangeListener {
     private final static String TAG = UserInfoSettingFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -173,6 +171,11 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
     private String cachePath;
     private UserInfoResponse.DataBean userInfo;
     private boolean citySetFlag = false;
+    private ChooseProviceCity chooseAddressWheel;
+    private AddressDtailsEntity data;
+    private String province;
+    private String city;
+    private String district;
 
     @Override
     protected String title() {
@@ -291,40 +294,20 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                     break;
                 case R.id.change_city:
                     LocalLog.d(TAG, "设置城市");
-                    CityListLoader.getInstance().loadProData(getContext());
-                    CityPickerView.getInstance().setConfig(new CityConfig.Builder(getContext()).build());
-                    CityPickerView.getInstance().setOnCityItemClickListener(new OnCityItemClickListener() {
-                        @Override
-                        public void onSelected(ProvinceBean province, CityBean city, DistrictBean district) {
-
-                            //省份
-                            if (province != null) {
-
+                    if (chooseAddressWheel == null) {
+                        initWheel();
+                        String address = ProUtils.readAssert(getActivity(), "address.txt");
+                        AddressModel model = new Gson().fromJson(address, AddressModel.class);
+                        if (model != null) {
+                            data = model.Result;
+                            if (data == null) return;
+                            if (data.ProvinceItems != null && data.ProvinceItems.Province != null) {
+                                chooseAddressWheel.setProvince(data.ProvinceItems.Province);
                             }
-
-                            //城市
-                            if (city != null) {
-
-                            }
-
-                            //地区
-                            if (district != null) {
-
-                            }
-                            LocalLog.d(TAG, province.getName() + "· " + city.getName() + "·" + district.getName());
-                            putUserInfoParam.setCity(province.getName() + "· " + city.getName() + "·" + district.getName());
-                            cityNames.setText(province.getName() + "· " + city.getName() + "·" + district.getName());
-
                         }
-
-                        @Override
-                        public void onCancel() {
-                            ToastUtils.showLongToast(getContext(), "已取消");
-                        }
-                    });
-
-                    //显示
-                    CityPickerView.getInstance().showCityPicker(getContext());
+                    }
+                    setData();
+                    chooseAddressWheel.show(changeCity);
                     break;
                 case R.id.change_high:
                     LocalLog.d(TAG, "设置身高");
@@ -355,6 +338,24 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             }
         }
     };
+
+
+    private void initWheel() {
+        chooseAddressWheel = new ChooseProviceCity(getActivity());
+        chooseAddressWheel.setTitle("请选择地区");
+        chooseAddressWheel.setOnAddressChangeListener(this);
+    }
+
+    private void setData() {
+        if (data == null) return;
+        if (data.ProvinceItems != null && data.ProvinceItems.Province != null) {
+            if (province == null || province.length() == 0) {
+                chooseAddressWheel.defaultValue(data.Province, data.City, null);
+            } else {
+                chooseAddressWheel.defaultValue(province, city, null);
+            }
+        }
+    }
 
     @Override
     public void onDestroyView() {
@@ -937,6 +938,21 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             getActivity().finish();
             System.exit(0);
         }
+    }
+
+    @Override
+    public void onAddressChange(String province, String city, String district) {
+        this.province = province;
+        this.city = city;
+        if (province.equals(city)) {
+            putUserInfoParam.setProvince(province);
+            cityNames.setText(province);
+        } else {
+            putUserInfoParam.setProvince(province);
+            putUserInfoParam.setCity(city);
+            cityNames.setText(province + "· " + city);
+        }
+
     }
 
     @Override
