@@ -149,7 +149,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         inviteTab.post(new Runnable() {
             @Override
             public void run() {
-                setIndicator(inviteTab, 10, 10);
+                setIndicator(inviteTab, 40, 40);
             }
         });
 
@@ -269,10 +269,10 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         TextView textView = (TextView) view.findViewById(R.id.tab_text);
         if (position == 0) {
             textView.setText(titles[0]);
-            view.setGravity(Gravity.LEFT);
+            view.setGravity(Gravity.CENTER);
         } else if (position == 1) {
             textView.setText(titles[1]);
-            view.setGravity(Gravity.RIGHT);
+            view.setGravity(Gravity.CENTER);
         }
         return view;
     }

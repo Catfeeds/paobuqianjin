@@ -25,7 +25,7 @@ import java.util.List;
  * on 2018/5/3.
  */
 
-public class ChooseListPop {
+public class ChooseListPop<T> {
 
     private Activity context;
     private WindowManager.LayoutParams layoutParams;
@@ -33,7 +33,7 @@ public class ChooseListPop {
     private LinearLayout parentView;
     private SearchPositionAdapter adapter;
     private OnListSelectListener listener;
-    private List<PoiInfo> list = new ArrayList<>();
+    private List<T> list = new ArrayList<>();
     private ListView listView;
     private boolean isLoad;
 
@@ -93,7 +93,7 @@ public class ChooseListPop {
         });
     }
 
-    public void setData(List<PoiInfo> list) {
+    public void setData(List<T> list) {
         this.list.clear();
         this.list.addAll(list);
         listView.setSelection(0);
@@ -105,7 +105,8 @@ public class ChooseListPop {
         this.isLoad = isLoad;
     }
 
-    public void setMoreData(List<PoiInfo> list) {
+
+    public void setMoreData(List<T> list) {
         this.list.addAll(list);
         adapter.notifyDataSetChanged();
         isLoad = false;
@@ -121,8 +122,8 @@ public class ChooseListPop {
         popupWindow.dismiss();
     }
 
-    public interface OnListSelectListener {
-        void onListSelect(PoiInfo info);
+    public interface OnListSelectListener<T> {
+        void onListSelect(T info);
 
         void onBottom();
     }

@@ -515,10 +515,10 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                         popQuitConfirm(dynamicId, innerCallBack);
                         break;
                     case R.id.like_num_icon:
-                        LocalLog.d(TAG, "点赞");
+/*                        LocalLog.d(TAG, "点赞");
                         PutVoteParam putVoteParam = new PutVoteParam();
                         putVoteParam.setDynamicid(dynamicId).setUserid(Presenter.getInstance(mContext).getId());
-                        Presenter.getInstance(mContext).putVote(putVoteParam, innerCallBack);
+                        Presenter.getInstance(mContext).putVote(putVoteParam, innerCallBack);*/
                         break;
                     default:
                         break;

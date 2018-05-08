@@ -295,6 +295,9 @@ public class RechargeDetailFragment extends BaseFragment implements RechargeDeta
         if (rechargeDetailResponse.getError() == 0) {
             //outDetailRecycler.setAdapter(new IncomeAdater(getContext(), rechargeDetailResponse.getData().getData()));
             LocalLog.d(TAG, rechargeDetailResponse.getMessage());
+            if (notFoundData == null) {
+                return;
+            }
             notFoundData.setVisibility(View.GONE);
             outComeRefresh.setVisibility(View.VISIBLE);
             pageCount = rechargeDetailResponse.getData().getPagenation().getTotalPage();

@@ -76,6 +76,9 @@ public class OwnerCreateFragment extends BaseFragment {
         if (TextUtils.isEmpty(keyWord)) {
             LocalLog.d(TAG, "显示旧数据");
             isSearch = false;
+            if (notFoundData == null) {
+                return;
+            }
             notFoundData.setVisibility(View.GONE);
             createCircleSwipe.setVisibility(View.VISIBLE);
             pageIndex = mCurrentIndex;

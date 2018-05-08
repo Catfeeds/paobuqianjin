@@ -237,7 +237,13 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 birthDayTV.setText(userInfo.getBirthyear() + "年" + userInfo.getBirthmonth() + "月" + userInfo.getBirthday() + "日");
                 highNum.setText(String.valueOf(userInfo.getHeight()) + "cm");
                 weightNum.setText(String.valueOf(userInfo.getWeight()) + "kg");
-                cityNames.setText(String.valueOf(userInfo.getCity()));
+                if (specialCity(userInfo.getProvince())) {
+                    cityNames.setText(String.valueOf(userInfo.getCity()));
+                } else {
+                    if (!TextUtils.isEmpty(userInfo.getProvince())) {
+                        cityNames.setText(String.valueOf(userInfo.getProvince()) + "." + String.valueOf(userInfo.getCity()));
+                    }
+                }
 
                 LocalLog.d(TAG, "ID = " + userInfo.getId());
             }
@@ -940,13 +946,24 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
         }
     }
 
+    private boolean specialCity(String province) {
+        if ("澳门".equals(province) || "台湾省".equals(province)
+                || "香港".equals(province) || "重庆市".equals(province) || "上海市".equals(province)
+                || "天津市".equals(province) || "北京市".equals(province)) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
+
     public void onAddressChange(String province, String city, String district) {
         this.province = province;
         this.city = city;
-        if (province.equals(city)) {
+        if (specialCity(province)) {
             putUserInfoParam.setProvince(province);
-            cityNames.setText(province);
+            putUserInfoParam.setCity(city);
+            cityNames.setText(city);
         } else {
             putUserInfoParam.setProvince(province);
             putUserInfoParam.setCity(city);

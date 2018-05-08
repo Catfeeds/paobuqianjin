@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -75,7 +76,6 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
     private String city;
     private double latitude, longitude;
     private int pageNum = 0;
-    private boolean isNear;
 
     @Override
     protected String title() {
@@ -103,7 +103,6 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     if (!TextUtils.isEmpty(city)) {
-                        isNear = false;
                         pageNum = 0;
                         mPoiSearch.searchInCity(new PoiCitySearchOption().city(city)
                                 .keyword(searchCircleText.getText().toString()).pageNum(pageNum));
@@ -215,6 +214,13 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
 
     @Override
     public void response(String city, double latitude, double longitude) {
+    }
+
+    @Override
+    public void response(BDLocation location) {
+        String city = location.getCity();
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
         LocalLog.d(TAG, "city:" + city + ",latitude:" + latitude + ";longitude:" + longitude);
         if (isFirstLocation) {
             this.city = city;
@@ -226,8 +232,7 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
             setUserMapCenter(latitude, longitude);
             isFirstLocation = false;
             pageNum = 0;
-            isNear = true;
-            mPoiSearch.searchNearby(new PoiNearbySearchOption().location(new LatLng(latitude, longitude)).keyword("").pageNum(pageNum));
+
         }
     }
 
@@ -245,26 +250,23 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
             }
             if (pageNum == 0) {
                 if (pop == null) {
-                    pop = new ChooseListPop(SponsorRedLocationActivity.this, new ChooseListPop.OnListSelectListener() {
+                    pop = new ChooseListPop<PoiInfo>(SponsorRedLocationActivity.this, new ChooseListPop.OnListSelectListener() {
                         @Override
-                        public void onListSelect(PoiInfo info) {
-                            SponsorRedLocationActivity.this.city = info.city;
-                            SponsorRedLocationActivity.this.latitude = info.location.latitude;
-                            SponsorRedLocationActivity.this.longitude = info.location.longitude;
+                        public void onListSelect(Object info) {
+                            SponsorRedLocationActivity.this.city = ((PoiInfo)info).city;
+                            SponsorRedLocationActivity.this.latitude = ((PoiInfo)info).location.latitude;
+                            SponsorRedLocationActivity.this.longitude = ((PoiInfo)info).location.longitude;
                             setMarker(latitude, longitude);
                             setUserMapCenter(latitude, longitude);
                         }
+
 
                         @Override
                         public void onBottom() {
                             if (!TextUtils.isEmpty(city)) {
                                 pageNum++;
-                                if (isNear) {
-                                    mPoiSearch.searchNearby(new PoiNearbySearchOption().location(new LatLng(mCurrentLat, mCurrentLon)).keyword("").pageNum(pageNum));
-                                } else {
-                                    mPoiSearch.searchInCity(new PoiCitySearchOption().city(city)
-                                            .keyword(searchCircleText.getText().toString()).pageNum(pageNum));
-                                }
+                                mPoiSearch.searchInCity(new PoiCitySearchOption().city(city)
+                                        .keyword(searchCircleText.getText().toString()).pageNum(pageNum));
                             }
                         }
                     });

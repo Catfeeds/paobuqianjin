@@ -162,6 +162,7 @@ public class LocalBaiduService extends Service {
                 intent.putExtra("city", location.getCity());
                 intent.putExtra("latitude", location.getLatitude());
                 intent.putExtra("longitude", location.getLongitude());
+                intent.putExtra("location",location);
                 sendBroadcast(intent);
                 stopSelf();
             }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorInfoActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
@@ -110,8 +111,11 @@ public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorV
                 Presenter.getInstance(context).deleteBusiness(businessid, new InnerCallBack() {
                     @Override
                     public void innerCallBack(Object object) {
-                        if (!(object instanceof ErrorCode)) {
+                        if (object instanceof ErrorCode) {
+                            ToastUtils.showShortToast(context, ((ErrorCode) object).getMessage());
+                        } else {
                             ((SponsorManagerActivity) context).refresh();
+                            deleteNormal.dismiss();
                         }
                     }
                 });

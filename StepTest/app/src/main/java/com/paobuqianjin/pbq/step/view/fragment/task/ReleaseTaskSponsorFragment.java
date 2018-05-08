@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,8 @@ import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.TargetPeopleActivity;
+import com.paobuqianjin.pbq.step.customview.LimitLengthFilter;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskSponsorRespone;
@@ -111,6 +115,8 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     private String distanceStr;
     private String city;
     private int businessId = -1;
+    private NormalDialog dialog;
+    private LimitLengthFilter filter;
 
     @Override
     protected int getLayoutResId() {
@@ -129,11 +135,19 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        filter = new LimitLengthFilter();
+        targetTaskStepNum.setFilters(new InputFilter[]{filter});
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         Presenter.getInstance(context).attachUiInterface(this);
 
     }
+
 
     @Override
     public void onDestroyView() {
@@ -178,23 +192,41 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                 //目标步数
                 String targetStepDayNumStr = targetStepDayNum.getText().toString().trim();
                 //目标人群
-
-                if (TextUtils.isEmpty(targetTaskStepNumStr)
-                        || TextUtils.isEmpty(targetTaskMoneyNumStr)
-                        || TextUtils.isEmpty(targetTaskDayNumStr)
-                        || TextUtils.isEmpty(packDayNumStr)
-                        || TextUtils.isEmpty(targetStepDayNumStr)
-                        ) {
-                    Toast.makeText(getActivity(), "请完善消息！", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(targetTaskStepNumStr.trim()) || filter.calculateLength(targetTaskStepNumStr) < 4
+                        || filter.calculateLength(targetTaskStepNumStr) > 32) {
+                    if (dialog == null) {
+                        dialog = new NormalDialog(getContext());
+                        dialog.setMessage("请输入2-16位任务名称");
+                        dialog.setSingleBtn(true);
+                        dialog.setYesOnclickListener("确定", new NormalDialog.onYesOnclickListener() {
+                            @Override
+                            public void onYesClick() {
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                    dialog.show();
                     return;
                 }
                 try {
-                    if (Integer.parseInt(targetTaskMoneyNumStr) < 5) {
-                        ToastUtils.showShortToast(getActivity(), "红包数额不能少于5元");
+                    if (TextUtils.isEmpty(targetTaskMoneyNumStr.trim()) || Integer.parseInt(targetTaskMoneyNumStr) < 5) {
+                        ToastUtils.showShortToast(getActivity(), "奖励金额不能少于5元");
                         return;
                     }
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
+                }
+                if (TextUtils.isEmpty(targetTaskDayNumStr.trim())) {
+                    Toast.makeText(getActivity(), "请输入任务天数", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(packDayNumStr.trim())) {
+                    Toast.makeText(getActivity(), "请输入每日红包个数", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(targetStepDayNumStr.trim())) {
+                    Toast.makeText(getActivity(), "请输入目标步数", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 if (taskSponsorParam == null) {
                     taskSponsorParam = new TaskSponsorParam();

@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter.dan;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 
 import java.util.List;
 
@@ -155,6 +157,16 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
                 @Override
                 public void onClick(View v) {
                     Presenter.getInstance(context).postAddUserFollow(innerCallBack, userid);
+                }
+            });
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    //TODO ACTION_SCAN_USERID
+                    intent.putExtra("userid", userid);
+                    intent.setClass(context, UserCenterActivity.class);
+                    context.startActivity(intent);
                 }
             });
         }

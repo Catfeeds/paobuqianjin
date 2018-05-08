@@ -30,8 +30,7 @@
                 android:layout_marginLeft="14dp"
                 android:text="填写邀请码"
                 android:textColor="@color/color_161727"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+                android:textSize="15dp" />
 
             <ImageView
                 android:layout_width="7dp"
@@ -61,8 +60,8 @@
                 android:layout_alignBottom="@+id/step_dollar_bg"
                 android:layout_alignParentBottom="true"
                 android:layout_below="@+id/line1"
-                android:layout_marginLeft="65dp"
-                android:layout_marginRight="65dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
                 app:tabIndicatorColor="@color/color_ffc14c"
                 app:tabIndicatorHeight="2dp"></android.support.design.widget.TabLayout>
 

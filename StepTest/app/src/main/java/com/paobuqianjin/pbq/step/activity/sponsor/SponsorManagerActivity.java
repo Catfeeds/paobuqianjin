@@ -146,10 +146,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_add_sponsor: {
-                Intent intent = new Intent();
-                intent.setAction("com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION");
-                intent.setClass(this, SponsorInfoActivity.class);
-                startActivityForResult(intent, REQUEST_SPONSOR_INFO);
+                goToAdd();
             }
             break;
         }
@@ -175,6 +172,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                     } else {
                         default_sponsor.setVisibility(View.GONE);
                         line.setVisibility(View.INVISIBLE);
+                        goToAdd();
                     }
                 }
                 adapter.notifyDataSetChanged();
@@ -183,12 +181,21 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
             } else {
                 if (isRefresh) {
                     data.clear();
+                    adapter.notifyDataSetChanged();
                     refreshLayout.setRefreshing(false);
                     default_sponsor.setVisibility(View.GONE);
                     line.setVisibility(View.INVISIBLE);
+                    goToAdd();
                 }
             }
         }
+    }
+
+    private void goToAdd() {
+        Intent intent = new Intent();
+        intent.setAction("com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION");
+        intent.setClass(this, SponsorInfoActivity.class);
+        startActivityForResult(intent, REQUEST_SPONSOR_INFO);
     }
 
     private void setDefaultView(final GetUserBusinessResponse.DataBeanX.DataBean dataBean) {
@@ -244,7 +251,10 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                 Presenter.getInstance(SponsorManagerActivity.this).deleteBusiness(businessid, new InnerCallBack() {
                     @Override
                     public void innerCallBack(Object object) {
-                        if (!(object instanceof ErrorCode)) {
+                        if (object instanceof ErrorCode) {
+                            ToastUtils.showShortToast(SponsorManagerActivity.this, ((ErrorCode) object).getMessage());
+                        } else {
+                            deleteNormal.dismiss();
                             refresh();
                         }
                     }

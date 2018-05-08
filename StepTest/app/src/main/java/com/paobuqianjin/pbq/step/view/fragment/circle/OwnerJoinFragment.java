@@ -223,6 +223,9 @@ public class OwnerJoinFragment extends BaseFragment {
     private MyJoinCircleInterface myJoinCircleInterface = new MyJoinCircleInterface() {
         @Override
         public void response(MyJoinCircleResponse myJoinCircleResponse) {
+            if (notFoundData == null) {
+                return;
+            }
             if (myJoinCircleResponse.getError() == 0) {
                 LocalLog.d(TAG, myJoinCircleResponse.getMessage());
                 notFoundData.setVisibility(View.GONE);

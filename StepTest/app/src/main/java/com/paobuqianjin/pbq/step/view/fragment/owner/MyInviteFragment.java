@@ -40,6 +40,7 @@ public class MyInviteFragment extends BaseFragment {
     @Bind(R.id.invite_code)
     TextView inviteCode;
     private final static String USER_INVITE_AGREEMENT_ACTION = "com.paobuqianjin.step.pbq.INVITE_ACTION";
+
     @Override
     protected int getLayoutResId() {
         return R.layout.my_invite_fg;
@@ -57,9 +58,11 @@ public class MyInviteFragment extends BaseFragment {
         if (isDetached()) {
             return;
         } else {
-            String inviteStrformat = getString(R.string.invite_msg);
-            String inviteStr = String.format(inviteStrformat, inviteNum, stepDollar);
-            inviteResult.setText(inviteStr);
+            if (this.isAdded()) {
+                String inviteStrformat = getString(R.string.invite_msg);
+                String inviteStr = String.format(inviteStrformat, inviteNum, stepDollar);
+                inviteResult.setText(inviteStr);
+            }
             /*inviteCode.setText("我的邀请码:" + code);*/
         }
     }

@@ -13,13 +13,13 @@
         android:src="@drawable/default_head_ico" />
 
     <ImageView
-    	android:id="@+id/vip_flg"
+        android:id="@+id/vip_flg"
         android:layout_width="27dp"
         android:layout_height="13dp"
         android:layout_alignBottom="@+id/head_icon"
         android:layout_alignRight="@+id/head_icon"
-        android:scaleType="centerInside"
         android:paddingEnd="5dp"
+        android:scaleType="centerInside"
         android:src="@drawable/vip_flg"
         android:visibility="gone" />
 
@@ -44,7 +44,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/task_desc"
             android:layout_marginTop="13dp"
-            android:text="派发人:微微"
+            android:ellipsize="end"
+            android:maxEms="12"
+            android:maxLines="1"
+            android:text=""
             android:textColor="@color/color_8a8a8a"
             android:textSize="12dp" />
 

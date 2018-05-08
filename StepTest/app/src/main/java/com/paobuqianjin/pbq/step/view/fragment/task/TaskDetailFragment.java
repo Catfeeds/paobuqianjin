@@ -166,26 +166,26 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
                 return;
             }
 
-            if (taskRecDetailResponse.getData().getIs_finished() == 1) {
-                buttonAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_e4393c));
-                buttonAction.setEnabled(true);
-                buttonAction.setText("领取奖励");
-            } else {
-                if (taskRecDetailResponse.getData().getIs_receive() == 1) {
+            if (taskRecDetailResponse.getData().getIs_receive() == 1) {
+                if (taskRecDetailResponse.getData().getIs_finished() == 1) {
+                    buttonAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_e4393c));
+                    buttonAction.setEnabled(true);
+                    buttonAction.setText("领取奖励");
+                } else {
                     buttonAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_b8bbbd));
                     buttonAction.setText("进行中");
                     buttonAction.setEnabled(false);
-                } else {
-                    buttonAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_e4393c));
-                    buttonAction.setText("领取任务");
-                    buttonAction.setEnabled(true);
                 }
+            } else {
+                buttonAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_e4393c));
+                buttonAction.setText("领取任务");
+                buttonAction.setEnabled(true);
             }
             targetStep.setText(taskRecDetailResponse.getData().getTask_name());
             targetMoney.setText("奖励金额: " + String.valueOf(taskRecDetailResponse.getData().getReward_amount()));
             Presenter.getInstance(getContext()).getImage(releaseUseIco, taskRecDetailResponse.getData().getAvatar());
             dearName.setText(taskRecDetailResponse.getData().getNickname());
-            dearId.setText(String.valueOf(taskRecDetailResponse.getData().getUserid()));
+            dearId.setText("ID:" + String.valueOf(taskRecDetailResponse.getData().getUserid()));
             stepDesRun.setText(String.valueOf(taskRecDetailResponse.getData().getUser_step()) + "/" + String.valueOf(taskRecDetailResponse.getData().getTarget_step()));
             if (taskRecDetailResponse.getData().getVip() == 1) {
                 vipFlg.setVisibility(View.VISIBLE);
@@ -226,7 +226,6 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
                 if (((ReceiveTaskResponse) object).getError() == 0) {
                     buttonAction.setText("进行中");
                     buttonAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_b8bbbd));
-                    buttonAction.setText("进行中");
                     buttonAction.setEnabled(false);
                     Intent intent = new Intent();
                     intent.setAction(REC_TASK_ACTION);
@@ -252,9 +251,14 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.button_action:
-                    LocalLog.d(TAG, "领取奖励");
-                    if (taskId != -1) {
-                        Presenter.getInstance(getContext()).putTask("receive_reward", taskId, innerCallBack);
+                    if (buttonAction.getText().toString().equals("领取奖励")) {
+                        if (taskId != -1) {
+                            Presenter.getInstance(getContext()).putTask("receive_reward", taskId, innerCallBack);
+                        }
+                    } else if (buttonAction.getText().toString().equals("领取任务")) {
+                        if (taskId != -1) {
+                            Presenter.getInstance(getContext()).putTask("receive_task", taskId, innerCallBack);
+                        }
                     }
                     break;
             }

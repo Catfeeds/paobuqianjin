@@ -28,8 +28,13 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(getLayoutResId(), container, false);
+        initBarView(view);
         initView(view);
         return view;
+    }
+
+    protected void initBarView(View view) {
+
     }
 
     protected abstract int getLayoutResId();

@@ -516,6 +516,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                         bundle.putString(CIRCLE_NAME, circleDetailResponse.getData().getName());
                         bundle.putString(CIRCLE_LOGO, circleDetailResponse.getData().getLogo());
                         startActivity(PaoBuPayActivity.class, bundle, false, QRCODE_ACTION);
+                        popupOpWindowTop.dismiss();
                     }
                     break;
                 case R.id.editor_text:
@@ -525,6 +526,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                         intentEdit.setClass(getContext(), EditCircleActivity.class);
                         intentEdit.putExtra("circle_detail", circleDetailResponse.getData());
                         startActivityForResult(intentEdit, REQUEST_EDIT);
+                        popupOpWindowTop.dismiss();
                     }
                     break;
                 case R.id.mananger_text:
@@ -536,14 +538,17 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     intentMember.setClass(getContext(), MemberManagerActivity.class);
                     intentMember.setAction(MEMBER_MANANGER_ACTION);
                     startActivityForResult(intentMember, REQUEST_MEMBER);
+                    popupOpWindowTop.dismiss();
                     break;
                 case R.id.cancle_text:
                     LocalLog.d(TAG, "解散");
                     Presenter.getInstance(getContext()).deleteCircle(circleId);
+                    popupOpWindowTop.dismiss();
                     break;
                 case R.id.exit_text:
                     LocalLog.d(TAG, "退出");
                     popQuitConfirm();
+                    popupOpWindowTop.dismiss();
                     break;
                 case R.id.join_in:
                     LocalLog.d(TAG, "点击加入圈子");

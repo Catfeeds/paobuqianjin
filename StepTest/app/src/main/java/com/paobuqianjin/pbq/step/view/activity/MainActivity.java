@@ -221,7 +221,6 @@ public class MainActivity extends BaseActivity {
             } else {
                 // ScanResult 为 获取到的字符串
                 String ScanResult = scanResult;
-                Toast.makeText(this, "扫描成功:" + ScanResult, Toast.LENGTH_LONG).show();
                 LocalLog.d(TAG, ScanResult);
                 if (ScanResult.startsWith("userid:")) {
                     LocalLog.d(TAG, "扫描个人");

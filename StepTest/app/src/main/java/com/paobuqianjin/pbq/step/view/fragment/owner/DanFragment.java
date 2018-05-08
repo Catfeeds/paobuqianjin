@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,8 +21,10 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserDanResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.DanAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.paobuqianjin.pbq.step.view.base.view.ProcessDanDrawable;
 
 import butterknife.Bind;
@@ -88,9 +91,12 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
     TextView barTvRight;
     @Bind(R.id.vip_flg)
     ImageView vipFlg;
+    @Bind(R.id.scrollView_center)
+    BounceScrollView scrollViewCenter;
     private long userStep;
     LinearLayoutManager layoutManager;
     RelativeLayout relativeLayout;
+    RelativeLayout barNull;
 
     @Override
     protected String title() {
@@ -131,7 +137,19 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
                 Presenter.getInstance(getContext()).getImage(userIcon, usrIcon);
             }
         }
-
+        barNull = (RelativeLayout) (viewRoot.findViewById(R.id.dan_bar));
+        scrollViewCenter = (BounceScrollView) viewRoot.findViewById(R.id.scrollView_center);
+        scrollViewCenter.setScrollListener(new BounceScrollView.ScrollListener() {
+            @Override
+            public void scrollOritention(int l, int t, int oldl, int oldt) {
+                LocalLog.d(TAG, "l =  " + l + ",t = " + t + ",oldl= " + oldl + "," + oldt);
+                if (Utils.px2dip(getContext(), (float) t) > 64) {
+                    barNull.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_232433));
+                } else {
+                    barNull.setBackground(null);
+                }
+            }
+        });
     }
 
     @Override

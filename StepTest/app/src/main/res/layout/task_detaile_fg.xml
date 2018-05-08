@@ -74,8 +74,8 @@
                         android:layout_height="13dp"
                         android:layout_alignBottom="@+id/release_use_ico"
                         android:layout_alignRight="@+id/release_use_ico"
-                        android:scaleType="centerInside"
                         android:paddingEnd="5dp"
+                        android:scaleType="centerInside"
                         android:src="@drawable/vip_flg"
                         android:visibility="gone" />
 
@@ -268,8 +268,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_below="@+id/num_2"></RelativeLayout>
+                android:layout_height="40dp"
+                android:layout_below="@+id/task_ruls_detail"></RelativeLayout>
         </RelativeLayout>
 
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>

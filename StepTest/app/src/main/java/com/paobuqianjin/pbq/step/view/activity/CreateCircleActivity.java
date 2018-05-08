@@ -224,6 +224,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     private final static String QRCODE_ACTION = "android.intent.action.QRCODE";
     private final int REQUEST_CODE = 111;
     private String localAvatar;
+
 /*
 
     static {
@@ -291,7 +292,8 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         circleReadPackageEditor.addTextChangedListener(textWatcher);
         moneyPkgNumEditor.setSelection(moneyPkgNumEditor.getText().toString().length());
         passwordNumEditor.setSelection(passwordNumEditor.getText().toString().length());
-
+        mRationale = new DefaultRationale();
+        mSetting = new PermissionSetting(this);
 
     }
 

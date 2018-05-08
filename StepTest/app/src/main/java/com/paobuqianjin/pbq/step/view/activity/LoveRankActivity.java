@@ -36,10 +36,18 @@ public class LoveRankActivity extends BaseActivity {
         if (intent != null) {
             if (ACTION_LOVE_RANK.equals(intent.getAction()) && intent.getParcelableExtra(getPackageName() + "circle_detail") != null) {
                 rechargeRankBundleData = (RechargeRankBundleData) intent.getParcelableExtra(getPackageName() + "circle_detail");
-                loveRankFragment.setRankData(rechargeRankBundleData.getRechargeRankData());
+                if (rechargeRankBundleData == null) {
+                    return;
+                } else {
+                    loveRankFragment.setRankData(rechargeRankBundleData.getRechargeRankData());
+                }
             } else if (ACTION_STEP_RANK.equals(intent.getAction())) {
                 stepBundleData = (StepBundleData) intent.getParcelableExtra(getPackageName() + "circle_detail");
-                loveRankFragment.setRankData(stepBundleData.getStepRankData());
+                if (stepBundleData == null) {
+                    return;
+                } else {
+                    loveRankFragment.setRankData(stepBundleData.getStepRankData());
+                }
             }
         }
         getSupportFragmentManager().beginTransaction()

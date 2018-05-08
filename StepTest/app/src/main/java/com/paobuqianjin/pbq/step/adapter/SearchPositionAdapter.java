@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.SelectPoisitonListBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,19 +21,41 @@ import java.util.List;
  * on 2018/5/4.
  */
 
-public class SearchPositionAdapter extends BaseAdapter {
+public class SearchPositionAdapter<T> extends BaseAdapter {
 
     private LayoutInflater inflater;
-    private List<PoiInfo> data = new ArrayList<>();
+    private List<T> data = new ArrayList<>();
     private int position = -1;
 
-    public SearchPositionAdapter(Context context, List<PoiInfo> data) {
+    public SearchPositionAdapter(Context context) {
+        inflater = LayoutInflater.from(context);
+    }
+
+    public SearchPositionAdapter(Context context, List<T> data) {
         this.data = data;
         inflater = LayoutInflater.from(context);
     }
 
+    public List<T> getData() {
+        return data;
+    }
+
+    public void setData(List<T> data) {
+        this.data.clear();
+        this.data.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void setData(List<T> data, int position) {
+        this.data.clear();
+        this.data.addAll(data);
+        this.position = position;
+        notifyDataSetChanged();
+    }
+
     public void setSelect(int position) {
         this.position = position;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -59,8 +83,26 @@ public class SearchPositionAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.tvPosition.setText(data.get(i).name);
-        holder.tvInfo.setText(data.get(i).address);
+        if (data.get(i) instanceof PoiInfo) {
+            PoiInfo bean = (PoiInfo) data.get(i);
+            holder.tvPosition.setText(bean.name);
+            if (TextUtils.isEmpty(bean.address)) {
+                holder.tvInfo.setVisibility(View.GONE);
+            } else {
+                holder.tvInfo.setVisibility(View.VISIBLE);
+                holder.tvInfo.setText(bean.address);
+            }
+        } else if (data.get(i) instanceof SelectPoisitonListBean) {
+            SelectPoisitonListBean bean = (SelectPoisitonListBean) data.get(i);
+            holder.tvPosition.setText(bean.getName());
+            if (TextUtils.isEmpty(bean.getAddress())) {
+                holder.tvInfo.setVisibility(View.GONE);
+            } else {
+                holder.tvInfo.setVisibility(View.VISIBLE);
+                holder.tvInfo.setText(bean.getAddress());
+            }
+        }
+
         if (position == i) {
             holder.ivSelect.setVisibility(View.VISIBLE);
         } else {

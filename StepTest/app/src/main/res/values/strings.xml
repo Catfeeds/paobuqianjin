@@ -56,7 +56,7 @@
     <string name="target_step">目标步数 %1d步</string>
     <string name="circle_total">圈子余额:%.2f元</string>
     <string name="near_by_step">当天健步%1d步</string>
-    <string name="near_by_distance">%.1fm</string>
+    <string name="near_by_distance">%.0fm</string>
     <string name="total_income">总金额%.2f元</string>
     <string name="today_income">￥%.2f</string>
     <string name="month_income">￥%.2f</string>
@@ -65,7 +65,7 @@
     <string name="invite_code">我的邀请码:%ld</string>
     <string name="invite_msg">成功邀请%d人，获得步币%d块</string>
     <string name="invite_dan_msg">邀请了%d个好友</string>
-    <string name="invite_red_pkg">收获红包%.2f元</string>
+    <string name="invite_red_pkg">收获红包%.2f块</string>
     <string name="invite_dan_rank">第%d名</string>
     <string name="task_days">任务天数: %d 天</string>
     <string name="target_money">奖励总金额: %.2f 元</string>
@@ -128,4 +128,6 @@
     <string name="cancel_no">取消</string>
     <string name="wallet_pay_confirm">确定使用钱包支付?</string>
     <string name="invite_string">①邀请越多好友使用跑步钱进，将获得更多的商家红包；\n②公司每月奖励前50名邀请达人，将有可能获得参加电视节目的机会；</string>
+    <string name="title_activity_sponsor_tmap">SponsorTMapActivity</string>
+    <string name="cancel_pay">是否取消此次任务的发布</string>
 </resources>

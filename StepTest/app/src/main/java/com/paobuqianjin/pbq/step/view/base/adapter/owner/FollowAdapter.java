@@ -1,19 +1,28 @@
 package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
@@ -35,14 +44,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowViewHolder> {
     private final static String TAG = FollowAdapter.class.getSimpleName();
-    Context context;
+    Activity context;
     List<?> mData;
     private final static String FOLLOW_OTO_ACTION = "com.paobuqianjin.pbq.action.OTO_ACTION";
     private final static String MY_FOLLOW_ACTION = "com.paobuqianjin.pbq.action.MY_FOLLOW_ACTION";
     private final static String FOLLOW_ME_ACTION = "com.paobuqianjin.pbq.action.FOLLOME_ACTION";
     private LocalBroadcastManager localBroadcastManager;
+    private View popCircleOpBar;
+    private PopupWindow popupOpWindow;
+    private TranslateAnimation animationCircleType;
 
-    public FollowAdapter(Context context, List<?> data) {
+    public FollowAdapter(Activity context, List<?> data) {
         this.context = context;
         mData = data;
         localBroadcastManager = LocalBroadcastManager.getInstance(context);
@@ -205,11 +217,61 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
                         break;
                     case R.id.bt_follow:
                         LocalLog.d(TAG, "style = " + stytle + ",content " + btFollow.getText());
-                        Presenter.getInstance(context).postAddUserFollow(innerCallBack, userid);
+                        if (btFollow.getText().toString().equals("互相关注")) {
+                            popCancelPointConfirm("取消关注");
+                        } else {
+                            Presenter.getInstance(context).postAddUserFollow(innerCallBack, userid);
+                        }
                         break;
                 }
             }
         };
+
+        private void popCancelPointConfirm(String title) {
+            LocalLog.d(TAG, "popQuitConfirm() enter 退圈确认");
+            popCircleOpBar = View.inflate(context, R.layout.quit_circle_confirm, null);
+            TextView titleTV = (TextView) popCircleOpBar.findViewById(R.id.quit_title);
+            titleTV.setText(title);
+            popupOpWindow = new PopupWindow(popCircleOpBar, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            popupOpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    popupOpWindow = null;
+                }
+            });
+            TextView cancelText = (TextView) popCircleOpBar.findViewById(R.id.cancel_quit_text);
+            cancelText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    LocalLog.d(TAG, "取消退圈动作");
+                    popupOpWindow.dismiss();
+                }
+            });
+            TextView confirmText = (TextView) popCircleOpBar.findViewById(R.id.confirm_quit_text);
+            confirmText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Presenter.getInstance(context).postAddUserFollow(innerCallBack, userid);
+                    popupOpWindow.dismiss();
+                }
+            });
+
+
+            popupOpWindow.setFocusable(true);
+            popupOpWindow.setOutsideTouchable(true);
+            popupOpWindow.setBackgroundDrawable(new BitmapDrawable());
+
+            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleType.setInterpolator(new
+
+                    AccelerateInterpolator());
+            animationCircleType.setDuration(200);
+
+            popupOpWindow.showAtLocation(context.findViewById(R.id.my_friend_fg), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+            popCircleOpBar.startAnimation(animationCircleType);
+        }
 
         private void initView(View viewRoot) {
             userNearIcon = (CircleImageView) viewRoot.findViewById(R.id.user_near_icon);

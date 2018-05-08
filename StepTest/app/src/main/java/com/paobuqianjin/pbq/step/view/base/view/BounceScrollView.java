@@ -29,6 +29,11 @@ public class BounceScrollView extends ScrollView {
     private float distanceX = 0;
     private float distanceY = 0;
     private boolean upDownSlide = false; //判断上下滑动的flag
+    private ScrollListener mListener;
+
+    public static interface ScrollListener {
+        public void scrollOritention(int l, int t, int oldl, int oldt);
+    }
 
     public BounceScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -183,5 +188,17 @@ public class BounceScrollView extends ScrollView {
         distanceX = 0;
         distanceY = 0;
         upDownSlide = false;
+    }
+
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        if (mListener != null) {
+            mListener.scrollOritention(l, t, oldl, oldt);
+        }
+    }
+
+    public void setScrollListener(ScrollListener scrollListener) {
+        this.mListener = scrollListener;
     }
 }

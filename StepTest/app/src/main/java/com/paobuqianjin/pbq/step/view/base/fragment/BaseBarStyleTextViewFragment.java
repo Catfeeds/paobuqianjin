@@ -57,7 +57,6 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        initBarView(rootView);
         return rootView;
     }
 
@@ -69,7 +68,8 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
         return null;
     }
 
-    public void initBarView(View rootView) {
+
+    protected void initBarView(View rootView) {
         tv_title = getView(rootView, R.id.bar_title);
         tv_right = getView(rootView, R.id.bar_tv_right);
         tv_left = getView(rootView, R.id.bar_return_drawable);

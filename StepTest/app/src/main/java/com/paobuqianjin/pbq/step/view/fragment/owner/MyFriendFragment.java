@@ -185,9 +185,9 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
         followTab.setupWithViewPager(friendRecyclerViewpager);
 
         //
-        followOtoAdapter = new FollowAdapter(getContext(), null);
-        myFollowAdapter = new FollowAdapter(getContext(), null);
-        followMeAdapter = new FollowAdapter(getContext(), null);
+        followOtoAdapter = new FollowAdapter(getActivity(), null);
+        myFollowAdapter = new FollowAdapter(getActivity(), null);
+        followMeAdapter = new FollowAdapter(getActivity(), null);
         followOtoFragment.setAdapter(followOtoAdapter);
         followMeFragment.setAdapter(followMeAdapter);
         myFollowFragment.setAdapter(myFollowAdapter);

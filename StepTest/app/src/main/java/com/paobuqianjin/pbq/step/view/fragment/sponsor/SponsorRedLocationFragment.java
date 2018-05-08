@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.BMapManager;
@@ -204,6 +205,11 @@ public class SponsorRedLocationFragment extends BaseBarStyleTextViewFragment imp
             mPoiSearch.searchInCity(new PoiCitySearchOption().city(city)
                     .keyword("火车站").pageNum(20));
         }
+    }
+
+    @Override
+    public void response(BDLocation location) {
+
     }
 
     OnGetPoiSearchResultListener poiLister = new OnGetPoiSearchResultListener() {

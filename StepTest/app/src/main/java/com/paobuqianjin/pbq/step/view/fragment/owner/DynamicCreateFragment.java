@@ -49,7 +49,13 @@ import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
+import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.umeng.socialize.utils.SocializeUtils;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.Rationale;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -101,6 +107,8 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
     private TranslateAnimation animationCircleType;
+    private Rationale mRationale;
+    private PermissionSetting mSetting;
 
     private final static int CAMERA_PIC = 0;
     @Bind(R.id.location_str)
@@ -211,6 +219,8 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         dialog = new ProgressDialog(getContext());
         Presenter.getInstance(getContext()).startService(null, LocalBaiduService.class);
         cachePath = getContext().getExternalCacheDir().getAbsolutePath();
+        mRationale = new DefaultRationale();
+        mSetting = new PermissionSetting(getContext());
     }
 
     @Override
@@ -234,24 +244,46 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         switch (view.getId()) {
             case R.id.pic_a:
                 picIndex = 0;
-                selectPicture(picIndex);
+                requestPermission(Permission.Group.STORAGE);
                 break;
             case R.id.pic_b:
                 picIndex = 1;
-                selectPicture(picIndex);
+                requestPermission(Permission.Group.STORAGE);
                 break;
             case R.id.pic_c:
                 picIndex = 2;
-                selectPicture(picIndex);
+                requestPermission(Permission.Group.STORAGE);
                 break;
             case R.id.pic_d:
                 picIndex = 3;
-                selectPicture(picIndex);
+                requestPermission(Permission.Group.STORAGE);
                 break;
             case R.id.location_span:
                 LocalLog.d(TAG, "开启定位");
                 break;
         }
+    }
+
+    /*权限适配*/
+
+    private void requestPermission(String... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        LocalLog.d(TAG, "获取权限成功");
+                        selectPicture(picIndex);
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                if (AndPermission.hasAlwaysDeniedPermission(getActivity(), permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
     }
 
     private void selectPicture(final int index) {

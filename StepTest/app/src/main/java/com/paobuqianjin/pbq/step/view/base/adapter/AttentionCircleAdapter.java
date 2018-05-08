@@ -469,10 +469,10 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
                     case R.id.like_num_span:
-                        LocalLog.d(TAG, "点赞");
+/*                        LocalLog.d(TAG, "点赞");
                         PutVoteParam putVoteParam = new PutVoteParam();
                         putVoteParam.setDynamicid(dynamicid).setUserid(Presenter.getInstance(mContext).getId());
-                        Presenter.getInstance(mContext).putVote(putVoteParam, innerCallBack);
+                        Presenter.getInstance(mContext).putVote(putVoteParam, innerCallBack);*/
                         break;
                     case R.id.scan_more:
                         LocalLog.d(TAG, "点击查看更多评价");
@@ -595,10 +595,10 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
                     case R.id.like_num_span:
-                        LocalLog.d(TAG, "点赞");
+/*                        LocalLog.d(TAG, "点赞");
                         PutVoteParam putVoteParam = new PutVoteParam();
                         putVoteParam.setDynamicid(dynamicid).setUserid(Presenter.getInstance(mContext).getId());
-                        Presenter.getInstance(mContext).putVote(putVoteParam, innerCallBack);
+                        Presenter.getInstance(mContext).putVote(putVoteParam, innerCallBack);*/
                         break;
                     case R.id.scan_more:
                         LocalLog.d(TAG, "点击查看更多评价");
@@ -722,10 +722,10 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 LocalLog.d(TAG, "onClick() enter");
                 switch (view.getId()) {
                     case R.id.like_num_span:
-                        LocalLog.d(TAG, "点赞");
+/*                        LocalLog.d(TAG, "点赞");
                         PutVoteParam putVoteParam = new PutVoteParam();
                         putVoteParam.setDynamicid(dynamicid).setUserid(Presenter.getInstance(mContext).getId());
-                        Presenter.getInstance(mContext).putVote(putVoteParam, innerCallBack);
+                        Presenter.getInstance(mContext).putVote(putVoteParam, innerCallBack);*/
                         break;
                     case R.id.scan_more:
                         LocalLog.d(TAG, "点击查看更多评价");

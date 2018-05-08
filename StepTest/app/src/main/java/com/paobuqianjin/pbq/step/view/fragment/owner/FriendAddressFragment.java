@@ -127,7 +127,6 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
                 .onGranted(new Action() {
                     @Override
                     public void onAction(List<String> permissions) {
-                        toast(R.string.successfully);
                         List<Map<String, String>> maps = getContacts();
                         updateAddressBook(maps);
                     }

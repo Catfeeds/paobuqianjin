@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
@@ -1824,7 +1825,10 @@ public final class Engine {
                         try {
                             CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
                             if (myName != null) {
-                                myName.setText(circleDetailResponse.getData().getName());
+                                if (circleDetailResponse.getData() == null){
+                                    return;
+                                }
+                                    myName.setText(circleDetailResponse.getData().getName());
                             }
                             if (imageView != null) {
                                 Presenter.getInstance(mContext).getImage(imageView, circleDetailResponse.getData().getLogo());
@@ -3091,6 +3095,7 @@ public final class Engine {
                 String city = intent.getStringExtra("city");
                 double la = intent.getDoubleExtra("latitude", 0d);
                 double lb = intent.getDoubleExtra("longitude", 0d);
+                BDLocation location = (BDLocation) intent.getParcelableExtra("location");
                 FlagPreference.setLocation(mContext, String.valueOf(la), String.valueOf(lb));
                 this.la = la;
                 this.lb = lb;
@@ -3102,6 +3107,7 @@ public final class Engine {
                 }
                 if (baiduMapInterface != null) {
                     baiduMapInterface.response(city, la, lb);
+                    baiduMapInterface.response(location);
                     return;
                 }
                 if (releaseDynamicInterface != null) {

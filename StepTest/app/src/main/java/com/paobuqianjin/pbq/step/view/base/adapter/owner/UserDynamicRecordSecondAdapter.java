@@ -138,15 +138,24 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
         public UserDynamicRecordSecondViewHolder(View view) {
             super(view);
             initView(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.putExtra(context.getPackageName() + "dynamicId", dynamicId);
+                    intent.putExtra(context.getPackageName() + "userId", userid);
+                    intent.putExtra(context.getPackageName() + "is_vote", is_vote);
+                    intent.setClass(context, DynamicActivity.class);
+                    context.startActivity(intent);
+                }
+            });
         }
 
         private void initView(View view) {
             dynamicReleaseTime = (TextView) view.findViewById(R.id.dynamic_release_time);
             dynamicDes = (TextView) view.findViewById(R.id.dynamic_des);
-            dynamicDes.setOnClickListener(onClickListener);
             image = (ImageView) view.findViewById(R.id.image);
             image.setVisibility(View.GONE);
-            image.setOnClickListener(onClickListener);
             contentNumbers = (TextView) view.findViewById(R.id.content_numbers);
             likeNumIcon = (ImageView) view.findViewById(R.id.like_num_icon);
             contentNumberIcon = (ImageView) view.findViewById(R.id.content_number_icon);
@@ -154,24 +163,6 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
 
         }
 
-        private View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (view.getId()) {
-                    case R.id.dynamic_des:
-                    case R.id.image:
-                        LocalLog.d(TAG, "dynamicId = " + dynamicId + ",userId = " + userid);
-                        Intent intent = new Intent();
-                        intent.putExtra(context.getPackageName() + "dynamicId", dynamicId);
-                        intent.putExtra(context.getPackageName() + "userId", userid);
-                        intent.putExtra(context.getPackageName() + "is_vote", is_vote);
-                        intent.setClass(context, DynamicActivity.class);
-                        context.startActivity(intent);
-                        break;
-
-                }
-            }
-        };
     }
 
 

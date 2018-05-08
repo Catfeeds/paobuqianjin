@@ -3,8 +3,10 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +27,10 @@ import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.UserDynamicRecordAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,12 +82,15 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     QueryFollowStateParam queryFollowStateParam;
     @Bind(R.id.vip_flg)
     ImageView vipFlg;
+    @Bind(R.id.scrollView_center)
+    BounceScrollView scrollViewCenter;
+    RelativeLayout barNull;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 50;
 
     @Override
     protected String title() {
-        return null;
+        return "个人主页";
     }
 
     @Override
@@ -134,6 +141,25 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
         dynamicRecordRecycler = (RecyclerView) viewRoot.findViewById(R.id.dynamic_record_recycler);
         dynamicRecordRecycler.setLayoutManager(layoutManager);
         vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
+        scrollViewCenter = (BounceScrollView) viewRoot.findViewById(R.id.scrollView_center);
+        barNull = (RelativeLayout) (viewRoot.findViewById(R.id.bar_return_null_bg));
+        scrollViewCenter.setScrollListener(new BounceScrollView.ScrollListener() {
+            @Override
+            public void scrollOritention(int l, int t, int oldl, int oldt) {
+                LocalLog.d(TAG, "l =  " + l + ",t = " + t + ",oldl= " + oldl + "," + oldt);
+                if (Utils.px2dip(getContext(), (float) t) > 64) {
+                    barNull.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_232433));
+                } else {
+                    barNull.setBackground(null);
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -142,6 +168,15 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
         ButterKnife.unbind(this);
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
         Presenter.getInstance(getContext()).dispatchUiInterface(addDeleteFollowInterface);
+    }
+
+    private boolean specialCity(String province) {
+        if ("澳门".equals(province) || "台湾省".equals(province)
+                || "香港".equals(province) || "重庆市".equals(province) || "上海市".equals(province)
+                || "天津市".equals(province) || "北京市".equals(province)) {
+            return true;
+        }
+        return false;
     }
 
 
@@ -165,7 +200,17 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             if (userInfoResponse.getData().getCity().equals(userInfoResponse.getData().getProvince())) {
                 locationCity.setText(userInfoResponse.getData().getCity());
             } else {
-                locationCity.setText(userInfoResponse.getData().getProvince() + "," + userInfoResponse.getData().getCity());
+                if (!TextUtils.isEmpty(userInfoResponse.getData().getProvince())) {
+
+                    if (specialCity(userInfoResponse.getData().getProvince())) {
+                        locationCity.setText(userInfoResponse.getData().getCity());
+                    } else {
+                        locationCity.setText(userInfoResponse.getData().getProvince() + "· " + userInfoResponse.getData().getCity());
+                    }
+                } else {
+                    locationCity.setText(userInfoResponse.getData().getCity());
+                }
+
             }
             if (userInfoResponse.getData().getVip() == 1) {
                 vipFlg.setVisibility(View.VISIBLE);

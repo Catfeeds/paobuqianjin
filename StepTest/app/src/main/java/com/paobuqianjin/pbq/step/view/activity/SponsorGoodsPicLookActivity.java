@@ -3,21 +3,17 @@ package com.paobuqianjin.pbq.step.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.presenter.im.BaiduMapInterface;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorGoodFragment;
 import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorRedLocationFragment;
 import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorTimeFragment;
 import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorUpPicFragment;
-import com.paobuqianjin.pbq.step.view.fragment.task.TargetPeopleFragment;
 
 /**
- * Created by pbq on 2018/1/23.
+ * Created by pbq
+ * on 2018/1/23.
  */
 /*
 @className :SponsorGoodsPicLookActivity

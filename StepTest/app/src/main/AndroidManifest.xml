@@ -47,6 +47,10 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="0ug1iU9lhYsMn10Ukwz4d2oxh8uP3zga" />
+        <!-- 配置腾讯地图KEY -->
+        <meta-data
+            android:name="TencentMapSDK"
+            android:value="H7PBZ-HE73V-YJYPZ-UNZA3-P6N53-KKF4I" />
 
         <!-- 屏幕适配尺寸 -->
         <meta-data
@@ -443,9 +447,14 @@
         <activity android:name=".activity.sponsor.SponsorInfoActivity" />
         <activity android:name=".activity.sponsor.SponsorRedLocationActivity" />
         <activity android:name=".activity.sponsor.TargetPeopleActivity" />
-        <activity android:name=".activity.sponsor.SponsorSelectPicActivity"></activity>
+        <activity android:name=".activity.sponsor.SponsorSelectPicActivity" />
         <activity android:name=".view.activity.LiveListActivity" />
         <activity android:name=".view.activity.LiveDetailActivity" />
+        <activity
+            android:name=".activity.sponsor.SponsorTMapActivity"
+            android:label="@string/title_activity_sponsor_tmap"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.sponsor.SponsorSearchPositionActivity"></activity>
     </application>
 
 </manifest>

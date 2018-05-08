@@ -88,5 +88,5 @@
         android:layout_height="1dp"
         android:layout_alignLeft="@+id/user_near_icon"
         android:layout_alignParentBottom="true"
-        android:background="@color/color_646464" />
+        android:background="@color/color_d9d9d9" />
 </RelativeLayout>
