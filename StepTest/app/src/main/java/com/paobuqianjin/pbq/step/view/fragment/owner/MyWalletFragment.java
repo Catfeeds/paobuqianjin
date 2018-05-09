@@ -18,10 +18,7 @@ import android.widget.Toast;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
@@ -29,11 +26,9 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
 import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
-import com.paobuqianjin.pbq.step.view.base.adapter.owner.FollowAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.WalletRedPkgIncomeAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
-import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
@@ -100,7 +95,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     private int mIndex;//当前收入页面索引
     private Fragment[] fragments;
     private int mCurrentIndex = 0;
-    private YesterDayIncomeFragment yesterDayIncomeFragment = new YesterDayIncomeFragment();
+    private ToDayIncomeFragment yesterDayIncomeFragment = new ToDayIncomeFragment();
     private MonthIncomeFragment monthIncomeFragment = new MonthIncomeFragment();
     private AllIncomeFragment allIncomeFragment = new AllIncomeFragment();
     WalletRedPkgIncomeAdapter yesterDayAdapter, monthAdapter, allAdapter;
@@ -145,7 +140,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     private BaseBarImageViewFragment.ToolBarListener toolBarListener = new BaseBarImageViewFragment.ToolBarListener() {
         @Override
         public void clickLeft() {
-
+            getActivity().onBackPressed();
         }
 
         @Override

@@ -503,7 +503,7 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
     private BaseBarImageViewFragment.ToolBarListener toolBarListener = new BaseBarImageViewFragment.ToolBarListener() {
         @Override
         public void clickLeft() {
-
+            getActivity().onBackPressed();
         }
 
         @Override

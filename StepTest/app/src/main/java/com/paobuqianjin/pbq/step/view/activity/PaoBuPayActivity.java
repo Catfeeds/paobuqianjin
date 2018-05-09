@@ -172,4 +172,13 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
             System.exit(0);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        if (circlePayFragment != null && circlePayFragment.isAdded()) {
+            circlePayFragment.getmToolBarListener().clickLeft();
+        }else{
+            super.onBackPressed();
+        }
+    }
 }

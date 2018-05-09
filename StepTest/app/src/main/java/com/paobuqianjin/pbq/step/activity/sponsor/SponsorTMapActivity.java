@@ -94,8 +94,8 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
             LocalLog.d(TAG, "onFinish" + (float) latitude + "---" + (float) longitude);
             LocalLog.d(TAG, "onFinish2" + (float) mCurrentLat + "---" + (float) mCurrentLon);
             LocalLog.d(TAG, "onFinish" + cameraPosition.toString());
-            if ((float) locLat == (float) cameraPosition.getTarget().getLatitude() &&
-                    (float) locLng == (float) cameraPosition.getTarget().getLongitude()) {
+            if (isEqualsTo((float) locLat, (float) cameraPosition.getTarget().getLatitude()) &&
+                    isEqualsTo((float) locLng ,(float) cameraPosition.getTarget().getLongitude())) {
                 ivLocation.setImageResource(R.mipmap.current_position);
             } else {
                 ivLocation.setImageResource(R.mipmap.nocurrent);
@@ -103,21 +103,27 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
             if (isLocSuc) {
                 latitude = cameraPosition.getTarget().getLatitude();
                 longitude = cameraPosition.getTarget().getLongitude();
-                if ((float) mCurrentLat == (float) cameraPosition.getTarget().getLatitude()
-                        && (float) mCurrentLon == (float) cameraPosition.getTarget().getLongitude()) {
+                if (isEqualsTo((float) mCurrentLat, (float) cameraPosition.getTarget().getLatitude())
+                        && isEqualsTo((float) mCurrentLon, (float) cameraPosition.getTarget().getLongitude())) {
                     return;
                 }
                 setPosition(latitude, longitude, false, true);
             } else {
-                if ((float) mCurrentLat == (float) cameraPosition.getTarget().getLatitude()
-                        && (float) mCurrentLon == (float) cameraPosition.getTarget().getLongitude()) {
+                if (isEqualsTo((float) mCurrentLat, (float) cameraPosition.getTarget().getLatitude())
+                        && isEqualsTo((float) mCurrentLon, (float) cameraPosition.getTarget().getLongitude())) {
                     latitude = cameraPosition.getTarget().getLatitude();
                     longitude = cameraPosition.getTarget().getLongitude();
                     isLocSuc = true;
+
                 }
             }
         }
     };
+
+
+    private boolean isEqualsTo(float a, float b) {
+        return a + 0.00001f >= b && a - 0.00001f <= b;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

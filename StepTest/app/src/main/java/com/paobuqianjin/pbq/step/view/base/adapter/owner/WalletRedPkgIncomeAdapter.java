@@ -79,6 +79,8 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
                 holder.incomeFrom.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getCirclename()));
             } else if (((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getTypeid() == 6) {
                 holder.incomeFrom.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
+            } else {
+                holder.incomeFrom.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
             }
         }
     }

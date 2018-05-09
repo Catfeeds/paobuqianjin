@@ -73,6 +73,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
     private SponsorAdapter adapter;
     public boolean isRefresh;
     private boolean isLoad;
+    private boolean isFirstLoad = true;
     private Intent intent;
     private int pageNum = 1;
     private NormalDialog deleteNormal;
@@ -88,12 +89,12 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
         setContentView(R.layout.sponsor_mananger_fg);
         ButterKnife.bind(this);
         init();
+        refresh();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        refresh();
     }
 
     public void refresh() {
@@ -111,6 +112,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                isFirstLoad = true;
                 refresh();
             }
         });
@@ -172,7 +174,13 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                     } else {
                         default_sponsor.setVisibility(View.GONE);
                         line.setVisibility(View.INVISIBLE);
-                        goToAdd();
+                        if (data.size() == 0 && ((GetUserBusinessResponse) object).getData().getPagenation().getPage() == 1) {
+                            if (isFirstLoad) {
+                                goToAdd();
+                            } else {
+                                onBackPressed();
+                            }
+                        }
                     }
                 }
                 adapter.notifyDataSetChanged();
@@ -185,10 +193,18 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                     refreshLayout.setRefreshing(false);
                     default_sponsor.setVisibility(View.GONE);
                     line.setVisibility(View.INVISIBLE);
-                    goToAdd();
+                    if (data.size() == 0 && pageNum == 1) {
+                        if (isFirstLoad) {
+                            goToAdd();
+                        } else {
+                            onBackPressed();
+                        }
+                    }
                 }
             }
+            isFirstLoad = false;
         }
+
     }
 
     private void goToAdd() {
@@ -196,6 +212,14 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
         intent.setAction("com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION");
         intent.setClass(this, SponsorInfoActivity.class);
         startActivityForResult(intent, REQUEST_SPONSOR_INFO);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_SPONSOR_INFO && resultCode > 0) {
+            refresh();
+        }
     }
 
     private void setDefaultView(final GetUserBusinessResponse.DataBeanX.DataBean dataBean) {
@@ -228,6 +252,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
             @Override
             public void onClick(View view) {
                 intent.putExtra("businessId", dataBean.getBusinessid());
+                intent.putExtra("name", dataBean.getName());
                 setResult(ReleaseTaskSponsorFragment.RESULT_SPONSOR_MSG, intent);
                 finish();
             }
@@ -254,6 +279,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                         if (object instanceof ErrorCode) {
                             ToastUtils.showShortToast(SponsorManagerActivity.this, ((ErrorCode) object).getMessage());
                         } else {
+                            ToastUtils.showShortToast(SponsorManagerActivity.this, "删除成功");
                             deleteNormal.dismiss();
                             refresh();
                         }

@@ -209,8 +209,8 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                     return;
                 }
                 try {
-                    if (TextUtils.isEmpty(targetTaskMoneyNumStr.trim()) || Integer.parseInt(targetTaskMoneyNumStr) < 5) {
-                        ToastUtils.showShortToast(getActivity(), "奖励金额不能少于5元");
+                    if (TextUtils.isEmpty(targetTaskMoneyNumStr.trim()) || Integer.parseInt(targetTaskMoneyNumStr) < 50) {
+                        ToastUtils.showShortToast(getActivity(), "商家红包单日金额不能低于50元");
                         return;
                     }
                 } catch (NumberFormatException e) {
@@ -320,7 +320,7 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                 int businessId = data.getIntExtra("businessId", -1);
                 if (businessId != -1) {
                     this.businessId = businessId;
-                    sponorMsgDesDetail.setText("已完善");
+                    sponorMsgDesDetail.setText(data.getStringExtra("name"));
                 }
             }
         }

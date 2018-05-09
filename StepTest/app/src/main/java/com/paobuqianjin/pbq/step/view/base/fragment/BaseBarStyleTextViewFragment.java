@@ -94,8 +94,8 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
                     if (mToolBarListener == null) {
                         BaseBarStyleTextViewFragment.this.getActivity().onBackPressed();
                     } else {
-                        //mToolBarListener.clickLeft();
-                        BaseBarStyleTextViewFragment.this.getActivity().onBackPressed();
+                        mToolBarListener.clickLeft();
+//                        BaseBarStyleTextViewFragment.this.getActivity().onBackPressed();
                     }
                     break;
                 case R.id.bar_tv_right:
@@ -164,4 +164,7 @@ public abstract class BaseBarStyleTextViewFragment extends BaseFragment {
         startActivity(intent);
     }
 
+    public BaseBarImageViewFragment.ToolBarListener getmToolBarListener() {
+        return mToolBarListener;
+    }
 }

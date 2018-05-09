@@ -1,7 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,8 +26,8 @@ import butterknife.ButterKnife;
  * Created by pbq on 2018/2/6.
  */
 
-public class YesterDayIncomeFragment extends BaseFragment {
-    private final static String TAG = YesterDayIncomeFragment.class.getSimpleName();
+public class ToDayIncomeFragment extends BaseFragment {
+    private final static String TAG = ToDayIncomeFragment.class.getSimpleName();
     @Bind(R.id.yesterday_income_recycler)
     SwipeMenuRecyclerView yesterdayIncomeRecycler;
     @Bind(R.id.not_found_data)

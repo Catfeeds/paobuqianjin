@@ -37,6 +37,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.RedPkgRecParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
@@ -255,8 +256,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         getContext().registerReceiver(stepLocationReciver, intentFilter);
         Presenter.getInstance(getContext()).attachUiInterface(this);
         requestPermission(Permission.Group.LOCATION);
-        Presenter.getInstance(getContext()).getHomePageIncome("today", pageIndex, PAGESIZE);
-        Presenter.getInstance(getContext()).getHomePageIncome("month", pageIndex, PAGESIZE);
+        Presenter.getInstance(getContext()).getHomePageIncome("today", pageIndex, 1);
+        Presenter.getInstance(getContext()).getHomePageIncome("all", pageIndex, 1);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -521,12 +522,12 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     }
 
     @Override
-    public void responseMonthIncome(IncomeResponse incomeResponse) {
-        LocalLog.d(TAG, "responseMonthIncome() enter " + incomeResponse.toString());
+    public void responseAllIncome(AllIncomeResponse incomeResponse) {
+        LocalLog.d(TAG, "responseAllIncome() enter " + incomeResponse.toString());
         if (incomeResponse.getError() == 0) {
             String moneyFormat = getContext().getResources().getString(R.string.month_income);
             String moneyStr = String.format(moneyFormat, incomeResponse.getData().getTotal_amount());
-            LocalLog.d(TAG, "responseMonthIncome() " + moneyStr);
+            LocalLog.d(TAG, "responseAllIncome() " + moneyStr);
             monthIncomeHome.setText(moneyStr);
         } else if (incomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");

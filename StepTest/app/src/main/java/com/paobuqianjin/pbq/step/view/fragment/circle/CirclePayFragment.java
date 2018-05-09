@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
@@ -32,6 +33,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -117,6 +119,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private final static String PAY_ACTION = "android.intent.action.PAY";
     private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
     private final static String PAY_FOR_STYLE = "pay_for_style";
+    private NormalDialog normalDialog;
 
     public enum PayStyles {
         WxPay,//微信支付
@@ -166,6 +169,34 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+        setToolBarListener(new BaseBarImageViewFragment.ToolBarListener() {
+            @Override
+            public void clickLeft() {
+                if (normalDialog == null) {
+                    normalDialog = new NormalDialog(getActivity());
+                    normalDialog.setMessage("是否取消此次任务的发布");
+                    normalDialog.setYesOnclickListener(getContext().getString(R.string.confirm_yes), new NormalDialog.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+                            normalDialog.dismiss();
+                            getActivity().finish();
+                        }
+                    });
+                    normalDialog.setNoOnclickListener(getContext().getString(R.string.cancel_no), new NormalDialog.onNoOnclickListener() {
+                        @Override
+                        public void onNoClick() {
+                            normalDialog.dismiss();
+                        }
+                    });
+                }
+                normalDialog.show();
+            }
+
+            @Override
+            public void clickRight() {
+
+            }
+        });
         req = new PayReq();
         Intent intent = getActivity().getIntent();
         Bundle bundle = intent.getBundleExtra(getContext().getPackageName());
@@ -539,4 +570,5 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             }
         }
     }
+
 }

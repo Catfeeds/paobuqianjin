@@ -171,7 +171,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     private BaseBarImageViewFragment.ToolBarListener toolBarListener = new BaseBarImageViewFragment.ToolBarListener() {
         @Override
         public void clickLeft() {
-
+            getActivity().onBackPressed();
         }
 
         @Override

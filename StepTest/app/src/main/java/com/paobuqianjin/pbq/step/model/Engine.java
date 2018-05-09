@@ -2228,13 +2228,13 @@ public final class Engine {
         String url = NetApi.urlIncome + "?userid=" + String.valueOf(getId(mContext)) + "&action=" + action + "&page=" + String.valueOf(page)
                 + "&pagesize=" + String.valueOf(pageSize);
         LocalLog.d(TAG, "getIncome() enter url = " + url);
-        if ("month".equals(action)) {
+        if ("all".equals(action)) {
             OkHttpUtils
                     .get()
                     .addHeader("headtoken", getToken(mContext))
                     .url(url)
                     .build()
-                    .execute(new NetStringCallBack(homePageInterface, COMMAND_INCOME_MONTH));
+                    .execute(new NetStringCallBack(homePageInterface, COMMAND_INCOME_ALL));
         } else if ("today".equals(action)) {
             OkHttpUtils
                     .get()

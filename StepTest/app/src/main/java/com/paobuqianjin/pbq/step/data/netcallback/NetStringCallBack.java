@@ -94,7 +94,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
-import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.BindThirdAccoutInterface;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
@@ -659,10 +658,10 @@ public class NetStringCallBack extends StringCallback {
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
                 }
-            } else if (command == Engine.COMMAND_INCOME_MONTH) {
+            } else if (command == Engine.COMMAND_INCOME_ALL) {
                 try {
-                    IncomeResponse incomeResponse = new Gson().fromJson(s, IncomeResponse.class);
-                    ((HomePageInterface) callBackInterface).responseMonthIncome(incomeResponse);
+                    AllIncomeResponse incomeResponse = new Gson().fromJson(s, AllIncomeResponse.class);
+                    ((HomePageInterface) callBackInterface).responseAllIncome(incomeResponse);
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
                 }

@@ -88,6 +88,7 @@ public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorV
             @Override
             public void onClick(View view) {
                 intent.putExtra("businessId", dataBean.getBusinessid());
+                intent.putExtra("name",dataBean.getName());
                 context.setResult(ReleaseTaskSponsorFragment.RESULT_SPONSOR_MSG, intent);
                 context.finish();
             }
@@ -114,6 +115,7 @@ public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorV
                         if (object instanceof ErrorCode) {
                             ToastUtils.showShortToast(context, ((ErrorCode) object).getMessage());
                         } else {
+                            ToastUtils.showShortToast(context, "删除成功");
                             ((SponsorManagerActivity) context).refresh();
                             deleteNormal.dismiss();
                         }

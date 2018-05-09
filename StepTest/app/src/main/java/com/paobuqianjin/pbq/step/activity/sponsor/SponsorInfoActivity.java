@@ -361,8 +361,11 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
 
     @Override
     public void innerCallBack(Object object) {
-        if (!(object instanceof ErrorCode)) {
-            onBackPressed();
+        if (object instanceof ErrorCode) {
+            ToastUtils.showShortToast(this, ((ErrorCode) object).getMessage());
+        } else {
+            setResult(10);
+            finish();
         }
     }
 }
