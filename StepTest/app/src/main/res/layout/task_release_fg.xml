@@ -55,6 +55,7 @@
             android:maxLines="1"
             android:textColor="@color/color_161727"
             android:textCursorDrawable="@null"
+            android:layout_toRightOf="@id/target_step_des"
             android:textSize="15dp" />
 
         <ImageView
@@ -109,6 +110,7 @@
             android:maxLines="1"
             android:textColor="@color/color_161727"
             android:textCursorDrawable="@null"
+            android:layout_toRightOf="@id/target_money_des"
             android:textSize="15dp" />
 
         <ImageView
@@ -163,6 +165,7 @@
             android:maxLines="1"
             android:textColor="@color/color_161727"
             android:textCursorDrawable="@null"
+            android:layout_toRightOf="@id/target_day_des"
             android:textSize="15dp" />
     </RelativeLayout>
 

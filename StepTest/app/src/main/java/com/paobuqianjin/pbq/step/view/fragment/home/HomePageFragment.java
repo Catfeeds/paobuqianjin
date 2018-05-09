@@ -308,11 +308,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             }
         }).start();
     }
-
-    protected void toast(@StringRes int message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
+    
     @Override
     protected int getLayoutResId() {
         return R.layout.home_page;

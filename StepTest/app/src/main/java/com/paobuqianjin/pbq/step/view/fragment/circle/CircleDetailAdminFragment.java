@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.RechargeRankBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.StepBundleData;
@@ -634,6 +635,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         public void response(ErrorCode errorCode) {
             if (errorCode.getMessage().equals("请输入密码")) {
                 popPassWordEdit();
+            } else {
+                ToastUtils.showShortToast(getContext(), errorCode.getMessage());
             }
         }
     };

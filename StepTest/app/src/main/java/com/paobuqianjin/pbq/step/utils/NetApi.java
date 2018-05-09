@@ -178,4 +178,6 @@ public class NetApi {
     public final static String urlLive = url+ "v1/Activity/getActivityList";
     //TODO 我的邀请码
     public final static String urlMyCode = url + "v1/userinviter/getMyCode";
+    //TODO 用户当前步数
+    public final static String urlCurrentStep = url + "v1/UserStep/";
 }

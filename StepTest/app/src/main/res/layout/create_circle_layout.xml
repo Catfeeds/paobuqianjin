@@ -55,6 +55,7 @@
                     android:lines="1"
                     android:maxLength="32"
                     android:textCursorDrawable="@null"
+                    android:layout_toRightOf="@id/circle_name_text"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -146,6 +147,7 @@
                     android:maxLength="11"
                     android:textColor="@color/color_161727"
                     android:textCursorDrawable="@null"
+                    android:layout_toRightOf="@id/phone_num_text"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -227,6 +229,7 @@
                     android:maxLines="1"
                     android:textColor="@color/color_161727"
                     android:textCursorDrawable="@null"
+                    android:layout_toRightOf="@+id/money_num_text"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -271,6 +274,7 @@
                     android:maxLines="1"
                     android:textColor="@color/color_161727"
                     android:textCursorDrawable="@null"
+                    android:layout_toRightOf="@id/read_package_num_text"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -315,6 +319,7 @@
                     android:maxLines="1"
                     android:textColor="@color/color_161727"
                     android:textCursorDrawable="@null"
+                    android:layout_toRightOf="@+id/money_pkg_text"
                     android:textSize="14dp" />
 
                 <ImageView

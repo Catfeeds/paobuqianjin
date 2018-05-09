@@ -65,7 +65,7 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
             holder.incomeFrom.setText(String.valueOf(((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
             if (((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getTypeid() == 1) {
                 holder.incomeFrom.setText(String.valueOf(((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getCirclename()));
-            } else if (((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getTypeid() == 6) {
+            } else {
                 holder.incomeFrom.setText(String.valueOf(((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
             }
         } else if (mData.get(position) instanceof AllIncomeResponse.DataBeanX.DataBean) {
@@ -77,8 +77,6 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
             holder.addIncome.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getAmount()));
             if (((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getTypeid() == 1) {
                 holder.incomeFrom.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getCirclename()));
-            } else if (((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getTypeid() == 6) {
-                holder.incomeFrom.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
             } else {
                 holder.incomeFrom.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
             }

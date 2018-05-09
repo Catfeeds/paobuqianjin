@@ -23,7 +23,7 @@
 
         <EditText
             android:id="@+id/target_task_step_num"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -31,6 +31,7 @@
             android:background="@null"
             android:gravity="right"
             android:hint="输入任务名称"
+            android:layout_toRightOf="@id/target_step_des"
             android:singleLine="true"
             android:textColor="@color/color_161727"
             android:textSize="14sp" />
@@ -80,10 +81,11 @@
             android:layout_marginRight="39dp"
             android:background="@null"
             android:gravity="right"
-            android:hint="输入奖励金额"
+            android:hint="单日红包50元起"
             android:inputType="numberDecimal"
             android:maxLength="6"
             android:maxLines="1"
+            android:layout_toRightOf="@id/target_money_des"
             android:textColor="@color/color_161727"
             android:textSize="14sp" />
 
@@ -137,6 +139,7 @@
             android:maxLength="3"
             android:maxLines="1"
             android:textColor="@color/color_161727"
+            android:layout_toRightOf="@id/target_day_des"
             android:textSize="14sp" />
 
         <ImageView
@@ -189,6 +192,7 @@
             android:maxLength="3"
             android:maxLines="1"
             android:textColor="@color/color_161727"
+            android:layout_toRightOf="@id/pack_day_des"
             android:textSize="14sp" />
 
         <ImageView
@@ -241,6 +245,7 @@
             android:inputType="number"
             android:maxLength="3"
             android:maxLines="1"
+            android:layout_toRightOf="@id/target_step_day_des"
             android:textColor="@color/color_161727"
             android:textSize="14sp" />
 
@@ -335,24 +340,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/sponor_msg_span"
         android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
         android:text="温馨提示：" />
 
     <TextView
         android:id="@+id/tv_tip1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sponor_msg_span"
+        android:layout_below="@+id/tv_tip"
+        android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
-        android:layout_toRightOf="@+id/tv_tip"
-        android:text="商家红包总金额不能低于5元，每日红包不能少于5个；" />
+        android:text="商家红包单日金额不能低于50元，单个红包金额不能低于1元；" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_tip1"
-        android:layout_marginRight="14dp"
-        android:layout_toRightOf="@+id/tv_tip"
-        android:text="软件上线初期，商家在跑步钱进平台派发红包，不收取手续费；" />
 
     <Button
         android:id="@+id/btn_confirm"

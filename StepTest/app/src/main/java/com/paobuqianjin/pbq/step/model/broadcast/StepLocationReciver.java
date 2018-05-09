@@ -12,6 +12,7 @@ import com.paobuqianjin.pbq.step.view.base.PaoBuApplication;
 public class StepLocationReciver extends BroadcastReceiver {
     private final static String TAG = StepLocationReciver.class.getSimpleName();
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
+    private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
 
     @Override
 
@@ -19,15 +20,8 @@ public class StepLocationReciver extends BroadcastReceiver {
         if (intent != null) {
             PaoBuApplication paoBuApplication = (PaoBuApplication) context.getApplicationContext();
             LocalLog.d(TAG, "onReceive() enter");
-            if (intent.getAction() != null && LOCATION_ACTION.equals(intent.getAction())) {
+            if (intent.getAction() != null) {
                 Presenter.getInstance(context).handBroadcast(intent);
-            }
-            if (!paoBuApplication.isForeground()) {
-                Intent mainIntent = new Intent(context, MainActivity.class);
-                mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(mainIntent);
-            } else {
-
             }
         }
     }

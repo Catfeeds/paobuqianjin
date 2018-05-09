@@ -76,6 +76,7 @@ public class TodayStepService extends Service implements Handler.Callback {
     private final Handler sHandler = new Handler(this);
 
     private Microlog4Android mMicrolog4Android = new Microlog4Android();
+    private final static String STEP_UP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
 
     @Override
     public boolean handleMessage(Message msg) {
@@ -353,6 +354,10 @@ public class TodayStepService extends Service implements Handler.Callback {
         builder.setContentText(calorie + " 千卡  " + km + " 公里");
         notification = builder.build();
         nm.notify(R.string.app_name, notification);
+        Intent stepUpIntent = new Intent();
+        stepUpIntent.setAction(STEP_UP_ACTION);
+        stepUpIntent.putExtra("today_step", stepCount);
+        sendBroadcast(stepUpIntent);
     }
 
     private boolean isStepCounter() {

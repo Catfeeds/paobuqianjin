@@ -59,6 +59,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CurrentStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
@@ -2223,6 +2224,43 @@ public final class Engine {
                 });
     }
 
+    //TODO 获取当前步数
+    public void getCurrentStep(final InnerCallBack innerCallBack) {
+        String url = NetApi.urlCurrentStep + String.valueOf(getId(mContext));
+        OkHttpUtils
+                .get()
+                .addHeader("headtoken", getToken(mContext))
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        try {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            if (innerCallBack != null) {
+                                innerCallBack.innerCallBack(errorCode);
+                            }
+                        } catch (JsonSyntaxException e1) {
+                            e.printStackTrace();
+                        }
+
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        try {
+                            CurrentStepResponse currentStepResponse = new Gson().fromJson(s, CurrentStepResponse.class);
+                            if (innerCallBack != null) {
+                                innerCallBack.innerCallBack(currentStepResponse);
+                            }
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                });
+    }
+
     //TODO
     public void getHomePageIncome(String action, int page, int pageSize) {
         String url = NetApi.urlIncome + "?userid=" + String.valueOf(getId(mContext)) + "&action=" + action + "&page=" + String.valueOf(page)
@@ -3091,6 +3129,7 @@ public final class Engine {
                 LocalLog.d(TAG, "步数信息:");
                 if (homePageInterface != null) {
                     int step = intent.getIntExtra("today_step", 0);
+                    LocalLog.d(TAG, "today_step = " + step);
                     homePageInterface.responseStepToday(step);
                 }
             } else if (LOCATION_ACTION.equals(intent.getAction())) {
