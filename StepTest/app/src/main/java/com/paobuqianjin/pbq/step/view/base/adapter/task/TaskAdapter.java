@@ -63,17 +63,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     public void notifyAddData(MyRecTaskRecordResponse.DataBeanX.DataBean dataBean) {
         if (mData != null) {
-            for (int i = 0; i < mData.size(); i++) {
-                if (mData.get(i).getId() != dataBean.getId()) {
-                    mData.add(dataBean);
-                    super.notifyItemRangeInserted(mData.size() - 1, 1);
-                } else {
-                    /*mData.remove(i);
-                    mData.add(dataBean);
-                    super.notifyItemChanged(i);*/
-                    return;
-                }
-            }
+            mData.add(dataBean);
+            super.notifyItemRangeInserted(mData.size() - 1, 1);
         } else {
             mData = new ArrayList<>();
             mData.add(dataBean);

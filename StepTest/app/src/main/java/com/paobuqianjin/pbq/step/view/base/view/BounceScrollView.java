@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
 
+import com.paobuqianjin.pbq.step.utils.LocalLog;
+
 /**
  * Created by pbq on 2018/1/25.
  */
@@ -183,6 +185,7 @@ public class BounceScrollView extends ScrollView {
     }
 
     private void clear0() {
+        LocalLog.d(TAG, "clear0() enter");
         lastX = 0;
         lastY = 0;
         distanceX = 0;

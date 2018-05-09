@@ -138,6 +138,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.MD5;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.view.PicassoTransformation;
@@ -803,7 +804,7 @@ public final class Engine {
     }
 
     public void postNewPassWord(PostPassWordParam postPassWordParam) {
-        LocalLog.d(TAG, "修改密码");
+        LocalLog.d(TAG, "修改密码" + postPassWordParam.paramString());
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
@@ -941,12 +942,14 @@ public final class Engine {
             Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT).show();
             return;
         }
+        String md5PassWord = MD5.md5Slat(userInfo[1]);
+        LocalLog.d(TAG, "md5PassWord = " + md5PassWord);
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
                 .url(NetApi.urlUserLogin)
                 .addParams("mobile", userInfo[0])
-                .addParams("password", userInfo[1])
+                .addParams("password", md5PassWord)
                 .build()
                 .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_LOGIN_IN_BY_PHONE));
     }
@@ -1825,10 +1828,10 @@ public final class Engine {
                         try {
                             CircleDetailResponse circleDetailResponse = new Gson().fromJson(s, CircleDetailResponse.class);
                             if (myName != null) {
-                                if (circleDetailResponse.getData() == null){
+                                if (circleDetailResponse.getData() == null) {
                                     return;
                                 }
-                                    myName.setText(circleDetailResponse.getData().getName());
+                                myName.setText(circleDetailResponse.getData().getName());
                             }
                             if (imageView != null) {
                                 Presenter.getInstance(mContext).getImage(imageView, circleDetailResponse.getData().getLogo());

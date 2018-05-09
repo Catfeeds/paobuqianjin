@@ -9,13 +9,13 @@ public class MD5 {
     private MD5() {
     }
 
-    public static String md5Slat(String src, String slat) {
+    public static String md5Slat(String src) {
         if (TextUtils.isEmpty(src)) {
             return "";
         }
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
-            byte[] bytes = md5.digest((src + slat).getBytes());
+            byte[] bytes = md5.digest((src).getBytes());
             String result = "";
             for (byte b : bytes) {
                 String temp = Integer.toHexString(b & 0xff);

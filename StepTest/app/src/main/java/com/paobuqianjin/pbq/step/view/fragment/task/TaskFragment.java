@@ -141,7 +141,11 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
         super.onDestroy();
         if (localBroadcastManager != null) {
             localBroadcastManager.unregisterReceiver(localReceiver);
+
         }
+        allTaskList = null;
+        doingTaskList = null;
+        finishTaskList = null;
     }
 
     @OnClick({R.id.task_all, R.id.task_un_finish, R.id.task_finished, R.id.bar_tv_right})
@@ -301,6 +305,11 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
             pageCount = myRecvTaskRecordResponse.getData().getPagenation().getTotalPage();
             LocalLog.d(TAG, "pageIndex =  " + pageIndex + ",pageCount =" + pageCount);
             for (int i = 0; i < myRecvTaskRecordResponse.getData().getData().size(); i++) {
+                if (allTaskList == null) {
+                    allTaskList = new ArrayList<>();
+                }
+                allTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
+                allTaskFragment.notifyAddData(myRecvTaskRecordResponse.getData().getData().get(i));
                 if (myRecvTaskRecordResponse.getData().getData().get(i).getIs_receive() == 1) {
                     LocalLog.d(TAG, "已接任务");
                     if (myRecvTaskRecordResponse.getData().getData().get(i).getIs_finished() == 0) {
@@ -322,18 +331,8 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
                     }
                 } else if (myRecvTaskRecordResponse.getData().getData().get(i).getIs_receive() == 0) {
                     LocalLog.d(TAG, "未接任务");
-                    if (doingTaskList == null) {
-                        doingTaskList = new ArrayList<>();
-                        doingTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
-                    } else {
-                        doingTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
-                    }
                 }
-                if (allTaskList == null) {
-                    allTaskList = new ArrayList<>();
-                }
-                allTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
-                allTaskFragment.notifyAddData(myRecvTaskRecordResponse.getData().getData().get(i));
+
             }
 
             if (pageIndex < pageCount) {

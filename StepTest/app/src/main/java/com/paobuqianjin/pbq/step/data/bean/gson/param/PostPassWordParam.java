@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.param;
 
+import com.paobuqianjin.pbq.step.utils.MD5;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -57,7 +59,8 @@ code	验证码	true	string*/
 
     public PostPassWordParam setPassword(String password) {
         this.password = password;
-        params.put("password", password);
+        String md5PassWord = MD5.md5Slat(password);
+        params.put("password", md5PassWord);
         return this;
     }
 

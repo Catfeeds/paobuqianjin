@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.param;
 
+import com.paobuqianjin.pbq.step.utils.MD5;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -48,7 +50,8 @@ new_password	新密码	true	string	*/
 
     public PostPassByOldParam setOld_password(String old_password) {
         this.old_password = old_password;
-        params.put("old_password", old_password);
+        String md5PassWord = MD5.md5Slat(old_password);
+        params.put("old_password", md5PassWord);
         return this;
     }
 
@@ -58,7 +61,8 @@ new_password	新密码	true	string	*/
 
     public PostPassByOldParam setNew_password(String new_password) {
         this.new_password = new_password;
-        params.put("new_password", new_password);
+        String md5PassWord = MD5.md5Slat(new_password);
+        params.put("new_password", md5PassWord);
         return this;
     }
 
