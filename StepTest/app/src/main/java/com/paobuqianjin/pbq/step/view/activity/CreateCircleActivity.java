@@ -38,6 +38,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
@@ -338,8 +339,9 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     private UiCreateCircleInterface uiCreateCircleInterface = new UiCreateCircleInterface() {
         @Override
         public void response(Object error) {
-            error.toString();
-            Toast.makeText(CreateCircleActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
+
+            ErrorCode errorCode = new Gson().fromJson(error.toString(), ErrorCode.class);
+            Toast.makeText(CreateCircleActivity.this, errorCode.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         @Override

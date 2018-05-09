@@ -816,18 +816,13 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         LocalLog.d(TAG, "LoginOutResponse()  enter");
         if (loginOutResponse.getError() == 0) {
             //TODO 刷新上一层界面
-            if (popupOpWindow != null) {
-                popupOpWindow.dismiss();
-                popupOpWindowTop.dismiss();
-                popupOpWindowTop = null;
-                Intent intent = new Intent();
-                intent.setAction(QUIT_ACTION);
-                if (position != -1) {
-                    intent.putExtra(mContext.getPackageName() + "position", position);
-                }
-                getActivity().setResult(RESULT_OK, intent);
-                getActivity().finish();
+            Intent intent = new Intent();
+            intent.setAction(QUIT_ACTION);
+            if (position != -1) {
+                intent.putExtra(mContext.getPackageName() + "position", position);
             }
+            getActivity().setResult(RESULT_OK, intent);
+            getActivity().finish();
         }
     }
 
@@ -850,8 +845,6 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         LocalLog.d(TAG, "DeleteCircleResponse() enter" + deleteCircleResponse.toString());
         if (deleteCircleResponse.getError() == 0) {
             Toast.makeText(getContext(), deleteCircleResponse.getMessage(), Toast.LENGTH_SHORT).show();
-            popupOpWindowTop.dismiss();
-            popupOpWindowTop = null;
             //TODO 通知上一层UI更新
             Intent intent = new Intent();
             intent.setAction(DELETE_ACTION);
