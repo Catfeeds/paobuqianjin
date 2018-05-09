@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.SelectPoisitonListBean;
+import com.tencent.lbssearch.object.result.SearchResultObject;
+import com.tencent.lbssearch.object.result.SuggestionResultObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,11 @@ public class SearchPositionAdapter<T> extends BaseAdapter {
 
     public void setData(List<T> data) {
         this.data.clear();
+        this.data.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public void setMoreData(List<T> data) {
         this.data.addAll(data);
         notifyDataSetChanged();
     }
@@ -101,9 +108,18 @@ public class SearchPositionAdapter<T> extends BaseAdapter {
                 holder.tvInfo.setVisibility(View.VISIBLE);
                 holder.tvInfo.setText(bean.getAddress());
             }
+        } else if (data.get(i) instanceof SuggestionResultObject.SuggestionData) {
+            SuggestionResultObject.SuggestionData bean = (SuggestionResultObject.SuggestionData) data.get(i);
+            holder.tvPosition.setText(bean.title);
+            holder.tvInfo.setText(bean.address);
+        } else if (data.get(i) instanceof SearchResultObject.SearchResultData) {
+            SearchResultObject.SearchResultData bean = (SearchResultObject.SearchResultData) data.get(i);
+            holder.tvPosition.setText(bean.title);
+            holder.tvInfo.setText(bean.address);
         }
-
-        if (position == i) {
+        if (data.get(i) instanceof SuggestionResultObject.SuggestionData || data.get(i) instanceof SearchResultObject.SearchResultData) {
+            holder.ivSelect.setVisibility(View.GONE);
+        } else if (position == i) {
             holder.ivSelect.setVisibility(View.VISIBLE);
         } else {
             holder.ivSelect.setVisibility(View.INVISIBLE);

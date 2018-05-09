@@ -71,9 +71,8 @@
         android:layout_alignBottom="@+id/mv_foreground"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20dp"
-        android:layout_marginRight="5dp"
-        android:background="@color/white"
-        android:src="@mipmap/ic_func_location" />
+        android:layout_marginRight="10dp"
+        android:src="@mipmap/nocurrent" />
 
     <ListView
         android:id="@+id/lv_show"

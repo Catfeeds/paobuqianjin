@@ -3,14 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/bar_location"
-        layout="@layout/bar_return_a_style" />
+    <RelativeLayout
+        android:id="@+id/button_return_bar"
+        android:layout_width="40dp"
+        android:layout_height="60dp"
+        android:background="@color/color_ebebed">
+
+        <ImageView
+            android:id="@+id/bar_return_drawable"
+            android:layout_width="10dp"
+            android:layout_height="19dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/bar_bg_selector" />
+    </RelativeLayout>
 
     <include
         android:id="@+id/search_location"
         layout="@layout/serch_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bar_location" />
+        android:layout_toRightOf="@+id/button_return_bar" />
+
+    <ListView
+        android:id="@+id/lv_position"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_return_bar" />
 </RelativeLayout>

@@ -453,8 +453,11 @@
         <activity
             android:name=".activity.sponsor.SponsorTMapActivity"
             android:label="@string/title_activity_sponsor_tmap"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.sponsor.SponsorSearchPositionActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowContentTransitions="true" />
+        <activity
+            android:name=".activity.sponsor.SponsorSearchPositionActivity"
+            android:windowContentTransitions="true" />
     </application>
 
 </manifest>

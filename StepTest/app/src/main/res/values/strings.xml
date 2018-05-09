@@ -129,5 +129,4 @@
     <string name="wallet_pay_confirm">确定使用钱包支付?</string>
     <string name="invite_string">①邀请越多好友使用跑步钱进，将获得更多的商家红包；\n②公司每月奖励前50名邀请达人，将有可能获得参加电视节目的机会；</string>
     <string name="title_activity_sponsor_tmap">SponsorTMapActivity</string>
-    <string name="cancel_pay">是否取消此次任务的发布</string>
 </resources>

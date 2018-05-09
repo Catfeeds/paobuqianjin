@@ -4,11 +4,12 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -68,12 +69,12 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
     private double mCurrentLon = 0.0;
     private PermissionSetting mSetting;
     private boolean isLocSuc;
-
     private String city;
     private double latitude, longitude;
-    private int pageNum = 0;
     private TencentMap tencentMap;
     private String req;
+    private double locLat;
+    private double locLng;
     private TencentLocationManager locationManager;
     private Marker myLocation;
     private TencentSearch tencentSearch;
@@ -81,13 +82,6 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
     private TencentMap.OnMapCameraChangeListener onMapCameraChangeListener = new TencentMap.OnMapCameraChangeListener() {
         @Override
         public void onCameraChange(CameraPosition cameraPosition) {
-          /*  if (!isLocEnd) return;
-            double latitude = cameraPosition.getTarget().getLatitude();
-            double longitude = cameraPosition.getTarget().getLongitude();
-            if (!isLocSuc ||
-                    ((float) SponsorTMapActivity.this.latitude == (float) latitude &&
-                            (float) SponsorTMapActivity.this.longitude == (float) longitude))
-                return;*/
             LocalLog.d(TAG, "onChange" + cameraPosition.toString());
             if (isLocSuc) {
                 setMark(new LatLng(cameraPosition.getTarget().getLatitude(),
@@ -100,6 +94,12 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
             LocalLog.d(TAG, "onFinish" + (float) latitude + "---" + (float) longitude);
             LocalLog.d(TAG, "onFinish2" + (float) mCurrentLat + "---" + (float) mCurrentLon);
             LocalLog.d(TAG, "onFinish" + cameraPosition.toString());
+            if ((float) locLat == (float) cameraPosition.getTarget().getLatitude() &&
+                    (float) locLng == (float) cameraPosition.getTarget().getLongitude()) {
+                ivLocation.setImageResource(R.mipmap.current_position);
+            } else {
+                ivLocation.setImageResource(R.mipmap.nocurrent);
+            }
             if (isLocSuc) {
                 latitude = cameraPosition.getTarget().getLatitude();
                 longitude = cameraPosition.getTarget().getLongitude();
@@ -119,7 +119,6 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,8 +136,8 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
                     onBackPressed();
                     return;
                 }
-                LocalLog.d(TAG, city + "----" + mCurrentLat + "----" + mCurrentLon
-                        + "----" + latitude + "---" + longitude);
+                LocalLog.d(TAG, city + "----" + mCurrentLat + "----" +
+                        mCurrentLon + "----" + latitude + "---" + longitude);
                 Intent intent = getIntent();
                 intent.putExtra("city", city);
                 intent.putExtra("latitude", latitude);
@@ -156,11 +155,23 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
         return "确定";
     }
 
-    @OnClick({R.id.search_location})
+    @OnClick({R.id.iv_location, R.id.search_location})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.iv_location: {
+                isFirstLocation = true;
+                startLocation();
+            }
+            break;
             case R.id.search_location: {
-
+                Intent intent = new Intent(this,
+                        SponsorSearchPositionActivity.class);
+                intent.putExtra("city", city);
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(this,
+                                searchLocation, "image");
+                ActivityCompat.startActivityForResult(this, intent,
+                        1, options.toBundle());
             }
             break;
         }
@@ -176,21 +187,28 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
         lvShow.setOnItemClickListener(itemClickListener);
         //获取TencentMap实例
         tencentMap = mapView.getMap();
-        tencentMap.setZoom(16);
+        tencentMap.setZoom(17);
         tencentSearch = new TencentSearch(this);
 //设置卫星底图
         tencentMap.setSatelliteEnabled(false);
         //设置实时路况开启
         tencentMap.setTrafficEnabled(false);
-        if (Build.VERSION.SDK_INT >= 23) {
-            String[] permissions = {
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            };
-            requestPermission(permissions);
+        if (getIntent().getDoubleExtra("lat", 0d) != 0d) {
+            tencentMap.setOnMapCameraChangeListener(onMapCameraChangeListener);
+            setPosition(getIntent().getDoubleExtra("lat", 0d),
+                    getIntent().getDoubleExtra("lng", 0d),
+                    true, true);
         } else {
-            startLocation();
+            if (Build.VERSION.SDK_INT >= 23) {
+                String[] permissions = {
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                };
+                requestPermission(permissions);
+            } else {
+                startLocation();
+            }
         }
     }
 
@@ -233,6 +251,16 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode > 0) {
+            setPosition(data.getFloatExtra("lat", (float) locLat),
+                    data.getFloatExtra("lng", (float) locLng),
+                    true, true);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         mapView.onDestroy();
         super.onDestroy();
@@ -261,7 +289,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
             myLocation = tencentMap.addMarker(new MarkerOptions().
                     position(latLng).
                     icon(BitmapDescriptorFactory.fromResource(R.mipmap.navigation)).
-                    anchor(0.5f, 0.5f));
+                    anchor(0.5f, 1f));
         }
         myLocation.setPosition(latLng);
 //        myLocation.setRotation(location.getBearing()); //仅当定位来源于gps有效，或者使用方向传感器
@@ -277,6 +305,8 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
             String city = location.getCity();
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
+            this.locLat = latitude;
+            this.locLng = longitude;
             this.city = city;
             tencentMap.setOnMapCameraChangeListener(onMapCameraChangeListener);
             setPosition(latitude, longitude, true, true);
@@ -292,7 +322,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
         if (needCenter) {
             isLocSuc = false;
             tencentMap.setCenter(latLng);
-            tencentMap.setZoom(tencentMap.getZoomLevel());
+//            tencentMap.setZoom(tencentMap.getZoomLevel());
         }
         setMark(latLng);
         if (needLoad) {
@@ -343,6 +373,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
                         list.add(position);
                     }
                     LocalLog.d(TAG, "location:" + sb);
+                    lvShow.smoothScrollToPosition(0);
                     adapter.setData(list, 0);
                 }
             }
@@ -404,7 +435,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
         if (location.getPoiList() != null && !location.getPoiList().isEmpty()) {
             for (int i = 0; i < location.getPoiList().size(); i++) {
                 TencentPoi poi = location.getPoiList().get(i);
-                sb.append(poi.getName() + ";");
+                sb.append(poi.getName()).append(";");
             }
         }
         if (TencentLocation.GPS_PROVIDER.equals(location.getProvider())) {// GPS定位结果

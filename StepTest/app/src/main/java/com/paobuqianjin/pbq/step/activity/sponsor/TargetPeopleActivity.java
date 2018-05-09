@@ -130,6 +130,8 @@ public class TargetPeopleActivity extends BaseBarActivity implements ChooseTarge
                 LocalLog.d(TAG, "位置选择");
                 Intent intent = new Intent();
                 intent.setAction(ACTION_RED_PACK_LOCATION);
+                intent.putExtra("lat",latitude);
+                intent.putExtra("lng",longitude);
                 intent.setClass(this, SponsorTMapActivity.class);
                 startActivityForResult(intent, REQ_POSITION);
                 break;

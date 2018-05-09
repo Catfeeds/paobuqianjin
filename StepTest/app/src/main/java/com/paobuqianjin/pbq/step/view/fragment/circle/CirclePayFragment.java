@@ -32,7 +32,6 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
@@ -118,22 +117,6 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private final static String PAY_ACTION = "android.intent.action.PAY";
     private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
     private final static String PAY_FOR_STYLE = "pay_for_style";
-    BaseBarImageViewFragment.ToolBarListener toolBarListener = new BaseBarImageViewFragment.ToolBarListener() {
-        @Override
-        public void clickLeft() {
-            switch (payAction) {
-                case "task":
-                    LocalLog.d(TAG, "取消任务支付");
-                    popPayConfirm(getString(R.string.cancel_pay));
-                    return;
-            }
-        }
-
-        @Override
-        public void clickRight() {
-
-        }
-    };
 
     public enum PayStyles {
         WxPay,//微信支付
@@ -222,7 +205,6 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             bankPaySpan = (RelativeLayout) viewRoot.findViewById(R.id.bank_pay_span);
             bankPaySpan.setVisibility(View.GONE);
         }
-        setToolBarListener(toolBarListener);
     }
 
 
@@ -443,7 +425,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         }
     }
 
-    private void popPayConfirm(final String string) {
+    private void popPayConfirm(String string) {
         LocalLog.d(TAG, "popPayConfirm() enter 确认钱包支付");
         popCircleOpBar = View.inflate(getContext(), R.layout.quit_circle_confirm, null);
         TextView textViewTitle = (TextView) popCircleOpBar.findViewById(R.id.quit_title);
@@ -469,11 +451,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             @Override
             public void onClick(View view) {
                 popupOpWindow.dismiss();
-                if (string.equals(getString(R.string.wallet_pay_confirm))) {
-                    payWallet();
-                } else if (string.equals(getString(R.string.cancel_pay))) {
-                    getActivity().finish();
-                }
+                payWallet();
             }
         });
 
