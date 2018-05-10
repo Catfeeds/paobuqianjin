@@ -7,6 +7,7 @@
         android:id="@+id/user_near_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:src="@drawable/default_head_ico"
         android:layout_centerVertical="true"
         android:layout_marginLeft="14dp" />
 

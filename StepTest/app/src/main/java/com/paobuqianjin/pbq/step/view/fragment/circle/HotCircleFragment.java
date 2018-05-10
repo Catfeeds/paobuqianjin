@@ -125,6 +125,13 @@ public class HotCircleFragment extends BaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        LocalLog.d(TAG, "onResume");
+        loadingData();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         if (localBroadcastManager != null) {
@@ -177,7 +184,7 @@ public class HotCircleFragment extends BaseFragment {
         moreLiveTV.setOnClickListener(onClickListener);
         Presenter.getInstance(mContext).attachUiInterface(uiHotCircleInterface);
         Presenter.getInstance(mContext).attachUiInterface(queryRedPkgInterface);
-        loadingData();
+        //loadingData();
         Presenter.getInstance(getContext()).getLiveList(innerCallBack, 1, 2);
     }
 

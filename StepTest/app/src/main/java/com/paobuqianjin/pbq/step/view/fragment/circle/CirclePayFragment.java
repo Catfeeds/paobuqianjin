@@ -359,7 +359,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                             Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        if (money < 0.01f) {
+                        if (money <= 0) {
                             Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -427,7 +427,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                 Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (money < 0.01) {
+            if (money <= 0) {
                 Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
                 return;
             }
