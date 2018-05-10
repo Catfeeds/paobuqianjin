@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -174,7 +175,25 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             public void clickLeft() {
                 if (normalDialog == null) {
                     normalDialog = new NormalDialog(getActivity());
-                    normalDialog.setMessage("是否取消此次任务的发布");
+                    if (!TextUtils.isEmpty(payAction)) {
+                        LocalLog.d(TAG, "payAction = " + payAction);
+                        switch (payAction) {
+                            case "task":
+                                normalDialog.setMessage("是否取消此次任务的发布");
+                                break;
+                            case "user":
+                                normalDialog.setMessage("确定取消充值到钱包");
+                                break;
+                            case "circle":
+                                normalDialog.setMessage("确定取消充值到圈子");
+                                break;
+                            case "redpacket":
+                                normalDialog.setMessage("是否取消商家红包的发布");
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                     normalDialog.setYesOnclickListener(getContext().getString(R.string.confirm_yes), new NormalDialog.onYesOnclickListener() {
                         @Override
                         public void onYesClick() {

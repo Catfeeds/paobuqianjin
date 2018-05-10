@@ -231,6 +231,9 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             LocalLog.d(TAG, "DynamicPersonResponse() enter " + dynamicPersonResponse.toString());
             pageCount = dynamicPersonResponse.getData().getPagenation().getTotalPage();
             List<List> map = checkDaysDynamic(dynamicPersonResponse);
+            if (dynamicRecordRecycler == null) {
+                return;
+            }
             dynamicRecordRecycler.addItemDecoration(new UserDynamicRecordAdapter.SpaceItemDecoration(45));
             dynamicRecordRecycler.setAdapter(new UserDynamicRecordAdapter(getContext(), map));
         } else if (dynamicPersonResponse.getError() == -100) {
