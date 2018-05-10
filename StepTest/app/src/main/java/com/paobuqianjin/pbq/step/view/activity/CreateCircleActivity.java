@@ -60,6 +60,7 @@ import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
@@ -303,6 +304,22 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
          filter = new LimitLengthFilter();
         cirNameDesc.setFilters(new InputFilter[]{filter});
+        circleDescOfYour.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                boundText.setText(getString(R.string.per_x_x_txt,s.length()+"","400"));
+            }
+        });
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -653,10 +670,6 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 if (!checkcreateCircleBodyParam()) {
                     return;
                 }
-                if (TextUtils.isEmpty(localAvatar)) {
-                    Toast.makeText(this, "请选择圈子头像", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 if (localAvatar != null) {
                     LogoUpTask logoUpTask = new LogoUpTask();
                     logoUpTask.execute(localAvatar);
@@ -780,12 +793,12 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     public boolean checkcreateCircleBodyParam() {
         createCircleBodyParam.setUserid(Presenter.getInstance(this).getId());
         //createCircleBodyParam.setCity("深圳福田");
+
         createCircleBodyParam.setName(cirNameDesc.getText().toString());
-        if (cirNameDesc.getText() == null || cirNameDesc.getText().toString().equals("")) {
+      /*  if (cirNameDesc.getText() == null || cirNameDesc.getText().toString().equals("")) {
             Toast.makeText(this, "请输入圈子名称", Toast.LENGTH_SHORT).show();
             return false;
-        }
-
+        }*/
         String targetTaskStepNumStr = cirNameDesc.getText().toString();
         if (TextUtils.isEmpty(targetTaskStepNumStr.trim()) || filter.calculateLength(targetTaskStepNumStr) < 4
                 || filter.calculateLength(targetTaskStepNumStr) > 32) {
@@ -801,14 +814,10 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             normalDialog.show();
             return false;
         }
+
         createCircleBodyParam.setMobile(circlePhoneNumEditor.getText().toString());
         if (!Utils.isMobile(createCircleBodyParam.getMobile())) {
-
-            Toast.makeText(this, "请填写正确的手机号", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (circlePhoneNumEditor.getText() == null || circlePhoneNumEditor.getText().toString().equals("")) {
-            Toast.makeText(this, "请输入正确手机号码", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -822,15 +831,18 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 Toast.makeText(this, "请完善红包信息", Toast.LENGTH_SHORT).show();
                 return false;
             } else {
-
+                try {
+                    if (Float.parseFloat(circleMoneyNumEditor.getText().toString().trim()) == 0) {
+                        PaoToastUtils.showShortToast(this,"金额不能为0");
+                        return false;
+                    }
+                } catch (Exception e) {
+                    PaoToastUtils.showShortToast(this,"金额信息有误");
+                    return false;
+                }
             }
         }
 
-        LocalLog.d(TAG, "Is_pwd = " + createCircleBodyParam.isIs_pwd());
-        if ((createCircleBodyParam.isIs_pwd() == 1) && (passwordNumEditor.getText().toString().equals(""))) {
-            Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
-            return false;
-        }
         if (createCircleBodyParam.isIs_recharge() == 1) {
             if (moneyPkgNumEditor.getText().toString().startsWith("0")) {
                 Toast.makeText(this, "红包个数非法", Toast.LENGTH_SHORT).show();
@@ -846,6 +858,16 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             createCircleBodyParam.setTotal_amount(Float.parseFloat(circleMoneyNumEditor.getText().toString()));
 
         }
+        if (TextUtils.isEmpty(localAvatar)) {
+            Toast.makeText(this, "请选择圈子logo", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        LocalLog.d(TAG, "Is_pwd = " + createCircleBodyParam.isIs_pwd());
+        if ((createCircleBodyParam.isIs_pwd() == 1) && (passwordNumEditor.getText().toString().equals(""))) {
+            Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
+            return false;
+        }
 
         if (createCircleBodyParam.isIs_pwd() == 1) {
             createCircleBodyParam.setPassword(passwordNumEditor.getText().toString());
@@ -853,7 +875,14 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
         if (circleDescOfYour.getText() == null || circleDescOfYour.getText().toString().equals("")) {
             Toast.makeText(this, "圈子描述至少填写一个字符", Toast.LENGTH_SHORT).show();
+            return false;
         }
+
+        if (circleDescOfYour.length() > 400) {
+            Toast.makeText(this, "请输入400字以内的圈子描述", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         createCircleBodyParam.setDescription(circleDescOfYour.getText().toString());
         createCircleBodyParam.setCoverid(1);
         return true;

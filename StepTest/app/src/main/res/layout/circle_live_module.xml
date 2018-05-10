@@ -52,6 +52,7 @@
             android:layout_weight="1">
 
             <ImageView
+                android:id="@+id/iv_live_a"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"
@@ -81,6 +82,7 @@
             android:layout_weight="1">
 
             <ImageView
+                android:id="@+id/iv_live_b"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"

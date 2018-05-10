@@ -751,7 +751,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         });
 
         final CustomEdit editText = (CustomEdit) popRedPkgView.findViewById(R.id.content_text);
-        editText.setHint("回复:" + dearName);
+//        editText.setHint("回复:" + dearName);
+        editText.setHint("请输入评论" );
         final EditTextChangeListener editTextChangeListener = new EditTextChangeListener();
         editText.addTextChangedListener(editTextChangeListener);
 

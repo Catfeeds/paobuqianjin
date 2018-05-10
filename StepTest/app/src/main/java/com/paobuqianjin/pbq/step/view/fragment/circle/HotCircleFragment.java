@@ -43,6 +43,7 @@ import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleChooseGoodAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -60,6 +61,8 @@ public class HotCircleFragment extends BaseFragment {
     private TextView myHotCircleTV, secondHotCircleTV;
     private TextView moreMyCircleTV, moreChoiceTV, moreLiveTV;
     private ImageView readPackAIV, readPackBIV;
+    private ImageView iv_live_a, iv_live_b;
+    private TextView live_a_desc, live_b_desc;
     private Context mContext;
     private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData;
     private ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> myCreateCircle;
@@ -160,6 +163,10 @@ public class HotCircleFragment extends BaseFragment {
         secondHotCircleTV = (TextView) rootView.findViewById(R.id.circle_hot_b_name);
         readPackAIV = (ImageView) rootView.findViewById(R.id.red_pack_a);
         readPackBIV = (ImageView) rootView.findViewById(R.id.red_pack_b);
+        iv_live_a = (ImageView) rootView.findViewById(R.id.iv_live_a);
+        iv_live_b = (ImageView) rootView.findViewById(R.id.iv_live_b);
+        live_a_desc = (TextView) rootView.findViewById(R.id.live_a_desc);
+        live_b_desc = (TextView) rootView.findViewById(R.id.live_b_desc);
 
         moreMyCircleTV = (TextView) rootView.findViewById(R.id.find_more_my_circle);
         moreMyCircleTV.setOnClickListener(onClickListener);
@@ -181,7 +188,28 @@ public class HotCircleFragment extends BaseFragment {
                 Toast.makeText(getContext(), ((ErrorCode) object).getMessage(), Toast.LENGTH_SHORT).show();
             } else if (object instanceof LiveResponse) {
                 if (((LiveResponse) object).getError() == 0) {
+                    LocalLog.d(TAG, "LiveResponse " + ((LiveResponse) object).toString());
+                    List<LiveResponse.DataBeanX.DataBean> listBean = ((LiveResponse) object).getData().getData();
 
+                    if (listBean.size() > 1) {
+                        iv_live_a.setVisibility(View.VISIBLE);
+//                        live_a_desc.setVisibility(View.VISIBLE);
+                        iv_live_b.setVisibility(View.VISIBLE);
+//                        live_b_desc.setVisibility(View.VISIBLE);
+                        Presenter.getInstance(getActivity()).getImage(iv_live_a, listBean.get(0).getConver());
+                        Presenter.getInstance(getActivity()).getImage(iv_live_b, listBean.get(1).getConver());
+                    }else if(listBean.size()>0){
+                        iv_live_a.setVisibility(View.VISIBLE);
+//                        live_a_desc.setVisibility(View.VISIBLE);
+                        iv_live_b.setVisibility(View.INVISIBLE);
+//                        live_b_desc.setVisibility(View.INVISIBLE);
+                        Presenter.getInstance(getActivity()).getImage(iv_live_a, listBean.get(0).getConver());
+                    } else {
+                        iv_live_a.setVisibility(View.INVISIBLE);
+//                        live_a_desc.setVisibility(View.INVISIBLE);
+                        iv_live_b.setVisibility(View.INVISIBLE);
+//                        live_b_desc.setVisibility(View.INVISIBLE);
+                    }
                 } else if (((LiveResponse) object).getError() == 1) {
 
                 }

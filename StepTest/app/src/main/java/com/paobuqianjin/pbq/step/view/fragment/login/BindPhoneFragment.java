@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.login;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWxQqBindPhoneParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
@@ -70,7 +72,6 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
     @Bind(R.id.sign_code_edit)
     EditText signCodeEdit;
     private boolean showSignPass = false;
-    ThirdPartyLoginResponse.DataBean dataBean;
 
     @Override
     protected int getLayoutResId() {
@@ -98,12 +99,7 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
         barReturnDrawable.setVisibility(View.GONE);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
         barTitle.setText("绑定手机号");
-        Intent intent = getActivity().getIntent();
-        if (intent != null) {
-            LocalLog.d(TAG, "thirdinfo");
-            dataBean = (ThirdPartyLoginResponse.DataBean) intent.getSerializableExtra("thirdinfo");
-            Presenter.getInstance(getContext()).setToken(getContext(), dataBean.getUser_token());
-        }
+
 
     }
 
@@ -117,17 +113,15 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
     @Override
     public void response(GetSignCodeResponse getSignCodeResponse) {
         if (getSignCodeResponse.getError() == 0) {
-
+            ToastUtils.showShortToast(getContext(), getSignCodeResponse.getMessage());
         }
     }
 
     @Override
     public void response(LogBindPhoneResponse logBindPhoneResponse) {
         if (logBindPhoneResponse.getError() == 0) {
-            Presenter.getInstance(getContext()).steLogFlg(true);
-            Presenter.getInstance(getContext()).setToken(getContext(), dataBean.getUser_token());
-            Presenter.getInstance(getContext()).setId(dataBean.getId());
-            //((UserFitActivity) getActivity()).showPersonInfo(dataBean);
+            ToastUtils.showShortToast(getContext(), "绑定手机号成功");
+            getActivity().setResult(Activity.RESULT_OK);
         } else if (logBindPhoneResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -136,7 +130,7 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
             getActivity().finish();
             System.exit(0);
         } else {
-            Toast.makeText(getContext(), logBindPhoneResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            ToastUtils.showShortToast(getContext(), logBindPhoneResponse.getMessage());
         }
     }
 
@@ -187,13 +181,6 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
                 checkSignCodeParam.setUserid(dataBean.getId());
                 Presenter.getInstance(getContext()).checkLoginBindPhone(checkSignCodeParam);*/
                 PostWxQqBindPhoneParam postWxQqBindPhoneParam = new PostWxQqBindPhoneParam();
-                if (dataBean.getQq_openid() != null && !"".equals(dataBean.getQq_openid())) {
-                    postWxQqBindPhoneParam.setMobile(phoneEdit.getText().toString()).setOpenid(dataBean.getQq_openid());
-                } else {
-                    if (dataBean.getWx_openid() != null && !"".equals(dataBean.getWx_openid()))
-                        postWxQqBindPhoneParam.setMobile(phoneEdit.getText().toString()).setOpenid(dataBean.getWx_openid());
-                }
-                postWxQqBindPhoneParam.setUserid(dataBean.getId());
                 postWxQqBindPhoneParam.setCode(signCodeEdit.getText().toString());
 
                 Presenter.getInstance(getContext()).bindLoginPhone(postWxQqBindPhoneParam);
@@ -214,6 +201,8 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            ToastUtils.showShortToast(getActivity(), errorCode.getMessage());
         }
     }
 }

@@ -96,7 +96,7 @@
             android:layout_height="175dp"
             android:layout_below="@+id/desc_qr_code"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="38dp"
+            android:layout_marginTop="20dp"
             android:scaleType="centerCrop" />
 
     </RelativeLayout>
@@ -115,8 +115,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_below="@+id/text_share_text"
         android:layout_marginTop="20dp">
 
@@ -127,11 +127,11 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_gravity="left"
-            android:layout_marginStart="30dp"
             android:layout_weight="1"
             android:drawableTop="@drawable/circle_friend"
             android:gravity="center"
             android:text="朋友圈"
+            android:drawablePadding="5dp"
             android:textColor="@color/color_161727"
             android:textSize="14dp" />
 
@@ -144,6 +144,7 @@
             android:drawableTop="@drawable/wet_char_ico"
             android:gravity="center"
             android:text="微信"
+            android:drawablePadding="5dp"
             android:textColor="@color/color_161727"
             android:textSize="14dp" />
 
@@ -153,11 +154,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_gravity="right"
-            android:layout_marginRight="30dp"
             android:layout_weight="1"
             android:drawableTop="@drawable/qq_ico"
             android:gravity="center"
             android:text="QQ"
+            android:drawablePadding="5dp"
             android:textColor="@color/color_161727"
             android:textSize="14dp" />
     </LinearLayout>

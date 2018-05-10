@@ -292,6 +292,10 @@ public class NetStringCallBack extends StringCallback {
                     callBackInterface.response(errorCode);
                 } else if (callBackInterface != null && callBackInterface instanceof ForgetPassWordInterface) {
                     ((ForgetPassWordInterface) callBackInterface).response(errorCode);
+                } else if (callBackInterface != null && callBackInterface instanceof BindThirdAccoutInterface) {
+                    ((BindThirdAccoutInterface) callBackInterface).response(errorCode);
+                } else if (callBackInterface != null && callBackInterface instanceof LoginBindPhoneInterface) {
+                    callBackInterface.response(errorCode);
                 } else {
                     LocalLog.e(TAG, " dispatch not match");
                 }

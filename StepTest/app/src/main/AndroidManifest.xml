@@ -91,11 +91,10 @@
         </activity>
         <activity
             android:name=".view.activity.CreateCircleActivity"
-            android:theme="@style/ImageTranslucentTheme"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation"
-            />
+            android:screenOrientation="portrait"
+            android:theme="@style/ImageTranslucentTheme"
+            android:windowSoftInputMode="adjustResize" />
         <!--android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"-->
         <activity
@@ -178,7 +177,12 @@
         <!-- 提现绑定微信 -->
         <activity
             android:name=".view.activity.BindWeChatActivity"
-            android:theme="@style/ImageTranslucentTheme" />
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.step.BIND_WECHAT"></action>
+                <action android:name="com.paobuqianjin.step.BIND_PHONE"></action>
+            </intent-filter>
+        </activity>
         <!-- 任务发布 -->
         <activity
             android:name=".view.activity.TaskReleaseActivity"

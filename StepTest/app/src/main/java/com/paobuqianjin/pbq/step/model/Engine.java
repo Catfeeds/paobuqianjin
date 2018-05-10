@@ -14,6 +14,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
@@ -69,6 +71,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LiveResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NormalResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PostBindResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
@@ -831,6 +834,7 @@ public final class Engine {
     }*/
 
     public void bindLoginPhone(PostWxQqBindPhoneParam postWxQqBindPhoneParam) {
+        postWxQqBindPhoneParam.setUserid(getId(mContext));
         LocalLog.d(TAG, "bindLoginPhone() enter " + postWxQqBindPhoneParam.paramString());
         OkHttpUtils
                 .post()
@@ -3055,6 +3059,49 @@ public final class Engine {
                 .params(postBindUnBindWqParam.getParams())
                 .build()
                 .execute(new NetStringCallBack(bindThirdAccoutInterface, COMMAND_BIND_THIRD));
+    }
+
+    //TODO 解除绑定
+    public void postUnBind(String action, final TextView textView) {
+        OkHttpUtils
+                .post()
+                .addHeader("headtoken", getToken(mContext))
+                .url(NetApi.urlUnbindAccount)
+                .addParams("action", action)
+                .addParams("userid", String.valueOf(getId(mContext)))
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (o != null) {
+                            try {
+                                ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                Log.d(TAG, o.toString());
+                                if (textView != null) {
+
+                                }
+                            } catch (JsonSyntaxException j) {
+                                j.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        if (textView != null) {
+                            Log.d(TAG, s);
+                            try {
+                                PostBindResponse postBindResponse = new Gson().fromJson(s, PostBindResponse.class);
+                                if (postBindResponse.getError() == 0) {
+                                    ToastUtils.showShortToast(mContext, "解绑成功");
+                                    textView.setText("尚未绑定");
+                                }
+                            } catch (JsonSyntaxException j) {
+                                j.printStackTrace();
+                            }
+                        }
+                    }
+                });
     }
 
     //TODO 查询绑定状态

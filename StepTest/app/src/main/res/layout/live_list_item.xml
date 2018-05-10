@@ -22,6 +22,7 @@
         android:layout_marginTop="14dp"
         android:background="@color/color_8a8a8a"
         android:text="赛事"
+        android:visibility="invisible"
         android:textColor="@color/color_f8"
         android:textSize="14dp" />
 

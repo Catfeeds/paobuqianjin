@@ -16,13 +16,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.l.okhttppaobu.okhttp.utils.L;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
@@ -30,6 +34,8 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.utils.SocializeUtils;
+
+import java.util.Hashtable;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -84,6 +90,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
     private ProgressDialog dialog;
     private UMImage imageCircleQr;
     private String title = "";
+    private int imgWidth;//二维码宽度
 
     @Override
     protected int getLayoutResId() {
@@ -123,6 +130,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
             LocalLog.d(TAG, "name = " + name + "logo = " + logo);
         }
 
+        imgWidth = (int) (Utils.getScreenWidthHight(getActivity())[0]*(350/750f));
 
         String codeInfo = "";
         if (id != null && !id.equals("")) {
@@ -136,6 +144,12 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         }
 
         qrcodeImg.setImageBitmap(encodeBitmap(codeInfo));
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) qrcodeImg.getLayoutParams();
+        params.height = imgWidth;
+        params.width = imgWidth;
+        qrcodeImg.setLayoutParams(params);
+
         LocalLog.d(TAG, "id = " + id + " name = "
                 + name + " logo= " + logo + " pay= " + pay);
         weixinCircle = (TextView) viewRoot.findViewById(R.id.weixin_circle);
@@ -165,11 +179,11 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         Drawable qq_icon = getResources().getDrawable(R.drawable.qq_ico);
 
 
-        circle.setBounds(0, 0, 40, 40);
+        circle.setBounds(0, 0, 80, 80);
         weixinCircle.setCompoundDrawables(null, circle, null, null);
-        weichat.setBounds(0, 0, 50, 40);
+        weichat.setBounds(0, 0, 80, 80);
         weixin.setCompoundDrawables(null, weichat, null, null);
-        qq_icon.setBounds(0, 0, 40, 40);
+        qq_icon.setBounds(0, 0, 80, 80);
         qq.setCompoundDrawables(null, qq_icon, null, null);
     }
 
@@ -196,7 +210,15 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         }*/
 
         try {
-            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 175, 175);
+            Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
+            // 指定纠错等级,纠错级别（L 7%、M 15%、Q 25%、H 30%）
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+            // 内容所使用字符集编码
+            hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+            hints.put(EncodeHintType.MARGIN, 0);
+
+            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, imgWidth, imgWidth,hints);
+//            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 175, 175);
             // 使用 ZXing Android Embedded 要写的代码
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             bitmap = barcodeEncoder.createBitmap(result);

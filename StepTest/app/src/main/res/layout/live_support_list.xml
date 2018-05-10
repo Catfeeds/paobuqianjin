@@ -53,11 +53,11 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
-            android:background="@drawable/button_join"
+            android:background="@drawable/rectangle_four_dp"
             android:gravity="center"
             android:stateListAnimator="@null"
             android:text=""
-            android:textColor="@color/color_161727"
+            android:textColor="@color/color_6c71c4"
             android:textSize="14dp" />
 
         <ImageView

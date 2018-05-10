@@ -105,9 +105,13 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
         if (tmpData.getIs_join() == 0) {
             LocalLog.d(TAG, "未在该圈可以加入");
             holder.circleJoin.setText("加入");
+            holder.circleJoin.setTextColor(mContext.getResources().getColor(R.color.color_6c71c4));
+            holder.circleJoin.setBackgroundResource(R.drawable.rectangle_four_dp);
             holder.circleJoin.setOnClickListener(holder.onClickListener);
         } else if (tmpData.getIs_join() == 1) {
             holder.circleJoin.setText("已加入");
+            holder.circleJoin.setTextColor(mContext.getResources().getColor(R.color.color_9999));
+            holder.circleJoin.setBackgroundResource(R.drawable.round5_gray999999);
             holder.is_join = true;
         }
         holder.setCircleId(tmpData.getCircleid());
@@ -236,6 +240,8 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
                 if (joinCircleResponse.getError() == 0) {
                     LocalLog.d(TAG, "加入成功");
                     circleJoin.setText("已加入");
+                    circleJoin.setTextColor(mContext.getResources().getColor(R.color.color_9999));
+                    circleJoin.setBackgroundResource(R.drawable.round5_gray999999);
                     is_join = true;
                     if (inOutCallBackInterface != null) {
                         inOutCallBackInterface.inCallBack(circleId);

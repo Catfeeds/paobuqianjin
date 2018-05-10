@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostBindUnBindWqParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -28,7 +29,10 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.PostBindStateResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.BindThirdAccoutInterface;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.BindWeChatActivity;
+import com.paobuqianjin.pbq.step.view.activity.LoginActivity;
 import com.paobuqianjin.pbq.step.view.activity.OlderPassChangeActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.umeng.socialize.UMAuthListener;
@@ -41,6 +45,8 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by pbq on 2018/3/31.
@@ -100,7 +106,11 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
     private TranslateAnimation animationCircleType;
     private String action;
     private ProgressDialog dialog;
-    private boolean bindPhone, bindWx, bindQq;
+    private boolean isauthQq;
+    private boolean isauthWx;
+    private String actionOp;
+    private final static String BIND_PHONE = "com.paobuqianjin.step.BIND_PHONE";
+    private final static int REQUEST_BIND_PHONE = 221;
 
     @Override
     protected int getLayoutResId() {
@@ -178,6 +188,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
             switch (qqChatDes.getText().toString()) {
                 case "已绑定账号":
                     bindOpTextView.setText("是否解绑QQ");
+
                     break;
                 case "尚未绑定":
                     bindOpTextView.setText("是否绑定QQ");
@@ -185,6 +196,8 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                 default:
                     break;
             }
+        } else if (actionWxQ.equals("mobile")) {
+            bindOpTextView.setText("是否解绑手机");
         }
         popupSelectWindow = new PopupWindow(popBirthSelectView,
                 WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
@@ -206,11 +219,18 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                     switch (weChatDes.getText().toString()) {
                         case "已绑定账号":
                             LocalLog.d(TAG, "解绑WX");
-                            postBindUnBindWqParam.setAction("wx").setOpenid(userInfo.getWx_openid());
-                            Presenter.getInstance(getContext()).postBindWq(postBindUnBindWqParam);
+                            actionOp = "wx";
+                            Presenter.getInstance(getContext()).postUnBind(actionWxQ, weChatDes);
                             break;
                         case "尚未绑定":
-                            LocalLog.d(TAG, "绑定WX");
+                            isauthWx = UMShareAPI.get(getContext()).isAuthorize(getActivity(), SHARE_MEDIA.WEIXIN);
+                            if (!isauthWx) {
+                                LocalLog.d(TAG, "授权");
+                                UMShareAPI.get(getActivity()).doOauthVerify(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
+                                break;
+                            }
+
+
                             UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
                             break;
                         default:
@@ -221,15 +241,24 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                     switch (qqChatDes.getText().toString()) {
                         case "已绑定账号":
                             LocalLog.d(TAG, "解绑QQ");
+                            actionOp = "qq";
+                            Presenter.getInstance(getContext()).postUnBind(actionWxQ, qqChatDes);
                             break;
                         case "尚未绑定":
                             LocalLog.d(TAG, "绑定QQ");
-                            UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, authListener);
+                            boolean isauthQq = UMShareAPI.get(getContext()).isAuthorize(getActivity(), SHARE_MEDIA.QQ);
+                            if (!isauthQq) {
+                                UMShareAPI.get(getActivity()).doOauthVerify(getActivity(), SHARE_MEDIA.QQ, authListener);
+                            } else {
+                                UMShareAPI.get(getActivity()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, authListener);
+                            }
                             break;
                         default:
                             break;
                     }
 
+                } else if (actionWxQ.equals("mobile")) {
+                    Presenter.getInstance(getContext()).postUnBind(actionWxQ, phoneChatDes);
                 }
 
                 popupSelectWindow.dismiss();
@@ -274,6 +303,15 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                 break;
             case R.id.phone_chat_des:
                 LocalLog.d(TAG, "手机号码绑定");
+                if (phoneChatDes.getText().toString().equals(getString(R.string.had_bind))) {
+                    actionOp = "mobile";
+                    bindUnbindConfirm("mobile");
+                } else {
+                    Intent intent = new Intent();
+                    intent.setAction(BIND_PHONE);
+                    intent.setClass(getContext(), BindWeChatActivity.class);
+                    startActivityForResult(intent, REQUEST_BIND_PHONE);
+                }
                 break;
             default:
                 break;
@@ -291,14 +329,20 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
         @Override
         public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
             LocalLog.d(TAG, "授权成功callback:" + share_media.toString());
-            Toast.makeText(getContext(), "成功：", Toast.LENGTH_LONG).show();
             String temp = "";
+            PostBindUnBindWqParam postBindUnBindWqParam = new PostBindUnBindWqParam();
             if (share_media.ordinal() == SHARE_MEDIA.WEIXIN.ordinal()) {
-
+                if (!isauthWx) {
+                    UMShareAPI.get(getActivity()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, this);
+                    isauthWx = true;
+                    return;
+                }
+                postBindUnBindWqParam.setAction("wx");
                 for (String key : map.keySet()) {
                     temp = temp + key + ":" + map.get(key) + "\n";
                     switch (key) {
                         case "openid":
+                            postBindUnBindWqParam.setOpenid(map.get(key));
                             break;
                         case "screen_name":
 
@@ -316,9 +360,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
 
                             continue;
                         case "unionid":
-                            PostBindUnBindWqParam postBindUnBindWqParam = new PostBindUnBindWqParam();
-                            postBindUnBindWqParam.setAction("wx").setOpenid(map.get(key));
-                            Presenter.getInstance(getContext()).postBindWq(postBindUnBindWqParam);
+                            postBindUnBindWqParam.setUnionid(map.get(key));
                             LocalLog.d(TAG, "绑定当前手机微信");
                             break;
                         default:
@@ -327,10 +369,18 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                 }
 
             } else if (share_media.ordinal() == SHARE_MEDIA.QQ.ordinal()) {
+                if (!isauthQq) {
+                    UMShareAPI.get(getActivity()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, this);
+                    isauthQq = true;
+                    return;
+                }
                 for (String key : map.keySet()) {
                     temp = temp + key + ":" + map.get(key) + "\n";
+                    postBindUnBindWqParam.setAction("qq");
                     switch (key) {
                         case "openid":
+                            postBindUnBindWqParam.setOpenid(map.get(key));
+                            LocalLog.d(TAG, "绑定当前手机QQ");
                             break;
                         case "screen_name":
 
@@ -348,36 +398,39 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
 
                             continue;
                         case "unionid":
-                            PostBindUnBindWqParam postBindUnBindWqParam = new PostBindUnBindWqParam();
-                            postBindUnBindWqParam.setAction("qq").setOpenid(map.get(key));
-                            Presenter.getInstance(getContext()).postBindWq(postBindUnBindWqParam);
-                            LocalLog.d(TAG, "绑定当前手机QQ");
                             break;
                         default:
                             continue;
                     }
-
                     LocalLog.d(TAG, temp);
+
                 }
+
             }
+            Presenter.getInstance(getContext()).postBindWq(postBindUnBindWqParam);
         }
 
         @Override
         public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
             SocializeUtils.safeCloseDialog(dialog);
-            Toast.makeText(getContext(), "失败：" + throwable.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA share_media, int i) {
             SocializeUtils.safeCloseDialog(dialog);
-            Toast.makeText(getContext(), "取消了", Toast.LENGTH_LONG).show();
         }
     };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_BIND_PHONE) {
+                if (data != null) {
+                    
+                }
+            }
+        }
         UMShareAPI.get(getContext()).onActivityResult(requestCode, resultCode, data);
     }
 
@@ -400,19 +453,16 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
             }
             if (postBindStateResponse.getData().getWx() == 1) {
                 weChatDes.setText("已绑定账号");
-                bindWx = true;
             } else {
                 weChatDes.setText("尚未绑定");
             }
             if (postBindStateResponse.getData().getQq() == 1) {
                 qqChatDes.setText("已绑定账号");
-                bindQq = true;
             } else {
                 qqChatDes.setText("尚未绑定");
             }
             if (postBindStateResponse.getData().getMobile() == 1) {
                 phoneChatDes.setText("已绑定账号");
-                bindPhone = true;
             } else {
                 phoneChatDes.setText("尚未绑定");
             }
@@ -423,27 +473,29 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
     public void response(PostBindResponse postBindResponse) {
 
         if (postBindResponse.getError() == 0) {
-            Toast.makeText(getContext(), postBindResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            ToastUtils.showShortToast(getContext(), postBindResponse.getMessage());
             switch (postBindResponse.getMessage()) {
                 case "解绑成功":
                     if (action != null) {
                         if ("wx".equals(action)) {
-                            weChatDes.setText("尚未绑定");
+                            weChatDes.setText(getString(R.string.not_bind));
                         } else if ("qq".equals(action)) {
-                            qqChatDes.setText("尚未绑定");
+                            qqChatDes.setText(getString(R.string.not_bind));
                         }
                     }
                     break;
                 case "加绑成功":
                     if (action != null) {
                         if ("wx".equals(action)) {
-                            weChatDes.setText("已绑定账号");
+                            weChatDes.setText(getString(R.string.had_bind));
                         } else if ("qq".equals(action)) {
-                            qqChatDes.setText("已绑定账号");
+                            qqChatDes.setText(getString(R.string.had_bind));
                         }
                     }
                     break;
             }
+        } else if (postBindResponse.getError() == 1) {
+            ToastUtils.showShortToast(getContext(), postBindResponse.getMessage());
         } else if (postBindResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -453,5 +505,10 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
             System.exit(0);
         }
         SocializeUtils.safeCloseDialog(dialog);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

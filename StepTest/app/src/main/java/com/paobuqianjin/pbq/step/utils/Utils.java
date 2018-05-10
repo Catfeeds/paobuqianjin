@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.input.InputManager;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
@@ -112,4 +113,15 @@ public class Utils {
         }
     }
 
+    /**
+     * 获取屏幕宽高
+     * @param context
+     * @return {width,height}
+     */
+    public static int[] getScreenWidthHight(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(displayMetrics);
+        return new int[]{displayMetrics.widthPixels,displayMetrics.heightPixels};
+    }
 }

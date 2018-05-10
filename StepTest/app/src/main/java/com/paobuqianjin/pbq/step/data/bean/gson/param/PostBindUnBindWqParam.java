@@ -16,17 +16,20 @@ userid	用户ID	true	string
     private String action;
     private String openid;
     private int userid;
+
+    public String getUnionid() {
+        return unionid;
+    }
+
+    public PostBindUnBindWqParam setUnionid(String unionid) {
+        this.unionid = unionid;
+        params.put("unionid", unionid);
+        return this;
+    }
+
+    private String unionid;
     private Map<String, String> params;
 
-    @Override
-    public String toString() {
-        return "PostBindUnBindWqParam{" +
-                "action='" + action + '\'' +
-                ", openid='" + openid + '\'' +
-                ", userid=" + userid +
-                ", params=" + params +
-                '}';
-    }
 
     public PostBindUnBindWqParam() {
         if (params == null) {
@@ -48,7 +51,7 @@ userid	用户ID	true	string
 
     public PostBindUnBindWqParam setAction(String action) {
         this.action = action;
-        params.put("action",action);
+        params.put("action", action);
         return this;
     }
 
@@ -58,7 +61,7 @@ userid	用户ID	true	string
 
     public PostBindUnBindWqParam setOpenid(String openid) {
         this.openid = openid;
-        params.put("openid",openid);
+        params.put("openid", openid);
         return this;
     }
 
@@ -68,7 +71,7 @@ userid	用户ID	true	string
 
     public PostBindUnBindWqParam setUserid(int userid) {
         this.userid = userid;
-        params.put("userid",String.valueOf(userid));
+        params.put("userid", String.valueOf(userid));
         return this;
     }
 
@@ -78,5 +81,16 @@ userid	用户ID	true	string
 
     public void setParams(Map<String, String> params) {
         this.params = params;
+    }
+
+    @Override
+    public String toString() {
+        return "PostBindUnBindWqParam{" +
+                "action='" + action + '\'' +
+                ", openid='" + openid + '\'' +
+                ", userid=" + userid +
+                ", unionid='" + unionid + '\'' +
+                ", params=" + params +
+                '}';
     }
 }

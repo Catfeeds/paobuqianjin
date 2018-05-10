@@ -729,6 +729,10 @@ public final class Presenter {
         engine.postBindWq(postBindUnBindWqParam);
     }
 
+    public void postUnBind(String action, TextView view) {
+        engine.postUnBind(action, view);
+    }
+
     public void getBindStates() {
         engine.getBindStates();
     }
