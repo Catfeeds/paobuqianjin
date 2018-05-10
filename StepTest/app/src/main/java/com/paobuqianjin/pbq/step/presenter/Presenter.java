@@ -294,8 +294,8 @@ public final class Presenter {
         engine.getHomePageIncome(action, page, pageSize);
     }
 
-    public void getCurrentStep(final InnerCallBack innerCallBack) {
-        engine.getCurrentStep(innerCallBack);
+    public boolean getCurrentStep(final InnerCallBack innerCallBack) {
+        return engine.getCurrentStep(innerCallBack);
     }
 
     public void getSponsorRedPkg() {

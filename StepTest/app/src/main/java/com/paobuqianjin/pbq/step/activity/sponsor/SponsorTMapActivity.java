@@ -70,6 +70,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
     private PermissionSetting mSetting;
     private boolean isLocSuc;
     private String city;
+    private String address;
     private double latitude, longitude;
     private TencentMap tencentMap;
     private String req;
@@ -146,6 +147,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
                         mCurrentLon + "----" + latitude + "---" + longitude);
                 Intent intent = getIntent();
                 intent.putExtra("city", city);
+                intent.putExtra("address",address);
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
                 setResult(TargetPeopleActivity.RES_POSITION, intent);
@@ -359,6 +361,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
                         (Geo2AddressResultObject) object;
                 if (oj.result != null) {
                     city = oj.result.ad_info.city;
+                    address = oj.result.formatted_addresses.recommend;
                     StringBuilder sb = new StringBuilder();
 
                     sb.append("\nname：").append(oj.result.ad_info.name);
@@ -397,6 +400,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
             Object o = adapter.getData().get(i);
             adapter.setSelect(i);
             if (o != null) {
+                address = ((SelectPoisitonListBean) o).getName();
                 setPosition(((SelectPoisitonListBean) o).getLat(), ((SelectPoisitonListBean) o).getLon(), true, false);
             }
         }

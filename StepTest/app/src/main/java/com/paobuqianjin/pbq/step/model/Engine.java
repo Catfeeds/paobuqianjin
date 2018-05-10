@@ -57,6 +57,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CurrentStepResponse;
@@ -67,6 +68,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LiveResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.NormalResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
@@ -148,6 +150,8 @@ import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 import com.today.step.lib.ISportStepInterface;
+import com.today.step.lib.TodayStepManager;
+import com.today.step.lib.TodayStepService;
 
 import java.io.File;
 import java.io.IOException;
@@ -348,6 +352,7 @@ public final class Engine {
     private Transformation transformation;
     private double la = 0;
     private double lb = 0;
+    private final static String START_STEP_ACTION = "com.paobuqianjin.step.START_STEP_ACTION";
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -2037,9 +2042,13 @@ public final class Engine {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
                         if (innerCallBack != null) {
-                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
-                            if (innerCallBack != null) {
-                                innerCallBack.innerCallBack(errorCode);
+                            try {
+                                ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                if (innerCallBack != null) {
+                                    innerCallBack.innerCallBack(errorCode);
+                                }
+                            } catch (JsonSyntaxException e1) {
+                                e1.printStackTrace();
                             }
                         }
                     }
@@ -2082,7 +2091,8 @@ public final class Engine {
                         if (innerCallBack != null) {
                             LocalLog.d(TAG, "s = " + s);
                             try {
-                                innerCallBack.innerCallBack(s);
+                                AddBusinessResponse response = new Gson().fromJson(s, AddBusinessResponse.class);
+                                innerCallBack.innerCallBack(response);
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                             }
@@ -2147,7 +2157,8 @@ public final class Engine {
                         if (innerCallBack != null) {
                             LocalLog.d(TAG, "s = " + s);
                             try {
-                                innerCallBack.innerCallBack(s);
+                                NormalResponse response = new Gson().fromJson(s, NormalResponse.class);
+                                innerCallBack.innerCallBack(response);
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                             }
@@ -2225,7 +2236,11 @@ public final class Engine {
     }
 
     //TODO 获取当前步数
-    public void getCurrentStep(final InnerCallBack innerCallBack) {
+    public boolean getCurrentStep(final InnerCallBack innerCallBack) {
+        if (getId(mContext) == -1 || getNetworkPolicy() == NetworkPolicy.OFFLINE) {
+            LocalLog.d(TAG, "当前无用户登录");
+            return false;
+        }
         String url = NetApi.urlCurrentStep + String.valueOf(getId(mContext));
         OkHttpUtils
                 .get()
@@ -2235,30 +2250,27 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
-                        try {
-                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
-                            if (innerCallBack != null) {
+                        if (innerCallBack != null) {
+                            if (o != null) {
+                                ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                                 innerCallBack.innerCallBack(errorCode);
                             }
-                        } catch (JsonSyntaxException e1) {
-                            e.printStackTrace();
                         }
-
                     }
 
                     @Override
                     public void onResponse(String s, int i) {
-                        try {
-                            CurrentStepResponse currentStepResponse = new Gson().fromJson(s, CurrentStepResponse.class);
-                            if (innerCallBack != null) {
+                        if (innerCallBack != null) {
+                            try {
+                                CurrentStepResponse currentStepResponse = new Gson().fromJson(s, CurrentStepResponse.class);
                                 innerCallBack.innerCallBack(currentStepResponse);
-                            }
-                        } catch (JsonSyntaxException e) {
-                            e.printStackTrace();
-                        }
+                            } catch (JsonSyntaxException e) {
 
+                            }
+                        }
                     }
                 });
+        return true;
     }
 
     //TODO
@@ -2904,6 +2916,7 @@ public final class Engine {
             }
             super.handleMessage(msg);
         }
+
     }
 
     //TODO 段位

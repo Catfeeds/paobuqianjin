@@ -100,6 +100,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
     private TranslateAnimation animationCircleType;
     private String action;
     private ProgressDialog dialog;
+    private boolean bindPhone, bindWx, bindQq;
 
     @Override
     protected int getLayoutResId() {
@@ -399,16 +400,19 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
             }
             if (postBindStateResponse.getData().getWx() == 1) {
                 weChatDes.setText("已绑定账号");
+                bindWx = true;
             } else {
                 weChatDes.setText("尚未绑定");
             }
             if (postBindStateResponse.getData().getQq() == 1) {
                 qqChatDes.setText("已绑定账号");
+                bindQq = true;
             } else {
                 qqChatDes.setText("尚未绑定");
             }
             if (postBindStateResponse.getData().getMobile() == 1) {
                 phoneChatDes.setText("已绑定账号");
+                bindPhone = true;
             } else {
                 phoneChatDes.setText("尚未绑定");
             }

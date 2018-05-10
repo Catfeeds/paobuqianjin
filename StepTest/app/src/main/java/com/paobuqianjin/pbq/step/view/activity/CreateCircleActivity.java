@@ -21,6 +21,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -44,6 +45,8 @@ import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.LimitLengthFilter;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
@@ -225,6 +228,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     private final static String QRCODE_ACTION = "android.intent.action.QRCODE";
     private final int REQUEST_CODE = 111;
     private String localAvatar;
+    private LimitLengthFilter filter;
 
 /*
 
@@ -296,6 +300,9 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(this);
 
+
+         filter = new LimitLengthFilter();
+        cirNameDesc.setFilters(new InputFilter[]{filter});
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -429,7 +436,6 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     public void onSoftKeyboardOpened(int keyboardHeightInPx) {
         LocalLog.d(TAG, "onSoftKeyboardOpened() 键盘弹出高度 ：" + keyboardHeightInPx);
         if (circleDescOfYour.hasFocus()) {
-            //boundText.setVisibility(View.GONE);
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -438,9 +444,23 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                     mHandler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            boundText.setVisibility(View.GONE);
+                            Utils.showSoftInputFromWindow(CreateCircleActivity.this, circleDescOfYour);
                         }
                     }, 500);
+                }
+            });
+        }else if(passwordNumEditor.hasFocus()){
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    LocalLog.d(TAG, "键盘弹出滚动到底部!");
+                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Utils.showSoftInputFromWindow(CreateCircleActivity.this, passwordNumEditor);
+                        }
+                    });
                 }
             });
         }
@@ -595,6 +615,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 break;*/
             case R.id.stand_circle_pan:
                 LocalLog.d(TAG, "设定目标距离");
+                hideSoftInputView();
                 selectType(targetDefaults, circleStandNum);
                 break;
             case R.id.switch_circle_money_add_off:
@@ -764,6 +785,22 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             Toast.makeText(this, "请输入圈子名称", Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        String targetTaskStepNumStr = cirNameDesc.getText().toString();
+        if (TextUtils.isEmpty(targetTaskStepNumStr.trim()) || filter.calculateLength(targetTaskStepNumStr) < 4
+                || filter.calculateLength(targetTaskStepNumStr) > 32) {
+                final NormalDialog normalDialog = new NormalDialog(this);
+                normalDialog.setMessage("请输入2-16位任务名称");
+                normalDialog.setSingleBtn(true);
+                normalDialog.setYesOnclickListener("确定", new NormalDialog.onYesOnclickListener() {
+                    @Override
+                    public void onYesClick() {
+                        normalDialog.dismiss();
+                    }
+                });
+            normalDialog.show();
+            return false;
+        }
         createCircleBodyParam.setMobile(circlePhoneNumEditor.getText().toString());
         if (!Utils.isMobile(createCircleBodyParam.getMobile())) {
 
@@ -801,7 +838,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             }
             if (Float.parseFloat(circleReadPackageEditor.getText().toString()) >
                     Float.parseFloat(circleMoneyNumEditor.getText().toString())) {
-                Toast.makeText(this, "红包个数非法", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "充值金额不能小于每日红包金额", Toast.LENGTH_SHORT).show();
                 return false;
             }
             createCircleBodyParam.setRed_packet(Integer.parseInt(moneyPkgNumEditor.getText().toString()));

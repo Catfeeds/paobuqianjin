@@ -70,7 +70,8 @@
         android:id="@+id/age_pan"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentStart="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"   android:layout_alignParentStart="true"
         android:layout_below="@+id/sex_pan"
         android:background="@color/color_f8">
 

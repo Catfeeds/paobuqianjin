@@ -18,8 +18,10 @@ import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.GetUserBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.NormalResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorAdapter;
 import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
@@ -77,6 +79,8 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
     private Intent intent;
     private int pageNum = 1;
     private NormalDialog deleteNormal;
+    public int businessId = -1;
+    public boolean isDelete;
 
     @Override
     protected String title() {
@@ -105,6 +109,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
 
     private void init() {
         intent = getIntent();
+        businessId = intent.getIntExtra("businessId", -1);
         layoutManager = new LinearLayoutManager(this);
         sponsorList.setLayoutManager(layoutManager);
         adapter = new SponsorAdapter(this, data, intent);
@@ -178,7 +183,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                             if (isFirstLoad) {
                                 goToAdd();
                             } else {
-                                onBackPressed();
+                                noDataBack();
                             }
                         }
                     }
@@ -197,14 +202,30 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                         if (isFirstLoad) {
                             goToAdd();
                         } else {
-                            onBackPressed();
+                            noDataBack();
                         }
                     }
                 }
             }
             isFirstLoad = false;
         }
+    }
 
+    private void noDataBack() {
+        setResult(ReleaseTaskSponsorFragment.RESULT_NO_SPONSOR);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        LocalLog.d(TAG, SponsorManagerActivity.this.businessId + "------" + isDelete);
+
+        if (isDelete) {
+            setResult(ReleaseTaskSponsorFragment.RESULT_DELETE_SPONSOR);
+            finish();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void goToAdd() {
@@ -278,10 +299,19 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                     public void innerCallBack(Object object) {
                         if (object instanceof ErrorCode) {
                             ToastUtils.showShortToast(SponsorManagerActivity.this, ((ErrorCode) object).getMessage());
-                        } else {
-                            ToastUtils.showShortToast(SponsorManagerActivity.this, "删除成功");
-                            deleteNormal.dismiss();
-                            refresh();
+                        } else if (object instanceof NormalResponse) {
+                            if (((NormalResponse) object).getError() == 0) {
+                                LocalLog.d(TAG, SponsorManagerActivity.this.businessId + "------" + businessid);
+                                ToastUtils.showShortToast(SponsorManagerActivity.this, "删除成功");
+                                if (SponsorManagerActivity.this.businessId != -1 &&
+                                        SponsorManagerActivity.this.businessId == businessid) {
+                                    SponsorManagerActivity.this.isDelete = true;
+                                }
+                                deleteNormal.dismiss();
+                                refresh();
+                            } else {
+                                ToastUtils.showShortToast(SponsorManagerActivity.this, ((NormalResponse) object).getMessage());
+                            }
                         }
                     }
                 });

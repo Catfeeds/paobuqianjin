@@ -54,7 +54,7 @@ public class TodayStepService extends Service implements Handler.Callback {
     public static final String INTENT_NAME_0_SEPARATE = "intent_name_0_separate";
     public static final String INTENT_NAME_BOOT = "intent_name_boot";
     public static final String INTENT_JOB_SCHEDULER = "intent_job_scheduler";
-
+    private final static String START_STEP_ACTION = "com.paobuqianjin.step.START_STEP_ACTION";
     public static int CURRENT_SETP = 0;
 
     private SensorManager sensorManager;
@@ -77,6 +77,7 @@ public class TodayStepService extends Service implements Handler.Callback {
 
     private Microlog4Android mMicrolog4Android = new Microlog4Android();
     private final static String STEP_UP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
+    private int mServiceStepToday = 0;
 
     @Override
     public boolean handleMessage(Message msg) {
@@ -122,6 +123,10 @@ public class TodayStepService extends Service implements Handler.Callback {
         if (null != intent) {
             mSeparate = intent.getBooleanExtra(INTENT_NAME_0_SEPARATE, false);
             mBoot = intent.getBooleanExtra(INTENT_NAME_BOOT, false);
+            if (START_STEP_ACTION.equals(intent.getAction())) {
+                Log.d(TAG, "netData = " + mServiceStepToday);
+                mServiceStepToday = intent.getIntExtra("today_step", 0);
+            }
         }
 
         mDbSaveCount = 0;
@@ -218,6 +223,12 @@ public class TodayStepService extends Service implements Handler.Callback {
             Logger.e(TAG, "已经注册TYPE_STEP_COUNTER");
             WakeLockUtils.getLock(this);
             CURRENT_SETP = stepCounter.getCurrentStep();
+            Log.d(TAG, "CURRENT_SETP = " + CURRENT_SETP);
+            if (CURRENT_SETP < mServiceStepToday) {
+                PreferencesHelper.setCurrentStep(this, mServiceStepToday);
+                CURRENT_SETP = mServiceStepToday;
+            }
+            stepCounter.setNetData(mServiceStepToday);
             updateNotification(CURRENT_SETP);
             return;
         }
@@ -225,7 +236,7 @@ public class TodayStepService extends Service implements Handler.Callback {
         if (null == countSensor) {
             return;
         }
-        stepCounter = new TodayStepCounter(getApplicationContext(), mOnStepCounterListener, mSeparate, mBoot);
+        stepCounter = new TodayStepCounter(getApplicationContext(), mOnStepCounterListener, mSeparate, mBoot, mServiceStepToday);
         Logger.e(TAG, "countSensor");
         sensorManager.registerListener(stepCounter, countSensor, SAMPLING_PERIOD_US);
     }
@@ -236,6 +247,7 @@ public class TodayStepService extends Service implements Handler.Callback {
             WakeLockUtils.getLock(this);
             Logger.e(TAG, "已经注册TYPE_ACCELEROMETER");
             CURRENT_SETP = mStepDetector.getCurrentStep();
+            Log.d(TAG, "CURRENT_SETP = " + CURRENT_SETP);
             updateNotification(CURRENT_SETP);
             return;
         }
@@ -245,7 +257,7 @@ public class TodayStepService extends Service implements Handler.Callback {
         if (null == sensor) {
             return;
         }
-        mStepDetector = new TodayStepDetector(this, mOnStepCounterListener);
+        mStepDetector = new TodayStepDetector(this, mOnStepCounterListener, mServiceStepToday);
         Log.e(TAG, "TodayStepDcretor");
         // 获得传感器的类型，这里获得的类型是加速度传感器
         // 此方法用来注册，只有注册过才会生效，参数：SensorEventListener的实例，Sensor的实例，更新速率

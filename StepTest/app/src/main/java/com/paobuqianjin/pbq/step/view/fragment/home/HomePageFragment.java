@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -38,6 +39,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.RedPkgRecParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CurrentStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
@@ -55,6 +57,7 @@ import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
+import com.paobuqianjin.pbq.step.view.base.PaoBuApplication;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorRedPakAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
@@ -62,6 +65,7 @@ import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.Rotate3dAnimation;
 import com.paobuqianjin.pbq.step.view.base.view.StepProcessDrawable;
 import com.paobuqianjin.pbq.step.view.base.view.WaveView;
+import com.today.step.lib.TodayStepManager;
 import com.today.step.lib.TodayStepService;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
@@ -308,7 +312,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             }
         }).start();
     }
-    
+
     @Override
     protected int getLayoutResId() {
         return R.layout.home_page;
@@ -347,7 +351,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public void onResume() {
         super.onResume();
-        updateHandler.sendEmptyMessageDelayed(MSG_UPDATE_STEP_LOCAL, 500);
+        Presenter.getInstance(getContext()).refreshStep();
     }
 
     @Override
@@ -575,8 +579,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         Message messageNet = Message.obtain();
         messageNet.what = MSG_UPDATE_STEP;
         messageNet.arg1 = stepToday;
-        updateHandler.sendMessageDelayed(messageNet, 10000);
-        updateHandler.sendEmptyMessageDelayed(MSG_UPDATE_STEP_LOCAL, 500);
+        updateHandler.sendMessageDelayed(messageNet, 30000);
 
     }
 
@@ -733,7 +736,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         break;
                     case MSG_UPDATE_STEP_LOCAL:
                         LocalLog.d(TAG, "MSG_UPDATE_STEP_LOCAL enter");
-                        Presenter.getInstance(homePageFragment.getContext()).refreshStep();
+
                         break;
                     default:
                         break;

@@ -9,6 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,15 +41,27 @@ class TodayStepCounter implements SensorEventListener {
     private boolean mSeparate = false;
     private boolean mBoot = false;
 
-    public TodayStepCounter(Context context, OnStepCounterListener onStepCounterListener, boolean separate, boolean boot) {
+    public int getNetData() {
+        return netData;
+    }
+
+    public void setNetData(int netData) {
+        this.netData = netData;
+    }
+
+    private int netData = 0;
+
+    public TodayStepCounter(Context context, OnStepCounterListener onStepCounterListener, boolean separate, boolean boot, int netData) {
         this.mContext = context;
         this.mSeparate = separate;
         this.mBoot = boot;
         this.mOnStepCounterListener = onStepCounterListener;
+        this.netData = netData;
 
         WakeLockUtils.getLock(mContext);
 
         sCurrStep = (int) PreferencesHelper.getCurrentStep(mContext);
+        Log.d(TAG, "sCurrStep = " + sCurrStep);
         mCleanStep = PreferencesHelper.getCleanStep(mContext);
         mTodayDate = PreferencesHelper.getStepToday(mContext);
         sOffsetStep = (int) PreferencesHelper.getStepOffset(mContext);
@@ -108,7 +121,10 @@ class TodayStepCounter implements SensorEventListener {
                 }
             }
             sCurrStep = counterStep - sOffsetStep;
-
+            if (netData > sCurrStep) {
+                sCurrStep = counterStep + netData - sOffsetStep;
+            }
+            Log.d(TAG, "netData = " + netData);
             if (sCurrStep < 0) {
                 //容错处理，无论任何原因步数不能小于0，如果小于0，直接清零
                 Logger.e(TAG, "容错处理，无论任何原因步数不能小于0，如果小于0，直接清零");

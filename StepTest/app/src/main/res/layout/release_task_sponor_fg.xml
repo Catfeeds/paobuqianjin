@@ -28,10 +28,11 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="39dp"
-            android:background="@null"
+            android:layout_toRightOf="@id/target_step_des"
+            android:background="@color/color_f8"
             android:gravity="right"
             android:hint="输入任务名称"
-            android:layout_toRightOf="@id/target_step_des"
+            android:paddingLeft="40dp"
             android:singleLine="true"
             android:textColor="@color/color_161727"
             android:textSize="14sp" />
@@ -79,13 +80,13 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="39dp"
+            android:layout_toRightOf="@id/target_money_des"
             android:background="@null"
             android:gravity="right"
             android:hint="单日红包50元起"
             android:inputType="numberDecimal"
             android:maxLength="6"
             android:maxLines="1"
-            android:layout_toRightOf="@id/target_money_des"
             android:textColor="@color/color_161727"
             android:textSize="14sp" />
 
@@ -132,6 +133,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="39dp"
+            android:layout_toRightOf="@id/target_day_des"
             android:background="@null"
             android:gravity="right"
             android:hint="输入任务天数"
@@ -139,7 +141,6 @@
             android:maxLength="3"
             android:maxLines="1"
             android:textColor="@color/color_161727"
-            android:layout_toRightOf="@id/target_day_des"
             android:textSize="14sp" />
 
         <ImageView
@@ -185,6 +186,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="39dp"
+            android:layout_toRightOf="@id/pack_day_des"
             android:background="@null"
             android:gravity="right"
             android:hint="输入每日红包个数"
@@ -192,7 +194,6 @@
             android:maxLength="3"
             android:maxLines="1"
             android:textColor="@color/color_161727"
-            android:layout_toRightOf="@id/pack_day_des"
             android:textSize="14sp" />
 
         <ImageView
@@ -239,13 +240,13 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="39dp"
+            android:layout_toRightOf="@id/target_step_day_des"
             android:background="@null"
             android:gravity="right"
             android:hint="输入目标步数"
             android:inputType="number"
             android:maxLength="3"
             android:maxLines="1"
-            android:layout_toRightOf="@id/target_step_day_des"
             android:textColor="@color/color_161727"
             android:textSize="14sp" />
 
@@ -281,8 +282,9 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="39dp"
-            android:text="立即筛选(选填)"
-            android:textColor="@color/color_8a8a8a"
+            android:gravity="right"
+            android:hint="立即筛选(选填)"
+            android:textColor="@color/color_161727"
             android:textSize="14sp" />
 
         <ImageView
@@ -321,8 +323,9 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="39dp"
-            android:text="立即完善"
-            android:textColor="@color/color_8a8a8a"
+            android:gravity="right"
+            android:hint="立即完善"
+            android:textColor="@color/color_161727"
             android:textSize="14sp" />
 
         <ImageView

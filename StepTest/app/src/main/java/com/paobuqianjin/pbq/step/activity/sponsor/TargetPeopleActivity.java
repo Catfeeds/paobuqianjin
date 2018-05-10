@@ -129,7 +129,6 @@ public class TargetPeopleActivity extends BaseBarActivity implements ChooseTarge
             case R.id.location_pan:
                 LocalLog.d(TAG, "位置选择");
                 Intent intent = new Intent();
-                intent.setAction(ACTION_RED_PACK_LOCATION);
                 intent.putExtra("lat",latitude);
                 intent.putExtra("lng",longitude);
                 intent.setClass(this, SponsorTMapActivity.class);
@@ -170,7 +169,11 @@ public class TargetPeopleActivity extends BaseBarActivity implements ChooseTarge
             city = data.getStringExtra("city");
             latitude = data.getDoubleExtra("latitude", 0);
             longitude = data.getDoubleExtra("longitude", 0);
-            locationSelect.setText(city);
+            if (TextUtils.isEmpty(data.getStringExtra("address"))){
+                locationSelect.setText(city);
+            }else {
+                locationSelect.setText(data.getStringExtra("address"));
+            }
         }
     }
 

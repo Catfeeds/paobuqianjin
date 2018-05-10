@@ -17,6 +17,7 @@ import com.paobuqianjin.pbq.step.customview.ProUtils;
 import com.paobuqianjin.pbq.step.data.bean.AddressDtailsEntity;
 import com.paobuqianjin.pbq.step.data.bean.AddressModel;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddBusinessParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.AddBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -89,6 +90,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     private int businessId = -1;
     private String images;
     private String imagesIn;
+    private Intent intent;
 
     @Override
     protected String title() {
@@ -104,7 +106,8 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     }
 
     private void init() {
-        businessId = getIntent().getIntExtra("businessId", -1);
+        intent = getIntent();
+        businessId = intent.getIntExtra("businessId", -1);
 //        businessId = 103;
         if (businessId != -1) {
             Presenter.getInstance(this).businessDetail(businessId, new InnerCallBack() {
@@ -363,9 +366,14 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     public void innerCallBack(Object object) {
         if (object instanceof ErrorCode) {
             ToastUtils.showShortToast(this, ((ErrorCode) object).getMessage());
-        } else {
-            setResult(10);
-            finish();
+        } else if (object instanceof AddBusinessResponse) {
+            AddBusinessResponse response = (AddBusinessResponse) object;
+            if (response.getError() == 0) {
+                intent.putExtra("businessId", Integer.parseInt(response.getData().getBusinessid()));
+                intent.putExtra("name", response.getData().getName());
+                setResult(10, intent);
+                finish();
+            }
         }
     }
 }

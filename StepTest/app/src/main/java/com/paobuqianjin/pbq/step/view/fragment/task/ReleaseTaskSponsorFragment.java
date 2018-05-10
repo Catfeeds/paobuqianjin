@@ -17,15 +17,19 @@ import android.widget.Toast;
 
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.activity.sponsor.SponsorInfoActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.TargetPeopleActivity;
 import com.paobuqianjin.pbq.step.customview.LimitLengthFilter;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.GetUserBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskSponsorRespone;
 import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.TaskSponsorInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
@@ -36,11 +40,18 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by pbq on 2018/4/19.
+ * Created by pbq on
+ * 2018/4/19.
  */
 
-public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSponsorInterface {
+public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSponsorInterface, InnerCallBack {
     private final static String TAG = ReleaseTaskSponsorFragment.class.getSimpleName();
+    private final static int REQUEST_TARGET_PEOPLE = 0;
+    public final static int REQUEST_SPONSOR_MSG = 1;
+    public final static int RESULT_SPONSOR_MSG = 2;
+    private static final int REQUEST_SPONSOR_INFO = 3;
+    public static final int RESULT_NO_SPONSOR = 9;
+    public static final int RESULT_DELETE_SPONSOR = 8;
     @Bind(R.id.target_step_des)
     TextView targetStepDes;
     @Bind(R.id.target_task_step_num)
@@ -101,9 +112,6 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     private final static String CIRCLE_RECHARGE = "pay";
     private final static String PAY_FOR_STYLE = "pay_for_style";
     private final static String PAY_ACTION = "android.intent.action.PAY";
-    private final static int REQUEST_TARGET_PEOPLE = 0;
-    public final static int REQUEST_SPONSOR_MSG = 1;
-    public final static int RESULT_SPONSOR_MSG = 2;
     private boolean isFirstLocal = true;
     private StepLocationReciver stepLocationReciver = new StepLocationReciver();
     private TaskSponsorParam taskSponsorParam;
@@ -114,6 +122,7 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     private double latitudeStr;
     private String distanceStr;
     private String city;
+    private boolean hasBusiness;
     private int businessId = -1;
     private NormalDialog dialog;
     private LimitLengthFilter filter;
@@ -128,6 +137,10 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
+        GetUserBusinessParam param = new GetUserBusinessParam();
+        param.setUserid(Presenter.getInstance(getContext()).getId()).setPage(1);
+        Presenter.getInstance(getContext()).getUserBusiness(param, this);
+
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(LOCATION_ACTION);
         getContext().registerReceiver(stepLocationReciver, intentFilter);
@@ -175,10 +188,18 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                 startActivityForResult(intent, REQUEST_TARGET_PEOPLE);
                 break;
             case R.id.sponor_msg_span:
-                LocalLog.d(TAG, "商铺信息");
-                intent.setClass(getContext(), SponsorManagerActivity.class);
-                intent.setAction(SPONSOR_INFO_ACTION);
-                startActivityForResult(intent, REQUEST_SPONSOR_MSG);
+                if (hasBusiness) {
+                    LocalLog.d(TAG, "商铺信息");
+                    intent.setClass(getContext(), SponsorManagerActivity.class);
+                    intent.putExtra("businessId", businessId);
+                    intent.setAction(SPONSOR_INFO_ACTION);
+                    startActivityForResult(intent, REQUEST_SPONSOR_MSG);
+                } else {
+                    LocalLog.d(TAG, "添加商铺");
+                    intent.setAction("com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION");
+                    intent.setClass(getContext(), SponsorInfoActivity.class);
+                    startActivityForResult(intent, REQUEST_SPONSOR_INFO);
+                }
                 break;
             case R.id.btn_confirm:
                 LocalLog.d(TAG, "确定");
@@ -218,6 +239,10 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                 }
                 if (TextUtils.isEmpty(targetTaskDayNumStr.trim())) {
                     Toast.makeText(getActivity(), "请输入任务天数", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (targetTaskDayNumStr.trim().equals("0")) {
+                    Toast.makeText(getActivity(), "任务天数不能为0", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (TextUtils.isEmpty(packDayNumStr.trim())) {
@@ -274,7 +299,7 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
             bundle.putString(CIRCLE_RECHARGE, targetTaskMoneyNum.getText().toString());
             startActivity(PaoBuPayActivity.class, bundle, true, PAY_ACTION);
         } else {
-            ToastUtils.showShortToast(getContext(), "创建失败");
+            ToastUtils.showShortToast(getContext(), taskSponsorRespone.getMessage());
         }
     }
 
@@ -292,12 +317,6 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_TARGET_PEOPLE && resultCode != 0) {
-           /* intentResult.putExtra("sexStr", sexStr);
-                intentResult.putExtra("minAgeStr", minAgeStr);
-                intentResult.putExtra("maxAgeStr", maxAgeStr);
-                intentResult.putExtra("targetSelectStr", targetSelectStr);
-                if(!TextUtils.isEmpty(longitudeStr)) intentResult.putExtra("targetSelectStr", longitudeStr);
-                if(!TextUtils.isEmpty(latitudeStr)) intentResult.putExtra("targetSelectStr", latitudeStr);*/
             sexStr = data.getStringExtra("sexStr");
             ageMinStr = data.getStringExtra("minAgeStr");
             ageMaxStr = data.getStringExtra("maxAgeStr");
@@ -305,25 +324,48 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
             latitudeStr = data.getDoubleExtra("latitudeStr", 0);
             distanceStr = data.getStringExtra("targetSelectStr");
             city = data.getStringExtra("city");
-            LocalLog.d(TAG, sexStr + " "
-                    + ageMinStr + "\n"
-                    + ageMaxStr + "\n"
-                    + longitudeStr + "\n"
-                    + latitudeStr + "\n"
-                    + city + "\n"
-                    + distanceStr + "\n"
+            LocalLog.d(TAG, sexStr + " " + ageMinStr + "\n" + ageMaxStr + "\n"
+                    + longitudeStr + "\n" + latitudeStr + "\n" + city + "\n" + distanceStr + "\n"
             );
             targetPeopleDetail.setText("已筛选");
-        } else {
-            if (requestCode == REQUEST_SPONSOR_MSG &&
-                    resultCode == ReleaseTaskSponsorFragment.RESULT_SPONSOR_MSG) {
+        } else if (requestCode == REQUEST_SPONSOR_MSG) {
+            if (resultCode == ReleaseTaskSponsorFragment.RESULT_SPONSOR_MSG) {
                 int businessId = data.getIntExtra("businessId", -1);
                 if (businessId != -1) {
                     this.businessId = businessId;
                     sponorMsgDesDetail.setText(data.getStringExtra("name"));
                 }
+            } else if (resultCode == ReleaseTaskSponsorFragment.RESULT_NO_SPONSOR) {
+                hasBusiness = false;
+                businessId = -1;
+                sponorMsgDesDetail.setText("");
+            } else if (resultCode == ReleaseTaskSponsorFragment.RESULT_DELETE_SPONSOR) {
+                businessId = -1;
+                sponorMsgDesDetail.setText("");
+            }
+        } else if (requestCode == REQUEST_SPONSOR_INFO && resultCode > 0) {
+            int businessId = data.getIntExtra("businessId", -1);
+            if (businessId != -1) {
+                hasBusiness = true;
+                this.businessId = businessId;
+                sponorMsgDesDetail.setText(data.getStringExtra("name"));
             }
         }
     }
 
+    @Override
+    public void innerCallBack(Object object) {
+        if (object instanceof GetUserBusinessResponse) {
+            if (((GetUserBusinessResponse) object).getError() == 0) {
+                hasBusiness = true;
+                if (((GetUserBusinessResponse) object).getData().getData().size() > 0) {
+                    GetUserBusinessResponse.DataBeanX.DataBean bean = ((GetUserBusinessResponse) object).getData().getData().get(0);
+                    if (bean.getDefaultX() == 1) {
+                        businessId = bean.getBusinessid();
+                        sponorMsgDesDetail.setText(bean.getName());
+                    }
+                }
+            }
+        }
+    }
 }

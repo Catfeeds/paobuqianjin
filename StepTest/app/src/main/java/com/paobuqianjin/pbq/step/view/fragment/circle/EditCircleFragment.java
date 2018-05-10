@@ -263,10 +263,12 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                 Presenter.getInstance(getContext()).getImage(logoCirclePic, dataBean.getLogo());
                 if (1 == dataBean.getIs_recharge()) {
                     switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a));
+                    switchCircleMoneyAddOff.setAlpha(0.5f);
                     is_recharge = true;
                     enableMoneyEdit();
                 } else {
                     switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a_pass));
+                    switchCircleMoneyAddOff.setAlpha(0.5f);
                     is_recharge = false;
                     disableMoneyEdit();
                 }

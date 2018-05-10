@@ -246,6 +246,11 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
             Toast.makeText(getContext(), "请输入任务天数", Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        if (targetTaskDayNum.getText().toString().equals("0")) {
+            Toast.makeText(getContext(), "任务天数不能为0", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         if (TextUtils.isEmpty(friends)) {
             Toast.makeText(getContext(), "请选择好友", Toast.LENGTH_SHORT).show();
             return false;

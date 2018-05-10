@@ -24,7 +24,7 @@ public class TodayStepManager {
      *
      * @param application
      */
-    public static void init(Application application) {
+    public static void init(Application application,Intent intent) {
 
         StepAlertManagerUtils.set0SeparateAlertManager(application);
 
@@ -33,11 +33,10 @@ public class TodayStepManager {
         }
 
 
-        startTodayStepService(application);
+        startTodayStepService(application,intent);
     }
 
-    public static void startTodayStepService(Application application) {
-        Intent intent = new Intent(application, TodayStepService.class);
+    public static void startTodayStepService(Application application,Intent intent) {
         application.startService(intent);
     }
 

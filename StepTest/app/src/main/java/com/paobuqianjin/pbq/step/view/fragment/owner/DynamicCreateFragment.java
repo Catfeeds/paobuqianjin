@@ -15,8 +15,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -36,6 +38,7 @@ import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.activity.sponsor.SponsorTMapActivity;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
@@ -125,6 +128,12 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     private final int REQUEST_CODE = 111;
     List<ImageBean> mResultList = new ArrayList<>();
     private int picIndex = 0;
+    public static final int REQ_POSITION = 3;
+    public static final int RES_POSITION = 4;
+
+    private String city;
+    private double latitude, longitude;
+    private String address;
 
     @Override
     protected String title() {
@@ -260,9 +269,16 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                 break;
             case R.id.location_span:
                 LocalLog.d(TAG, "开启定位");
+                Intent intent = new Intent();
+                intent.putExtra("lat", latitude);
+                intent.putExtra("lng", longitude);
+                intent.setClass(getContext(), SponsorTMapActivity.class);
+                startActivityForResult(intent, REQ_POSITION);
                 break;
         }
     }
+
+
 
     /*权限适配*/
 
@@ -287,7 +303,17 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     }
 
     private void selectPicture(final int index) {
+        hideSoftInput(dynamicContent.getWindowToken());
         popupCircleTypeView = View.inflate(getContext(), R.layout.select_camera_pic, null);
+        //点击其他地方消失
+        popupCircleTypeView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // TODO Auto-generated method stub
+                popupCircleTypeWindow.dismiss();
+                return false;
+            }
+        });
         popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
                 WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
@@ -339,15 +365,16 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         popupCircleTypeWindow.showAtLocation(getActivity().findViewById(R.id.dynamic_create), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
                 , 0, 0);
         popupCircleTypeView.startAnimation(animationCircleType);
+
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_OK) {
+       /* if (resultCode != RESULT_OK) {
             return;
-        }
+        }*/
 
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             List<ImageBean> resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);
@@ -391,6 +418,14 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                 }
             }
             return;
+        }
+
+        if (requestCode == REQ_POSITION && resultCode == RES_POSITION) {
+            city = data.getStringExtra("city");
+            latitude = data.getDoubleExtra("latitude", 0);
+            longitude = data.getDoubleExtra("longitude", 0);
+            locationStr.setText(city);
+            address = data.getStringExtra("address");
         }
     }
 

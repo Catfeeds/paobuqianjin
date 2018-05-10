@@ -251,6 +251,9 @@ public class MyReleaseFragment extends BaseBarStyleTextViewFragment implements M
         } else if (taskMyReleaseResponse.getError() == -1) {
 
         } else if (taskMyReleaseResponse.getError() == 0) {
+            if (noReleaseRecord == null) {
+                return;
+            }
             if (noReleaseRecord.getVisibility() == View.VISIBLE) {
                 noReleaseRecord.setVisibility(View.GONE);
             }

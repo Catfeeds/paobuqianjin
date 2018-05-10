@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.base;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Looper;
@@ -15,15 +16,19 @@ import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
+import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.l.okhttppaobu.okhttp.https.HttpsUtils;
 import com.l.okhttppaobu.okhttp.log.LoggerInterceptor;
 import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.lljjcoder.style.citypickerview.CityPickerView;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CurrentStepResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.model.services.baidu.LocationService;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.emoji.IImageLoader;
@@ -63,6 +68,7 @@ public class PaoBuApplication extends MultiDexApplication {
     private static final long cacheSize = 1024 * 1024 * 200;
     private static PaoBuApplication sApplication;
     private int appCount = 0;
+    private final static String START_STEP_ACTION = "com.paobuqianjin.step.START_STEP_ACTION";
 
     @Override
     public void onCreate() {
@@ -71,7 +77,6 @@ public class PaoBuApplication extends MultiDexApplication {
         initHttpOk();
         initSDKService();
         sApplication = this;
-        TodayStepManager.init(this);
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override
@@ -166,6 +171,24 @@ public class PaoBuApplication extends MultiDexApplication {
 
     private static class DetectThread extends Thread {
         WeakReference<PaoBuApplication> application;
+        InnerCallBack innerCallBack = new InnerCallBack() {
+            @Override
+            public void innerCallBack(Object object) {
+                final PaoBuApplication app = application.get();
+                if (object instanceof ErrorCode) {
+
+                } else if (object instanceof CurrentStepResponse) {
+                    LocalLog.d(TAG, "CurrentStepResponse  " + object.toString());
+                    Intent intent = new Intent();
+                    if (((CurrentStepResponse) object).getError() == 0 && ((CurrentStepResponse) object).getData() != null) {
+                        intent.putExtra("today_step", ((CurrentStepResponse) object).getData().getStep_number());
+                    }
+                    intent.setAction(START_STEP_ACTION);
+                    intent.setClass(app, TodayStepService.class);
+                    TodayStepManager.init(app, intent);
+                }
+            }
+        };
 
         DetectThread(PaoBuApplication application) {
             this.application = new WeakReference<PaoBuApplication>(application);
@@ -178,9 +201,16 @@ public class PaoBuApplication extends MultiDexApplication {
             if (app != null) {
                 UMShareAPI.get(app);
                 LocalLog.d(TAG, "DetectThread run() 初始化网络、计步服务、定位SDK、三方登陆注册、三方支付SDK等");
-                Presenter.getInstance(app).startService(null, TodayStepService.class);
                 app.initWXapi(app);
                 app.loadCitySelect(app);
+                boolean netAccess = Presenter.getInstance(app).getCurrentStep(innerCallBack);
+                if (!netAccess) {
+                    LocalLog.d(TAG, "未登录无网络");
+                    Intent intent = new Intent();
+                    intent.setAction(START_STEP_ACTION);
+                    intent.setClass(app, TodayStepService.class);
+                    TodayStepManager.init(app, intent);
+                }
             }
         }
     }

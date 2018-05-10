@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CurrentStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginRecordResponse;
@@ -31,11 +32,14 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.LoginSignCallbackInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.fragment.login.ForgetPassFragment;
+import com.today.step.lib.TodayStepManager;
+import com.today.step.lib.TodayStepService;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -85,6 +89,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     private ProgressDialog dialog;
     private ThirdPartyLoginParam thirdPartyLoginParam;
     LoginResponse loginResponse;
+    private final static String START_STEP_ACTION = "com.paobuqianjin.step.START_STEP_ACTION";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -204,6 +209,35 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     }
 
 
+    InnerCallBack innerCallBack = new InnerCallBack() {
+        @Override
+        public void innerCallBack(Object object) {
+            if (object instanceof ErrorCode) {
+
+            } else if (object instanceof CurrentStepResponse) {
+                LocalLog.d(TAG, "CurrentStepResponse  " + object.toString());
+                Intent intent = new Intent();
+                if (((CurrentStepResponse) object).getError() == 0 && ((CurrentStepResponse) object).getData() != null) {
+                    intent.putExtra("today_step", ((CurrentStepResponse) object).getData().getStep_number());
+                }
+                intent.setAction(START_STEP_ACTION);
+                intent.setClass(LoginActivity.this, TodayStepService.class);
+                TodayStepManager.init(LoginActivity.this.getApplication(), intent);
+            }
+        }
+    };
+
+    private void startStep() {
+        boolean netAccess = Presenter.getInstance(this).getCurrentStep(innerCallBack);
+        if (!netAccess) {
+            LocalLog.d(TAG, "未登录无网络");
+            Intent intent = new Intent();
+            intent.setAction(START_STEP_ACTION);
+            intent.setClass(this.getApplication(), TodayStepService.class);
+            TodayStepManager.init(this.getApplication(), intent);
+        }
+    }
+
     @Override
     public void response(LoginResponse loginResponse) {
         LocalLog.d(TAG, "手机号登入成功! 去获取用户信息!");
@@ -214,6 +248,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             Presenter.getInstance(this).setToken(this, loginResponse.getData().getUser_token());
             Presenter.getInstance(this).setId(loginResponse.getData().getId());
             Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
+            startStep();
             startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
         } else {
             if (loginResponse.getData().getIs_perfect() == 0) {
@@ -279,6 +314,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             Presenter.getInstance(this).setMobile(this, thirdPartyLoginResponse.getData().getMobile());
             Presenter.getInstance(this).setToken(this, thirdPartyLoginResponse.getData().getUser_token());
             startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+            startStep();
           /*  }*/
         }
 

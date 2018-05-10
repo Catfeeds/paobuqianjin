@@ -175,7 +175,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
 
     @Override
     public void onBackPressed() {
-        if (circlePayFragment != null && circlePayFragment.isAdded()) {
+        if (circlePayFragment != null && circlePayFragment.isAdded() && circlePayFragment.isVisible()) {
             circlePayFragment.getmToolBarListener().clickLeft();
         }else{
             super.onBackPressed();

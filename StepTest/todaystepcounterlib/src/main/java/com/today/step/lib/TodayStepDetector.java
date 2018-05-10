@@ -8,6 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.PowerManager;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -63,15 +64,17 @@ class TodayStepDetector implements SensorEventListener{
     private long timeOfLastPeak1 = 0;
     private long timeOfThisPeak1 = 0;
     private String mTodayDate;
+    private int netData;
 
-    public TodayStepDetector(Context context, OnStepCounterListener onStepCounterListener){
+    public TodayStepDetector(Context context, OnStepCounterListener onStepCounterListener, int netData) {
         super();
         mContext = context;
         this.mOnStepCounterListener = onStepCounterListener;
-
+        this.netData = netData;
         WakeLockUtils.getLock(mContext);
 
         mCount = (int) PreferencesHelper.getCurrentStep(mContext);
+        Log.d(TAG, "mCount =  " + mCount);
         mTodayDate = PreferencesHelper.getStepToday(mContext);
         dateChangeCleanStep();
         initBroadcastReceiver();

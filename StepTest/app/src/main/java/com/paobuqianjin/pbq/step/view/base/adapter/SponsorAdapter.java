@@ -17,18 +17,19 @@ import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.NormalResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
- * Created by pbq on 2018/4/21.
+ * Created by pbq
+ * on 2018/4/21.
  */
 
 public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorViewHolder> {
@@ -88,7 +89,7 @@ public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorV
             @Override
             public void onClick(View view) {
                 intent.putExtra("businessId", dataBean.getBusinessid());
-                intent.putExtra("name",dataBean.getName());
+                intent.putExtra("name", dataBean.getName());
                 context.setResult(ReleaseTaskSponsorFragment.RESULT_SPONSOR_MSG, intent);
                 context.finish();
             }
@@ -114,10 +115,19 @@ public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorV
                     public void innerCallBack(Object object) {
                         if (object instanceof ErrorCode) {
                             ToastUtils.showShortToast(context, ((ErrorCode) object).getMessage());
-                        } else {
-                            ToastUtils.showShortToast(context, "删除成功");
-                            ((SponsorManagerActivity) context).refresh();
-                            deleteNormal.dismiss();
+                        } else if (object instanceof NormalResponse) {
+                            if (((NormalResponse) object).getError() == 0) {
+                                LocalLog.d(TAG, ((SponsorManagerActivity) context).businessId + "------" + businessid);
+                                ToastUtils.showShortToast(context, "删除成功");
+                                if (((SponsorManagerActivity) context).businessId != -1 &&
+                                        ((SponsorManagerActivity) context).businessId == businessid) {
+                                    ((SponsorManagerActivity) context).isDelete = true;
+                                }
+                                deleteNormal.dismiss();
+                                ((SponsorManagerActivity) context).refresh();
+                            } else {
+                                ToastUtils.showShortToast(context, ((NormalResponse) object).getMessage());
+                            }
                         }
                     }
                 });

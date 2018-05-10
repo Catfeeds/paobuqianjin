@@ -8,464 +8,502 @@
         android:id="@+id/bar_create_circle"
         layout="@layout/bar_return_a_style"></include>
 
+    <RelativeLayout
+        android:id="@+id/create_span"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:id="@+id/circle_theme_phone_line_2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/create_circle_confim"
+            android:background="@color/color_fefefe" />
+
+        <Button
+            android:id="@+id/create_circle_confim"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/create_button"
+            android:stateListAnimator="@null"
+            android:text="创建"
+            android:textColor="@color/color_fefefe"
+            android:textSize="16dp" />
+    </RelativeLayout>
+
+    <!--
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/bar_create_circle">-->
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/create_span"
         android:layout_below="@+id/bar_create_circle">
 
-        <RelativeLayout
-            android:id="@+id/container_create_circle"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="-24dp"
-            android:fitsSystemWindows="true">
+            android:orientation="vertical">
+
 
             <RelativeLayout
-                android:id="@+id/name_circle_span"
+                android:id="@+id/container_create_circle"
                 android:layout_width="wrap_content"
-                android:layout_height="49dp"
-                android:layout_alignParentTop="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-24dp"
+                android:fitsSystemWindows="true">
 
-                <TextView
-                    android:id="@+id/circle_name_text"
+                <RelativeLayout
+                    android:id="@+id/name_circle_span"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="圈子名称"
-                    android:textColor="@color/color_161727"
-                    android:textSize="14dp" />
-
-                <EditText
-                    android:id="@+id/cir_name_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:cursorVisible="true"
+                    android:layout_height="49dp"
+                    android:layout_alignParentTop="true"
                     android:focusable="true"
-                    android:gravity="right"
-                    android:hint="输入圈子名称"
-                    android:inputType="text"
-                    android:lines="1"
-                    android:maxLength="32"
-                    android:textCursorDrawable="@null"
-                    android:layout_toRightOf="@id/circle_name_text"
-                    android:textSize="14dp" />
+                    android:focusableInTouchMode="true">
+
+                    <TextView
+                        android:id="@+id/circle_name_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="圈子名称"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/cir_name_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:layout_toRightOf="@id/circle_name_text"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:focusable="true"
+                        android:gravity="right"
+                        android:hint="输入圈子名称"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:maxLength="32"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/circle_name_text"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@color/color_ebebed" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/stand_circle_pan"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_below="@+id/name_circle_span">
+
+                    <TextView
+                        android:id="@+id/circle_stand_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="圈子目标"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
+
+                    <ImageView
+                        android:id="@+id/switch_stand"
+                        android:layout_width="13dp"
+                        android:layout_height="7dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:src="@drawable/menu_age" />
+
+                    <TextView
+                        android:id="@+id/circle_stand_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:layout_toLeftOf="@+id/switch_stand"
+                        android:text=""
+                        android:textColor="@color/color_161727"
+                        android:textSize="12dp" />
+                </RelativeLayout>
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/circle_name_text"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/color_ebebed" />
-            </RelativeLayout>
+                    android:id="@+id/circle_owner_phone_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:layout_below="@+id/stand_circle_pan"
+                    android:background="@color/color_f6f6f6" />
 
-
-            <RelativeLayout
-                android:id="@+id/stand_circle_pan"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_below="@+id/name_circle_span">
-
-                <TextView
-                    android:id="@+id/circle_stand_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="圈子目标"
-                    android:textColor="@color/color_161727"
-                    android:textSize="14dp" />
-
-                <ImageView
-                    android:id="@+id/switch_stand"
-                    android:layout_width="13dp"
-                    android:layout_height="7dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:src="@drawable/menu_age" />
-
-                <TextView
-                    android:id="@+id/circle_stand_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:layout_toLeftOf="@+id/switch_stand"
-                    android:text=""
-                    android:textColor="@color/color_161727"
-                    android:textSize="12dp" />
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/circle_owner_phone_line"
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:layout_below="@+id/stand_circle_pan"
-                android:background="@color/color_f6f6f6" />
-
-            <RelativeLayout
-                android:id="@+id/phone_circle_pan"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_below="@+id/circle_owner_phone_line"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
-
-                <TextView
-                    android:id="@+id/phone_num_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="圈主联系电话"
-                    android:textColor="@color/color_161727"
-                    android:textSize="14dp" />
-
-                <EditText
-                    android:id="@+id/circle_phone_num_editor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:cursorVisible="true"
+                <RelativeLayout
+                    android:id="@+id/phone_circle_pan"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_below="@+id/circle_owner_phone_line"
                     android:focusable="true"
-                    android:gravity="right"
-                    android:hint="维护圈友利益，请务必填写真实号码"
-                    android:inputType="phone"
-                    android:lines="1"
-                    android:maxLength="11"
-                    android:textColor="@color/color_161727"
-                    android:textCursorDrawable="@null"
-                    android:layout_toRightOf="@id/phone_num_text"
-                    android:textSize="14dp" />
+                    android:focusableInTouchMode="true">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/phone_num_text"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/color_ebebed" />
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/phone_num_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="圈主联系电话"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
 
-            <RelativeLayout
-                android:id="@+id/circle_start_money"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_below="@+id/phone_circle_pan">
+                    <EditText
+                        android:id="@+id/circle_phone_num_editor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:layout_toRightOf="@id/phone_num_text"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:focusable="true"
+                        android:gravity="right"
+                        android:hint="维护圈友利益，请务必填写真实号码"
+                        android:inputType="phone"
+                        android:lines="1"
+                        android:maxLength="11"
+                        android:textColor="@color/color_161727"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
 
-                <TextView
-                    android:id="@+id/circle_money_start_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="是否充值金额"
-                    android:textColor="@color/color_161727"
-                    android:textSize="14dp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/phone_num_text"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@color/color_ebebed" />
+                </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/switch_circle_money_add_off"
-                    android:layout_width="48dp"
-                    android:layout_height="34dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:src="@drawable/switch_bar_a" />
+                <RelativeLayout
+                    android:id="@+id/circle_start_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_below="@+id/phone_circle_pan">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/circle_money_start_text"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/color_ebebed" />
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/circle_money_start_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="是否充值金额"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
+
+                    <ImageView
+                        android:id="@+id/switch_circle_money_add_off"
+                        android:layout_width="48dp"
+                        android:layout_height="34dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:src="@drawable/switch_bar_a" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/circle_money_start_text"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@color/color_ebebed" />
+                </RelativeLayout>
 
 
-            <RelativeLayout
-                android:id="@+id/money_mum_pan"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_below="@+id/circle_start_money"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
-
-                <TextView
-                    android:id="@+id/money_num_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="充值金额"
-                    android:textColor="@color/color_161727"
-                    android:textSize="14dp" />
-
-                <EditText
-                    android:id="@+id/circle_money_num_editor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:cursorVisible="true"
+                <RelativeLayout
+                    android:id="@+id/money_mum_pan"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_below="@+id/circle_start_money"
                     android:focusable="true"
-                    android:gravity="right"
-                    android:hint="请输入充值金额"
-                    android:inputType="numberDecimal"
-                    android:maxLength="11"
-                    android:maxLines="1"
-                    android:textColor="@color/color_161727"
-                    android:textCursorDrawable="@null"
-                    android:layout_toRightOf="@+id/money_num_text"
-                    android:textSize="14dp" />
+                    android:focusableInTouchMode="true">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/money_num_text"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/color_ebebed" />
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/money_num_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="充值金额"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
 
-            <RelativeLayout
-                android:id="@+id/read_package_mum_pan"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_below="@+id/money_mum_pan"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
+                    <EditText
+                        android:id="@+id/circle_money_num_editor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:layout_toRightOf="@+id/money_num_text"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:focusable="true"
+                        android:gravity="right"
+                        android:hint="请输入充值金额"
+                        android:inputType="numberDecimal"
+                        android:maxLength="11"
+                        android:maxLines="1"
+                        android:textColor="@color/color_161727"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
 
-                <TextView
-                    android:id="@+id/read_package_num_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="每日红包总金额"
-                    android:textColor="@color/color_161727" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/money_num_text"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@color/color_ebebed" />
+                </RelativeLayout>
 
-                <EditText
-                    android:id="@+id/circle_read_package_editor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:cursorVisible="true"
-                    android:gravity="right"
-                    android:hint="请输入每日红包总金额"
-                    android:inputType="numberDecimal"
-                    android:maxLength="11"
-                    android:maxLines="1"
-                    android:textColor="@color/color_161727"
-                    android:textCursorDrawable="@null"
-                    android:layout_toRightOf="@id/read_package_num_text"
-                    android:textSize="14dp" />
+                <RelativeLayout
+                    android:id="@+id/read_package_mum_pan"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_below="@+id/money_mum_pan"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/read_package_num_text"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/color_ebebed" />
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/read_package_num_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="每日红包总金额"
+                        android:textColor="@color/color_161727" />
 
-            <RelativeLayout
-                android:id="@+id/money_pkg_pan"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_below="@+id/read_package_mum_pan"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
+                    <EditText
+                        android:id="@+id/circle_read_package_editor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:layout_toRightOf="@id/read_package_num_text"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:gravity="right"
+                        android:hint="请输入每日红包总金额"
+                        android:inputType="numberDecimal"
+                        android:maxLength="11"
+                        android:maxLines="1"
+                        android:textColor="@color/color_161727"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
 
-                <TextView
-                    android:id="@+id/money_pkg_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="每日红包个数"
-                    android:textColor="@color/color_161727" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/read_package_num_text"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@color/color_ebebed" />
+                </RelativeLayout>
 
-                <EditText
-                    android:id="@+id/money_pkg_num_editor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:cursorVisible="true"
-                    android:gravity="right"
-                    android:hint="请输入每日红包总个数"
-                    android:inputType="number"
-                    android:maxLength="11"
-                    android:maxLines="1"
-                    android:textColor="@color/color_161727"
-                    android:textCursorDrawable="@null"
-                    android:layout_toRightOf="@+id/money_pkg_text"
-                    android:textSize="14dp" />
+                <RelativeLayout
+                    android:id="@+id/money_pkg_pan"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_below="@+id/read_package_mum_pan"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/money_pkg_text"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/color_ebebed" />
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/money_pkg_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="每日红包个数"
+                        android:textColor="@color/color_161727" />
 
-            <RelativeLayout
-                android:id="@+id/money_use_desc"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_below="@+id/money_pkg_pan"
-                android:layout_centerVertical="true"
-                android:background="@color/color_f6f6f6">
+                    <EditText
+                        android:id="@+id/money_pkg_num_editor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:layout_toRightOf="@+id/money_pkg_text"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:gravity="right"
+                        android:hint="请输入每日红包总个数"
+                        android:inputType="number"
+                        android:maxLength="11"
+                        android:maxLines="1"
+                        android:textColor="@color/color_161727"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
 
-                <TextView
-                    android:id="@+id/money_use_desc_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:gravity="right"
-                    android:text="所充值金额将全部用于运动达标成员发红包"
-                    android:textColor="@color/color_161727"
-                    android:textSize="12dp" />
-            </RelativeLayout>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/money_pkg_text"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@color/color_ebebed" />
+                </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/logo_circle_pan"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/money_use_desc">
-
-                <TextView
-                    android:id="@+id/circle_logo_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="圈子logo"
-                    android:textColor="@color/color_161727"
-                    android:textSize="14dp" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/logo_circle_pic"
-                    android:layout_width="30dp"
+                <RelativeLayout
+                    android:id="@+id/money_use_desc"
+                    android:layout_width="match_parent"
                     android:layout_height="30dp"
-                    android:layout_alignParentEnd="true"
+                    android:layout_below="@+id/money_pkg_pan"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:src="@drawable/default_head_ico" />
+                    android:background="@color/color_f6f6f6">
 
-                <ImageView
+                    <TextView
+                        android:id="@+id/money_use_desc_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:gravity="right"
+                        android:text="所充值金额将全部用于运动达标成员发红包"
+                        android:textColor="@color/color_161727"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/logo_circle_pan"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/money_use_desc">
+
+                    <TextView
+                        android:id="@+id/circle_logo_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="圈子logo"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/logo_circle_pic"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:src="@drawable/default_head_ico" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/circle_logo_text"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@color/color_ebebed" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/pass_circle_span"
                     android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/circle_logo_text"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/color_ebebed" />
-            </RelativeLayout>
+                    android:layout_height="49dp"
+                    android:layout_below="@+id/logo_circle_pan">
 
+                    <TextView
+                        android:id="@+id/circle_pass_text_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="是否需要密码"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
 
-            <RelativeLayout
-                android:id="@+id/pass_circle_span"
-                android:layout_width="wrap_content"
-                android:layout_height="49dp"
-                android:layout_below="@+id/logo_circle_pan">
+                    <ImageView
+                        android:id="@+id/password_circle_switch"
+                        android:layout_width="48dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:src="@drawable/switch_bar_a" />
 
-                <TextView
-                    android:id="@+id/circle_pass_text_desc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="是否需要密码"
-                    android:textColor="@color/color_161727"
-                    android:textSize="14dp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/circle_pass_text_desc"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@color/color_ebebed" />
+                </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/password_circle_switch"
-                    android:layout_width="48dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:src="@drawable/switch_bar_a" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/circle_pass_text_desc"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/color_ebebed" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/password_pan"
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
-                android:layout_below="@+id/pass_circle_span"
-                android:focusable="true"
-                android:focusableInTouchMode="true">
-
-                <TextView
-                    android:id="@+id/password_num_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp" />
-
-                <EditText
-                    android:id="@+id/password_num_editor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:background="@null"
-                    android:cursorVisible="true"
+                <RelativeLayout
+                    android:id="@+id/password_pan"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:layout_below="@+id/pass_circle_span"
                     android:focusable="true"
-                    android:gravity="right"
-                    android:hint="请输入6位密码"
-                    android:inputType="textPassword"
-                    android:lines="1"
-                    android:maxLength="6"
-                    android:textColor="@color/color_161727"
-                    android:textCursorDrawable="@null"
-                    android:textSize="14dp" />
+                    android:focusableInTouchMode="true">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/password_num_text"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:background="@color/color_ebebed" />
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/password_num_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp" />
 
-            <!--            <RelativeLayout
+                    <EditText
+                        android:id="@+id/password_num_editor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:focusable="true"
+                        android:gravity="right"
+                        android:hint="请输入6位密码"
+                        android:inputType="textPassword"
+                        android:lines="1"
+                        android:maxLength="6"
+                        android:textColor="@color/color_161727"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:layout_alignLeft="@+id/password_num_text"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:background="@color/color_ebebed" />
+                </RelativeLayout>
+
+                <!--            <RelativeLayout
                             android:id="@+id/circle_theme_pan"
                             android:layout_width="match_parent"
                             android:layout_height="49dp"
@@ -527,24 +565,19 @@
                                 android:background="@color/color_ebebed" />
                         </RelativeLayout>-->
 
-            <ImageView
-                android:id="@+id/circle_theme_phone_line"
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:layout_below="@+id/password_pan"
-                android:background="@color/color_f6f6f6" />
-
-            <RelativeLayout
-                android:id="@+id/edit_circle_desc"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:layout_below="@+id/circle_theme_phone_line">
-
-                <FrameLayout
+                <ImageView
+                    android:id="@+id/circle_theme_phone_line"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true">
+                    android:layout_height="15dp"
+                    android:layout_below="@+id/password_pan"
+                    android:background="@color/color_f6f6f6" />
+
+                <RelativeLayout
+                    android:id="@+id/edit_circle_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:layout_below="@+id/circle_theme_phone_line">
+
 
                     <EditText
                         android:id="@+id/circle_desc_of_your"
@@ -557,53 +590,26 @@
                         android:gravity="left|top"
                         android:hint="请对你的圈子进行描述"
                         android:textColor="@color/color_8a8a8a"
-                        android:textCursorDrawable="@null"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="30dp"
                         android:textSize="14dp" />
-                </FrameLayout>
 
-                <TextView
-                    android:id="@+id/bound_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginBottom="15dp"
-                    android:layout_marginRight="14dp"
-                    android:text="0/400字" />
+                    <TextView
+                        android:id="@+id/bound_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginRight="14dp"
+                        android:layout_alignBottom="@+id/circle_desc_of_your"
+                        android:text="0/400字" />
+
+                </RelativeLayout>
 
             </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+    <!--</com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>-->
 
-        </RelativeLayout>
-    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
-
-
-    <RelativeLayout
-        android:id="@+id/create_span"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
-
-        <ImageView
-
-            android:id="@+id/circle_theme_phone_line_2"
-            android:layout_width="match_parent"
-            android:layout_height="15dp"
-            android:layout_above="@+id/create_circle_confim"
-            android:layout_alignParentStart="true"
-            android:background="@color/color_fefefe" />
-
-        <Button
-            android:id="@+id/create_circle_confim"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:background="@drawable/create_button"
-            android:stateListAnimator="@null"
-            android:text="创建"
-            android:textColor="@color/color_fefefe"
-            android:textSize="16dp" />
-    </RelativeLayout>
 
 </RelativeLayout>

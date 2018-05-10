@@ -91,7 +91,13 @@
         </activity>
         <activity
             android:name=".view.activity.CreateCircleActivity"
-            android:theme="@style/ImageTranslucentTheme" />
+            android:theme="@style/ImageTranslucentTheme"
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation"
+            />
+        <!--android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"-->
         <activity
             android:name=".view.activity.SearchCircleActivity"
             android:theme="@style/ImageTranslucentTheme" />
