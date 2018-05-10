@@ -68,6 +68,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteCodeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteMessageResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LiveResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NormalResponse;
@@ -679,7 +680,7 @@ public final class Engine {
 
 
     //TODO 短信邀请
-    public void inviteMsg(String phoneNum) {
+    public void inviteMsg(String phoneNum, final Button button) {
         LocalLog.d(TAG, "inviteMsg() phoneNum " + phoneNum);
         OkHttpUtils
                 .post()
@@ -688,7 +689,31 @@ public final class Engine {
                 .addParams("userid", String.valueOf(getId(mContext)))
                 .addParams("phones", "[" + "\"" + phoneNum + "\"" + "]")
                 .build()
-                .execute(new NetStringCallBack(friendAddressInterface, COMMAND_IVITE_MSG));
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        try {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            ToastUtils.showLongToast(mContext, errorCode.getMessage());
+                        } catch (JsonSyntaxException s) {
+                            s.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        try {
+                            InviteMessageResponse inviteMessageResponse = new Gson().fromJson(s, InviteMessageResponse.class);
+                            if (inviteMessageResponse.getError() == 0) {
+                                if (button != null) {
+                                    button.setText("邀请过");
+                                }
+                            }
+                        } catch (JsonSyntaxException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
     }
 
     //手机号码注册

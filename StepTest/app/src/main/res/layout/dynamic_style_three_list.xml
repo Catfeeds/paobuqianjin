@@ -166,7 +166,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
                 android:layout_toStartOf="@+id/content_supports"
-                android:background="@drawable/fabulous_n" />
+                android:src="@drawable/fabulous_n"
+                />
         </RelativeLayout>
         <!--<TextView
             android:id="@+id/content_supports"

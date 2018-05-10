@@ -25,13 +25,43 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class HonorAdapter extends RecyclerView.Adapter<HonorAdapter.HonorAdapterViewHolder> {
     private final static String TAG = HonorAdapter.class.getSimpleName();
     Context context;
-    List<?> mData;
+    List mData;
     private static int DEFAULT_COUNT = 3;
 
 
-    public HonorAdapter(Context context, List<?> data) {
+    public HonorAdapter(Context context, List data) {
         this.context = context;
         mData = data;
+        addDefault();
+    }
+
+    /**
+     * 添加默认的排名
+     */
+    private void addDefault() {
+        int emptyPerson = DEFAULT_COUNT - mData.size();
+
+        try {
+            for (int i = 0; i < emptyPerson; i++) {
+                if (mData.get(0) instanceof FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) {
+                    FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean bean = new FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean();
+                    bean.setAvatar("");
+                    bean.setNickname("--");
+                    bean.setStep_number("--");
+                    mData.add(bean);
+                } else if (mData.get(0) instanceof CircleStepRankResponse.DataBeanX.DataBean.CircleBean) {
+                    CircleStepRankResponse.DataBeanX.DataBean.CircleBean bean = new CircleStepRankResponse.DataBeanX.DataBean.CircleBean();
+                    bean.setAvatar("");
+                    bean.setNickname("--");
+                    bean.setStep_number("--");
+                    mData.add(bean);
+
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

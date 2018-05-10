@@ -753,8 +753,8 @@ public final class Presenter {
         engine.postAddressBook(addressBook);
     }
 
-    public void inviteMsg(String phoneNum) {
-        engine.inviteMsg(phoneNum);
+    public void inviteMsg(String phoneNum,Button button) {
+        engine.inviteMsg(phoneNum ,button);
     }
 
     public void postTaskSponsorRelease(TaskSponsorParam taskSponsorParam) {

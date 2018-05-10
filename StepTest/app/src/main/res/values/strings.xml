@@ -132,4 +132,5 @@
     <string name="per_x_x_txt">%1$s/%2$s字</string>
     <string name="had_bind">已绑定账号</string>
     <string name="not_bind">尚未绑定</string>
+    <string name="circle_have_enouth_money">圈子余额不足，无法支付今日红包，请及时充值！</string>
 </resources>

@@ -25,6 +25,7 @@ import android.text.InputFilter;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
@@ -320,6 +321,26 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 boundText.setText(getString(R.string.per_x_x_txt,s.length()+"","400"));
             }
         });
+
+        circleDescOfYour.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // 解决scrollView中嵌套EditText导致不能上下滑动的问题
+                switch (v.getId()) {
+                    case R.id.circle_desc_of_your:
+//                    case R.id.bound_text:
+                        // 解决scrollView中嵌套EditText导致不能上下滑动的问题
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                            case MotionEvent.ACTION_UP:
+                                v.getParent().requestDisallowInterceptTouchEvent(false);
+                                break;
+                        }
+                }
+                return false;
+            }
+        });
+
     }
 
     private TextWatcher textWatcher = new TextWatcher() {

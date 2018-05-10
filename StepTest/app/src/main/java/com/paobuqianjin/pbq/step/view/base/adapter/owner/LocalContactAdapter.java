@@ -114,7 +114,7 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
                             case "邀请":
                                 //TODO 发送邀请
                                 LocalLog.d(TAG, "邀请好友");
-                                Presenter.getInstance(context).inviteMsg("13424156029");
+                                Presenter.getInstance(context).inviteMsg(phoneNum,btFollow);
                                 break;
                             case "已关注":
                                 LocalLog.d(TAG, "取消关注");

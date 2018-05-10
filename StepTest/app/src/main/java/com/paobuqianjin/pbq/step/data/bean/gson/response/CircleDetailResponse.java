@@ -74,6 +74,7 @@ public class CircleDetailResponse {
          * is_join : 1
          * is_admin : 1
          * is_red_packet : 0
+         * red_packet_status : 0
          */
 
         private int id;
@@ -96,6 +97,7 @@ public class CircleDetailResponse {
         private int is_join;
         private int is_admin;
         private int is_red_packet;
+        private int red_packet_status;
 
         public int getId() {
             return id;
@@ -257,6 +259,14 @@ public class CircleDetailResponse {
             this.is_red_packet = is_red_packet;
         }
 
+        public int getRed_packet_status() {
+            return red_packet_status;
+        }
+
+        public void setRed_packet_status(int red_packet_status) {
+            this.red_packet_status = red_packet_status;
+        }
+
         @Override
         public String toString() {
             return "DataBean{" +
@@ -280,6 +290,7 @@ public class CircleDetailResponse {
                     ", is_join=" + is_join +
                     ", is_admin=" + is_admin +
                     ", is_red_packet=" + is_red_packet +
+                    ", red_packet_status=" + red_packet_status +
                     '}';
         }
     }

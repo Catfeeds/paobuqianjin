@@ -169,6 +169,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private String changeName;
     private int memberNum = 0;
 
+    TextView tvRedTipsMoney;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.circle_detail_fg_no_admin;
@@ -493,7 +495,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         reChargeBt = (Button) viewRoot.findViewById(R.id.re_charge_bt);
         reChargeBt.setOnClickListener(onClickListener);
         rankMoney = (RelativeLayout) viewRoot.findViewById(R.id.rank_money);
-
+        tvRedTipsMoney = (TextView) viewRoot.findViewById(R.id.tv_red_tips_money);
     }
 
 
@@ -765,6 +767,10 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             if (red_pack_money > total_money) {
                 LocalLog.d(TAG, "余额不足当天的红包");
 
+            }
+            if (circleDetailResponse.getData().getRed_packet_status() == 4) {
+                LocalLog.d(TAG, "圈子余额不足");
+                tvRedTipsMoney.setVisibility(View.VISIBLE);
             }
             if (circleDetailResponse.getData().getIs_pwd() == 1) {
                 is_password = true;

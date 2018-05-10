@@ -584,7 +584,8 @@
                         android:id="@+id/circle_desc_of_your"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
-                        android:layout_marginLeft="14dp"
+                        android:paddingLeft="14dp"
+                        android:paddingRight="14dp"
                         android:background="@null"
                         android:cursorVisible="true"
                         android:focusable="true"
@@ -592,6 +593,7 @@
                         android:hint="请对你的圈子进行描述"
                         android:textColor="@color/color_8a8a8a"
                         android:paddingTop="8dp"
+                        android:scrollbars="vertical"
                         android:paddingBottom="30dp"
                         android:textSize="14dp" />
 

@@ -22,7 +22,7 @@
             android:layout_width="90dp"
             android:layout_height="27dp"
             android:layout_marginTop="63dp"
-            android:background="@color/color_3d3e49">
+            android:background="#99000000">
 
             <TextView
                 android:id="@+id/circle_location"

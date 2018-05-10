@@ -206,9 +206,9 @@ public class HotCircleFragment extends BaseFragment {
                         Presenter.getInstance(getActivity()).getImage(iv_live_a, listBean.get(0).getConver());
                     } else {
                         iv_live_a.setVisibility(View.INVISIBLE);
-//                        live_a_desc.setVisibility(View.INVISIBLE);
+                        live_a_desc.setVisibility(View.INVISIBLE);
                         iv_live_b.setVisibility(View.INVISIBLE);
-//                        live_b_desc.setVisibility(View.INVISIBLE);
+                        live_b_desc.setVisibility(View.INVISIBLE);
                     }
                 } else if (((LiveResponse) object).getError() == 1) {
 

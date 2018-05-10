@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
+import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 
 import java.util.Date;
 import java.util.List;
@@ -461,6 +462,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
             likeNumSpan = (RelativeLayout) view.findViewById(R.id.like_num_span);
             likeNumSpan.setOnClickListener(onClickListener);
+            dynamicUserIcon.setOnClickListener(onClickListener);
+            dynamicUserName.setOnClickListener(onClickListener);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -483,6 +486,15 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         intent.putExtra(mContext.getPackageName() + "is_vote", is_vote);
                         intent.setClass(mContext, DynamicActivity.class);
                         fragment.startActivityForResult(intent, DYNAMIC_DETAIL);
+                        break;
+                    case R.id.dynamic_user_icon:
+                    case R.id.dynamic_user_name:
+                        LocalLog.d(TAG, "点击头像");
+                        LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
+                        Intent intentPersonDetial = new Intent();
+                        intentPersonDetial.putExtra("userid", userid);
+                        intentPersonDetial.setClass(mContext, UserCenterActivity.class);
+                        fragment.startActivityForResult(intentPersonDetial, DYNAMIC_DETAIL);
                         break;
                 }
             }
@@ -587,6 +599,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
             likeNumSpan = (RelativeLayout) view.findViewById(R.id.like_num_span);
             likeNumSpan.setOnClickListener(onClickListener);
+            dynamicUserIcon.setOnClickListener(onClickListener);
+            dynamicUserName.setOnClickListener(onClickListener);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -609,6 +623,15 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         intent.putExtra(mContext.getPackageName() + "is_vote", is_vote);
                         intent.setClass(mContext, DynamicActivity.class);
                         fragment.startActivityForResult(intent, DYNAMIC_DETAIL);
+                        break;
+                    case R.id.dynamic_user_icon:
+                    case R.id.dynamic_user_name:
+                        LocalLog.d(TAG, "点击头像");
+                        LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
+                        Intent intentPersonDetial = new Intent();
+                        intentPersonDetial.putExtra("userid", userid);
+                        intentPersonDetial.setClass(mContext, UserCenterActivity.class);
+                        fragment.startActivityForResult(intentPersonDetial, DYNAMIC_DETAIL);
                         break;
                 }
             }
@@ -693,7 +716,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
             likeNumSpan = (RelativeLayout) view.findViewById(R.id.like_num_span);
             likeNumSpan.setOnClickListener(onClickListener);
-
+            dynamicUserIcon.setOnClickListener(onClickListener);
+            dynamicUserName.setOnClickListener(onClickListener);
         }
 
         private InnerCallBack innerCallBack = new InnerCallBack() {
@@ -736,6 +760,15 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         intent.putExtra(mContext.getPackageName() + "is_vote", is_vote);
                         intent.setClass(mContext, DynamicActivity.class);
                         fragment.startActivityForResult(intent, DYNAMIC_DETAIL);
+                        break;
+                    case R.id.dynamic_user_icon:
+                    case R.id.dynamic_user_name:
+                        LocalLog.d(TAG, "点击头像");
+                        LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
+                        Intent intentPersonDetial = new Intent();
+                        intentPersonDetial.putExtra("userid", userid);
+                        intentPersonDetial.setClass(mContext, UserCenterActivity.class);
+                        fragment.startActivityForResult(intentPersonDetial, DYNAMIC_DETAIL);
                         break;
                 }
             }

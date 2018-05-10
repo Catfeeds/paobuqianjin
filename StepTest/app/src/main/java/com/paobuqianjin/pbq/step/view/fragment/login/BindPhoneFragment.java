@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -103,6 +105,28 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+        phoneEdit = (EditText) viewRoot.findViewById(R.id.phone_edit);
+        phoneEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String forgotpwdAccountStr = phoneEdit.getText().toString().trim();
+                if (forgotpwdAccountStr.length() == 11) {
+                    forgotpwdGetCode.setEnabled(true);
+                } else {
+                    forgotpwdGetCode.setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     @Override
