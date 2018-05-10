@@ -209,8 +209,8 @@ public final class Presenter {
         engine.getSignCode(phone);
     }
 
-    public void getSignCodeLoginBind(String phone) {
-        engine.getSignCodeLoginBind(phone);
+    public boolean getSignCodeLoginBind(String phone) {
+        return engine.getSignCodeLoginBind(phone);
     }
 
    /* public void checkLoginBindPhone(CheckSignCodeParam checkSignCodeParam) {

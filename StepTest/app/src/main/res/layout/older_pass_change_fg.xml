@@ -22,7 +22,7 @@
             android:background="@null"
             android:hint="原密码"
             android:inputType="textPassword"
-            android:maxLength="6"
+            android:maxLength="12"
             android:maxLines="1"
             android:textSize="18dp" />
 
@@ -48,7 +48,7 @@
             android:background="@null"
             android:hint="新密码"
             android:inputType="textPassword"
-            android:maxLength="6"
+            android:maxLength="12"
             android:maxLines="1"
             android:textSize="18dp" />
 
@@ -77,6 +77,12 @@
             android:maxLength="6"
             android:maxLines="1"
             android:textSize="18dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_d9d9d9" />
     </RelativeLayout>
 
     <Button

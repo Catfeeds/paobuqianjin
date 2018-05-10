@@ -2,8 +2,8 @@ package com.paobuqianjin.pbq.step.view.fragment.login;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
@@ -23,11 +22,10 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LogBindPhoneResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.LoginBindPhoneInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,7 +35,7 @@ import butterknife.OnClick;
  * Created by pbq on 2018/1/31.
  */
 
-public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInterface {
+public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements LoginBindPhoneInterface {
     private final static String TAG = BindPhoneFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -61,8 +59,8 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
     RelativeLayout passwordSpan;
     @Bind(R.id.btn_confirm)
     Button confirm;
-    @Bind(R.id.sign_code_t)
-    TextView signCodeT;
+    /*    @Bind(R.id.sign_code_t)
+        TextView signCodeT;*/
     @Bind(R.id.pass_word_edit)
     EditText passWordEdit;
     @Bind(R.id.pass_y)
@@ -71,7 +69,17 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
     EditText phoneEdit;
     @Bind(R.id.sign_code_edit)
     EditText signCodeEdit;
+    @Bind(R.id.forgotpwd_getCode)
+    Button forgotpwdGetCode;
     private boolean showSignPass = false;
+    private Thread thread;
+    public int T = 60; //倒计时时长
+    private Handler mHandler = new Handler();
+
+    @Override
+    protected String title() {
+        return "绑定手机号";
+    }
 
     @Override
     protected int getLayoutResId() {
@@ -95,12 +103,6 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        barReturnDrawable = (ImageView) viewRoot.findViewById(R.id.bar_return_drawable);
-        barReturnDrawable.setVisibility(View.GONE);
-        barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
-        barTitle.setText("绑定手机号");
-
-
     }
 
     @Override
@@ -113,7 +115,7 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
     @Override
     public void response(GetSignCodeResponse getSignCodeResponse) {
         if (getSignCodeResponse.getError() == 0) {
-            ToastUtils.showShortToast(getContext(), getSignCodeResponse.getMessage());
+            ToastUtils.showShortToast(getContext(), "验证码发送成功");
         }
     }
 
@@ -122,6 +124,7 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
         if (logBindPhoneResponse.getError() == 0) {
             ToastUtils.showShortToast(getContext(), "绑定手机号成功");
             getActivity().setResult(Activity.RESULT_OK);
+            getActivity().onBackPressed();
         } else if (logBindPhoneResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -154,7 +157,7 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
         }
     }
 
-    @OnClick({R.id.pass_y, R.id.btn_confirm, R.id.sign_code_t})
+    @OnClick({R.id.pass_y, R.id.btn_confirm, R.id.forgotpwd_getCode})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pass_y:
@@ -181,14 +184,69 @@ public class BindPhoneFragment extends BaseFragment implements LoginBindPhoneInt
                 checkSignCodeParam.setUserid(dataBean.getId());
                 Presenter.getInstance(getContext()).checkLoginBindPhone(checkSignCodeParam);*/
                 PostWxQqBindPhoneParam postWxQqBindPhoneParam = new PostWxQqBindPhoneParam();
-                postWxQqBindPhoneParam.setCode(signCodeEdit.getText().toString());
+                postWxQqBindPhoneParam.setCode(signCodeEdit.getText().toString()).setMobile(phoneEdit.getText().toString());
 
                 Presenter.getInstance(getContext()).bindLoginPhone(postWxQqBindPhoneParam);
                 break;
-            case R.id.sign_code_t:
+            case R.id.forgotpwd_getCode:
                 LocalLog.d(TAG, "获取验证码");
-                Presenter.getInstance(getContext()).getSignCodeLoginBind(phoneEdit.getText().toString());
+                if (Presenter.getInstance(getContext()).getSignCodeLoginBind(phoneEdit.getText().toString())) {
+                    if (thread != null && thread.isAlive()) {
+                        return;
+                    } else {
+                        thread = new Thread(new MyCountDownTimer());
+                        thread.start();
+                    }
+                }
                 break;
+        }
+    }
+
+
+    private class MyCountDownTimer implements Runnable {
+        public void run() {
+
+            //倒计时开始，循环
+            while (T > 0) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (forgotpwdGetCode != null) {
+                            forgotpwdGetCode.setClickable(false);
+                            forgotpwdGetCode.setText(T + "秒");
+                        }
+                    }
+                });
+                try {
+                    Thread.sleep(1000); //强制线程休眠1秒，就是设置倒计时的间隔时间为1秒。
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                T--;
+            }
+            //倒计时结束，也就是循环结束
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (forgotpwdGetCode != null) {
+                        forgotpwdGetCode.setClickable(true);
+                        forgotpwdGetCode.setText("获取验证码");
+                    }
+                }
+            });
+            T = 60; //最后再恢复倒计时时长
+        }
+    }
+
+    ;
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (thread != null) {
+            if (thread.isAlive()) {
+                thread.interrupt();
+            }
         }
     }
 

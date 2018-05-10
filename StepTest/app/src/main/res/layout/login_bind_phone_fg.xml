@@ -35,8 +35,8 @@
             android:layout_marginLeft="20dp"
             android:layout_toEndOf="@+id/phone_num"
             android:background="@null"
-            android:inputType="phone"
             android:hint="请输入手机号码"
+            android:inputType="phone"
             android:textColor="@color/color_161727"
             android:textColorHint="@color/color_8a8a8a"
             android:textSize="15dp" />
@@ -76,22 +76,35 @@
             android:layout_marginLeft="20dp"
             android:layout_toEndOf="@+id/sign_code_num"
             android:background="@null"
-            android:inputType="number"
             android:hint="请输入验证码"
+            android:inputType="number"
             android:textColor="@color/color_161727"
             android:textColorHint="@color/color_8a8a8a"
             android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/sign_code_t"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <!--        <TextView
+                    android:id="@+id/sign_code_t"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/sign_code_num"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/sign_code_num"
+                    android:text="获取验证码"
+                    android:textColor="@color/color_6c71c4"
+                    android:textSize="15dp" />-->
+        <Button
+            android:id="@+id/forgotpwd_getCode"
+            android:layout_width="92dp"
+            android:layout_height="30dp"
             android:layout_alignBottom="@+id/sign_code_num"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/sign_code_num"
-            android:text="获取验证码"
-            android:textColor="@color/color_6c71c4"
-            android:textSize="15dp" />
+            android:layout_marginTop="10dp"
+            android:background="@drawable/change_color_btn"
+            android:enabled="false"
+            android:onClick="onClickTab"
+            android:text="@string/recive_indetitying_code"
+            android:textColor="#ffffff"
+            android:textSize="14dp" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -107,7 +120,8 @@
         android:layout_below="@+id/sign_code_span"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="0dp">
+        android:layout_marginTop="0dp"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/pass_word"
@@ -128,8 +142,8 @@
             android:layout_marginLeft="20dp"
             android:layout_toEndOf="@+id/pass_word"
             android:background="@null"
-            android:inputType="textPassword"
             android:hint="请输入密码"
+            android:inputType="textPassword"
             android:textColor="@color/color_161727"
             android:textColorHint="@color/color_8a8a8a"
             android:textSize="15dp" />

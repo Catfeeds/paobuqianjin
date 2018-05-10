@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostPassByOldParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -105,15 +106,15 @@ public class OldPassChangeFragment extends BaseBarStyleTextViewFragment implemen
 
     @Override
     public void response(ErrorCode errorCode) {
-
+        ToastUtils.showShortToast(getContext(), errorCode.getMessage());
     }
 
     @Override
     public void response(OldPassChangeResponse oldPassChangeResponse) {
         if (oldPassChangeResponse.getError() == 0) {
             LocalLog.d(TAG, "密码修改成功");
-            Toast.makeText(getContext(), oldPassChangeResponse.getMessage(), Toast.LENGTH_SHORT).show();
-            getActivity().finish();
+            ToastUtils.showLongToast(getContext(), oldPassChangeResponse.getMessage());
+            getActivity().onBackPressed();
         } else if (oldPassChangeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);
@@ -121,6 +122,8 @@ public class OldPassChangeFragment extends BaseBarStyleTextViewFragment implemen
             Presenter.getInstance(getContext()).setToken(getContext(), "");
             getActivity().finish();
             System.exit(0);
+        } else {
+            ToastUtils.showLongToast(getContext(), oldPassChangeResponse.getMessage());
         }
     }
 }

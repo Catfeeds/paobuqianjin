@@ -766,13 +766,13 @@ public final class Engine {
                 .execute(new NetStringCallBack(signCodeInterface, COMMAND_GET_SIGN_CODE));
     }
 
-    public void getSignCodeLoginBind(String phone) {
+    public boolean getSignCodeLoginBind(String phone) {
         String url = NetApi.urlSignCode + "/?mobile=" + phone;
         LocalLog.d(TAG, "getSignCode() enter url  = " + url);
         LocalLog.d(TAG, "getMsg() enter phone =" + phone);
         if (!isPhone(phone)) {
             Toast.makeText(mContext, "请输入一个手机号码:", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
 
         }
         OkHttpUtils
@@ -781,6 +781,7 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(loginBindPhoneInterface, COMMAND_GET_SIGN_CODE));
+        return true;
     }
 
     public boolean getSignCodePassWord(String phone) {

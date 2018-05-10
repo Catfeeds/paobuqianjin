@@ -38,6 +38,7 @@ import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.utils.Log;
 import com.umeng.socialize.utils.SocializeUtils;
 
 import java.util.Map;
@@ -426,8 +427,9 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_BIND_PHONE) {
-                if (data != null) {
-                    
+                LocalLog.d(TAG, "绑定手机成功");
+                if (phoneChatDes.getText().toString().equals(getString(R.string.not_bind))) {
+                    phoneChatDes.setText(getString(R.string.had_bind));
                 }
             }
         }
