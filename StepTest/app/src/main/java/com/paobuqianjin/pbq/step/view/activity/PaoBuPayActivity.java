@@ -65,6 +65,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
                     .add(R.id.pay_container, circlePayFragment)
                     .show(circlePayFragment)
                     .commit();
+            currentAction = intent.getAction();
 
         } else if (QRCODE_ACTION.equals(intent.getAction())) {
             LocalLog.d(TAG, "显示圈子二维码");
@@ -72,11 +73,13 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
                     .add(R.id.pay_container, qrCodeFragment)
                     .show(qrCodeFragment)
                     .commit();
+            currentAction = intent.getAction();
         } else if (ACTION_VIP_SELF.equals(intent.getAction()) || ACTION_VIP_FRIEND.equals(intent.getAction())) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.pay_container, payVipFriendFragment)
                     .show(payVipFriendFragment)
                     .commit();
+            currentAction = intent.getAction();
         }
     }
 
@@ -125,6 +128,10 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
 
     public void showQrCodeFragment(BaseFragment hideFragment) {
         LocalLog.d(TAG, "显示二维码分享界面");
+        if (PAY_RECHARGE.equals(currentAction)) {
+            onBackPressed();
+            return;
+        }
         getSupportFragmentManager().beginTransaction()
                 .hide(hideFragment)
                 .add(R.id.pay_container, qrCodeFragment)
@@ -144,6 +151,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
                     .add(R.id.pay_container, paySuccessFragment)
                     .show(paySuccessFragment)
                     .commit();
+            setResult(RESULT_OK);
         } else {
             LocalLog.d(TAG, "error  ");
         }
@@ -159,6 +167,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
                 .add(R.id.pay_container, paySuccessFragment)
                 .show(paySuccessFragment)
                 .commit();
+        setResult(RESULT_OK);
     }
 
     @Override
@@ -177,7 +186,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
     public void onBackPressed() {
         if (circlePayFragment != null && circlePayFragment.isAdded() && circlePayFragment.isVisible()) {
             circlePayFragment.getmToolBarListener().clickLeft();
-        }else{
+        } else {
             super.onBackPressed();
         }
     }

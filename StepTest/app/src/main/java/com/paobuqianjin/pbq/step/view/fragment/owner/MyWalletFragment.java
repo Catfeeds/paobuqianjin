@@ -37,6 +37,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
 import static com.paobuqianjin.pbq.step.utils.Utils.PAGE_SIZE_DEFAULT;
 
 /**
@@ -109,8 +110,10 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     private int pageYDCount = 0, pageMonthCount = 0, pageAllCount = 0;
     private final static int REQUEST_CRASH = 231;
     private float totalMoney = 0.0f;
+    private final int REQUEST_RECHARGE = 223;
 
     @Override
+
     protected int getLayoutResId() {
         return R.layout.my_wallet_fg;
     }
@@ -205,7 +208,10 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 LocalLog.d(TAG, "向钱包充值");
                 Bundle bundle = new Bundle();
                 bundle.putString(PAY_FOR_STYLE, "user");
-                startActivity(PaoBuPayActivity.class, bundle, false, PAY_RECHARGE);
+                intent.putExtra(getActivity().getPackageName(), bundle);
+                intent.setClass(getContext(), PaoBuPayActivity.class);
+                intent.setAction(PAY_RECHARGE);
+                startActivityForResult(intent, REQUEST_RECHARGE);
                 break;
             case R.id.crash:
                 LocalLog.d(TAG, "提现");
@@ -559,5 +565,11 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_RECHARGE || requestCode == REQUEST_CRASH) {
+                LocalLog.d(TAG, "充值成功或者提现成功");
+                Presenter.getInstance(getContext()).getUserPackageMoney();
+            }
+        }
     }
 }

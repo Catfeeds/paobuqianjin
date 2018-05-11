@@ -250,7 +250,7 @@ public class NetStringCallBack extends StringCallback {
                 } else if (callBackInterface != null
                         && callBackInterface instanceof PayInterface
                         && command == Engine.COMMAND_CIRCLE_ORDER_POST_WX) {
-
+                    callBackInterface.response(errorCode);
                 } else if (callBackInterface != null
                         && callBackInterface instanceof WxPayResultQueryInterface
                         && command == Engine.COMMAND_PAY_RESULT_QUERY_WX) {

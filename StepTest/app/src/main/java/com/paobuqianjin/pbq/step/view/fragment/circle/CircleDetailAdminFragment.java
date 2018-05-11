@@ -153,11 +153,12 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private final static String ACTION_ENTER_CIRCLE = "coma.paobuqian.pbq.step.ICON_ACTION";
     private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.SCAN_ACTION";
     private final static String PAY_ACTION = "android.intent.action.PAY";
-    private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
+    private final static String PAY_RECHARGE = "com.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
     private final static String ACTION_STEP_RANK = "com.paobuqian.pbq.step.STEP_ACTION";
     private final static String ACTION_LOVE_RANK = "com.paobuqian.pbq.step.LOVE_ACTION";
     private final int REQUEST_MEMBER = 201;
     private final int REQUEST_EDIT = 202;
+    private final int REQUEST_RECHARGE = 333;
     String titleStr = "";
     private boolean is_join = false;
     private int pageIndex = 1, PAGESIZE = 200;
@@ -598,7 +599,11 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                         bundlePay.putString(PAY_FOR_STYLE, "circle");
                         bundlePay.putString(CIRCLE_NAME, circleDetailResponse.getData().getName());
                         bundlePay.putString(CIRCLE_LOGO, circleDetailResponse.getData().getLogo());
-                        startActivity(PaoBuPayActivity.class, bundlePay, true, PAY_RECHARGE);
+                        Intent intentPay = new Intent();
+                        intentPay.setAction(PAY_RECHARGE);
+                        intentPay.setClass(getContext(), PaoBuPayActivity.class);
+                        intentPay.putExtra(getActivity().getPackageName(), bundlePay);
+                        startActivityForResult(intentPay, REQUEST_RECHARGE);
                     }
                     break;
                 case R.id.red_pkg_button:
@@ -792,7 +797,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 popRedPkgButton();
                 desc.setVisibility(View.VISIBLE);
                 moneyRet.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 desc.setVisibility(View.INVISIBLE);
                 moneyRet.setVisibility(View.INVISIBLE);
             }
@@ -878,6 +883,10 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     }
                 } else if (requestCode == REQUEST_EDIT) {
                     LocalLog.d(TAG, "编辑过圈子");
+                    if (circleId != -1) {
+                        Presenter.getInstance(getContext()).getCircleDetail(circleId);
+                    }
+                } else if (requestCode == REQUEST_RECHARGE) {
                     if (circleId != -1) {
                         Presenter.getInstance(getContext()).getCircleDetail(circleId);
                     }

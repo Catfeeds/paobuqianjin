@@ -118,7 +118,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private IWXAPI msgApi;
     private final static String PAY_RESULT_ACTION = "android.intent.action.paobuqianjin.PAY_RESULT";
     private final static String PAY_ACTION = "android.intent.action.PAY";
-    private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
+    private final static String PAY_RECHARGE = "com.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
     private final static String PAY_FOR_STYLE = "pay_for_style";
     private NormalDialog normalDialog;
 
@@ -409,7 +409,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                 } else if (style == 1) {
                     popPayConfirm(getString(R.string.wallet_pay_confirm));
                 } else {
-                    Toast.makeText(getContext(), "其他支付方式暂时未开通,请选择微信", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "请选择一种支付方式", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
