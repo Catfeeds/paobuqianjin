@@ -318,11 +318,7 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
             }
         } else if (crashListDetailResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         } else {
             Toast.makeText(getContext(), crashListDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -332,11 +328,7 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 }

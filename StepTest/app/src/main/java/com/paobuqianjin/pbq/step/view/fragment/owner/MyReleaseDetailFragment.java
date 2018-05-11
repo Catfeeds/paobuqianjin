@@ -150,11 +150,7 @@ public class MyReleaseDetailFragment extends BaseBarStyleTextViewFragment implem
             taskDetailRecycler.setAdapter(new MyTaskDetailStateAdapter(getContext(), myReleaseTaskDetailResponse.getData().getTask_record()));
         } else if (myReleaseTaskDetailResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 }

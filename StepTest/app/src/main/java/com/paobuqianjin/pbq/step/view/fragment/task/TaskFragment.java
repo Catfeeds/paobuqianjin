@@ -354,23 +354,14 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
             Toast.makeText(getContext(), myRecvTaskRecordResponse.getMessage(), Toast.LENGTH_SHORT).show();
         } else if (myRecvTaskRecordResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
     @Override
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 }

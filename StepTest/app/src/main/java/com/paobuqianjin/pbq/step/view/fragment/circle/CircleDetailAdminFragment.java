@@ -310,6 +310,13 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             }
         });
         money = (TextView) popCircleOpBar.findViewById(R.id.rec_money);
+        ImageView close = (ImageView) popCircleOpBar.findViewById(R.id.close);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popCircleRedPkg.dismiss();
+            }
+        });
         popCircleRedPkg.setFocusable(true);
         popCircleRedPkg.setOutsideTouchable(true);
         popCircleRedPkg.setBackgroundDrawable(new BitmapDrawable());
@@ -395,30 +402,30 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
 
     public void popRedPkgButton() {
         LocalLog.d(TAG, "popRedPkgButton() 弹出红包");
-        popCircleOpBar = View.inflate(getContext(), R.layout.red_pkg_button_pop_window, null);
-        popOpWindowRedButton = new PopupWindow(popCircleOpBar,
+        View popCircleOpBarHori = View.inflate(getContext(), R.layout.red_pkg_button_pop_window, null);
+        PopupWindow popOpWindowRedButton = new PopupWindow(popCircleOpBarHori,
                 WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        popCircleOpBar.findViewById(R.id.red_pkg_button).setOnClickListener(onClickListener);
+        popCircleOpBarHori.findViewById(R.id.red_pkg_button).setOnClickListener(onClickListener);
         popOpWindowRedButton.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 LocalLog.d(TAG, "popRedPkgButton dismiss() ");
-                popOpWindowRedButton = null;
+//                popOpWindowRedButton = null;
             }
         });
 
-        popOpWindowRedButton.setFocusable(true);
-        popOpWindowRedButton.setOutsideTouchable(true);
+//        popOpWindowRedButton.setFocusable(true);
+//        popOpWindowRedButton.setOutsideTouchable(true);
         popOpWindowRedButton.setBackgroundDrawable(new BitmapDrawable());
-        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+        TranslateAnimation animationCircleTypeHori = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
                 1, Animation.RELATIVE_TO_PARENT, 0);
-        animationCircleType.setInterpolator(new AccelerateInterpolator());
-        animationCircleType.setDuration(200);
+        animationCircleTypeHori.setInterpolator(new AccelerateInterpolator());
+        animationCircleTypeHori.setDuration(200);
 
 
         popOpWindowRedButton.showAtLocation(getActivity().findViewById(R.id.circle_detail_fg), Gravity.BOTTOM | Gravity.RIGHT, 0, 25);
-        popCircleOpBar.startAnimation(animationCircleType);
+        popCircleOpBarHori.startAnimation(animationCircleTypeHori);
     }
 
     private void popAdminSelect() {
@@ -480,7 +487,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         rankRecycler.setLayoutManager(reChargeLayoutManager);
         rankRecycler.addItemDecoration(new RechargeRankSimpleAdapter.SpaceItemDecoration(30));
         stepRecycler.setLayoutManager(stepLayoutManager);
-
+        stepRecycler.setHasFixedSize(true);
+        stepRecycler.setNestedScrollingEnabled(false);
 
         memberNumDes = (TextView) viewRoot.findViewById(R.id.member_num_des);
         imageButton = (RelativeLayout) viewRoot.findViewById(R.id.image_button);
@@ -594,7 +602,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     break;
                 case R.id.red_pkg_button:
                     LocalLog.d(TAG, "点击领取红包按钮");
-                    popOpWindowRedButton.dismiss();
+//                    popOpWindowRedButton.dismiss();
                     popRedPkgPick();
                     break;
                 case R.id.scan_more:
@@ -625,11 +633,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 }
             } else if (joinCircleResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
-                Presenter.getInstance(getContext()).setId(-1);
-                Presenter.getInstance(getContext()).steLogFlg(false);
-                Presenter.getInstance(getContext()).setToken(getContext(), "");
-                getActivity().finish();
-                System.exit(0);
+                exitTokenUnfect();
             }
         }
 
@@ -659,11 +663,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
 
             } else if (reChargeRankResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
-                Presenter.getInstance(getContext()).setId(-1);
-                Presenter.getInstance(getContext()).steLogFlg(false);
-                Presenter.getInstance(getContext()).setToken(getContext(), "");
-                getActivity().finish();
-                System.exit(0);
+                exitTokenUnfect();
             }
         }
 
@@ -694,11 +694,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                                 stepRankResponse.getData().getData());
             } else if (stepRankResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
-                Presenter.getInstance(getContext()).setId(-1);
-                Presenter.getInstance(getContext()).steLogFlg(false);
-                Presenter.getInstance(getContext()).setToken(getContext(), "");
-                getActivity().finish();
-                System.exit(0);
+                exitTokenUnfect();
             }
 
         }
@@ -707,11 +703,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         public void response(ErrorCode errorCode) {
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
-                Presenter.getInstance(getContext()).setId(-1);
-                Presenter.getInstance(getContext()).steLogFlg(false);
-                Presenter.getInstance(getContext()).setToken(getContext(), "");
-                getActivity().finish();
-                System.exit(0);
+                exitTokenUnfect();
             }
         }
     };
@@ -766,10 +758,6 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             moneyRet.setText(sMoney);
             if (red_pack_money > total_money) {
                 LocalLog.d(TAG, "余额不足当天的红包");
-
-            }
-            if (circleDetailResponse.getData().getRed_packet_status() == 4) {
-                LocalLog.d(TAG, "圈子余额不足");
                 tvRedTipsMoney.setVisibility(View.VISIBLE);
             }
             if (circleDetailResponse.getData().getIs_pwd() == 1) {
@@ -808,11 +796,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
 
         } else if (circleDetailResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -835,14 +819,18 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     @Override
     public void response(PostRevRedPkgResponse postRevRedPkgResponse) {
         LocalLog.d(TAG, "PostRevRedPkgResponse() enter " + postRevRedPkgResponse.toString());
-        if (imageView != null) {
-            imageView.clearAnimation();
-            imageView.setVisibility(View.GONE);
-            money.setText(String.valueOf("￥ " + postRevRedPkgResponse.getData().getAmount()));
-            //popCircleRedPkg.dismiss();
-        }
+
         if (postRevRedPkgResponse.getError() == 0) {
-            Toast.makeText(getActivity(), postRevRedPkgResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            if (imageView != null) {
+                imageView.clearAnimation();
+                imageView.setVisibility(View.GONE);
+                if (money != null) {
+                    if (postRevRedPkgResponse.getData() != null) {
+                        money.setText(String.valueOf("￥ " + postRevRedPkgResponse.getData().getAmount()));
+                    }
+                }
+                //popCircleRedPkg.dismiss();
+            }
         }
     }
 
@@ -866,11 +854,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         } else {
             Toast.makeText(getContext(), errorCode.getMessage(), Toast.LENGTH_SHORT).show();
         }

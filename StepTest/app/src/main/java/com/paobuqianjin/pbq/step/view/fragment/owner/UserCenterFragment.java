@@ -217,11 +217,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             }
         } else if (userInfoResponse.getError() == 0) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -238,11 +234,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             dynamicRecordRecycler.setAdapter(new UserDynamicRecordAdapter(getContext(), map));
         } else if (dynamicPersonResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -317,11 +309,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             });
         } else if (queryFollowStateResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -336,11 +324,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
                 }
             } else if (addDeleteFollowResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
-                Presenter.getInstance(getContext()).setId(-1);
-                Presenter.getInstance(getContext()).steLogFlg(false);
-                Presenter.getInstance(getContext()).setToken(getContext(), "");
-                getActivity().finish();
-                System.exit(0);
+                exitTokenUnfect();
             }
         }
 
@@ -348,11 +332,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
         public void response(ErrorCode errorCode) {
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
-                Presenter.getInstance(getContext()).setId(-1);
-                Presenter.getInstance(getContext()).steLogFlg(false);
-                Presenter.getInstance(getContext()).setToken(getContext(), "");
-                getActivity().finish();
-                System.exit(0);
+                exitTokenUnfect();
             }
         }
     };
@@ -361,11 +341,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 }

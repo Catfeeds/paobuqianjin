@@ -125,11 +125,7 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
             }
         } else if (friendStepRankDayResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -137,11 +133,7 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 }

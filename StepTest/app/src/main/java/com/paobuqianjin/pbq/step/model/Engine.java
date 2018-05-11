@@ -544,6 +544,14 @@ public final class Engine {
         FlagPreference.setToken(context, user_token);
     }
 
+    public boolean getReadCrashProtocol(Context context) {
+        return FlagPreference.getReadCrashProtocol(context);
+    }
+
+    public void setReadCrashProtocol(Context context, boolean readFlg) {
+        FlagPreference.setReadCrashProtocol(context, readFlg);
+    }
+
     public String getToken(Context context) {
         return FlagPreference.getToken(context);
     }
@@ -896,6 +904,7 @@ public final class Engine {
     //TODO 用户提现
     public void postCrashTo(CrashToParam crashToParam) {
         LocalLog.d(TAG, crashToParam.paramString());
+        crashToParam.setUserid(String.valueOf(getId(mContext)));
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))

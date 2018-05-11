@@ -235,6 +235,9 @@ public class MyReleaseFragment extends BaseBarStyleTextViewFragment implements M
     public void response(TaskMyReleaseResponse taskMyReleaseResponse) {
         LocalLog.d(TAG, "TaskMyReleaseResponse() enter");
         if (taskMyReleaseResponse.getError() == 1) {
+            if (noReleaseRecord == null) {
+                return;
+            }
             if (noReleaseRecord.getVisibility() == View.GONE) {
                 noReleaseRecord.setVisibility(View.VISIBLE);
                 if (myReleaseScroll.getVisibility() != View.GONE) {
@@ -275,11 +278,7 @@ public class MyReleaseFragment extends BaseBarStyleTextViewFragment implements M
             pageIndex++;
         } else if (taskMyReleaseResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
 
     }

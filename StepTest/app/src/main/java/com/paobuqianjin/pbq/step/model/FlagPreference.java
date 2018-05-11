@@ -179,6 +179,20 @@ public final class FlagPreference {
         editor.commit();
     }
 
+    public static void setReadCrashProtocol(Context context, boolean readFlag) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putBoolean("crash_protocl", readFlag);
+        editor.commit();
+    }
+
+    public static boolean getReadCrashProtocol(Context context) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        boolean readFlag = flagPreference.getBoolean("crash_protocl", false);
+        return readFlag;
+    }
+
     public static String getToken(Context context) {
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
         String user_token = flagPreference.getString("user_token", "");

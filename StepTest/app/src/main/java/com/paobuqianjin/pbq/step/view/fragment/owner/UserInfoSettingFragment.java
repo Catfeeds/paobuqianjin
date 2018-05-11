@@ -938,11 +938,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             getActivity().finish();
         } else if (userInfoSetResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -976,11 +972,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 }

@@ -158,11 +158,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
             getActivity().finish();
         } else if (releaseDynamicResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         } else {
             Toast.makeText(getContext(), releaseDynamicResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -621,11 +617,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 }

@@ -55,7 +55,6 @@
                 android:id="@+id/iv_live_a"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:scaleType="centerCrop"
                 android:src="@drawable/hot_live" />
 
             <TextView
@@ -85,7 +84,6 @@
                 android:id="@+id/iv_live_b"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:scaleType="centerCrop"
                 android:src="@drawable/hot_livei" />
 
             <TextView

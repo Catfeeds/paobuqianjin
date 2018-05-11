@@ -545,11 +545,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             msgApi.sendReq(req);
         } else if (wxPayOrderResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
 
     }
@@ -565,11 +561,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             ((PaoBuPayActivity) getActivity()).showPaySuccessWallet(walletPayOrderResponse);
         } else if (walletPayOrderResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -577,11 +569,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         } else {
             Toast.makeText(getContext(), errorCode.getMessage(), Toast.LENGTH_SHORT).show();
             if (dialog != null && dialog.isShowing()) {

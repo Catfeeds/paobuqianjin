@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -41,6 +42,7 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
     TextView barTvRight;
     @Bind(R.id.protcol)
     TextView protcol;
+    private String action = "";
 
     @Override
     protected int getLayoutResId() {
@@ -75,11 +77,14 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
             if (USER_SERVICE_AGREEMENT_ACTION.equals(intent.getAction())) {
                 LocalLog.d(TAG, "用户服务协议");
                 Presenter.getInstance(getContext()).protocol("1");
+                action = "1";
             } else if (USER_CRASH_ACTION.equals(intent.getAction())) {
                 LocalLog.d(TAG, "用户提现协议");
                 Presenter.getInstance(getContext()).protocol("4");
+                action = "4";
             } else if (USER_INVITE_AGREEMENT_ACTION.equals(intent.getAction())) {
                 Presenter.getInstance(getContext()).protocol("2");
+                action = "2";
             }
         }
     }
@@ -101,6 +106,10 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
         if (protocolResponse.getError() == 0) {
             if (protcol == null) {
                 return;
+            }
+            if ("4".equals(action)) {
+                Presenter.getInstance(getContext()).setReadCrashProtocol(getContext(), true);
+                getActivity().setResult(Activity.RESULT_OK);
             }
             protcol.setText(Html.fromHtml(protocolResponse.getData().getContent()));
             setTitle(protocolResponse.getData().getTitle());

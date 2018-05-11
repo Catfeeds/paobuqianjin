@@ -531,11 +531,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             monthIncomeHome.setText(moneyStr);
         } else if (incomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -600,11 +596,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             todayIncomeNum.setText(moneyStr);
         } else if (incomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
 
     }
@@ -621,12 +613,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 weatherIcon.setImageResource(weatherMap.get(weatherResponse.getData().getImg()));
             }
         } else if (weatherResponse.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
 
 
@@ -749,11 +736,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 

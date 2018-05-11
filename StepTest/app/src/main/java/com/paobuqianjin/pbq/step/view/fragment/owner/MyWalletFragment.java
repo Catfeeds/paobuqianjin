@@ -103,9 +103,12 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     ArrayList<IncomeResponse.DataBeanX.DataBean> monthData = new ArrayList<>();
     ArrayList<AllIncomeResponse.DataBeanX.DataBean> allData = new ArrayList<>();
     private final static String PAY_FOR_STYLE = "pay_for_style";
-    private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
+    private final static String PAY_RECHARGE = "com.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
+    private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
     private int pageIndexYD = 1, pageIndexMonth = 1, pageIndexAll = 1;
     private int pageYDCount = 0, pageMonthCount = 0, pageAllCount = 0;
+    private final static int REQUEST_CRASH = 231;
+    private float totalMoney = 0.0f;
 
     @Override
     protected int getLayoutResId() {
@@ -206,8 +209,10 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 break;
             case R.id.crash:
                 LocalLog.d(TAG, "提现");
+                intent.setAction(CRASH_ACTION);
+                intent.putExtra("total", totalMoney);
                 intent.setClass(getContext(), CrashActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CRASH);
                 break;
             case R.id.yesterday_span:
                 LocalLog.d(TAG, "查看昨日收益");
@@ -441,11 +446,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
             }
         } else if (allIncomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -473,11 +474,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
             }
         } else if (incomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
 
     }
@@ -505,11 +502,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
             }
         } else if (incomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
 
     }
@@ -548,13 +541,10 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 return;
             }
             incomeMoney.setText("总金额:" + userInfoResponse.getData().getBalance());
+            totalMoney = Float.parseFloat(userInfoResponse.getData().getBalance());
         } else if (userInfoResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -562,11 +552,12 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

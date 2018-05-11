@@ -354,11 +354,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             myInviteFragment.setMsg(0, 0);
         } else if (myInviteResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         } else {
             Toast.makeText(getContext(), myInviteResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -377,11 +373,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             }
         } else if (inviteDanResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         } else {
             Toast.makeText(getContext(), inviteDanResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -391,11 +383,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 }

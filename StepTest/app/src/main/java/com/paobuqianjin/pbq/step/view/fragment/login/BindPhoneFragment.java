@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -106,6 +107,7 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         phoneEdit = (EditText) viewRoot.findViewById(R.id.phone_edit);
+        confirm = (Button) viewRoot.findViewById(R.id.btn_confirm);
         phoneEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -124,6 +126,50 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
 
             @Override
             public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        signCodeEdit = (EditText) viewRoot.findViewById(R.id.sign_code_edit);
+        passWordEdit = (EditText) viewRoot.findViewById(R.id.pass_word_edit);
+        signCodeEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                String signcode = signCodeEdit.getText().toString().trim();
+                if (signcode.length() != 6) {
+                    confirm.setEnabled(false);
+                } else {
+                    
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        passWordEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                String passWord = signCodeEdit.getText().toString().trim();
+                if (passWord.length() < 6) {
+                    confirm.setEnabled(false);
+                } else {
+                    confirm.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
 
             }
         });
@@ -151,11 +197,7 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
             getActivity().onBackPressed();
         } else if (logBindPhoneResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         } else {
             ToastUtils.showShortToast(getContext(), logBindPhoneResponse.getMessage());
         }
@@ -278,11 +320,7 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         } else {
             ToastUtils.showShortToast(getActivity(), errorCode.getMessage());
         }

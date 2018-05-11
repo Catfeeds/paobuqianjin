@@ -43,7 +43,7 @@
                         android:layout_height="16dp"
                         android:layout_alignBottom="@+id/head_icon"
                         android:layout_alignEnd="@+id/head_icon"
-                        android:src="@drawable/girl"
+                        android:src="@drawable/woman_flag"
                         android:visibility="gone" />
 
                     <ImageView

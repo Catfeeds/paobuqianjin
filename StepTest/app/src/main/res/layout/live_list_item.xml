@@ -10,7 +10,6 @@
         android:id="@+id/live_imag"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
         android:src="@drawable/bitmap_null" />
 
     <TextView
@@ -22,7 +21,7 @@
         android:layout_marginTop="14dp"
         android:background="@color/color_8a8a8a"
         android:text="赛事"
-        android:visibility="invisible"
+        android:visibility="visible"
         android:textColor="@color/color_f8"
         android:textSize="14dp" />
 
@@ -33,8 +32,8 @@
         android:layout_alignBottom="@+id/live_desc"
         android:layout_alignTop="@+id/live_desc"
         android:layout_marginRight="14dp"
-        android:layout_toStartOf="@+id/live_desc"
         android:background="@color/color_6c71c4"
+        android:layout_alignParentRight="true"
         android:text="进行中"
         android:textColor="@color/color_f8"
         android:textSize="14dp" />

@@ -20,12 +20,11 @@
 
         <ImageView
             android:id="@+id/close"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignRight="@+id/red_pkg_bg"
             android:layout_alignTop="@+id/red_pkg_bg"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            android:padding="15dp"
             android:src="@drawable/cacel" />
 
         <TextView

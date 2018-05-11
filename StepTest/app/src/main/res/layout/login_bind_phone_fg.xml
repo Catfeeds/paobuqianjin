@@ -120,8 +120,7 @@
         android:layout_below="@+id/sign_code_span"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="0dp"
-        android:visibility="gone">
+        android:layout_marginTop="0dp">
 
         <TextView
             android:id="@+id/pass_word"

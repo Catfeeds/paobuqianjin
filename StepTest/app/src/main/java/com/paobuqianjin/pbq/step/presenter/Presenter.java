@@ -116,6 +116,14 @@ public final class Presenter {
         engine.setToken(context, user_token);
     }
 
+    public void setReadCrashProtocol(Context context, boolean readFlag) {
+        engine.setReadCrashProtocol(context, readFlag);
+    }
+
+    public boolean getReadCrashProtocol(Context context) {
+        return engine.getReadCrashProtocol(context);
+    }
+
     public String getToken(Context context) {
         return engine.getToken(context);
     }

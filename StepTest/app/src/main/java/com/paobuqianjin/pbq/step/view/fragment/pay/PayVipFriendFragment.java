@@ -481,11 +481,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             msgApi.sendReq(req);
         } else if (wxPayOrderResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 

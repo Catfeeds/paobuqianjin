@@ -206,11 +206,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
             buttonAction.setOnClickListener(onClickListener);
         } else if (taskRecDetailResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         } else {
             Toast.makeText(getContext(), taskRecDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -272,11 +268,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
             buttonAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_b8bbbd));
         } else if (recPayResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         } else {
             Toast.makeText(getContext(), recPayResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -286,11 +278,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 }

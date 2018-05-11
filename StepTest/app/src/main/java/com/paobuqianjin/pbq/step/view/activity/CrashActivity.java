@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -18,6 +19,7 @@ public class CrashActivity extends BaseActivity {
     private final static String TAG = CrashActivity.class.getSimpleName();
     private CrashFragment crashFragment = new CrashFragment();
     private CrashSuccessFragment crashSuccessFragment = new CrashSuccessFragment();
+    private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,10 +30,13 @@ public class CrashActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.crash_container, crashFragment)
-                .show(crashFragment)
-                .commit();
+        Intent intent = getIntent();
+        if (intent != null && CRASH_ACTION.equals(intent.getAction())) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.crash_container, crashFragment)
+                    .show(crashFragment)
+                    .commit();
+        }
     }
 
     public void showCrashResult(CrashResponse crashResponse) {
@@ -41,5 +46,10 @@ public class CrashActivity extends BaseActivity {
                 .hide(crashFragment)
                 .show(crashSuccessFragment)
                 .commit();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

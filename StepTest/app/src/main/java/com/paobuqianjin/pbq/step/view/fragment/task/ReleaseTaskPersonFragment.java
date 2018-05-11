@@ -168,11 +168,7 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                 startActivity(PaoBuPayActivity.class, bundle, true, PAY_ACTION);
             } else if (taskReleaseResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
-                Presenter.getInstance(getContext()).setId(-1);
-                Presenter.getInstance(getContext()).steLogFlg(false);
-                Presenter.getInstance(getContext()).setToken(getContext(), "");
-                getActivity().finish();
-                System.exit(0);
+                exitTokenUnfect();
             } else {
                 Toast.makeText(getContext(), taskReleaseResponse.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -183,11 +179,7 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
         public void response(ErrorCode errorCode) {
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
-                Presenter.getInstance(getContext()).setId(-1);
-                Presenter.getInstance(getContext()).steLogFlg(false);
-                Presenter.getInstance(getContext()).setToken(getContext(), "");
-                getActivity().finish();
-                System.exit(0);
+                exitTokenUnfect();
             }
         }
     };

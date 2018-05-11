@@ -133,4 +133,8 @@
     <string name="had_bind">已绑定账号</string>
     <string name="not_bind">尚未绑定</string>
     <string name="circle_have_enouth_money">圈子余额不足，无法支付今日红包，请及时充值！</string>
+    <string name="can_crash">可转出 %.2f元</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

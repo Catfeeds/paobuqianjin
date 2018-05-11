@@ -14,11 +14,15 @@ import java.util.Map;
 */
 public class CrashToParam {
     /*
-    * id	提现方式ID	true	string
-amount	提现金额	true	string
-*/
-    private int id;
+    userid	用户ID	false	string
+typeid	提现方式（不传默认为微信提现）：1微信|2支付宝|3银行卡	false	string
+wx_openid	app对应的openid（备注：小程序的未开通）	true	string
+amount	提现金额
+   */
+    private String userid;
     private String amount;
+    private String wx_openid;
+    private String typeid;
 
     public Map<String, String> getParams() {
         return params;
@@ -30,33 +34,6 @@ amount	提现金额	true	string
 
     private Map<String, String> params;
 
-    public int getId() {
-        return id;
-    }
-
-    public CrashToParam setId(int id) {
-        this.id = id;
-        params.put("id", String.valueOf(id));
-        return this;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public CrashToParam setAmount(String amount) {
-        this.amount = amount;
-        params.put("amount", amount);
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        return "CrashToParam{" +
-                "id=" + id +
-                ", amount='" + amount + '\'' +
-                '}';
-    }
 
     public CrashToParam() {
         if (params == null) {
@@ -70,5 +47,57 @@ amount	提现金额	true	string
             temp = temp + key + ":" + params.get(key) + "\n";
         }
         return temp;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public CrashToParam setUserid(String userid) {
+        this.userid = userid;
+        params.put("userid", userid);
+        return this;
+
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public CrashToParam setAmount(String amount) {
+        this.amount = amount;
+        params.put("amount", amount);
+        return this;
+    }
+
+    public String getWx_openid() {
+        return wx_openid;
+    }
+
+    public CrashToParam setWx_openid(String wx_openid) {
+        this.wx_openid = wx_openid;
+        params.put("wx_openid", wx_openid);
+        return this;
+    }
+
+    public String getTypeid() {
+        return typeid;
+    }
+
+    public CrashToParam setTypeid(String typeid) {
+        this.typeid = typeid;
+        params.put("typeid", typeid);
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "CrashToParam{" +
+                "userid='" + userid + '\'' +
+                ", amount='" + amount + '\'' +
+                ", wx_openid='" + wx_openid + '\'' +
+                ", typeid='" + typeid + '\'' +
+                ", params=" + params +
+                '}';
     }
 }

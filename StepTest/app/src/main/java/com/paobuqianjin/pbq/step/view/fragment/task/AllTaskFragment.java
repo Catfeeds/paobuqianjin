@@ -102,11 +102,7 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
             Toast.makeText(getContext(), receiveTaskResponse.getMessage(), Toast.LENGTH_SHORT).show();
         } else if (receiveTaskResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -114,11 +110,7 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 

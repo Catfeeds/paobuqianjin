@@ -183,11 +183,7 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
             this.messageLikeResponse = messageLikeResponse;
         } else if (messageLikeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -201,11 +197,7 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
             likeDesMsg.setText(String.valueOf(messageSystemResponse.getData().getPagenation().getTotalCount()) + "个赞");
         } else if (messageSystemResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -219,11 +211,7 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
             contentDesMsg.setText(String.valueOf(messageContentResponse.getData().getPagenation().getTotalCount()) + "条消息");
         } else if (messageContentResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -231,11 +219,7 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 }

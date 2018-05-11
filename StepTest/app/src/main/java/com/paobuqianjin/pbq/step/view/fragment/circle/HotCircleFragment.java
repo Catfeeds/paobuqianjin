@@ -154,7 +154,8 @@ public class HotCircleFragment extends BaseFragment {
         choiceRecyclerView.setLayoutManager(layoutManagerChoose);
         choiceRecyclerView.setItemAnimator(new DefaultItemAnimator());
         choiceRecyclerView.addItemDecoration(new CircleChooseGoodAdapter.SpaceItemDecoration(5));
-
+        choiceRecyclerView.setHasFixedSize(true);
+        choiceRecyclerView.setNestedScrollingEnabled(false);
 
         //
         createCircleView = (ImageView) rootView.findViewById(R.id.circle_create);
@@ -339,11 +340,7 @@ public class HotCircleFragment extends BaseFragment {
         public void response(ErrorCode errorCode) {
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
-                Presenter.getInstance(getContext()).setId(-1);
-                Presenter.getInstance(getContext()).steLogFlg(false);
-                Presenter.getInstance(getContext()).setToken(getContext(), "");
-                getActivity().finish();
-                System.exit(0);
+                exitTokenUnfect();
             }
         }
 
@@ -386,11 +383,7 @@ public class HotCircleFragment extends BaseFragment {
                 pageCounts[1] = myHotCircleResponse.getData().getPagenation().getTotalPage();
             } else if (myHotCircleResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
-                Presenter.getInstance(getContext()).setId(-1);
-                Presenter.getInstance(getContext()).steLogFlg(false);
-                Presenter.getInstance(getContext()).setToken(getContext(), "");
-                getActivity().finish();
-                System.exit(0);
+                exitTokenUnfect();
             }
         }
 
@@ -451,11 +444,7 @@ public class HotCircleFragment extends BaseFragment {
                 pageCounts[2] = choiceCircleResponse.getData().getPagenation().getTotalPage();
             } else if (choiceCircleResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
-                Presenter.getInstance(getContext()).setId(-1);
-                Presenter.getInstance(getContext()).steLogFlg(false);
-                Presenter.getInstance(getContext()).setToken(getContext(), "");
-                getActivity().finish();
-                System.exit(0);
+                exitTokenUnfect();
             }
         }
     };
@@ -484,11 +473,7 @@ public class HotCircleFragment extends BaseFragment {
         public void response(ErrorCode errorCode) {
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
-                Presenter.getInstance(getContext()).setId(-1);
-                Presenter.getInstance(getContext()).steLogFlg(false);
-                Presenter.getInstance(getContext()).setToken(getContext(), "");
-                getActivity().finish();
-                System.exit(0);
+                exitTokenUnfect();
             }
         }
 

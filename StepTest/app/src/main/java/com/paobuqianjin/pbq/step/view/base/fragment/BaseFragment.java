@@ -14,11 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.view.activity.LoginActivity;
+
 /**
  * Created by pbq on 2017/12/1.
  */
 
 public abstract class BaseFragment extends Fragment {
+    private NormalDialog exitDialog;
 
     protected void runOnMainUi(Runnable runnable) {
         getActivity().runOnUiThread(runnable);
@@ -91,5 +97,30 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void exitTokenUnfect() {
+        if (exitDialog == null) {
+            exitDialog = new NormalDialog(getActivity());
+            exitDialog.setMessage("登录过期，点击确定重新登录");
+            exitDialog.setYesOnclickListener(getContext().getString(R.string.confirm_yes), new NormalDialog.onYesOnclickListener() {
+                @Override
+                public void onYesClick() {
+                    exitDialog.dismiss();
+                    Presenter.getInstance(getContext()).setId(-1);
+                    Presenter.getInstance(getContext()).steLogFlg(false);
+                    Presenter.getInstance(getContext()).setToken(getContext(), "");
+                    getActivity().finish();
+                    System.exit(0);
+                }
+            });
+            exitDialog.setNoOnclickListener(getContext().getString(R.string.cancel_no), new NormalDialog.onNoOnclickListener() {
+                @Override
+                public void onNoClick() {
+                    exitDialog.dismiss();
+                }
+            });
+        }
+        exitDialog.show();
     }
 }

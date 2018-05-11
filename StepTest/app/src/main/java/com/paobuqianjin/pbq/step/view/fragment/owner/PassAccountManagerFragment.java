@@ -110,6 +110,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
     private boolean isauthQq;
     private boolean isauthWx;
     private String actionOp;
+    private boolean isBindPhone = false;
     private final static String BIND_PHONE = "com.paobuqianjin.step.BIND_PHONE";
     private final static int REQUEST_BIND_PHONE = 221;
 
@@ -247,7 +248,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                             break;
                         case "尚未绑定":
                             LocalLog.d(TAG, "绑定QQ");
-                            boolean isauthQq = UMShareAPI.get(getContext()).isAuthorize(getActivity(), SHARE_MEDIA.QQ);
+                            isauthQq = UMShareAPI.get(getContext()).isAuthorize(getActivity(), SHARE_MEDIA.QQ);
                             if (!isauthQq) {
                                 UMShareAPI.get(getActivity()).doOauthVerify(getActivity(), SHARE_MEDIA.QQ, authListener);
                             } else {
@@ -292,7 +293,11 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
         switch (view.getId()) {
             case R.id.pass_word_layer:
                 LocalLog.d(TAG, "修改密码");
-                startActivity(OlderPassChangeActivity.class, null);
+                if (phoneChatDes.getText().toString().equals(getString(R.string.had_bind))) {
+                    startActivity(OlderPassChangeActivity.class, null);
+                }else{
+                    ToastUtils.showLongToast(getContext(),"未绑定手机号码，不可修改密码");
+                }
                 break;
             case R.id.we_chat_des:
                 LocalLog.d(TAG, "绑定或者解绑");
@@ -500,11 +505,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
             ToastUtils.showShortToast(getContext(), postBindResponse.getMessage());
         } else if (postBindResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
         SocializeUtils.safeCloseDialog(dialog);
     }
