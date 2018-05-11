@@ -349,6 +349,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                     LocalLog.d(TAG, "昵称修改成功!");
                     Toast.makeText(getContext(), "昵称修改成功", Toast.LENGTH_SHORT).show();
                     Presenter.getInstance(getContext()).getCircleMemberAll(Integer.parseInt(id), pageIndex, PAGESIZE);
+                    getActivity().setResult(RESULT_OK);
                     break;
                 }
             default:

@@ -11,10 +11,22 @@ import java.util.Map;
 
 public class PostInviteCodeParam {
     /*
-    * mobile	邀请码	true	string
-userid	用户ID	true	string*/
+    * icode	邀请码	true	string
+userid	用户ID	false	int*/
     private String mobile;
     private int userid;
+
+    public String getIcode() {
+        return icode;
+    }
+
+    public PostInviteCodeParam setIcode(String icode) {
+        this.icode = icode;
+        params.put("icode", icode);
+        return this;
+    }
+
+    private String icode;
     private Map<String, String> params;
 
     public PostInviteCodeParam() {
@@ -29,14 +41,6 @@ userid	用户ID	true	string*/
             temp = temp + key + ":" + params.get(key) + "\n";
         }
         return temp;
-    }
-
-    @Override
-    public String toString() {
-        return "PostInviteCodeParam{" +
-                "mobile='" + mobile + '\'' +
-                ", userid=" + userid +
-                '}';
     }
 
     public String getMobile() {
@@ -65,5 +69,15 @@ userid	用户ID	true	string*/
 
     public void setParams(Map<String, String> params) {
         this.params = params;
+    }
+
+    @Override
+    public String toString() {
+        return "PostInviteCodeParam{" +
+                "mobile='" + mobile + '\'' +
+                ", userid=" + userid +
+                ", icode='" + icode + '\'' +
+                ", params=" + params +
+                '}';
     }
 }

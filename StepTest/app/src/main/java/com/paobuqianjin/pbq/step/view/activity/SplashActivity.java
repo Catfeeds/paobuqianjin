@@ -67,10 +67,10 @@ public class SplashActivity extends AppCompatActivity {
         vp_first_income = (ViewPager) findViewById(R.id.vp_first_income);
 
         boolean isFirstEnter = (boolean) SharedPreferencesUtil.get(Constants.SP_IS_FIRST_ENTER, true);
-        if (isFirstEnter) {//Ê×´Î½øÈë
+        if (isFirstEnter) {//é¦–æ¬¡è¿›å…¥
             initViewpager();
             SharedPreferencesUtil.put(Constants.SP_IS_FIRST_ENTER, false);
-        }else{//·ÇÊ×´Î½øÈë
+        }else{//éé¦–æ¬¡è¿›å…¥
             mHideHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

@@ -140,11 +140,34 @@ public class ReChargeRankResponse {
              * nickname : 嗯额
              * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg
              * total_fee : 0.01
+             * circlenickname :kk
              */
 
             private int userid;
             private String nickname;
             private String avatar;
+
+            @Override
+            public String toString() {
+                return "DataBean{" +
+                        "userid=" + userid +
+                        ", nickname='" + nickname + '\'' +
+                        ", avatar='" + avatar + '\'' +
+                        ", circlenickname='" + circlenickname + '\'' +
+                        ", total_fee='" + total_fee + '\'' +
+                        ", vip=" + vip +
+                        '}';
+            }
+
+            public String getCirclenickname() {
+                return circlenickname;
+            }
+
+            public void setCirclenickname(String circlenickname) {
+                this.circlenickname = circlenickname;
+            }
+
+            private String circlenickname;
             private String total_fee;
 
             public int getVip() {
@@ -189,16 +212,6 @@ public class ReChargeRankResponse {
                 this.total_fee = total_fee;
             }
 
-            @Override
-            public String toString() {
-                return "DataBean{" +
-                        "userid=" + userid +
-                        ", nickname='" + nickname + '\'' +
-                        ", avatar='" + avatar + '\'' +
-                        ", total_fee='" + total_fee + '\'' +
-                        ", vip=" + vip +
-                        '}';
-            }
         }
     }
 }

@@ -149,10 +149,21 @@ public class StepRankResponse {
              * nickname : 嗯额
              * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg
              * step_number : 1936
+             * circlenickname :kk
              */
 
             private int userid;
             private String nickname;
+
+            public String getCirclenickname() {
+                return circlenickname;
+            }
+
+            public void setCirclenickname(String circlenickname) {
+                this.circlenickname = circlenickname;
+            }
+
+            private String circlenickname;
             private String avatar;
             private int step_number;
 
@@ -203,6 +214,7 @@ public class StepRankResponse {
                 return "DataBean{" +
                         "userid=" + userid +
                         ", nickname='" + nickname + '\'' +
+                        ", circlenickname='" + circlenickname + '\'' +
                         ", avatar='" + avatar + '\'' +
                         ", step_number=" + step_number +
                         ", vip=" + vip +

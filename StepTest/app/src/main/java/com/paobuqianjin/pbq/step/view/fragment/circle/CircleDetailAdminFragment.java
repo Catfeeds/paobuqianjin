@@ -496,6 +496,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         scanMore = (TextView) viewRoot.findViewById(R.id.scan_more);
         scanMore.setOnClickListener(onClickListener);
         setToolBarListener(toolBarListener);
+        desc = (TextView) viewRoot.findViewById(R.id.desc);
         moneyRet = (TextView) viewRoot.findViewById(R.id.money_ret);
         circleCover = (ImageView) viewRoot.findViewById(R.id.circle_cover);
 
@@ -789,6 +790,11 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             if (circleDetailResponse.getData().getIs_red_packet() == 1) {
                 LocalLog.d(TAG, "弹出红包,用户可以点击领取");
                 popRedPkgButton();
+                desc.setVisibility(View.VISIBLE);
+                moneyRet.setVisibility(View.VISIBLE);
+            }else{
+                desc.setVisibility(View.INVISIBLE);
+                moneyRet.setVisibility(View.INVISIBLE);
             }
         } else if (circleDetailResponse.getError() == -1) {
             Toast.makeText(getContext(), circleDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();

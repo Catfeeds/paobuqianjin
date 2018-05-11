@@ -420,8 +420,10 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
             city = data.getStringExtra("city");
             latitude = data.getDoubleExtra("latitude", 0);
             longitude = data.getDoubleExtra("longitude", 0);
-            locationStr.setText(city);
             address = data.getStringExtra("address");
+            locationStr.setText(address);
+
+            LocalLog.d(TAG,address);
         }
     }
 

@@ -24,7 +24,7 @@ import com.paobuqianjin.pbq.step.view.activity.LoginActivity;
  */
 
 public abstract class BaseFragment extends Fragment {
-    private NormalDialog exitDialog;
+    private static NormalDialog exitDialog;
 
     protected void runOnMainUi(Runnable runnable) {
         getActivity().runOnUiThread(runnable);
@@ -107,6 +107,7 @@ public abstract class BaseFragment extends Fragment {
                 @Override
                 public void onYesClick() {
                     exitDialog.dismiss();
+                    exitDialog = null;
                     Presenter.getInstance(getContext()).setId(-1);
                     Presenter.getInstance(getContext()).steLogFlg(false);
                     Presenter.getInstance(getContext()).setToken(getContext(), "");
@@ -118,9 +119,14 @@ public abstract class BaseFragment extends Fragment {
                 @Override
                 public void onNoClick() {
                     exitDialog.dismiss();
+                    exitDialog = null;
                 }
             });
+            exitDialog.show();
+        } else {
+            if (!exitDialog.isShowing()) {
+                exitDialog.show();
+            }
         }
-        exitDialog.show();
     }
 }

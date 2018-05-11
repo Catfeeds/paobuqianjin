@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.param;
 
+import com.paobuqianjin.pbq.step.utils.MD5;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -28,10 +30,24 @@ public class PostWxQqBindPhoneParam {
     openid	微信或者QQ的openid	true	string
     mobile	绑定的手机号	true	string
     code	验证码	true	string
+    password 验证码 true string
         * */
     private int userid;
     private String openid;
     private String mobile;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public PostWxQqBindPhoneParam setPassword(String password) {
+        this.password = password;
+        String md5 = MD5.md5Slat(password);
+        params.put("password", md5);
+        return this;
+    }
+
+    private String password;
 
     public String getCode() {
         return code;

@@ -141,7 +141,7 @@
             android:layout_marginLeft="20dp"
             android:layout_toEndOf="@+id/pass_word"
             android:background="@null"
-            android:hint="请输入密码"
+            android:hint="请输入6-12位密码"
             android:inputType="textPassword"
             android:textColor="@color/color_161727"
             android:textColorHint="@color/color_8a8a8a"

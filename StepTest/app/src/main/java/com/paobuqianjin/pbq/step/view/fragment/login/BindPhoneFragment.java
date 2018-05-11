@@ -250,7 +250,12 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
                 checkSignCodeParam.setUserid(dataBean.getId());
                 Presenter.getInstance(getContext()).checkLoginBindPhone(checkSignCodeParam);*/
                 PostWxQqBindPhoneParam postWxQqBindPhoneParam = new PostWxQqBindPhoneParam();
-                postWxQqBindPhoneParam.setCode(signCodeEdit.getText().toString()).setMobile(phoneEdit.getText().toString());
+                if (TextUtils.isEmpty(passWordEdit.getText().toString())) {
+                    ToastUtils.showLongToast(getContext(), "密码必填");
+                    return;
+                }
+                postWxQqBindPhoneParam.setCode(signCodeEdit.getText().toString())
+                        .setMobile(phoneEdit.getText().toString()).setPassword(passWordEdit.getText().toString());
 
                 Presenter.getInstance(getContext()).bindLoginPhone(postWxQqBindPhoneParam);
                 break;

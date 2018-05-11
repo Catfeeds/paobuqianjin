@@ -17,7 +17,7 @@ public class SharedPreferencesUtil {
     public static String FILLNAME = "config";
 
     /**
-     * ´æÈëÄ³¸ökey¶ÔÓ¦µÄvalueÖµ
+     * å­˜å…¥æŸä¸ªkeyå¯¹åº”çš„valueå€¼
      *
      * @param context
      * @param key
@@ -58,7 +58,7 @@ public class SharedPreferencesUtil {
     }
 
     /**
-     * µÃµ½Ä³¸ökey¶ÔÓ¦µÄÖµ
+     * å¾—åˆ°æŸä¸ªkeyå¯¹åº”çš„å€¼
      *
      * @param context
      * @param key
@@ -82,7 +82,7 @@ public class SharedPreferencesUtil {
     }
 
     /**
-     * µÃµ½Ä³¸ökey¶ÔÓ¦µÄÖµ
+     * å¾—åˆ°æŸä¸ªkeyå¯¹åº”çš„å€¼
      *
      * @param key
      * @param defValue
@@ -105,7 +105,7 @@ public class SharedPreferencesUtil {
     }
 
     /**
-     * ·µ»ØËùÓĞÊı¾İ
+     * è¿”å›æ‰€æœ‰æ•°æ®
      *
      * @param context
      * @return
@@ -116,7 +116,7 @@ public class SharedPreferencesUtil {
     }
 
     /**
-     * ÒÆ³ıÄ³¸ökeyÖµÒÑ¾­¶ÔÓ¦µÄÖµ
+     * ç§»é™¤æŸä¸ªkeyå€¼å·²ç»å¯¹åº”çš„å€¼
      *
      * @param context
      * @param key
@@ -129,7 +129,7 @@ public class SharedPreferencesUtil {
     }
 
     /**
-     * Çå³ıËùÓĞÄÚÈİ
+     * æ¸…é™¤æ‰€æœ‰å†…å®¹
      *
      * @param context
      */

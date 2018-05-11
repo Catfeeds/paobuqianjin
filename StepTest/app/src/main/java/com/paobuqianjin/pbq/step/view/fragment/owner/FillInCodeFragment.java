@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -91,7 +93,7 @@ public class FillInCodeFragment extends BaseBarStyleTextViewFragment implements 
     public void onClick() {
         LocalLog.d(TAG, "确定");
         if (checkPostInviteParam()) {
-            postInviteCodeParam.setUserid(Presenter.getInstance(getContext()).getId());
+            postInviteCodeParam.setUserid(Presenter.getInstance(getContext()).getId()).setIcode(code.getText().toString());
             Presenter.getInstance(getContext()).postInviteCode(postInviteCodeParam);
         }
 
@@ -99,7 +101,7 @@ public class FillInCodeFragment extends BaseBarStyleTextViewFragment implements 
 
     private boolean checkPostInviteParam() {
         LocalLog.d(TAG, code.getText().toString());
-        if (code.getText().toString() == null || code.getText().toString().equals("")) {
+        if (TextUtils.isEmpty(code.getText().toString())) {
             Toast.makeText(getContext(), "请填写邀请码", Toast.LENGTH_SHORT).show();
             return false;
         } else {
@@ -112,10 +114,10 @@ public class FillInCodeFragment extends BaseBarStyleTextViewFragment implements 
     public void response(PostInviteCodeResponse postInviteCodeResponse) {
         LocalLog.d(TAG, "PostInviteCodeResponse() enter " + postInviteCodeResponse.toString());
         if (postInviteCodeResponse.getError() == 0) {
-            Toast.makeText(getContext(), "", Toast.LENGTH_SHORT).show();
+            ToastUtils.showLongToast(getContext(), postInviteCodeResponse.getMessage());
             getActivity().finish();
         } else {
-
+            ToastUtils.showLongToast(getContext(), postInviteCodeResponse.getMessage());
         }
 
     }

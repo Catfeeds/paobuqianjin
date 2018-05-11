@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,11 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             holder.rankNum.setText(String.valueOf(position + 1));
             ReChargeRankResponse.DataBeanX.DataBean dataBean = (ReChargeRankResponse.DataBeanX.DataBean) mData.get(position);
             Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, dataBean.getAvatar());
-            holder.searchCircleDesListName.setText(dataBean.getNickname());
+            if (!TextUtils.isEmpty(dataBean.getCirclenickname())) {
+                holder.searchCircleDesListName.setText(dataBean.getCirclenickname());
+            } else {
+                holder.searchCircleDesListName.setText(dataBean.getNickname());
+            }
             holder.loveNumber.setText(dataBean.getTotal_fee() + "元");
             holder.userid = ((ReChargeRankResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
             if (((ReChargeRankResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
@@ -68,7 +73,11 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
         } else if (mData.get(position) instanceof StepRankResponse.DataBeanX.DataBean) {
             StepRankResponse.DataBeanX.DataBean dataBean = (StepRankResponse.DataBeanX.DataBean) mData.get(position);
             Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, dataBean.getAvatar());
-            holder.searchCircleDesListName.setText(dataBean.getNickname());
+            if (!TextUtils.isEmpty(dataBean.getCirclenickname())) {
+                holder.searchCircleDesListName.setText(dataBean.getCirclenickname());
+            } else {
+                holder.searchCircleDesListName.setText(dataBean.getNickname());
+            }
             holder.loveNumber.setText(dataBean.getStep_number() + "步");
             holder.userid = ((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
             if (((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {

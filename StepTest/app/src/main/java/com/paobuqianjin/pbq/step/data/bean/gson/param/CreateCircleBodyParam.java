@@ -166,6 +166,9 @@ public class CreateCircleBodyParam {
     public CreateCircleBodyParam setPassword(String password) {
         this.password = password;
         params.put("password", password);
+        if (password == null) {
+            params.remove("password");
+        }
         return this;
     }
 

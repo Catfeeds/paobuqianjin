@@ -23,6 +23,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +88,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class EditCircleFragment extends BaseBarStyleTextViewFragment implements EditCircleInterface, SoftKeyboardStateHelper.SoftKeyboardStateListener {
     private final static String TAG = EditCircleFragment.class.getSimpleName();
+    private static final String DEFAULT_EMPTY_PWD = "***/**";
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -254,6 +256,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                 circleStandNum.setText(String.valueOf(dataBean.getTarget()));
                 createCircleBodyParam.setTargetid(dataBean.getTarget());
                 circlePhoneNumEditor = (EditText) viewRoot.findViewById(R.id.circle_phone_num_editor);
+                passwordNumEditor = (EditText) viewRoot.findViewById(R.id.password_num_editor);
                 circlePhoneNumEditor.setText(dataBean.getMobile());
                 moneyPkgPan = (RelativeLayout) viewRoot.findViewById(R.id.money_pkg_pan);
                 readPackageMumPan = (RelativeLayout) viewRoot.findViewById(R.id.read_package_mum_pan);
@@ -285,16 +288,32 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                     passwordCircleSwitch.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a));
                     is_pwd = true;
                     enablePassEdit();
+                    changePwdEditTextLogic();
                 } else if (dataBean.getIs_pwd() == 0) {
                     passwordCircleSwitch.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a_pass));
                     is_pwd = false;
                     disablePassEdit();
-
                 }
                 circleDescOfYour.setText(dataBean.getDescription());
                 mHandler = new Handler(getActivity().getMainLooper());
             }
         }
+    }
+
+    private void changePwdEditTextLogic() {
+        passwordNumEditor.setText(DEFAULT_EMPTY_PWD);
+        passwordNumEditor.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL
+                        && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    passwordNumEditor.setText("");
+                    passwordNumEditor.setOnKeyListener(null);
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -583,7 +602,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         }
     }
 
-    @OnClick({R.id.stand_circle_pan, R.id.logo_circle_pan, R.id.edit_circle_confim})
+    @OnClick({R.id.stand_circle_pan, R.id.logo_circle_pan, R.id.edit_circle_confim,R.id.password_circle_switch})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.stand_circle_pan:
@@ -593,6 +612,20 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
             case R.id.logo_circle_pan:
                 LocalLog.d(TAG, "上传圈子logo");
                 requestPermission(Permission.Group.STORAGE);
+                break;
+            case R.id.password_circle_switch:
+                LocalLog.d(TAG, "修改圈子");
+                if (!is_pwd) {
+                    passwordCircleSwitch.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.switch_bar_a));
+                    is_pwd = true;
+                    enablePassEdit();
+                    createCircleBodyParam.setIs_pwd(1);
+                } else {
+                    passwordCircleSwitch.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.switch_bar_a_pass));
+                    is_pwd = false;
+                    disablePassEdit();
+                    createCircleBodyParam.setIs_pwd(0);
+                }
                 break;
             case R.id.edit_circle_confim:
                 LocalLog.d(TAG, "保存");
@@ -685,6 +718,9 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
 
         if (createCircleBodyParam.isIs_pwd() == 1) {
             createCircleBodyParam.setPassword(passwordNumEditor.getText().toString());
+            if (passwordNumEditor.getText().toString().equals(DEFAULT_EMPTY_PWD)) {//如果为默认的就不提交
+                createCircleBodyParam.setParams(null);
+            }
         }
 
         if (circleDescOfYour.getText() == null || circleDescOfYour.getText().toString().equals("")) {
