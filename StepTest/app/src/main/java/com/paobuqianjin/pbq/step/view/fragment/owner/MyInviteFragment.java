@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteCodeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
@@ -27,8 +28,6 @@ import butterknife.OnClick;
 public class MyInviteFragment extends BaseFragment {
     @Bind(R.id.invite_pkg)
     ImageView invitePkg;
-    @Bind(R.id.invite_result)
-    TextView inviteResult;
     @Bind(R.id.desc)
     TextView desc;
     @Bind(R.id.invite_rule)
@@ -54,25 +53,13 @@ public class MyInviteFragment extends BaseFragment {
         return rootView;
     }
 
-    public void setMsg(int inviteNum, int stepDollar) {
-        if (isDetached()) {
-            return;
-        } else {
-            if (this.isAdded()) {
-                String inviteStrformat = getString(R.string.invite_msg);
-                String inviteStr = String.format(inviteStrformat, inviteNum, stepDollar);
-                inviteResult.setText(inviteStr);
-            }
-            /*inviteCode.setText("我的邀请码:" + code);*/
-        }
-    }
 
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        inviteResult = (TextView) viewRoot.findViewById(R.id.invite_result);
         inviteCode = (TextView) viewRoot.findViewById(R.id.invite_code);
         Presenter.getInstance(getContext()).getMyCode(innerCallBack);
+        Presenter.getInstance(getContext()).getMyInviteMsg(innerCallBack);
     }
 
     private InnerCallBack innerCallBack = new InnerCallBack() {
@@ -91,6 +78,8 @@ public class MyInviteFragment extends BaseFragment {
                         }
                     }
                 }
+
+            } else if (object instanceof MyInviteResponse) {
 
             }
         }

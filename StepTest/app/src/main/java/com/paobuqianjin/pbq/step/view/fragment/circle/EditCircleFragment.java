@@ -724,7 +724,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         if (createCircleBodyParam.isIs_pwd() == 1) {
             createCircleBodyParam.setPassword(passwordNumEditor.getText().toString());
             if (passwordNumEditor.getText().toString().equals(DEFAULT_EMPTY_PWD)) {//如果为默认的就不提交
-                createCircleBodyParam.setParams(null);
+                createCircleBodyParam.setPassword(null);
             }
         }
 

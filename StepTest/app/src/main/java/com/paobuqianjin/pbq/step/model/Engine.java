@@ -70,6 +70,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteMessageResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LiveResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NormalResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostBindResponse;
@@ -2975,7 +2976,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(inviteInterface, COMMAND_GET_INVITE_DAN));
     }
 
-    public void getMyInviteMsg() {
+    public void getMyInviteMsg(final InnerCallBack innerCallBack) {
         String url = NetApi.urlInvite + "/" + String.valueOf(getId(mContext));
         LocalLog.d(TAG, "getMyInviteMsg() enter url =  " + url);
         OkHttpUtils
@@ -2983,7 +2984,27 @@ public final class Engine {
                 .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(inviteInterface, COMMAND_GET_MY_INVITE_MSG));
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (innerCallBack != null) {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            innerCallBack.innerCallBack(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        if (innerCallBack != null) {
+                            try {
+                                MyInviteResponse myInviteResponse = new Gson().fromJson(s, MyInviteResponse.class);
+                                innerCallBack.innerCallBack(myInviteResponse);
+                            } catch (JsonSyntaxException e) {
+
+                            }
+                        }
+                    }
+                });
     }
 
     public void postInviteCode(PostInviteCodeParam postInviteCodeParam) {

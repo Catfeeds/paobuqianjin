@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import java.util.List;
+
 /**
  * Created by pbq on 2018/2/27.
  */
@@ -10,10 +12,11 @@ package com.paobuqianjin.pbq.step.data.bean.gson.response;
 *@description 个人邀请信息
 */
 public class MyInviteResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"userid":1,"mobile":"18588278880","number":4,"sum_credit":50}
+     * data : {"Inumber":1,"Icredit":0,"Imoney":50,"Ilist":[{"id":33,"inviterid":66,"userid":3,"code":"66T3","create_time":1526106630}]}
      */
 
     private int error;
@@ -44,68 +47,126 @@ public class MyInviteResponse {
         this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return "MyInviteResponse{" +
-                "error=" + error +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
-    }
-
     public static class DataBean {
         /**
-         * userid : 1
-         * mobile : 18588278880
-         * number : 4
-         * sum_credit : 50
+         * Inumber : 1
+         * Icredit : 0
+         * Imoney : 50
+         * Ilist : [{"id":33,"inviterid":66,"userid":3,"code":"66T3","create_time":1526106630}]
          */
 
-        private int userid;
-        private String mobile;
-        private int number;
-        private int sum_credit;
+        private int Inumber;
+        private int Icredit;
+        private int Imoney;
+        private List<IlistBean> Ilist;
 
-        public int getUserid() {
-            return userid;
+        public int getInumber() {
+            return Inumber;
         }
 
-        public void setUserid(int userid) {
-            this.userid = userid;
+        public void setInumber(int Inumber) {
+            this.Inumber = Inumber;
         }
 
-        public String getMobile() {
-            return mobile;
+        public int getIcredit() {
+            return Icredit;
         }
 
-        public void setMobile(String mobile) {
-            this.mobile = mobile;
+        public void setIcredit(int Icredit) {
+            this.Icredit = Icredit;
         }
 
-        public int getNumber() {
-            return number;
+        public int getImoney() {
+            return Imoney;
         }
 
-        public void setNumber(int number) {
-            this.number = number;
+        public void setImoney(int Imoney) {
+            this.Imoney = Imoney;
         }
 
-        public int getSum_credit() {
-            return sum_credit;
+        public List<IlistBean> getIlist() {
+            return Ilist;
         }
 
-        public void setSum_credit(int sum_credit) {
-            this.sum_credit = sum_credit;
+        public void setIlist(List<IlistBean> Ilist) {
+            this.Ilist = Ilist;
         }
 
         @Override
         public String toString() {
             return "DataBean{" +
-                    "userid=" + userid +
-                    ", mobile='" + mobile + '\'' +
-                    ", number=" + number +
-                    ", sum_credit=" + sum_credit +
+                    "Inumber=" + Inumber +
+                    ", Icredit=" + Icredit +
+                    ", Imoney=" + Imoney +
+                    ", Ilist=" + Ilist +
                     '}';
+        }
+
+        public static class IlistBean {
+            /**
+             * id : 33
+             * inviterid : 66
+             * userid : 3
+             * code : 66T3
+             * create_time : 1526106630
+             */
+
+            private int id;
+            private int inviterid;
+            private int userid;
+            private String code;
+            private int create_time;
+
+            public int getId() {
+                return id;
+            }
+
+            public void setId(int id) {
+                this.id = id;
+            }
+
+            public int getInviterid() {
+                return inviterid;
+            }
+
+            public void setInviterid(int inviterid) {
+                this.inviterid = inviterid;
+            }
+
+            public int getUserid() {
+                return userid;
+            }
+
+            public void setUserid(int userid) {
+                this.userid = userid;
+            }
+
+            public String getCode() {
+                return code;
+            }
+
+            public void setCode(String code) {
+                this.code = code;
+            }
+
+            public int getCreate_time() {
+                return create_time;
+            }
+
+            public void setCreate_time(int create_time) {
+                this.create_time = create_time;
+            }
+
+            @Override
+            public String toString() {
+                return "IlistBean{" +
+                        "id=" + id +
+                        ", inviterid=" + inviterid +
+                        ", userid=" + userid +
+                        ", code='" + code + '\'' +
+                        ", create_time=" + create_time +
+                        '}';
+            }
         }
     }
 }

@@ -62,7 +62,7 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
     private int totalCircle = 0;
     private PagerAdapter adapter;
     private final static String ACTION_CIRCLE_HONOR = "com.paobuqianjin.pbq.ACTION_CIRCLE_HONOR";
-    private final static int PAGESIZE = 100;
+    private final static int PAGESIZE = 200;
 
     @Override
 

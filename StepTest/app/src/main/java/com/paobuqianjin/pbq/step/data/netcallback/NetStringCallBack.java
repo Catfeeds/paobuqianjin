@@ -839,13 +839,6 @@ public class NetStringCallBack extends StringCallback {
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
                 }
-            } else if (command == Engine.COMMAND_GET_MY_INVITE_MSG) {
-                try {
-                    MyInviteResponse myInviteResponse = new Gson().fromJson(s, MyInviteResponse.class);
-                    ((InviteInterface) callBackInterface).response(myInviteResponse);
-                } catch (JsonSyntaxException e) {
-                    e.printStackTrace();
-                }
             }
         } else if (callBackInterface != null
                 && callBackInterface instanceof PostInviteCodeInterface) {

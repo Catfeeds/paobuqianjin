@@ -65,7 +65,7 @@
     <string name="invite_code">我的邀请码:%ld</string>
     <string name="invite_msg">成功邀请%d人，获得步币%d块</string>
     <string name="invite_dan_msg">邀请了%d个好友</string>
-    <string name="invite_red_pkg">收获红包%.2f块</string>
+    <string name="invite_red_pkg">获得步币%d个，人民币%.2f元</string>
     <string name="invite_dan_rank">第%d名</string>
     <string name="task_days">任务天数: %d 天</string>
     <string name="target_money">奖励总金额: %.2f 元</string>
@@ -127,7 +127,7 @@
     <string name="confirm_yes">确定</string>
     <string name="cancel_no">取消</string>
     <string name="wallet_pay_confirm">确定使用钱包支付?</string>
-    <string name="invite_string">①邀请越多好友使用跑步钱进，将获得更多的商家红包；\n②公司每月奖励前50名邀请达人，将有可能获得参加电视节目的机会；</string>
+    <string name="invite_string">①软件初期，我们将从受邀者获得的商家红包中抽取微量部分作为邀请者的奖励，普通用户邀请新用户一个奖励上限30元，会员邀请一个奖励上限50元。\n②由于每次都是微量抽取，且奖励是分批次积累，奖励金额的到账时间与多少由受邀者领取商家红包的时间和多少决定，奖够为止。</string>
     <string name="title_activity_sponsor_tmap">SponsorTMapActivity</string>
     <string name="per_x_x_txt">%1$s/%2$s字</string>
     <string name="had_bind">已绑定账号</string>
@@ -138,4 +138,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="money_delay">余额不足充值失败</string>
+    <string name="invite_nums">成功邀请（人）</string>
+    <string name="money_invite">人民币（元）</string>
+    <string name="invite_step_dollor">步币（个）</string>
 </resources>

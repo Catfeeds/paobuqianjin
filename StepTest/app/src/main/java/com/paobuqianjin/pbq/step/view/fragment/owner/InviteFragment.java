@@ -91,7 +91,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     private ProgressDialog dialog;
     private UMWeb web;
     private int pageIndexDan = 1, pageCountDan = 0;
-    private final static int PAGE_SIZE = 10;
+    private final static int PAGE_SIZE = 100;
     InviteDanAdapter adapter;
     private ArrayList<InviteDanResponse.DataBeanX.DataBean> inviteDan = new ArrayList<>();
 
@@ -102,7 +102,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
 
     @Override
     protected String title() {
-        return "邀请有礼";
+        return "邀请奖钱";
     }
 
     @Override
@@ -117,7 +117,6 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         Presenter.getInstance(getContext()).getInviteDan(pageIndexDan, PAGE_SIZE);
-        Presenter.getInstance(getContext()).getMyInviteMsg();
         return rootView;
     }
 
@@ -344,21 +343,6 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         adapter.notifyDataSetChanged(dataBeans);
     }
 
-
-    @Override
-    public void response(MyInviteResponse myInviteResponse) {
-        LocalLog.d(TAG, "MyInviteResponse() enter " + myInviteResponse.toString());
-        if (myInviteResponse.getError() == 0) {
-            myInviteFragment.setMsg(myInviteResponse.getData().getNumber(), myInviteResponse.getData().getSum_credit());
-        } else if (myInviteResponse.getError() == 1) {
-            myInviteFragment.setMsg(0, 0);
-        } else if (myInviteResponse.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
-        } else {
-            Toast.makeText(getContext(), myInviteResponse.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public void response(InviteDanResponse inviteDanResponse) {

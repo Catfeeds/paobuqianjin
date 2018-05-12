@@ -79,7 +79,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     ImageView vipFlg;
 
     private int pageIndexDay = 1, pageCountDay = 0, pageIndexWeek = 1, pageCountWeek = 0;
-    private final static int PAGE_DEFAULT_SIZE = 10;
+    private final static int PAGE_DEFAULT_SIZE = 200;
     LinearLayoutManager layoutManager;
     FriendStepRankDayResponse friendStepRankDayResponse;
     FriendWeekResponse friendWeekResponse;
@@ -133,8 +133,6 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         buttoneLeftBar.setOnClickListener(onClickListener);
 
         Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndexDay, PAGE_DEFAULT_SIZE);
-        Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
-
 
     }
 
@@ -163,7 +161,11 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                     if (popupOpWindowTop != null) {
                         popupOpWindowTop.dismiss();
                     }
-                    updateFriendWeekResponse(friendWeekResponse);
+                    if (friendWeekResponse == null) {
+                        Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
+                    } else {
+                        updateFriendWeekResponse(friendWeekResponse);
+                    }
                     break;
             }
         }
@@ -262,8 +264,8 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                     Presenter.getInstance(getContext()).getImage(kingHeadIcon, friendStepRankDayResponse.getData().getData().getMember().get(0).getAvatar());
                     kingName.setText(friendStepRankDayResponse.getData().getData().getMember().get(0).getNickname());
                 }
-                if (pageIndexDay == pageCountDay) {
-
+                if (pageIndexDay >= pageCountDay) {
+                    return;
                 } else if (pageIndexDay < pageCountDay) {
                     pageIndexDay++;
                     Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndexDay, PAGE_DEFAULT_SIZE);
@@ -282,11 +284,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
 
         } else if (friendStepRankDayResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -329,8 +327,8 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                 //adapter.notifyDataSetChanged(friendWeekResponse.getData().getData().getMember());
                 adapter = new HonorDetailAdapter(getContext(), friendWeekResponse.getData().getData().getMember());
                 danDetailRecycler.setAdapter(adapter);
-                if (pageIndexWeek == pageCountWeek) {
-
+                if (pageIndexWeek >= pageCountWeek) {
+                    return;
                 } else if (pageIndexWeek < pageCountWeek) {
                     pageIndexWeek++;
                     Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);

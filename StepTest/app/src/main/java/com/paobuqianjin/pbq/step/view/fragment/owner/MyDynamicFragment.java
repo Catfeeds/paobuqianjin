@@ -64,7 +64,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements MyDynamicInterface {
     private final static String TAG = MyDynamicFragment.class.getSimpleName();
-    private final static int REQUEST_DETAIL = 0;
+    private final static int REQUEST_DETAIL = 301;
     LinearLayoutManager layoutManager;
     int pageIndex = 1;
     int pageCount = 0;
@@ -87,7 +87,6 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
     private TranslateAnimation animationCircleType;
     private int mScreenWidth;
     private int mScreenHeight;
-    private final static int REQUEST_DYTEAL = 301;
 
     @Override
 
@@ -111,7 +110,6 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getMyDynamic(pageIndex, Utils.PAGE_SIZE_DEFAULT);
         return rootView;
     }
 
@@ -133,13 +131,14 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
         myDynamicRecycler.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         myDynamicRecycler.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
         myDynamicRecycler.setSwipeItemClickListener(mItemClickListener);
-
+        myDynamicRecycler.setItemAnimator(null);
         myDynamicRecycler.setAdapter(adapter);
 
         swipeRefreshLayout = (SwipeRefreshLayout) viewRoot.findViewById(R.id.my_dynamic_swip);
         swipeRefreshLayout.setOnRefreshListener(mRefreshListener);
 
         loadData(dynamicAllData);
+        Presenter.getInstance(getContext()).getMyDynamic(pageIndex, Utils.PAGE_SIZE_DEFAULT);
     }
 
     public interface PopBigImageInterface {
@@ -357,7 +356,8 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
             myDynamicRecycler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    loadData(dynamicAllData);
+                    pageIndex = 1;
+                    Presenter.getInstance(getContext()).getMyDynamic(pageIndex, Utils.PAGE_SIZE_DEFAULT);
                     LocalLog.d(TAG, "加载数据");
                 }
             }, 1000); // 延时模拟请求服务器。
@@ -400,8 +400,11 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
             pageCount = dynamicPersonResponse.getData().getPagenation().getTotalPage();
             LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
 
-            loadMore((ArrayList<DynamicPersonResponse.DataBeanX.DataBean>) dynamicPersonResponse.getData().getData());
+
             if (pageIndex == 1) {
+                dynamicAllData.clear();
+                dynamicAllData.addAll(dynamicPersonResponse.getData().getData());
+                loadData(dynamicAllData);
                 myDynamicRecycler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -409,6 +412,8 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
                         myDynamicRecycler.scrollToPosition(0);
                     }
                 }, 100);
+            }else{
+                loadMore((ArrayList<DynamicPersonResponse.DataBeanX.DataBean>) dynamicPersonResponse.getData().getData());
             }
 
             pageIndex++;
@@ -429,9 +434,10 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        LocalLog.d(TAG,"EEEEEEE");
+
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_DYTEAL) {
+            if (requestCode == REQUEST_DETAIL) {
+
                 if (data != null) {
                     int position = data.getIntExtra(getContext().getPackageName() + "position", -1);
                     if (position != -1) {
@@ -447,12 +453,8 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
                         if (contentNum != -1) {
                             dynamicAllData.get(position).setComment(contentNum);
                         }
-                        DynamicPersonResponse.DataBeanX.DataBean.OneCommentBean oneCommentBean =
-                                (DynamicPersonResponse.DataBeanX.DataBean.OneCommentBean) data.getSerializableExtra((getContext().getPackageName() + "oneCommentBean"));
-                        if (oneCommentBean != null) {
-                            dynamicAllData.get(position).setOne_comment(oneCommentBean);
-                        }
-                        LocalLog.d(TAG, "详情操作 is_vote = " + is_vote + ",likeNum = " + likeNum + ",contentNum = " + contentNum);
+                        
+                        LocalLog.d(TAG, "详情操作 is_vote = " + is_vote + ",likeNum = " + likeNum + ",contentNum = " + contentNum + "position = " + position);
                         if (is_vote != -1 || likeNum != -1 || contentNum != -1) {
                             adapter.notifyItemChanged(position);
                         }

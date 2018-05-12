@@ -322,7 +322,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_toEndOf="@+id/gift_icon"
                     android:includeFontPadding="false"
-                    android:text="邀请有礼"
+                    android:text="邀请奖钱"
                     android:textColor="@color/color_161727"
                     android:textSize="15dp" />
 

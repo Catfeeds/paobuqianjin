@@ -49,7 +49,8 @@ public class InviteDanAdapter extends RecyclerView.Adapter<InviteDanAdapter.Invi
             String inviteStrFormat = context.getString(R.string.invite_dan_msg);
             String inviteRedPkgFormat = context.getString(R.string.invite_red_pkg);
             String inviteStr = String.format(inviteStrFormat, ((InviteDanResponse.DataBeanX.DataBean) mData.get(position)).getInviternum());
-            String inviteRedPkgStr = String.format(inviteRedPkgFormat, ((InviteDanResponse.DataBeanX.DataBean) mData.get(position)).getSum_credit());
+            String inviteRedPkgStr = String.format(inviteRedPkgFormat, ((InviteDanResponse.DataBeanX.DataBean) mData.get(position)).getSum_credit(),
+                    ((InviteDanResponse.DataBeanX.DataBean) mData.get(position)).getAllmoney());
             String inviteDanStrFormat = context.getString(R.string.invite_dan_rank);
             String inviteDanStr = String.format(inviteDanStrFormat, position + 1);
             Presenter.getInstance(context).getImage(holder.userHeadIcon, ((InviteDanResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());

@@ -12,10 +12,11 @@ import java.util.List;
 *@description 邀请排行达人榜
 */
 public class InviteDanResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":3},"data":[{"inviterid":1,"inviternum":4,"avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D0922F24-15D6-451E-B432-9B1F123D2C9A.jpg","nickname":"嗯额咳咳","create_time":1519637725,"sum_credit":50},{"inviterid":2,"inviternum":2,"avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","nickname":"李五","create_time":1519637725,"sum_credit":50},{"inviterid":3,"inviternum":1,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg","nickname":"九卿臣","create_time":1519637725,"sum_credit":0}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":2},"data":[{"inviterid":2,"inviternum":2,"avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","nickname":"李五","create_time":1526106975,"vip":0,"sum_credit":200,"allmoney":60},{"inviterid":66,"inviternum":1,"avatar":"https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqrcBtCRb0zSZbkaV20yibScfdoqsHwcianPcBJjX1KhMBR113nm5R7IwIw5LsHHhp6EUpscauqzicOA/132","nickname":"小沙","create_time":1526106630,"vip":1,"sum_credit":0,"allmoney":50}]}
      */
 
     private int error;
@@ -57,8 +58,8 @@ public class InviteDanResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":3}
-         * data : [{"inviterid":1,"inviternum":4,"avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D0922F24-15D6-451E-B432-9B1F123D2C9A.jpg","nickname":"嗯额咳咳","create_time":1519637725,"sum_credit":50},{"inviterid":2,"inviternum":2,"avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","nickname":"李五","create_time":1519637725,"sum_credit":50},{"inviterid":3,"inviternum":1,"avatar":"http://pic.qqtn.com/up/2017-12/2017120911184280328.jpg","nickname":"九卿臣","create_time":1519637725,"sum_credit":0}]
+         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":2}
+         * data : [{"inviterid":2,"inviternum":2,"avatar":"http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg","nickname":"李五","create_time":1526106975,"vip":0,"sum_credit":200,"allmoney":60},{"inviterid":66,"inviternum":1,"avatar":"https://wx.qlogo.cn/mmopen/vi_32/DYAIOgq83eqrcBtCRb0zSZbkaV20yibScfdoqsHwcianPcBJjX1KhMBR113nm5R7IwIw5LsHHhp6EUpscauqzicOA/132","nickname":"小沙","create_time":1526106630,"vip":1,"sum_credit":0,"allmoney":50}]
          */
 
         private PagenationBean pagenation;
@@ -93,7 +94,7 @@ public class InviteDanResponse {
              * page : 1
              * pageSize : 10
              * totalPage : 1
-             * totalCount : 3
+             * totalCount : 2
              */
 
             private int page;
@@ -132,26 +133,18 @@ public class InviteDanResponse {
             public void setTotalCount(int totalCount) {
                 this.totalCount = totalCount;
             }
-
-            @Override
-            public String toString() {
-                return "PagenationBean{" +
-                        "page=" + page +
-                        ", pageSize=" + pageSize +
-                        ", totalPage=" + totalPage +
-                        ", totalCount=" + totalCount +
-                        '}';
-            }
         }
 
         public static class DataBean {
             /**
-             * inviterid : 1
-             * inviternum : 4
-             * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/D0922F24-15D6-451E-B432-9B1F123D2C9A.jpg
-             * nickname : 嗯额咳咳
-             * create_time : 1519637725
-             * sum_credit : 50
+             * inviterid : 2
+             * inviternum : 2
+             * avatar : http://e.hiphotos.baidu.com/image/pic/item/9922720e0cf3d7ca7f053ebcfb1fbe096a63a90c.jpg
+             * nickname : 李五
+             * create_time : 1526106975
+             * vip : 0
+             * sum_credit : 200
+             * allmoney : 60
              */
 
             private int inviterid;
@@ -159,17 +152,9 @@ public class InviteDanResponse {
             private String avatar;
             private String nickname;
             private int create_time;
-            private float sum_credit;
-
-            public int getVip() {
-                return vip;
-            }
-
-            public void setVip(int vip) {
-                this.vip = vip;
-            }
-
             private int vip;
+            private int sum_credit;
+            private float allmoney;
 
             public int getInviterid() {
                 return inviterid;
@@ -211,12 +196,28 @@ public class InviteDanResponse {
                 this.create_time = create_time;
             }
 
-            public float getSum_credit() {
+            public int getVip() {
+                return vip;
+            }
+
+            public void setVip(int vip) {
+                this.vip = vip;
+            }
+
+            public int getSum_credit() {
                 return sum_credit;
             }
 
             public void setSum_credit(int sum_credit) {
                 this.sum_credit = sum_credit;
+            }
+
+            public float getAllmoney() {
+                return allmoney;
+            }
+
+            public void setAllmoney(float allmoney) {
+                this.allmoney = allmoney;
             }
 
             @Override
@@ -227,8 +228,9 @@ public class InviteDanResponse {
                         ", avatar='" + avatar + '\'' +
                         ", nickname='" + nickname + '\'' +
                         ", create_time=" + create_time +
-                        ", sum_credit=" + sum_credit +
                         ", vip=" + vip +
+                        ", sum_credit=" + sum_credit +
+                        ", allmoney=" + allmoney +
                         '}';
             }
         }

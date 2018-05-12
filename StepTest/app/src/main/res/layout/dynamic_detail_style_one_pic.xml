@@ -152,7 +152,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/like_num_icon"
             android:textColor="@color/color_161727"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textSize="15dp" />
 
         <TextView

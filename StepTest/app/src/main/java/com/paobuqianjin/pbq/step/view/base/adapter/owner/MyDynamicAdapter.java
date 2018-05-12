@@ -137,6 +137,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                     }
                 }
 
+                holder.dynamicContentText.setVisibility(View.VISIBLE);
                 holder.dynamicContentText.setText(content);
             }
             int likes = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getVote();
@@ -146,6 +147,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 holder.likeNumIcon.setImageResource(R.drawable.fabulous_s);
                 holder.contentSupports.setText(String.valueOf(likes));
             } else {
+                holder.likeNumIcon.setImageResource(R.drawable.fabulous_n);
                 holder.contentSupports.setText(String.valueOf(0));
             }
 
@@ -180,6 +182,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                     LocalLog.d(TAG, "动态没有图片");
                     holder.picViewpager.setVisibility(View.GONE);
                 } else {
+                    holder.picViewpager.setVisibility(View.VISIBLE);
                     holder.imageView0 = LayoutInflater.from(mContext).inflate(R.layout.image_view_pager, null);
 
                     holder.dots.add(holder.dot1);

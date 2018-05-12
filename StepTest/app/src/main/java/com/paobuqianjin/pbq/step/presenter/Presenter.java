@@ -702,8 +702,8 @@ public final class Presenter {
         engine.getInviteDan(page, pagesize);
     }
 
-    public void getMyInviteMsg() {
-        engine.getMyInviteMsg();
+    public void getMyInviteMsg(InnerCallBack innerCallBack) {
+        engine.getMyInviteMsg(innerCallBack);
     }
 
     public void postInviteCode(PostInviteCodeParam postInviteCodeParam) {

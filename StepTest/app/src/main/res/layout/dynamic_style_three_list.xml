@@ -120,8 +120,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:maxEms="11"
+            android:maxLines="1"
             android:ellipsize="end"
+            android:layout_toLeftOf="@+id/like_num_span"
+            android:layout_alignParentLeft="true"
+            android:paddingRight="10dp"
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
@@ -149,25 +152,25 @@
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/content_number_icon">
 
-            <TextView
-                android:id="@+id/content_supports"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="22dp"
-                android:text=""
-                android:textColor="@color/color_161727"
-                android:textSize="15dp" />
-
             <ImageView
                 android:id="@+id/like_num_icon"
                 android:layout_width="17dp"
                 android:layout_height="14dp"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:layout_toStartOf="@+id/content_supports"
                 android:src="@drawable/fabulous_n"
                 />
+
+            <TextView
+                android:id="@+id/content_supports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="22dp"
+                android:text=""
+                android:layout_toRightOf="@+id/like_num_icon"
+                android:textColor="@color/color_161727"
+                android:textSize="15dp" />
+
         </RelativeLayout>
         <!--<TextView
             android:id="@+id/content_supports"
