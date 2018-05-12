@@ -30,7 +30,7 @@ public class AboutActivity extends BaseBarActivity {
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
     @Bind(R.id.app_logo)
-    CircleImageView appLogo;
+    ImageView appLogo;
     @Bind(R.id.app_name)
     TextView appName;
     @Bind(R.id.version)

@@ -1,7 +1,9 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -29,7 +29,6 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.AttentionCircleAdapter;
-import com.paobuqianjin.pbq.step.view.base.adapter.SearchCircleAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.yanzhenjie.loading.LoadingView;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
@@ -49,6 +48,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class AttentionCircleFragment extends BaseFragment {
     private final static String TAG = AttentionCircleFragment.class.getSimpleName();
+    public static final String ACTION_REFRESH_DATA = "ACTION_REFRESH_DATA";
     LinearLayoutManager layoutManager;
     @Bind(R.id.dynamic_recyclerView)
     SwipeMenuRecyclerView dynamicRecyclerView;
@@ -64,8 +64,9 @@ public class AttentionCircleFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Presenter.getInstance(getActivity()).attachUiInterface(dynamicIndexUiInterface);
-        ButterKnife.bind(this, super.onCreateView(inflater, container, savedInstanceState));
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -80,7 +81,7 @@ public class AttentionCircleFragment extends BaseFragment {
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        Presenter.getInstance(getContext()).getDynamicIndex(pageIndex, Utils.PAGE_SIZE_DEFAULT);
+        LocalLog.d(TAG,"initView");
         dynamicRecyclerView = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.dynamic_recyclerView);
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -101,6 +102,7 @@ public class AttentionCircleFragment extends BaseFragment {
         swipeRefreshLayout.setOnRefreshListener(mRefreshListener);
 
         loadData(dynamicAllData);
+        Presenter.getInstance(getContext()).getDynamicIndex(pageIndex, Utils.PAGE_SIZE_DEFAULT);
     }
 
 
@@ -281,7 +283,9 @@ public class AttentionCircleFragment extends BaseFragment {
             dynamicRecyclerView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    loadData(dynamicAllData);
+                    pageIndex = 1;
+                    Presenter.getInstance(getContext()).getDynamicIndex(pageIndex, Utils.PAGE_SIZE_DEFAULT);
+//                    loadData(dynamicAllData);
                     LocalLog.d(TAG, "加载数据");
                 }
             }, 1000); // 延时模拟请求服务器。
@@ -326,10 +330,13 @@ public class AttentionCircleFragment extends BaseFragment {
                     return;
                 }
                 pageCount = dynamicAllIndexResponse.getData().getPagenation().getTotalPage();
-                LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
+                LocalLog.d(TAG, "pageIndex = " + pageIndex + "  pageCount = " + pageCount);
 
-                loadMore((ArrayList<DynamicAllIndexResponse.DataBeanX.DataBean>) dynamicAllIndexResponse.getData().getData());
+
                 if (pageIndex == 1) {
+                    dynamicAllData.clear();
+                    dynamicAllData.addAll(dynamicAllIndexResponse.getData().getData());
+                    loadData(dynamicAllData);
                     dynamicRecyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -337,6 +344,8 @@ public class AttentionCircleFragment extends BaseFragment {
                             dynamicRecyclerView.scrollToPosition(0);
                         }
                     }, 100);
+                }else{
+                    loadMore((ArrayList<DynamicAllIndexResponse.DataBeanX.DataBean>) dynamicAllIndexResponse.getData().getData());
                 }
 
                 pageIndex++;

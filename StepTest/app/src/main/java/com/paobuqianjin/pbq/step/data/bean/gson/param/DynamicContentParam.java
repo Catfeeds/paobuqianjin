@@ -1,7 +1,5 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.param;
 
-import com.paobuqianjin.pbq.step.utils.Base64Util;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -61,15 +59,7 @@ content	评论内容	true	string
 
     public DynamicContentParam setContent(String content) {
         this.content = content;
-        param.put("content", Base64Util.makeUidToBase64(content));
+        param.put("content", content);
         return this;
-    }
-
-    public String paramString() {
-        String temp = "";
-        for (String key : param.keySet()) {
-            temp = temp + key + ":" + param.get(key) + "\n";
-        }
-        return temp;
     }
 }

@@ -1,7 +1,5 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.param;
 
-import com.paobuqianjin.pbq.step.utils.Base64Util;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -38,7 +36,7 @@ city	城市	true	string*/
 
     public PostDynamicParam setDynamic(String dynamic) {
         this.dynamic = dynamic;
-        params.put("dynamic", Base64Util.makeUidToBase64(dynamic));
+        params.put("dynamic", dynamic);
         return this;
     }
 

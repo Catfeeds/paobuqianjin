@@ -20,10 +20,11 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="35dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/app_logo"
                 android:layout_width="55dp"
                 android:layout_height="55dp"
+                android:scaleType="centerCrop"
                 android:src="@mipmap/app_icon" />
 
             <RelativeLayout

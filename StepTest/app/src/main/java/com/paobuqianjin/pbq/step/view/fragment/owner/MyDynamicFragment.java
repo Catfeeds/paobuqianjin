@@ -56,6 +56,8 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by pbq on 2018/1/17.
  */
@@ -85,6 +87,7 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
     private TranslateAnimation animationCircleType;
     private int mScreenWidth;
     private int mScreenHeight;
+    private final static int REQUEST_DYTEAL = 301;
 
     @Override
 
@@ -123,7 +126,7 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
         myDynamicRecycler.setLayoutManager(layoutManager);
 
         //myDynamicRecycler.setAdapter(new MyDynamicAdapter(getContext()));
-        adapter = new MyDynamicAdapter(getActivity(), null, popBigImageInterface);
+        adapter = new MyDynamicAdapter(getActivity(), null, popBigImageInterface, this);
         // 自定义的核心就是DefineLoadMoreView类。
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());
         myDynamicRecycler.addFooterView(loadMoreView); // 添加为Footer。
@@ -422,4 +425,41 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
             exitTokenUnfect();
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LocalLog.d(TAG,"EEEEEEE");
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_DYTEAL) {
+                if (data != null) {
+                    int position = data.getIntExtra(getContext().getPackageName() + "position", -1);
+                    if (position != -1) {
+                        int is_vote = data.getIntExtra(getContext().getPackageName() + "is_vote", -1);
+                        if (is_vote != -1) {
+                            dynamicAllData.get(position).setIs_vote(is_vote);
+                        }
+                        int likeNum = data.getIntExtra(getContext().getPackageName() + "likeNum", -1);
+                        if (likeNum != -1) {
+                            dynamicAllData.get(position).setVote(likeNum);
+                        }
+                        int contentNum = data.getIntExtra(getContext().getPackageName() + "contentNum", -1);
+                        if (contentNum != -1) {
+                            dynamicAllData.get(position).setComment(contentNum);
+                        }
+                        DynamicPersonResponse.DataBeanX.DataBean.OneCommentBean oneCommentBean =
+                                (DynamicPersonResponse.DataBeanX.DataBean.OneCommentBean) data.getSerializableExtra((getContext().getPackageName() + "oneCommentBean"));
+                        if (oneCommentBean != null) {
+                            dynamicAllData.get(position).setOne_comment(oneCommentBean);
+                        }
+                        LocalLog.d(TAG, "详情操作 is_vote = " + is_vote + ",likeNum = " + likeNum + ",contentNum = " + contentNum);
+                        if (is_vote != -1 || likeNum != -1 || contentNum != -1) {
+                            adapter.notifyItemChanged(position);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

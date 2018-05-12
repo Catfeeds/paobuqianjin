@@ -23,7 +23,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
-import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
@@ -136,12 +135,6 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
         int[] emj = mContext.getResources().getIntArray(R.array.emjio_list);//TODO 优化
         LocalLog.d(TAG, "DATA = " + data.get(position).toString());
-        try {
-            data.get(position).setDynamic(Base64Util.getUidFromBase64(data.get(position).getDynamic()));
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
-        LocalLog.d(TAG, " " + data.get(position).getDynamic());
         if (holder instanceof OneOrZeroViewHodler) {
             LocalLog.d(TAG, "无图");
             ((OneOrZeroViewHodler) holder).dynamicid = data.get(position).getId();
@@ -169,7 +162,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).vote = data.get(position).getVote();
                 if (data.get(position).getIs_vote() == 1) {
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
-                } else {
+                }else{
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
                 }
                 if (data.get(position).getComment() <= 0) {
@@ -217,7 +210,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).vote = data.get(position).getVote();
                 if (data.get(position).getIs_vote() == 1) {
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
-                } else {
+                }else{
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
                 }
                 if (data.get(position).getComment() <= 0) {
@@ -273,7 +266,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((TwoPicViewHolder) holder).vote = data.get(position).getVote();
             if (data.get(position).getIs_vote() == 1) {
                 ((TwoPicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
-            } else {
+            }else{
                 ((TwoPicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
             }
             if (data.get(position).getComment() <= 0) {
@@ -323,7 +316,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((ThreePicViewHolder) holder).vote = data.get(position).getVote();
             if (data.get(position).getIs_vote() == 1) {
                 ((ThreePicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
-            } else {
+            }else{
                 ((ThreePicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
             }
             LocalLog.d(TAG, "3图");

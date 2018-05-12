@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -50,7 +51,7 @@ import butterknife.Bind;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.paobuqianjin.pbq.step.view.emoji.EmotionViewPagerAdapter.numToHex8;
-import static com.umeng.socialize.utils.ContextUtil.getPackageName;
+
 
 /**
  * Created by pbq on 2018/1/17.
@@ -67,11 +68,14 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
     private TranslateAnimation animationCircleType;
     TextView cancelText;
     TextView confirmText;
+    private Fragment fragment;
+    private final static int REQUEST_DYTEAL = 301;
 
-    public MyDynamicAdapter(Activity context, List<DynamicPersonResponse.DataBeanX.DataBean> data, MyDynamicFragment.PopBigImageInterface popBigImageInterface) {
+    public MyDynamicAdapter(Activity context, List<DynamicPersonResponse.DataBeanX.DataBean> data, MyDynamicFragment.PopBigImageInterface popBigImageInterface, Fragment fragment) {
         mContext = context;
         mData = data;
         this.popBigImageInterface = popBigImageInterface;
+        this.fragment = fragment;
     }
 
     public void notifyDataSetChanged(List<DynamicPersonResponse.DataBeanX.DataBean> data) {
@@ -506,8 +510,9 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                         intent.putExtra(mContext.getPackageName() + "dynamicId", dynamicId);
                         intent.putExtra(mContext.getPackageName() + "userId", userid);
                         intent.putExtra(mContext.getPackageName() + "is_vote", is_vote);
+                        intent.putExtra(mContext.getPackageName() + "position", position);
                         intent.setClass(mContext, DynamicActivity.class);
-                        mContext.startActivity(intent);
+                        fragment.startActivityForResult(intent, REQUEST_DYTEAL);
                         break;
                     case R.id.delete_dynamic:
                         LocalLog.d(TAG, "删除动态");

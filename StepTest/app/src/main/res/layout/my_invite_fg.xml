@@ -32,7 +32,7 @@
         android:layout_marginTop="42dp"
         android:text="@string/invite_string"
         android:textColor="@color/color_161727"
-        android:textSize="12dp" />
+        android:textSize="14dp" />
 
     <RelativeLayout
         android:id="@+id/go_rule_span"

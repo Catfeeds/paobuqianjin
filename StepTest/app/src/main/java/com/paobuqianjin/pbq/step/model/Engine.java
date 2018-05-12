@@ -1274,7 +1274,7 @@ public final class Engine {
 
     //Post 发送评论
     public void postDynamicComment(DynamicContentParam dynamicContentParam) {
-        LocalLog.d(TAG, "postDynamicComment() enter" + dynamicContentParam.paramString());
+        LocalLog.d(TAG, "postDynamicComment() enter");
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
