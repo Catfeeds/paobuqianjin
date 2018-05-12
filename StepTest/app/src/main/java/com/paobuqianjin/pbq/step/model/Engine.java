@@ -715,7 +715,8 @@ public final class Engine {
                             InviteMessageResponse inviteMessageResponse = new Gson().fromJson(s, InviteMessageResponse.class);
                             if (inviteMessageResponse.getError() == 0) {
                                 if (button != null) {
-                                    button.setText("邀请过");
+                                    ToastUtils.showLongToast(mContext, "发送邀请成功");
+                                    /*button.setText("邀请过");*/
                                 }
                             }
                         } catch (JsonSyntaxException e) {
@@ -1190,7 +1191,7 @@ public final class Engine {
     public void postContent(PostDynamicContentParam postDynamicContentParam) {
         LocalLog.d(TAG, "postContent() enter " + postDynamicContentParam.paramString());
         if (String.valueOf(getId(mContext)).equals(String.valueOf(postDynamicContentParam.getReply_userid()))) {
-            Toast.makeText(mContext, "不能评论自己", Toast.LENGTH_SHORT).show();
+            ToastUtils.showLongToast(mContext, "不能评论自己");
             return;
         }
         OkHttpUtils
@@ -2991,7 +2992,7 @@ public final class Engine {
                             try {
                                 ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                                 innerCallBack.innerCallBack(errorCode);
-                            }catch (JsonSyntaxException j){
+                            } catch (JsonSyntaxException j) {
                                 j.printStackTrace();
                             }
                         }

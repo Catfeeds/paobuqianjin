@@ -122,6 +122,7 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdap
                     childBean.setId(Integer.parseInt(postDynamicContentResponse.getData().getId()));
                     childBean.setReply_nickname(postDynamicContentResponse.getData().getReply_nickname());
                     childBean.setNickname(postDynamicContentResponse.getData().getNickname());
+                    childBean.setUserid(Integer.parseInt(postDynamicContentResponse.getData().getUserid()));
                     reflashInterfaceTop.notifyReflash(childBean);
                 }
             }

@@ -33,10 +33,9 @@
         android:textColor="@color/color_161727"
         android:textSize="14dp" />
 
-
     <Button
         android:id="@+id/bt_follow"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="25dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
@@ -45,7 +44,6 @@
         android:text=""
         android:textColor="@color/color_6c71c4"
         android:textSize="14dp" />
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"

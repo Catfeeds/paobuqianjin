@@ -49,7 +49,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@+id/mail_address_layer"
-        android:background="@color/color_f8">
+        android:background="@color/color_f8"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/address_weichat"
@@ -84,7 +85,8 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@+id/address_weichat_layer"
-        android:background="@color/color_f8">
+        android:background="@color/color_f8"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/address_qq"

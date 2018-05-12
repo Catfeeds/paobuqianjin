@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,11 +60,17 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
             Presenter.getInstance(context).getImage(holder.userNearIcon, ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getAvatar());
             holder.dearName.setText(((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getName());
             if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getFollow_type() == 2) {
+                holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_646464));
+                holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_not_fllow_nearby));
                 holder.btFollow.setText("已关注");
             } else if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getFollow_type() == 3) {
+                holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
+                holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
                 holder.btFollow.setText("互相关注");
             } else if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getFollow_type() == 0) {
-                holder.btFollow.setText("未关注");
+                holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
+                holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
+                holder.btFollow.setText("关注");
             }
             holder.phoneNum = ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getPhone();
             if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getVip() == 1) {
@@ -73,6 +80,7 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
             holder.dearName.setText(((FriendAddResponse.DataBean.OutSystemBean) mData.get(position)).getName());
             holder.btFollow.setText("邀请");
             holder.phoneNum = ((FriendAddResponse.DataBean.OutSystemBean) mData.get(position)).getPhone();
+            holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
         }
     }
 
@@ -114,7 +122,7 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
                             case "邀请":
                                 //TODO 发送邀请
                                 LocalLog.d(TAG, "邀请好友");
-                                Presenter.getInstance(context).inviteMsg(phoneNum,btFollow);
+                                Presenter.getInstance(context).inviteMsg(phoneNum, btFollow);
                                 break;
                             case "已关注":
                                 LocalLog.d(TAG, "取消关注");
