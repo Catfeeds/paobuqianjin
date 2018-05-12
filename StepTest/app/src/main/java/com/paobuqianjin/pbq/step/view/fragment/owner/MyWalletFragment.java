@@ -113,7 +113,6 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     private final int REQUEST_RECHARGE = 223;
 
     @Override
-
     protected int getLayoutResId() {
         return R.layout.my_wallet_fg;
     }

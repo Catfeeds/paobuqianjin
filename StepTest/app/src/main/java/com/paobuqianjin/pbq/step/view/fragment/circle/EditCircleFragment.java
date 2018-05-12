@@ -40,6 +40,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
@@ -250,6 +251,9 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         if (intent != null) {
             dataBean = (CircleDetailResponse.DataBean) intent.getSerializableExtra("circle_detail");
             if (dataBean != null) {
+                String paramStr = new Gson().toJson(dataBean);
+                createCircleBodyParam = new Gson().fromJson(paramStr, CreateCircleBodyParam.class);
+
                 cirNameDesc = (EditText) viewRoot.findViewById(R.id.cir_name_desc);
                 cirNameDesc.setText(dataBean.getName());
                 circleStandNum = (TextView) viewRoot.findViewById(R.id.circle_stand_num);
@@ -280,7 +284,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                 circleReadPackageEditor = (EditText) viewRoot.findViewById(R.id.circle_read_package_editor);
                 circleReadPackageEditor.setText(String.valueOf(dataBean.getRed_packet_amount()));
                 moneyPkgNumEditor = (EditText) viewRoot.findViewById(R.id.money_pkg_num_editor);
-                moneyPkgNumEditor.setText(String.valueOf(dataBean.getRed_packet()));
+                moneyPkgNumEditor.setText(String.valueOf(dataBean.getRed_packetInt()));
                 passwordPan = (RelativeLayout) viewRoot.findViewById(R.id.password_pan);
                 passwordCircleSwitch = (ImageView) viewRoot.findViewById(R.id.password_circle_switch);
                 circleDescOfYour = (EditText) viewRoot.findViewById(R.id.circle_desc_of_your);
@@ -537,6 +541,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+
         ButterKnife.unbind(this);
     }
 

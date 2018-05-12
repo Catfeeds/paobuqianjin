@@ -75,6 +75,7 @@ public class CircleDetailResponse {
          * is_admin : 1
          * is_red_packet : 0
          * red_packet_status : 0
+         * red_packet_money : 0.01
          */
 
         private int id;
@@ -97,7 +98,11 @@ public class CircleDetailResponse {
         private int is_join;
         private int is_admin;
         private int is_red_packet;
+        /**
+         * 个人红包状态：0步数未达标|1有红包|2红包已领完|3用户已经领过红包|4圈子余额不足
+         */
         private int red_packet_status;
+        private String red_packet_money;
 
         public int getId() {
             return id;
@@ -223,6 +228,10 @@ public class CircleDetailResponse {
             return red_packet;
         }
 
+        public int getRed_packetInt() {
+            return (int) red_packet;
+        }
+
         public void setRed_packet(float red_packet) {
             this.red_packet = red_packet;
         }
@@ -267,6 +276,14 @@ public class CircleDetailResponse {
             this.red_packet_status = red_packet_status;
         }
 
+        public String getRed_packet_money() {
+            return red_packet_money;
+        }
+
+        public void setRed_packet_money(String red_packet_money) {
+            this.red_packet_money = red_packet_money;
+        }
+
         @Override
         public String toString() {
             return "DataBean{" +
@@ -291,6 +308,7 @@ public class CircleDetailResponse {
                     ", is_admin=" + is_admin +
                     ", is_red_packet=" + is_red_packet +
                     ", red_packet_status=" + red_packet_status +
+                    ", red_packet_money=" + red_packet_money +
                     '}';
         }
     }

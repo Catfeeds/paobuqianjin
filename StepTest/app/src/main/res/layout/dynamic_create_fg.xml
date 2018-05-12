@@ -112,7 +112,9 @@
                     android:layout_marginRight="20dp"
                     android:text="深圳"
                     android:textColor="@color/color_161727"
-                    android:drawableRight="@drawable/go_to_rule"
+                    android:drawableRight="@mipmap/ic_arrow_right26"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
                     android:textSize="15dp" />
             </RelativeLayout>
 

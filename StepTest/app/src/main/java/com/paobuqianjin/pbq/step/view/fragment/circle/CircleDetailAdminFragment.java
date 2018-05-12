@@ -44,6 +44,7 @@ import com.paobuqianjin.pbq.step.presenter.im.CircleDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiStepAndLoveRankInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.EditCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.LoveRankActivity;
 import com.paobuqianjin.pbq.step.view.activity.MemberManagerActivity;
@@ -141,7 +142,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private PopupWindow popCircleRedPkg;
     private TranslateAnimation animationCircleType;
     private ImageView imageView;
-    private TextView money;
+    private TextView pop_money;
     private CircleDetailResponse circleDetailResponse = null;
     private final static String CIRCLE_ID = "id";
     private final static String CIRCLE_NAME = "name";
@@ -153,7 +154,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private final static String ACTION_ENTER_CIRCLE = "coma.paobuqian.pbq.step.ICON_ACTION";
     private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.SCAN_ACTION";
     private final static String PAY_ACTION = "android.intent.action.PAY";
-    private final static String PAY_RECHARGE = "com.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
+    private final static String PAY_RECHARGE = "coma.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
     private final static String ACTION_STEP_RANK = "com.paobuqian.pbq.step.STEP_ACTION";
     private final static String ACTION_LOVE_RANK = "com.paobuqian.pbq.step.LOVE_ACTION";
     private final int REQUEST_MEMBER = 201;
@@ -171,6 +172,10 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private int memberNum = 0;
 
     TextView tvRedTipsMoney;
+    private TextView pop_pkg_des;//领红包的界面底部红包解释
+    private PopupWindow popOpWindowRedButtonHori;
+    private TextView pop_message_red_a;
+    private TextView pop_message_red_b;
 
     @Override
     protected int getLayoutResId() {
@@ -310,7 +315,11 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 popCircleRedPkg = null;
             }
         });
-        money = (TextView) popCircleOpBar.findViewById(R.id.rec_money);
+        pop_money = (TextView) popCircleOpBar.findViewById(R.id.rec_money);
+        pop_pkg_des = (TextView) popCircleOpBar.findViewById(R.id.pkg_des);
+        pop_message_red_a = (TextView) popCircleOpBar.findViewById(R.id.message_red_a);
+        pop_message_red_b = (TextView) popCircleOpBar.findViewById(R.id.message_red_b);
+        pop_pkg_des.setText(titleStr+"的红包");
         ImageView close = (ImageView) popCircleOpBar.findViewById(R.id.close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -342,7 +351,38 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             }
         });
 
+        if (circleDetailResponse.getData().getRed_packet_status() != 1) {//红包不能正常领取
+            imageView.clearAnimation();
+            imageView.setVisibility(View.GONE);
+            //0步数未达标|1有红包|2红包已领完|3用户已经领过红包|4圈子余额不足
+            switch (circleDetailResponse.getData().getRed_packet_status()) {
+                case 0:
+                    pop_message_red_a.setVisibility(View.INVISIBLE);
+                    pop_message_red_b.setText("未达标");
+                    break;
+                case 2:
+                    pop_message_red_a.setVisibility(View.INVISIBLE);
+                    pop_message_red_b.setText("红包已领完");
+                    break;
+                case 3:
+                    pop_message_red_a.setVisibility(View.INVISIBLE);
+                    pop_message_red_b.setText("已经领过红包");
+                    pop_money.setText("￥ " + circleDetailResponse.getData().getRed_packet_money());
+                    break;
+                case 4:
+                    pop_message_red_a.setVisibility(View.INVISIBLE);
+                    pop_message_red_b.setText("圈子余额不足");
+                    break;
+            }
+        }
 
+
+    /*    if (!TextUtils.isEmpty(circleDetailResponse.getData().getRed_packet_money())) {
+            imageView.clearAnimation();
+            imageView.setVisibility(View.GONE);
+            pop_money.setText(String.valueOf("￥ " + circleDetailResponse.getData().getRed_packet_money()));
+        }
+*/
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
                 1, Animation.RELATIVE_TO_PARENT, 0);
@@ -404,10 +444,10 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     public void popRedPkgButton() {
         LocalLog.d(TAG, "popRedPkgButton() 弹出红包");
         View popCircleOpBarHori = View.inflate(getContext(), R.layout.red_pkg_button_pop_window, null);
-        PopupWindow popOpWindowRedButton = new PopupWindow(popCircleOpBarHori,
+        popOpWindowRedButtonHori = new PopupWindow(popCircleOpBarHori,
                 WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
         popCircleOpBarHori.findViewById(R.id.red_pkg_button).setOnClickListener(onClickListener);
-        popOpWindowRedButton.setOnDismissListener(new PopupWindow.OnDismissListener() {
+        popOpWindowRedButtonHori.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
                 LocalLog.d(TAG, "popRedPkgButton dismiss() ");
@@ -417,7 +457,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
 
 //        popOpWindowRedButton.setFocusable(true);
 //        popOpWindowRedButton.setOutsideTouchable(true);
-        popOpWindowRedButton.setBackgroundDrawable(new BitmapDrawable());
+        popOpWindowRedButtonHori.setBackgroundDrawable(new BitmapDrawable());
         TranslateAnimation animationCircleTypeHori = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
                 1, Animation.RELATIVE_TO_PARENT, 0);
@@ -425,7 +465,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         animationCircleTypeHori.setDuration(200);
 
 
-        popOpWindowRedButton.showAtLocation(getActivity().findViewById(R.id.circle_detail_fg), Gravity.BOTTOM | Gravity.RIGHT, 0, 25);
+        popOpWindowRedButtonHori.showAtLocation(getActivity().findViewById(R.id.circle_detail_fg), Gravity.BOTTOM | Gravity.RIGHT, 0, 25);
         popCircleOpBarHori.startAnimation(animationCircleTypeHori);
     }
 
@@ -465,6 +505,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         super.initView(viewRoot);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
+            LocalLog.d(TAG, "intent.getAction():"+intent.getAction());
+            LocalLog.d(TAG, "ACTION_ENTER_CIRCLE:"+ACTION_ENTER_CIRCLE);
             if (ACTION_ENTER_CIRCLE.equals(intent.getAction())) {
                 LocalLog.d(TAG, "logo 进入");
                 circleId = intent.getIntExtra(getContext().getPackageName() + "circleid", -1);
@@ -730,6 +772,10 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             popupOpWindow.dismiss();
             popupOpWindow = null;
         }
+        if (popOpWindowRedButtonHori != null) {
+            popOpWindowRedButtonHori.dismiss();
+            popOpWindowRedButtonHori = null;
+        }
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
         Presenter.getInstance(getContext()).dispatchUiInterface(uiStepAndLoveRankInterface);
         Presenter.getInstance(getContext()).dispatchUiInterface(joinCircleInterface);
@@ -785,6 +831,16 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             titleStr = circleDetailResponse.getData().getName();
             if (circleDetailResponse.getData().getIs_recharge() == 1) {
                 rankMoney.setVisibility(View.VISIBLE);
+
+                if (circleDetailResponse.getData().getIs_join() == 1) {
+                    LocalLog.d(TAG, "弹出红包,用户可以点击领取");
+                    popRedPkgButton();
+                    desc.setVisibility(View.VISIBLE);
+                    moneyRet.setVisibility(View.VISIBLE);
+                }
+            }else{
+                desc.setVisibility(View.INVISIBLE);
+                moneyRet.setVisibility(View.INVISIBLE);
             }
             Log.d(TAG, "titleStr = " + titleStr);
             setTitle(titleStr);
@@ -792,15 +848,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             Presenter.getInstance(getContext()).getCircleRechargeRand(circleId, pageIndex, PAGESIZE);
             Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndex, PAGESIZE);
 
-            if (circleDetailResponse.getData().getIs_red_packet() == 1) {
-                LocalLog.d(TAG, "弹出红包,用户可以点击领取");
-                popRedPkgButton();
-                desc.setVisibility(View.VISIBLE);
-                moneyRet.setVisibility(View.VISIBLE);
-            } else {
-                desc.setVisibility(View.INVISIBLE);
-                moneyRet.setVisibility(View.INVISIBLE);
-            }
+
         } else if (circleDetailResponse.getError() == -1) {
             Toast.makeText(getContext(), circleDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
         } else if (circleDetailResponse.getError() == 1) {
@@ -835,13 +883,15 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             if (imageView != null) {
                 imageView.clearAnimation();
                 imageView.setVisibility(View.GONE);
-                if (money != null) {
+                if (pop_money != null) {
                     if (postRevRedPkgResponse.getData() != null) {
-                        money.setText(String.valueOf("￥ " + postRevRedPkgResponse.getData().getAmount()));
+                        pop_money.setText(String.valueOf("￥ " + postRevRedPkgResponse.getData().getAmount()));
                     }
                 }
                 //popCircleRedPkg.dismiss();
             }
+        }else{
+            PaoToastUtils.showShortToast(getActivity(), postRevRedPkgResponse.getMessage());
         }
     }
 

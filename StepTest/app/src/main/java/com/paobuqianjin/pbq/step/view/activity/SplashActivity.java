@@ -66,18 +66,18 @@ public class SplashActivity extends AppCompatActivity {
         mContentView = findViewById(R.id.fullscreen_content);
         vp_first_income = (ViewPager) findViewById(R.id.vp_first_income);
 
-        boolean isFirstEnter = (boolean) SharedPreferencesUtil.get(Constants.SP_IS_FIRST_ENTER, true);
-        if (isFirstEnter) {//首次进入
-            initViewpager();
-            SharedPreferencesUtil.put(Constants.SP_IS_FIRST_ENTER, false);
-        }else{//非首次进入
-            mHideHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
+        mHideHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                boolean isFirstEnter = (boolean) SharedPreferencesUtil.get(Constants.SP_IS_FIRST_ENTER, true);
+                if (isFirstEnter) {//首次进入
+                    initViewpager();
+                    SharedPreferencesUtil.put(Constants.SP_IS_FIRST_ENTER, false);
+                }else{
                     enterMainActivity();
                 }
-            }, AUTO_HIDE_DELAY_MILLIS);
-        }
+            }
+        }, AUTO_HIDE_DELAY_MILLIS);
     }
 
     private void initViewpager() {

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 
@@ -60,7 +61,17 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
 
     private void updateListItem(UserDynamicRecordSecondViewHolder holder, int position) {
         LocalLog.d(TAG, "updateListItem() enter position =" + position);
+        LocalLog.d(TAG, "DATA = " + mData.get(position).toString());
+
+
         if (mData.get(position) instanceof DynamicPersonResponse.DataBeanX.DataBean) {
+            try {
+                LocalLog.d(TAG, "源" + ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic());
+                LocalLog.d(TAG, "解码" + Base64Util.getUidFromBase64(((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic()));
+                ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).setDynamic(Base64Util.getUidFromBase64(((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic()));
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            }
             holder.dynamicDes.setText(((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic());
             int imageSize = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().size();
             LocalLog.d(TAG, "imageSize = " + imageSize);
