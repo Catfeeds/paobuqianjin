@@ -11,14 +11,13 @@ import android.util.Base64;
 public class Base64Util {
     private final static String TAG = Base64Util.class.getSimpleName();
 
-    public static String makeUidToBase64(long uid) {
-        LocalLog.d(TAG, "makeUidToBase64 uid = " + uid);
-        String strUid = String.valueOf(uid);
-        String enUid = new String(Base64.encode(strUid.getBytes(), Base64.DEFAULT));
+    public static String makeUidToBase64(String source) {
+        LocalLog.d(TAG, "makeUidToBase64 uid = " + source);
+        String enUid = new String(Base64.encode(source.getBytes(), Base64.DEFAULT));
         LocalLog.d(TAG, "makeUidToBase64 enUid = " + enUid);
         return enUid;
     }
-
+    
     public static String getUidFromBase64(String base64Id) {
         String result = "";
         if (!TextUtils.isEmpty(base64Id)) {
