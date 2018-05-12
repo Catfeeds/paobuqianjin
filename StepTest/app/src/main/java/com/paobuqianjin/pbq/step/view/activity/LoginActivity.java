@@ -369,7 +369,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             thirdPartyLoginParam = new ThirdPartyLoginParam();
             thirdPartyLoginParam.setSide(2);
             LocalLog.d(TAG, "授权成功callback:" + share_media.toString());
-            Toast.makeText(LoginActivity.this, "成功：", Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this, "成功授权", Toast.LENGTH_LONG).show();
             String temp = "";
             if (share_media.ordinal() == SHARE_MEDIA.WEIXIN.ordinal()) {
                 if (!bStartAuth) {

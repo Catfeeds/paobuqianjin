@@ -28,11 +28,12 @@
 
     <TextView
         android:id="@+id/not_found_data"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/contents_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:text="没有消息！"
         android:textSize="15dp"
+        android:layout_centerInParent="true"
+        android:drawableTop="@mipmap/ic_no_content"
         android:visibility="gone" />
 </RelativeLayout>

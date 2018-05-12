@@ -298,6 +298,8 @@ public class NetStringCallBack extends StringCallback {
                     callBackInterface.response(errorCode);
                 } else if (callBackInterface != null && callBackInterface instanceof OlderPassInterface) {
                     ((OlderPassInterface) callBackInterface).response(errorCode);
+                } else if (callBackInterface != null && callBackInterface instanceof SuggestInterface) {
+                    ((SuggestInterface) callBackInterface).response(errorCode);
                 } else {
                     LocalLog.e(TAG, " dispatch not match");
                 }

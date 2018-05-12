@@ -2976,8 +2976,8 @@ public final class Engine {
                 .execute(new NetStringCallBack(inviteInterface, COMMAND_GET_INVITE_DAN));
     }
 
-    public void getMyInviteMsg(final InnerCallBack innerCallBack) {
-        String url = NetApi.urlInvite + "/" + String.valueOf(getId(mContext));
+    public void getMyInviteMsg(final InnerCallBack innerCallBack, int page, int pagesize) {
+        String url = NetApi.urlMyInviteData + "?userid=" + String.valueOf(getId(mContext)) + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         LocalLog.d(TAG, "getMyInviteMsg() enter url =  " + url);
         OkHttpUtils
                 .get()
@@ -2988,8 +2988,12 @@ public final class Engine {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
                         if (innerCallBack != null) {
-                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
-                            innerCallBack.innerCallBack(errorCode);
+                            try {
+                                ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                innerCallBack.innerCallBack(errorCode);
+                            }catch (JsonSyntaxException j){
+                                j.printStackTrace();
+                            }
                         }
                     }
 

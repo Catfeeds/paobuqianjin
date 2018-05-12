@@ -26,7 +26,7 @@
         <RelativeLayout
             android:id="@+id/content_span"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/content_text"
             android:layout_marginTop="14dp"
             android:background="@color/color_f8">
@@ -34,17 +34,20 @@
             <EditText
                 android:id="@+id/content_edit"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="180dp"
                 android:background="@null"
-                android:gravity="left|top"
-                android:inputType="text" />
+                android:padding="15dp"
+                android:gravity="top|left"
+                android:textSize="14sp"
+                android:inputType="textMultiLine" />
 
             <TextView
                 android:id="@+id/content_bound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/content_edit"
+                android:layout_alignParentRight="true"
+                android:padding="8dp"
                 android:text="0/200" />
         </RelativeLayout>
 
@@ -68,6 +71,7 @@
             android:hint="选填，便于我们与你联系"
             android:paddingLeft="14dp"
             android:textColorHint="@color/color_cbcacf"
+            android:inputType="phone"
             android:textSize="14dp" />
 
         <Button
@@ -83,7 +87,7 @@
             android:gravity="center"
             android:text="提交"
             android:textColor="@color/color_f8"
-            android:textSize="36dp" />
+            android:textSize="18sp" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -100,6 +104,7 @@
                 android:layout_alignParentTop="true"
                 android:text="如需要帮助或获取更多信息，请关注或联系："
                 android:textColor="@color/color_8a8a8a"
+                android:visibility="invisible"
                 android:textSize="12dp" />
 
             <TextView
@@ -109,6 +114,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="微信公众号 跑步钱进"
                 android:textColor="@color/color_8a8a8a"
+                android:visibility="invisible"
                 android:textSize="12dp" />
         </RelativeLayout>
 

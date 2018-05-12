@@ -182,4 +182,6 @@ public class NetApi {
     public final static String urlCurrentStep = url + "v1/UserStep/";
     //TODO 解除绑定
     public final static String urlUnbindAccount = url + "v1/user/userUntie";
+    //TODO 获取我的邀请数据和我的邀请人列表
+    public final static String urlMyInviteData = url + "v1/userinviter/getMyInviter";
 }

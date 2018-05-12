@@ -130,6 +130,7 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
                 if (messageLikeResponse == null || messageLikeResponse.getData() == null) {
                     messageContentBundleData = null;
                 } else {
+                    if(messageContentResponse == null) return;
                     messageContentBundleData = new MessageContentBundleData((ArrayList<MessageContentResponse.DataBeanX.DataBean>) messageContentResponse.getData().getData());
                 }
 

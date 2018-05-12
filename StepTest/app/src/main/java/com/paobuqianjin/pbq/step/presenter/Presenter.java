@@ -702,8 +702,8 @@ public final class Presenter {
         engine.getInviteDan(page, pagesize);
     }
 
-    public void getMyInviteMsg(InnerCallBack innerCallBack) {
-        engine.getMyInviteMsg(innerCallBack);
+    public void getMyInviteMsg(final InnerCallBack innerCallBack, int page, int pagesize) {
+        engine.getMyInviteMsg(innerCallBack, page, pagesize);
     }
 
     public void postInviteCode(PostInviteCodeParam postInviteCodeParam) {
@@ -761,8 +761,8 @@ public final class Presenter {
         engine.postAddressBook(addressBook);
     }
 
-    public void inviteMsg(String phoneNum,Button button) {
-        engine.inviteMsg(phoneNum ,button);
+    public void inviteMsg(String phoneNum, Button button) {
+        engine.inviteMsg(phoneNum, button);
     }
 
     public void postTaskSponsorRelease(TaskSponsorParam taskSponsorParam) {

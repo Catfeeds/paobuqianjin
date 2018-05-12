@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <include
         android:id="@+id/bar_task_detail"
@@ -153,16 +154,18 @@
                 android:layout_marginRight="14dp"
                 android:text="" />
 
-            <ImageView
+            <ProgressBar
                 android:id="@+id/process_run"
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
+                style="@style/RunProgressBar"
+                android:progressDrawable="@drawable/bg_progress_horizontal"
                 android:layout_alignLeft="@+id/button_1"
                 android:layout_below="@+id/man_run_ico"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="12dp"
-                android:background="@color/color_f6f6f6"
-                android:src="@color/color_ffbe24" />
+                android:progress="10"
+                 />
 
             <Button
 

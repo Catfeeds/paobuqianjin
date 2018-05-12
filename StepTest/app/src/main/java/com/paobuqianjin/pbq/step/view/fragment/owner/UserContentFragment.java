@@ -86,11 +86,23 @@ public class UserContentFragment extends BaseBarStyleTextViewFragment {
         }
         if (messageContentBundleData != null) {
             title = "评论";
-            contentRecycler.setAdapter(new MessageAdapter(getContext(), messageContentBundleData.getMessageContentBundleData()));
+            boolean isNoData = messageContentBundleData.getMessageContentBundleData().size() < 1;
+            if (isNoData) {
+                notFoundData.setText("您暂时还没有收到评论！");
+                notFoundData.setVisibility(View.VISIBLE);
+            }else{
+                contentRecycler.setAdapter(new MessageAdapter(getContext(), messageContentBundleData.getMessageContentBundleData()));
+            }
         }
         if (messageLikeBundleData != null) {
             title = "点赞";
-            contentRecycler.setAdapter(new MessageAdapter(getContext(), messageLikeBundleData.getMessageLikeBundleData()));
+            boolean isNoData = messageLikeBundleData.getMessageLikeBundleData().size() < 1;
+            if (isNoData) {
+                notFoundData.setText("您暂时还没有被点赞！");
+                notFoundData.setVisibility(View.VISIBLE);
+            }else{
+                contentRecycler.setAdapter(new MessageAdapter(getContext(), messageLikeBundleData.getMessageLikeBundleData()));
+            }
         }
 
     }

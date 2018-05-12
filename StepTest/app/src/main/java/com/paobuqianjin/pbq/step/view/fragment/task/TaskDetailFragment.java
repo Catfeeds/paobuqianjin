@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,7 +71,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
     @Bind(R.id.step_des_run)
     TextView stepDesRun;
     @Bind(R.id.process_run)
-    ImageView processRun;
+    ProgressBar processRun;
     @Bind(R.id.button_2)
     Button button2;
     @Bind(R.id.task_tells)
@@ -148,6 +149,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
         stepDesRun = (TextView) viewRoot.findViewById(R.id.step_des_run);
         vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
         taskRulsDetail = (TextView) viewRoot.findViewById(R.id.task_ruls_detail);
+        processRun = (ProgressBar) viewRoot.findViewById(R.id.process_run);
     }
 
     @Override
@@ -204,6 +206,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
             taskRulsDetail.setText(Html.fromHtml(taskRecDetailResponse.getData().getTask_desc()));
 
             buttonAction.setOnClickListener(onClickListener);
+            processRun.setProgress((int) (taskRecDetailResponse.getData().getUser_step()*100.0f/taskRecDetailResponse.getData().getTarget_step()));
         } else if (taskRecDetailResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

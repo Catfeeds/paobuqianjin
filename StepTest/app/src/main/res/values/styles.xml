@@ -70,4 +70,7 @@
         <item name="android:background">@color/black_overlay</item>
     </style>
 
+    <style name="RunProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal" >
+       <!-- <item name="progressDrawable"></item>-->
+    </style>
 </resources>

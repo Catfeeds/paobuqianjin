@@ -106,8 +106,8 @@ public class SuggestionActivity extends BaseBarActivity implements SuggestInterf
                 suggetionBtn.setEnabled(true);
             } else {
                 suggetionBtn.setEnabled(false);
-
             }
+            contentBound.setText(s.length() + "/200");
         }
 
         @Override
@@ -121,11 +121,12 @@ public class SuggestionActivity extends BaseBarActivity implements SuggestInterf
         if (suggestResponse.getError() == 0) {
             LocalLog.d(TAG, "SuggestResponse() enter");
             Toast.makeText(this, "意见反馈成功，感谢你的支持", Toast.LENGTH_SHORT).show();
+            finish();
         }
     }
 
     @Override
     public void response(ErrorCode errorCode) {
-
+        Toast.makeText(this, errorCode.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

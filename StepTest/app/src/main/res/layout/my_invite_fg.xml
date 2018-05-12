@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/invite_pkg"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="22dp"
         android:orientation="horizontal">
 
         <RelativeLayout
@@ -29,6 +29,7 @@
                 android:id="@+id/invit_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:textColor="@color/color_e4393c"
                 android:textSize="15dp" />
 
@@ -53,6 +54,7 @@
                 android:id="@+id/invit_money"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:textColor="@color/color_e4393c"
                 android:textSize="15dp" />
 
@@ -77,6 +79,7 @@
                 android:id="@+id/invit_step_dollar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:textColor="@color/color_e4393c"
                 android:textSize="15dp" />
 
@@ -111,7 +114,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/desc"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="77dp">
+        android:layout_marginTop="20dp">
 
         <TextView
             android:id="@+id/invite_rule"
@@ -135,9 +138,8 @@
     <RelativeLayout
         android:id="@+id/invite_code_rel"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="45dp"
         android:layout_below="@+id/go_rule_span"
-        android:layout_marginBottom="45dp"
         android:layout_marginTop="20dp"
         android:background="@color/color_f6f6f6">
 

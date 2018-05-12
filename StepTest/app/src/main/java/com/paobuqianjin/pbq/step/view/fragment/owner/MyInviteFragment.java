@@ -5,15 +5,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -26,19 +29,36 @@ import butterknife.OnClick;
  */
 
 public class MyInviteFragment extends BaseFragment {
+    private final static String TAG = MyInviteFragment.class.getSimpleName();
+    private final static String USER_INVITE_AGREEMENT_ACTION = "com.paobuqianjin.step.pbq.INVITE_ACTION";
     @Bind(R.id.invite_pkg)
     ImageView invitePkg;
+    @Bind(R.id.invit_num)
+    TextView invitNum;
+    @Bind(R.id.invite_num_des)
+    TextView inviteNumDes;
+    @Bind(R.id.invit_money)
+    TextView invitMoney;
+    @Bind(R.id.invite_money_des)
+    TextView inviteMoneyDes;
+    @Bind(R.id.invit_step_dollar)
+    TextView invitStepDollar;
+    @Bind(R.id.invite_step_des)
+    TextView inviteStepDes;
+    @Bind(R.id.invite_result_pan)
+    LinearLayout inviteResultPan;
     @Bind(R.id.desc)
     TextView desc;
     @Bind(R.id.invite_rule)
     TextView inviteRule;
     @Bind(R.id.go_rule_span)
     RelativeLayout goRuleSpan;
-    @Bind(R.id.invite_code_rel)
-    RelativeLayout inviteCodeRel;
     @Bind(R.id.invite_code)
     TextView inviteCode;
-    private final static String USER_INVITE_AGREEMENT_ACTION = "com.paobuqianjin.step.pbq.INVITE_ACTION";
+    @Bind(R.id.invite_code_rel)
+    RelativeLayout inviteCodeRel;
+    private int pageIndex = 1, pageCount = 0;
+    private final static int PAGESIZE = 200;
 
     @Override
     protected int getLayoutResId() {
@@ -58,8 +78,11 @@ public class MyInviteFragment extends BaseFragment {
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         inviteCode = (TextView) viewRoot.findViewById(R.id.invite_code);
+        invitNum = (TextView) viewRoot.findViewById(R.id.invit_num);
+        invitMoney = (TextView) viewRoot.findViewById(R.id.invit_money);
+        invitStepDollar = (TextView) viewRoot.findViewById(R.id.invit_step_dollar);
         Presenter.getInstance(getContext()).getMyCode(innerCallBack);
-        Presenter.getInstance(getContext()).getMyInviteMsg(innerCallBack);
+        Presenter.getInstance(getContext()).getMyInviteMsg(innerCallBack, pageIndex, PAGESIZE);
     }
 
     private InnerCallBack innerCallBack = new InnerCallBack() {
@@ -73,6 +96,7 @@ public class MyInviteFragment extends BaseFragment {
                         if (((InviteCodeResponse) object).getData() != null) {
                             int size = ((InviteCodeResponse) object).getData().size();
                             if (size >= 1) {
+                                LocalLog.d(TAG, "我的邀请码 " + ((InviteCodeResponse) object).getData().get(1));
                                 inviteCode.setText("我的邀请码:" + ((InviteCodeResponse) object).getData().get(1));
                             }
                         }
@@ -80,7 +104,17 @@ public class MyInviteFragment extends BaseFragment {
                 }
 
             } else if (object instanceof MyInviteResponse) {
-
+                if (((MyInviteResponse) object).getError() == 100) {
+                    exitTokenUnfect();
+                } else if (((MyInviteResponse) object).getError() == 0) {
+                    if (invitNum != null && ((MyInviteResponse) object).getData() != null) {
+                        invitNum.setText(String.valueOf(((MyInviteResponse) object).getData().getInumber()));
+                        invitMoney.setText(String.valueOf(((MyInviteResponse) object).getData().getImoney()));
+                        invitStepDollar.setText(String.valueOf(((MyInviteResponse) object).getData().getIcredit()));
+                    }
+                } else {
+                    ToastUtils.showLongToast(getContext(), ((MyInviteResponse) object).getMessage());
+                }
             }
         }
     };

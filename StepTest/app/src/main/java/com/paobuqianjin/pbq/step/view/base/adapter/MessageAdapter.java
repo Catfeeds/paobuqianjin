@@ -175,7 +175,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         @Bind(R.id.dear_name)
         TextView dearName;
         @Bind(R.id.button_reply)
-        Button buttonReply;
+        TextView buttonReply;
         @Bind(R.id.content_title)
         RelativeLayout contentTitle;
         @Bind(R.id.content_text)

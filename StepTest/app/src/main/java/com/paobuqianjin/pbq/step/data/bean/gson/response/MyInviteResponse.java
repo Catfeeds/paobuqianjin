@@ -57,7 +57,7 @@ public class MyInviteResponse {
 
         private int Inumber;
         private int Icredit;
-        private int Imoney;
+        private float Imoney;
         private List<IlistBean> Ilist;
 
         public int getInumber() {
@@ -76,11 +76,11 @@ public class MyInviteResponse {
             this.Icredit = Icredit;
         }
 
-        public int getImoney() {
+        public float getImoney() {
             return Imoney;
         }
 
-        public void setImoney(int Imoney) {
+        public void setImoney(float Imoney) {
             this.Imoney = Imoney;
         }
 
