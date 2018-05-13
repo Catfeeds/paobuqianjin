@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,6 +104,8 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
     TextView attention;
     @Bind(R.id.btn_confirm)
     Button confirm;
+    @Bind(R.id.tv_calculate)
+    TextView tvCalculate;
     private TaskReleaseParam taskReleaseParam = new TaskReleaseParam();
     private String friends;
     LinearLayoutManager layoutManager;
@@ -148,10 +152,13 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
         recvRecycler.setLayoutManager(layoutManager);
 
         addFriendDes = (TextView) viewRoot.findViewById(R.id.add_friend_des);
+        tvCalculate = (TextView) viewRoot.findViewById(R.id.tv_calculate);
         recvRecycler.addItemDecoration(new LikeUserAdapter.SpaceItemDecoration(10));
         targetTaskDayNum.setSelection(targetTaskDayNum.getText().toString().length());
         targetTaskMoneyNum.setSelection(targetTaskMoneyNum.getText().toString().length());
         targetTaskStepNum.setSelection(targetTaskStepNum.getText().toString().length());
+        targetTaskMoneyNum.addTextChangedListener(textWatcher);
+        targetTaskDayNum.addTextChangedListener(textWatcher);
     }
 
     private TaskReleaseInterface taskReleaseInterface = new TaskReleaseInterface() {
@@ -278,8 +285,64 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                     }
                     this.friends = friends;
                     LocalLog.d(TAG, friends);
+                    calculateResultMoney();
                 }
                 break;
         }
+    }
+
+    private final TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            calculateResultMoney();
+        }
+    };
+
+    /**
+     * 计算红包总额
+     */
+    private void calculateResultMoney() {
+        if (targetTaskStepNum.getText() == null || targetTaskStepNum.getText().toString().equals("")) {
+//            Toast.makeText(getContext(), "请输入目标步数", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
+        if (targetTaskMoneyNum.getText() == null || targetTaskMoneyNum.getText().toString().equals("")) {
+//            Toast.makeText(getContext(), "请输入奖励金额", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
+        if (targetTaskDayNum.getText() == null || targetTaskDayNum.getText().toString().equals("")) {
+//            Toast.makeText(getContext(), "请输入任务天数", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
+        if (targetTaskDayNum.getText().toString().equals("0")) {
+//            Toast.makeText(getContext(), "任务天数不能为0", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+        if (TextUtils.isEmpty(friends) && dataBeans==null || dataBeans.size()==0) {
+//            Toast.makeText(getContext(), "请选择好友", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
+        int dayNum = Integer.parseInt(targetTaskDayNum.getText().toString());
+        float dailyMoney = Float.parseFloat(targetTaskMoneyNum.getText().toString());
+        float totalMoney = dailyMoney * dayNum * dataBeans.size();
+        String dailyMoneyStr = String.format("%.2f", dailyMoney);
+        String dayNumStr = dayNum+"";
+        String personNumStr = dataBeans.size()+"";
+        String allMoneyStr = String.format("%.2f", totalMoney);
+        tvCalculate.setText(getString(R.string.calculate_person_send_rbag,allMoneyStr,dailyMoneyStr,dayNumStr,personNumStr));
     }
 }

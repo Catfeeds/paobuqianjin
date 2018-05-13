@@ -162,12 +162,16 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).vote = data.get(position).getVote();
                 if (data.get(position).getIs_vote() == 1) {
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
-                }else{
+                } else {
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
                 }
                 if (data.get(position).getComment() <= 0) {
                     LocalLog.d(TAG, "updateItem() 无人评论");
                     ((OneOrZeroViewHodler) holder).scanMore.setVisibility(View.GONE);
+                    ((OneOrZeroViewHodler) holder).firstContent.setVisibility(View.GONE);
+                } else {
+                    ((OneOrZeroViewHodler) holder).scanMore.setVisibility(View.VISIBLE);
+                    ((OneOrZeroViewHodler) holder).firstContent.setVisibility(View.VISIBLE);
                 }
 
                 if (data.get(position).getOne_comment() != null) {
@@ -210,12 +214,16 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).vote = data.get(position).getVote();
                 if (data.get(position).getIs_vote() == 1) {
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
-                }else{
+                } else {
                     ((OneOrZeroViewHodler) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
                 }
                 if (data.get(position).getComment() <= 0) {
                     LocalLog.d(TAG, "updateItem() 无人评论");
                     ((OneOrZeroViewHodler) holder).scanMore.setVisibility(View.GONE);
+                    ((OneOrZeroViewHodler) holder).firstContent.setVisibility(View.GONE);
+                } else {
+                    ((OneOrZeroViewHodler) holder).scanMore.setVisibility(View.VISIBLE);
+                    ((OneOrZeroViewHodler) holder).firstContent.setVisibility(View.VISIBLE);
                 }
                 if (data.get(position).getOne_comment() != null) {
                     if (data.get(position).getOne_comment().getNickname() != null) {
@@ -266,12 +274,16 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((TwoPicViewHolder) holder).vote = data.get(position).getVote();
             if (data.get(position).getIs_vote() == 1) {
                 ((TwoPicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
-            }else{
+            } else {
                 ((TwoPicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
             }
             if (data.get(position).getComment() <= 0) {
                 LocalLog.d(TAG, "updateItem() 无人评论");
                 ((TwoPicViewHolder) holder).scanMore.setVisibility(View.GONE);
+                ((TwoPicViewHolder) holder).firstContent.setVisibility(View.GONE);
+            } else {
+                ((TwoPicViewHolder) holder).scanMore.setVisibility(View.VISIBLE);
+                ((TwoPicViewHolder) holder).firstContent.setVisibility(View.VISIBLE);
             }
             if (data.get(position).getOne_comment() != null) {
                 if (data.get(position).getOne_comment().getNickname() != null) {
@@ -316,16 +328,18 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((ThreePicViewHolder) holder).vote = data.get(position).getVote();
             if (data.get(position).getIs_vote() == 1) {
                 ((ThreePicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_s));
-            }else{
+            } else {
                 ((ThreePicViewHolder) holder).likeNumIcon.setImageDrawable(ContextCompat.getDrawable(mContext, R.drawable.fabulous_n));
             }
             LocalLog.d(TAG, "3图");
             if (data.get(position).getComment() <= 0) {
                 LocalLog.d(TAG, "updateItem() 无人评论");
                 ((ThreePicViewHolder) holder).scanMore.setVisibility(View.GONE);
+                ((ThreePicViewHolder) holder).firstContent.setVisibility(View.GONE);
             } else {
                 LocalLog.d(TAG, "updateItem() 有评论");
                 ((ThreePicViewHolder) holder).scanMore.setVisibility(View.VISIBLE);
+                ((ThreePicViewHolder) holder).firstContent.setVisibility(View.VISIBLE);
             }
             if (data.get(position).getOne_comment() != null) {
                 if (data.get(position).getOne_comment().getNickname() != null) {

@@ -40,6 +40,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by pbq on 2018/1/6.
  */
@@ -87,6 +89,9 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     RelativeLayout barNull;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 50;
+    private final static int REQUEST_DETAIL = 401;
+    ArrayList<DynamicPersonResponse.DataBeanX.DataBean> dynamicAllData = new ArrayList<>();
+    UserDynamicRecordAdapter adapter;
 
     @Override
     protected String title() {
@@ -226,12 +231,22 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
         if (dynamicPersonResponse.getError() == 0) {
             LocalLog.d(TAG, "DynamicPersonResponse() enter " + dynamicPersonResponse.toString());
             pageCount = dynamicPersonResponse.getData().getPagenation().getTotalPage();
-            List<List> map = checkDaysDynamic(dynamicPersonResponse);
-            if (dynamicRecordRecycler == null) {
-                return;
+            if (dynamicPersonResponse.getData() != null) {
+                List<List> map = checkDaysDynamic(dynamicPersonResponse);
+                if (dynamicRecordRecycler == null) {
+                    return;
+                }
+                dynamicRecordRecycler.addItemDecoration(new UserDynamicRecordAdapter.SpaceItemDecoration(45));
+                if (adapter == null) {
+                    adapter = new UserDynamicRecordAdapter(getContext(), map, this);
+                    dynamicRecordRecycler.setAdapter(adapter);
+                }
             }
-            dynamicRecordRecycler.addItemDecoration(new UserDynamicRecordAdapter.SpaceItemDecoration(45));
-            dynamicRecordRecycler.setAdapter(new UserDynamicRecordAdapter(getContext(), map));
+
+        } else if (dynamicPersonResponse.getError() == -1) {
+            if (pageIndex == 1) {
+                LocalLog.d(TAG, "还没有动态!");
+            }
         } else if (dynamicPersonResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
@@ -344,4 +359,42 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             exitTokenUnfect();
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_DETAIL) {
+
+                if (data != null) {
+                    int topPosition = data.getIntExtra(getContext().getPackageName() + "topPosition", -1);
+                    if (topPosition <= -1) {
+                        return;
+                    }
+                    int position = data.getIntExtra(getContext().getPackageName() + "position", -1);
+                    if (position != -1) {
+                        int is_vote = data.getIntExtra(getContext().getPackageName() + "is_vote", -1);
+                        if (is_vote != -1) {
+                            dynamicAllData.get(position).setIs_vote(is_vote);
+                        }
+                        int likeNum = data.getIntExtra(getContext().getPackageName() + "likeNum", -1);
+                        if (likeNum != -1) {
+                            dynamicAllData.get(position).setVote(likeNum);
+                        }
+                        int contentNum = data.getIntExtra(getContext().getPackageName() + "contentNum", -1);
+                        if (contentNum != -1) {
+                            dynamicAllData.get(position).setComment(contentNum);
+                        }
+
+                        LocalLog.d(TAG, "详情操作 is_vote = " + is_vote + ",likeNum = " + likeNum + ",contentNum = " + contentNum + "position = " + position);
+                        if (is_vote != -1 || likeNum != -1 || contentNum != -1) {
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

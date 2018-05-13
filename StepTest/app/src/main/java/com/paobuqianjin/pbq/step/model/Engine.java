@@ -2992,7 +2992,7 @@ public final class Engine {
                             try {
                                 ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                                 innerCallBack.innerCallBack(errorCode);
-                            } catch (JsonSyntaxException j) {
+                            }catch (JsonSyntaxException j){
                                 j.printStackTrace();
                             }
                         }

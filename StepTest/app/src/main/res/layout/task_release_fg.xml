@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
-            android:text="奖励金额"
+            android:text="单个金额"
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
@@ -250,6 +250,30 @@
 
     </android.support.v7.widget.RecyclerView>
 
+    <TextView
+        android:id="@+id/tv_calculate_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/recv_recycler"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:textColor="@color/black0"
+        android:text="奖励总金额" />
+
+    <TextView
+        android:id="@+id/tv_calculate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tv_calculate_title"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:textColor="@color/black0"
+        android:text="@string/calculate_person_send_rbag" />
+
     <ImageView
         android:id="@+id/add_ico"
         android:layout_width="20dp"
@@ -263,8 +287,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/recv_recycler"
-        android:layout_marginTop="15dp"
+        android:layout_below="@+id/tv_calculate"
+        android:layout_marginTop="5dp"
         android:background="@color/color_f6f6f6">
 
         <TextView

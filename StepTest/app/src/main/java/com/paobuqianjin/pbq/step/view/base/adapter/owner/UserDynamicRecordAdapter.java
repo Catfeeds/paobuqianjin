@@ -2,14 +2,17 @@ package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.UserCenterVoteData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -33,10 +36,39 @@ public class UserDynamicRecordAdapter extends RecyclerView.Adapter<UserDynamicRe
     private final static String TAG = UserDynamicRecordAdapter.class.getSimpleName();
     Context context;
     List<List> mData;
+    private Fragment fragment;
 
-    public UserDynamicRecordAdapter(Context context, List<List> map) {
+    public UserDynamicRecordAdapter(Context context, List<List> map, Fragment fragment) {
         this.context = context;
         this.mData = map;
+        this.fragment = fragment;
+    }
+
+    public void notifyItemChange(int topPosition, int position, int is_vote, int vote, int comment) {
+        UserCenterVoteData userCenterVoteData = new UserCenterVoteData();
+        userCenterVoteData.setPosition(position);
+        userCenterVoteData.setIs_vote(is_vote);
+        userCenterVoteData.setVote(vote);
+        userCenterVoteData.setComment(comment);
+        super.notifyItemChanged(topPosition, userCenterVoteData);
+    }
+
+    @Override
+    public void onBindViewHolder(UserDynamicRecordViewHolder holder, int position, List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+        int size = payloads.size();
+        LocalLog.d(TAG, "size = " + payloads.size());
+        if (size == 1) {
+            UserCenterVoteData userCenterVoteData = (UserCenterVoteData) payloads.get(0);
+            LocalLog.d(TAG, "" + userCenterVoteData.toString());
+            if (holder.userDynamicRecordSecondAdapter != null) {
+                DynamicPersonResponse.DataBeanX.DataBean dataBean = (DynamicPersonResponse.DataBeanX.DataBean) holder.userDynamicRecordSecondAdapter.mData.get(userCenterVoteData.getPosition());
+                dataBean.setIs_vote(userCenterVoteData.getIs_vote());
+                dataBean.setVote(userCenterVoteData.getVote());
+                dataBean.setComment(userCenterVoteData.getComment());
+                holder.userDynamicRecordSecondAdapter.mData.get(userCenterVoteData.getPosition());
+            }
+        }
     }
 
     @Override
@@ -65,7 +97,10 @@ public class UserDynamicRecordAdapter extends RecyclerView.Adapter<UserDynamicRe
             }
         }
         holder.dayDynamicRecycler.addItemDecoration(new UserDynamicRecordSecondAdapter.SpaceItemDecoration(30));
-        holder.dayDynamicRecycler.setAdapter(new UserDynamicRecordSecondAdapter(context, mData.get(position)));
+        if (holder.userDynamicRecordSecondAdapter == null) {
+            holder.userDynamicRecordSecondAdapter = new UserDynamicRecordSecondAdapter(context, mData.get(position), fragment, position);
+            holder.dayDynamicRecycler.setAdapter(holder.userDynamicRecordSecondAdapter);
+        }
 
     }
 
@@ -80,6 +115,7 @@ public class UserDynamicRecordAdapter extends RecyclerView.Adapter<UserDynamicRe
         @Bind(R.id.day_dynamic_recycler)
         RecyclerView dayDynamicRecycler;
         LinearLayoutManager layoutManager;
+        UserDynamicRecordSecondAdapter userDynamicRecordSecondAdapter;
 
         public UserDynamicRecordViewHolder(View view) {
             super(view);

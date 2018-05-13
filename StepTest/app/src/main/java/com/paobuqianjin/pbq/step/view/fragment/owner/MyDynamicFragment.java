@@ -399,8 +399,12 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
             LocalLog.d(TAG, dynamicPersonResponse.getMessage());
             pageCount = dynamicPersonResponse.getData().getPagenation().getTotalPage();
             LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
-
-
+            int returnPage = dynamicPersonResponse.getData().getPagenation().getPage();
+            LocalLog.d(TAG, "当前返回页 returnPage = " + returnPage + ",当前最后请求页 pageIndex =" + pageIndex);
+            if (pageIndex != returnPage) {
+                LocalLog.d(TAG, "非法数据");
+                return;
+            }
             if (pageIndex == 1) {
                 dynamicAllData.clear();
                 dynamicAllData.addAll(dynamicPersonResponse.getData().getData());

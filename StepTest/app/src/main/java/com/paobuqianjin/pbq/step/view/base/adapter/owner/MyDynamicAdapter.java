@@ -143,11 +143,14 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
             int likes = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getVote();
             int content = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getComment();
             LocalLog.d(TAG, "点赞数 = " + likes + ",评论数 = " + content);
-            if (likes > 0) {
+            if (((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getIs_vote() == 1) {
                 holder.likeNumIcon.setImageResource(R.drawable.fabulous_s);
-                holder.contentSupports.setText(String.valueOf(likes));
             } else {
                 holder.likeNumIcon.setImageResource(R.drawable.fabulous_n);
+            }
+            if (likes > 0) {
+                holder.contentSupports.setText(String.valueOf(likes));
+            } else {
                 holder.contentSupports.setText(String.valueOf(0));
             }
 
@@ -163,7 +166,6 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 }
 
                 LocalLog.d(TAG, "firstContentText = " + firstContentText);
-                holder.dynamicContentText.setText(firstContentText);
                 SpannableStringBuilder style = new SpannableStringBuilder(firstContentDes + firstContentText);
                 style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), 0, firstContentDes.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), firstContentDes.length(), (firstContentDes + firstContentText).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -172,6 +174,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 LocalLog.d(TAG, "没有任何评论");
                 holder.contentNumbers.setText(String.valueOf(0));
                 holder.scanMore.setVisibility(View.GONE);
+                holder.firstContent.setVisibility(View.GONE);
             }
 
             if (imageSize <= 0) {

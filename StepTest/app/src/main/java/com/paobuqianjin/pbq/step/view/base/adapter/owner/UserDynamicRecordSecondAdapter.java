@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -33,10 +34,15 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
     private final static String TAG = UserDynamicRecordSecondAdapter.class.getSimpleName();
     Context context;
     List<?> mData;
+    private final static int REQUEST_DETAIL = 401;
+    private Fragment fragment;
+    private int topPosition = -1;
 
-    public UserDynamicRecordSecondAdapter(Context context, List<?> data) {
+    public UserDynamicRecordSecondAdapter(Context context, List<?> data, Fragment fragment, int topPosition) {
         this.context = context;
         mData = data;
+        this.fragment = fragment;
+        this.topPosition = topPosition;
     }
 
     @Override
@@ -73,8 +79,12 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
             int likes = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getVote();
             int content = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getComment();
             LocalLog.d(TAG, "点赞数 = " + likes + ",评论数 = " + content);
-            if (likes > 0) {
+            if (((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getIs_vote() == 1) {
                 holder.likeNumIcon.setImageResource(R.drawable.fabulous_s);
+            } else {
+                holder.likeNumIcon.setImageResource(R.drawable.fabulous_n);
+            }
+            if (likes > 0) {
                 holder.contentSupports.setText(String.valueOf(likes));
             } else {
                 holder.contentSupports.setText(String.valueOf(0));
@@ -146,7 +156,9 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
                     intent.putExtra(context.getPackageName() + "userId", userid);
                     intent.putExtra(context.getPackageName() + "is_vote", is_vote);
                     intent.setClass(context, DynamicActivity.class);
-                    context.startActivity(intent);
+                    intent.putExtra(context.getPackageName() + "position", getAdapterPosition());
+                    intent.putExtra(context.getPackageName() + "topPosition", topPosition);
+                    fragment.startActivityForResult(intent, REQUEST_DETAIL);
                 }
             });
         }

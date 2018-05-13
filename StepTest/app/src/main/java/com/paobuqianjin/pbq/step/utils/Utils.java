@@ -16,7 +16,7 @@ import android.widget.EditText;
  */
 
 public class Utils {
-    public final static int PAGE_SIZE_DEFAULT = 10;
+    public final static int PAGE_SIZE_DEFAULT = 20;
 
     public static Context getApplicationContext(Context context) {
         return context.getApplicationContext();
@@ -84,6 +84,7 @@ public class Utils {
         manager.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
+
     /**
      * EditText获取焦点并显示软键盘
      */
@@ -115,6 +116,7 @@ public class Utils {
 
     /**
      * 获取屏幕宽高
+     *
      * @param context
      * @return {width,height}
      */
@@ -122,6 +124,6 @@ public class Utils {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(displayMetrics);
-        return new int[]{displayMetrics.widthPixels,displayMetrics.heightPixels};
+        return new int[]{displayMetrics.widthPixels, displayMetrics.heightPixels};
     }
 }

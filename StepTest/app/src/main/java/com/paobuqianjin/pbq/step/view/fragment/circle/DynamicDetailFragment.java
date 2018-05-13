@@ -12,6 +12,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -175,6 +176,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 300;
     private int position = -1;
+    private int topPosition = -1;
 
     @Override
     protected int getLayoutResId() {
@@ -261,6 +263,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             position = intent.getIntExtra(getContext().getPackageName() + "position", -1);
             LocalLog.d(TAG, "dynamicid= " + dynamicid + "userid = " + userid + "is_vote = " + is_vote + ",position =" + position);
             this.intent.putExtra(getContext().getPackageName() + "position", position);
+            topPosition = intent.getIntExtra(getContext().getPackageName() + "topPosition", -1);
+            this.intent.putExtra(getContext().getPackageName() + "topPosition", topPosition);
             if (dynamicid != -1) {
                 Presenter.getInstance(getContext()).getDynamicCommentList(dynamicid, currentIndexPage, PAGESIZE);
                 Presenter.getInstance(getContext()).getDynamicDetail(dynamicid);
@@ -720,19 +724,32 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
     private void popEdit(final PostDynamicContentParam postDynamicContentParam, String dearName) {
         LocalLog.d(TAG, "popRedPkg() enter");
-        popRedPkgView = View.inflate(getContext(), R.layout.response_edit_span, null);
-        popupRedPkgWindow = new PopupWindow(popRedPkgView,
-                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                popupRedPkgWindow = null;
-            }
-        });
-
+        if (popRedPkgView == null) {
+            popRedPkgView = View.inflate(getContext(), R.layout.response_edit_span, null);
+        }
+        if (popupRedPkgWindow == null) {
+            popupRedPkgWindow = new PopupWindow(popRedPkgView,
+                    WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    LocalLog.d(TAG, "评论框消失");
+                    popupRedPkgWindow = null;
+                }
+            });
+            popupRedPkgWindow.setTouchInterceptor(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_OUTSIDE && !popupRedPkgWindow.isFocusable()) {
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
         final CustomEdit editText = (CustomEdit) popRedPkgView.findViewById(R.id.content_text);
 //        editText.setHint("回复:" + dearName);
-        editText.setHint("请输入评论" );
+        editText.setHint("请输入评论");
         final EditTextChangeListener editTextChangeListener = new EditTextChangeListener();
         editText.addTextChangedListener(editTextChangeListener);
 
