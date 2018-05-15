@@ -80,13 +80,15 @@ public class StepProcessDrawable extends Drawable {
         viewParentHeight = height;
         acrWidth = parentWidth;
         arcHeight = parentHeight;
+//        widthStrokeWidth = Utils.dp2px(context, 10);
+        LocalLog.d(TAG,"widthStrokeWidth : "+ widthStrokeWidth);
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = false;
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.foot_ico, options);
         footWidth = Utils.dip2px(context, 20);
         LocalLog.d(TAG, "width = " + bitmap.getWidth() + ", height = " + bitmap.getHeight());
         options.inSampleSize = bitmap.getWidth() / footWidth;
-        widthStrokeWidth = 20.0f;
+        widthStrokeWidth = Utils.dip2px(context,10);
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.foot_ico, options);
         LocalLog.d(TAG, "width = " + bitmap.getWidth() + ", height = " + bitmap.getHeight());
         oval = new RectF((width - parentWidth) / 2 + widthStrokeWidth / 2, (height - parentHeight) / 2 + widthStrokeWidth / 2,

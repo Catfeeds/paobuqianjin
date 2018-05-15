@@ -28,14 +28,21 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
+import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.utils.SocializeUtils;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.Rationale;
 
 import java.util.Hashtable;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -91,6 +98,9 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
     private UMImage imageCircleQr;
     private String title = "";
     private int imgWidth;//二维码宽度
+    private Rationale mRationale;
+    private PermissionSetting mSetting;
+    private Bitmap bitmap = null;
 
     @Override
     protected int getLayoutResId() {
@@ -168,7 +178,8 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         } else {
             circleId.setText("ID:" + userid);
         }
-
+        mRationale = new DefaultRationale();
+        mSetting = new PermissionSetting(getContext());
         dialog = new ProgressDialog(getContext());
     }
 
@@ -237,6 +248,33 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         ButterKnife.unbind(this);
     }
 
+    /*权限适配*/
+
+    private void requestPermission(String... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        LocalLog.d(TAG, "获取权限成功");
+                        share_media = SHARE_MEDIA.QQ;
+                        imageCircleQr = new UMImage(getContext(), bitmap);
+                        new ShareAction(getActivity()).withMedia(imageCircleQr)
+                                .setPlatform(share_media)
+                                .setCallback(shareListener).share();
+
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                if (AndPermission.hasAlwaysDeniedPermission(getActivity(), permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
+    }
+
     public Bitmap getFragmentBitmap(Fragment fragment) {
         LocalLog.d(TAG, "fragment 截图");
         View v = fragment.getView().findViewById(R.id.desc_qr_span);
@@ -248,7 +286,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         @Override
         public void onStart(SHARE_MEDIA share_media) {
             LocalLog.d(TAG, share_media.toString() + "开始分享");
-            SocializeUtils.safeShowDialog(dialog);
+//            SocializeUtils.safeShowDialog(dialog);
         }
 
         @Override
@@ -279,12 +317,16 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        bitmap = null;
         UMShareAPI.get(getContext()).release();
     }
 
     @OnClick({R.id.weixin_circle, R.id.weixin, R.id.qq})
     public void onClick(View view) {
-        Bitmap bitmap = getFragmentBitmap(QrCodeFragment.this);
+        bitmap = getFragmentBitmap(QrCodeFragment.this);
+        if (bitmap == null) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.weixin_circle:
                 LocalLog.d(TAG, "分享到朋友圈");
@@ -304,11 +346,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
                 break;
             case R.id.qq:
                 LocalLog.d(TAG, "分享到qq");
-                share_media = SHARE_MEDIA.QQ;
-                imageCircleQr = new UMImage(getContext(), bitmap);
-                new ShareAction(getActivity()).withMedia(imageCircleQr)
-                        .setPlatform(share_media)
-                        .setCallback(shareListener).share();
+                requestPermission(Permission.Group.STORAGE);
                 break;
         }
     }

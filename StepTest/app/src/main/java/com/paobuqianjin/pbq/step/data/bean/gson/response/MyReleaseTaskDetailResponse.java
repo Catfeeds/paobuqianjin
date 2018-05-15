@@ -98,6 +98,7 @@ public class MyReleaseTaskDetailResponse {
             private String task_name;
             private int target_step;
             private float reward_amount;
+            private float allmoney;
             private int task_days;
             private String task_rule;
             private String task_desc;
@@ -158,6 +159,14 @@ public class MyReleaseTaskDetailResponse {
                 this.task_desc = task_desc;
             }
 
+            public float getAllmoney() {
+                return allmoney;
+            }
+
+            public void setAllmoney(float allmoney) {
+                this.allmoney = allmoney;
+            }
+
             @Override
             public String toString() {
                 return "TaskBean{" +
@@ -165,6 +174,7 @@ public class MyReleaseTaskDetailResponse {
                         ", task_name='" + task_name + '\'' +
                         ", target_step=" + target_step +
                         ", reward_amount=" + reward_amount +
+                        ", allmoney=" + allmoney +
                         ", task_days=" + task_days +
                         ", task_rule='" + task_rule + '\'' +
                         ", task_desc='" + task_desc + '\'' +

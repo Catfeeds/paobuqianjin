@@ -36,6 +36,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.LiveDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.LiveListActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
@@ -185,8 +186,6 @@ public class HotCircleFragment extends BaseFragment {
         moreLiveTV.setOnClickListener(onClickListener);
         Presenter.getInstance(mContext).attachUiInterface(uiHotCircleInterface);
         Presenter.getInstance(mContext).attachUiInterface(queryRedPkgInterface);
-        //loadingData();
-        Presenter.getInstance(getContext()).getLiveList(innerCallBack, 1, 2);
     }
 
     private InnerCallBack innerCallBack = new InnerCallBack() {
@@ -197,7 +196,7 @@ public class HotCircleFragment extends BaseFragment {
             } else if (object instanceof LiveResponse) {
                 if (((LiveResponse) object).getError() == 0) {
                     LocalLog.d(TAG, "LiveResponse " + ((LiveResponse) object).toString());
-                    List<LiveResponse.DataBeanX.DataBean> listBean = ((LiveResponse) object).getData().getData();
+                    final List<LiveResponse.DataBeanX.DataBean> listBean = ((LiveResponse) object).getData().getData();
 
                     if (listBean.size() > 1) {
                         iv_live_a.setVisibility(View.VISIBLE);
@@ -206,12 +205,51 @@ public class HotCircleFragment extends BaseFragment {
 //                        live_b_desc.setVisibility(View.VISIBLE);
                         Presenter.getInstance(getActivity()).getImage(iv_live_a, listBean.get(0).getConver());
                         Presenter.getInstance(getActivity()).getImage(iv_live_b, listBean.get(1).getConver());
-                    }else if(listBean.size()>0){
+                        iv_live_a.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent();
+                                intent.putExtra(getActivity().getPackageName(), listBean.get(0).getRemote_url());
+                                intent.putExtra("is_process", listBean.get(0).getIs_process());
+                                intent.putExtra("is_receive", listBean.get(0).getIs_receive());
+                                intent.putExtra("target", listBean.get(0).getTarget());
+                                intent.putExtra("actid", listBean.get(0).getId());
+                                intent.setClass(getActivity(), LiveDetailActivity.class);
+                                getActivity().startActivity(intent);
+                            }
+                        });
+                        iv_live_b.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent();
+                                intent.putExtra(getActivity().getPackageName(), listBean.get(1).getRemote_url());
+                                intent.putExtra("is_process", listBean.get(1).getIs_process());
+                                intent.putExtra("is_receive", listBean.get(1).getIs_receive());
+                                intent.putExtra("target", listBean.get(1).getTarget());
+                                intent.putExtra("actid", listBean.get(1).getId());
+                                intent.setClass(getActivity(), LiveDetailActivity.class);
+                                getActivity().startActivity(intent);
+                            }
+                        });
+                    } else if (listBean.size() > 0) {
                         iv_live_a.setVisibility(View.VISIBLE);
 //                        live_a_desc.setVisibility(View.VISIBLE);
                         iv_live_b.setVisibility(View.INVISIBLE);
 //                        live_b_desc.setVisibility(View.INVISIBLE);
                         Presenter.getInstance(getActivity()).getImage(iv_live_a, listBean.get(0).getConver());
+                        iv_live_a.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent();
+                                intent.putExtra(getActivity().getPackageName(), listBean.get(0).getRemote_url());
+                                intent.setClass(getActivity(), LiveDetailActivity.class);
+                                intent.putExtra("is_process", listBean.get(0).getIs_process());
+                                intent.putExtra("is_receive", listBean.get(0).getIs_receive());
+                                intent.putExtra("target", listBean.get(0).getTarget());
+                                intent.putExtra("actid", listBean.get(0).getId());
+                                getActivity().startActivity(intent);
+                            }
+                        });
                     } else {
                         iv_live_a.setVisibility(View.INVISIBLE);
                         live_a_desc.setVisibility(View.INVISIBLE);
@@ -249,6 +287,7 @@ public class HotCircleFragment extends BaseFragment {
     private void loadingData() {
         Presenter.getInstance(mContext).getCircleChoice(PAGE_INDEX_DEFAULT, PAGE_DEFAULT_SIZE);
         Presenter.getInstance(mContext).getMyHotCircle(PAGE_INDEX_DEFAULT, 2);
+        Presenter.getInstance(getContext()).getLiveList(innerCallBack, 1, 2);
     }
 
     /*@desc  返回Fragment标签

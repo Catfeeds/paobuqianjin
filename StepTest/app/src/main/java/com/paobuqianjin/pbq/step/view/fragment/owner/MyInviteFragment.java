@@ -55,8 +55,6 @@ public class MyInviteFragment extends BaseFragment {
     RelativeLayout goRuleSpan;
     @Bind(R.id.invite_code)
     TextView inviteCode;
-    @Bind(R.id.invite_code_rel)
-    RelativeLayout inviteCodeRel;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 200;
 
@@ -81,24 +79,22 @@ public class MyInviteFragment extends BaseFragment {
         invitNum = (TextView) viewRoot.findViewById(R.id.invit_num);
         invitMoney = (TextView) viewRoot.findViewById(R.id.invit_money);
         invitStepDollar = (TextView) viewRoot.findViewById(R.id.invit_step_dollar);
-        Presenter.getInstance(getContext()).getMyCode(innerCallBack);
         Presenter.getInstance(getContext()).getMyInviteMsg(innerCallBack, pageIndex, PAGESIZE);
+        Presenter.getInstance(getContext()).getMyCode(innerCallBack);
     }
 
     private InnerCallBack innerCallBack = new InnerCallBack() {
         @Override
         public void innerCallBack(Object object) {
+            LocalLog.d(TAG, object.toString());
             if (object instanceof ErrorCode) {
-
+                ToastUtils.showLongToast(getContext(), ((ErrorCode) object).getMessage());
             } else if (object instanceof InviteCodeResponse) {
                 if (inviteCode != null) {
                     if (((InviteCodeResponse) object).getError() == 0) {
                         if (((InviteCodeResponse) object).getData() != null) {
-                            int size = ((InviteCodeResponse) object).getData().size();
-                            if (size >= 1) {
-                                LocalLog.d(TAG, "我的邀请码 " + ((InviteCodeResponse) object).getData().get(1));
-                                inviteCode.setText("我的邀请码:" + ((InviteCodeResponse) object).getData().get(1));
-                            }
+                            inviteCode.setText("我的邀请码:" + ((InviteCodeResponse) object).getData().getMycode());
+
                         }
                     }
                 }

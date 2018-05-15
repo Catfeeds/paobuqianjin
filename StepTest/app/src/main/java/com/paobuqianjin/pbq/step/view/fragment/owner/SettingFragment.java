@@ -208,6 +208,8 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                         if (!TextUtils.isEmpty(ico)) {
                             Presenter.getInstance(getContext()).getImage(ico, userIco);
                         }
+                        UserInfoResponse.DataBean dataBean = (UserInfoResponse.DataBean) data.getSerializableExtra("userinfo");
+                        if (dataBean!=null) userInfo = dataBean;
                     }
                 }
                 break;

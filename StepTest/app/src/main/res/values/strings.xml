@@ -8,7 +8,7 @@
     <string name="try_ones">榜单</string>
     <string name="login_account">账号登录</string>
     <string name="login_phoneNum">请输入手机号码</string>
-    <string name="login_phonePwd">请输入密码</string>
+    <string name="login_phonePwd">请输入6-16位密码</string>
     <string name="new_phonePwd">请输入新密码</string>
     <string name="identifying_code">请输入验证码</string>
     <string name="recive_indetitying_code">获取验证码</string>
@@ -137,9 +137,13 @@
     <string name="title_activity_splash">SplashActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
- <string name="calculate_person_send_rbag">%1$s元 = %2$s元/天 * %3$s天 * %4$s人</string>
+    <string name="calculate_person_send_rbag">%1$s元 = %2$s元/天 * %3$s天 * %4$s人</string>
     <string name="money_delay">余额不足充值失败</string>
     <string name="invite_nums">成功邀请（人）</string>
     <string name="money_invite">人民币（元）</string>
     <string name="invite_step_dollor">步币（个）</string>
+    <string name="viewpager_indicator">%1$d/%2$d</string>
+    <string name="useinfo_setting">完善个人信息，领取商家红包的机会变大哦。</string>
+    <string name="fit_info">去完善</string>
+    <string name="no_buess_pkg">很遗憾，你周围没有商家派发红包</string>
 </resources>

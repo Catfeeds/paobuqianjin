@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.ChooseOneItemWheelPopWindow;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -33,6 +34,8 @@ import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -111,6 +114,10 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
     LinearLayoutManager layoutManager;
     FriendBundleData friendBundleData = null;
     private final static String ACTION_TASK = "com.paobuqianjin.pbq.step.ACTION_TASK";
+    private float totalMoney;
+    private ChooseOneItemWheelPopWindow wheelPopWindow;
+    private final int DEVALUE_STEP = 10000;//默认步数
+    private String[] targetStepArr = {"5000","6000","7000","8000","9000","10000"};
 
     @Override
     protected int getLayoutResId() {
@@ -159,6 +166,8 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
         targetTaskStepNum.setSelection(targetTaskStepNum.getText().toString().length());
         targetTaskMoneyNum.addTextChangedListener(textWatcher);
         targetTaskDayNum.addTextChangedListener(textWatcher);
+        targetTaskStepNum.setText(DEVALUE_STEP + "");
+        calculateResultMoney();
     }
 
     private TaskReleaseInterface taskReleaseInterface = new TaskReleaseInterface() {
@@ -171,7 +180,7 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString(PAY_FOR_STYLE, "task");
                 bundle.putString(TASK_NO, taskReleaseResponse.getData().getTask_no());
-                bundle.putString(CIRCLE_RECHARGE, targetTaskMoneyNum.getText().toString());
+                bundle.putString(CIRCLE_RECHARGE, String.format("%.2f",totalMoney));
                 startActivity(PaoBuPayActivity.class, bundle, true, PAY_ACTION);
             } else if (taskReleaseResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
@@ -191,12 +200,28 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
         }
     };
 
-    @OnClick({R.id.target_task_span, R.id.add_task_friend, R.id.add_ico, R.id.btn_confirm})
+    @OnClick({R.id.target_task_span, R.id.target_task_step_num, R.id.add_task_friend, R.id.add_ico, R.id.btn_confirm})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.target_task_span:
+            case R.id.target_task_step_num:
                 LocalLog.d(TAG, "设置任务目标步数");
+                if (wheelPopWindow == null) {
+                    wheelPopWindow = new ChooseOneItemWheelPopWindow(getActivity(), Arrays.asList(targetStepArr));
+                    wheelPopWindow.setItemConfirmListener(new ChooseOneItemWheelPopWindow.OnWheelItemConfirmListener() {
+                        @Override
+                        public void onItemSelectLis(String result) {
+                            targetTaskStepNum.setText(result);
+                        }
+                    });
+                }
+                if (wheelPopWindow.isShowing()) {
+                    wheelPopWindow.cancel();
+                    return;
+                }
+                wheelPopWindow.setCurrentSelectValue(targetTaskStepNum.getText().toString());
+                wheelPopWindow.show();
                 break;
             case R.id.add_task_friend:
                 LocalLog.d(TAG, "添加任务好友");
@@ -312,36 +337,34 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
      * 计算红包总额
      */
     private void calculateResultMoney() {
-        if (targetTaskStepNum.getText() == null || targetTaskStepNum.getText().toString().equals("")) {
-//            Toast.makeText(getContext(), "请输入目标步数", Toast.LENGTH_SHORT).show();
-            return ;
-        }
-
+        int dayNum = 0;
+        float dailyMoney = 0f;
+        int friendsNum = 0;
         if (targetTaskMoneyNum.getText() == null || targetTaskMoneyNum.getText().toString().equals("")) {
 //            Toast.makeText(getContext(), "请输入奖励金额", Toast.LENGTH_SHORT).show();
-            return ;
+            dailyMoney = 0f;
+        }else{
+            dailyMoney = Float.parseFloat(targetTaskMoneyNum.getText().toString());
         }
 
         if (targetTaskDayNum.getText() == null || targetTaskDayNum.getText().toString().equals("")) {
 //            Toast.makeText(getContext(), "请输入任务天数", Toast.LENGTH_SHORT).show();
-            return ;
+            dayNum = 0;
+        }else{
+            dayNum = Integer.parseInt(targetTaskDayNum.getText().toString());
         }
 
-        if (targetTaskDayNum.getText().toString().equals("0")) {
-//            Toast.makeText(getContext(), "任务天数不能为0", Toast.LENGTH_SHORT).show();
-            return ;
-        }
         if (TextUtils.isEmpty(friends) && dataBeans==null || dataBeans.size()==0) {
 //            Toast.makeText(getContext(), "请选择好友", Toast.LENGTH_SHORT).show();
-            return ;
+            friendsNum = 0;
+        }else{
+            friendsNum = dataBeans.size();
         }
 
-        int dayNum = Integer.parseInt(targetTaskDayNum.getText().toString());
-        float dailyMoney = Float.parseFloat(targetTaskMoneyNum.getText().toString());
-        float totalMoney = dailyMoney * dayNum * dataBeans.size();
+        totalMoney = dailyMoney * dayNum * friendsNum;
         String dailyMoneyStr = String.format("%.2f", dailyMoney);
         String dayNumStr = dayNum+"";
-        String personNumStr = dataBeans.size()+"";
+        String personNumStr = friendsNum+"";
         String allMoneyStr = String.format("%.2f", totalMoney);
         tvCalculate.setText(getString(R.string.calculate_person_send_rbag,allMoneyStr,dailyMoneyStr,dayNumStr,personNumStr));
     }

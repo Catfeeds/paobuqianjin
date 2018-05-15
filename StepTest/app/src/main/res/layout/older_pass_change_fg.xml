@@ -46,7 +46,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
             android:background="@null"
-            android:hint="新密码"
+            android:hint="请输入6-16位新密码"
             android:inputType="textPassword"
             android:maxLength="12"
             android:maxLines="1"
@@ -74,7 +74,7 @@
             android:background="@null"
             android:hint="确定新密码"
             android:inputType="textPassword"
-            android:maxLength="6"
+            android:maxLength="12"
             android:maxLines="1"
             android:textSize="18dp" />
 
@@ -93,7 +93,7 @@
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
         android:layout_marginTop="45dp"
-        android:background="@drawable/rect_angle_background"
+        android:background="@drawable/rect_angle_diss_bt"
         android:stateListAnimator="@null"
         android:text="确定"
         android:textColor="@color/color_f8"

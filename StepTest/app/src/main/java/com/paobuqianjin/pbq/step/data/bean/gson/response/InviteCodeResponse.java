@@ -1,7 +1,5 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
-import java.util.List;
-
 /**
  * Created by pbq on 2018/5/7.
  */
@@ -10,12 +8,12 @@ public class InviteCodeResponse {
     /**
      * error : 0
      * message : success
-     * data : ["mycode",201]
+     * data : {"mycode":30}
      */
 
     private int error;
     private String message;
-    private List<String> data;
+    private DataBean data;
 
     public int getError() {
         return error;
@@ -33,11 +31,11 @@ public class InviteCodeResponse {
         this.message = message;
     }
 
-    public List<String> getData() {
+    public DataBean getData() {
         return data;
     }
 
-    public void setData(List<String> data) {
+    public void setData(DataBean data) {
         this.data = data;
     }
 
@@ -48,5 +46,28 @@ public class InviteCodeResponse {
                 ", message='" + message + '\'' +
                 ", data=" + data +
                 '}';
+    }
+
+    public static class DataBean {
+        /**
+         * mycode : 30
+         */
+
+        private int mycode;
+
+        public int getMycode() {
+            return mycode;
+        }
+
+        public void setMycode(int mycode) {
+            this.mycode = mycode;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "mycode=" + mycode +
+                    '}';
+        }
     }
 }

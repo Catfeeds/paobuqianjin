@@ -119,4 +119,12 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
         LocalLog.d(TAG, "领取任务 id = " + taskId);
         this.reflashInterface = reflashInterface;
     }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+
+        }
+    }
 }

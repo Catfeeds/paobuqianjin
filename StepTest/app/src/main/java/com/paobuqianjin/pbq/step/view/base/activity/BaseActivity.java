@@ -156,7 +156,7 @@ public class BaseActivity extends AppCompatActivity {
         LocalLog.d(TAG, "xdpi = " + getResources().getDisplayMetrics().xdpi);*/
     }
 
-    @Override
+  /*  @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         FragmentManager fm = getSupportFragmentManager();
@@ -178,7 +178,7 @@ public class BaseActivity extends AppCompatActivity {
             }
             return;
         }
-    }
+    }*/
 
     private void handleResult(Fragment frag, int requestCode, int resultCode,
                               Intent data) {

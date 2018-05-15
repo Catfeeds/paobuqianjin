@@ -18,8 +18,6 @@ import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.WheelPicker;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-
 /**
  * Created by pbq on 2018/5/7.
  */
@@ -36,7 +34,7 @@ public class ChooseProviceCity implements View.OnClickListener {
 
     private List<AddressDtailsEntity.ProvinceEntity> province = null;
 
-    private ChooseAddressWheel.OnAddressChangeListener onAddressChangeListener = null;
+    private ChooseAddressWheel.OnSelectWheelItemListener onAddressChangeListener = null;
     private Button mBtnCel;
     private Button mBtnSure;
 
@@ -243,7 +241,7 @@ public class ChooseProviceCity implements View.OnClickListener {
         popupWindow.dismiss();
     }
 
-    public void setOnAddressChangeListener(ChooseAddressWheel.OnAddressChangeListener onAddressChangeListener) {
+    public void setOnAddressChangeListener(ChooseAddressWheel.OnSelectWheelItemListener onAddressChangeListener) {
         this.onAddressChangeListener = onAddressChangeListener;
     }
 

@@ -31,6 +31,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
@@ -41,6 +43,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoSetResponse;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
@@ -139,9 +142,8 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     ImageView gotoWeight;
     @Bind(R.id.weight_span)
     RelativeLayout weightSpan;
-    ThirdPartyLoginResponse.DataBean dataBean;
-    LoginResponse.DataBean phoneLoginDataBean;
-    SignUserResponse.DataBean signUserDataBean;
+    UserInfoResponse.DataBean dataBean;
+
     private final static String USER_FIT_ACTION_SETTING = "com.paobuqianjin.pbq.USER_FIT_ACTION_USER_SETTING";
     @Bind(R.id.btn_confirm)
     Button confirm;
@@ -166,13 +168,11 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     ArrayList<String> weightList = new ArrayList<>();
     //50-250cm
     ArrayList<String> heightList = new ArrayList<>();
-    PutUserInfoParam putUserInfoParam = new PutUserInfoParam();
-    private final static String LOGIN_SUCCESS_ACTION = "com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION";
+    PutUserInfoParam putUserInfoParam;
     private boolean[] selectSex = new boolean[2];
     private ImageView[] selectIcon = new ImageView[2];
     private Rationale mRationale;
     private PermissionSetting mSetting;
-    private final static int CAMERA_PIC = 0;
     private QServiceCfg qServiceCfg;
     private String cachePath;
     private final int REQUEST_CODE = 111;
@@ -234,21 +234,12 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             if (USER_FIT_ACTION_SETTING.equals(intent.getAction())) {
-                LocalLog.d(TAG, "手机号登入第一次设置");
-                signUserDataBean = (SignUserResponse.DataBean) intent.getSerializableExtra("signinfo");
-                if (signUserDataBean != null) {
-                    userid = signUserDataBean.getUserid();
-                }
-                phoneLoginDataBean = (LoginResponse.DataBean) intent.getSerializableExtra("userinfo");
-                if (phoneLoginDataBean != null) {
-                    userid = phoneLoginDataBean.getId();
-                }
-                dataBean = (ThirdPartyLoginResponse.DataBean) intent.getSerializableExtra("thirdinfo");
+                dataBean = (UserInfoResponse.DataBean) intent.getSerializableExtra("userinfo");
                 if (dataBean != null) {
+                    String paramStr = new Gson().toJson(dataBean);
+                    putUserInfoParam = new Gson().fromJson(paramStr, PutUserInfoParam.class);
                     LocalLog.d(TAG, "三方登录");
                     userid = dataBean.getId();
-                    Presenter.getInstance(getContext()).setToken(getContext(), dataBean.getUser_token());
-                    Presenter.getInstance(getContext()).setId(dataBean.getId());
                     update(dataBean);
                 }
             }
@@ -463,7 +454,6 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             public void onItemSelected(WheelPicker picker, Object data, int position) {
                 LocalLog.d(TAG, (String) data);
                 high = (String) data;
-
             }
         });
         confirmBt.setOnClickListener(new View.OnClickListener() {
@@ -504,7 +494,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
-    private void update(ThirdPartyLoginResponse.DataBean dataBean) {
+    private void update(UserInfoResponse.DataBean dataBean) {
         if (dataBean == null) {
             return;
         } else {
@@ -514,12 +504,12 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             }
             Presenter.getInstance(getContext()).getImage(userIcon, dataBean.getAvatar());
             useName.setText(dataBean.getNickname());
-            if (dataBean.getSex() == 0) {
+            if (dataBean.getSex() == 1) {
                 //
                 useGenderManSelect.setImageResource(R.drawable.selected_icon);
                 selectSex[0] = true;
                 selectSex[1] = false;
-            } else if (dataBean.getSex() == 1) {
+            } else if (dataBean.getSex() == 2) {
                 //
                 useGenderNvSelect.setImageResource(R.drawable.selected_icon);
                 selectSex[0] = false;
@@ -528,45 +518,17 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         }
     }
 
-    public void setDataBen(ThirdPartyLoginResponse.DataBean dataBean) {
-        this.dataBean = dataBean;
-        if (dataBean != null) {
-            userid = dataBean.getId();
-            if (userid != -1) {
-                update(dataBean);
-            }
-        }
-    }
 
     @Override
     public void response(UserInfoSetResponse userInfoSetResponse) {
         LocalLog.d(TAG, "UserInfoSetResponse() enter " + userInfoSetResponse.toString());
         if (userInfoSetResponse.getError() == 0) {
-            if (phoneLoginDataBean != null) {
-                LocalLog.d(TAG, "手机号登陆成功");
-                Presenter.getInstance(getContext()).steLogFlg(true);
-                Presenter.getInstance(getContext()).setId(phoneLoginDataBean.getId());
-                Presenter.getInstance(getContext()).setToken(getContext(), phoneLoginDataBean.getUser_token());
-                Presenter.getInstance(getContext()).setMobile(getContext(), phoneLoginDataBean.getMobile());
-                startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
-            }
-            if (dataBean != null) {
-                LocalLog.d(TAG, "三方登录成功");
-                Presenter.getInstance(getContext()).steLogFlg(true);
-                Presenter.getInstance(getContext()).setId(dataBean.getId());
-                Presenter.getInstance(getContext()).setMobile(getContext(), dataBean.getMobile());
-                Presenter.getInstance(getContext()).setToken(getContext(), dataBean.getUser_token());
-                startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
-            }
-            if (signUserDataBean != null) {
-                LocalLog.d(TAG, "立即登登陆");
-                Presenter.getInstance(getContext()).steLogFlg(true);
-                Presenter.getInstance(getContext()).setId(signUserDataBean.getUserid());
-                startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
-            }
-
+            getActivity().onBackPressed();
         } else if (userInfoSetResponse.getError() == -100) {
             exitTokenUnfect();
+        } else {
+            ToastUtils.showLongToast(getContext(), userInfoSetResponse.getMessage());
+            getActivity().onBackPressed();
         }
     }
 
@@ -669,12 +631,6 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                         putUserInfoParam.setHeight(high);
                     }
                     putUserInfoParam.setSex(getSelect());
-                    if (signUserDataBean != null) {
-                        Presenter.getInstance(getContext()).setToken(getContext(), signUserDataBean.getUser_token());
-                    }
-                    if (phoneLoginDataBean != null) {
-                        Presenter.getInstance(getContext()).setToken(getContext(), phoneLoginDataBean.getUser_token());
-                    }
                     if (localAvatar != null) {
                         LogoUpTask logoUpTask = new LogoUpTask();
                         logoUpTask.execute(localAvatar);

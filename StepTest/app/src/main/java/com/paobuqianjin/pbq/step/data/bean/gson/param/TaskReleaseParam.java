@@ -25,6 +25,7 @@ task_days	任务天数	true	int
     private int target_step;
     private float reward_amount;
     private int task_days;
+    private int totalMoney;
 
     public Map<String, String> getParams() {
         return params;
@@ -100,5 +101,13 @@ task_days	任务天数	true	int
             temp = temp + key + ":" + params.get(key) + "\n";
         }
         return temp;
+    }
+
+    public int getTotalMoney() {
+        return totalMoney;
+    }
+
+    public void setTotalMoney(int totalMoney) {
+        this.totalMoney = totalMoney;
     }
 }

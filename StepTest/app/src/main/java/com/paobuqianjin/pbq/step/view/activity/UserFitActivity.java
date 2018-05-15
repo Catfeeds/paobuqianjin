@@ -50,13 +50,5 @@ public class UserFitActivity extends BaseActivity {
             finish();
         }
     }
-
-    public void showPersonInfo(ThirdPartyLoginResponse.DataBean dataBean) {
-        LocalLog.d(TAG, "showPersonInfo() enter 跳转到个人资料修改页");
-        personInfoSettingFragment.setDataBen(dataBean);
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.user_fit_container, personInfoSettingFragment)
-                .show(personInfoSettingFragment)
-                .commit();
-    }
+    
 }

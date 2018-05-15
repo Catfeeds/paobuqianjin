@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -167,6 +169,7 @@ public class DynamicAllIndexResponse {
             private String nickname;
             private String dynamic;
             private String city;
+            private String position;
             private int vote;
             private int comment;
             private int create_time;
@@ -226,6 +229,18 @@ public class DynamicAllIndexResponse {
 
             public String getCity() {
                 return city;
+            }
+
+            public void setPosition(String position) {
+                this.position = position;
+            }
+
+            public String getPosition() {
+                return position;
+            }
+
+            public String getShowAddress() {
+                return TextUtils.isEmpty(position) ? city : (city + "·" + position);
             }
 
             public void setCity(String city) {

@@ -38,7 +38,7 @@ public class ChooseAddressWheel implements View.OnClickListener {
 
     private List<AddressDtailsEntity.ProvinceEntity> province = null;
 
-    private OnAddressChangeListener onAddressChangeListener = null;
+    private OnSelectWheelItemListener onAddressChangeListener = null;
     private Button mBtnCel;
     private Button mBtnSure;
 
@@ -252,12 +252,11 @@ public class ChooseAddressWheel implements View.OnClickListener {
         cancel();
     }
 
-    //@OnClick(R.id.cancel_button)
     public void cancel() {
         popupWindow.dismiss();
     }
 
-    public void setOnAddressChangeListener(OnAddressChangeListener onAddressChangeListener) {
+    public void setOnAddressChangeListener(OnSelectWheelItemListener onAddressChangeListener) {
         this.onAddressChangeListener = onAddressChangeListener;
     }
 
@@ -276,7 +275,7 @@ public class ChooseAddressWheel implements View.OnClickListener {
 
     }
 
-    public interface OnAddressChangeListener {
+    public interface OnSelectWheelItemListener {
         void onAddressChange(String province, String city, String district);
     }
 }

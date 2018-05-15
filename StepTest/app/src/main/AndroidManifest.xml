@@ -90,6 +90,7 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:theme="@style/ImageTranslucentTheme"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".view.activity.UserFitActivity"
@@ -484,6 +485,8 @@
         <activity
             android:name=".activity.sponsor.SponsorSearchPositionActivity"
             android:windowContentTransitions="true" />
+        <activity
+            android:name=".activity.base.GalleryActivity"/>
     </application>
 
 </manifest>

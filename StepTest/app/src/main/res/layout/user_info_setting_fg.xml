@@ -324,6 +324,6 @@
         android:stateListAnimator="@null"
         android:text="确定"
         android:textColor="@color/color_f8"
-        android:textSize="24dp" />
+        android:textSize="16dp" />
 
 </RelativeLayout>

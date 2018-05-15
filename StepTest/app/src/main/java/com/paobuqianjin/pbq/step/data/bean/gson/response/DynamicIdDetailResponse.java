@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import android.text.TextUtils;
+
 import java.util.List;
 
 /**
@@ -10,7 +12,7 @@ public class DynamicIdDetailResponse {
     /**
      * error : 0
      * message : success
-     * data : {"id":8,"userid":8,"avatar":"http://pic.qqtn.com/up/2017-12/15127898937460203.jpg","nickname":"酒自斟","dynamic":"易烊千玺登银十刊封面，天生超模脸，苏芒大赞：高级脸！","images":["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"],"city":"深圳","vote":100,"comment":3,"create_time":1513393712}
+     * data : {"id":388,"userid":30,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","dynamic":"546v5aKD\n","images":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/VID_20171004_165316.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/VID_20171004_165318.jpg"],"city":"深圳市","country":"","province":"","county":"","village":"","position":"金龙工业城","vote":0,"comment":0,"create_time":1526287415}
      */
 
     private int error;
@@ -51,37 +53,54 @@ public class DynamicIdDetailResponse {
     }
 
     public static class DataBean {
-        public int getVip() {
-            return vip;
-        }
-
-        public void setVip(int vip) {
-            this.vip = vip;
-        }
-
         /**
-         * id : 8
-         * userid : 8
-         * avatar : http://pic.qqtn.com/up/2017-12/15127898937460203.jpg
-         * nickname : 酒自斟
-         * dynamic : 易烊千玺登银十刊封面，天生超模脸，苏芒大赞：高级脸！
-         * images : ["https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg","https://wx1.sinaimg.cn/mw690/005WPY4oly1fmi8vy22pfj30io0g5t94.jpg"]
-         * city : 深圳
-         * vote : 100
-         * comment : 3
-         * create_time : 1513393712
+         * id : 388
+         * userid : 30
+         * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
+         * nickname : 黄钦平
+         * dynamic : 546v5aKD
+         * <p>
+         * images : ["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/VID_20171004_165316.jpg","http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/VID_20171004_165318.jpg"]
+         * city : 深圳市
+         * country :
+         * province :
+         * county :
+         * village :
+         * position : 金龙工业城
+         * vote : 0
+         * comment : 0
+         * create_time : 1526287415
          */
-        private int vip;
+
         private int id;
         private int userid;
         private String avatar;
         private String nickname;
         private String dynamic;
         private String city;
+        private String country;
+        private String province;
+        private String county;
+        private String village;
+        private String position;
         private int vote;
         private int comment;
-        private long create_time;
+        private int create_time;
         private List<String> images;
+
+        public int getVip() {
+            return vip;
+        }
+
+        public String getShowAddress() {
+            return TextUtils.isEmpty(position) ? city : (city + "·" + position);
+        }
+
+        public void setVip(int vip) {
+            this.vip = vip;
+        }
+
+        private int vip;
 
         public int getId() {
             return id;
@@ -131,6 +150,46 @@ public class DynamicIdDetailResponse {
             this.city = city;
         }
 
+        public String getCountry() {
+            return country;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
+        }
+
+        public String getProvince() {
+            return province;
+        }
+
+        public void setProvince(String province) {
+            this.province = province;
+        }
+
+        public String getCounty() {
+            return county;
+        }
+
+        public void setCounty(String county) {
+            this.county = county;
+        }
+
+        public String getVillage() {
+            return village;
+        }
+
+        public void setVillage(String village) {
+            this.village = village;
+        }
+
+        public String getPosition() {
+            return position;
+        }
+
+        public void setPosition(String position) {
+            this.position = position;
+        }
+
         public int getVote() {
             return vote;
         }
@@ -147,11 +206,11 @@ public class DynamicIdDetailResponse {
             this.comment = comment;
         }
 
-        public long getCreate_time() {
+        public int getCreate_time() {
             return create_time;
         }
 
-        public void setCreate_time(long create_time) {
+        public void setCreate_time(int create_time) {
             this.create_time = create_time;
         }
 
@@ -166,17 +225,22 @@ public class DynamicIdDetailResponse {
         @Override
         public String toString() {
             return "DataBean{" +
-                    "vip=" + vip +
-                    ", id=" + id +
+                    "id=" + id +
                     ", userid=" + userid +
                     ", avatar='" + avatar + '\'' +
                     ", nickname='" + nickname + '\'' +
                     ", dynamic='" + dynamic + '\'' +
                     ", city='" + city + '\'' +
+                    ", country='" + country + '\'' +
+                    ", province='" + province + '\'' +
+                    ", county='" + county + '\'' +
+                    ", village='" + village + '\'' +
+                    ", position='" + position + '\'' +
                     ", vote=" + vote +
                     ", comment=" + comment +
                     ", create_time=" + create_time +
                     ", images=" + images +
+                    ", vip=" + vip +
                     '}';
         }
     }

@@ -107,7 +107,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String loginStr = loginAccount.getText().toString().trim();
                 String pwdStr = loginPwd.getText().toString().trim();
-                if (loginStr.length() == 11 && pwdStr.length() >= 6 && pwdStr.length() <= 12) {
+                if (loginStr.length() == 11 && pwdStr.length() >= 6 && pwdStr.length() <= 16) {
                     btnLogin.setEnabled(true);
                 } else {
                     btnLogin.setEnabled(false);
@@ -129,7 +129,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String pwdStr = loginPwd.getText().toString().trim();
                 String loginStr = loginAccount.getText().toString().trim();
-                if (loginStr.length() == 11 && pwdStr.length() >= 6 && pwdStr.length() <= 12) {
+                if (loginStr.length() == 11 && pwdStr.length() >= 6 && pwdStr.length() <= 16) {
                     btnLogin.setEnabled(true);
                 } else {
                     btnLogin.setEnabled(false);
@@ -242,30 +242,13 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     public void response(LoginResponse loginResponse) {
         LocalLog.d(TAG, "手机号登入成功! 去获取用户信息!");
         this.loginResponse = loginResponse;
-        if (!"".equals(loginResponse.getData().getQq_openid()) || !"".equals(loginResponse.getData().getWx_openid())) {
-            LocalLog.d(TAG, "绑定过QQ或者微信");
-            Presenter.getInstance(this).steLogFlg(true);
-            Presenter.getInstance(this).setToken(this, loginResponse.getData().getUser_token());
-            Presenter.getInstance(this).setId(loginResponse.getData().getId());
-            Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
-            startStep();
-            startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
-        } else {
-            if (loginResponse.getData().getIs_perfect() == 0) {
-                LocalLog.d(TAG, "没有完善信息");
-                Intent intent = new Intent();
-                intent.setClass(this, UserFitActivity.class);
-                intent.setAction(USER_FIT_ACTION_SETTING);
-                intent.putExtra("userinfo", loginResponse.getData());
-                startActivity(intent);
-            } else {
-                Presenter.getInstance(this).steLogFlg(true);
-                Presenter.getInstance(this).setId(loginResponse.getData().getId());
-                Presenter.getInstance(this).setToken(this, loginResponse.getData().getUser_token());
-                Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
-                startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
-            }
-        }
+        startStep();
+        Presenter.getInstance(this).steLogFlg(true);
+        Presenter.getInstance(this).setId(loginResponse.getData().getId());
+        Presenter.getInstance(this).setToken(this, loginResponse.getData().getUser_token());
+        Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
+        startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+
 
     }
 

@@ -210,6 +210,7 @@
         android:layout_height="50dp"
         android:layout_below="@+id/day_pack_num_span"
         android:layout_marginTop="10dp"
+        android:clickable="true"
         android:background="@color/color_f8">
 
         <TextView
@@ -230,9 +231,18 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:text="步"
+            android:visibility="invisible"
             android:textColor="@color/color_161727"
             android:textSize="15sp" />
 
+        <ImageView
+            android:layout_width="7dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="19dp"
+            android:src="@drawable/go_to"
+            android:textSize="15dp" />
         <EditText
             android:id="@+id/target_step_day_num"
             android:layout_width="wrap_content"
@@ -243,10 +253,10 @@
             android:layout_toRightOf="@id/target_step_day_des"
             android:background="@null"
             android:gravity="right"
-            android:hint="输入目标步数"
             android:inputType="number"
-            android:maxLength="3"
+            android:maxLength="6"
             android:maxLines="1"
+            android:focusable="false"
             android:textColor="@color/color_161727"
             android:textSize="14sp" />
 

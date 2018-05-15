@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -230,10 +231,9 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                                 LocalLog.d(TAG, "授权");
                                 UMShareAPI.get(getActivity()).doOauthVerify(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
                                 break;
+                            } else {
+                                UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
                             }
-
-
-                            UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
                             break;
                         default:
                             break;
@@ -254,6 +254,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                             } else {
                                 UMShareAPI.get(getActivity()).getPlatformInfo(getActivity(), SHARE_MEDIA.QQ, authListener);
                             }
+
                             break;
                         default:
                             break;
@@ -295,8 +296,8 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                 LocalLog.d(TAG, "修改密码");
                 if (phoneChatDes.getText().toString().equals(getString(R.string.had_bind))) {
                     startActivity(OlderPassChangeActivity.class, null);
-                }else{
-                    ToastUtils.showLongToast(getContext(),"未绑定手机号码，不可修改密码");
+                } else {
+                    ToastUtils.showLongToast(getContext(), "未绑定手机号码，不可修改密码");
                 }
                 break;
             case R.id.we_chat_des:
@@ -385,7 +386,8 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                     postBindUnBindWqParam.setAction("qq");
                     switch (key) {
                         case "openid":
-                            postBindUnBindWqParam.setOpenid(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key)))
+                                postBindUnBindWqParam.setOpenid(map.get(key));
                             LocalLog.d(TAG, "绑定当前手机QQ");
                             break;
                         case "screen_name":
@@ -404,6 +406,8 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
 
                             continue;
                         case "unionid":
+                            if (!TextUtils.isEmpty(map.get(key)))
+                                postBindUnBindWqParam.setUnionid(map.get(key));
                             break;
                         default:
                             continue;
@@ -491,7 +495,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                         }
                     }
                     break;
-                case "加绑成功":
+                case "绑定成功":
                     if (action != null) {
                         if ("wx".equals(action)) {
                             weChatDes.setText(getString(R.string.had_bind));

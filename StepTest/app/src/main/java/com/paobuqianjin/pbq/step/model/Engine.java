@@ -626,7 +626,7 @@ public final class Engine {
 
     public void putUserInfo(int userid, PutUserInfoParam putUserInfoParam) {
         String url = NetApi.urlUser + String.valueOf(userid);
-        LocalLog.d(TAG, "putUserInfo() enter url = " + url + ",putUserInfoParam = " + putUserInfoParam.paramString());
+        LocalLog.d(TAG, "putUserInfo() enter url = " + url + "   ,putUserInfoParam = " + putUserInfoParam.paramString());
         if (putUserInfoParam.paramString() == null) {
             Toast.makeText(mContext, "至少修改一项资料", Toast.LENGTH_SHORT).show();
             return;
@@ -1742,7 +1742,7 @@ public final class Engine {
 
     public void getLiveList(final InnerCallBack innerCallBack, int page, int pagesize) {
         LocalLog.d(TAG, "getLiveList() enter");
-        String url = NetApi.urlLive;
+        String url = NetApi.urlLive + "?&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         OkHttpUtils
                 .get()
                 .addHeader("headtoken", getToken(mContext))
@@ -1754,9 +1754,13 @@ public final class Engine {
                         if (o == null) {
                             return;
                         }
-                        ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
-                        if (innerCallBack != null) {
-                            innerCallBack.innerCallBack(errorCode);
+                        try {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            if (innerCallBack != null) {
+                                innerCallBack.innerCallBack(errorCode);
+                            }
+                        } catch (Exception e1) {
+                            e1.printStackTrace();
                         }
                     }
 
@@ -2421,8 +2425,9 @@ public final class Engine {
     }
 
     //TODO 获取用户步币详细信息，请求方式：get，地址：http://119.29.10.64/v1/usercredit?userid=1
-    public void getUserCredit() {
-        String url = NetApi.urlCredit + "?userid=" + String.valueOf(getId(mContext));
+    public void getUserCredit(int page, int pagesize) {
+        String url = NetApi.urlCredit + "?userid=" + String.valueOf(getId(mContext)) + "&page=" + String.valueOf(page)
+                + "&pagesize=" + String.valueOf(pagesize);
         LocalLog.d(TAG, "usercredit() enter url = " + url);
         OkHttpUtils
                 .get()
@@ -2611,6 +2616,13 @@ public final class Engine {
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(79, 79).into(imageView);
+    }
+
+    public void getOriginImage(String fileUrl, final ImageView imageView) {
+        LocalLog.d(TAG, "getImage() local");
+        Picasso picasso = Picasso.with(mContext);
+        LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
+        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).into(imageView);
     }
 
     public void getImage(String fileUrl, final ImageView imageView, int targetWidth, int targetHeight) {
@@ -3480,7 +3492,7 @@ public final class Engine {
             releaseDynamicInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskMyRecInterface) {
             taskMyRecInterface = null;
-        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskMyRecInterface) {
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskDetailRecInterface) {
             taskDetailRecInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof ReceiveTaskInterface) {
             receiveTaskInterface = null;

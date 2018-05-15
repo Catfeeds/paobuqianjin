@@ -23,7 +23,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorInfoCollectFragment;
 
@@ -33,7 +32,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddressWheel.OnAddressChangeListener, InnerCallBack {
+public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddressWheel.OnSelectWheelItemListener, InnerCallBack {
     private final static String TAG = SponsorInfoCollectFragment.class.getSimpleName();
     public final static int REQ_TIME = 1;
     public final static int RES_TIME = 2;

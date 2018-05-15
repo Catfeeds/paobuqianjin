@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
@@ -43,6 +44,7 @@ import com.paobuqianjin.pbq.step.customview.ChooseProviceCity;
 import com.paobuqianjin.pbq.step.customview.ProUtils;
 import com.paobuqianjin.pbq.step.data.bean.AddressDtailsEntity;
 import com.paobuqianjin.pbq.step.data.bean.AddressModel;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
@@ -76,7 +78,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by pbq on 2018/1/5.
  */
 
-public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implements UserInfoLoginSetInterface, ChooseAddressWheel.OnAddressChangeListener {
+public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implements UserInfoLoginSetInterface, ChooseAddressWheel.OnSelectWheelItemListener {
     private final static String TAG = UserInfoSettingFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -223,6 +225,9 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
         if (intent != null) {
             userInfo = (UserInfoResponse.DataBean) intent.getSerializableExtra("userinfo");
             if (userInfo != null) {
+                String paramStr = new Gson().toJson(userInfo);
+                putUserInfoParam = new Gson().fromJson(paramStr, PutUserInfoParam.class);
+
                 Presenter.getInstance(getContext()).getImage(headIco, userInfo.getAvatar());
                 dearNameSetting.setText(userInfo.getNickname());
                 if (userInfo.getSex() == 1) {
@@ -335,6 +340,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                         }
                         if (!userInfo.getNickname().equals(dearNameSetting.getText().toString())) {
                             putUserInfoParam.setNickname(dearNameSetting.getText().toString());
+                            userInfo.setNickname(dearNameSetting.getText().toString());
                         }
                         Presenter.getInstance(getContext()).putUserInfo(userInfo.getId(), putUserInfoParam);
                     }
@@ -503,6 +509,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             super.onPostExecute(s);
             //SocializeUtils.safeCloseDialog(dialog);
             putUserInfoParam.setAvatar(s);
+            userInfo.setAvatar(s);
             strChangeIco = localAvatar;
             Presenter.getInstance(getContext()).putUserInfo(userInfo.getId(), putUserInfoParam);
         }
@@ -701,9 +708,16 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "确认");
+                birthYear = wheelDatePicker.getCurrentYear()+"";
+                birthMonth = wheelDatePicker.getCurrentMonth()+"";
+                birthDay = wheelDatePicker.getCurrentDay()+"";
                 birthDayTV.setText(birthYear + "年" + birthMonth + "月" + birthDay + "日");
 
                 putUserInfoParam.setBirthyear(birthYear).setBirthmonth(birthMonth).setBirthday(birthDay);
+                userInfo.setBirthyear(Integer.parseInt(birthYear));
+                userInfo.setBirthmonth(Integer.parseInt(birthMonth));
+                userInfo.setBirthday(Integer.parseInt(birthDay));
+
                 popupSelectWindow.dismiss();
             }
         });
@@ -711,9 +725,9 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "取消");
-                birthYear = null;
-                birthMonth = null;
-                birthDay = null;
+//                birthYear = null;
+//                birthMonth = null;
+//                birthDay = null;
                 //TODO  使用默认的生日
                 popupSelectWindow.dismiss();
             }
@@ -760,7 +774,10 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "确认");
-                weightNum.setText(weight + "公斤");
+                weight = weightList.get(wheelWeigthPicker.getCurrentItemPosition());
+                weightNum.setText(weight + "kg");
+                putUserInfoParam.setWeight(weight);
+                userInfo.setWeight(weight);
                 popupSelectWindow.dismiss();
             }
         });
@@ -816,8 +833,10 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "确认");
+                high = heightList.get(wheelHighPicker.getCurrentItemPosition());
                 highNum.setText(high + "cm");
                 putUserInfoParam.setHeight(high);
+                userInfo.setHeight(Integer.parseInt(high));
                 popupSelectWindow.dismiss();
             }
         });
@@ -889,9 +908,11 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 String selectString = selectSettingAdapter.getSelectContent();
                 LocalLog.d(TAG, "选择结果: " + selectString);
                 if ("男".equals(selectString)) {
-                    putUserInfoParam.setSex(0);
-                } else {
                     putUserInfoParam.setSex(1);
+                    userInfo.setSex(1);
+                } else {
+                    putUserInfoParam.setSex(2);
+                    userInfo.setSex(2);
                 }
                 maleText.setText(selectString);
                 if (popupCircleTypeWindow.isShowing()) {
@@ -934,6 +955,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             if (!TextUtils.isEmpty(strChangeIco)) {
                 intent.putExtra(getContext().getPackageName() + "avatar", strChangeIco);
             }
+            intent.putExtra("userinfo", userInfo);
             getActivity().setResult(RESULT_OK, intent);
             getActivity().finish();
         } else if (userInfoSetResponse.getError() == -100) {
@@ -959,10 +981,14 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
         if (specialCity(province)) {
             putUserInfoParam.setProvince(province);
             putUserInfoParam.setCity(city);
+            userInfo.setProvince(province);
+            userInfo.setCity(city);
             cityNames.setText(city);
         } else {
             putUserInfoParam.setProvince(province);
             putUserInfoParam.setCity(city);
+            userInfo.setProvince(province);
+            userInfo.setCity(city);
             cityNames.setText(province + "· " + city);
         }
 
@@ -973,6 +999,8 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
+        } else {
+            ToastUtils.showLongToast(getActivity(), errorCode.getMessage());
         }
     }
 }

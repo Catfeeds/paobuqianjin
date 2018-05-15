@@ -70,7 +70,6 @@ public class AndroidIosAdapter extends BaseAdapter {
 //        rl.setBackgroundColor(Color.RED);
 
         TextView emojiThumb = new TextView(mContext);
-        emojiThumb.setGravity(Gravity.CENTER);
         int count = emjCode.length;
         int index = mStartIndex + position;
         if (position == EmotionLayout.EMOJI_PER_PAGE || index == count) {

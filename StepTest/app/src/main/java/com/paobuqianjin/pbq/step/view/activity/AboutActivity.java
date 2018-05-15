@@ -68,7 +68,7 @@ public class AboutActivity extends BaseBarActivity {
     protected void initView() {
         super.initView();
         version = (TextView) findViewById(R.id.version);
-        version.setText("当前版本 " + Utils.getVersionCode(this));
+        version.setText("当前版本 " + Utils.getVerName(this));
     }
 
     @OnClick(R.id.introduce_span)

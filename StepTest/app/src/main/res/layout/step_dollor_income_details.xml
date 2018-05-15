@@ -2,10 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <android.support.v7.widget.RecyclerView
+
+    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
         android:id="@+id/step_dollar_income_recycler"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-    </android.support.v7.widget.RecyclerView>
+    </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+
+    <TextView
+        android:id="@+id/crash_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="70dp"
+        android:text="您暂无兑换记录！"
+        android:textColor="@color/color_161727"
+        android:textSize="18dp"
+        android:visibility="gone" />
 </RelativeLayout>

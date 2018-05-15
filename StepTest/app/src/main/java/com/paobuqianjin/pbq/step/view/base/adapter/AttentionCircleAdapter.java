@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
@@ -123,6 +125,11 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     }
 
     @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position, List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+    }
+
+    @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         updateItem(holder, position);
     }
@@ -146,7 +153,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar());
 
 
-                String content = data.get(position).getDynamic();
+                String content = Base64Util.getUidFromBase64(data.get(position).getDynamic());
                 LocalLog.d(TAG, "content = " + content);
                 if (content != null) {
                     for (int i = 0; i < emj.length; i++) {
@@ -156,7 +163,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                 ((OneOrZeroViewHodler) holder).dynamicContentText.setText(content);
                 ((OneOrZeroViewHodler) holder).dynamicUserName.setText(data.get(position).getNickname());
-                ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getCity());
+                ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getShowAddress());
                 ((OneOrZeroViewHodler) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
                 ((OneOrZeroViewHodler) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
                 ((OneOrZeroViewHodler) holder).vote = data.get(position).getVote();
@@ -208,7 +215,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
                 ((OneOrZeroViewHodler) holder).dynamicContentText.setText(content);
                 ((OneOrZeroViewHodler) holder).dynamicUserName.setText(data.get(position).getNickname());
-                ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getCity());
+                ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getShowAddress());
                 ((OneOrZeroViewHodler) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
                 ((OneOrZeroViewHodler) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
                 ((OneOrZeroViewHodler) holder).vote = data.get(position).getVote();
@@ -268,7 +275,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             ((TwoPicViewHolder) holder).dynamicContentText.setText(content);
             ((TwoPicViewHolder) holder).dynamicUserName.setText(data.get(position).getNickname());
-            ((TwoPicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getCity());
+            ((TwoPicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getShowAddress());
             ((TwoPicViewHolder) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
             ((TwoPicViewHolder) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
             ((TwoPicViewHolder) holder).vote = data.get(position).getVote();
@@ -323,7 +330,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             Presenter.getInstance(mContext).getImage(((ThreePicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar());
             ((ThreePicViewHolder) holder).dynamicContentText.setText(data.get(position).getDynamic());
             ((ThreePicViewHolder) holder).dynamicUserName.setText(data.get(position).getNickname());
-            ((ThreePicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getCity());
+            ((ThreePicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getShowAddress());
             ((ThreePicViewHolder) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));
             ((ThreePicViewHolder) holder).vote = data.get(position).getVote();
             if (data.get(position).getIs_vote() == 1) {

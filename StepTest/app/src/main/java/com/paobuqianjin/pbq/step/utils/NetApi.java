@@ -176,6 +176,8 @@ public class NetApi {
     public final static String urlSetDefaultBusiness = urlBusiness+"/setDefaultBusiness";
     //TODO 圈子活动
     public final static String urlLive = url+ "v1/Activity/getActivityList";
+    //TODO 领取活动奖励（红包）
+    public final static String urlLiveGetRed = url+ "v1/Activity/redActivity";
     //TODO 我的邀请码
     public final static String urlMyCode = url + "v1/userinviter/getMyCode";
     //TODO 用户当前步数

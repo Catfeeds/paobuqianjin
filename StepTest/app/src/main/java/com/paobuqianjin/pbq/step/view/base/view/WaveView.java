@@ -21,7 +21,8 @@ public class WaveView extends View {
     // 波纹颜色
     private static final int WAVE_PAINT_COLOR3 = 0xffffffff;
     // 波纹颜色
-    private static final int WAVE_PAINT_COLOR2 = 0xff757681;
+//    private static final int WAVE_PAINT_COLOR2 = 0xff757681;
+    private static final int WAVE_PAINT_COLOR2 = 0xffffffff;
 
     private static final int WAVE_PAINT_COLOR1 = 0xff3c3e4d;
     // y = Asin(wx+b)+h

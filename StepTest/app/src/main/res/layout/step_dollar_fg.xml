@@ -12,15 +12,15 @@
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:id="@+id/step_dollar_scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true"
-        android:layout_below="@+id/bar_step_dollar_detail">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/bar_step_dollar_detail"
+        android:fillViewport="true">
 
         <RelativeLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
 
             <ImageView
                 android:id="@+id/step_dollar_bg"

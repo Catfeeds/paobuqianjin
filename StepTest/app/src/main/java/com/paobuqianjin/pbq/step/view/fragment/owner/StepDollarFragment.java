@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -15,20 +16,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
-import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.presenter.im.StepDollarDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
-import com.paobuqianjin.pbq.step.view.base.adapter.owner.StepDollarDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
+import com.paobuqianjin.pbq.step.view.base.view.CustomViewPager;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -36,15 +33,16 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/1/16.
  */
 
-public class StepDollarFragment extends BaseBarStyleTextViewFragment implements StepDollarDetailInterface {
+public class StepDollarFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = StepDollarFragment.class.getSimpleName();
     StepDollarDetailFragment stepDollarDetailFragment;
-    StepDollarDetailFragment stepDollarDetailFragment1;
+    StepDollorCrashFragment stepDollorCrashFragment;
     String[] titles = {"步币明细", "兑换记录"};
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -67,12 +65,13 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
     @Bind(R.id.step_dollar_tab)
     TabLayout stepDollarTab;
     @Bind(R.id.step_dollar_viewpager)
-    ViewPager stepDollarViewpager;
+    CustomViewPager stepDollarViewpager;
     @Bind(R.id.step_dollar_span)
     RelativeLayout stepDollarSpan;
     @Bind(R.id.step_dollar_scroll)
     BounceScrollView stepDollarScroll;
     private int mIndex = 0;
+    private UserInfoResponse.DataBean userInfo;
 
     @Override
     protected String title() {
@@ -87,7 +86,6 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Presenter.getInstance(getContext()).attachUiInterface(this);
     }
 
     @Override
@@ -95,8 +93,6 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getUserCredit();
-        Presenter.getInstance(getContext()).getUserDollarStep();
         return rootView;
     }
 
@@ -104,23 +100,29 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         stepDollarDetailFragment = new StepDollarDetailFragment();
-        stepDollarDetailFragment1 = new StepDollarDetailFragment();
+        stepDollorCrashFragment = new StepDollorCrashFragment();
         stepDollarNums = (TextView) viewRoot.findViewById(R.id.step_dollar_nums);
         stepDollarScroll = (BounceScrollView) viewRoot.findViewById(R.id.step_dollar_scroll);
         List<Fragment> fragments = new ArrayList<>();
 
         fragments.add(stepDollarDetailFragment);
-        fragments.add(stepDollarDetailFragment1);
+        fragments.add(stepDollorCrashFragment);
         TabAdapter tabAdapter = new TabAdapter(getContext()
                 , getActivity().getSupportFragmentManager(), fragments, titles);
 
         stepDollarTab = (TabLayout) viewRoot.findViewById(R.id.step_dollar_tab);
-        stepDollarViewpager = (ViewPager) viewRoot.findViewById(R.id.step_dollar_viewpager);
+        stepDollarViewpager = (CustomViewPager) viewRoot.findViewById(R.id.step_dollar_viewpager);
         stepDollarViewpager.setAdapter(tabAdapter);
 
 
         stepDollarTab.setupWithViewPager(stepDollarViewpager);
-
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            userInfo = (UserInfoResponse.DataBean) intent.getSerializableExtra("userinfo");
+            if (userInfo != null) {
+                stepDollarNums.setText(String.valueOf(userInfo.getCredit()));
+            }
+        }
         for (int i = 0; i < stepDollarTab.getTabCount(); i++) {
             LocalLog.d(TAG, "initView() i = " + i);
             stepDollarTab.getTabAt(i).setCustomView(getTabView(i));
@@ -220,50 +222,25 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment implements 
         return view;
     }
 
-    @Override
-    public void response(StepDollarDetailResponse stepDollarDetailResponse) {
-        LocalLog.d(TAG, "StepDollarDetailResponse() enter " + stepDollarDetailResponse.toString());
-        if (stepDollarDetailResponse.getError() == 0) {
-            stepDollarDetailFragment.setStepDollarDetailAdapter(new StepDollarDetailAdapter(getContext(), stepDollarDetailResponse.getData().getData()));
-        } else if (stepDollarDetailResponse.getError() == 1) {
-
-        } else if (stepDollarDetailResponse.getError() == -1) {
-
-        } else if (stepDollarDetailResponse.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
-        }
-    }
-
-    @Override
-    public void response(UserInfoResponse userInfoResponse) {
-        if (userInfoResponse.getError() == 0) {
-            if (stepDollarNums == null) {
-                return;
-            }
-            stepDollarNums.setText(String.valueOf(userInfoResponse.getData().getCredit()));
-        } else if (userInfoResponse.getError() == 1) {
-
-        } else if (userInfoResponse.getError() == -1) {
-
-        } else if (userInfoResponse.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
-        }
-    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
-    @Override
-    public void response(ErrorCode errorCode) {
-        if (errorCode.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
-        }
+
+    @OnClick(R.id.crash_step_dol)
+    public void onClick() {
+        final NormalDialog normalDialog = new NormalDialog(getActivity());
+        normalDialog.setSingleBtn(true);
+        normalDialog.setMessage("兑换功能即将上线，敬请期待！");
+        normalDialog.setYesOnclickListener("好的",new NormalDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                normalDialog.dismiss();
+            }
+        });
+        normalDialog.show();
     }
 }

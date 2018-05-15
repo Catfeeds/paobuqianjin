@@ -46,10 +46,18 @@ public class UserDynamicRecordAdapter extends RecyclerView.Adapter<UserDynamicRe
 
     public void notifyItemChange(int topPosition, int position, int is_vote, int vote, int comment) {
         UserCenterVoteData userCenterVoteData = new UserCenterVoteData();
-        userCenterVoteData.setPosition(position);
-        userCenterVoteData.setIs_vote(is_vote);
-        userCenterVoteData.setVote(vote);
-        userCenterVoteData.setComment(comment);
+        if (position > -1) {
+            userCenterVoteData.setPosition(position);
+        }
+        if (is_vote > -1) {
+            userCenterVoteData.setIs_vote(is_vote);
+        }
+        if (vote > -1) {
+            userCenterVoteData.setVote(vote);
+        }
+        if (comment > -1) {
+            userCenterVoteData.setComment(comment);
+        }
         super.notifyItemChanged(topPosition, userCenterVoteData);
     }
 
@@ -60,13 +68,11 @@ public class UserDynamicRecordAdapter extends RecyclerView.Adapter<UserDynamicRe
         LocalLog.d(TAG, "size = " + payloads.size());
         if (size == 1) {
             UserCenterVoteData userCenterVoteData = (UserCenterVoteData) payloads.get(0);
-            LocalLog.d(TAG, "" + userCenterVoteData.toString());
+            LocalLog.d(TAG, "userCenterVoteData = " + userCenterVoteData.toString());
             if (holder.userDynamicRecordSecondAdapter != null) {
-                DynamicPersonResponse.DataBeanX.DataBean dataBean = (DynamicPersonResponse.DataBeanX.DataBean) holder.userDynamicRecordSecondAdapter.mData.get(userCenterVoteData.getPosition());
-                dataBean.setIs_vote(userCenterVoteData.getIs_vote());
-                dataBean.setVote(userCenterVoteData.getVote());
-                dataBean.setComment(userCenterVoteData.getComment());
-                holder.userDynamicRecordSecondAdapter.mData.get(userCenterVoteData.getPosition());
+                holder.userDynamicRecordSecondAdapter.notifyItemChanged(userCenterVoteData.getPosition(), userCenterVoteData);
+            }else{
+                LocalLog.d(TAG,"userDynamicRecordSecondAdapter  is null");
             }
         }
     }

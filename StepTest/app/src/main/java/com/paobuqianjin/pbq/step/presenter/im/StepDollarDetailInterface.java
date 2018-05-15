@@ -9,6 +9,4 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 
 public interface StepDollarDetailInterface extends CallBackInterface {
     public void response(StepDollarDetailResponse stepDollarDetailResponse);
-
-    public void response(UserInfoResponse userInfoResponse);
 }

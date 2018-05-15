@@ -12,10 +12,11 @@ import java.util.List;
 *@description 步币明细数据
 */
 public class StepDollarDetailResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":2,"totalCount":11},"data":[{"id":2,"userid":1,"source":"注册奖励","credit":"10.00","creat_time":1515809369},{"id":3,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":4,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":5,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":6,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":7,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":8,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":9,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":10,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":11,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":12,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":2},"data":[{"id":59,"userid":11148,"type":1,"source":11133,"credit":100,"create_time":1526355879,"sname":"OPPO2","bname":"rm_13652354126","create_day":"2018-05-15","typename":"邀请用户奖励"},{"id":61,"userid":11148,"type":1,"source":11171,"credit":100,"create_time":1526364937,"sname":"俊","bname":"rm_13652354126","create_day":"2018-05-15","typename":"邀请用户奖励"}]}
      */
 
     private int error;
@@ -57,8 +58,8 @@ public class StepDollarDetailResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":2,"totalCount":11}
-         * data : [{"id":2,"userid":1,"source":"注册奖励","credit":"10.00","creat_time":1515809369},{"id":3,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":4,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":5,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":6,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":7,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":8,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":9,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":10,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":11,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369},{"id":12,"userid":1,"source":"邀请好友","credit":"5.00","creat_time":1515809369}]
+         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":2}
+         * data : [{"id":59,"userid":11148,"type":1,"source":11133,"credit":100,"create_time":1526355879,"sname":"OPPO2","bname":"rm_13652354126","create_day":"2018-05-15","typename":"邀请用户奖励"},{"id":61,"userid":11148,"type":1,"source":11171,"credit":100,"create_time":1526364937,"sname":"俊","bname":"rm_13652354126","create_day":"2018-05-15","typename":"邀请用户奖励"}]
          */
 
         private PagenationBean pagenation;
@@ -92,8 +93,8 @@ public class StepDollarDetailResponse {
             /**
              * page : 1
              * pageSize : 10
-             * totalPage : 2
-             * totalCount : 11
+             * totalPage : 1
+             * totalCount : 2
              */
 
             private int page;
@@ -146,18 +147,28 @@ public class StepDollarDetailResponse {
 
         public static class DataBean {
             /**
-             * id : 2
-             * userid : 1
-             * source : 注册奖励
-             * credit : 10.00
-             * creat_time : 1515809369
+             * id : 59
+             * userid : 11148
+             * type : 1
+             * source : 11133
+             * credit : 100
+             * create_time : 1526355879
+             * sname : OPPO2
+             * bname : rm_13652354126
+             * create_day : 2018-05-15
+             * typename : 邀请用户奖励
              */
 
             private int id;
             private int userid;
-            private String source;
-            private String credit;
-            private long creat_time;
+            private int type;
+            private int source;
+            private int credit;
+            private int create_time;
+            private String sname;
+            private String bname;
+            private String create_day;
+            private String typename;
 
             public int getId() {
                 return id;
@@ -175,28 +186,68 @@ public class StepDollarDetailResponse {
                 this.userid = userid;
             }
 
-            public String getSource() {
+            public int getType() {
+                return type;
+            }
+
+            public void setType(int type) {
+                this.type = type;
+            }
+
+            public int getSource() {
                 return source;
             }
 
-            public void setSource(String source) {
+            public void setSource(int source) {
                 this.source = source;
             }
 
-            public String getCredit() {
+            public int getCredit() {
                 return credit;
             }
 
-            public void setCredit(String credit) {
+            public void setCredit(int credit) {
                 this.credit = credit;
             }
 
-            public long getCreat_time() {
-                return creat_time;
+            public int getCreate_time() {
+                return create_time;
             }
 
-            public void setCreat_time(int creat_time) {
-                this.creat_time = creat_time;
+            public void setCreate_time(int create_time) {
+                this.create_time = create_time;
+            }
+
+            public String getSname() {
+                return sname;
+            }
+
+            public void setSname(String sname) {
+                this.sname = sname;
+            }
+
+            public String getBname() {
+                return bname;
+            }
+
+            public void setBname(String bname) {
+                this.bname = bname;
+            }
+
+            public String getCreate_day() {
+                return create_day;
+            }
+
+            public void setCreate_day(String create_day) {
+                this.create_day = create_day;
+            }
+
+            public String getTypename() {
+                return typename;
+            }
+
+            public void setTypename(String typename) {
+                this.typename = typename;
             }
 
             @Override
@@ -204,9 +255,14 @@ public class StepDollarDetailResponse {
                 return "DataBean{" +
                         "id=" + id +
                         ", userid=" + userid +
-                        ", source='" + source + '\'' +
-                        ", credit='" + credit + '\'' +
-                        ", creat_time=" + creat_time +
+                        ", type=" + type +
+                        ", source=" + source +
+                        ", credit=" + credit +
+                        ", create_time=" + create_time +
+                        ", sname='" + sname + '\'' +
+                        ", bname='" + bname + '\'' +
+                        ", create_day='" + create_day + '\'' +
+                        ", typename='" + typename + '\'' +
                         '}';
             }
         }

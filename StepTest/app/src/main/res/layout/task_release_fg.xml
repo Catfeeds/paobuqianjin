@@ -35,7 +35,17 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:text="步"
+            android:visibility="invisible"
             android:textColor="@color/color_161727"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:layout_width="7dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/go_to"
             android:textSize="15dp" />
 
         <EditText
@@ -47,12 +57,12 @@
             android:layout_toLeftOf="@+id/go_to_target_step"
             android:background="@null"
             android:cursorVisible="true"
-            android:focusable="true"
+            android:focusable="false"
             android:gravity="right"
-            android:hint="输入目标步数"
             android:inputType="number"
             android:maxLength="6"
             android:maxLines="1"
+            android:clickable="true"
             android:textColor="@color/color_161727"
             android:textCursorDrawable="@null"
             android:layout_toRightOf="@id/target_step_des"
@@ -299,7 +309,7 @@
             android:layout_marginTop="10dp"
             android:text="提示:"
             android:textColor="@color/color_8a8a8a"
-            android:textSize="12dp" />
+            android:textSize="10sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -308,9 +318,10 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="14dp"
             android:layout_toEndOf="@+id/attention"
-            android:text="派发给好友的任务未完成，则不能重复派发任务;\n单日单个人最高奖励金额不能高于200元;\n总金额=奖励金额*任务天数"
+            android:text="派发给好友的任务未完成，则不能重复派发任务;\n单日单个人最高奖励金额不能高于200元;"
             android:textColor="@color/color_8a8a8a"
-            android:textSize="12dp" />
+            android:layout_centerHorizontal="true"
+            android:textSize="10sp" />
     </RelativeLayout>
 
     <Button

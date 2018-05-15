@@ -90,7 +90,6 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 50;
     private final static int REQUEST_DETAIL = 401;
-    ArrayList<DynamicPersonResponse.DataBeanX.DataBean> dynamicAllData = new ArrayList<>();
     UserDynamicRecordAdapter adapter;
 
     @Override
@@ -368,28 +367,30 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             if (requestCode == REQUEST_DETAIL) {
 
                 if (data != null) {
-                    int topPosition = data.getIntExtra(getContext().getPackageName() + "topPosition", -1);
+                    final int topPosition = data.getIntExtra(getContext().getPackageName() + "topPosition", -1);
                     if (topPosition <= -1) {
                         return;
                     }
-                    int position = data.getIntExtra(getContext().getPackageName() + "position", -1);
+                    final int position = data.getIntExtra(getContext().getPackageName() + "position", -1);
                     if (position != -1) {
-                        int is_vote = data.getIntExtra(getContext().getPackageName() + "is_vote", -1);
+                        final int is_vote = data.getIntExtra(getContext().getPackageName() + "is_vote", -1);
                         if (is_vote != -1) {
-                            dynamicAllData.get(position).setIs_vote(is_vote);
+
                         }
-                        int likeNum = data.getIntExtra(getContext().getPackageName() + "likeNum", -1);
+                        final int likeNum = data.getIntExtra(getContext().getPackageName() + "likeNum", -1);
                         if (likeNum != -1) {
-                            dynamicAllData.get(position).setVote(likeNum);
+
                         }
-                        int contentNum = data.getIntExtra(getContext().getPackageName() + "contentNum", -1);
+                        final int contentNum = data.getIntExtra(getContext().getPackageName() + "contentNum", -1);
                         if (contentNum != -1) {
-                            dynamicAllData.get(position).setComment(contentNum);
+
                         }
 
                         LocalLog.d(TAG, "详情操作 is_vote = " + is_vote + ",likeNum = " + likeNum + ",contentNum = " + contentNum + "position = " + position);
                         if (is_vote != -1 || likeNum != -1 || contentNum != -1) {
-
+                            if (adapter != null) {
+                                adapter.notifyItemChange(topPosition, position, is_vote, likeNum, contentNum);
+                            }
                         }
                     }
                 }

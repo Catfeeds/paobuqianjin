@@ -135,7 +135,7 @@ public class MyReleaseDetailFragment extends BaseBarStyleTextViewFragment implem
             LocalLog.d(TAG, "MyReleaseTaskDetailResponse() enter " + myReleaseTaskDetailResponse.toString());
             targetStep.setText(myReleaseTaskDetailResponse.getData().getTask().getTask_name());
             String targetMoneyStrFormat = getString(R.string.target_money);
-            String targetMoneyStr = String.format(targetMoneyStrFormat, myReleaseTaskDetailResponse.getData().getTask().getReward_amount());
+            String targetMoneyStr = String.format(targetMoneyStrFormat, myReleaseTaskDetailResponse.getData().getTask().getAllmoney());
             targetMoney.setText(targetMoneyStr);
             String targetDayStrFormat = getString(R.string.task_days);
             String targetDayStr = String.format(targetDayStrFormat, myReleaseTaskDetailResponse.getData().getTask().getTask_days());

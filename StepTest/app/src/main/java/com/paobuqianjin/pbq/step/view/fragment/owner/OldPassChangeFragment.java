@@ -2,6 +2,8 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,6 +88,41 @@ public class OldPassChangeFragment extends BaseBarStyleTextViewFragment implemen
         super.onDestroyView();
         ButterKnife.unbind(this);
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
+    }
+
+    @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+        passNew = (EditText) viewRoot.findViewById(R.id.pass_new);
+        sourcePass = (EditText) viewRoot.findViewById(R.id.source_pass);
+        newPass = (EditText) viewRoot.findViewById(R.id.new_pass);
+        confirmNewPass = (Button) viewRoot.findViewById(R.id.confirm_new_pass);
+        passNew.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String src = sourcePass.getText().toString().trim();
+                String obj = newPass.getText().toString().trim();
+                String pwdStr = passNew.getText().toString().trim();
+                if (src.length() >= 6 && obj.length() >= 6 &&
+                        pwdStr.length() >= 6 && pwdStr.length() <= 16) {
+                    confirmNewPass.setEnabled(true);
+                    confirmNewPass.setBackground(getDrawableResource(R.drawable.rect_angle_background));
+                } else {
+                    confirmNewPass.setEnabled(false);
+                    confirmNewPass.setBackground(getDrawableResource(R.drawable.rect_angle_diss_bt));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     @OnClick(R.id.confirm_new_pass)

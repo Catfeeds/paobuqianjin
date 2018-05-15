@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -21,13 +22,16 @@ import com.paobuqianjin.pbq.step.view.base.adapter.LiveAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
  * Created by pbq on 2018/5/3.
  */
-
 public class LiveFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = LiveFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
@@ -44,7 +48,7 @@ public class LiveFragment extends BaseBarStyleTextViewFragment {
     SwipeRefreshLayout swLive;
     LinearLayoutManager layoutManager;
     private int pageIndex = 1;
-    private final static int PAGESIZE = 10;
+    private final static int PAGESIZE = 50;
 
     @Override
     protected int getLayoutResId() {
@@ -67,12 +71,14 @@ public class LiveFragment extends BaseBarStyleTextViewFragment {
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+        EventBus.getDefault().register(this);
         swLive = (SwipeRefreshLayout) viewRoot.findViewById(R.id.sw_live);
         liveRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.live_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         liveRecycler.setLayoutManager(layoutManager);
         Presenter.getInstance(getContext()).getLiveList(innerCallBack, pageIndex, PAGESIZE);
         swLive.setRefreshing(false);
+        swLive.setEnabled(false);
     }
 
     private InnerCallBack innerCallBack = new InnerCallBack() {
@@ -83,7 +89,7 @@ public class LiveFragment extends BaseBarStyleTextViewFragment {
             } else if (object instanceof LiveResponse) {
                 if (((LiveResponse) object).getError() == 0) {
                     LocalLog.d(TAG, "LiveResponse " + ((LiveResponse) object).toString());
-                    liveRecycler.setAdapter(new LiveAdapter(getContext(), ((LiveResponse) object).getData().getData()));
+                    liveRecycler.setAdapter(new LiveAdapter(getActivity(), ((LiveResponse) object).getData().getData()));
                 } else if (((LiveResponse) object).getError() == 1) {
 
                 }
@@ -95,5 +101,23 @@ public class LiveFragment extends BaseBarStyleTextViewFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(PaoMessageEvent messageEvent) {
+        LocalLog.d(TAG,"领取红包成功，刷新数据");
+        Presenter.getInstance(getContext()).getLiveList(innerCallBack, pageIndex, PAGESIZE);
+    }
+
+    public static class PaoMessageEvent {
+        private int actionFlag;
+        public PaoMessageEvent(int actionFlag) {
+            this.actionFlag = actionFlag;
+        }
+
+        public int getActionFlag() {
+            return actionFlag;
+        }
     }
 }

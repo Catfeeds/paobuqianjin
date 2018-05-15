@@ -164,7 +164,8 @@ public class LiveResponse {
             private String create_time;
             private String remote_url;
             private int read_total;
-            private int is_process;
+            private int is_process;//活动状态：0未开始 1进行中 2已结束 3已经被领完
+            private int is_receive;//领取状态：0未领 1已领
 
             public int getId() {
                 return id;
@@ -254,6 +255,14 @@ public class LiveResponse {
                 this.is_process = is_process;
             }
 
+            public int getIs_receive() {
+                return is_receive;
+            }
+
+            public void setIs_receive(int is_receive) {
+                this.is_receive = is_receive;
+            }
+
             @Override
             public String toString() {
                 return "DataBean{" +
@@ -268,6 +277,7 @@ public class LiveResponse {
                         ", remote_url='" + remote_url + '\'' +
                         ", read_total=" + read_total +
                         ", is_process=" + is_process +
+                        ", is_receive=" + is_receive +
                         '}';
             }
         }

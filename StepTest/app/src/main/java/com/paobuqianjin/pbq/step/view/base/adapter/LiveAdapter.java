@@ -3,7 +3,6 @@ package com.paobuqianjin.pbq.step.view.base.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,13 +38,17 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.LiveViewHolder
             Presenter.getInstance(context).getImage(holder.liveImag, ((LiveResponse.DataBeanX.DataBean) mData.get(position)).getConver());
             if (((LiveResponse.DataBeanX.DataBean) mData.get(position)).getIs_process() == 0) {
                 holder.liveStates.setText("未开赛");
-            } else if (((LiveResponse.DataBeanX.DataBean) mData.get(position)).getIs_process() == 1) {
-                holder.liveStates.setText("已结束");
             } else if (((LiveResponse.DataBeanX.DataBean) mData.get(position)).getIs_process() == 2) {
-                holder.liveStates.setText("开赛中");
+                holder.liveStates.setText("已结束");
+            } else {
+                holder.liveStates.setText("进行中");
             }
             /*holder.liveDesc.setText(Html.fromHtml(((LiveResponse.DataBeanX.DataBean) mData.get(position)).getDeail()));*/
             holder.url = ((LiveResponse.DataBeanX.DataBean) mData.get(position)).getRemote_url();
+            holder.isProcess = ((LiveResponse.DataBeanX.DataBean) mData.get(position)).getIs_process();
+            holder.isReceive = ((LiveResponse.DataBeanX.DataBean) mData.get(position)).getIs_receive();
+            holder.target = ((LiveResponse.DataBeanX.DataBean) mData.get(position)).getTarget();
+            holder.actid = ((LiveResponse.DataBeanX.DataBean) mData.get(position)).getId();
         }
     }
 
@@ -75,6 +78,10 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.LiveViewHolder
         @Bind(R.id.join_mum)
         TextView joinMum;*/
         String url = "";
+        public int isReceive;
+        public int isProcess;
+        public int target;
+        public int actid;
 
         public LiveViewHolder(View view) {
             super(view);
@@ -92,6 +99,10 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.LiveViewHolder
                 public void onClick(View v) {
                     Intent intent = new Intent();
                     intent.putExtra(context.getPackageName(), url);
+                    intent.putExtra("is_process", isProcess);
+                    intent.putExtra("is_receive", isReceive);
+                    intent.putExtra("target", target);
+                    intent.putExtra("actid", actid);
                     intent.setClass(context, LiveDetailActivity.class);
                     context.startActivity(intent);
                 }

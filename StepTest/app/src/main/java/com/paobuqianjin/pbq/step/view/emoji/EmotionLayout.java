@@ -25,7 +25,7 @@ import com.paobuqianjin.pbq.step.view.base.view.CustomEdit;
 public class EmotionLayout extends LinearLayout implements View.OnClickListener {
 
     public static final int EMOJI_COLUMNS = 7;
-    public static final int EMOJI_ROWS = 3;
+    public static final int EMOJI_ROWS = 4;
     public static final int EMOJI_PER_PAGE = EMOJI_COLUMNS * EMOJI_ROWS - 1;//最后一个是删除键
 
     public static final int STICKER_COLUMNS = 4;

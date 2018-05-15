@@ -188,34 +188,34 @@ public class NetStringCallBack extends StringCallback {
                 if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface) {
                     ((LoginSignCallbackInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {
-
+                    callBackInterface.response(errorCode);
                 } else if (callBackInterface != null && callBackInterface instanceof SignCodeCallBackInterface) {
-
+                    callBackInterface.response(errorCode);
                 } else if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface
                         && command == Engine.COMMAND_REFRESH_PASSWORD) {
-
+                    ((LoginSignCallbackInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null && callBackInterface instanceof MyCreateCircleResponse
                         && command == Engine.COMMAND_GET_MY_CREATE_CIRCLE) {
-
+                    callBackInterface.response(errorCode);
                 } else if (callBackInterface != null && callBackInterface instanceof UiHotCircleInterface
                         && command == Engine.COMMAND_GET_CHOICE_CIRCLE) {
-
+                    ((UiHotCircleInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null
                         && callBackInterface instanceof MyJoinCircleInterface
                         && command == Engine.COMMAND_GET_MY_JOIN_CIRCLE) {
-
+                    ((MyJoinCircleInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null
                         && callBackInterface instanceof UiCreateCircleInterface
                         && command == Engine.COMMAND_CIRCLE_TYPE) {
-
+                    ((UiCreateCircleInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null
                         && callBackInterface instanceof UiStepAndLoveRankInterface
                         && command == Engine.COMMAND_RECHARGE_RANK) {
-
+                    ((UiStepAndLoveRankInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null
                         && callBackInterface instanceof UiStepAndLoveRankInterface
                         && command == Engine.COMMAND_STEP_RANK) {
-
+                    ((UiStepAndLoveRankInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null
                         && callBackInterface instanceof CircleDetailInterface) {
                     callBackInterface.response(errorCode);
@@ -230,7 +230,7 @@ public class NetStringCallBack extends StringCallback {
                 } else if (callBackInterface != null
                         && callBackInterface instanceof UiCreateCircleInterface
                         && command == Engine.COMMAND_GET_CIRCLE_TARGET) {
-
+                    ((UiCreateCircleInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null
                         && callBackInterface instanceof ReflashMyCircleInterface
                         && command == Engine.COMMAND_REFLASH_CIRCLE) {
@@ -238,15 +238,15 @@ public class NetStringCallBack extends StringCallback {
                 } else if (callBackInterface != null &&
                         callBackInterface instanceof DynamicIndexUiInterface
                         && command == Engine.COMMAND_GET_DYNAMIC_INDEX) {
-
+                    callBackInterface.response(errorCode);
                 } else if (callBackInterface != null
                         && callBackInterface instanceof DynamicDetailInterface
                         && command == Engine.COMMAND_DYNAMIC_CONTENTS) {
-
+                    ((DynamicDetailInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null
                         && callBackInterface instanceof OwnerUiInterface
                         && command == Engine.COMMAND_OWNER_USER_INFO) {
-
+                    callBackInterface.response(errorCode);
                 } else if (callBackInterface != null
                         && callBackInterface instanceof PayInterface
                         && command == Engine.COMMAND_CIRCLE_ORDER_POST_WX) {
@@ -254,6 +254,7 @@ public class NetStringCallBack extends StringCallback {
                 } else if (callBackInterface != null
                         && callBackInterface instanceof WxPayResultQueryInterface
                         && command == Engine.COMMAND_PAY_RESULT_QUERY_WX) {
+                    ((WxPayResultQueryInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null
                         && callBackInterface instanceof PostInviteCodeInterface) {
                     if (command == Engine.COMMAND_POST_INVITE_CODE) {
@@ -300,6 +301,8 @@ public class NetStringCallBack extends StringCallback {
                     ((OlderPassInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null && callBackInterface instanceof SuggestInterface) {
                     ((SuggestInterface) callBackInterface).response(errorCode);
+                } else if (callBackInterface != null && callBackInterface instanceof UserInfoLoginSetInterface) {
+                    ((UserInfoLoginSetInterface) callBackInterface).response(errorCode);
                 } else {
                     LocalLog.e(TAG, " dispatch not match");
                 }
@@ -820,14 +823,6 @@ public class NetStringCallBack extends StringCallback {
                 try {
                     StepDollarDetailResponse dollarDetailResponse = new Gson().fromJson(s, StepDollarDetailResponse.class);
                     ((StepDollarDetailInterface) callBackInterface).response(dollarDetailResponse);
-                } catch (JsonSyntaxException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (command == Engine.COMMAND_GET_USER_INFO) {
-                try {
-                    UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
-                    ((StepDollarDetailInterface) callBackInterface).response(userInfoResponse);
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
                 }

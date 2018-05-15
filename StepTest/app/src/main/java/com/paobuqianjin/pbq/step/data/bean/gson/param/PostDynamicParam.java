@@ -1,5 +1,9 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.param;
 
+import android.text.TextUtils;
+
+import com.paobuqianjin.pbq.step.utils.Base64Util;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -17,6 +21,19 @@ city	城市	true	string*/
     private String dynamic;
     private String images;
     private String city;
+
+    public String getPosition() {
+        return position;
+    }
+
+    public PostDynamicParam setPosition(String position) {
+        this.position = position;
+        if (!TextUtils.isEmpty(position))
+            params.put("position", position);
+        return this;
+    }
+
+    private String position;//详细位置
     private Map<String, String> params;
 
 
@@ -36,7 +53,9 @@ city	城市	true	string*/
 
     public PostDynamicParam setDynamic(String dynamic) {
         this.dynamic = dynamic;
-        params.put("dynamic", dynamic);
+        String baseCode = Base64Util.makeUidToBase64(dynamic);
+        if (!TextUtils.isEmpty(dynamic))
+            params.put("dynamic", baseCode);
         return this;
     }
 
@@ -46,7 +65,8 @@ city	城市	true	string*/
 
     public PostDynamicParam setImages(String images) {
         this.images = images;
-        params.put("images", images);
+        if (!TextUtils.isEmpty(images))
+            params.put("images", images);
         return this;
     }
 
@@ -56,7 +76,8 @@ city	城市	true	string*/
 
     public PostDynamicParam setCity(String city) {
         this.city = city;
-        params.put("city", city);
+        if (!TextUtils.isEmpty(city))
+            params.put("city", city);
         return this;
     }
 
@@ -81,5 +102,17 @@ city	城市	true	string*/
             temp = temp + key + ":" + params.get(key) + "\n";
         }
         return temp;
+    }
+
+    @Override
+    public String toString() {
+        return "PostDynamicParam{" +
+                "userid=" + userid +
+                ", dynamic='" + dynamic + '\'' +
+                ", images='" + images + '\'' +
+                ", city='" + city + '\'' +
+                ", position='" + position + '\'' +
+                ", params=" + params +
+                '}';
     }
 }

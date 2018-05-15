@@ -20,6 +20,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorInfoActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.TargetPeopleActivity;
+import com.paobuqianjin.pbq.step.customview.ChooseOneItemWheelPopWindow;
 import com.paobuqianjin.pbq.step.customview.LimitLengthFilter;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.GetUserBusinessParam;
@@ -34,6 +35,8 @@ import com.paobuqianjin.pbq.step.presenter.im.TaskSponsorInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+
+import java.util.Arrays;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -127,6 +130,10 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     private NormalDialog dialog;
     private LimitLengthFilter filter;
 
+    private ChooseOneItemWheelPopWindow wheelPopWindow;
+    private final int DEVALUE_STEP = 10000;//默认步数
+    private String[] targetStepArr = {"5000","6000","7000","8000","9000","10000"};
+
     @Override
     protected int getLayoutResId() {
         return R.layout.release_task_sponor_fg;
@@ -145,6 +152,13 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
         intentFilter.addAction(LOCATION_ACTION);
         getContext().registerReceiver(stepLocationReciver, intentFilter);
         return rootView;
+    }
+
+    @Override
+    protected void initView(View viewRoot) {
+        super.initView(viewRoot);
+        targetStepDayNum = (EditText) viewRoot.findViewById(R.id.target_step_day_num);
+        targetStepDayNum.setText(DEVALUE_STEP+"");
     }
 
     @Override
@@ -170,10 +184,31 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
-    @OnClick({R.id.people_target_span, R.id.sponor_msg_span, R.id.btn_confirm})
+    @OnClick({R.id.day_step_target_span, R.id.target_step_day_num, R.id.people_target_span, R.id.sponor_msg_span, R.id.btn_confirm})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
+            case R.id.day_step_target_span:
+            case R.id.target_step_day_num:
+                LocalLog.d(TAG, "商家设置任务目标步数");
+                if (wheelPopWindow == null) {
+                    wheelPopWindow = new ChooseOneItemWheelPopWindow(getActivity(), Arrays.asList(targetStepArr));
+                    wheelPopWindow.setItemConfirmListener(new ChooseOneItemWheelPopWindow.OnWheelItemConfirmListener() {
+                        @Override
+                        public void onItemSelectLis(String result) {
+                            targetStepDayNum.setText(result);
+                        }
+                    });
+
+                }
+                if (wheelPopWindow.isShowing()) {
+                    wheelPopWindow.cancel();
+                    return;
+                }
+                wheelPopWindow.setCurrentSelectValue(targetStepDayNum.getText().toString());
+                wheelPopWindow.show();
+                break;
+
             case R.id.people_target_span:
                 LocalLog.d(TAG, "目标人群筛选");
                 intent.setClass(getContext(), TargetPeopleActivity.class);

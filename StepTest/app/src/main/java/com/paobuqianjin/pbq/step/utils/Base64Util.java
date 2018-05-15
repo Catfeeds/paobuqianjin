@@ -17,14 +17,18 @@ public class Base64Util {
         LocalLog.d(TAG, "makeUidToBase64 enUid = " + enUid);
         return enUid;
     }
-    
+
     public static String getUidFromBase64(String base64Id) {
         String result = "";
         if (!TextUtils.isEmpty(base64Id)) {
             LocalLog.d(TAG, "getUidFromBase64 enUID = " + base64Id);
             if (!TextUtils.isEmpty(base64Id)) {
-                result = new String(Base64.decode(base64Id.getBytes(), Base64.DEFAULT));
-
+                try {
+                    result = new String(Base64.decode(base64Id.getBytes(), Base64.DEFAULT));
+                } catch (IllegalStateException e) {
+                    result = base64Id;
+                    LocalLog.d(TAG, "bad base-64");
+                }
             }
         }
         LocalLog.d(TAG, "getUidFromBase64 uid = " + result);

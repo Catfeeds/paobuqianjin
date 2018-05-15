@@ -1,11 +1,11 @@
 package com.paobuqianjin.pbq.step.activity.sponsor;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -28,15 +28,14 @@ import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
 import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.customview.GridAddPicAdapter;
+import com.paobuqianjin.pbq.step.adapter.GridAddPicAdapter;
 import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
-import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
-import com.paobuqianjin.pbq.step.view.fragment.owner.UserInfoSettingFragment;
+import com.umeng.socialize.utils.SocializeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +61,7 @@ public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBar
     private TranslateAnimation animationCircleType;
     private QServiceCfg qServiceCfg;
     private Intent intent;
+    private ProgressDialog dialog;
 
     @Override
     protected String title() {
@@ -88,6 +88,9 @@ public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBar
         setContentView(R.layout.activity_sponsor_select_pic);
         ButterKnife.bind(this);
         setToolBarListener(this);
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("上传中");
+        dialog.setCancelable(false);
         qServiceCfg = QServiceCfg.instance(this);
         cachePath = getExternalCacheDir().getAbsolutePath();
         initAdapter();
@@ -225,6 +228,7 @@ public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBar
         super.onActivityResult(requestCode, resultCode, data);
         LocalLog.d(TAG, "onActivityResult() enter");
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            SocializeUtils.safeShowDialog(dialog);
             List<ImageBean> resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);
             String content = "";
             for (ImageBean imageBean : resultList) {
@@ -291,8 +295,8 @@ public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBar
                     }
                 });
                 LocalLog.d(TAG, "url = " + url);
-
             }
+            SocializeUtils.safeCloseDialog(dialog);
             return null;
         }
 

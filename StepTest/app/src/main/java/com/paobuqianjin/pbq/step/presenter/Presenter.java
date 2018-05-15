@@ -35,16 +35,13 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginOutResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
-import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.squareup.picasso.NetworkPolicy;
-
-import java.io.File;
 
 
 /**
@@ -58,6 +55,7 @@ public final class Presenter {
     private static Context mContext;
     private int defaultPage = 1;
     private int defaultPageSize = 10;
+    private UserInfoResponse.DataBean currentUser;
 
     private Presenter() {
         engine = Engine.getEngine(mContext);
@@ -505,6 +503,13 @@ public final class Presenter {
         engine.getImage(fileUrl, imageView);
     }
 
+    public void getOriginImage(String fileUrl, final ImageView imageView) {
+        if (fileUrl == null) {
+            return;
+        }
+        engine.getOriginImage(fileUrl, imageView);
+    }
+
     //TODO 加入圈子
     public void joinCircle(JoinCircleParam joinCircleParam) {
         engine.joinCircle(joinCircleParam);
@@ -711,8 +716,8 @@ public final class Presenter {
     }
 
     //TODO 获取步币明细
-    public void getUserCredit() {
-        engine.getUserCredit();
+    public void getUserCredit(int page, int pagesize) {
+        engine.getUserCredit(page, pagesize);
     }
 
     public void getUserDollarStep() {
@@ -784,5 +789,13 @@ public final class Presenter {
     public void dispatchUiInterface(CallBackInterface uiCallBackInterface) {
         LocalLog.d(TAG, "dispatchUiInterface() enter");
         engine.dispatchUiInterface(uiCallBackInterface);
+    }
+
+    public UserInfoResponse.DataBean getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(UserInfoResponse.DataBean currentUser) {
+        this.currentUser = currentUser;
     }
 }

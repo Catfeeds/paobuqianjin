@@ -266,8 +266,12 @@ public final class OwnerFragment extends BaseFragment {
                 break;
             case R.id.step_dollar_span:
                 LocalLog.d(TAG, "步币");
-                intent.setClass(getContext(), StepDollarActivity.class);
-                startActivity(intent);
+                if (this.userInfoResponse != null && this.userInfoResponse.getData() != null) {
+                    intent.putExtra("userinfo", this.userInfoResponse.getData());
+                    intent.setClass(getContext(), StepDollarActivity.class);
+                    startActivity(intent);
+                }
+
                 break;
             case R.id.gitf_span:
                 LocalLog.d(TAG, "邀请有礼");
@@ -348,6 +352,7 @@ public final class OwnerFragment extends BaseFragment {
                     LocalLog.d(TAG, "vvvvvvvv");
                     return;
                 }
+                Presenter.getInstance(getContext()).setCurrentUser(userInfoResponse.getData());
                 Presenter.getInstance(getContext()).setTarget(getContext(), userInfoResponse.getData().getTarget_step());
                 Presenter.getInstance(getContext()).setAvatar(getContext(), userAvatar);
                 Presenter.getInstance(getContext()).setNickName(getContext(), userInfoResponse.getData().getNickname());

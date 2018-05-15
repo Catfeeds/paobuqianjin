@@ -9,10 +9,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -44,6 +44,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
+import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
@@ -309,7 +310,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 dataBean.setContent(postDynamicContentResponse.getData().getContent());
                 dataBean.setCreate_time(postDynamicContentResponse.getData().getCreate_time());
                 dataBean.setDynamicid(Integer.parseInt(postDynamicContentResponse.getData().getDynamicid()));
-                dataBean.setId(Integer.parseInt(postDynamicContentResponse.getData().getUserid()));
+                dataBean.setId(Integer.parseInt(postDynamicContentResponse.getData().getId()));
+                dataBean.setUserid(Integer.parseInt(postDynamicContentResponse.getData().getUserid()));
                 dataBean.setParent_id(Integer.parseInt(postDynamicContentResponse.getData().getParent_id()));
                 dataBean.setReply_userid(Integer.parseInt(postDynamicContentResponse.getData().getReply_userid()));
                 dataBean.setNickname(postDynamicContentResponse.getData().getNickname());
@@ -427,18 +429,16 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 likeNumIcon.setImageDrawable(getDrawableResource(R.drawable.fabulous_n));
             }
             int[] emj = getContext().getResources().getIntArray(R.array.emjio_list);
-            String content = dynamicIdDetailResponse.getData().getDynamic();
+            String content = Base64Util.getUidFromBase64(dynamicIdDetailResponse.getData().getDynamic());
 
-            if (content != null) {
+/*            if (content != null) {
                 for (int i = 0; i < emj.length; i++) {
                     content = content.replace(Utils.getEmojiStringByUnicode(emj[i]), "[0x" + numToHex8(emj[i]) + "]");
                 }
-            }
+            }*/
 
             dynamicContentText.setText(content);
-            if (dynamicIdDetailResponse.getData().getCity() != null && !dynamicIdDetailResponse.getData().getCity().equals("")) {
-                dynamicLocationCity.setText(dynamicIdDetailResponse.getData().getCity());
-            }
+            dynamicLocationCity.setText(dynamicIdDetailResponse.getData().getShowAddress());
             likeNum = dynamicIdDetailResponse.getData().getVote();
             sourceLikeNum = likeNum;
             contentNum = dynamicIdDetailResponse.getData().getComment();
@@ -724,37 +724,24 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
     private void popEdit(final PostDynamicContentParam postDynamicContentParam, String dearName) {
         LocalLog.d(TAG, "popRedPkg() enter");
-        if (popRedPkgView == null) {
-            popRedPkgView = View.inflate(getContext(), R.layout.response_edit_span, null);
-        }
-        if (popupRedPkgWindow == null) {
-            popupRedPkgWindow = new PopupWindow(popRedPkgView,
-                    WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-            popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    LocalLog.d(TAG, "评论框消失");
-                    popupRedPkgWindow = null;
-                }
-            });
-            popupRedPkgWindow.setTouchInterceptor(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_OUTSIDE && !popupRedPkgWindow.isFocusable()) {
-                        return true;
-                    }
-                    return false;
-                }
-            });
-        }
+        popRedPkgView = View.inflate(getContext(), R.layout.response_edit_span, null);
+        popupRedPkgWindow = new PopupWindow(popRedPkgView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupRedPkgWindow = null;
+            }
+        });
+
         final CustomEdit editText = (CustomEdit) popRedPkgView.findViewById(R.id.content_text);
 //        editText.setHint("回复:" + dearName);
-        editText.setHint("请输入评论");
+        editText.setHint("请输入评论" );
         final EditTextChangeListener editTextChangeListener = new EditTextChangeListener();
         editText.addTextChangedListener(editTextChangeListener);
 
         Button button = (Button) popRedPkgView.findViewById(R.id.send_content);
-        Button buttonIcon = (Button) popRedPkgView.findViewById(R.id.edit_expression);
+        ImageView buttonIcon = (ImageView) popRedPkgView.findViewById(R.id.edit_expression);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

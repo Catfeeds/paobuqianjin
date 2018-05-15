@@ -272,30 +272,26 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
             if (intent != null) {
                 if (REC_TASK_ACTION.equals(intent.getAction())) {
                     LocalLog.d(TAG, "领取任务成功");
-                    pageIndex = 1;
-                    pageCount = 0;
-                    allTaskList = null;
-                    doingTaskList = null;
-                    finishTaskList = null;
-                    allTaskFragment.setData(null);
-                    unFinishTaskFragment.setData(null);
-                    finishedTaskFragment.setData(null);
-                    Presenter.getInstance(getContext()).getAllMyRecTask(pageIndex, PAGESIZE);
+                    loadTaskData();
 
                 } else if (REC_GIFT_ACTION.equals(intent.getAction())) {
                     LocalLog.d(TAG, "领取奖励成功");
-                    pageIndex = 1;
-                    pageCount = 0;
-                    allTaskList = null;
-                    doingTaskList = null;
-                    finishTaskList = null;
-                    allTaskFragment.setData(null);
-                    unFinishTaskFragment.setData(null);
-                    finishedTaskFragment.setData(null);
-                    Presenter.getInstance(getContext()).getAllMyRecTask(pageIndex, PAGESIZE);
+                    loadTaskData();
                 }
             }
         }
+    }
+
+    private void loadTaskData() {
+        pageIndex = 1;
+        pageCount = 0;
+        allTaskList = null;
+        doingTaskList = null;
+        finishTaskList = null;
+        allTaskFragment.setData(null);
+        unFinishTaskFragment.setData(null);
+        finishedTaskFragment.setData(null);
+        Presenter.getInstance(getContext()).getAllMyRecTask(pageIndex, PAGESIZE);
     }
 
     @Override
@@ -362,6 +358,15 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() == -100) {
             exitTokenUnfect();
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            LocalLog.d(TAG, "刷新任务列表");
+            loadTaskData();
         }
     }
 }

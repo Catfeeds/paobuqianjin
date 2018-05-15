@@ -46,14 +46,14 @@ public class StepDollarDetailAdapter extends RecyclerView.Adapter<StepDollarDeta
     private void updateListItem(StepDollarDetailViewHolder holder, int position) {
         LocalLog.d(TAG, "updateListItem() enter");
         if (mData.get(position) instanceof StepDollarDetailResponse.DataBeanX.DataBean) {
-            holder.inviteText.setText(((StepDollarDetailResponse.DataBeanX.DataBean) mData.get(position)).getSource());
+            holder.inviteText.setText(((StepDollarDetailResponse.DataBeanX.DataBean) mData.get(position)).getTypename());
             //转换为毫秒级
-            long createTime = ((StepDollarDetailResponse.DataBeanX.DataBean) mData.get(position)).getCreat_time();
+            long createTime = ((StepDollarDetailResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
             LocalLog.d(TAG, "createTime = " + createTime);
-            String dateStr = DateTimeUtil.formatDateTime(createTime*1000, DateTimeUtil.DF_YYYY_MM_DD);
+            String dateStr = DateTimeUtil.formatDateTime(createTime * 1000, DateTimeUtil.DF_YYYY_MM_DD);
             LocalLog.d(TAG, "dateStr = " + dateStr);
             holder.inviteTime.setText(dateStr);
-            holder.stepDollarIncome.setText(((StepDollarDetailResponse.DataBeanX.DataBean) mData.get(position)).getCredit());
+            holder.stepDollarIncome.setText("+" + ((StepDollarDetailResponse.DataBeanX.DataBean) mData.get(position)).getCredit());
         }
     }
 

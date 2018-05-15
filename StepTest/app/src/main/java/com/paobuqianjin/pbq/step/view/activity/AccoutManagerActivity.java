@@ -3,10 +3,16 @@ package com.paobuqianjin.pbq.step.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.fragment.owner.PassAccountManagerFragment;
+import com.umeng.socialize.UMShareAPI;
+
+import java.util.List;
 
 /**
  * Created by pbq on 2018/4/2.
@@ -34,5 +40,7 @@ public class AccoutManagerActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
+
 }

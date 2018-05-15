@@ -39,6 +39,8 @@ import com.paobuqianjin.pbq.step.view.activity.FillInviteCodeActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.InviteDanAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
+import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -46,6 +48,10 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.umeng.socialize.utils.SocializeUtils;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.Rationale;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -93,6 +99,8 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     private int pageIndexDan = 1, pageCountDan = 0;
     private final static int PAGE_SIZE = 100;
     InviteDanAdapter adapter;
+    private Rationale mRationale;
+    private PermissionSetting mSetting;
     private ArrayList<InviteDanResponse.DataBeanX.DataBean> inviteDan = new ArrayList<>();
 
     @Override
@@ -116,7 +124,6 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getInviteDan(pageIndexDan, PAGE_SIZE);
         return rootView;
     }
 
@@ -160,7 +167,9 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         adapter = new InviteDanAdapter(getContext(), null);
         inviteDanFragment.setDanAdapter(adapter);
         loadData(inviteDan);
-
+        mRationale = new DefaultRationale();
+        mSetting = new PermissionSetting(getContext());
+        Presenter.getInstance(getContext()).getInviteDan(pageIndexDan, PAGE_SIZE);
     }
 
 
@@ -252,16 +261,38 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
                             .setCallback(shareListener).share();
                     break;
                 case R.id.qq_icon:
-                    share_media = SHARE_MEDIA.QQ;
-                    new ShareAction(getActivity()).withMedia(web)
-                            .setPlatform(share_media)
-                            .setCallback(shareListener).share();
+                    requestPermission(Permission.Group.STORAGE);
+
                     break;
                 default:
                     break;
             }
         }
     };
+ /*权限适配*/
+
+    private void requestPermission(String... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        LocalLog.d(TAG, "获取权限成功");
+                        share_media = SHARE_MEDIA.QQ;
+                        new ShareAction(getActivity()).withMedia(web)
+                                .setPlatform(share_media)
+                                .setCallback(shareListener).share();
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                if (AndPermission.hasAlwaysDeniedPermission(getActivity(), permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
+    }
 
     private View getTabView(int position) {
         RelativeLayout view = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.text_tab, null);

@@ -36,6 +36,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PutVoteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
@@ -129,14 +130,14 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 LocalLog.d(TAG, "无内容");
                 holder.dynamicContentText.setVisibility(View.GONE);
             } else {
-                String content = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic();
+/*                String content = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic();
                 LocalLog.d(TAG, "content = " + content);
                 if (content != null) {
                     for (int i = 0; i < emj.length; i++) {
                         content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
                     }
-                }
-
+                }*/
+                String content = Base64Util.getUidFromBase64(((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic());
                 holder.dynamicContentText.setVisibility(View.VISIBLE);
                 holder.dynamicContentText.setText(content);
             }

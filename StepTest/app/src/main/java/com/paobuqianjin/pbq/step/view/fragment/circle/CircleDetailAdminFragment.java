@@ -886,12 +886,20 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 if (pop_money != null) {
                     if (postRevRedPkgResponse.getData() != null) {
                         pop_money.setText(String.valueOf("￥ " + postRevRedPkgResponse.getData().getAmount()));
+                        Presenter.getInstance(getContext()).getCircleDetail(circleId);
                     }
                 }
                 //popCircleRedPkg.dismiss();
             }
         }else{
+           /* if (imageView != null) {
+                imageView.clearAnimation();
+                imageView.setVisibility(View.GONE);
+                pop_message_red_a.setVisibility(View.INVISIBLE);
+                pop_message_red_b.setText("圈子余额不足");
+            }*/
             PaoToastUtils.showShortToast(getActivity(), postRevRedPkgResponse.getMessage());
+
         }
     }
 

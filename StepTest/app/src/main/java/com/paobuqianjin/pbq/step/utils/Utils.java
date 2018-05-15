@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.hardware.input.InputManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
@@ -26,6 +27,10 @@ public class Utils {
     public static int dip2px(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
+    }
+    //dp转px
+    public static int dp2px(Context context,int dpValue){
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dpValue,context.getResources().getDisplayMetrics());
     }
 
     /**
@@ -84,7 +89,6 @@ public class Utils {
         manager.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
-
     /**
      * EditText获取焦点并显示软键盘
      */
@@ -116,7 +120,6 @@ public class Utils {
 
     /**
      * 获取屏幕宽高
-     *
      * @param context
      * @return {width,height}
      */
@@ -124,6 +127,6 @@ public class Utils {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(displayMetrics);
-        return new int[]{displayMetrics.widthPixels, displayMetrics.heightPixels};
+        return new int[]{displayMetrics.widthPixels,displayMetrics.heightPixels};
     }
 }

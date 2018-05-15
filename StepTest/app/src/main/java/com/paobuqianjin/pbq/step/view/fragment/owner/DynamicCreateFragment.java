@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -25,7 +27,9 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -38,10 +42,15 @@ import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.activity.base.GalleryActivity;
+import com.paobuqianjin.pbq.step.activity.sponsor.SponsorInfoActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorTMapActivity;
+import com.paobuqianjin.pbq.step.adapter.DynamicAddPicAdapter;
+import com.paobuqianjin.pbq.step.adapter.GridAddPicAdapter;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
+import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
@@ -107,6 +116,8 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     RelativeLayout locationSpan;
     @Bind(R.id.dynamic_create)
     RelativeLayout dynamicCreate;
+    @Bind(R.id.grid_view)
+    GridView gridView;
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
     private TranslateAnimation animationCircleType;
@@ -126,7 +137,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private String cachePath;
     private final int REQUEST_CODE = 111;
-    List<ImageBean> mResultList = new ArrayList<>();
+    ArrayList<ImageBean> mResultList = new ArrayList<>();
     private int picIndex = 0;
     public static final int REQ_POSITION = 3;
     public static final int RES_POSITION = 4;
@@ -134,6 +145,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     private String city;
     private double latitude, longitude;
     private String address;
+    private DynamicAddPicAdapter adapter;
 
     @Override
     protected String title() {
@@ -189,7 +201,16 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                     Toast.makeText(getContext(), "没有内容", Toast.LENGTH_SHORT).show();
                     return;
                 } else {
-                    postDynamicParam.setCity(locationStr.getText().toString())
+                    if (!TextUtils.isEmpty(city) && !TextUtils.isEmpty(locationStr.getText().toString())) {
+                        if (city.equals(locationStr.getText().toString())) {
+                            postDynamicParam.setCity(city);
+                        } else {
+                            postDynamicParam.setCity(city).setPosition(locationStr.getText().toString());
+                        }
+                    } else {
+                        postDynamicParam.setCity(locationStr.getText().toString());
+                    }
+                    postDynamicParam
                             .setDynamic(content)
                             .setUserid(Presenter.getInstance(getContext()).getId());
                     Presenter.getInstance(getContext()).postDynamic(postDynamicParam);
@@ -210,6 +231,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+        ButterKnife.bind(this, viewRoot);
         setToolBarListener(toolBarListener);
         dynamicContent = (EditText) viewRoot.findViewById(R.id.dynamic_content);
         picA = (ImageView) viewRoot.findViewById(R.id.pic_a);
@@ -226,13 +248,38 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         cachePath = getContext().getExternalCacheDir().getAbsolutePath();
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getContext());
+        initAdapter();
+    }
+
+    private void initAdapter() {
+        gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
+        adapter = new DynamicAddPicAdapter(getContext(), 4, mResultList);
+        gridView.setAdapter(adapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == adapter.getData().size()) {
+                    //点击+
+                    picIndex = mResultList.size();
+                    requestPermission(Permission.Group.STORAGE);
+                } else {
+                    Intent intent = new Intent(getContext(), GalleryActivity.class);
+                    intent.putParcelableArrayListExtra("list", mResultList);
+                    intent.putExtra("ID", position);
+                    getContext().startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.activity_photo_enter, -1);
+
+                    //点击图片查看大图
+                    //  popImageView(adapter.getData().get(position).getImageUrl());
+                }
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
@@ -379,11 +426,13 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                 content = content + imageBean.toString() + "\n";
             }
             LocalLog.d(TAG, "content = " + content);
-            if (resultList != null) {
+            if (resultList != null && resultList.size() != 0) {
                 int size = resultList.size();
                 int resultSize = mResultList.size();
                 LocalLog.d(TAG, "size = " + size + ",resultSize = " + resultSize);
-                if (resultSize == 0) {
+                mResultList.addAll(resultList);
+                adapter.notifyDataSetChanged();
+              /*  if (resultSize == 0) {
                     mResultList = resultList;
                 } else {
                     for (int i = 0; i < size; i++) {
@@ -411,19 +460,22 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                     showC(mResultList.get(2).getImagePath());
                     showD(mResultList.get(3).getImagePath());
                     picD.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
             return;
         }
 
         if (requestCode == REQ_POSITION && resultCode == RES_POSITION) {
-            city = data.getStringExtra("city");
+            String choiceCity = data.getStringExtra("city");
+            if (!TextUtils.isEmpty(choiceCity)) {
+                city = choiceCity;
+            }
             latitude = data.getDoubleExtra("latitude", 0);
             longitude = data.getDoubleExtra("longitude", 0);
             address = data.getStringExtra("address");
             locationStr.setText(address);
 
-            LocalLog.d(TAG,address);
+            LocalLog.d(TAG, address);
         }
     }
 
@@ -493,8 +545,16 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
 
             netPath = s;
             String content = dynamicContent.getText().toString();
-            postDynamicParam.setCity(locationStr.getText().toString())
-                    .setDynamic(content)
+            if (!TextUtils.isEmpty(city) && !TextUtils.isEmpty(locationStr.getText().toString())) {
+                if (city.equals(locationStr.getText().toString())) {
+                    postDynamicParam.setCity(city);
+                } else {
+                    postDynamicParam.setCity(city).setPosition(locationStr.getText().toString());
+                }
+            } else {
+                postDynamicParam.setCity(locationStr.getText().toString());
+            }
+            postDynamicParam.setDynamic(content)
                     .setUserid(Presenter.getInstance(getContext()).getId())
                     .setImages(images);
             Presenter.getInstance(getContext()).postDynamic(postDynamicParam);
@@ -612,6 +672,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
 
     @Override
     public void response(String city, double latitude, double longitude) {
+        this.city = city;
         locationStr.setText(city);
     }
 
