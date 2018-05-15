@@ -106,11 +106,40 @@
 
 -keep class com.lljjcoder.**{
 	*;
+	}
 #避免混淆Bugly，在Proguard混淆文件中增加以下配置
+
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 -keep class android.support.**{*;}
 -dontwarn com.yanzhenjie.permission.**
-}
+
 -dontwarn com.lwkandroid.imagepicker.**
 -keep class com.lwkandroid.imagepicker.**{*;}
+
+-keepclassmembers class ** {
+    public void on*Event(...);
+}
+-keep class c.t.**{*;}
+-keep class com.tencent.map.geolocation.**{*;}
+-keep class com.tencent.tencentmap.lbssdk.service.**{*;}
+
+
+-dontwarn  org.eclipse.jdt.annotation.**
+-dontwarn  c.t.**
+
+#腾讯地图 2D sdk
+-keep class com.tencent.mapsdk.**{*;}
+-keep class com.tencent.tencentmap.**{*;}
+
+#腾讯地图 3D sdk
+-keep class com.tencent.tencentmap.**{*;}
+-keep class com.tencent.map.**{*;}
+-keep class com.tencent.beacontmap.**{*;}
+-keep class navsns.**{*;}
+-dontwarn com.qq.**
+-dontwarn com.tencent.beacon.**
+
+#腾讯地图检索sdk
+-keep class com.tencent.lbssearch.**{*;}
+-keep class com.google.gson.examples.android.model.** { *; }

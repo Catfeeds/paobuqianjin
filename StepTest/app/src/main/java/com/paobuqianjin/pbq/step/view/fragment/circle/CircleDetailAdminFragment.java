@@ -324,14 +324,13 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popCircleRedPkg.dismiss();
+                if(popCircleRedPkg!=null) popCircleRedPkg.dismiss();
             }
         });
         popCircleRedPkg.setFocusable(true);
         popCircleRedPkg.setOutsideTouchable(true);
         popCircleRedPkg.setBackgroundDrawable(new BitmapDrawable());
         imageView = (ImageView) popCircleOpBar.findViewById(R.id.open_red_pkg);
-
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -365,9 +364,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     pop_message_red_b.setText("红包已领完");
                     break;
                 case 3:
-                    pop_message_red_a.setVisibility(View.INVISIBLE);
-                    pop_message_red_b.setText("已经领过红包");
-                    pop_money.setText("￥ " + circleDetailResponse.getData().getRed_packet_money());
+                    pop_message_red_a.setVisibility(View.VISIBLE);
+                    pop_message_red_b.setText("今日达标红包");
+                    pop_money.setText("￥" + circleDetailResponse.getData().getRed_packet_money());
                     break;
                 case 4:
                     pop_message_red_a.setVisibility(View.INVISIBLE);
@@ -443,30 +442,32 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
 
     public void popRedPkgButton() {
         LocalLog.d(TAG, "popRedPkgButton() 弹出红包");
-        View popCircleOpBarHori = View.inflate(getContext(), R.layout.red_pkg_button_pop_window, null);
-        popOpWindowRedButtonHori = new PopupWindow(popCircleOpBarHori,
-                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        popCircleOpBarHori.findViewById(R.id.red_pkg_button).setOnClickListener(onClickListener);
-        popOpWindowRedButtonHori.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                LocalLog.d(TAG, "popRedPkgButton dismiss() ");
+        if (popOpWindowRedButtonHori == null) {
+            View popCircleOpBarHori = View.inflate(getContext(), R.layout.red_pkg_button_pop_window, null);
+            popOpWindowRedButtonHori = new PopupWindow(popCircleOpBarHori,
+                    WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            popCircleOpBarHori.findViewById(R.id.red_pkg_button).setOnClickListener(onClickListener);
+            popOpWindowRedButtonHori.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    LocalLog.d(TAG, "popRedPkgButton dismiss() ");
 //                popOpWindowRedButton = null;
-            }
-        });
+                }
+            });
 
 //        popOpWindowRedButton.setFocusable(true);
 //        popOpWindowRedButton.setOutsideTouchable(true);
-        popOpWindowRedButtonHori.setBackgroundDrawable(new BitmapDrawable());
-        TranslateAnimation animationCircleTypeHori = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
-                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
-                1, Animation.RELATIVE_TO_PARENT, 0);
-        animationCircleTypeHori.setInterpolator(new AccelerateInterpolator());
-        animationCircleTypeHori.setDuration(200);
+            popOpWindowRedButtonHori.setBackgroundDrawable(new BitmapDrawable());
+            TranslateAnimation animationCircleTypeHori = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleTypeHori.setInterpolator(new AccelerateInterpolator());
+            animationCircleTypeHori.setDuration(200);
 
 
-        popOpWindowRedButtonHori.showAtLocation(getActivity().findViewById(R.id.circle_detail_fg), Gravity.BOTTOM | Gravity.RIGHT, 0, 25);
-        popCircleOpBarHori.startAnimation(animationCircleTypeHori);
+            popOpWindowRedButtonHori.showAtLocation(getActivity().findViewById(R.id.circle_detail_fg), Gravity.BOTTOM | Gravity.RIGHT, 0, 25);
+            popCircleOpBarHori.startAnimation(animationCircleTypeHori);
+        }
     }
 
     private void popAdminSelect() {
@@ -892,12 +893,13 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 //popCircleRedPkg.dismiss();
             }
         }else{
-           /* if (imageView != null) {
+            if (imageView != null) {
                 imageView.clearAnimation();
                 imageView.setVisibility(View.GONE);
                 pop_message_red_a.setVisibility(View.INVISIBLE);
-                pop_message_red_b.setText("圈子余额不足");
-            }*/
+                pop_message_red_b.setText(postRevRedPkgResponse.getMessage());
+                Presenter.getInstance(getContext()).getCircleDetail(circleId);
+            }
             PaoToastUtils.showShortToast(getActivity(), postRevRedPkgResponse.getMessage());
 
         }
