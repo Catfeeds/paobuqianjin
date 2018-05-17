@@ -75,6 +75,8 @@ public class TargetPeopleActivity extends BaseBarActivity implements ChooseTarge
 
     private String city;
     private double latitude, longitude;
+    private String address;
+    private String cityCode;
 
     @Override
     protected String title() {
@@ -94,6 +96,8 @@ public class TargetPeopleActivity extends BaseBarActivity implements ChooseTarge
         chooseTargetWheel.setOnTargetChangeListener(this);
         Intent data = getIntent();
         sexStr = data.getStringExtra("sexStr");
+        cityCode = data.getStringExtra("cityCode");
+        address = data.getStringExtra("address");
         if (!TextUtils.isEmpty(sexStr)) {
             switch (sexStr) {
                 case "2":
@@ -108,10 +112,10 @@ public class TargetPeopleActivity extends BaseBarActivity implements ChooseTarge
             }
         }
         minAgeStr = data.getStringExtra("minAgeStr");
-        if (!(TextUtils.isEmpty(minAgeStr)||"0".equals(minAgeStr)))
+        if (!(TextUtils.isEmpty(minAgeStr) || "0".equals(minAgeStr)))
             minAge.setText(minAgeStr);
         maxAgeStr = data.getStringExtra("maxAgeStr");
-        if (!(TextUtils.isEmpty(maxAgeStr)||"0".equals(maxAgeStr)))
+        if (!(TextUtils.isEmpty(maxAgeStr) || "0".equals(maxAgeStr)))
             maxAge.setText(maxAgeStr);
         longitude = data.getDoubleExtra("longitudeStr", 0);
         latitude = data.getDoubleExtra("latitudeStr", 0);
@@ -119,8 +123,8 @@ public class TargetPeopleActivity extends BaseBarActivity implements ChooseTarge
         if (!TextUtils.isEmpty(targetSelectStr))
             targetSelect.setText(chooseTargetWheel.getContentByDistance(targetSelectStr));
         city = data.getStringExtra("city");
-        if (!TextUtils.isEmpty(city))
-            locationSelect.setText(city);
+        if (!TextUtils.isEmpty(address))
+            locationSelect.setText(address);
     }
 
     @OnClick({R.id.location_pan, R.id.location_radius, R.id.btn_confirm})
@@ -129,8 +133,8 @@ public class TargetPeopleActivity extends BaseBarActivity implements ChooseTarge
             case R.id.location_pan:
                 LocalLog.d(TAG, "位置选择");
                 Intent intent = new Intent();
-                intent.putExtra("lat",latitude);
-                intent.putExtra("lng",longitude);
+                intent.putExtra("lat", latitude);
+                intent.putExtra("lng", longitude);
                 intent.setClass(this, SponsorTMapActivity.class);
                 startActivityForResult(intent, REQ_POSITION);
                 break;
@@ -156,6 +160,10 @@ public class TargetPeopleActivity extends BaseBarActivity implements ChooseTarge
                     intentResult.putExtra("longitudeStr", longitude);
                 if (0 != latitude)
                     intentResult.putExtra("latitudeStr", latitude);
+                if (!TextUtils.isEmpty(address)){
+                    intentResult.putExtra("address", address);
+                }
+                intentResult.putExtra("cityCode",cityCode);
                 setResult(1, intentResult);
                 finish();
                 break;
@@ -169,11 +177,13 @@ public class TargetPeopleActivity extends BaseBarActivity implements ChooseTarge
             city = data.getStringExtra("city");
             latitude = data.getDoubleExtra("latitude", 0);
             longitude = data.getDoubleExtra("longitude", 0);
-            if (TextUtils.isEmpty(data.getStringExtra("address"))){
+            if (TextUtils.isEmpty(data.getStringExtra("address"))) {
                 locationSelect.setText(city);
-            }else {
-                locationSelect.setText(data.getStringExtra("address"));
+            } else {
+                address = data.getStringExtra("address");
+                locationSelect.setText(address);
             }
+            cityCode = data.getStringExtra("cityCode");
         }
     }
 

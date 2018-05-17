@@ -26,8 +26,10 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.MainActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.fragment.home.HomePageFragment;
 import com.paobuqianjin.pbq.step.view.fragment.owner.MyFriendFragment;
 
 import java.util.ArrayList;
@@ -75,6 +77,7 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
     private final static String REC_GIFT_ACTION = "com.paobuqianjin.pbq.step.REC_GIFT_ACTION";
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 10;
+    MainActivity.MoneyUpdateInterface moneyUpdateInterface;
 
     @Override
 
@@ -86,6 +89,10 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
     public void onAttach(Context context) {
         super.onAttach(context);
         Presenter.getInstance(getContext()).attachUiInterface(this);
+    }
+
+    public void setMoneyUpdate(MainActivity.MoneyUpdateInterface moneyUpdateInterface) {
+        this.moneyUpdateInterface = moneyUpdateInterface;
     }
 
     @Override
@@ -276,6 +283,9 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
 
                 } else if (REC_GIFT_ACTION.equals(intent.getAction())) {
                     LocalLog.d(TAG, "领取奖励成功");
+                    if (moneyUpdateInterface != null) {
+                        moneyUpdateInterface.update();
+                    }
                     loadTaskData();
                 }
             }

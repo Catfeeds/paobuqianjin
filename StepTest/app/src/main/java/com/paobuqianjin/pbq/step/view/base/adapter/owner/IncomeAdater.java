@@ -69,7 +69,7 @@ public class IncomeAdater extends RecyclerView.Adapter<IncomeAdater.IncomeDetail
             if (((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getStatus() == 0) {
                 LocalLog.d(TAG, "审核状态");
             } else if (((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getStatus() == 1) {
-                LocalLog.d(TAG, "提现成功");
+
             }
             holder.data.setText("￥:" + ((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getActual_amount() + "元");
         } else if (mData.get(position) instanceof RechargeDetailResponse.DataBeanX.DataBean) {

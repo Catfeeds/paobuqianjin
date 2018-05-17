@@ -79,6 +79,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
     private TencentLocationManager locationManager;
     private Marker myLocation;
     private TencentSearch tencentSearch;
+    private String cityCode;
     private SearchPositionAdapter<SelectPoisitonListBean> adapter;
     private TencentMap.OnMapCameraChangeListener onMapCameraChangeListener = new TencentMap.OnMapCameraChangeListener() {
         @Override
@@ -147,6 +148,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
                         mCurrentLon + "----" + latitude + "---" + longitude);
                 Intent intent = getIntent();
                 intent.putExtra("city", city);
+                intent.putExtra("cityCode", cityCode);
                 intent.putExtra("address",address);
                 intent.putExtra("latitude", latitude);
                 intent.putExtra("longitude", longitude);
@@ -242,7 +244,8 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
 
     private void startLocation() {
         TencentLocationRequest request = TencentLocationRequest.create();
-        request.setRequestLevel(TencentLocationRequest.REQUEST_LEVEL_NAME);
+        request.setRequestLevel(TencentLocationRequest.REQUEST_LEVEL_POI);
+        request.setAllowGPS(true);
         req = request.toString();
         locationManager = TencentLocationManager.getInstance(SponsorTMapActivity.this);
         int error = locationManager.requestLocationUpdates(request, SponsorTMapActivity.this);
@@ -361,8 +364,10 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
                         (Geo2AddressResultObject) object;
                 if (oj.result != null) {
                     city = oj.result.ad_info.city;
+                    cityCode = oj.result.ad_info.adcode;
                     address = oj.result.formatted_addresses.recommend;
                     StringBuilder sb = new StringBuilder();
+                    sb.append("\nname：").append(oj.result.ad_info.adcode);
 
                     sb.append("\nname：").append(oj.result.ad_info.name);
                     sb.append("\n地址：").append(oj.result.address);

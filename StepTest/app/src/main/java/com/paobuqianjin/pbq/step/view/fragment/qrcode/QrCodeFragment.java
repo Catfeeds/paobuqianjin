@@ -25,6 +25,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.l.okhttppaobu.okhttp.utils.L;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.Defaultcontent;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -35,6 +36,7 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMMin;
 import com.umeng.socialize.utils.SocializeUtils;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
@@ -343,11 +345,36 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
                 new ShareAction(getActivity()).withMedia(imageCircleQr)
                         .setPlatform(share_media)
                         .setCallback(shareListener).share();
+
+                //shareXiaoChengXu();
                 break;
             case R.id.qq:
                 LocalLog.d(TAG, "分享到qq");
                 requestPermission(Permission.Group.STORAGE);
                 break;
         }
+    }
+
+    /**
+     * 分享小程序
+     */
+    private void shareXiaoChengXu() {
+        UMImage testThumb = new UMImage(getContext(), R.mipmap.app_icon);
+        UMMin umMin = new UMMin(Defaultcontent.url);
+//兼容低版本的网页链接
+        umMin.setThumb(testThumb);
+// 小程序消息封面图片
+        umMin.setTitle("跑步钱进");
+// 小程序消息title
+        umMin.setDescription("大道之行，跑步钱进");
+// 小程序消息描述
+        umMin.setPath("pages/home/home");
+//小程序页面路径
+        umMin.setUserName("gh_564a5200b41c");
+// 小程序原始id,在微信平台查询
+        new ShareAction(getActivity())
+                .withMedia(umMin)
+                .setPlatform(share_media)
+                .setCallback(shareListener).share();
     }
 }

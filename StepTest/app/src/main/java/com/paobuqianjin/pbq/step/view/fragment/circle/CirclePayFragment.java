@@ -500,8 +500,11 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         confirmText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popupOpWindow.dismiss();
-                payWallet();
+                if (popupOpWindow != null) {
+                    popupOpWindow.dismiss();
+                    payWallet();
+                }
+
             }
         });
 

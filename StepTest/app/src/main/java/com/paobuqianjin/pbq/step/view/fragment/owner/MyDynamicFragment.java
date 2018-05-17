@@ -409,6 +409,9 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
                 dynamicAllData.clear();
                 dynamicAllData.addAll(dynamicPersonResponse.getData().getData());
                 loadData(dynamicAllData);
+                if (myDynamicRecycler == null) {
+                    return;
+                }
                 myDynamicRecycler.postDelayed(new Runnable() {
                     @Override
                     public void run() {

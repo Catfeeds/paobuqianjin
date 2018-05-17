@@ -390,6 +390,9 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         } else {
+            if ("Not Found Data".equals(inviteDanResponse.getMessage())) {
+                return;
+            }
             Toast.makeText(getContext(), inviteDanResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }

@@ -153,4 +153,21 @@ city	所在市	false	string
         params.put("city", city);
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "PutUserInfoParam{" +
+                "params=" + params +
+                ", nickname='" + nickname + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", sex=" + sex +
+                ", birthyear='" + birthyear + '\'' +
+                ", birthmonth='" + birthmonth + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", height='" + height + '\'' +
+                ", weight='" + weight + '\'' +
+                ", province='" + province + '\'' +
+                ", city='" + city + '\'' +
+                '}';
+    }
 }

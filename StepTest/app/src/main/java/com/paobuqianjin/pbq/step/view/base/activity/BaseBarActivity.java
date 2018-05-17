@@ -89,8 +89,8 @@ public abstract class BaseBarActivity extends BaseActivity {
                     if (mToolBarListener == null) {
                         onBackPressed();
                     } else {
-                        //mToolBarListener.clickLeft();
-                        onBackPressed();
+                        mToolBarListener.clickLeft();
+//                        onBackPressed();
                     }
                     break;
                 case R.id.bar_tv_right:

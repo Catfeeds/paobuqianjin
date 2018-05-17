@@ -178,6 +178,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     private final static int PAGESIZE = 300;
     private int position = -1;
     private int topPosition = -1;
+    private LinearLayout linear_edit;
 
     @Override
     protected int getLayoutResId() {
@@ -256,6 +257,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         contentNumberIcon.setOnClickListener(onClickListener);
         supportPics = (RelativeLayout) viewRoot.findViewById(R.id.support_pics);
         vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
+        linear_edit = (LinearLayout) viewRoot.findViewById(R.id.linear_edit);
+        initEditView(linear_edit);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             dynamicid = intent.getIntExtra(getContext().getPackageName() + "dynamicId", -1);
@@ -274,6 +277,77 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         }
 
 
+    }
+
+    private void initEditView(View linear_edit) {
+        LocalLog.d(TAG, "initEditView() enter");
+        linear_edit.setVisibility(View.GONE);
+/*
+        final CustomEdit editText = (CustomEdit) linear_edit.findViewById(R.id.content_text);
+//        editText.setHint("回复:" + dearName);
+        editText.setHint("请输入评论" );
+        final EditTextChangeListener editTextChangeListener = new EditTextChangeListener();
+        editText.addTextChangedListener(editTextChangeListener);
+
+        Button button = (Button) linear_edit.findViewById(R.id.send_content);
+        ImageView buttonIcon = (ImageView) linear_edit.findViewById(R.id.edit_expression);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String content = editText.getText().toString();
+                editText.removeTextChangedListener(editTextChangeListener);
+                LocalLog.d(TAG, "content = " + content);
+                int[] emj = getContext().getResources().getIntArray(R.array.emjio_list);
+                if (content != null) {
+                    for (int i = 0; i < emj.length; i++) {
+                        content = content.replace(Utils.getEmojiStringByUnicode(emj[i]), "[0x" + numToHex8(emj[i]) + "]");
+                    }
+                }
+
+                LocalLog.d(TAG, content + "");
+                // TODO: 2018/5/16 回复数据
+                if (content != null && !content.equals("")) {
+                    postDynamicContentParam.setContent(content).setUserid(Presenter.getInstance(getContext()).getId());
+                    Presenter.getInstance(getContext()).postContent(postDynamicContentParam);
+                }
+            }
+        });
+        LinearLayout mLlContent = (LinearLayout) linear_edit.findViewById(R.id.edit_content);
+        EmotionLayout mElEmotion = (EmotionLayout) linear_edit.findViewById(R.id.elEmotion);
+        mEmotionKeyboard = EmotionKeyboard.with(getActivity());
+        mEmotionKeyboard.bindToContent(mLlContent);
+        mEmotionKeyboard.bindToEmotionButton(buttonIcon);
+        mEmotionKeyboard.bindToEditText(editText);
+        mEmotionKeyboard.setEmotionLayout(mElEmotion);
+
+        mElEmotion.attachEditText(editText);
+        mElEmotion.setEmotionAddVisiable(false);
+        mElEmotion.setEmotionSettingVisiable(false);
+        mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
+            @Override
+            public void onEmotionAddClick(View view) {
+                Toast.makeText(getContext(), "add", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onEmotionSettingClick(View view) {
+                Toast.makeText(getContext(), "setting", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        mElEmotion.setEmotionSelectedListener(new IEmotionSelectedListener() {
+            @Override
+            public void onEmojiSelected(String key) {
+                LocalLog.d(TAG, "onEmojiSelected() " + key);
+            }
+
+            @Override
+            public void onStickerSelected(String categoryName, String stickerName, String stickerBitmapPath) {
+                String stickerPath = stickerBitmapPath;
+                Toast.makeText(getContext(), stickerPath, Toast.LENGTH_SHORT).show();
+            }
+        });*/
     }
 
 
@@ -773,8 +847,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
 
         mElEmotion.attachEditText(editText);
-        mElEmotion.setEmotionAddVisiable(true);
-        mElEmotion.setEmotionSettingVisiable(true);
+        mElEmotion.setEmotionAddVisiable(false);
+        mElEmotion.setEmotionSettingVisiable(false);
         mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
             @Override
             public void onEmotionAddClick(View view) {

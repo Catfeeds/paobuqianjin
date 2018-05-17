@@ -73,4 +73,10 @@
     <style name="RunProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal" >
        <!-- <item name="progressDrawable"></item>-->
     </style>
+
+    <style name="MyTextBlackTitle" >
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">14dp</item>
+    </style>
 </resources>

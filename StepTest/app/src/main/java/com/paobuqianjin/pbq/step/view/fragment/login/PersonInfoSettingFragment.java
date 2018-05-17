@@ -15,6 +15,9 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,9 +43,6 @@ import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoSetResponse;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
@@ -52,7 +52,6 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.MainActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
@@ -164,6 +163,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     private String birthDay = null;
     private String high;
     private String weight;
+    private String userNameOldStr;
     private int userid = -1;
     ArrayList<String> weightList = new ArrayList<>();
     //50-250cm
@@ -189,6 +189,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         Presenter.getInstance(getContext()).attachUiInterface(this);
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getContext());
+
     }
 
     @Override
@@ -203,11 +204,11 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     private int getSelect() {
         for (int i = 0; i < selectSex.length; i++) {
             if (selectSex[i]) {
-                return i;
+                return i + 1;
             }
         }
         LocalLog.d(TAG, "error:没有选择");
-        return -1;
+        return 0;
     }
 
     private void UpdateUnSelect(int i) {
@@ -231,6 +232,16 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         selectIcon[0] = useGenderManSelect;
         selectIcon[1] = useGenderNvSelect;
         birthDaySpan = (RelativeLayout) viewRoot.findViewById(R.id.birth_day_span);
+        buttonReturnBar = (RelativeLayout) viewRoot.findViewById(R.id.button_return_bar);
+        settingBirth = (TextView) viewRoot.findViewById(R.id.setting_birth);
+        settingHeight = (TextView) viewRoot.findViewById(R.id.setting_height);
+        settingWeight = (TextView) viewRoot.findViewById(R.id.setting_weight);
+        buttonReturnBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             if (USER_FIT_ACTION_SETTING.equals(intent.getAction())) {
@@ -238,7 +249,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 if (dataBean != null) {
                     String paramStr = new Gson().toJson(dataBean);
                     putUserInfoParam = new Gson().fromJson(paramStr, PutUserInfoParam.class);
-                    LocalLog.d(TAG, "三方登录");
+                    LocalLog.d(TAG, "" + putUserInfoParam.toString() + ", " + putUserInfoParam.paramString());
                     userid = dataBean.getId();
                     update(dataBean);
                 }
@@ -348,7 +359,14 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "确认");
-                settingBirth.setText(birthYear + "年" + birthMonth + "月" + birthDay + "日");
+                if (birthDay != null && birthMonth != null && birthYear != null) {
+                    String newBorth = birthYear + "年" + birthMonth + "月" + birthDay + "日";
+                    if (!newBorth.equals(settingBirth.getText().toString())) {
+                        settingBirth.setText(newBorth);
+                        putUserInfoParam.setBirthyear(birthYear).setBirthmonth(birthMonth).setBirthday(birthDay);
+                    }
+
+                }
                 popupSelectWindow.dismiss();
             }
         });
@@ -405,7 +423,12 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "确认");
-                settingWeight.setText(weight + "公斤");
+                if (weight != null) {
+                    if (!weight.equals(settingWeight.getText().toString())) {
+                        settingWeight.setText(weight + "公斤");
+                        putUserInfoParam.setWeight(weight);
+                    }
+                }
                 popupSelectWindow.dismiss();
             }
         });
@@ -460,7 +483,12 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "确认");
-                settingHeight.setText(high + "厘米");
+                if (high != null) {
+                    if (!high.equals(settingHeight.getText().toString())) {
+                        settingHeight.setText(high + "厘米");
+                        putUserInfoParam.setHeight(high);
+                    }
+                }
                 popupSelectWindow.dismiss();
             }
         });
@@ -502,8 +530,51 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 LocalLog.d(TAG, "UI not live");
                 return;
             }
+
+            birthYear = putUserInfoParam.getBirthyear();
+            birthMonth = putUserInfoParam.getBirthmonth();
+            birthDay = putUserInfoParam.getBirthday();
+            if (birthYear == null && birthMonth == null && birthYear == null) {
+                putUserInfoParam.setBirthyear("1900").setBirthday("01").setBirthmonth("01");
+            } else {
+                settingBirth.setText(birthYear + "年" + birthMonth + "月" + birthDay + "日");
+            }
+
+            weight = putUserInfoParam.getWeight();
+            if (weight == null) {
+                putUserInfoParam.setWeight("10.0");
+            } else {
+                settingWeight.setText(weight + "公斤");
+            }
+
+            high = putUserInfoParam.getHeight();
+            if (high == null) {
+                putUserInfoParam.setHeight("50");
+            } else {
+                settingHeight.setText(high + "厘米");
+            }
             Presenter.getInstance(getContext()).getImage(userIcon, dataBean.getAvatar());
+            userNameOldStr = dataBean.getNickname();
+            useName.requestFocus();
             useName.setText(dataBean.getNickname());
+            useName.setSelection(useName.getText().toString().trim().length());
+            useName.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    useName.setSelection(useName.getText().toString().trim().length());
+                    putUserInfoParam.setNickname(useName.getText().toString());
+                }
+            });
             if (dataBean.getSex() == 1) {
                 //
                 useGenderManSelect.setImageResource(R.drawable.selected_icon);
@@ -523,6 +594,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     public void response(UserInfoSetResponse userInfoSetResponse) {
         LocalLog.d(TAG, "UserInfoSetResponse() enter " + userInfoSetResponse.toString());
         if (userInfoSetResponse.getError() == 0) {
+            ToastUtils.showLongToast(getContext(), "资料填写成功");
             getActivity().onBackPressed();
         } else if (userInfoSetResponse.getError() == -100) {
             exitTokenUnfect();
@@ -578,17 +650,20 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                     selectIcon[0].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.selected_icon));
                     selectSex[0] = true;
                 }
+                putUserInfoParam.setSex(getSelect());
                 break;
             case R.id.use_gender_nv_select:
                 LocalLog.d(TAG, "点击女");
                 if (selectSex[1]) {
                     selectSex[1] = false;
                     selectIcon[1].setImageDrawable(null);
+
                 } else {
                     UpdateUnSelect(1);
                     selectIcon[1].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.selected_icon));
                     selectSex[1] = true;
                 }
+                putUserInfoParam.setSex(getSelect());
                 break;
             case R.id.birth_day_span:
                 LocalLog.d(TAG, "设置生日");
@@ -609,32 +684,19 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                         Toast.makeText(getContext(), "请填写昵称", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    if (getSelect() == -1) {
+                    if (getSelect() == 0) {
                         Toast.makeText(getContext(), "请选择性别", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                    putUserInfoParam.setNickname(useName.getText().toString());
-                    if (birthYear != null) {
-                        putUserInfoParam.setBirthyear(birthYear);
-                    }
-                    if (birthMonth != null) {
-                        putUserInfoParam.setBirthmonth(birthMonth);
-                    }
 
-                    if (birthDay != null) {
-                        putUserInfoParam.setBirthday(birthDay);
-                    }
-                    if (weight != null) {
-                        putUserInfoParam.setWeight(weight);
-                    }
-                    if (high != null) {
-                        putUserInfoParam.setHeight(high);
-                    }
-                    putUserInfoParam.setSex(getSelect());
                     if (localAvatar != null) {
                         LogoUpTask logoUpTask = new LogoUpTask();
                         logoUpTask.execute(localAvatar);
                     } else {
+                        if (TextUtils.isEmpty(putUserInfoParam.paramString())) {
+                            ToastUtils.showLongToast(getContext(), "没有修改");
+                            return;
+                        }
                         Presenter.getInstance(getContext()).putUserInfo(userid, putUserInfoParam);
                     }
                 }
@@ -817,6 +879,8 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
+        } else {
+            ToastUtils.showLongToast(getContext(), errorCode.getMessage());
         }
     }
 }

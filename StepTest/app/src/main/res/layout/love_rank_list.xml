@@ -24,7 +24,9 @@
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
-            android:layout_toEndOf="@+id/rank_num" />
+            android:layout_toEndOf="@+id/rank_num"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_head_ico" />
 
         <ImageView
 	    android:id="@+id/vip_flg"

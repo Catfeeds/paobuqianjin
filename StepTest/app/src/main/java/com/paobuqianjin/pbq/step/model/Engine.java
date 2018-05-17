@@ -929,7 +929,7 @@ public final class Engine {
     }
 
     public void getRechargeRecord(int page, int pagesize) {
-        String url = NetApi.urlCrashTo + "/rechargeList";
+        String url = NetApi.urlRechargeRecord;
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))

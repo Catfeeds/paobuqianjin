@@ -507,7 +507,6 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             LocalLog.d(TAG, "intent.getAction():"+intent.getAction());
-            LocalLog.d(TAG, "ACTION_ENTER_CIRCLE:"+ACTION_ENTER_CIRCLE);
             if (ACTION_ENTER_CIRCLE.equals(intent.getAction())) {
                 LocalLog.d(TAG, "logo 进入");
                 circleId = intent.getIntExtra(getContext().getPackageName() + "circleid", -1);
@@ -678,7 +677,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 is_join = true;
                 //TODO 通知源UI更新
                 if (circleId != -1) {
-                    Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndex, PAGESIZE);
+//                    Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndex, PAGESIZE);
+                    Presenter.getInstance(getContext()).getCircleDetail(circleId);
                 }
             } else if (joinCircleResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");

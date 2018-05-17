@@ -112,7 +112,8 @@ public class NetApi {
     public final static String urlSignCodeCheck = url+"v1/UserBankCard/checkCode";
     //TODO 提现接口
     public final static String urlCrashTo = url+"v1/withdraw";
-
+    //TODO 充值记录
+    public final static String urlRechargeRecord = urlCrashTo + "/rechargeList";
     //TODO 天气查询接口
     public final static String urlWeather = url+"v1/ThirdParty/getWeather";
     //TODO 用户好友接口

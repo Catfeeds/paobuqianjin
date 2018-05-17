@@ -12,10 +12,11 @@ import java.util.List;
 *@description 充值明细
 */
 public class RechargeDetailResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":3,"totalCount":30},"data":[{"id":410,"otype":1,"ptype":2,"order_no":"201803210833295463","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"1.00","create_time":1521635609},{"id":409,"otype":1,"ptype":2,"order_no":"201803210821147226","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"1.00","create_time":1521634874},{"id":407,"otype":1,"ptype":2,"order_no":"201803210718226349","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.11","create_time":1521631102},{"id":402,"otype":0,"ptype":2,"order_no":"201803210446145888","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.10","create_time":1521621974},{"id":396,"otype":1,"ptype":2,"order_no":"201803210208325196","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.10","create_time":1521612512},{"id":395,"otype":2,"ptype":2,"order_no":"201803210207264020","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.01","create_time":1521612446},{"id":394,"otype":1,"ptype":2,"order_no":"201803210203255998","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.10","create_time":1521612205},{"id":393,"otype":2,"ptype":2,"order_no":"201803211137448848","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.01","create_time":1521603464},{"id":390,"otype":2,"ptype":2,"order_no":"201803211106268040","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.10","create_time":1521601586},{"id":389,"otype":1,"ptype":2,"order_no":"201803211037465827","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.10","create_time":1521599866}]}
+     * data : {"pagenation":{"page":1,"pageSize":10,"totalPage":13,"totalCount":129},"data":[{"id":1527,"otype":2,"ptype":1,"order_no":"201805161258047305","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"123.00","create_time":1526446684},{"id":1526,"otype":2,"ptype":1,"order_no":"201805161254478463","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"4.00","create_time":1526446487},{"id":1405,"otype":4,"ptype":1,"order_no":"201805150941557592","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"50.00","create_time":1526348515},{"id":1354,"otype":2,"ptype":1,"order_no":"201805140355423187","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"100.00","create_time":1526284542},{"id":1325,"otype":2,"ptype":1,"order_no":"201805120804134734","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"1.00","create_time":1526126653},{"id":1324,"otype":2,"ptype":1,"order_no":"201805120748041040","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"100.00","create_time":1526125684},{"id":1290,"otype":1,"ptype":2,"order_no":"201805110858108430","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.01","create_time":1526043490},{"id":1289,"otype":0,"ptype":1,"order_no":"201805110837279821","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"200.00","create_time":1526042247},{"id":1288,"otype":0,"ptype":2,"order_no":"201805110837205241","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"200.00","create_time":1526042240},{"id":1287,"otype":0,"ptype":1,"order_no":"201805110837085599","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"200.00","create_time":1526042228}]}
      */
 
     private int error;
@@ -57,8 +58,8 @@ public class RechargeDetailResponse {
 
     public static class DataBeanX {
         /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":3,"totalCount":30}
-         * data : [{"id":410,"otype":1,"ptype":2,"order_no":"201803210833295463","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"1.00","create_time":1521635609},{"id":409,"otype":1,"ptype":2,"order_no":"201803210821147226","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"1.00","create_time":1521634874},{"id":407,"otype":1,"ptype":2,"order_no":"201803210718226349","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.11","create_time":1521631102},{"id":402,"otype":0,"ptype":2,"order_no":"201803210446145888","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.10","create_time":1521621974},{"id":396,"otype":1,"ptype":2,"order_no":"201803210208325196","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.10","create_time":1521612512},{"id":395,"otype":2,"ptype":2,"order_no":"201803210207264020","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.01","create_time":1521612446},{"id":394,"otype":1,"ptype":2,"order_no":"201803210203255998","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.10","create_time":1521612205},{"id":393,"otype":2,"ptype":2,"order_no":"201803211137448848","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.01","create_time":1521603464},{"id":390,"otype":2,"ptype":2,"order_no":"201803211106268040","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.10","create_time":1521601586},{"id":389,"otype":1,"ptype":2,"order_no":"201803211037465827","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.10","create_time":1521599866}]
+         * pagenation : {"page":1,"pageSize":10,"totalPage":13,"totalCount":129}
+         * data : [{"id":1527,"otype":2,"ptype":1,"order_no":"201805161258047305","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"123.00","create_time":1526446684},{"id":1526,"otype":2,"ptype":1,"order_no":"201805161254478463","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"4.00","create_time":1526446487},{"id":1405,"otype":4,"ptype":1,"order_no":"201805150941557592","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"50.00","create_time":1526348515},{"id":1354,"otype":2,"ptype":1,"order_no":"201805140355423187","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"100.00","create_time":1526284542},{"id":1325,"otype":2,"ptype":1,"order_no":"201805120804134734","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"1.00","create_time":1526126653},{"id":1324,"otype":2,"ptype":1,"order_no":"201805120748041040","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"100.00","create_time":1526125684},{"id":1290,"otype":1,"ptype":2,"order_no":"201805110858108430","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"0.01","create_time":1526043490},{"id":1289,"otype":0,"ptype":1,"order_no":"201805110837279821","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"200.00","create_time":1526042247},{"id":1288,"otype":0,"ptype":2,"order_no":"201805110837205241","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"200.00","create_time":1526042240},{"id":1287,"otype":0,"ptype":1,"order_no":"201805110837085599","userid":30,"nickname":"黄钦平","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","total_fee":"200.00","create_time":1526042228}]
          */
 
         private PagenationBean pagenation;
@@ -92,8 +93,8 @@ public class RechargeDetailResponse {
             /**
              * page : 1
              * pageSize : 10
-             * totalPage : 3
-             * totalCount : 30
+             * totalPage : 13
+             * totalCount : 129
              */
 
             private int page;
@@ -146,15 +147,15 @@ public class RechargeDetailResponse {
 
         public static class DataBean {
             /**
-             * id : 410
-             * otype : 1
-             * ptype : 2
-             * order_no : 201803210833295463
+             * id : 1527
+             * otype : 2
+             * ptype : 1
+             * order_no : 201805161258047305
              * userid : 30
              * nickname : 黄钦平
              * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
-             * total_fee : 1.00
-             * create_time : 1521635609
+             * total_fee : 123.00
+             * create_time : 1526446684
              */
 
             private int id;
@@ -166,16 +167,6 @@ public class RechargeDetailResponse {
             private String avatar;
             private String total_fee;
             private int create_time;
-
-            public int getVip() {
-                return vip;
-            }
-
-            public void setVip(int vip) {
-                this.vip = vip;
-            }
-
-            private int vip;
 
             public int getId() {
                 return id;
@@ -261,7 +252,6 @@ public class RechargeDetailResponse {
                         ", avatar='" + avatar + '\'' +
                         ", total_fee='" + total_fee + '\'' +
                         ", create_time=" + create_time +
-                        ", vip=" + vip +
                         '}';
             }
         }

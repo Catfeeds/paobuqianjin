@@ -59,6 +59,8 @@ public class UserInfoResponse {
     public static class DataBean implements Serializable {
         /**
          * id : 30
+         * wx_unionid:
+         * qq_unionid:
          * wx_openid : oPd5d0SDHRV1oZF8dB80Jq0kH_tY
          * qq_openid :
          * mobile : 13424156029
@@ -87,9 +89,12 @@ public class UserInfoResponse {
          * circleCount : 10
          * authentication_status : 4
          * messagesCount : 3
+         * userAllincome: 0
          */
 
         private int id;
+        private String wx_unionid;
+        private String qq_unionid;
         private String wx_openid;
         private String qq_openid;
         private String mobile;
@@ -118,6 +123,7 @@ public class UserInfoResponse {
         private int circleCount;
         private int authentication_status;
         private int messagesCount;
+        private float userAllincome;
 
         public int getVip() {
             return vip;
@@ -365,6 +371,8 @@ public class UserInfoResponse {
         public String toString() {
             return "DataBean{" +
                     "id=" + id +
+                    ", wx_unionid='" + wx_unionid + '\'' +
+                    ", qq_unionid='" + qq_unionid + '\'' +
                     ", wx_openid='" + wx_openid + '\'' +
                     ", qq_openid='" + qq_openid + '\'' +
                     ", mobile='" + mobile + '\'' +
@@ -393,8 +401,33 @@ public class UserInfoResponse {
                     ", circleCount=" + circleCount +
                     ", authentication_status=" + authentication_status +
                     ", messagesCount=" + messagesCount +
+                    ", userAllincome=" + userAllincome +
                     ", vip=" + vip +
                     '}';
+        }
+
+        public String getWx_unionid() {
+            return wx_unionid;
+        }
+
+        public void setWx_unionid(String wx_unionid) {
+            this.wx_unionid = wx_unionid;
+        }
+
+        public String getQq_unionid() {
+            return qq_unionid;
+        }
+
+        public void setQq_unionid(String qq_unionid) {
+            this.qq_unionid = qq_unionid;
+        }
+
+        public float getUserAllincome() {
+            return userAllincome;
+        }
+
+        public void setUserAllincome(float userAllincome) {
+            this.userAllincome = userAllincome;
         }
     }
 }

@@ -359,6 +359,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     public void onResume() {
         super.onResume();
         Presenter.getInstance(getContext()).refreshStep();
+        updateIncome();
     }
 
     @Override
@@ -377,7 +378,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         }
     }
 
-    public void popRedPkg(SponsorRedPkgResponse sponsorRedPkgResponse) {
+    public void popRedPkg(final SponsorRedPkgResponse sponsorRedPkgResponse) {
         LocalLog.d(TAG, "popRedPkg() enter");
         String canRevPkg = "";
         popRedPkgView = View.inflate(getContext(), R.layout.red_pkg_pop_window, null);
@@ -386,10 +387,18 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         openRedPkgView = (ImageView) popRedPkgView.findViewById(R.id.open_red_pkg);
         errorTextView = (TextView) popRedPkgView.findViewById(R.id.error_text);
         desPkgTextView = (TextView) popRedPkgView.findViewById(R.id.des_pkg);
-        totalRedPkg.setVisibility(View.GONE);
-        openRedPkgView.setVisibility(View.VISIBLE);
-        errorTextView.setVisibility(View.GONE);
-        desPkgTextView.setVisibility(View.GONE);
+        if (sponsorRedPkgResponse.getData().getUserstatus() == 0) {
+            totalRedPkg.setVisibility(View.GONE);
+            openRedPkgView.setVisibility(View.VISIBLE);
+            errorTextView.setVisibility(View.GONE);
+            desPkgTextView.setVisibility(View.GONE);
+        } else {
+            totalRedPkg.setVisibility(View.VISIBLE);
+            openRedPkgView.setVisibility(View.INVISIBLE);
+            errorTextView.setVisibility(View.GONE);
+            desPkgTextView.setVisibility(View.VISIBLE);
+            totalRedPkg.setText(String.valueOf(sponsorRedPkgResponse.getData().getLedredmoney()));
+        }
         RelativeLayout relativeLayout = (RelativeLayout) popRedPkgView.findViewById(R.id.cancel_red_span);
         TextView tv_go2be_vip = (TextView) popRedPkgView.findViewById(R.id.tv_go2be_vip);
         tv_go2be_vip.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
@@ -424,12 +433,12 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         redPkgRecycler.setLayoutManager(layoutManager);
         ArrayList<?> sponsorData = new ArrayList<>();
-        if (sponsorRedPkgResponse.getData().getLedredpacket() != null) {
+        if (sponsorRedPkgResponse.getData().getLedredpacket() != null && sponsorRedPkgResponse.getData().getUserstatus() != 0) {
             if (sponsorRedPkgResponse.getData().getLedredpacket().size() > 0) {
                 sponsorData.addAll((ArrayList) sponsorRedPkgResponse.getData().getLedredpacket());
             }
         }
-        if (sponsorRedPkgResponse.getData().getCanredpacket() != null) {
+        if (sponsorRedPkgResponse.getData().getCanredpacket() != null && sponsorRedPkgResponse.getData().getCanredpacket().size() > 0) {
             /*if (sponsorRedPkgResponse.getData().getCanredpacket().size() > 0) {
                 sponsorData.addAll((ArrayList) sponsorRedPkgResponse.getData().getCanredpacket());
             }*/
@@ -465,8 +474,12 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 view.setAnimation(animation);
                 view.startAnimation(animation);
                 LocalLog.d(TAG, "可领红包的 " + redids);
-                if (TextUtils.isEmpty(redids)) {
-                    Toast.makeText(getContext(), "没有可领取的红包", Toast.LENGTH_SHORT).show();
+                if (TextUtils.isEmpty(redids) && sponsorRedPkgResponse.getData().getUserstatus() == 0) {
+                    view.clearAnimation();
+                    openRedPkgView.setVisibility(View.INVISIBLE);
+                    errorTextView.setVisibility(View.VISIBLE);
+                    desPkgTextView.setVisibility(View.VISIBLE);
+                    return;
                 }
                 RedPkgRecParam redPkgRecParam = new RedPkgRecParam().setRedids(redids);
                 Presenter.getInstance(getContext()).postRedPkgRec(redPkgRecParam, innerRecRedCallBack);
@@ -507,6 +520,11 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         }
     }
 
+    public void updateIncome() {
+        Presenter.getInstance(getContext()).getHomePageIncome("today", pageIndex, 1);
+        Presenter.getInstance(getContext()).getHomePageIncome("all", pageIndex, 1);
+    }
+
     private final InnerCallBack innerRecRedCallBack = new InnerCallBack() {
         @Override
         public void innerCallBack(Object object) {
@@ -521,6 +539,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         openRedPkgView.setVisibility(View.INVISIBLE);
                         totalRedPkg.setVisibility(View.VISIBLE);
                         totalRedPkg.setText(String.valueOf(((RecRedPkgResponse) object).getData().getAllmoney()));
+                        updateIncome();
                     } else {
                         openRedPkgView.setVisibility(View.INVISIBLE);
                         errorTextView.setVisibility(View.VISIBLE);
@@ -686,26 +705,25 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public void response(SponsorRedPkgResponse sponsorRedPkgResponse) {
         LocalLog.d(TAG, "SponsorRedPkgResponse() enter " + sponsorRedPkgResponse.toString());
+        redPkgEnable = true;
         if (sponsorRedPkgResponse.getError() == 0) {
-            if (sponsorRedPkgResponse.getData().getCanredpacket().size() == 0 && sponsorRedPkgResponse.getData().getLedredpacket().size() == 0) {
+            if (sponsorRedPkgResponse.getData().getUserstatus() == 0
+                    && (sponsorRedPkgResponse.getData().getCanredpacket() == null
+                    || sponsorRedPkgResponse.getData().getCanredpacket().size() == 0)) {
                 //TODO 领红包错误提示
                 //popTargetView();
                 LocalLog.d(TAG, "附近没有商家红包");
-                if (sponsorRedPkgResponse.getData().getUserstatus() == 0) {
-                    LocalLog.d(TAG, "还可以领红包");
-                    UserInfoResponse.DataBean userInfo = Presenter.getInstance(getContext()).getCurrentUser();
-                    if (userInfo != null) {
-                        if (userInfo.getIs_perfect() == 0) {
-                            showUseInfSettingDialog(userInfo);
-                        } else {
-                            popTargetView(getString(R.string.no_buess_pkg));
-                        }
+                UserInfoResponse.DataBean userInfo = Presenter.getInstance(getContext()).getCurrentUser();
+                if (userInfo != null) {
+                    if (userInfo.getIs_perfect() == 0) {
+                        showUseInfSettingDialog(userInfo);
+                    } else {
+                        popTargetView(getString(R.string.no_buess_pkg));
                     }
-
                 }
+
             } else {
                 LocalLog.d(TAG, "有可领或者已经领过的红包！");
-                redPkgEnable = false;
                 popRedPkg(sponsorRedPkgResponse);
             }
 
@@ -719,7 +737,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 Toast.makeText(getContext(), sponsorRedPkgResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
-            redPkgEnable = true;
         }
 
     }
@@ -814,6 +831,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
+        } else {
+            if (!redPkgEnable)
+                redPkgEnable = true;
         }
     }
 

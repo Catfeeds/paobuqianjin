@@ -206,7 +206,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((OneOrZeroViewHodler) holder).timeStmp.setText(create_timeStr);
                 Presenter.getInstance(mContext).getImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar());
                 ((OneOrZeroViewHodler) holder).is_vote = data.get(position).getIs_vote();
-                String content = data.get(position).getDynamic();
+                String content = Base64Util.getUidFromBase64(data.get(position).getDynamic());
                 LocalLog.d(TAG, "content = " + content);
                 if (content != null) {
                     for (int i = 0; i < emj.length; i++) {
@@ -265,7 +265,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0));
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1));
             Presenter.getInstance(mContext).getImage(((TwoPicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar());
-            String content = data.get(position).getDynamic();
+            String content = Base64Util.getUidFromBase64(data.get(position).getDynamic());
             LocalLog.d(TAG, "content = " + content);
             if (content != null) {
                 for (int i = 0; i < emj.length; i++) {
@@ -328,7 +328,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             Presenter.getInstance(mContext).getImage(((ThreePicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1));
             Presenter.getInstance(mContext).getImage(((ThreePicViewHolder) holder).dynamicPicThree, data.get(position).getImages().get(2));
             Presenter.getInstance(mContext).getImage(((ThreePicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar());
-            ((ThreePicViewHolder) holder).dynamicContentText.setText(data.get(position).getDynamic());
+            String content = Base64Util.getUidFromBase64(data.get(position).getDynamic());
+            ((ThreePicViewHolder) holder).dynamicContentText.setText(content);
             ((ThreePicViewHolder) holder).dynamicUserName.setText(data.get(position).getNickname());
             ((ThreePicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getShowAddress());
             ((ThreePicViewHolder) holder).contentSupports.setText(String.valueOf(data.get(position).getVote()));

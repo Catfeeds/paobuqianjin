@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -172,7 +173,8 @@
                     android:layout_marginRight="15dp"
                     android:text="领取状态"
                     android:textColor="@color/color_161727"
-                    android:textSize="14dp" />
+                    android:textSize="14dp"
+                    tools:ignore="UnknownId" />
             </RelativeLayout>
 
 

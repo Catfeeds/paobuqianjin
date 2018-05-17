@@ -125,6 +125,8 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     private double latitudeStr;
     private String distanceStr;
     private String city;
+    private String cityCode;
+    private String address;
     private boolean hasBusiness;
     private int businessId = -1;
     private NormalDialog dialog;
@@ -132,7 +134,7 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
 
     private ChooseOneItemWheelPopWindow wheelPopWindow;
     private final int DEVALUE_STEP = 10000;//默认步数
-    private String[] targetStepArr = {"5000","6000","7000","8000","9000","10000"};
+    private String[] targetStepArr = {"5000", "6000", "7000", "8000", "9000", "10000"};
 
     @Override
     protected int getLayoutResId() {
@@ -158,7 +160,7 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
         targetStepDayNum = (EditText) viewRoot.findViewById(R.id.target_step_day_num);
-        targetStepDayNum.setText(DEVALUE_STEP+"");
+        targetStepDayNum.setText(DEVALUE_STEP + "");
     }
 
     @Override
@@ -219,6 +221,8 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                 intent.putExtra("latitudeStr", latitudeStr);
                 intent.putExtra("targetSelectStr", distanceStr);
                 intent.putExtra("city", city);
+                intent.putExtra("cityCode", cityCode);
+                intent.putExtra("address", address);
                 intent.setAction(TARGET_PEOPLE_ACTION);
                 startActivityForResult(intent, REQUEST_TARGET_PEOPLE);
                 break;
@@ -313,6 +317,10 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                     taskSponsorParam.setAge_min(ageMinStr);
                 if (!TextUtils.isEmpty(city))
                     taskSponsorParam.setCity(city);
+                if (!TextUtils.isEmpty(cityCode))
+                    taskSponsorParam.setCity_code(cityCode);
+                if (!TextUtils.isEmpty(address))
+                    taskSponsorParam.setTrading_area(address);
                 Presenter.getInstance(getContext()).postTaskSponsorRelease(taskSponsorParam);
                 break;
         }
@@ -359,8 +367,12 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
             latitudeStr = data.getDoubleExtra("latitudeStr", 0);
             distanceStr = data.getStringExtra("targetSelectStr");
             city = data.getStringExtra("city");
-            LocalLog.d(TAG, sexStr + " " + ageMinStr + "\n" + ageMaxStr + "\n"
-                    + longitudeStr + "\n" + latitudeStr + "\n" + city + "\n" + distanceStr + "\n"
+            cityCode = data.getStringExtra("cityCode");
+            address = data.getStringExtra("address");
+
+            LocalLog.d(TAG, sexStr + " " + ageMinStr + "\n" + ageMaxStr + "\n" +
+                    cityCode + "\n" + address + "\n" + city + "\n"
+                    + longitudeStr + "\n" + latitudeStr + "\n" + distanceStr + "\n"
             );
             targetPeopleDetail.setText("已筛选");
         } else if (requestCode == REQUEST_SPONSOR_MSG) {

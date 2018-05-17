@@ -216,7 +216,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="14dp"
-                android:text="我已接受《提现协议》"
+                android:text="请认真阅读《提现协议》"
                 android:textColor="@color/color_161727"
                 android:textSize="17dp" />
 

@@ -398,6 +398,8 @@ public class HotCircleFragment extends BaseFragment {
                     //Presenter.getInstance(getContext()).getCircleDetail(myHotCircleResponse.getData().getData().get(0).getId());
                     if (myHotCircleResponse.getData().getData().get(0).getIs_red_packet() == 1) {
                         readPackAIV.setVisibility(View.VISIBLE);
+                    } else {
+                        readPackAIV.setVisibility(View.GONE);
                     }
                 } else if (size >= 2) {
                     setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
@@ -413,10 +415,14 @@ public class HotCircleFragment extends BaseFragment {
                     //Presenter.getInstance(getContext()).getCircleDetail(myHotCircleResponse.getData().getData().get(0).getId());
                     if (myHotCircleResponse.getData().getData().get(0).getIs_red_packet() == 1) {
                         readPackAIV.setVisibility(View.VISIBLE);
+                    } else {
+                        readPackAIV.setVisibility(View.GONE);
                     }
                     //Presenter.getInstance(getContext()).getCircleDetail(myHotCircleResponse.getData().getData().get(1).getId());
                     if (myHotCircleResponse.getData().getData().get(1).getIs_red_packet() == 1) {
                         readPackBIV.setVisibility(View.VISIBLE);
+                    } else {
+                        readPackBIV.setVisibility(View.GONE);
                     }
                 }
                 pageCounts[1] = myHotCircleResponse.getData().getPagenation().getTotalPage();

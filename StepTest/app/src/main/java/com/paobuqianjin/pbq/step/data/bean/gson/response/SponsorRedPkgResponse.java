@@ -16,7 +16,7 @@ public class SponsorRedPkgResponse {
     /**
      * error : 0
      * message : success
-     * data : {"userstatus":0,"ledredpacket":[{"red_id":33,"businessid":30,"red_name":"你定","red_content":"","step":0,"number":2,"money":"64.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"你定"},{"red_id":34,"businessid":31,"red_name":"你定","red_content":"","step":0,"number":7,"money":"3.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"你定"},{"red_id":32,"businessid":29,"red_name":"雷敏","red_content":"","step":0,"number":5,"money":"12.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"雷敏"},{"red_id":29,"businessid":26,"red_name":"跑步钱进","red_content":"","step":0,"number":5,"money":"0.20","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"跑步钱进"}],"canredpacket":[{"red_id":33,"businessid":30,"red_name":"你定","red_content":"","step":0,"number":2,"money":"64.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"你定"},{"red_id":34,"businessid":31,"red_name":"你定","red_content":"","step":0,"number":7,"money":"3.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"你定"},{"red_id":32,"businessid":29,"red_name":"雷敏","red_content":"","step":0,"number":5,"money":"12.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"雷敏"},{"red_id":29,"businessid":26,"red_name":"跑步钱进","red_content":"","step":0,"number":5,"money":"0.20","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"跑步钱进"}]}
+     * data : {"userstatus":0,"ledredmoney":47.35,"ledredpacket":[{"red_id":33,"businessid":30,"red_name":"你定","red_content":"","step":0,"number":2,"money":"64.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"你定"},{"red_id":34,"businessid":31,"red_name":"你定","red_content":"","step":0,"number":7,"money":"3.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"你定"},{"red_id":32,"businessid":29,"red_name":"雷敏","red_content":"","step":0,"number":5,"money":"12.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"雷敏"},{"red_id":29,"businessid":26,"red_name":"跑步钱进","red_content":"","step":0,"number":5,"money":"0.20","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"跑步钱进"}],"canredpacket":[{"red_id":33,"businessid":30,"red_name":"你定","red_content":"","step":0,"number":2,"money":"64.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"你定"},{"red_id":34,"businessid":31,"red_name":"你定","red_content":"","step":0,"number":7,"money":"3.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"你定"},{"red_id":32,"businessid":29,"red_name":"雷敏","red_content":"","step":0,"number":5,"money":"12.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"雷敏"},{"red_id":29,"businessid":26,"red_name":"跑步钱进","red_content":"","step":0,"number":5,"money":"0.20","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"跑步钱进"}]}
      */
 
     private int error;
@@ -59,11 +59,32 @@ public class SponsorRedPkgResponse {
     public static class DataBean {
         /**
          * userstatus : 0
+         * ledredmoney:47.35
          * ledredpacket : [{"red_id":33,"businessid":30,"red_name":"你定","red_content":"","step":0,"number":2,"money":"64.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"你定"},{"red_id":34,"businessid":31,"red_name":"你定","red_content":"","step":0,"number":7,"money":"3.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"你定"},{"red_id":32,"businessid":29,"red_name":"雷敏","red_content":"","step":0,"number":5,"money":"12.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"雷敏"},{"red_id":29,"businessid":26,"red_name":"跑步钱进","red_content":"","step":0,"number":5,"money":"0.20","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"跑步钱进"}]
          * canredpacket : [{"red_id":33,"businessid":30,"red_name":"你定","red_content":"","step":0,"number":2,"money":"64.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"你定"},{"red_id":34,"businessid":31,"red_name":"你定","red_content":"","step":0,"number":7,"money":"3.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"你定"},{"red_id":32,"businessid":29,"red_name":"雷敏","red_content":"","step":0,"number":5,"money":"12.00","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"雷敏"},{"red_id":29,"businessid":26,"red_name":"跑步钱进","red_content":"","step":0,"number":5,"money":"0.20","sex":0,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":null,"e_time":null,"longitude":"0.000000","latitude":"0.000000","logo":"","name":"跑步钱进"}]
          */
 
         private int userstatus;
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "userstatus=" + userstatus +
+                    ", ledredmoney=" + ledredmoney +
+                    ", ledredpacket=" + ledredpacket +
+                    ", canredpacket=" + canredpacket +
+                    '}';
+        }
+
+        public float getLedredmoney() {
+            return ledredmoney;
+        }
+
+        public void setLedredmoney(float ledredmoney) {
+            this.ledredmoney = ledredmoney;
+        }
+
+        private float ledredmoney;
         private List<LedredpacketBean> ledredpacket;
         private List<CanredpacketBean> canredpacket;
 
@@ -89,15 +110,6 @@ public class SponsorRedPkgResponse {
 
         public void setCanredpacket(List<CanredpacketBean> canredpacket) {
             this.canredpacket = canredpacket;
-        }
-
-        @Override
-        public String toString() {
-            return "DataBean{" +
-                    "userstatus=" + userstatus +
-                    ", ledredpacket=" + ledredpacket +
-                    ", canredpacket=" + canredpacket +
-                    '}';
         }
 
         public static class LedredpacketBean implements Serializable {

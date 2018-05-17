@@ -111,6 +111,7 @@ public class MainActivity extends BaseActivity {
         mHomePageFragment = new HomePageFragment();
         mFriendCircleFragment = new FriendCircleFragment();
         taskFragment = new TaskFragment();
+        taskFragment.setMoneyUpdate(moneyUpdateInterface);
         mHonorFragment = new HonorFragment();
         mOwnerFragment = new OwnerFragment();
         mFragments = new Fragment[]{mHomePageFragment, mFriendCircleFragment, taskFragment, mHonorFragment, mOwnerFragment};
@@ -126,6 +127,19 @@ public class MainActivity extends BaseActivity {
                 .hide(mOwnerFragment)
                 .show(mHomePageFragment).commit();
     }
+
+    public interface MoneyUpdateInterface {
+        public void update();
+    }
+
+    public MoneyUpdateInterface moneyUpdateInterface = new MoneyUpdateInterface() {
+        @Override
+        public void update() {
+            if (mHomePageFragment.isAdded()) {
+                mHomePageFragment.updateIncome();
+            }
+        }
+    };
 
     @Override
     protected void onResume() {

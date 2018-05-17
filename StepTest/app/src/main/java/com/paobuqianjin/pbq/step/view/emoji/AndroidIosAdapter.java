@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.emoji;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -70,6 +71,7 @@ public class AndroidIosAdapter extends BaseAdapter {
 //        rl.setBackgroundColor(Color.RED);
 
         TextView emojiThumb = new TextView(mContext);
+        emojiThumb.setTextColor(ContextCompat.getColor(mContext, R.color.color_161727));
         int count = emjCode.length;
         int index = mStartIndex + position;
         if (position == EmotionLayout.EMOJI_PER_PAGE || index == count) {

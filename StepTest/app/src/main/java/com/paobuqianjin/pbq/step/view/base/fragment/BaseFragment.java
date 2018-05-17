@@ -101,6 +101,9 @@ public abstract class BaseFragment extends Fragment {
 
     public void exitTokenUnfect() {
         if (exitDialog == null) {
+            if (getActivity() == null) {
+                return;
+            }
             exitDialog = new NormalDialog(getActivity());
             exitDialog.setMessage("登录过期，点击确定重新登录");
             exitDialog.setYesOnclickListener(getContext().getString(R.string.confirm_yes), new NormalDialog.onYesOnclickListener() {
