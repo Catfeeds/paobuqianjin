@@ -16,6 +16,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.fragment.circle.FriendCircleFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.HomePageFragment;
@@ -236,9 +237,9 @@ public class MainActivity extends BaseActivity {
                 // ScanResult 为 获取到的字符串
                 String ScanResult = scanResult;
                 LocalLog.d(TAG, ScanResult);
-                if (ScanResult.startsWith("userid:")) {
+                if (ScanResult.startsWith(NetApi.urlShareIc)) {
                     LocalLog.d(TAG, "扫描个人");
-                    String userid = ScanResult.substring("userid:".length(), ScanResult.length());
+                    String userid = ScanResult.substring(NetApi.urlShareIc.length(), ScanResult.length());
                     LocalLog.d(TAG, "userid = " + userid);
                     try {
                         Intent intent = new Intent();
@@ -250,9 +251,9 @@ public class MainActivity extends BaseActivity {
                         e.printStackTrace();
                     }
 
-                } else if (ScanResult.startsWith("circleid:")) {
+                } else if (ScanResult.startsWith(NetApi.urlShareCd)) {
                     LocalLog.d(TAG, "扫描圈子");
-                    String circleid = ScanResult.substring("circleid:".length(), ScanResult.length());
+                    String circleid = ScanResult.substring(NetApi.urlShareCd.length(), ScanResult.length());
                     LocalLog.d(TAG, "circleid = " + circleid);
                     //TODO ACTION_SCAND_CIRCLE_ID
                     try {

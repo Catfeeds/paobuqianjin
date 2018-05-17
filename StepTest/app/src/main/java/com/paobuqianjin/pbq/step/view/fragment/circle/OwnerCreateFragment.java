@@ -187,7 +187,9 @@ public class OwnerCreateFragment extends BaseFragment {
     private void loadData(ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> dataBeans) {
 
         adapter.notifyDataSetChanged(dataBeans);
-
+        if (createCircleSwipe == null) {
+            return;
+        }
         createCircleSwipe.setRefreshing(false);
 
         // 第一次加载数据：一定要掉用这个方法。

@@ -101,7 +101,7 @@
                     android:layout_height="16dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="14dp"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/sponsor_tel" />
 
                 <TextView
@@ -147,7 +147,7 @@
                     android:layout_height="16dp"
                     android:layout_marginLeft="14dp"
                     android:layout_marginTop="15dp"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/sponsor_open" />
 
                 <TextView
@@ -192,7 +192,7 @@
                     android:layout_height="16dp"
                     android:layout_marginLeft="14dp"
                     android:layout_marginTop="16dp"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/sponsor_location" />
 
                 <TextView

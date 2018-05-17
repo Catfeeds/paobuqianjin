@@ -13,9 +13,9 @@ import java.util.ArrayList;
  */
 
 public class GoodImageData implements Parcelable {
-    private ArrayList<SponsorDetailResponse.DataBean.GoodsImgsBean> goodsImgsBeans;
+    private ArrayList<SponsorDetailResponse.DataBean.EnvironmentImgsBean> goodsImgsBeans;
 
-    public GoodImageData(ArrayList<SponsorDetailResponse.DataBean.GoodsImgsBean> data) {
+    public GoodImageData(ArrayList<SponsorDetailResponse.DataBean.EnvironmentImgsBean> data) {
         super();
         goodsImgsBeans = new ArrayList<>();
         goodsImgsBeans = data;
@@ -35,7 +35,7 @@ public class GoodImageData implements Parcelable {
     public static final Parcelable.Creator<GoodImageData> CREATOR = new Creator<GoodImageData>() {
         @Override
         public GoodImageData createFromParcel(Parcel parcel) {
-            return new GoodImageData(parcel.readArrayList(SponsorDetailResponse.DataBean.GoodsImgsBean.class.getClassLoader()));
+            return new GoodImageData(parcel.readArrayList(SponsorDetailResponse.DataBean.EnvironmentImgsBean.class.getClassLoader()));
         }
 
         @Override
@@ -44,7 +44,7 @@ public class GoodImageData implements Parcelable {
         }
     };
 
-    public ArrayList<SponsorDetailResponse.DataBean.GoodsImgsBean> getGoodsImgsBeans() {
+    public ArrayList<SponsorDetailResponse.DataBean.EnvironmentImgsBean> getGoodsImgsBeans() {
         return goodsImgsBeans;
     }
 

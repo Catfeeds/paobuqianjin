@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,10 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.l.okhttppaobu.okhttp.utils.L;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.BitmapUtil;
 import com.paobuqianjin.pbq.step.utils.Defaultcontent;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
@@ -142,25 +145,19 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
             LocalLog.d(TAG, "name = " + name + "logo = " + logo);
         }
 
-        imgWidth = (int) (Utils.getScreenWidthHight(getActivity())[0]*(350/750f));
+        imgWidth = (int) (Utils.getScreenWidthHight(getActivity())[0] * (350 / 750f));
 
         String codeInfo = "";
         if (id != null && !id.equals("")) {
-            codeInfo = "circleid:" + id;
+            codeInfo = NetApi.urlShareCd + id;
             title = "圈子二维码";
         } else {
             userid = String.valueOf(Presenter.getInstance(getContext()).getId());
-            codeInfo = "userid:" + userid;
+            codeInfo = NetApi.urlShareIc + userid;
             descQrCode.setText("用“跑步钱进”APP扫描二维码关注我");
             title = "我的二维码";
         }
 
-        qrcodeImg.setImageBitmap(encodeBitmap(codeInfo));
-
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) qrcodeImg.getLayoutParams();
-        params.height = imgWidth;
-        params.width = imgWidth;
-        qrcodeImg.setLayoutParams(params);
 
         LocalLog.d(TAG, "id = " + id + " name = "
                 + name + " logo= " + logo + " pay= " + pay);
@@ -171,8 +168,13 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         circleLogo = (CircleImageView) viewRoot.findViewById(R.id.circle_logo);
         circleName = (TextView) viewRoot.findViewById(R.id.circle_name);
         circleId = (TextView) viewRoot.findViewById(R.id.circle_id);
-        if (logo != null && !logo.equals("")) {
-            Presenter.getInstance(getContext()).getImage(circleLogo, logo);
+        if (!TextUtils.isEmpty(logo)) {
+            if (logo.startsWith("/")) {
+                LocalLog.d(TAG,"本地路径");
+                Presenter.getInstance(getContext()).getImage(logo, circleLogo);
+            } else {
+                Presenter.getInstance(getContext()).getImage(circleLogo, logo);
+            }
         }
         circleName.setText(name);
         if (id != null && !id.equals("")) {
@@ -183,6 +185,13 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getContext());
         dialog = new ProgressDialog(getContext());
+
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) qrcodeImg.getLayoutParams();
+        params.height = imgWidth;
+        params.width = imgWidth;
+        qrcodeImg.setLayoutParams(params);
+        encodeBitmap(codeInfo);
     }
 
     //更改图片大小
@@ -200,8 +209,8 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         qq.setCompoundDrawables(null, qq_icon, null, null);
     }
 
-    private Bitmap encodeBitmap(String url) {
-        Bitmap bitmap = null;
+
+    private void encodeBitmap(String url) {
         BitMatrix result = null;
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
@@ -230,17 +239,33 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
             hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
             hints.put(EncodeHintType.MARGIN, 0);
 
-            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, imgWidth, imgWidth,hints);
+            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, imgWidth, imgWidth, hints);
 //            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 175, 175);
             // 使用 ZXing Android Embedded 要写的代码
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            bitmap = barcodeEncoder.createBitmap(result);
+            final Bitmap bitmap = barcodeEncoder.createBitmap(result);
+            circleLogo.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (circleLogo != null) {
+                        Bitmap logo = null;
+                        if (((ImageView) circleLogo).getDrawable() != null) {
+                            logo = ((BitmapDrawable) ((ImageView) circleLogo).getDrawable()).getBitmap();
+                        }
+                        if (logo == null) {
+                            qrcodeImg.setImageBitmap(bitmap);
+                        } else {
+                            qrcodeImg.setImageBitmap(BitmapUtil.addLogo(bitmap, logo));
+                        }
+                    }
+                }
+            }, 200);
         } catch (WriterException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException iae) {
-            return null;
+            return;
         }
-        return bitmap;
+        return;
     }
 
     @Override
@@ -294,18 +319,15 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         @Override
         public void onResult(SHARE_MEDIA share_media) {
             Toast.makeText(getContext(), "分享成功", Toast.LENGTH_SHORT).show();
-            SocializeUtils.safeCloseDialog(dialog);
         }
 
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-            SocializeUtils.safeCloseDialog(dialog);
             Toast.makeText(getContext(), "失败" + throwable.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
-            SocializeUtils.safeCloseDialog(dialog);
             Toast.makeText(getContext(), "取消分享", Toast.LENGTH_LONG).show();
         }
     };

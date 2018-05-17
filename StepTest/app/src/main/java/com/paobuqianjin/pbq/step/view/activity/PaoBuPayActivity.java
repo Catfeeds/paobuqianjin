@@ -21,6 +21,7 @@ import com.paobuqianjin.pbq.step.view.fragment.pay.PayFailedFragment;
 import com.paobuqianjin.pbq.step.view.fragment.pay.PaySuccessFragment;
 import com.paobuqianjin.pbq.step.view.fragment.pay.PayVipFriendFragment;
 import com.paobuqianjin.pbq.step.view.fragment.qrcode.QrCodeFragment;
+import com.umeng.socialize.UMShareAPI;
 
 /**
  * Created by pbq on 2018/1/27.
@@ -189,5 +190,11 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

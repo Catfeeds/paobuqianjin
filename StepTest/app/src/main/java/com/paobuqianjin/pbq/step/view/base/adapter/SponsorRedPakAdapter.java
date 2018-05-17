@@ -52,7 +52,7 @@ public class SponsorRedPakAdapter extends RecyclerView.Adapter<SponsorRedPakAdap
         String name = "";
         if (mData != null && position < mData.size()) {
             if (mData.get(position) instanceof SponsorRedPkgResponse.DataBean.CanredpacketBean) {
-                if (TextUtils.isEmpty(((SponsorRedPkgResponse.DataBean.CanredpacketBean) mData.get(position)).getRed_name())) {
+                if (!TextUtils.isEmpty(((SponsorRedPkgResponse.DataBean.CanredpacketBean) mData.get(position)).getName())) {
                     name = ((SponsorRedPkgResponse.DataBean.CanredpacketBean) mData.get(position)).getName();
                 } else {
                     name = ((SponsorRedPkgResponse.DataBean.CanredpacketBean) mData.get(position)).getRed_name();
@@ -62,7 +62,7 @@ public class SponsorRedPakAdapter extends RecyclerView.Adapter<SponsorRedPakAdap
                 holder.businessid = ((SponsorRedPkgResponse.DataBean.CanredpacketBean) mData.get(position)).getBusinessid();
                 holder.imageView.setVisibility(View.VISIBLE);
             } else if (mData.get(position) instanceof SponsorRedPkgResponse.DataBean.LedredpacketBean) {
-                if (TextUtils.isEmpty(((SponsorRedPkgResponse.DataBean.LedredpacketBean) mData.get(position)).getRed_name())) {
+                if (!TextUtils.isEmpty(((SponsorRedPkgResponse.DataBean.LedredpacketBean) mData.get(position)).getName())) {
                     name = ((SponsorRedPkgResponse.DataBean.LedredpacketBean) mData.get(position)).getName();
                 } else {
                     name = ((SponsorRedPkgResponse.DataBean.LedredpacketBean) mData.get(position)).getRed_name();
@@ -72,7 +72,7 @@ public class SponsorRedPakAdapter extends RecyclerView.Adapter<SponsorRedPakAdap
                 holder.businessid = ((SponsorRedPkgResponse.DataBean.LedredpacketBean) mData.get(position)).getBusinessid();
                 holder.imageView.setVisibility(View.VISIBLE);
             } else if (mData.get(position) instanceof RecRedPkgResponse.DataBean.ResultBean) {
-                if (TextUtils.isEmpty(((RecRedPkgResponse.DataBean.ResultBean) mData.get(position)).getRed_name())) {
+                if (!TextUtils.isEmpty(((RecRedPkgResponse.DataBean.ResultBean) mData.get(position)).getName())) {
                     name = ((RecRedPkgResponse.DataBean.ResultBean) mData.get(position)).getName();
                 } else {
                     name = ((RecRedPkgResponse.DataBean.ResultBean) mData.get(position)).getRed_name();

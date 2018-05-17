@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.fragment.sponsor;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,7 +94,7 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
     ImageView goodsB;
     List<View> Mview = new ArrayList<>();
     private final static String SHOW_SPONSOR_PICS_ACTION = "com.paobuqianjin.pbq.step.SHOW_PIC_ACTION";
-    ArrayList<SponsorDetailResponse.DataBean.GoodsImgsBean> goodsImgsBeans = new ArrayList<>();
+    ArrayList<SponsorDetailResponse.DataBean.EnvironmentImgsBean> goodsImgsBeans = new ArrayList<>();
     @Bind(R.id.sponsor_name)
     TextView sponsorName;
 
@@ -188,49 +189,54 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
                         sponsorTimeNumStr.setText(displayTime);
                         locationStr.setText(dataBean.getAddress());
 
-                        int sizeEnv = 0;
-
+                        if (!TextUtils.isEmpty(dataBean.getLogo())) {
+                            View view = LayoutInflater.from(getContext()).inflate(R.layout.sponsor_image_view, null);
+                            ImageView imageView = (ImageView) view.findViewById(R.id.sponsor_env_img);
+                            Presenter.getInstance(getContext()).getImage(imageView, dataBean.getLogo());
+                            Mview.add(view);
+                        }
+                       /* int sizeEnv = 0;
 
                         if (dataBean.getLogo_imgs() != null) {
                             sizeEnv = dataBean.getEnvironment_imgs().size();
-                            /*for (int i = 0; i < sizeEnv; i++) {
+                            *//*for (int i = 0; i < sizeEnv; i++) {
                                 View view = LayoutInflater.from(getContext()).inflate(R.layout.sponsor_image_view, null);
                                 ImageView imageView = (ImageView) view.findViewById(R.id.sponsor_env_img);
                                 Presenter.getInstance(getContext()).getImage(imageView, dataBean.getEnvironment_imgs().get(i).getUrl());
                                 Mview.add(view);
-                            }*/
+                            }*//*
                             if (sizeEnv >= 1) {
                                 View view = LayoutInflater.from(getContext()).inflate(R.layout.sponsor_image_view, null);
                                 ImageView imageView = (ImageView) view.findViewById(R.id.sponsor_env_img);
                                 Presenter.getInstance(getContext()).getImage(imageView, dataBean.getEnvironment_imgs().get(0).getUrl());
                                 Mview.add(view);
                             }
-                        }
+                        }*/
                         if (Mview.size() > 0) {
 
                             sponsorImages.setAdapter(new ImageViewPagerAdapter(getContext(), Mview));
                             sponsorImages.addOnPageChangeListener(onPageChangeListener);
                         }
                         int size = 0;
-                        if (dataBean.getGoods_imgs() != null) {
-                            size = dataBean.getGoods_imgs().size();
-                            goodsImgsBeans.addAll(dataBean.getGoods_imgs());
+                        if (dataBean.getEnvironment_imgs() != null) {
+                            size = dataBean.getEnvironment_imgs().size();
+                            goodsImgsBeans.addAll(dataBean.getEnvironment_imgs());
                             if (size == 1) {
                                 goodsA.setVisibility(View.VISIBLE);
-                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getGoods_imgs().get(0).getUrl());
+                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getEnvironment_imgs().get(0).getUrl());
                             } else if (size == 2) {
                                 goodsA.setVisibility(View.VISIBLE);
                                 centerPic.setVisibility(View.VISIBLE);
-                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getGoods_imgs().get(0).getUrl());
-                                Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getGoods_imgs().get(1).getUrl());
+                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getEnvironment_imgs().get(0).getUrl());
+                                Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getEnvironment_imgs().get(1).getUrl());
                             } else if (size >= 3) {
 
                                 goodsA.setVisibility(View.VISIBLE);
                                 centerPic.setVisibility(View.VISIBLE);
                                 goodsB.setVisibility(View.VISIBLE);
-                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getGoods_imgs().get(0).getUrl());
-                                Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getGoods_imgs().get(1).getUrl());
-                                Presenter.getInstance(getContext()).getImage(goodsB, dataBean.getGoods_imgs().get(2).getUrl());
+                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getEnvironment_imgs().get(0).getUrl());
+                                Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getEnvironment_imgs().get(1).getUrl());
+                                Presenter.getInstance(getContext()).getImage(goodsB, dataBean.getEnvironment_imgs().get(2).getUrl());
                             }
                         }
                     }

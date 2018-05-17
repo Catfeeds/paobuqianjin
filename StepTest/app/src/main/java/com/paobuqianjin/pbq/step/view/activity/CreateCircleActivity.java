@@ -457,7 +457,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 Bundle bundle = new Bundle();
                 bundle.putString(CIRCLE_ID, createCircleResponses.getData().getId());
                 bundle.putString(CIRCLE_NAME, createCircleResponses.getData().getName());
-                bundle.putString(CIRCLE_LOGO, createCircleResponses.getData().getLogo());
+                bundle.putString(CIRCLE_LOGO, localAvatar);
                 if (is_recharge) {
                     LocalLog.d(TAG, "创建成功,跳转支付");
                     bundle.putString(PAY_FOR_STYLE, "circle");

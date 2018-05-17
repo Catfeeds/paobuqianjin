@@ -49,8 +49,8 @@ public class GridAdpter extends BaseAdapter {
             imageView = new ImageView(context);
             imageView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mImageLayoutSize));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            if (mData.get(position) instanceof SponsorDetailResponse.DataBean.GoodsImgsBean) {
-                Presenter.getInstance(context).getImage(imageView, ((SponsorDetailResponse.DataBean.GoodsImgsBean) mData.get(position)).getUrl());
+            if (mData.get(position) instanceof SponsorDetailResponse.DataBean.EnvironmentImgsBean) {
+                Presenter.getInstance(context).getImage(imageView, ((SponsorDetailResponse.DataBean.EnvironmentImgsBean) mData.get(position)).getUrl());
             }
         } else {
             imageView = (ImageView) convertView;

@@ -19,6 +19,7 @@ import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.DefaultDecoderFactory;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 
 import java.util.Arrays;
@@ -58,7 +59,7 @@ public class QrCodeScanActivity extends BaseActivity implements DecoratedBarcode
             }
             lastText = result.getText();
             beepManager.playBeepSoundAndVibrate();
-            if (!result.getText().startsWith("userid:") && !result.getText().startsWith("circleid:")) {
+            if (!result.getText().startsWith(NetApi.urlShareIc) && !result.getText().startsWith(NetApi.urlShareCd)) {
                 Toast.makeText(getApplicationContext(), "请对准正确的二维码", Toast.LENGTH_SHORT).show();
                 return;
             } else {

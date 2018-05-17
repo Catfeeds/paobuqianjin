@@ -160,7 +160,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         });
 
         dialog = new ProgressDialog(getContext());
-        web = new UMWeb(NetApi.urlShare + String.valueOf(Presenter.getInstance(getContext()).getId()));
+        web = new UMWeb(NetApi.urlShareIc + String.valueOf(Presenter.getInstance(getContext()).getId()));
         web.setTitle("跑步钱进");
         web.setThumb(new UMImage(getContext(), R.mipmap.app_icon));
         web.setDescription("邀请好友");

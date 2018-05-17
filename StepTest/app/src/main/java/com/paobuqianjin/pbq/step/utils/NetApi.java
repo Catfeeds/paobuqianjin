@@ -157,6 +157,10 @@ public class NetApi {
     public final static String urlLocation = url+"v1/UserLocation/setLocation";
     //TODO share
     public final static String urlShare = "http://share.runmoneyin.com/in.html?";
+    //TODO 个人码
+    public final static String urlShareIc = urlShare + "ic=";
+    //TODO 圈子码
+    public final static String urlShareCd = urlShare + "cd=";
     //TODO 商户发红包
     public final static String urlSendTaskRedBag = url + "v1/Redpacket";
     //TODO VIP

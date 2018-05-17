@@ -53,7 +53,7 @@ public class SponsorGoodFragment extends BaseBarStyleTextViewFragment implements
     GridView sponsorView;
     private int mColumnWidth;
     private int mColumnNum;
-    ArrayList<SponsorDetailResponse.DataBean.GoodsImgsBean> goodsImgsBeans = new ArrayList<>();
+    ArrayList<SponsorDetailResponse.DataBean.EnvironmentImgsBean> goodsImgsBeans = new ArrayList<>();
     GoodImageData goodImageData;
     private View popBirthSelectView;
     private PopupWindow popupSelectWindow;

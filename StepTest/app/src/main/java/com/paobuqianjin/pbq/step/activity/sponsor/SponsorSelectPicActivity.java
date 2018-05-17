@@ -45,6 +45,7 @@ import butterknife.ButterKnife;
 
 public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBarActivity.ToolBarListener {
 
+    public static final int MAX_SIZE = 30;
     @Bind(R.id.desc)
     TextView desc;
     @Bind(R.id.pic_grid_view)
@@ -102,7 +103,7 @@ public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBar
         if (SponsorInfoActivity.ACTION_OUT_PIC.equals(intent.getAction())) {
             adapter = new GridAddPicAdapter(this, 1);
         } else {
-            adapter = new GridAddPicAdapter(this, 12);
+            adapter = new GridAddPicAdapter(this, MAX_SIZE);
         }
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -204,7 +205,11 @@ public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBar
                 if (SponsorInfoActivity.ACTION_OUT_PIC.equals(intent.getAction())) {
                     picker.maxNum(1);
                 } else {
-                    picker.maxNum(12 - adapter.getData().size());
+                    if ((MAX_SIZE - adapter.getData().size()) / 12 == 0) {
+                        picker.maxNum((MAX_SIZE - adapter.getData().size()) % 12);
+                    }else{
+                        picker.maxNum(12);
+                    }
                 }
                 picker.start(SponsorSelectPicActivity.this, REQUEST_CODE);
                 popupCircleTypeWindow.dismiss();

@@ -357,7 +357,7 @@ public class SponsorDetailResponse {
             }
         }
 
-        public static class EnvironmentImgsBean {
+        public static class EnvironmentImgsBean implements Serializable {
             /**
              * img_id : 36
              * type : 3

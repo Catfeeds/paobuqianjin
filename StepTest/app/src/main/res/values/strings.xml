@@ -151,4 +151,7 @@
     <string name="next_step">下一步</string>
     <string name="default_text">--</string>
     <string name="title_code_already_send">验证码已发送至手机：</string>
+    <string name="red_finish">您已领完商家红包</string>
+    <string name="error_red">手慢了，商家红包已领完</string>
+    <string name="get_red">恭喜您获得</string>
 </resources>

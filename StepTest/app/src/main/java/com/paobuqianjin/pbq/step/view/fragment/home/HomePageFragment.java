@@ -192,6 +192,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     private boolean redPkgEnable = true;
     SponsorRedPakAdapter sponsorRedPakAdapter;
     TextView totalRedPkg;
+    TextView redRevTv;
     RecyclerView redPkgRecycler;
     TextView errorTextView;
     TextView desPkgTextView;
@@ -383,6 +384,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         String canRevPkg = "";
         popRedPkgView = View.inflate(getContext(), R.layout.red_pkg_pop_window, null);
         totalRedPkg = (TextView) popRedPkgView.findViewById(R.id.total_red_pkg);
+        redRevTv = (TextView) popRedPkgView.findViewById(R.id.concla_id);
         redPkgRecycler = (RecyclerView) popRedPkgView.findViewById(R.id.red_pkg_recycler);
         openRedPkgView = (ImageView) popRedPkgView.findViewById(R.id.open_red_pkg);
         errorTextView = (TextView) popRedPkgView.findViewById(R.id.error_text);
@@ -392,12 +394,15 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             openRedPkgView.setVisibility(View.VISIBLE);
             errorTextView.setVisibility(View.GONE);
             desPkgTextView.setVisibility(View.GONE);
+            redRevTv.setVisibility(View.INVISIBLE);
         } else {
             totalRedPkg.setVisibility(View.VISIBLE);
             openRedPkgView.setVisibility(View.INVISIBLE);
             errorTextView.setVisibility(View.GONE);
             desPkgTextView.setVisibility(View.VISIBLE);
             totalRedPkg.setText(String.valueOf(sponsorRedPkgResponse.getData().getLedredmoney()));
+            redRevTv.setText(getString(R.string.red_finish));
+            redRevTv.setVisibility(View.VISIBLE);
         }
         RelativeLayout relativeLayout = (RelativeLayout) popRedPkgView.findViewById(R.id.cancel_red_span);
         TextView tv_go2be_vip = (TextView) popRedPkgView.findViewById(R.id.tv_go2be_vip);
@@ -477,6 +482,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 if (TextUtils.isEmpty(redids) && sponsorRedPkgResponse.getData().getUserstatus() == 0) {
                     view.clearAnimation();
                     openRedPkgView.setVisibility(View.INVISIBLE);
+                    errorTextView.setText(getString(R.string.error_red));
                     errorTextView.setVisibility(View.VISIBLE);
                     desPkgTextView.setVisibility(View.VISIBLE);
                     return;
@@ -533,15 +539,19 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 LocalLog.d(TAG, "领取红包出错" + ((ErrorCode) object).getMessage());
                 openRedPkgView.setVisibility(View.INVISIBLE);
                 errorTextView.setVisibility(View.VISIBLE);
+                errorTextView.setText(getString(R.string.error_red));
             } else if (object instanceof RecRedPkgResponse) {
                 if (((RecRedPkgResponse) object).getError() == 0) {
                     if (((RecRedPkgResponse) object).getData().getAllmoney() > 0.0f) {
                         openRedPkgView.setVisibility(View.INVISIBLE);
                         totalRedPkg.setVisibility(View.VISIBLE);
                         totalRedPkg.setText(String.valueOf(((RecRedPkgResponse) object).getData().getAllmoney()));
+                        redRevTv.setText(getString(R.string.get_red));
+                        redRevTv.setVisibility(View.VISIBLE);
                         updateIncome();
                     } else {
                         openRedPkgView.setVisibility(View.INVISIBLE);
+                        errorTextView.setText(getString(R.string.error_red));
                         errorTextView.setVisibility(View.VISIBLE);
                     }
                     desPkgTextView.setVisibility(View.VISIBLE);
@@ -551,6 +561,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         sponsorRedPakAdapter.notifyDataSetChanged(sponsorData);
                     }
                 } else if (((RecRedPkgResponse) object).getError() == -1) {
+                    errorTextView.setText(getString(R.string.error_red));
                     errorTextView.setVisibility(View.VISIBLE);
                 }
             }
@@ -582,7 +593,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popupRedPkgWindow.dismiss();
+                if (popupRedPkgWindow != null) {
+                    popupRedPkgWindow.dismiss();
+                }
             }
         });
         popupRedPkgWindow.showAtLocation(getActivity().findViewById(R.id.home_page), Gravity.CENTER, 0, 0);
@@ -705,7 +718,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Override
     public void response(SponsorRedPkgResponse sponsorRedPkgResponse) {
         LocalLog.d(TAG, "SponsorRedPkgResponse() enter " + sponsorRedPkgResponse.toString());
-        redPkgEnable = true;
+        if (!this.isAdded()) {
+            return;
+        }
         if (sponsorRedPkgResponse.getError() == 0) {
             if (sponsorRedPkgResponse.getData().getUserstatus() == 0
                     && (sponsorRedPkgResponse.getData().getCanredpacket() == null
@@ -738,7 +753,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
             }
         }
-
+        redPkgEnable = true;
     }
 
     @Override

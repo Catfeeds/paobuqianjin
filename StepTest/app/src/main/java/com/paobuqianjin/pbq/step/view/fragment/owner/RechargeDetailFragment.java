@@ -213,6 +213,9 @@ public class RechargeDetailFragment extends BaseFragment implements RechargeDeta
                         LocalLog.d(TAG, "第一次刷新");
                     } else {
                         if (pageIndex > pageCount) {
+                            if (getContext() == null) {
+                                return;
+                            }
                             Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
                             outDetailRecycler.loadMoreFinish(false, true);
                             return;
