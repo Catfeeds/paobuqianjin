@@ -443,7 +443,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 sponsorData.addAll((ArrayList) sponsorRedPkgResponse.getData().getLedredpacket());
             }
         }
-        if (sponsorRedPkgResponse.getData().getCanredpacket() != null && sponsorRedPkgResponse.getData().getCanredpacket().size() > 0) {
+        if (sponsorRedPkgResponse.getData().getCanredpacket() != null && sponsorRedPkgResponse.getData().getCanredpacket().size() > 0
+                && sponsorRedPkgResponse.getData().getUserstatus() == 0) {
             /*if (sponsorRedPkgResponse.getData().getCanredpacket().size() > 0) {
                 sponsorData.addAll((ArrayList) sponsorRedPkgResponse.getData().getCanredpacket());
             }*/
@@ -458,9 +459,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             sponsorData.addAll((ArrayList) sponsorRedPkgResponse.getData().getCanredpacket());
         }
 
-        if (sponsorRedPakAdapter == null) {
-            sponsorRedPakAdapter = new SponsorRedPakAdapter(getContext(), sponsorData);
-        }
+        sponsorRedPakAdapter = new SponsorRedPakAdapter(getContext(), sponsorData);
         redPkgRecycler.setAdapter(sponsorRedPakAdapter);
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
                 0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,

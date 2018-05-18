@@ -162,6 +162,9 @@ public class LiveDetailFragment extends BaseBarStyleTextViewFragment {
                     @Override
                     public void run() {
                         //WebView加载web资源
+                        if (webView == null) {
+                            return;
+                        }
                         webView.loadUrl(url);
                         //覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
                         webView.setWebViewClient(new WebViewClient() {

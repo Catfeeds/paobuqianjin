@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,15 +11,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.base.adapter.owner.FollowAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.yanzhenjie.loading.LoadingView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.paobuqianjin.pbq.step.utils.Utils.PAGE_SIZE_DEFAULT;
 
 /**
  * Created by pbq on 2018/3/1.
@@ -31,10 +38,11 @@ public class FollowOtoFragment extends BaseFragment {
     @Bind(R.id.invite_dan_recycler)
     SwipeMenuRecyclerView inviteDanRecycler;
     LinearLayoutManager layoutManager;
-    private RecyclerView.Adapter adapter;
-
+    private FollowAdapter adapter;
     DefineLoadMoreView loadMoreView;
-    SwipeMenuRecyclerView.LoadMoreListener loadMoreListener;
+    private int pageFollowOtoCount = 0;
+    private int pageIndexFollowOto = 1;
+    private String keyWord = "";
 
     @Override
     protected int getLayoutResId() {
@@ -55,25 +63,35 @@ public class FollowOtoFragment extends BaseFragment {
         inviteDanRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.invite_dan_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         inviteDanRecycler.setLayoutManager(layoutManager);
-        if (adapter != null) {
-            inviteDanRecycler.setAdapter(adapter);
-        }
-        this.loadMoreView = new DefineLoadMoreView(getContext());
+        adapter = new FollowAdapter(getActivity(), null);
+        inviteDanRecycler.setAdapter(adapter);
+
+        loadMoreView = new DefineLoadMoreView(getContext());
         inviteDanRecycler.addFooterView(loadMoreView); // 添加为Footer。
         inviteDanRecycler.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
-        if (loadMoreListener != null) {
-            inviteDanRecycler.setLoadMoreListener(loadMoreListener); // 加载更多的监听。
-        }
+        inviteDanRecycler.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
+
+        Presenter.getInstance(getContext()).getFollows("mutual", pageIndexFollowOto, PAGE_SIZE_DEFAULT, keyWord, OtoFriendCallBack);
     }
 
-    public void loadMoreFinish(boolean dateEmpty, boolean hasMore) {
-        if (inviteDanRecycler != null) {
-            inviteDanRecycler.loadMoreFinish(dateEmpty, hasMore);
-        } else {
-            LocalLog.d(TAG, "UI is null");
-        }
-    }
+    private InnerCallBack OtoFriendCallBack = new InnerCallBack() {
+        @Override
+        public void innerCallBack(Object object) {
+            if (object instanceof UserFollowOtOResponse) {
+                if (((UserFollowOtOResponse) object).getError() == 0) {
 
+                } else if (((UserFollowOtOResponse) object).getError() == 100) {
+                    LocalLog.d(TAG, "Token 过期!");
+                    exitTokenUnfect();
+                } else if (((UserFollowOtOResponse) object).getError() == 1) {
+                    LocalLog.d(TAG, "Not found Data");
+
+                }
+            } else if (object instanceof ErrorCode) {
+
+            }
+        }
+    };
 
     public void scrollTop() {
         if (inviteDanRecycler != null) {
@@ -85,6 +103,7 @@ public class FollowOtoFragment extends BaseFragment {
             }, 10);
         }
     }
+
     /**
      * 这是这个类的主角，如何自定义LoadMoreView。
      */
@@ -190,19 +209,27 @@ public class FollowOtoFragment extends BaseFragment {
             if (mLoadMoreListener != null) mLoadMoreListener.onLoadMore();
         }
     }
-    public void listen(SwipeMenuRecyclerView.LoadMoreListener loadMoreListener) {
-        this.loadMoreListener = loadMoreListener;
-        if (inviteDanRecycler != null) {
-            inviteDanRecycler.setLoadMoreListener(loadMoreListener); // 加载更多的监听。
-        }
-    }
 
-    public void setAdapter(RecyclerView.Adapter adapter) {
-        this.adapter = adapter;
-        if (inviteDanRecycler != null) {
-            inviteDanRecycler.setAdapter(adapter);
+    /**
+     * 加载更多。
+     */
+    private SwipeMenuRecyclerView.LoadMoreListener mLoadMoreListener = new SwipeMenuRecyclerView.LoadMoreListener() {
+        @Override
+        public void onLoadMore() {
+            LocalLog.d(TAG, "加载更多!");
+            if (pageFollowOtoCount == 0) {
+                LocalLog.d(TAG, "第一次刷新");
+            } else {
+                if (pageIndexFollowOto > pageFollowOtoCount) {
+                    Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                    inviteDanRecycler.loadMoreFinish(false, true);
+                    return;
+                }
+            }
+
+            Presenter.getInstance(getContext()).getFollows("mutual", pageIndexFollowOto, PAGE_SIZE_DEFAULT, keyWord, OtoFriendCallBack);
         }
-    }
+    };
 
     @Override
     public void onDestroyView() {

@@ -51,7 +51,8 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
     public void onBindViewHolder(SelectTaskFriendViewHolder holder, int position) {
         if (mData.get(position) instanceof UserFriendResponse.DataBeanX.DataBean) {
             LocalLog.d(TAG, " before mData.get(position) " + mData.get(position).toString());
-            Presenter.getInstance(context).getImage(holder.dearIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
+            Presenter.getInstance(context).getPlaceErrorImage(holder.dearIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.dearName.setText(((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.position = position;
             holder.is_distrubute = mData.get(position).getIs_distribute();

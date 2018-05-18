@@ -134,7 +134,7 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
         if (intent != null) {
             String usrIcon = intent.getStringExtra("usericon");
             if (usrIcon != null && !usrIcon.equals("")) {
-                Presenter.getInstance(getContext()).getImage(userIcon, usrIcon);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(userIcon, usrIcon, R.drawable.default_head_ico, R.drawable.default_head_ico);
             }
         }
         barNull = (RelativeLayout) (viewRoot.findViewById(R.id.dan_bar));

@@ -177,24 +177,20 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         @Override
         public void onStart(SHARE_MEDIA share_media) {
             LocalLog.d(TAG, share_media.toString() + "开始分享");
-            SocializeUtils.safeShowDialog(dialog);
         }
 
         @Override
         public void onResult(SHARE_MEDIA share_media) {
             Toast.makeText(getContext(), "分享成功", Toast.LENGTH_SHORT).show();
-            SocializeUtils.safeCloseDialog(dialog);
         }
 
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-            SocializeUtils.safeCloseDialog(dialog);
             Toast.makeText(getContext(), "失败" + throwable.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
-            SocializeUtils.safeCloseDialog(dialog);
             Toast.makeText(getContext(), "取消分享", Toast.LENGTH_LONG).show();
         }
     };

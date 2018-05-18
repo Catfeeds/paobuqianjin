@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.view;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,8 @@ public class PaoToastView extends Toast {
 //        this.noticeText = (TextView) layout.findViewById(android.R.id.message);
 
         this.toast = new Toast(context);
-        this.toast.setGravity(17, 0, 0);
-        this.toast.setDuration(0);
+//        this.toast.setGravity(Gravity.BOTTOM, 0, 0);
+        this.toast.setDuration(Toast.LENGTH_SHORT);
         this.toast.setView(layout);
     }
 

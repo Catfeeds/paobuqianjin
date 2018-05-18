@@ -399,8 +399,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                     oneCommentBean.setContent(postDynamicContentResponse.getData().getContent());
                     intent.putExtra(getContext().getPackageName() + "oneCommentBean", oneCommentBean);
                 } else {
-                    topContentData.add(0, dataBean);
-                    topLevelContentAdapter.notifyItemInserted(0);
+                    topContentData.add(topContentData.size(), dataBean);
+                    topLevelContentAdapter.notifyItemInserted(topContentData.size());
                 }
             }
         }
@@ -486,7 +486,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             if (dynamicUserIcon == null) {
                 return;
             }
-            Presenter.getInstance(getContext()).getImage(dynamicUserIcon, dynamicIdDetailResponse.getData().getAvatar());
+            Presenter.getInstance(getContext()).getPlaceErrorImage(dynamicUserIcon, dynamicIdDetailResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             dynamicUserName.setText(dynamicIdDetailResponse.getData().getNickname());
             long create_time = dynamicIdDetailResponse.getData().getCreate_time();
 
@@ -545,7 +545,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                     Mview.add(imageView0);
                     dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
                     ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
-                    Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
+                    Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0)
+                            , R.drawable.bitmap_null, R.drawable.bitmap_null);
                     showBigImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
                 }
             } else if (imageSize == 2) {
@@ -561,8 +562,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
                 ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
                 dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
-                Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
-                Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
                 showBigImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
                 showBigImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
 
@@ -582,9 +583,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
                 ImageView imageViewC = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
                 dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
-                Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
-                Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
-                Presenter.getInstance(getContext()).getImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2), R.drawable.bitmap_null, R.drawable.bitmap_null);
                 showBigImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
                 showBigImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
                 showBigImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
@@ -611,10 +612,10 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 ImageView imageViewC = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
                 ImageView imageViewD = (ImageView) imageView3.findViewById(R.id.dynamic_pic);
                 dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
-                Presenter.getInstance(getContext()).getImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
-                Presenter.getInstance(getContext()).getImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
-                Presenter.getInstance(getContext()).getImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));
-                Presenter.getInstance(getContext()).getImage(imageViewD, dynamicIdDetailResponse.getData().getImages().get(3));
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewD, dynamicIdDetailResponse.getData().getImages().get(3), R.drawable.bitmap_null, R.drawable.bitmap_null);
                 showBigImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0));
                 showBigImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1));
                 showBigImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2));

@@ -55,13 +55,7 @@ public class IncomeAdater extends RecyclerView.Adapter<IncomeAdater.IncomeDetail
     private void upDateListItem(IncomeDetailViewHolder holder, int position) {
         LocalLog.d(TAG, "upDateListItem() enter");
         if (mData.get(position) instanceof CrashListDetailResponse.DataBeanX.DataBean) {
-            if (((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getTypeid() == 1) {
-                holder.incomeDetailDes.setText("提现到微信");
-            } else if (((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getTypeid() == 2) {
-                holder.incomeDetailDes.setText("提现到支付宝");
-            } else if (((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getTypeid() == 3) {
-                holder.incomeDetailDes.setText("提现到银行卡");
-            }
+            holder.incomeDetailDes.setText(((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getType_name());
             long create_time = ((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
             String date = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_YYYY_MM_DD_HH_MM);
             String dateStr = date.replace("-", "/");
@@ -73,13 +67,8 @@ public class IncomeAdater extends RecyclerView.Adapter<IncomeAdater.IncomeDetail
             }
             holder.data.setText("￥:" + ((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getActual_amount() + "元");
         } else if (mData.get(position) instanceof RechargeDetailResponse.DataBeanX.DataBean) {
-            if (((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getPtype() == 2) {
-                holder.incomeDetailDes.setText("微信充值");
-            } else if (((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getPtype() == 1) {
-                holder.incomeDetailDes.setText("钱包充值");
-            } else if (((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getPtype() == 3) {
-                holder.incomeDetailDes.setText("支付宝充值");
-            }
+
+            holder.incomeDetailDes.setText(((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getPay_name());
             long create_time = ((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
             String date = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_YYYY_MM_DD_HH_MM);
             String dateStr = date.replace("-", "/");

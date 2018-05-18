@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -98,6 +99,7 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
     private final static String FOLLOW_OTO_ACTION = "com.paobuqianjin.pbq.action.OTO_ACTION";
     private final static String MY_FOLLOW_ACTION = "com.paobuqianjin.pbq.action.MY_FOLLOW_ACTION";
     private final static String FOLLOW_ME_ACTION = "com.paobuqianjin.pbq.action.FOLLOME_ACTION";
+    private String keyWord = "";
 
     @Override
 
@@ -121,10 +123,13 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getFollows("mutual", pageIndexFollowOto, PAGE_SIZE_DEFAULT);
-        Presenter.getInstance(getContext()).getFollows("my", pageIndexMyFollow, PAGE_SIZE_DEFAULT);
-        Presenter.getInstance(getContext()).getFollows("me", pageIndexFollowMe, PAGE_SIZE_DEFAULT);
+        Presenter.getInstance(getContext()).getFollows("my", pageIndexMyFollow, PAGE_SIZE_DEFAULT, keyWord);
+        Presenter.getInstance(getContext()).getFollows("me", pageIndexFollowMe, PAGE_SIZE_DEFAULT, keyWord);
         return rootView;
+    }
+
+    private void searchKeyWord(String keyWord) {
+        this.keyWord = keyWord;
     }
 
     private class LocalReceiver extends BroadcastReceiver {
@@ -412,7 +417,7 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
                     }
                 }
 
-                Presenter.getInstance(getContext()).getFollows("mutual", pageIndexFollowOto, PAGE_SIZE_DEFAULT);
+                Presenter.getInstance(getContext()).getFollows("mutual", pageIndexFollowOto, PAGE_SIZE_DEFAULT, keyWord);
             } else if (selectPage == 2) {
                 if (pageFollowMeCount == 0) {
                     LocalLog.d(TAG, "第一次刷新");
@@ -424,7 +429,7 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
                     }
                 }
 
-                Presenter.getInstance(getContext()).getFollows("me", pageFollowMeCount, PAGE_SIZE_DEFAULT);
+                Presenter.getInstance(getContext()).getFollows("me", pageFollowMeCount, PAGE_SIZE_DEFAULT, keyWord);
             } else if (selectPage == 1) {
                 if (pageFollowMeCount == 0) {
                     LocalLog.d(TAG, "第一次刷新");
@@ -435,7 +440,7 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
                         return;
                     }
                 }
-                Presenter.getInstance(getContext()).getFollows("my", pageFollowMeCount, PAGE_SIZE_DEFAULT);
+                Presenter.getInstance(getContext()).getFollows("my", pageFollowMeCount, PAGE_SIZE_DEFAULT, keyWord);
             }
         }
     };

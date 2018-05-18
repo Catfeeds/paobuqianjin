@@ -279,7 +279,8 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     private void updateDayRank(StepRankResponse stepRankResponse) {
         if (stepRankResponse != null) {
             if (stepRankResponse.getData().getPagenation().getTotalCount() > 0) {
-                Presenter.getInstance(getContext()).getImage(kingHeadIcon, stepRankResponse.getData().getData().get(0).getAvatar());
+                Presenter.getInstance(getContext()).getPlaceErrorImage(kingHeadIcon, stepRankResponse.getData().getData().get(0).getAvatar()
+                        , R.drawable.default_head_ico, R.drawable.default_head_ico);
                 kingName.setText(stepRankResponse.getData().getData().get(0).getNickname());
                 if (stepRankResponse.getData().getData().get(0).getVip() == 1) {
                     vipFlg.setVisibility(View.VISIBLE);
@@ -324,7 +325,8 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     private void updateWeekRank(StepRandWeekResponse stepRandWeekResponse) {
         if (stepRandWeekResponse != null) {
             if (stepRandWeekResponse.getData().getPagenation().getTotalCount() > 0) {
-                Presenter.getInstance(getContext()).getImage(kingHeadIcon, stepRandWeekResponse.getData().getData().getMember().get(0).getAvatar());
+                Presenter.getInstance(getContext()).getPlaceErrorImage(kingHeadIcon, stepRandWeekResponse.getData().getData().getMember().get(0).getAvatar()
+                        , R.drawable.default_head_ico, R.drawable.default_head_ico);
                 kingName.setText(stepRandWeekResponse.getData().getData().getMember().get(0).getNickname());
             }
             danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), stepRandWeekResponse.getData().getData().getMember()));

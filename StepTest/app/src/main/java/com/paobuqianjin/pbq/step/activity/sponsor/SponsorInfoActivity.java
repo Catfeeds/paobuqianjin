@@ -281,6 +281,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
         }
         if (!TextUtils.isEmpty(images)) {
             param.setEnvironment_images(images);
+            param.setLogo(images);
             LocalLog.d(TAG, "out----" + images);
         }
         if (!TextUtils.isEmpty(imagesIn)) {

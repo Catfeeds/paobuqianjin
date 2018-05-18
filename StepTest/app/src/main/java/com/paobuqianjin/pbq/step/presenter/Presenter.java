@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -481,6 +482,10 @@ public final class Presenter {
         engine.getImage(view, urlImg);
     }
 
+    public void getPlaceErrorImage(ImageView view, String urlImage, int placeholderImageId, int errorId) {
+        engine.getPlaceErrorImage(view, urlImage, placeholderImageId, errorId);
+    }
+
     public void getImage(ImageView view, String urlImg, int targetWidth, int targetHeight) {
         if ("".equals(urlImg)) {
             return;
@@ -642,8 +647,8 @@ public final class Presenter {
     }
 
     //TODO 用户关注接口
-    public void getFollows(String action, int page, int pagesize) {
-        engine.getFollows(action, page, pagesize);
+    public void getFollows(String action, int page, int pagesize, String keyWord, InnerCallBack innerCallBack) {
+        engine.getFollows(action, page, pagesize, keyWord, innerCallBack);
     }
 
     public void postQueryFollowState(QueryFollowStateParam queryFollowStateParam) {
@@ -766,8 +771,8 @@ public final class Presenter {
         engine.postAddressBook(addressBook);
     }
 
-    public void inviteMsg(String phoneNum,Button button) {
-        engine.inviteMsg(phoneNum ,button);
+    public void inviteMsg(String phoneNum, Button button) {
+        engine.inviteMsg(phoneNum, button);
     }
 
     public void postTaskSponsorRelease(TaskSponsorParam taskSponsorParam) {

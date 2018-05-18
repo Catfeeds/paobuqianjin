@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment implements ProtocolInterface {
     private final static String TAG = UserServiceProtcolFragment.class.getSimpleName();
     private final static String USER_SERVICE_AGREEMENT_ACTION = "com.paobuqianjin.pbq.step.SERVICE_ACTION";
-    private final static String USER_CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
+    public final static String USER_CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
     private final static String USER_INVITE_AGREEMENT_ACTION = "com.paobuqianjin.step.pbq.INVITE_ACTION";
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -108,7 +108,6 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
                 return;
             }
             if ("4".equals(action)) {
-                Presenter.getInstance(getContext()).setReadCrashProtocol(getContext(), true);
                 getActivity().setResult(Activity.RESULT_OK);
             }
             protcol.setText(Html.fromHtml(protocolResponse.getData().getContent()));

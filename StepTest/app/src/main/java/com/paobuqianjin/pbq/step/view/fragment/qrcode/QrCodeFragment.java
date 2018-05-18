@@ -173,7 +173,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
                 LocalLog.d(TAG,"本地路径");
                 Presenter.getInstance(getContext()).getImage(logo, circleLogo);
             } else {
-                Presenter.getInstance(getContext()).getImage(circleLogo, logo);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(circleLogo, logo,R.drawable.default_head_ico,R.drawable.default_head_ico);
             }
         }
         circleName.setText(name);

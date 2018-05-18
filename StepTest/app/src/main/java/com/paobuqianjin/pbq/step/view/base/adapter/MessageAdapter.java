@@ -69,8 +69,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             int[] emj = context.getResources().getIntArray(R.array.emjio_list);
             if (mData.get(position) instanceof MessageContentResponse.DataBeanX.DataBean) {
                 if (holder instanceof MessageContentViewHolder) {
-                    Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).rectIcon,
-                            ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getFrom_avatar());
+                    Presenter.getInstance(context).getPlaceErrorImage(((MessageContentViewHolder) holder).rectIcon,
+                            ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getFrom_avatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                     ((MessageContentViewHolder) holder).dearName.setText(((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getFrom_nickanme());
                     ((MessageContentViewHolder) holder).contentText.setText(((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getTitle());
                     String content = ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getContent();
@@ -112,8 +112,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             } else if (mData.get(position) instanceof MessageLikeResponse.DataBeanX.DataBean) {
                 if (holder instanceof MessageLikeViewHolder) {
-                    Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).rectIcon,
-                            ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getFrom_avatar());
+                    Presenter.getInstance(context).getPlaceErrorImage(((MessageLikeViewHolder) holder).rectIcon,
+                            ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getFrom_avatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                     ((MessageLikeViewHolder) holder).dearName.setText(((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getFrom_nickanme());
                     ((MessageLikeViewHolder) holder).contentText.setText(((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getTitle());
                     String content = ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getContent();

@@ -228,7 +228,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 String paramStr = new Gson().toJson(userInfo);
                 putUserInfoParam = new Gson().fromJson(paramStr, PutUserInfoParam.class);
 
-                Presenter.getInstance(getContext()).getImage(headIco, userInfo.getAvatar());
+                Presenter.getInstance(getContext()).getPlaceErrorImage(headIco, userInfo.getAvatar(),R.drawable.default_head_ico,R.drawable.default_head_ico);
                 dearNameSetting.setText(userInfo.getNickname());
                 if (userInfo.getSex() == 1) {
                     maleText.setText("男");

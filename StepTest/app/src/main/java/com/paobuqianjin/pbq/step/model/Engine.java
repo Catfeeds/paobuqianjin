@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
@@ -26,6 +27,7 @@ import com.google.gson.JsonSyntaxException;
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
+import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
@@ -66,6 +68,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CurrentStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteMessageResponse;
@@ -79,6 +82,8 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.VipNoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -1163,7 +1168,7 @@ public final class Engine {
 
     //TODO 获取评论列表 http://119.29.10.64/v1/DynamicComment/?dynamicid=1
     public void getDynamicCommentList(int dynamicid, int page, int pagesize) {
-        String url = NetApi.urlDynamicComment + "?dynamicid=" + String.valueOf(dynamicid) + "&page=" +
+        String url = NetApi.urlDynamicComment + "/getComment?dynamicid=" + String.valueOf(dynamicid) + "&page=" +
                 String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
         LocalLog.d(TAG, "getDynamicCommentList() enter url = " + url);
         OkHttpUtils
@@ -2459,10 +2464,14 @@ public final class Engine {
                 .execute(new NetStringCallBack(userIncomInterface, COMMAND_GET_USER_INFO));
     }
 
+
     //TODO 关注接口
-    public void getFollows(String action, int page, int pagesize) {
+    public void getFollows(String action, int page, int pagesize, String keyWord, final InnerCallBack innerCallBack) {
         String url = NetApi.urlUserFollow + "?action=" + action + "&userid=" + String.valueOf(getId(mContext))
                 + "&page=" + String.valueOf(page) + "&pagesize=" + String.valueOf(pagesize);
+        if (!TextUtils.isEmpty(keyWord)) {
+            url += url + "&keyword=" + keyWord;
+        }
         LocalLog.d(TAG, "getFollows() enter url = " + url);
         switch (action) {
             case "my":
@@ -2472,7 +2481,31 @@ public final class Engine {
                         .addHeader("headtoken", getToken(mContext))
                         .url(url)
                         .build()
-                        .execute(new NetStringCallBack(userFollowInterface, COMMAND_MY_FOLLOW));
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int i, Object o) {
+                                try {
+                                    ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                    if (innerCallBack != null) {
+                                        innerCallBack.innerCallBack(errorCode);
+                                    }
+                                } catch (JsonSyntaxException e1) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onResponse(String s, int i) {
+                                try {
+                                    UserIdFollowResponse userIdFollowResponse = new Gson().fromJson(s, UserIdFollowResponse.class);
+                                    if (innerCallBack != null) {
+                                        innerCallBack.innerCallBack(userIdFollowResponse);
+                                    }
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                 break;
             case "me":
                 LocalLog.d(TAG, "获取关注我的");
@@ -2481,7 +2514,31 @@ public final class Engine {
                         .addHeader("headtoken", getToken(mContext))
                         .url(url)
                         .build()
-                        .execute(new NetStringCallBack(userFollowInterface, COMMAND_FOLLOW_ME));
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int i, Object o) {
+                                try {
+                                    ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                    if (innerCallBack != null) {
+                                        innerCallBack.innerCallBack(errorCode);
+                                    }
+                                } catch (JsonSyntaxException e1) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onResponse(String s, int i) {
+                                try {
+                                    FollowUserResponse followUserResponse = new Gson().fromJson(s, FollowUserResponse.class);
+                                    if (innerCallBack != null) {
+                                        innerCallBack.innerCallBack(followUserResponse);
+                                    }
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                 break;
             case "mutual":
                 LocalLog.d(TAG, "获取互相关注");
@@ -2490,7 +2547,31 @@ public final class Engine {
                         .addHeader("headtoken", getToken(mContext))
                         .url(url)
                         .build()
-                        .execute(new NetStringCallBack(userFollowInterface, COMMAND_FOLLOW_O_TO_O));
+                        .execute(new StringCallback() {
+                            @Override
+                            public void onError(Call call, Exception e, int i, Object o) {
+                                try {
+                                    ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                    if (innerCallBack != null) {
+                                        innerCallBack.innerCallBack(errorCode);
+                                    }
+                                } catch (JsonSyntaxException e1) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onResponse(String s, int i) {
+                                try {
+                                    UserFollowOtOResponse followOtOResponse = new Gson().fromJson(s, UserFollowOtOResponse.class);
+                                    if (innerCallBack != null) {
+                                        innerCallBack.innerCallBack(followOtOResponse);
+                                    }
+                                } catch (JsonSyntaxException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                 break;
         }
     }
@@ -2552,8 +2633,12 @@ public final class Engine {
                         if (button != null) {
                             if (addDeleteFollowResponse.getMessage().equals("取消关注成功")) {
                                 button.setText("关注");
+                                button.setTextColor(ContextCompat.getColor(mContext, R.color.color_6c71c4));
+                                button.setBackground(ContextCompat.getDrawable(mContext, R.drawable.has_fllow_nearby));
                             } else {
                                 button.setText("已关注");
+                                button.setTextColor(ContextCompat.getColor(mContext, R.color.color_646464));
+                                button.setBackground(ContextCompat.getDrawable(mContext, R.drawable.has_not_fllow_nearby));
                             }
                         }
                     }
@@ -2665,6 +2750,22 @@ public final class Engine {
                         imageView.setImageBitmap(bitmap);}
                     }
                 });*/
+    }
+
+    public void getPlaceErrorImage(ImageView view, String urlImage, int placeholderImageId, int errorId) {
+        if (TextUtils.isEmpty(urlImage)) {
+            picasso.load(placeholderImageId).config(Bitmap.Config.RGB_565).transform(transformation).into(view);
+            return;
+        }
+        if (networkPolicy == NetworkPolicy.OFFLINE) {
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation)
+                    .placeholder(ContextCompat.getDrawable(mContext, placeholderImageId)).networkPolicy(networkPolicy)
+                    .error(ContextCompat.getDrawable(mContext, errorId)).networkPolicy(networkPolicy).into(view);
+        } else {
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation)
+                    .placeholder(ContextCompat.getDrawable(mContext, placeholderImageId))
+                    .error(ContextCompat.getDrawable(mContext, errorId)).into(view);
+        }
     }
 
     //网络图片获取接口
@@ -3004,7 +3105,7 @@ public final class Engine {
                             try {
                                 ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                                 innerCallBack.innerCallBack(errorCode);
-                            }catch (JsonSyntaxException j){
+                            } catch (JsonSyntaxException j) {
                                 j.printStackTrace();
                             }
                         }

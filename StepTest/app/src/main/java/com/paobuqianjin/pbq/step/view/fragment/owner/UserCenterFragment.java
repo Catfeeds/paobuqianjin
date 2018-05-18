@@ -200,7 +200,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             String stepFormat = getContext().getResources().getString(R.string.user_target);
             String stepStr = String.format(stepFormat, userInfoResponse.getData().getTarget_step());
             targerNum.setText(stepStr);
-            Presenter.getInstance(getContext()).getImage(userHeadIco, userInfoResponse.getData().getAvatar());
+            Presenter.getInstance(getContext()).getPlaceErrorImage(userHeadIco, userInfoResponse.getData().getAvatar(),R.drawable.default_head_ico,R.drawable.default_head_ico);
             if (userInfoResponse.getData().getCity().equals(userInfoResponse.getData().getProvince())) {
                 locationCity.setText(userInfoResponse.getData().getCity());
             } else {

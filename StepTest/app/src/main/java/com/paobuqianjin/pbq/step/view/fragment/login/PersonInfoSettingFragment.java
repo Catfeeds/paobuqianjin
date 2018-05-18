@@ -553,7 +553,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             } else {
                 settingHeight.setText(high + "厘米");
             }
-            Presenter.getInstance(getContext()).getImage(userIcon, dataBean.getAvatar());
+            Presenter.getInstance(getContext()).getPlaceErrorImage(userIcon, dataBean.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             userNameOldStr = dataBean.getNickname();
             useName.requestFocus();
             useName.setText(dataBean.getNickname());

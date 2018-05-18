@@ -156,6 +156,7 @@ public class RechargeDetailResponse {
              * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132
              * total_fee : 123.00
              * create_time : 1526446684
+             * pay_name:微信充值-用户钱包
              */
 
             private int id;
@@ -167,6 +168,16 @@ public class RechargeDetailResponse {
             private String avatar;
             private String total_fee;
             private int create_time;
+
+            public String getPay_name() {
+                return pay_name;
+            }
+
+            public void setPay_name(String pay_name) {
+                this.pay_name = pay_name;
+            }
+
+            private String pay_name;
 
             public int getId() {
                 return id;
@@ -252,6 +263,7 @@ public class RechargeDetailResponse {
                         ", avatar='" + avatar + '\'' +
                         ", total_fee='" + total_fee + '\'' +
                         ", create_time=" + create_time +
+                        ", pay_name='" + pay_name + '\'' +
                         '}';
             }
         }

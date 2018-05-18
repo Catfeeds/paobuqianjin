@@ -79,4 +79,9 @@
         <item name="android:textSize">16sp</item>
         <item name="android:padding">14dp</item>
     </style>
+
+    <style name="MyTextGray8a_Title16" >
+        <item name="android:textColor">@color/color_8a8a8a</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.PostBindUnBindWqParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -31,7 +30,6 @@ import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
-import com.paobuqianjin.pbq.step.view.activity.UserBindBankListActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -142,7 +140,7 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
             String canCrashStr = String.format(canCrashStrFormat, canCrashNum);
             canCrash.setHint(canCrashStr);
         }
-        String part1 = "我已接受", part2 = "《提现协议》";
+        String part1 = "请认真阅读", part2 = "《提现协议》";
         String protoclStr = part1 + part2;
         SpannableString spannableString = new SpannableString(protoclStr);
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.color_6c71c4));
@@ -164,7 +162,7 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
-    @OnClick({R.id.wechat_pay, R.id.confirm_crash, R.id.protocl_pay})
+    @OnClick({R.id.wechat_pay, R.id.confirm_crash, R.id.protocl_pay,R.id.select_icon})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.wechat_pay:
@@ -195,6 +193,23 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                 intent.setClass(getActivity(), AgreementActivity.class);
                 intent.setAction(CRASH_ACTION);
                 startActivityForResult(intent, CRASH_PROTOCAL);
+                break;
+            case R.id.select_icon:
+                boolean isCurrentProtocalPayState = Presenter.getInstance(getActivity()).getReadCrashProtocol(getActivity());
+                isCurrentProtocalPayState = !isCurrentProtocalPayState;
+                Presenter.getInstance(getActivity()).setReadCrashProtocol(getActivity(), isCurrentProtocalPayState);
+
+                if (!isCurrentProtocalPayState) {
+//                    LocalLog.d(TAG, "未阅读过提现协议");
+                    confirmCrash.setEnabled(false);
+                    confirmCrash.setBackgroundColor(getResources().getColor(R.color.color_8a8a8a));
+                    selectIcon.setImageDrawable(null);
+                } else {
+//                    LocalLog.d(TAG, "已阅读");
+                    confirmCrash.setEnabled(true);
+                    confirmCrash.setBackgroundColor(getResources().getColor(R.color.color_6c71c4));
+                    selectIcon.setImageResource(R.drawable.selected_icon);
+                }
                 break;
         }
     }
@@ -306,9 +321,9 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == CRASH_PROTOCAL) {
-                confirmCrash.setEnabled(true);
-                confirmCrash.setBackgroundColor(getResources().getColor(R.color.color_6c71c4));
-                selectIcon.setImageResource(R.drawable.selected_icon);
+//                confirmCrash.setEnabled(true);
+//                confirmCrash.setBackgroundColor(getResources().getColor(R.color.color_6c71c4));
+//                selectIcon.setImageResource(R.drawable.selected_icon);
             }
         }
         UMShareAPI.get(getContext()).onActivityResult(requestCode, resultCode, data);

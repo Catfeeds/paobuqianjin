@@ -58,7 +58,7 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             holder.rankNum.setVisibility(View.VISIBLE);
             holder.rankNum.setText(String.valueOf(position + 1));
             ReChargeRankResponse.DataBeanX.DataBean dataBean = (ReChargeRankResponse.DataBeanX.DataBean) mData.get(position);
-            Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, dataBean.getAvatar());
+            Presenter.getInstance(mContext).getPlaceErrorImage(holder.circleLogoSearch, dataBean.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             if (!TextUtils.isEmpty(dataBean.getCirclenickname())) {
                 holder.searchCircleDesListName.setText(dataBean.getCirclenickname());
             } else {
@@ -72,7 +72,8 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
 
         } else if (mData.get(position) instanceof StepRankResponse.DataBeanX.DataBean) {
             StepRankResponse.DataBeanX.DataBean dataBean = (StepRankResponse.DataBeanX.DataBean) mData.get(position);
-            Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, dataBean.getAvatar());
+            Presenter.getInstance(mContext).getPlaceErrorImage(holder.circleLogoSearch, dataBean.getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);
             if (!TextUtils.isEmpty(dataBean.getCirclenickname())) {
                 holder.searchCircleDesListName.setText(dataBean.getCirclenickname());
             } else {

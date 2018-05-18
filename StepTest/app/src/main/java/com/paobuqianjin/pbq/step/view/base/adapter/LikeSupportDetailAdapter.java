@@ -52,7 +52,7 @@ public class LikeSupportDetailAdapter extends RecyclerView.Adapter<LikeSupportDe
 
     private void updateListItem(LikeSupportViewHolder holder, int position) {
         if (mData.get(position) instanceof DynamicLikeListResponse.DataBeanX.DataBean) {
-            Presenter.getInstance(context).getImage(holder.circleLogoSearch, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
+            Presenter.getInstance(context).getPlaceErrorImage(holder.circleLogoSearch, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.searchCircleDesListName.setText(((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.userid = ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
             /*查询我与该用户的关注状态*/

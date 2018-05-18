@@ -57,7 +57,8 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
 
     private void updateListItem(LocalContactViewHolder holder, int position) {
         if (mData.get(position) instanceof FriendAddResponse.DataBean.InSystemBean) {
-            Presenter.getInstance(context).getImage(holder.userNearIcon, ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getAvatar());
+            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.dearName.setText(((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getName());
             if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getFollow_type() == 2) {
                 holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_646464));
@@ -76,6 +77,7 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
             if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
             }
+            holder.userid = ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getUserid();
         } else if (mData.get(position) instanceof FriendAddResponse.DataBean.OutSystemBean) {
             holder.dearName.setText(((FriendAddResponse.DataBean.OutSystemBean) mData.get(position)).getName());
             holder.btFollow.setText("邀请");
@@ -99,6 +101,7 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
         String phoneNum;
         @Bind(R.id.vip_flg)
         ImageView vipFlg;
+        int userid = -1;
 
         public LocalContactViewHolder(View view) {
             super(view);
@@ -126,6 +129,21 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
                                 break;
                             case "已关注":
                                 LocalLog.d(TAG, "取消关注");
+                                if (userid != -1) {
+                                    Presenter.getInstance(context).postUserStatus(btFollow, userid);
+                                }
+                                break;
+                            case "关注":
+                                LocalLog.d(TAG, "取消关注");
+                                if (userid != -1) {
+                                    Presenter.getInstance(context).postUserStatus(btFollow, userid);
+                                }
+                                break;
+                            case "互相关注":
+                                LocalLog.d(TAG, "取消关注");
+                                if (userid != -1) {
+                                    Presenter.getInstance(context).postUserStatus(btFollow, userid);
+                                }
                                 break;
                             default:
                                 break;

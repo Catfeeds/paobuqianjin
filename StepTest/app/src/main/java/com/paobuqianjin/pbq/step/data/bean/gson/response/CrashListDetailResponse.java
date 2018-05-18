@@ -153,6 +153,7 @@ public class CrashListDetailResponse {
              * actual_amount : 1980
              * status : 0
              * create_time : 1513755628
+             * type_name :提现到微信
              */
 
             private int id;
@@ -162,6 +163,16 @@ public class CrashListDetailResponse {
             private String actual_amount;
             private int status;
             private long create_time;
+
+            public String getType_name() {
+                return type_name;
+            }
+
+            public void setType_name(String type_name) {
+                this.type_name = type_name;
+            }
+
+            private String type_name;
 
             public int getId() {
                 return id;
@@ -229,6 +240,7 @@ public class CrashListDetailResponse {
                         ", actual_amount='" + actual_amount + '\'' +
                         ", status=" + status +
                         ", create_time=" + create_time +
+                        ", type_name='" + type_name + '\'' +
                         '}';
             }
         }

@@ -68,7 +68,7 @@ public class CircleMemberBarAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private void updateListItem(RecyclerView.ViewHolder holder, int position) {
         if (position == 0) {
-            Presenter.getInstance(context).getImage(((CircleMemberViewHolder) holder).memberHeadIconInCircle, mData.getAvatar());
+            Presenter.getInstance(context).getPlaceErrorImage(((CircleMemberViewHolder) holder).memberHeadIconInCircle, mData.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             LocalLog.d(TAG, "" + mData.toString());
 
             if ("".equals(mData.getCirclenickname())) {

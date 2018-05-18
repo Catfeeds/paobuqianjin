@@ -254,14 +254,16 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                 userNameRank.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getNickname()));
                 yourDan.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getRank()));
                 stepNumMy.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
-                Presenter.getInstance(getContext()).getImage(headIconUser, friendStepRankDayResponse.getData().getData().getMydata().getAvatar());
+                Presenter.getInstance(getContext()).getPlaceErrorImage(headIconUser, friendStepRankDayResponse.getData().getData().getMydata().getAvatar()
+                        , R.drawable.default_head_ico, R.drawable.default_head_ico);
                 if (friendStepRankDayResponse.getData().getData().getMydata().getVip() == 1) {
                     vipFlg.setVisibility(View.VISIBLE);
                 }
                 adapter = new HonorDetailAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember());
                 danDetailRecycler.setAdapter(adapter);
                 if (friendStepRankDayResponse.getData().getData().getMember().size() > 0) {
-                    Presenter.getInstance(getContext()).getImage(kingHeadIcon, friendStepRankDayResponse.getData().getData().getMember().get(0).getAvatar());
+                    Presenter.getInstance(getContext()).getPlaceErrorImage(kingHeadIcon, friendStepRankDayResponse.getData().getData().getMember().get(0).getAvatar()
+                            , R.drawable.default_head_ico, R.drawable.default_head_ico);
                     kingName.setText(friendStepRankDayResponse.getData().getData().getMember().get(0).getNickname());
                 }
                 if (pageIndexDay >= pageCountDay) {
@@ -293,9 +295,11 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
             userNameRank.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getNickname()));
             yourDan.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getRank()));
             stepNumMy.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
-            Presenter.getInstance(getContext()).getImage(headIconUser, friendStepRankDayResponse.getData().getData().getMydata().getAvatar());
+            Presenter.getInstance(getContext()).getPlaceErrorImage(headIconUser, friendStepRankDayResponse.getData().getData().getMydata().getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);
             if (friendStepRankDayResponse.getData().getData().getMember().size() > 0) {
-                Presenter.getInstance(getContext()).getImage(kingHeadIcon, friendStepRankDayResponse.getData().getData().getMember().get(0).getAvatar());
+                Presenter.getInstance(getContext()).getPlaceErrorImage(kingHeadIcon, friendStepRankDayResponse.getData().getData().getMember().get(0).getAvatar()
+                        , R.drawable.default_head_ico, R.drawable.default_head_ico);
                 kingName.setText(friendStepRankDayResponse.getData().getData().getMember().get(0).getNickname());
             }
             danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember()));
@@ -307,9 +311,11 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
             userNameRank.setText(String.valueOf(friendWeekResponse.getData().getData().getMydata().getNickname()));
             yourDan.setText(String.valueOf(friendWeekResponse.getData().getData().getMydata().getRank()));
             stepNumMy.setText(String.valueOf(friendWeekResponse.getData().getData().getMydata().getStep_number()));
-            Presenter.getInstance(getContext()).getImage(headIconUser, friendWeekResponse.getData().getData().getMydata().getAvatar());
+            Presenter.getInstance(getContext()).getPlaceErrorImage(headIconUser, friendWeekResponse.getData().getData().getMydata().getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);
             if (friendWeekResponse.getData().getData().getMember().size() > 0) {
-                Presenter.getInstance(getContext()).getImage(kingHeadIcon, friendWeekResponse.getData().getData().getMember().get(0).getAvatar());
+                Presenter.getInstance(getContext()).getPlaceErrorImage(kingHeadIcon, friendWeekResponse.getData().getData().getMember().get(0).getAvatar()
+                        , R.drawable.default_head_ico, R.drawable.default_head_ico);
                 kingName.setText(friendWeekResponse.getData().getData().getMember().get(0).getNickname());
             }
             danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), friendWeekResponse.getData().getData().getMember()));
@@ -325,8 +331,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                 pageCountWeek = friendWeekResponse.getData().getPagenation().getTotalPage();
                 LocalLog.d(TAG, "pageIndexWeek = " + pageIndexWeek + "pageCountWeek = " + pageCountWeek);
                 //adapter.notifyDataSetChanged(friendWeekResponse.getData().getData().getMember());
-                adapter = new HonorDetailAdapter(getContext(), friendWeekResponse.getData().getData().getMember());
-                danDetailRecycler.setAdapter(adapter);
+                updateFriendWeekResponse(friendWeekResponse);
                 if (pageIndexWeek >= pageCountWeek) {
                     return;
                 } else if (pageIndexWeek < pageCountWeek) {

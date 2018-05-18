@@ -356,7 +356,7 @@ public final class OwnerFragment extends BaseFragment {
                 Presenter.getInstance(getContext()).setTarget(getContext(), userInfoResponse.getData().getTarget_step());
                 Presenter.getInstance(getContext()).setAvatar(getContext(), userAvatar);
                 Presenter.getInstance(getContext()).setNickName(getContext(), userInfoResponse.getData().getNickname());
-                Presenter.getInstance(getContext()).getImage(headIcon, userInfoResponse.getData().getAvatar());
+                Presenter.getInstance(getContext()).getPlaceErrorImage(headIcon, userInfoResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                 userName.setText(userInfoResponse.getData().getNickname());
                 userId.setText("ID:" + String.valueOf(userInfoResponse.getData().getId()));
                 circle.setText(String.valueOf(userInfoResponse.getData().getCircleCount()));

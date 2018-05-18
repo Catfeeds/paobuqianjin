@@ -112,7 +112,7 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
         if (intent != null) {
             userInfo = (UserInfoResponse.DataBean) intent.getSerializableExtra("userinfo");
             if (userInfo != null) {
-                Presenter.getInstance(getContext()).getImage(userIco, userInfo.getAvatar());
+                Presenter.getInstance(getContext()).getPlaceErrorImage(userIco, userInfo.getAvatar(),R.drawable.default_head_ico,R.drawable.default_head_ico);
                 if (userInfo.getVip() == 1) {
                     vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
                     vipFlg.setVisibility(View.VISIBLE);

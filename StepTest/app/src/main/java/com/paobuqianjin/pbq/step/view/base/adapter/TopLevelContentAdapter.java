@@ -66,7 +66,8 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
     private void updateListItem(TopLevelViewHolder holder, int position) {
         if (mData.get(position) instanceof DynamicCommentListResponse.DataBeanX.DataBean) {
             LocalLog.d(TAG, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).toString());
-            Presenter.getInstance(context).getImage(holder.contentUserIcon, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar());
+            Presenter.getInstance(context).getPlaceErrorImage(holder.contentUserIcon, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.dearName = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getNickname();
             holder.userContentName.setText(((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             long create_time = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
@@ -154,6 +155,9 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
                     dataBean.setUserid(Integer.parseInt(postDynamicContentResponse.getData().getUserid()));
                     int size = childBeans.size();
                     childBeans.add(size, dataBean);
+                    if (middleContentAdapter == null) {
+                        middleContentAdapter = new MiddleContentAdapter(context, childBeans, dynamicDetailInterface, this);
+                    }
                     middleContentAdapter.notifyItemChanged(childBeans.size() - 1);
                 } else if (object instanceof DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) {
                     LocalLog.d(TAG, "刷新二级评论");
