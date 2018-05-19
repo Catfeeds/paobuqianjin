@@ -65,7 +65,7 @@ public class IncomeAdater extends RecyclerView.Adapter<IncomeAdater.IncomeDetail
             } else if (((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getStatus() == 1) {
 
             }
-            holder.data.setText("￥:" + ((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getActual_amount() + "元");
+            holder.data.setText(((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getActual_amount());
         } else if (mData.get(position) instanceof RechargeDetailResponse.DataBeanX.DataBean) {
 
             holder.incomeDetailDes.setText(((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getPay_name());
@@ -73,7 +73,7 @@ public class IncomeAdater extends RecyclerView.Adapter<IncomeAdater.IncomeDetail
             String date = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_YYYY_MM_DD_HH_MM);
             String dateStr = date.replace("-", "/");
             holder.incomeDetailTime.setText(dateStr);
-            holder.data.setText("￥" + ((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getTotal_fee());
+            holder.data.setText(((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getTotal_fee());
         }
     }
 

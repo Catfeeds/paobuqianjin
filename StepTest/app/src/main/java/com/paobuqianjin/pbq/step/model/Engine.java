@@ -481,7 +481,9 @@ public final class Engine {
     public void refreshStep() {
         if (null != iSportStepInterface) {
             try {
-                homePageInterface.responseStepToday(iSportStepInterface.getCurrentTimeSportStep());
+                int step = iSportStepInterface.getCurrentTimeSportStep();
+                homePageInterface.responseStepToday(step);
+                LocalLog.d(TAG, "refreshStep() step = " + step);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -3105,7 +3107,7 @@ public final class Engine {
                             try {
                                 ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                                 innerCallBack.innerCallBack(errorCode);
-                            } catch (JsonSyntaxException j) {
+                            }catch (JsonSyntaxException j){
                                 j.printStackTrace();
                             }
                         }

@@ -242,7 +242,8 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     public void response(LoginResponse loginResponse) {
         LocalLog.d(TAG, "手机号登入成功! 去获取用户信息!");
         this.loginResponse = loginResponse;
-        startStep();
+        /*startStep();
+        * 暂时不做数据融合*/
         Presenter.getInstance(this).steLogFlg(true);
         Presenter.getInstance(this).setId(loginResponse.getData().getId());
         Presenter.getInstance(this).setToken(this, loginResponse.getData().getUser_token());
@@ -297,7 +298,8 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             Presenter.getInstance(this).setMobile(this, thirdPartyLoginResponse.getData().getMobile());
             Presenter.getInstance(this).setToken(this, thirdPartyLoginResponse.getData().getUser_token());
             startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
-            startStep();
+            /*startStep();
+            * 暂时不做数据融合*/
           /*  }*/
         }
 

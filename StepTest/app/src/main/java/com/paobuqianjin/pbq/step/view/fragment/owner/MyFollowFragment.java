@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,15 +12,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.base.adapter.owner.FollowAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.yanzhenjie.loading.LoadingView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.paobuqianjin.pbq.step.utils.Utils.PAGE_SIZE_DEFAULT;
 
 /**
  * Created by pbq on 2018/3/1.
@@ -31,10 +41,17 @@ public class MyFollowFragment extends BaseFragment {
     @Bind(R.id.invite_dan_recycler)
     SwipeMenuRecyclerView inviteDanRecycler;
     LinearLayoutManager layoutManager;
-    private RecyclerView.Adapter adapter;
+    @Bind(R.id.not_found_data)
+    TextView notFoundData;
+    private FollowAdapter adapter;
     DefineLoadMoreView loadMoreView;
-    SwipeMenuRecyclerView.LoadMoreListener loadMoreListener;
-
+    private int pageIndexMyFollow = 1;
+    private int pageMyFollowCount = 0;
+    private String keyWord = "";
+    ArrayList<UserIdFollowResponse.DataBeanX.DataBean> myFollowData = new ArrayList<>();
+    private boolean isSearch = false;
+    private int mCurrentIndex = 1;
+    ArrayList<UserIdFollowResponse.DataBeanX.DataBean> searchData;
 
     @Override
     protected int getLayoutResId() {
@@ -56,33 +73,148 @@ public class MyFollowFragment extends BaseFragment {
         inviteDanRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.invite_dan_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         inviteDanRecycler.setLayoutManager(layoutManager);
-        if (adapter != null) {
-            inviteDanRecycler.setAdapter(adapter);
-        }
-        this.loadMoreView = new DefineLoadMoreView(getContext());
+        adapter = new FollowAdapter(getActivity(), null);
+        inviteDanRecycler.setAdapter(adapter);
+        loadMoreView = new DefineLoadMoreView(getContext());
         inviteDanRecycler.addFooterView(loadMoreView); // 添加为Footer。
         inviteDanRecycler.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
-        if (loadMoreListener != null) {
-            inviteDanRecycler.setLoadMoreListener(loadMoreListener); // 加载更多的监听。
+        inviteDanRecycler.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
+        loadMyFollowData(myFollowData);
+        notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
+        Presenter.getInstance(getContext()).getFollows("my", pageIndexMyFollow, PAGE_SIZE_DEFAULT, keyWord, myFollowCallBack);
+    }
+
+
+    public void searchKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+        LocalLog.d(TAG, "keyWord = " + keyWord);
+        if (TextUtils.isEmpty(keyWord)) {
+            LocalLog.d(TAG, "显示旧数据");
+            isSearch = false;
+            if (notFoundData == null) {
+                return;
+            }
+            notFoundData.setVisibility(View.GONE);
+            inviteDanRecycler.setVisibility(View.VISIBLE);     
+            pageIndexMyFollow = mCurrentIndex;
+            loadMyFollowData(myFollowData);
+            pageMyFollowCount = 0;
+            return;
+        }
+        isSearch = true;
+        searchData = new ArrayList<>();
+        loadMyFollowData(searchData);
+        pageIndexMyFollow = 1;
+        Presenter.getInstance(getContext()).getFollows("my", pageIndexMyFollow, PAGE_SIZE_DEFAULT, keyWord, myFollowCallBack);
+    }
+
+    public void update() {
+        if (isAdded()) {
+            pageIndexMyFollow = 1;
+            myFollowData.clear();
+            searchData.clear();
+            adapter.notifyDataSetChanged(null);
+            Presenter.getInstance(getContext()).getFollows("my", pageIndexMyFollow, PAGE_SIZE_DEFAULT, keyWord, myFollowCallBack);
         }
     }
 
-    public void listen(SwipeMenuRecyclerView.LoadMoreListener loadMoreListener) {
-        this.loadMoreListener = loadMoreListener;
-        if (inviteDanRecycler != null) {
-            inviteDanRecycler.setLoadMoreListener(loadMoreListener); // 加载更多的监听。
-        }
-    }
-
-    public void scrollTop() {
-        if (inviteDanRecycler != null) {
-            inviteDanRecycler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    inviteDanRecycler.scrollToPosition(0);
+    private InnerCallBack myFollowCallBack = new InnerCallBack() {
+        @Override
+        public void innerCallBack(Object object) {
+            if (object instanceof UserIdFollowResponse) {
+                if (((UserIdFollowResponse) object).getError() == 0) {
+                    if (((UserIdFollowResponse) object).getData() != null) {
+                        //followOtoFragment.setAdapter(new FollowAdapter(getContext(), userFollowOtOResponse.getData().getData()));
+                        if (!isSearch) {
+                            if (notFoundData != null) {
+                                notFoundData.setVisibility(View.GONE);
+                                inviteDanRecycler.setVisibility(View.VISIBLE);
+                            }
+                            pageMyFollowCount = ((UserIdFollowResponse) object).getData().getPagenation().getTotalPage();
+                            LocalLog.d(TAG, "pageIndexFollowOto = " + pageIndexMyFollow + "  , pageFollowOtoCount = " + pageMyFollowCount);
+                            loadMyFollowMore((ArrayList<UserIdFollowResponse.DataBeanX.DataBean>) ((UserIdFollowResponse) object).getData().getData());
+                            if (pageIndexMyFollow == 1) {
+                                scrollTop();
+                            }
+                            pageIndexMyFollow++;
+                            mCurrentIndex = pageIndexMyFollow;
+                        } else {
+                            pageMyFollowCount = ((UserIdFollowResponse) object).getData().getPagenation().getTotalPage();
+                            LocalLog.d(TAG, "pageIndexFollowOto = " + pageIndexMyFollow + "  , pageFollowOtoCount = " + pageMyFollowCount);
+                            loadSearch((ArrayList<UserIdFollowResponse.DataBeanX.DataBean>) ((UserIdFollowResponse) object).getData().getData());
+                            if (pageIndexMyFollow == 1) {
+                                scrollTop();
+                            }
+                            pageIndexMyFollow++;
+                        }
+                    }
+                } else if (((UserIdFollowResponse) object).getError() == 100) {
+                    LocalLog.d(TAG, "Token 过期!");
+                    exitTokenUnfect();
+                } else if (((UserIdFollowResponse) object).getError() == 1) {
+                    LocalLog.d(TAG, "Not found Data");
+                    if (pageIndexMyFollow == 1) {
+                        if (notFoundData != null) {
+                            notFoundData.setVisibility(View.VISIBLE);
+                            inviteDanRecycler.setVisibility(View.GONE);
+                        }
+                    }
                 }
-            }, 10);
+            } else if (object instanceof ErrorCode) {
+
+            }
         }
+    };
+
+    private void loadMyFollowData(ArrayList<UserIdFollowResponse.DataBeanX.DataBean> dataBeans) {
+        LocalLog.d(TAG, "loadMyFollowData() enter");
+        adapter.notifyDataSetChanged(dataBeans);
+
+        // 第一次加载数据：一定要掉用这个方法。
+        // 第一个参数：表示此次数据是否为空，假如你请求到的list为空(== null || list.size == 0)，那么这里就要true。
+        // 第二个参数：表示是否还有更多数据，根据服务器返回给你的page等信息判断是否还有更多，这样可以提供性能，如果不能判断则传true。
+        if (dataBeans == null || dataBeans.size() == 0) {
+            inviteDanRecycler.loadMoreFinish(true, true);
+        } else {
+            inviteDanRecycler.loadMoreFinish(false, true);
+        }
+    }
+
+
+    private void loadSearch(ArrayList<UserIdFollowResponse.DataBeanX.DataBean> newData) {
+        LocalLog.d(TAG, "loadMyFollowMore() enter");
+        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        searchData.addAll(newData);
+        // notifyItemRangeInserted()或者notifyDataSetChanged().
+        adapter.notifyItemRangeInserted(searchData.size() - newData.size(), newData.size());
+
+        // 数据完更多数据，一定要掉用这个方法。
+        // 第一个参数：表示此次数据是否为空。
+        // 第二个参数：表示是否还有更多数据。
+        inviteDanRecycler.loadMoreFinish(false, true);
+
+        // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
+        // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
+        // errorMessage是会显示到loadMoreView上的，用户可以看到。
+        // mRecyclerView.loadMoreError(0, "请求网络失败");
+    }
+
+    private void loadMyFollowMore(ArrayList<UserIdFollowResponse.DataBeanX.DataBean> newData) {
+        LocalLog.d(TAG, "loadMyFollowMore() enter");
+        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        myFollowData.addAll(newData);
+        // notifyItemRangeInserted()或者notifyDataSetChanged().
+        adapter.notifyItemRangeInserted(myFollowData.size() - newData.size(), newData.size());
+
+        // 数据完更多数据，一定要掉用这个方法。
+        // 第一个参数：表示此次数据是否为空。
+        // 第二个参数：表示是否还有更多数据。
+        inviteDanRecycler.loadMoreFinish(false, true);
+
+        // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
+        // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
+        // errorMessage是会显示到loadMoreView上的，用户可以看到。
+        // mRecyclerView.loadMoreError(0, "请求网络失败");
     }
 
     /**
@@ -191,18 +323,38 @@ public class MyFollowFragment extends BaseFragment {
         }
     }
 
-    public void loadMoreFinish(boolean dateEmpty, boolean hasMore) {
-        if (inviteDanRecycler != null) {
-            inviteDanRecycler.loadMoreFinish(dateEmpty, hasMore);
-        } else {
-            LocalLog.d(TAG, "UI is null");
-        }
-    }
 
-    public void setAdapter(RecyclerView.Adapter adapter) {
-        this.adapter = adapter;
+    /**
+     * 加载更多。
+     */
+    private SwipeMenuRecyclerView.LoadMoreListener mLoadMoreListener = new SwipeMenuRecyclerView.LoadMoreListener() {
+        @Override
+        public void onLoadMore() {
+            LocalLog.d(TAG, "加载更多!");
+
+            if (pageIndexMyFollow == 0) {
+                LocalLog.d(TAG, "第一次刷新");
+            } else {
+                if (pageIndexMyFollow > pageMyFollowCount) {
+                    Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                    inviteDanRecycler.loadMoreFinish(false, true);
+                    return;
+                }
+            }
+            Presenter.getInstance(getContext()).getFollows("my", pageIndexMyFollow, PAGE_SIZE_DEFAULT, keyWord, myFollowCallBack);
+        }
+    };
+
+    public void scrollTop() {
         if (inviteDanRecycler != null) {
-            inviteDanRecycler.setAdapter(adapter);
+            inviteDanRecycler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (inviteDanRecycler != null) {
+                        inviteDanRecycler.scrollToPosition(0);
+                    }
+                }
+            }, 10);
         }
     }
 

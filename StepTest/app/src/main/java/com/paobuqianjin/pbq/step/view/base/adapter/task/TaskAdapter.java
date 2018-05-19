@@ -97,10 +97,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             holder.taskGift.setText(spannableString);
             if (((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getIs_receive() == 0) {
                 holder.releaseDetails.setText("领取任务");
+                holder.releaseDetails.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
                 holder.releaseDetails.setBackground(ContextCompat.getDrawable(context, R.drawable.release_detail_bg));
             } else {
                 if (((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getIs_finished() == 0) {
                     holder.releaseDetails.setText("进行中");
+                    holder.releaseDetails.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
                     holder.releaseDetails.setBackground(ContextCompat.getDrawable(context, R.drawable.release_detail_bg));
                 } else {
                     holder.releaseDetails.setText("领取奖励");

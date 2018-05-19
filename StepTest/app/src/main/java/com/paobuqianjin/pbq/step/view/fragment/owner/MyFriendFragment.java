@@ -5,46 +5,37 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Editable;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
+import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
-import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.presenter.im.UserFollowInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.AddFriendAddressActivity;
-import com.paobuqianjin.pbq.step.view.base.adapter.OwnerCreateAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
-import com.paobuqianjin.pbq.step.view.base.adapter.owner.FollowAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
-import com.paobuqianjin.pbq.step.view.base.view.CustomViewPager;
-import com.yanzhenjie.loading.LoadingView;
-import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -53,13 +44,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-import static com.paobuqianjin.pbq.step.utils.Utils.PAGE_SIZE_DEFAULT;
-
 /**
  * Created by pbq on 2018/1/17.
  */
 
-public class MyFriendFragment extends BaseBarStyleTextViewFragment implements UserFollowInterface {
+public class MyFriendFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = MyFriendFragment.class.getSimpleName();
 
     String[] titles = {"互相关注", "已关注", "关注我的"};
@@ -83,15 +72,13 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
     ViewPager friendRecyclerViewpager;
     @Bind(R.id.create_circle_swipe)
     SwipeRefreshLayout createCircleSwipe;
+    @Bind(R.id.cancel_icon)
+    RelativeLayout cancelIcon;
+    @Bind(R.id.my_friend_fg)
+    RelativeLayout myFriendFg;
     private FollowOtoFragment followOtoFragment;
     private MyFollowFragment myFollowFragment;
     private FollowMeFragment followMeFragment;
-    FollowAdapter followOtoAdapter, myFollowAdapter, followMeAdapter;
-    ArrayList<UserFollowOtOResponse.DataBeanX.DataBean> followOtoData = new ArrayList<>();
-    ArrayList<UserIdFollowResponse.DataBeanX.DataBean> myFollowData = new ArrayList<>();
-    ArrayList<FollowUserResponse.DataBeanX.DataBean> followMeData = new ArrayList<>();
-    private int pageIndexFollowOto = 1, pageIndexFollowMe = 1, pageIndexMyFollow = 1;
-    private int pageFollowOtoCount = 0, pageFollowMeCount = 0, pageMyFollowCount = 0;
     private int selectPage = 0;
     private IntentFilter intentFilter;
     private LocalBroadcastManager localBroadcastManager;
@@ -115,7 +102,6 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Presenter.getInstance(getContext()).attachUiInterface(this);
     }
 
     @Override
@@ -123,8 +109,6 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getFollows("my", pageIndexMyFollow, PAGE_SIZE_DEFAULT, keyWord);
-        Presenter.getInstance(getContext()).getFollows("me", pageIndexFollowMe, PAGE_SIZE_DEFAULT, keyWord);
         return rootView;
     }
 
@@ -139,23 +123,17 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
             if (intent != null) {
                 switch (intent.getAction()) {
                     case FOLLOW_ME_ACTION:
-
                         UserFollowOtOResponse.DataBeanX.DataBean dataBean = (UserFollowOtOResponse.DataBeanX.DataBean) intent.getSerializableExtra("friendinfo");
                         if (dataBean != null) {
                             LocalLog.d(TAG, "关注我的的人变互相关注");
-                            followOtoData.add(dataBean);
-                            // notifyItemRangeInserted()或者notifyDataSetChanged().
-                            followOtoAdapter.notifyItemRangeInserted(followOtoData.size() - 1, 1);
+                            followOtoFragment.add(dataBean);
                         }
                         break;
                     case FOLLOW_OTO_ACTION:
-
                         FollowUserResponse.DataBeanX.DataBean dataBeanOt = (FollowUserResponse.DataBeanX.DataBean) intent.getSerializableExtra("friendinfo");
                         if (dataBeanOt != null) {
                             LocalLog.d(TAG, "互相关注的变成关注我的");
-                            followMeData.add(dataBeanOt);
-                            // notifyItemRangeInserted()或者notifyDataSetChanged().
-                            followMeAdapter.notifyItemRangeInserted(followMeData.size() - 1, 1);
+                            followMeFragment.add(dataBeanOt);
                         }
                         break;
                     case MY_FOLLOW_ACTION:
@@ -188,24 +166,30 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
 
 
         followTab.setupWithViewPager(friendRecyclerViewpager);
+        searchCircleText = (EditText) viewRoot.findViewById(R.id.search_circle_text);
+        searchIcon = (RelativeLayout) viewRoot.findViewById(R.id.search_icon);
+        searchCircleText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    LocalLog.d(TAG, "onEditorAction() selectPage = " + selectPage);
+                    if (selectPage == 0) {
+                        followOtoFragment.searchKeyWord(searchCircleText.getText().toString());
+                    } else if (selectPage == 1) {
+                        myFollowFragment.searchKeyWord(searchCircleText.getText().toString());
+                    } else if (selectPage == 2) {
+                        followMeFragment.searchKeyWord(searchCircleText.getText().toString());
+                    }
+                    Utils.hideInput(getContext());
+                }
+                return false;
+            }
+        });
+        searchCircleText.addTextChangedListener(textWatcher);
 
+        cancelIcon = (RelativeLayout) viewRoot.findViewById(R.id.cancel_icon);
+        cancelIcon.setOnClickListener(onClickListener);
         //
-        followOtoAdapter = new FollowAdapter(getActivity(), null);
-        myFollowAdapter = new FollowAdapter(getActivity(), null);
-        followMeAdapter = new FollowAdapter(getActivity(), null);
-        followOtoFragment.setAdapter(followOtoAdapter);
-        followMeFragment.setAdapter(followMeAdapter);
-        myFollowFragment.setAdapter(myFollowAdapter);
-        // 自定义的核心就是DefineLoadMoreView类。
-
-        followOtoFragment.listen(mLoadMoreListener);
-        followMeFragment.listen(mLoadMoreListener);
-        myFollowFragment.listen(mLoadMoreListener);
-
-        loadFollowOtOData(followOtoData);
-        loadFollowMeData(followMeData);
-        loadMyFollowData(myFollowData);
-//
         createCircleSwipe.setOnRefreshListener(mRefreshListener);
         for (int i = 0; i < followTab.getTabCount(); i++) {
             LocalLog.d(TAG, "initView() i = " + i);
@@ -226,11 +210,15 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
                 switch (tab.getPosition()) {
                     case 0:
                         selectPage = 0;
+                        LocalLog.d(TAG, "onTabSelected() selectPage = " + selectPage);
                         break;
                     case 1:
                         selectPage = 1;
+                        LocalLog.d(TAG, "onTabSelected() selectPage = " + selectPage);
+                        break;
                     case 2:
                         selectPage = 2;
+                        LocalLog.d(TAG, "onTabSelected() selectPage = " + selectPage);
                         break;
                     default:
                         break;
@@ -259,191 +247,85 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
         localBroadcastManager.registerReceiver(localReceiver, intentFilter);
     }
 
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.cancel_icon:
+                    LocalLog.d(TAG, "取消搜索,显示原来的数据");
+                    searchCircleText.setText(null);
+                    keyWord = "";
+                    break;
+            }
+        }
+    };
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String temp = s.toString();
+            if (!TextUtils.isEmpty(temp)) {
+                LocalLog.d(TAG, "显示取消搜索界面");
+                cancelIcon.setVisibility(View.VISIBLE);
+                cancelIcon.setOnClickListener(onClickListener);
+            } else {
+                LocalLog.d(TAG, "隐藏搜索界面");
+                cancelIcon.setVisibility(View.GONE);
+                keyWord = "";
+                LocalLog.d(TAG, "afterTextChanged() enter selectPage" + selectPage);
+                if (selectPage == 0) {
+                    followOtoFragment.searchKeyWord("");
+                } else if (selectPage == 1) {
+                    myFollowFragment.searchKeyWord("");
+                } else if (selectPage == 2) {
+                    followMeFragment.searchKeyWord("");
+                }
+            }
+        }
+    };
     /**
      * 刷新。
      */
     private SwipeRefreshLayout.OnRefreshListener mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            LocalLog.d(TAG, "刷新当前页面!");
+            LocalLog.d(TAG, "刷新当前页面! selectPage" + selectPage);
             if (selectPage == 0) {
-                loadFollowOtOData(followOtoData);
+                //followOtoFragment.update();
             } else if (selectPage == 1) {
-                loadMyFollowData(myFollowData);
+                //myFollowFragment.update();
             } else if (selectPage == 2) {
-                loadFollowMeData(followMeData);
+                //followMeFragment.update();
+            }
+            if (createCircleSwipe != null) {
+                createCircleSwipe.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (createCircleSwipe != null) {
+                            createCircleSwipe.setRefreshing(false);
+                        }
+                    }
+                }, 1000);
             }
         }
     };
 
 
-    /**
-     * 第一次加载数据。
-     */
-    private void loadFollowOtOData(ArrayList<UserFollowOtOResponse.DataBeanX.DataBean> dataBeans) {
-        LocalLog.d(TAG, "loadFollowOtOData() enter");
-        followOtoAdapter.notifyDataSetChanged(dataBeans);
-
-        createCircleSwipe.setRefreshing(false);
-
-        // 第一次加载数据：一定要掉用这个方法。
-        // 第一个参数：表示此次数据是否为空，假如你请求到的list为空(== null || list.size == 0)，那么这里就要true。
-        // 第二个参数：表示是否还有更多数据，根据服务器返回给你的page等信息判断是否还有更多，这样可以提供性能，如果不能判断则传true。
-        if (dataBeans == null || dataBeans.size() == 0) {
-            followOtoFragment.loadMoreFinish(true, true);
-        } else {
-            followOtoFragment.loadMoreFinish(false, true);
+    public void finishUpdate() {
+        if (isAdded() && createCircleSwipe != null) {
+            createCircleSwipe.setRefreshing(false);
         }
     }
-
-    private void loadFollowOtOMore(ArrayList<UserFollowOtOResponse.DataBeanX.DataBean> newData) {
-        LocalLog.d(TAG, "loadFollowOtOMore() enter");
-        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
-        for (int i = 0; i < newData.size(); i++) {
-            for (int j = 0; j < followOtoData.size(); j++) {
-                if (followOtoData.get(j).getUserid() == newData.get(i).getUserid()) {
-                    LocalLog.d(TAG, "重复数据");
-                    newData.remove(i);
-                }
-            }
-        }
-        followOtoData.addAll(newData);
-        // notifyItemRangeInserted()或者notifyDataSetChanged().
-        followOtoAdapter.notifyItemRangeInserted(followOtoData.size() - newData.size(), newData.size());
-
-        // 数据完更多数据，一定要掉用这个方法。
-        // 第一个参数：表示此次数据是否为空。
-        // 第二个参数：表示是否还有更多数据。
-        followOtoFragment.loadMoreFinish(false, true);
-
-        // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
-        // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
-        // errorMessage是会显示到loadMoreView上的，用户可以看到。
-        // mRecyclerView.loadMoreError(0, "请求网络失败");
-    }
-
-    private void loadFollowMeData(ArrayList<FollowUserResponse.DataBeanX.DataBean> dataBeans) {
-        LocalLog.d(TAG, "loadFollowMeData() enter");
-        followMeAdapter.notifyDataSetChanged(dataBeans);
-
-        createCircleSwipe.setRefreshing(false);
-
-        // 第一次加载数据：一定要掉用这个方法。
-        // 第一个参数：表示此次数据是否为空，假如你请求到的list为空(== null || list.size == 0)，那么这里就要true。
-        // 第二个参数：表示是否还有更多数据，根据服务器返回给你的page等信息判断是否还有更多，这样可以提供性能，如果不能判断则传true。
-        if (dataBeans == null || dataBeans.size() == 0) {
-            followMeFragment.loadMoreFinish(true, true);
-        } else {
-            followMeFragment.loadMoreFinish(false, true);
-        }
-    }
-
-    private void loadFollowMeMore(ArrayList<FollowUserResponse.DataBeanX.DataBean> newData) {
-        LocalLog.d(TAG, "loadFollowMeMore() enter");
-        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
-        for (int i = 0; i < newData.size(); i++) {
-            for (int j = 0; j < followMeData.size(); j++) {
-                if (followMeData.get(j).getUserid() == newData.get(i).getUserid()) {
-                    LocalLog.d(TAG, "重复数据");
-                    newData.remove(i);
-                }
-            }
-        }
-        followMeData.addAll(newData);
-        // notifyItemRangeInserted()或者notifyDataSetChanged().
-        followMeAdapter.notifyItemRangeInserted(followMeData.size() - newData.size(), newData.size());
-
-        // 数据完更多数据，一定要掉用这个方法。
-        // 第一个参数：表示此次数据是否为空。
-        // 第二个参数：表示是否还有更多数据。
-        followMeFragment.loadMoreFinish(false, true);
-
-        // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
-        // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
-        // errorMessage是会显示到loadMoreView上的，用户可以看到。
-        // mRecyclerView.loadMoreError(0, "请求网络失败");
-    }
-
-    private void loadMyFollowData(ArrayList<UserIdFollowResponse.DataBeanX.DataBean> dataBeans) {
-        LocalLog.d(TAG, "loadMyFollowData() enter");
-        myFollowAdapter.notifyDataSetChanged(dataBeans);
-
-        createCircleSwipe.setRefreshing(false);
-
-        // 第一次加载数据：一定要掉用这个方法。
-        // 第一个参数：表示此次数据是否为空，假如你请求到的list为空(== null || list.size == 0)，那么这里就要true。
-        // 第二个参数：表示是否还有更多数据，根据服务器返回给你的page等信息判断是否还有更多，这样可以提供性能，如果不能判断则传true。
-        if (dataBeans == null || dataBeans.size() == 0) {
-            myFollowFragment.loadMoreFinish(true, true);
-        } else {
-            myFollowFragment.loadMoreFinish(false, true);
-        }
-    }
-
-    private void loadMyFollowMore(ArrayList<UserIdFollowResponse.DataBeanX.DataBean> newData) {
-        LocalLog.d(TAG, "loadMyFollowMore() enter");
-        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
-        myFollowData.addAll(newData);
-        // notifyItemRangeInserted()或者notifyDataSetChanged().
-        myFollowAdapter.notifyItemRangeInserted(myFollowData.size() - newData.size(), newData.size());
-
-        // 数据完更多数据，一定要掉用这个方法。
-        // 第一个参数：表示此次数据是否为空。
-        // 第二个参数：表示是否还有更多数据。
-        myFollowFragment.loadMoreFinish(false, true);
-
-        // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
-        // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
-        // errorMessage是会显示到loadMoreView上的，用户可以看到。
-        // mRecyclerView.loadMoreError(0, "请求网络失败");
-    }
-
-
-    /**
-     * 加载更多。
-     */
-    private SwipeMenuRecyclerView.LoadMoreListener mLoadMoreListener = new SwipeMenuRecyclerView.LoadMoreListener() {
-        @Override
-        public void onLoadMore() {
-            LocalLog.d(TAG, "加载更多!");
-            if (selectPage == 0) {
-                if (pageFollowOtoCount == 0) {
-                    LocalLog.d(TAG, "第一次刷新");
-                } else {
-                    if (pageIndexFollowOto > pageFollowOtoCount) {
-                        Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
-                        followOtoFragment.loadMoreFinish(false, true);
-                        return;
-                    }
-                }
-
-                Presenter.getInstance(getContext()).getFollows("mutual", pageIndexFollowOto, PAGE_SIZE_DEFAULT, keyWord);
-            } else if (selectPage == 2) {
-                if (pageFollowMeCount == 0) {
-                    LocalLog.d(TAG, "第一次刷新");
-                } else {
-                    if (pageIndexFollowMe > pageFollowMeCount) {
-                        Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
-                        followMeFragment.loadMoreFinish(false, true);
-                        return;
-                    }
-                }
-
-                Presenter.getInstance(getContext()).getFollows("me", pageFollowMeCount, PAGE_SIZE_DEFAULT, keyWord);
-            } else if (selectPage == 1) {
-                if (pageFollowMeCount == 0) {
-                    LocalLog.d(TAG, "第一次刷新");
-                } else {
-                    if (pageIndexMyFollow > pageMyFollowCount) {
-                        Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
-                        myFollowFragment.loadMoreFinish(false, true);
-                        return;
-                    }
-                }
-                Presenter.getInstance(getContext()).getFollows("my", pageFollowMeCount, PAGE_SIZE_DEFAULT, keyWord);
-            }
-        }
-    };
 
     private View getTabView(int position) {
         RelativeLayout view = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.text_tab, null);
@@ -496,7 +378,6 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
     @Override
@@ -525,76 +406,4 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment implements Us
         return "添加关注";
     }
 
-    @Override
-    public void response(ErrorCode errorCode) {
-        LocalLog.d(TAG, "ErrorCode() enter");
-
-    }
-
-    @Override
-    public void response(FollowUserResponse followUserResponse) {
-        LocalLog.d(TAG, "FollowUserResponse() enter " + followUserResponse.toString());
-        if (followUserResponse.getError() == 0) {
-            //followMeFragment.setAdapter(new FollowAdapter(getContext(), followUserResponse.getData().getData()));
-            LocalLog.d(TAG, followUserResponse.getMessage());
-            pageFollowMeCount = followUserResponse.getData().getPagenation().getTotalPage();
-            LocalLog.d(TAG, "pageIndexFollowMe = " + pageIndexFollowMe + " ,pageFollowMeCount = " + pageFollowMeCount);
-            loadFollowMeMore((ArrayList<FollowUserResponse.DataBeanX.DataBean>) followUserResponse.getData().getData());
-            if (pageIndexFollowMe == 1) {
-                followMeFragment.scrollTop();
-            }
-            pageIndexFollowMe++;
-        } else if (followUserResponse.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
-        }
-
-    }
-
-    @Override
-    public void response(UserIdFollowResponse userIdFollowResponse) {
-        LocalLog.d(TAG, "UserIdFollowResponse() enter " + userIdFollowResponse.toString());
-        if (userIdFollowResponse.getError() == 0) {
-            if (userIdFollowResponse.getData() != null) {
-                //myFollowFragment.setAdapter(new FollowAdapter(getContext(), userIdFollowResponse.getData().getData()));
-                LocalLog.d(TAG, userIdFollowResponse.getMessage());
-                pageMyFollowCount = userIdFollowResponse.getData().getPagenation().getTotalPage();
-                LocalLog.d(TAG, "pageIndexFollowOto = " + pageIndexMyFollow + "  ,pageMyFollowCount = " + pageMyFollowCount);
-                loadMyFollowMore((ArrayList<UserIdFollowResponse.DataBeanX.DataBean>) userIdFollowResponse.getData().getData());
-                if (pageIndexMyFollow == 1) {
-                    myFollowFragment.scrollTop();
-                }
-                pageIndexMyFollow++;
-            }
-        } else if (userIdFollowResponse.getError() == 1) {
-            LocalLog.e(TAG, "没有数据");
-        } else if (userIdFollowResponse.getError() == -1) {
-            LocalLog.e(TAG, userIdFollowResponse.getMessage());
-        } else if (userIdFollowResponse.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
-        }
-    }
-
-    @Override
-    public void response(UserFollowOtOResponse userFollowOtOResponse) {
-        LocalLog.d(TAG, "UserFollowOtOResponse() enter " + userFollowOtOResponse.toString());
-        if (userFollowOtOResponse.getError() == 0) {
-            if (userFollowOtOResponse.getData() != null) {
-                //followOtoFragment.setAdapter(new FollowAdapter(getContext(), userFollowOtOResponse.getData().getData()));
-                LocalLog.d(TAG, userFollowOtOResponse.getMessage());
-                pageFollowOtoCount = userFollowOtOResponse.getData().getPagenation().getTotalPage();
-                LocalLog.d(TAG, "pageIndexFollowOto = " + pageIndexFollowOto + "  , pageFollowOtoCount = " + pageFollowOtoCount);
-                loadFollowOtOMore((ArrayList<UserFollowOtOResponse.DataBeanX.DataBean>) userFollowOtOResponse.getData().getData());
-                if (pageIndexFollowOto == 1) {
-                    followOtoFragment.scrollTop();
-                }
-                pageIndexFollowOto++;
-            }
-        } else if (userFollowOtOResponse.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
-        }
-
-    }
 }

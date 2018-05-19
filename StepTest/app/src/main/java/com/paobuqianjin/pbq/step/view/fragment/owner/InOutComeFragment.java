@@ -49,7 +49,7 @@ public class InOutComeFragment extends BaseBarStyleTextViewFragment {
     ViewPager incomePager;
     CrashDetailFragment incomeDetailFragment;
     RechargeDetailFragment rechargeDetailFragment;
-    String[] titles = {"充值明细", "提现明细"};
+    String[] titles = {"交易明细", "提现明细"};
 
     @Override
     protected int getLayoutResId() {

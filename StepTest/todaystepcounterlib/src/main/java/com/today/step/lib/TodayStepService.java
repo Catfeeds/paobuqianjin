@@ -109,7 +109,7 @@ public class TodayStepService extends Service implements Handler.Callback {
         sensorManager = (SensorManager) this
                 .getSystemService(SENSOR_SERVICE);
 
-        initNotification(CURRENT_SETP);
+        /*initNotification(CURRENT_SETP);*/
 
         if (null != mMicrolog4Android) {
             mMicrolog4Android.configure(this);
@@ -357,7 +357,7 @@ public class TodayStepService extends Service implements Handler.Callback {
      * 更新通知
      */
     private void updateNotification(int stepCount) {
-        if (null == builder || null == nm) {
+/*        if (null == builder || null == nm) {
             return;
         }
         builder.setContentTitle(getString(R.string.title_notification_bar, String.valueOf(stepCount)));
@@ -365,7 +365,7 @@ public class TodayStepService extends Service implements Handler.Callback {
         String calorie = getCalorieByStep(stepCount);
         builder.setContentText(calorie + " 千卡  " + km + " 公里");
         notification = builder.build();
-        nm.notify(R.string.app_name, notification);
+        nm.notify(R.string.app_name, notification);*/
         Intent stepUpIntent = new Intent();
         stepUpIntent.setAction(STEP_UP_ACTION);
         stepUpIntent.putExtra("today_step", stepCount);

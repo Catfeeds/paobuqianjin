@@ -61,10 +61,10 @@ public class StepProcessDrawable extends Drawable {
             super.handleMessage(msg);
             switch (msg.what) {
                 case REDRAW:
-                    mCurrentAngle += mAngle / 500;
+                    mCurrentAngle += mAngle / 25;
                     if (mCurrentAngle <= mAngle) {
                         StepProcessDrawable.this.invalidateSelf();
-                        sendEmptyMessage(REDRAW);
+                        sendEmptyMessageDelayed(REDRAW, 40);
                     }
                     break;
             }

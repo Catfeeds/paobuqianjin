@@ -4,18 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -27,7 +21,6 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -38,10 +31,8 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.PostCircleRedPkgParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.RedPkgRecParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.CurrentStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
@@ -51,7 +42,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
-import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
@@ -62,7 +52,6 @@ import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserFitActivity;
 import com.paobuqianjin.pbq.step.view.activity.VipActivity;
-import com.paobuqianjin.pbq.step.view.base.PaoBuApplication;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorRedPakAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
@@ -70,7 +59,6 @@ import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.Rotate3dAnimation;
 import com.paobuqianjin.pbq.step.view.base.view.StepProcessDrawable;
 import com.paobuqianjin.pbq.step.view.base.view.WaveView;
-import com.today.step.lib.TodayStepManager;
 import com.today.step.lib.TodayStepService;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
@@ -181,6 +169,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     private final static String USER_FIT_ACTION_SETTING = "com.paobuqianjin.pbq.USER_FIT_ACTION_USER_SETTING";
     private final static int MSG_UPDATE_STEP = 0;
     private final static int MSG_UPDATE_STEP_LOCAL = 1;
+    private final static int MSG_UPDATE_STEP_TODAY = 2;
     private UpdateHandler updateHandler = new UpdateHandler(this);
 
     private static Map<String, Integer> weatherMap = new LinkedHashMap<>();
@@ -201,6 +190,12 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     private int pageIndex = 1;
     private final static int PAGESIZE = 10;
     private NormalDialog normalDialog;
+    private int stepAnimation = 0;
+    private int SPEED_DEFAULT = 40;
+    private int showStep = 0;
+
+    private static int DEFAULT_COUNT = 25;//默认动画25
+    StepProcessDrawable stepProcessDrawable;
 
     static {
         weatherMap.put("0", R.drawable.weather_0);
@@ -636,36 +631,40 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 public void run() {
                     int[] location = new int[2];
                     processStepNow.getLocationOnScreen(location);
-                    processStepNow.setImageDrawable(new StepProcessDrawable(getContext(), location[0], location[1], processStepNow.getWidth(), processStepNow.getHeight(),
-                            targetCircle.getWidth(), targetCircle.getHeight()).setmAngle(angelProcess));
+                    if (stepProcessDrawable == null) {
+                        stepProcessDrawable = new StepProcessDrawable(getContext(), location[0], location[1], processStepNow.getWidth(), processStepNow.getHeight(),
+                                targetCircle.getWidth(), targetCircle.getHeight());
+                    }
+                    processStepNow.setImageDrawable(stepProcessDrawable.setmAngle(angelProcess));
                 }
-            }, 1000);
+            }, 500);
             canDrawProcess = false;
         }
     }
 
     @Override
-    public void responseStepToday(int stepToday) {
-        if (lastStep >= stepToday) {
-            toayStep.setText(String.valueOf(lastStep));
-            return;
-        }
-        lastStep = stepToday;
-        LocalLog.d(TAG, "responseStepToday() enter" + stepToday + ",lastStep" + lastStep);
-        if (toayStep != null) {
-            toayStep.setText(String.valueOf(stepToday));
-            int targetStep = Presenter.getInstance(getContext()).getTarget(getContext());
-            targetSteps.setText(String.valueOf(targetStep));
-            if (targetStep > 0) {
-                drawProcess(targetStep, lastStep);
+    public void responseStepToday(final int stepToday) {
+        int targetStep = Presenter.getInstance(getContext()).getTarget(getContext());
+
+        if (showStep == 0) {
+            LocalLog.d(TAG, "新进入Homepage 数字变化动画 ");
+            lastStep = stepToday;
+            stepAnimation = lastStep;
+            toayStep.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    updateHandler.sendEmptyMessageDelayed(MSG_UPDATE_STEP_TODAY, SPEED_DEFAULT);
+                }
+            }, 500);
+            drawProcess(targetStep, lastStep);
+        } else {
+            if (lastStep >= stepToday) {
+                toayStep.setText(String.valueOf(lastStep));
+            } else {
+                lastStep = stepToday;
+                toayStep.setText(String.valueOf(lastStep));
             }
         }
-        LocalLog.d(TAG, "stepToday = " + stepToday);
-        Message messageNet = Message.obtain();
-        messageNet.what = MSG_UPDATE_STEP;
-        messageNet.arg1 = stepToday;
-        updateHandler.sendMessageDelayed(messageNet, 30000);
-
     }
 
     @Override
@@ -732,7 +731,16 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     if (userInfo.getIs_perfect() == 0) {
                         showUseInfSettingDialog(userInfo);
                     } else {
-                        popTargetView(getString(R.string.no_buess_pkg));
+                        final NormalDialog dialog = new NormalDialog(getActivity());
+                        dialog.setMessage(getString(R.string.no_buess_pkg));
+                        dialog.setYesOnclickListener("好的", new NormalDialog.onYesOnclickListener() {
+                            @Override
+                            public void onYesClick() {
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+//                        popTargetView(getString(R.string.no_buess_pkg));
                     }
                 }
 
@@ -760,6 +768,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         super.onDestroy();
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
         updateHandler.removeCallbacksAndMessages(null);
+        LocalLog.d(TAG, "onDestroy() enter");
+        showStep = 0;
         if (popupRedPkgWindow != null) {
             popupRedPkgWindow.dismiss();
             popupRedPkgWindow = null;
@@ -791,7 +801,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     startActivity(InviteActivity.class, null);
                     break;
                 case R.id.scan_img:
+                    // TODO: 2018/5/17 waitdelete
                     requestPermissionScan(Permission.Group.CAMERA);
+//                    startActivity(IdentityAuth1Activity.class,null);
                     break;
                 case R.id.step_desc_span:
                     LocalLog.d(TAG, "目标说明");
@@ -832,6 +844,17 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     case MSG_UPDATE_STEP_LOCAL:
                         LocalLog.d(TAG, "MSG_UPDATE_STEP_LOCAL enter");
 
+                        break;
+                    case MSG_UPDATE_STEP_TODAY:
+                        if (homePageFragment.showStep < homePageFragment.stepAnimation) {
+                            homePageFragment.showStep += homePageFragment.stepAnimation / DEFAULT_COUNT;
+                        }
+                        if (homePageFragment.showStep >= homePageFragment.stepAnimation) {
+                            homePageFragment.toayStep.setText(String.valueOf(homePageFragment.stepAnimation));
+                        } else {
+                            homePageFragment.toayStep.setText(String.valueOf(homePageFragment.showStep));
+                            sendEmptyMessageDelayed(MSG_UPDATE_STEP_TODAY, 40);
+                        }
                         break;
                     default:
                         break;

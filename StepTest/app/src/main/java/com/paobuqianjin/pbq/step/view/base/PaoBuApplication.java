@@ -203,14 +203,15 @@ public class PaoBuApplication extends MultiDexApplication {
                 LocalLog.d(TAG, "DetectThread run() 初始化网络、计步服务、定位SDK、三方登陆注册、三方支付SDK等");
                 app.initWXapi(app);
                 app.loadCitySelect(app);
-                boolean netAccess = Presenter.getInstance(app).getCurrentStep(innerCallBack);
-                if (!netAccess) {
-                    LocalLog.d(TAG, "未登录无网络");
-                    Intent intent = new Intent();
-                    intent.setAction(START_STEP_ACTION);
-                    intent.setClass(app, TodayStepService.class);
-                    TodayStepManager.init(app, intent);
-                }
+                /*boolean netAccess = Presenter.getInstance(app).getCurrentStep(innerCallBack);
+                * 暂时不做数据融合显示，只显示本手机的步数*/
+
+                LocalLog.d(TAG, "未登录无网络");
+                Intent intent = new Intent();
+                intent.setAction(START_STEP_ACTION);
+                intent.setClass(app, TodayStepService.class);
+                TodayStepManager.init(app, intent);
+
             }
         }
     }
