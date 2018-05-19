@@ -60,22 +60,21 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.TimeViewHolder
             default:
                 break;
         }
-
         holder.timeDays.setText(timeString);
         if (!TextUtils.isEmpty(data[position])) {
-            holder.selectIco.setImageResource(R.mipmap.selected1);
+            holder.selectIco.setImageResource(R.mipmap.selected_icon);
         } else {
-            holder.selectIco.setImageResource(R.mipmap.unchecked);
+            holder.selectIco.setImageResource(R.drawable.circle_outline);
         }
         final String finalTimeString = timeString;
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!TextUtils.isEmpty(data[holder.getAdapterPosition()])) {
-                    holder.selectIco.setImageResource(R.mipmap.unchecked);
+                    holder.selectIco.setImageResource(R.drawable.circle_outline);
                     data[holder.getAdapterPosition()] = "";
                 } else {
-                    holder.selectIco.setImageResource(R.mipmap.selected1);
+                    holder.selectIco.setImageResource(R.mipmap.selected_icon);
                     data[holder.getAdapterPosition()] = finalTimeString;
                 }
             }

@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -47,6 +46,7 @@ import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.LikeSupportActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
@@ -143,8 +143,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     TextView dynamicTime;
     @Bind(R.id.vip_flg)
     ImageView vipFlg;
-    @Bind(R.id.dynamic_id_detail)
-    RelativeLayout dynamicIdDetail;
+//    @Bind(R.id.dynamic_id_detail)
+//    RelativeLayout dynamicIdDetail;
     private ArrayList<DynamicLikeListResponse.DataBeanX.DataBean> likeData = new ArrayList<>();
     private EmotionKeyboard mEmotionKeyboard;
     private List<View> Mview = new ArrayList<>();
@@ -178,7 +178,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     private final static int PAGESIZE = 300;
     private int position = -1;
     private int topPosition = -1;
-    private LinearLayout linear_edit;
+
+    private CustomEdit commentEditText;
+    private LinearLayout linear_comment_root;
 
     @Override
     protected int getLayoutResId() {
@@ -241,6 +243,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         contentDetailsListItem = (RecyclerView) viewRoot.findViewById(R.id.content_details_list_item);
         layoutManagerContent = new LinearLayoutManager(getContext());
         contentDetailsListItem.setLayoutManager(layoutManagerContent);
+        contentDetailsListItem.setHasFixedSize(true);
+        contentDetailsListItem.setNestedScrollingEnabled(false);
 
 
         dynamicUserIcon = (CircleImageView) viewRoot.findViewById(R.id.dynamic_user_icon);
@@ -257,8 +261,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         contentNumberIcon.setOnClickListener(onClickListener);
         supportPics = (RelativeLayout) viewRoot.findViewById(R.id.support_pics);
         vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
-        linear_edit = (LinearLayout) viewRoot.findViewById(R.id.linear_edit);
-        initEditView(linear_edit);
+        linear_comment_root = (LinearLayout) viewRoot.findViewById(R.id.linear_edit);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             dynamicid = intent.getIntExtra(getContext().getPackageName() + "dynamicId", -1);
@@ -276,26 +279,66 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             }
         }
 
-
     }
 
-    private void initEditView(View linear_edit) {
+    /**
+     * 原来的popEdit
+     * @param postDynamicContentParam
+     * @param dearName
+     */
+    private void initEditView(final PostDynamicContentParam postDynamicContentParam, String dearName) {
         LocalLog.d(TAG, "initEditView() enter");
-        linear_edit.setVisibility(View.GONE);
-/*
-        final CustomEdit editText = (CustomEdit) linear_edit.findViewById(R.id.content_text);
-//        editText.setHint("回复:" + dearName);
-        editText.setHint("请输入评论" );
-        final EditTextChangeListener editTextChangeListener = new EditTextChangeListener();
-        editText.addTextChangedListener(editTextChangeListener);
+        if (commentEditText == null) {
+            commentEditText = (CustomEdit) linear_comment_root.findViewById(R.id.content_text);
+            ImageView buttonIcon = (ImageView) linear_comment_root.findViewById(R.id.edit_expression);
+            LinearLayout mLlContent = (LinearLayout) linear_comment_root.findViewById(R.id.edit_content);
+            EmotionLayout mElEmotion = (EmotionLayout) linear_comment_root.findViewById(R.id.elEmotion);
+            mEmotionKeyboard = EmotionKeyboard.with(getActivity());
+            mEmotionKeyboard.bindToContent(mLlContent);
+            mEmotionKeyboard.bindToEmotionButton(buttonIcon);
+            mEmotionKeyboard.bindToEditText(commentEditText);
+            mEmotionKeyboard.setEmotionLayout(mElEmotion);
 
-        Button button = (Button) linear_edit.findViewById(R.id.send_content);
-        ImageView buttonIcon = (ImageView) linear_edit.findViewById(R.id.edit_expression);
+            mElEmotion.attachEditText(commentEditText);
+            mElEmotion.setEmotionAddVisiable(false);
+            mElEmotion.setEmotionSettingVisiable(false);
+            mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
+                @Override
+                public void onEmotionAddClick(View view) {
+                    Toast.makeText(getContext(), "add", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onEmotionSettingClick(View view) {
+                    Toast.makeText(getContext(), "setting", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+            mElEmotion.setEmotionSelectedListener(new IEmotionSelectedListener() {
+                @Override
+                public void onEmojiSelected(String key) {
+                    LocalLog.d(TAG, "onEmojiSelected() " + key);
+                }
+
+                @Override
+                public void onStickerSelected(String categoryName, String stickerName, String stickerBitmapPath) {
+                    String stickerPath = stickerBitmapPath;
+                    Toast.makeText(getContext(), stickerPath, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        if (dynamicUserName.getText().toString().equals(dearName)) {
+            commentEditText.setHint("请输入评论" );
+        }else{
+            commentEditText.setHint("回复:" + dearName);
+        }
+        Button button = (Button) linear_comment_root.findViewById(R.id.send_content);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String content = editText.getText().toString();
-                editText.removeTextChangedListener(editTextChangeListener);
+                String content = commentEditText.getText().toString();
                 LocalLog.d(TAG, "content = " + content);
                 int[] emj = getContext().getResources().getIntArray(R.array.emjio_list);
                 if (content != null) {
@@ -304,50 +347,13 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                     }
                 }
 
-                LocalLog.d(TAG, content + "");
-                // TODO: 2018/5/16 回复数据
                 if (content != null && !content.equals("")) {
                     postDynamicContentParam.setContent(content).setUserid(Presenter.getInstance(getContext()).getId());
                     Presenter.getInstance(getContext()).postContent(postDynamicContentParam);
                 }
             }
         });
-        LinearLayout mLlContent = (LinearLayout) linear_edit.findViewById(R.id.edit_content);
-        EmotionLayout mElEmotion = (EmotionLayout) linear_edit.findViewById(R.id.elEmotion);
-        mEmotionKeyboard = EmotionKeyboard.with(getActivity());
-        mEmotionKeyboard.bindToContent(mLlContent);
-        mEmotionKeyboard.bindToEmotionButton(buttonIcon);
-        mEmotionKeyboard.bindToEditText(editText);
-        mEmotionKeyboard.setEmotionLayout(mElEmotion);
 
-        mElEmotion.attachEditText(editText);
-        mElEmotion.setEmotionAddVisiable(false);
-        mElEmotion.setEmotionSettingVisiable(false);
-        mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
-            @Override
-            public void onEmotionAddClick(View view) {
-                Toast.makeText(getContext(), "add", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onEmotionSettingClick(View view) {
-                Toast.makeText(getContext(), "setting", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        mElEmotion.setEmotionSelectedListener(new IEmotionSelectedListener() {
-            @Override
-            public void onEmojiSelected(String key) {
-                LocalLog.d(TAG, "onEmojiSelected() " + key);
-            }
-
-            @Override
-            public void onStickerSelected(String categoryName, String stickerName, String stickerBitmapPath) {
-                String stickerPath = stickerBitmapPath;
-                Toast.makeText(getContext(), stickerPath, Toast.LENGTH_SHORT).show();
-            }
-        });*/
     }
 
 
@@ -405,6 +411,12 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             }
         }
     };
+
+    private void resetCommentEdittext() {
+        PaoToastUtils.showShortToast(getActivity(),"评论成功");
+        commentEditText.setText("");
+        hideSoftInput(commentEditText.getWindowToken());
+    }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -673,8 +685,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 reflashInterface.notifyReflash(postDynamicContentResponse);
             }
             if (popupRedPkgWindow != null) {
-                popupRedPkgWindow.dismiss();
+//                popupRedPkgWindow.dismiss();
             }
+            resetCommentEdittext();
             contentNumbers.setText(String.valueOf(contentNum));
             intent.putExtra(getContext().getPackageName() + "contentNum", contentNum);
             getActivity().setResult(Activity.RESULT_OK, intent);
@@ -793,35 +806,78 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void postDynamicAction(PostDynamicContentParam postDynamicContentParam, String dearName, ReflashInterface reflashInterface) {
         LocalLog.d(TAG, "PostDynamicContentParam() 弹出评论框" + postDynamicContentParam.paramString());
-        popEdit(postDynamicContentParam, dearName);
+        //popEdit(postDynamicContentParam, dearName);
+        initEditView(postDynamicContentParam,dearName);
         this.reflashInterface = reflashInterface;
     }
 
     private void popEdit(final PostDynamicContentParam postDynamicContentParam, String dearName) {
-        LocalLog.d(TAG, "popRedPkg() enter");
-        popRedPkgView = View.inflate(getContext(), R.layout.response_edit_span, null);
-        popupRedPkgWindow = new PopupWindow(popRedPkgView,
-                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                popupRedPkgWindow = null;
-            }
-        });
+        LocalLog.d(TAG, "popEdit() enter");
+        if (popupRedPkgWindow == null) {
+            popRedPkgView = View.inflate(getContext(), R.layout.response_edit_span, null);
+            popupRedPkgWindow = new PopupWindow(popRedPkgView,
+                    WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    popupRedPkgWindow = null;
+                }
+            });
+            commentEditText = (CustomEdit) popRedPkgView.findViewById(R.id.content_text);
+            EditTextChangeListener editTextChangeListener = new EditTextChangeListener();
+            commentEditText.addTextChangedListener(editTextChangeListener);
 
-        final CustomEdit editText = (CustomEdit) popRedPkgView.findViewById(R.id.content_text);
-//        editText.setHint("回复:" + dearName);
-        editText.setHint("请输入评论" );
-        final EditTextChangeListener editTextChangeListener = new EditTextChangeListener();
-        editText.addTextChangedListener(editTextChangeListener);
+            ImageView buttonIcon = (ImageView) popRedPkgView.findViewById(R.id.edit_expression);
+            LinearLayout mLlContent = (LinearLayout) popRedPkgView.findViewById(R.id.edit_content);
+            EmotionLayout mElEmotion = (EmotionLayout) popRedPkgView.findViewById(R.id.elEmotion);
+            mEmotionKeyboard = EmotionKeyboard.with(getActivity());
+            mEmotionKeyboard.bindToContent(mLlContent);
+            mEmotionKeyboard.bindToEmotionButton(buttonIcon);
+            mEmotionKeyboard.bindToEditText(commentEditText);
+            mEmotionKeyboard.setEmotionLayout(mElEmotion);
+            popupRedPkgWindow.setFocusable(true);
+            popupRedPkgWindow.setOutsideTouchable(false);
+//            popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
+
+            mElEmotion.attachEditText(commentEditText);
+            mElEmotion.setEmotionAddVisiable(false);
+            mElEmotion.setEmotionSettingVisiable(false);
+            mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
+                @Override
+                public void onEmotionAddClick(View view) {
+                    Toast.makeText(getContext(), "add", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onEmotionSettingClick(View view) {
+                    Toast.makeText(getContext(), "setting", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+            mElEmotion.setEmotionSelectedListener(new IEmotionSelectedListener() {
+                @Override
+                public void onEmojiSelected(String key) {
+                    LocalLog.d(TAG, "onEmojiSelected() " + key);
+                }
+
+                @Override
+                public void onStickerSelected(String categoryName, String stickerName, String stickerBitmapPath) {
+                    String stickerPath = stickerBitmapPath;
+                    Toast.makeText(getContext(), stickerPath, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+        commentEditText.setHint("回复:" + dearName);
+
 
         Button button = (Button) popRedPkgView.findViewById(R.id.send_content);
-        ImageView buttonIcon = (ImageView) popRedPkgView.findViewById(R.id.edit_expression);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String content = editText.getText().toString();
-                editText.removeTextChangedListener(editTextChangeListener);
+                String content = commentEditText.getText().toString();
                 LocalLog.d(TAG, "content = " + content);
                 int[] emj = getContext().getResources().getIntArray(R.array.emjio_list);
                 if (content != null) {
@@ -836,53 +892,20 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 }
             }
         });
-        LinearLayout mLlContent = (LinearLayout) popRedPkgView.findViewById(R.id.edit_content);
-        EmotionLayout mElEmotion = (EmotionLayout) popRedPkgView.findViewById(R.id.elEmotion);
-        mEmotionKeyboard = EmotionKeyboard.with(getActivity());
-        mEmotionKeyboard.bindToContent(mLlContent);
-        mEmotionKeyboard.bindToEmotionButton(buttonIcon);
-        mEmotionKeyboard.bindToEditText(editText);
-        mEmotionKeyboard.setEmotionLayout(mElEmotion);
-        popupRedPkgWindow.setFocusable(true);
-        popupRedPkgWindow.setOutsideTouchable(true);
-        popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
-
-        mElEmotion.attachEditText(editText);
-        mElEmotion.setEmotionAddVisiable(false);
-        mElEmotion.setEmotionSettingVisiable(false);
-        mElEmotion.setEmotionExtClickListener(new IEmotionExtClickListener() {
-            @Override
-            public void onEmotionAddClick(View view) {
-                Toast.makeText(getContext(), "add", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onEmotionSettingClick(View view) {
-                Toast.makeText(getContext(), "setting", Toast.LENGTH_SHORT).show();
-            }
-        });
 
 
-        mElEmotion.setEmotionSelectedListener(new IEmotionSelectedListener() {
-            @Override
-            public void onEmojiSelected(String key) {
-                LocalLog.d(TAG, "onEmojiSelected() " + key);
-            }
 
-            @Override
-            public void onStickerSelected(String categoryName, String stickerName, String stickerBitmapPath) {
-                String stickerPath = stickerBitmapPath;
-                Toast.makeText(getContext(), stickerPath, Toast.LENGTH_SHORT).show();
-            }
-        });
-        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
-                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
-                1, Animation.RELATIVE_TO_PARENT, 0);
-        animationCircleType.setInterpolator(new AccelerateInterpolator());
-        animationCircleType.setDuration(200);
+        if (!popupRedPkgWindow.isShowing()) {
+            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleType.setInterpolator(new AccelerateInterpolator());
+            animationCircleType.setDuration(200);
 
-        popupRedPkgWindow.showAtLocation(getActivity().findViewById(R.id.dynamic_id_detail), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-        popRedPkgView.startAnimation(animationCircleType);
+            popupRedPkgWindow.showAtLocation(getActivity().findViewById(R.id.dynamic_id_detail), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+            popRedPkgView.startAnimation(animationCircleType);
+        }
+
     }
 
 

@@ -24,7 +24,8 @@ public class WaveView extends View {
 //    private static final int WAVE_PAINT_COLOR2 = 0xff757681;
     private static final int WAVE_PAINT_COLOR2 = 0xffffffff;
 
-    private static final int WAVE_PAINT_COLOR1 = 0xff3c3e4d;
+    private static final int WAVE_PAINT_COLOR1 = 0xffffffff;
+//    private static final int WAVE_PAINT_COLOR1 = 0xff3c3e4d;
     // y = Asin(wx+b)+h
     private static final float STRETCH_FACTOR_A = 8;
     private static final int OFFSET_Y = 0;
@@ -110,7 +111,7 @@ public class WaveView extends View {
         // 从canvas层面去除绘制时锯齿
         canvas.setDrawFilter(mDrawFilter);
         resetPositonY();
-   /*     for (int i = 0; i < mTotalWidth; i++) {
+       /* for (int i = 0; i < mTotalWidth; i++) {
 
             // 减400只是为了控制波纹绘制的y的在屏幕的位置，大家可以改成一个变量，然后动态改变这个变量，从而形成波纹上升下降效果
             // 绘制第一条水波纹
@@ -122,7 +123,7 @@ public class WaveView extends View {
             canvas.drawLine(i, mTotalHeight - mResetTwoYPositions[i] - (mTotalHeight-STRETCH_FACTOR_A)*progress, i,
                     mTotalHeight,
                     mWavePaint2);
-        }  */
+        }*/
 
         canvas.drawLines(mResetOneYPositions, mWavePaint1);
         canvas.drawLines(mResetTwoYPositions, mWavePaint2);

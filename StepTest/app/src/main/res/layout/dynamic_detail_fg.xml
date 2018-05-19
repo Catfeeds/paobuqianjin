@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dynamic_id_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,7 +12,7 @@
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/linear_edit"
+        android:layout_above="@+id/v_empty"
         android:layout_below="@+id/bar_dynamic_detail">
 
         <RelativeLayout
@@ -24,10 +25,18 @@
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 
+
+    <View
+        android:id="@+id/v_empty"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible" />
     <include
         android:id="@+id/linear_edit"
-        android:layout_alignParentBottom="true"
         layout="@layout/response_edit_span"
+        android:layout_alignParentBottom="true"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
+
 </RelativeLayout>

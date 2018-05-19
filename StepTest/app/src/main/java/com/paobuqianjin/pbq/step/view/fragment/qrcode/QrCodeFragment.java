@@ -203,9 +203,9 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
 
         circle.setBounds(0, 0, 80, 80);
         weixinCircle.setCompoundDrawables(null, circle, null, null);
-        weichat.setBounds(0, 0, 80, 80);
+        weichat.setBounds(0, 0, 98, 80);
         weixin.setCompoundDrawables(null, weichat, null, null);
-        qq_icon.setBounds(0, 0, 80, 80);
+        qq_icon.setBounds(0, 0, 76, 80);
         qq.setCompoundDrawables(null, qq_icon, null, null);
     }
 
