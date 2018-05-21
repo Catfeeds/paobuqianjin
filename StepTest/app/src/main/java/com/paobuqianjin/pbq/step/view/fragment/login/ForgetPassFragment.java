@@ -114,7 +114,7 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
                 String forgotpwdAccountStr = forgotpwdAccount.getText().toString().trim();
                 String forgotpwdPwdStr = forgotpwdPwd.getText().toString().trim();
                 String forgotpwdIindntifyingCodeStr = forgotpwdIindntifyingCode.getText().toString().trim();
-                if ((forgotpwdAccountStr.length() == 11) && (forgotpwdPwdStr.length() >= 6) && (forgotpwdPwdStr.length() <= 12) && (forgotpwdIindntifyingCodeStr.length() == 6)) {
+                if ((forgotpwdAccountStr.length() == 11) && (forgotpwdPwdStr.length() >= 6) && (forgotpwdPwdStr.length() <= 16) && (forgotpwdIindntifyingCodeStr.length() == 6)) {
                     forgotpwdOk.setEnabled(true);
                 } else {
                     forgotpwdOk.setEnabled(false);
@@ -138,7 +138,7 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
                 String forgotpwdAccountStr = forgotpwdAccount.getText().toString().trim();
                 String forgotpwdPwdStr = forgotpwdPwd.getText().toString().trim();
                 String forgotpwdIindntifyingCodeStr = forgotpwdIindntifyingCode.getText().toString().trim();
-                if ((forgotpwdAccountStr.length() == 11) && (forgotpwdPwdStr.length() == 6) && (forgotpwdIindntifyingCodeStr.length() == 6)) {
+                if ((forgotpwdAccountStr.length() == 11) && (forgotpwdPwdStr.length() >= 6) && (forgotpwdPwdStr.length() <= 16) && (forgotpwdIindntifyingCodeStr.length() == 6)) {
                     forgotpwdOk.setEnabled(true);
                 } else {
                     forgotpwdOk.setEnabled(false);
@@ -173,11 +173,7 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
             Toast.makeText(getContext(), "验证码发送成功", Toast.LENGTH_SHORT).show();
         } else if (getSignCodeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 

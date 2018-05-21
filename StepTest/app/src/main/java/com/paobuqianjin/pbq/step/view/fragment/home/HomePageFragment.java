@@ -609,10 +609,12 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     public void responseAllIncome(AllIncomeResponse incomeResponse) {
         LocalLog.d(TAG, "responseAllIncome() enter " + incomeResponse.toString());
         if (incomeResponse.getError() == 0) {
-            String moneyFormat = getContext().getResources().getString(R.string.month_income);
-            String moneyStr = String.format(moneyFormat, incomeResponse.getData().getTotal_amount());
-            LocalLog.d(TAG, "responseAllIncome() " + moneyStr);
-            monthIncomeHome.setText(moneyStr);
+            if (isAdded() && monthIncomeHome != null) {
+                String moneyFormat = getContext().getResources().getString(R.string.month_income);
+                String moneyStr = String.format(moneyFormat, incomeResponse.getData().getTotal_amount());
+                LocalLog.d(TAG, "responseAllIncome() " + moneyStr);
+                monthIncomeHome.setText(moneyStr);
+            }
         } else if (incomeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

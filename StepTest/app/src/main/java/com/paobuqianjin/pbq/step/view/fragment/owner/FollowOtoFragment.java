@@ -340,28 +340,30 @@ public class FollowOtoFragment extends BaseFragment {
 
     private void loadFollowOtOMore(ArrayList<UserFollowOtOResponse.DataBeanX.DataBean> newData) {
         LocalLog.d(TAG, "loadFollowOtOMore() enter");
+        if (isAdded() && inviteDanRecycler != null) {
         /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
-        for (int i = 0; i < newData.size(); i++) {
-            for (int j = 0; j < followOtoData.size(); j++) {
-                if (followOtoData.get(j).getUserid() == newData.get(i).getUserid()) {
-                    LocalLog.d(TAG, "重复数据");
-                    newData.remove(i);
+            for (int i = 0; i < newData.size(); i++) {
+                for (int j = 0; j < followOtoData.size(); j++) {
+                    if (followOtoData.get(j).getUserid() == newData.get(i).getUserid()) {
+                        LocalLog.d(TAG, "重复数据");
+                        newData.remove(i);
+                    }
                 }
             }
+            followOtoData.addAll(newData);
+            // notifyItemRangeInserted()或者notifyDataSetChanged().
+            adapter.notifyItemRangeInserted(followOtoData.size() - newData.size(), newData.size());
+
+            // 数据完更多数据，一定要掉用这个方法。
+            // 第一个参数：表示此次数据是否为空。
+            // 第二个参数：表示是否还有更多数据。
+            inviteDanRecycler.loadMoreFinish(false, true);
+
+            // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
+            // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
+            // errorMessage是会显示到loadMoreView上的，用户可以看到。
+            // mRecyclerView.loadMoreError(0, "请求网络失败");
         }
-        followOtoData.addAll(newData);
-        // notifyItemRangeInserted()或者notifyDataSetChanged().
-        adapter.notifyItemRangeInserted(followOtoData.size() - newData.size(), newData.size());
-
-        // 数据完更多数据，一定要掉用这个方法。
-        // 第一个参数：表示此次数据是否为空。
-        // 第二个参数：表示是否还有更多数据。
-        inviteDanRecycler.loadMoreFinish(false, true);
-
-        // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
-        // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
-        // errorMessage是会显示到loadMoreView上的，用户可以看到。
-        // mRecyclerView.loadMoreError(0, "请求网络失败");
     }
 
     /**

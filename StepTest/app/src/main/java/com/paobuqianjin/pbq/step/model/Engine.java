@@ -178,6 +178,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
 
+import static android.content.ContentValues.TAG;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlProtocol;
@@ -999,7 +1000,7 @@ public final class Engine {
             return;
         }
         String md5PassWord = MD5.md5Slat(userInfo[1]);
-        LocalLog.d(TAG, "md5PassWord = " + md5PassWord);
+        LocalLog.d(TAG, "password = " + userInfo[1] + ",md5PassWord = " + md5PassWord);
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))

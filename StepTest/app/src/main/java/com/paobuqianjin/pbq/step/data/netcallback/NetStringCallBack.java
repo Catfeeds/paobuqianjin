@@ -783,30 +783,6 @@ public class NetStringCallBack extends StringCallback {
                 }
             }
         } else if (callBackInterface != null
-                && callBackInterface instanceof UserHomeInterface) {
-            if (command == Engine.COMMAND_GET_USER_INFO) {
-                try {
-                    UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
-                    ((UserHomeInterface) callBackInterface).response(userInfoResponse);
-                } catch (JsonSyntaxException e) {
-                    e.printStackTrace();
-                }
-            } else if (command == Engine.COMMAND_GET_USER_DYNAMIC) {
-                try {
-                    DynamicPersonResponse dynamicPersonResponse = new Gson().fromJson(s, DynamicPersonResponse.class);
-                    ((UserHomeInterface) callBackInterface).response(dynamicPersonResponse);
-                } catch (JsonSyntaxException e) {
-                    e.printStackTrace();
-                }
-            } else if (command == Engine.COMMAND_QUERY_FOLLOW_STATE) {
-                try {
-                    QueryFollowStateResponse queryFollowStateResponse = new Gson().fromJson(s, QueryFollowStateResponse.class);
-                    ((UserHomeInterface) callBackInterface).response(queryFollowStateResponse);
-                } catch (JsonSyntaxException e) {
-                    e.printStackTrace();
-                }
-            }
-        } else if (callBackInterface != null
                 && callBackInterface instanceof MyDynamicInterface) {
             if (command == Engine.COMMAND_GET_USER_DYNAMIC) {
                 try {

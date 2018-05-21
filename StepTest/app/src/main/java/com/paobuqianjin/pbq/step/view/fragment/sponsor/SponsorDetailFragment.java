@@ -179,7 +179,7 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
                             if (workTimeStrList != null) {
                                 if (workTimeStrList.length >= 7) {
                                     displayTime = "周一至周日 " + dataBean.getS_do_time() + "-" + dataBean.getE_do_time();
-                                } else {
+                                } else if (workTimeStrList.length > 0) {
                                     displayTime = workTimeStr + " " + dataBean.getS_do_time() + "-" + dataBean.getE_do_time();
                                 }
                             }

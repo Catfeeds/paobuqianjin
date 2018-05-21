@@ -25,6 +25,7 @@ import com.paobuqianjin.pbq.step.view.activity.LoginActivity;
 
 public abstract class BaseFragment extends Fragment {
     private static NormalDialog exitDialog;
+    private final static String RE_LOGIN_ACTION = "com.paobuqianjin.pbq.step.RE_LOGIN";
 
     protected void runOnMainUi(Runnable runnable) {
         getActivity().runOnUiThread(runnable);
@@ -114,14 +115,17 @@ public abstract class BaseFragment extends Fragment {
                     Presenter.getInstance(getContext()).setId(-1);
                     Presenter.getInstance(getContext()).steLogFlg(false);
                     Presenter.getInstance(getContext()).setToken(getContext(), "");
-                    getActivity().finish();
-                    System.exit(0);
+                    startActivity(LoginActivity.class, null, true, RE_LOGIN_ACTION);
                 }
             });
             exitDialog.setNoOnclickListener(getContext().getString(R.string.cancel_no), new NormalDialog.onNoOnclickListener() {
                 @Override
                 public void onNoClick() {
                     exitDialog.dismiss();
+                    Presenter.getInstance(getContext()).setId(-1);
+                    Presenter.getInstance(getContext()).steLogFlg(false);
+                    Presenter.getInstance(getContext()).setToken(getContext(), "");
+                    startActivity(LoginActivity.class, null, true, RE_LOGIN_ACTION);
                     exitDialog = null;
                 }
             });
