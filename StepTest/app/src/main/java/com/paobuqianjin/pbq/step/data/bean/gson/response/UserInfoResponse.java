@@ -59,6 +59,7 @@ public class UserInfoResponse {
     public static class DataBean implements Serializable {
         /**
          * id : 30
+         * no: 30,
          * wx_unionid:
          * qq_unionid:
          * wx_openid : oPd5d0SDHRV1oZF8dB80Jq0kH_tY
@@ -93,6 +94,16 @@ public class UserInfoResponse {
          */
 
         private int id;
+
+        public String getNo() {
+            return no;
+        }
+
+        public void setNo(String no) {
+            this.no = no;
+        }
+
+        private String no;
         private String wx_unionid;
         private String qq_unionid;
         private String wx_openid;
@@ -367,10 +378,35 @@ public class UserInfoResponse {
             this.messagesCount = messagesCount;
         }
 
+        public String getWx_unionid() {
+            return wx_unionid;
+        }
+
+        public void setWx_unionid(String wx_unionid) {
+            this.wx_unionid = wx_unionid;
+        }
+
+        public String getQq_unionid() {
+            return qq_unionid;
+        }
+
+        public void setQq_unionid(String qq_unionid) {
+            this.qq_unionid = qq_unionid;
+        }
+
+        public float getUserAllincome() {
+            return userAllincome;
+        }
+
+        public void setUserAllincome(float userAllincome) {
+            this.userAllincome = userAllincome;
+        }
+
         @Override
         public String toString() {
             return "DataBean{" +
                     "id=" + id +
+                    ", no='" + no + '\'' +
                     ", wx_unionid='" + wx_unionid + '\'' +
                     ", qq_unionid='" + qq_unionid + '\'' +
                     ", wx_openid='" + wx_openid + '\'' +
@@ -404,30 +440,6 @@ public class UserInfoResponse {
                     ", userAllincome=" + userAllincome +
                     ", vip=" + vip +
                     '}';
-        }
-
-        public String getWx_unionid() {
-            return wx_unionid;
-        }
-
-        public void setWx_unionid(String wx_unionid) {
-            this.wx_unionid = wx_unionid;
-        }
-
-        public String getQq_unionid() {
-            return qq_unionid;
-        }
-
-        public void setQq_unionid(String qq_unionid) {
-            this.qq_unionid = qq_unionid;
-        }
-
-        public float getUserAllincome() {
-            return userAllincome;
-        }
-
-        public void setUserAllincome(float userAllincome) {
-            this.userAllincome = userAllincome;
         }
     }
 }

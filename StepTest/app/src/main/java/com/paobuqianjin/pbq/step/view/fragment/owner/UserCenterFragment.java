@@ -21,9 +21,11 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.QueryFollowStateResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserCenterResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -46,7 +48,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by pbq on 2018/1/6.
  */
 
-public class UserCenterFragment extends BaseBarStyleTextViewFragment implements UserHomeInterface {
+public class UserCenterFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = UserCenterFragment.class.getSimpleName();
     @Bind(R.id.user_head_ico)
     CircleImageView userHeadIco;
@@ -91,6 +93,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     private final static int PAGESIZE = 50;
     private final static int REQUEST_DETAIL = 401;
     UserDynamicRecordAdapter adapter;
+    private String userNo = "";
 
     @Override
     protected String title() {
@@ -105,7 +108,6 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Presenter.getInstance(getContext()).attachUiInterface(this);
         Presenter.getInstance(getContext()).attachUiInterface(addDeleteFollowInterface);
     }
 
@@ -123,15 +125,14 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             int userid = intent.getIntExtra("userid", -1);
+            userNo = intent.getStringExtra("userno");
             if (userid != -1) {
-                LocalLog.d(TAG, "userid = " + userid);
-                queryFollowStateParam = new QueryFollowStateParam();
-                if (userid != Presenter.getInstance(getContext()).getId()) {
-                    queryFollowStateParam.setFollowid(userid);
-                    Presenter.getInstance(getContext()).postQueryFollowState(queryFollowStateParam);
-                }
-                Presenter.getInstance(getContext()).getUserInfo(String.valueOf(userid));
-                Presenter.getInstance(getContext()).getUserDynamic(String.valueOf(userid), pageIndex, PAGESIZE);
+                LocalLog.d(TAG, "userid =  " + userid);
+                Presenter.getInstance(getContext()).getUserHome(String.valueOf(userid), "", pageIndex, PAGESIZE, userCenterCallBack);
+            }
+            if (!TextUtils.isEmpty(userNo) && Integer.parseInt(userNo) != -1) {
+                LocalLog.d(TAG, "userno =  " + userNo);
+                Presenter.getInstance(getContext()).getUserHome("", userNo, pageIndex, PAGESIZE, userCenterCallBack);
             }
         }
         userHeadIco = (CircleImageView) viewRoot.findViewById(R.id.user_head_ico);
@@ -170,9 +171,109 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        Presenter.getInstance(getContext()).dispatchUiInterface(this);
         Presenter.getInstance(getContext()).dispatchUiInterface(addDeleteFollowInterface);
     }
+
+    private InnerCallBack userCenterCallBack = new InnerCallBack() {
+        @Override
+        public void innerCallBack(Object object) {
+            if (object instanceof ErrorCode) {
+
+            } else if (object instanceof UserCenterResponse) {
+                if (((UserCenterResponse) object).getError() == 0) {
+                    if (!isAdded() || sexIcon == null) {
+                        return;
+                    }
+                    //用户信息
+                    if (((UserCenterResponse) object).getData().getUser_data().getSex() == 1) {
+                        sexIcon.setImageResource(R.drawable.man);
+                    } else if (((UserCenterResponse) object).getData().getUser_data().getSex() == 2) {
+                        sexIcon.setImageResource(R.drawable.woman_flag);
+                    }
+                    userName.setText(((UserCenterResponse) object).getData().getUser_data().getNickname());
+                    String stepFormat = getContext().getResources().getString(R.string.user_target);
+                    String stepStr = String.format(stepFormat, ((UserCenterResponse) object).getData().getUser_data().getTarget_step());
+                    targerNum.setText(stepStr);
+                    Presenter.getInstance(getContext()).getPlaceErrorImage(userHeadIco, ((UserCenterResponse) object).getData().getUser_data().getAvatar(),
+                            R.drawable.default_head_ico, R.drawable.default_head_ico);
+                    if (((UserCenterResponse) object).getData().getUser_data().getCity().equals(((UserCenterResponse) object).getData().getUser_data().getProvince())) {
+                        locationCity.setText(((UserCenterResponse) object).getData().getUser_data().getCity());
+                    } else {
+                        if (!TextUtils.isEmpty(((UserCenterResponse) object).getData().getUser_data().getProvince())) {
+
+                            if (specialCity(((UserCenterResponse) object).getData().getUser_data().getProvince())) {
+                                locationCity.setText(((UserCenterResponse) object).getData().getUser_data().getCity());
+                            } else {
+                                locationCity.setText(((UserCenterResponse) object).getData().getUser_data().getProvince() + "· "
+                                        + ((UserCenterResponse) object).getData().getUser_data().getCity());
+                            }
+                        } else {
+                            locationCity.setText(((UserCenterResponse) object).getData().getUser_data().getCity());
+                        }
+
+                    }
+                    if (((UserCenterResponse) object).getData().getUser_data().getVip() == 1) {
+                        vipFlg.setVisibility(View.VISIBLE);
+                    }
+                    //关注状态
+                    if (!TextUtils.isEmpty(userNo) && !userNo.equals(Presenter.getInstance(getContext()).getCurrentUser().getNo())) {
+                        if (((UserCenterResponse) object).getData().getIs_follow() == 0) {
+                            LocalLog.d(TAG, "关注");
+                            bntLike.setText("关注");
+                        } else if (((UserCenterResponse) object).getData().getIs_follow() == 1) {
+                            LocalLog.d(TAG, "已关注");
+                            bntLike.setText("已关注");
+                        }
+                        bntLike.setVisibility(View.VISIBLE);
+                        bntLike.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                switch (view.getId()) {
+                                    case R.id.bnt_like:
+                                        switch (bntLike.getText().toString()) {
+                                            case "已关注":
+                                                LocalLog.d(TAG, "取消关注");
+                                                Presenter.getInstance(getContext()).postAddUserFollow(queryFollowStateParam);
+                                                break;
+                                            case "关注":
+                                                LocalLog.d(TAG, "去关注");
+                                                Presenter.getInstance(getContext()).postAddUserFollow(queryFollowStateParam);
+                                                break;
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        });
+                    }
+
+                    //个人动态列表
+                    if (((UserCenterResponse) object).getData().getDynamic_data() != null) {
+                        if (((UserCenterResponse) object).getData().getDynamic_data().getData() != null &&
+                                ((UserCenterResponse) object).getData().getDynamic_data().getData().size() > 0) {
+                            pageCount = ((UserCenterResponse) object).getData().getDynamic_data().getPagenation().getTotalPage();
+                            if (((UserCenterResponse) object).getData().getDynamic_data().getData() != null) {
+                                List<List> map = checkDaysDynamic(((UserCenterResponse) object).getData().getDynamic_data());
+                                if (dynamicRecordRecycler == null) {
+                                    return;
+                                }
+                                dynamicRecordRecycler.addItemDecoration(new UserDynamicRecordAdapter.SpaceItemDecoration(45));
+                                if (adapter == null) {
+                                    adapter = new UserDynamicRecordAdapter(getContext(), map, UserCenterFragment.this);
+                                    dynamicRecordRecycler.setAdapter(adapter);
+                                }
+                            }
+                        }
+                    }
+                } else if (((UserCenterResponse) object).getError() == 100) {
+                    exitTokenUnfect();
+                } else {
+
+                }
+            }
+        }
+    };
 
     private boolean specialCity(String province) {
         if ("澳门".equals(province) || "台湾省".equals(province)
@@ -183,6 +284,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
         return false;
     }
 
+/*
 
     @Override
     public void response(UserInfoResponse userInfoResponse) {
@@ -200,7 +302,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             String stepFormat = getContext().getResources().getString(R.string.user_target);
             String stepStr = String.format(stepFormat, userInfoResponse.getData().getTarget_step());
             targerNum.setText(stepStr);
-            Presenter.getInstance(getContext()).getPlaceErrorImage(userHeadIco, userInfoResponse.getData().getAvatar(),R.drawable.default_head_ico,R.drawable.default_head_ico);
+            Presenter.getInstance(getContext()).getPlaceErrorImage(userHeadIco, userInfoResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             if (userInfoResponse.getData().getCity().equals(userInfoResponse.getData().getProvince())) {
                 locationCity.setText(userInfoResponse.getData().getCity());
             } else {
@@ -221,11 +323,12 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             }
         } else if (userInfoResponse.getError() == 0) {
             LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
+
         }
     }
+*/
 
-    @Override
+ /*   @Override
     public void response(DynamicPersonResponse dynamicPersonResponse) {
         if (dynamicPersonResponse.getError() == 0) {
             LocalLog.d(TAG, "DynamicPersonResponse() enter " + dynamicPersonResponse.toString());
@@ -250,36 +353,36 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         }
-    }
+    }*/
 
-    private List<List> checkDaysDynamic(DynamicPersonResponse dynamicPersonResponse) {
-        LocalLog.d(TAG, "当前记录条数 " + dynamicPersonResponse.getData().getData().size());
+    private List<List> checkDaysDynamic(UserCenterResponse.DataBeanX.DynamicDataBean dynamicDataBean) {
+        LocalLog.d(TAG, "当前记录条数 " + dynamicDataBean.getData().size());
         String tempDays = "";
         List<List> map = new ArrayList<>();
-        List<DynamicPersonResponse.DataBeanX.DataBean> list = new ArrayList<>();
-        for (int i = 0; i < dynamicPersonResponse.getData().getData().size(); i++) {
-            long create_time = dynamicPersonResponse.getData().getData().get(i).getCreate_time();
+        List<UserCenterResponse.DataBeanX.DynamicDataBean.DataBean> list = new ArrayList<>();
+        for (int i = 0; i < dynamicDataBean.getData().size(); i++) {
+            long create_time = dynamicDataBean.getData().get(i).getCreate_time();
             String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
             LocalLog.d(TAG, "create_timeStr = " + create_timeStr + ", tempdays =" + tempDays);
             if (i == 0) {
                 LocalLog.d(TAG, "记录第一条时间");
                 tempDays = create_timeStr;
-                list.add(dynamicPersonResponse.getData().getData().get(0));
-                if (dynamicPersonResponse.getData().getData().size() == 1) {
+                list.add(dynamicDataBean.getData().get(0));
+                if (dynamicDataBean.getData().size() == 1) {
                     map.add(list);
                     break;
                 }
             } else {
                 if (create_timeStr.equals(tempDays)) {
-                    list.add(dynamicPersonResponse.getData().getData().get(i));
+                    list.add(dynamicDataBean.getData().get(i));
                 } else {
                     LocalLog.d(TAG, tempDays + " 记录条数 " + list.size());
                     map.add(list);
                     list = new ArrayList<>();
-                    list.add(dynamicPersonResponse.getData().getData().get(i));
+                    list.add(dynamicDataBean.getData().get(i));
                     tempDays = create_timeStr;
                 }
-                if (i == dynamicPersonResponse.getData().getData().size() - 1) {
+                if (i == dynamicDataBean.getData().size() - 1) {
                     LocalLog.d(TAG, tempDays + " 记录条数 " + list.size());
                     map.add(list);
                 }
@@ -288,7 +391,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
         return map;
     }
 
-    @Override
+   /* @Override
     public void response(QueryFollowStateResponse queryFollowStateResponse) {
         LocalLog.d(TAG, "QueryFollowStateResponse() enter " + queryFollowStateResponse.toString());
         if (queryFollowStateResponse.getError() == 0) {
@@ -325,7 +428,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         }
-    }
+    }*/
 
     private AddDeleteFollowInterface addDeleteFollowInterface = new AddDeleteFollowInterface() {
         @Override
@@ -350,14 +453,6 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment implements 
             }
         }
     };
-
-    @Override
-    public void response(ErrorCode errorCode) {
-        if (errorCode.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
-        }
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

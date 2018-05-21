@@ -9,7 +9,7 @@ public class TaskRecDetailResponse {
     /**
      * error : 0
      * message : success
-     * data : {"id":770,"task_name":"3820步达标赛","task_days":31,"target_step":3820,"reward_amount":"100.00","userid":193,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/YXr2VhxJpdg2dcIZMrju42mmGXmLabwpbTiaoKq9lP5WbdkhcTkkZ6pjuBwLIQdC0u68UhqUkpb5yZ89PoyMiarA/132","nickname":"李","activity_start_time":1525190400,"activity_end_time":1525276799,"task_rule":"达标即可获得红包奖励，未达标者无奖励","task_desc":"\r\n                <p>\r\n                    ①运动数据以跑步钱进的APP为准；\r\n                <\/p>\r\n                <p>\r\n                    ②任务每天晚上12点重置，未领取的红包退回到派发人账户；\r\n                <\/p>\r\n                <p>\r\n                    ③若任务领取人未领取任务及奖励，属用户自主行为，与跑步钱进无关；\r\n   ","to_userid":30,"is_receive":1,"user_step":3086,"is_finished":0}
+     * data : {"id":770,"no":770,"task_name":"3820步达标赛","task_days":31,"target_step":3820,"reward_amount":"100.00","userid":193,"avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/YXr2VhxJpdg2dcIZMrju42mmGXmLabwpbTiaoKq9lP5WbdkhcTkkZ6pjuBwLIQdC0u68UhqUkpb5yZ89PoyMiarA/132","nickname":"李","activity_start_time":1525190400,"activity_end_time":1525276799,"task_rule":"达标即可获得红包奖励，未达标者无奖励","task_desc":"\r\n                <p>\r\n                    ①运动数据以跑步钱进的APP为准；\r\n                <\/p>\r\n                <p>\r\n                    ②任务每天晚上12点重置，未领取的红包退回到派发人账户；\r\n                <\/p>\r\n                <p>\r\n                    ③若任务领取人未领取任务及奖励，属用户自主行为，与跑步钱进无关；\r\n   ","to_userid":30,"is_receive":1,"user_step":3086,"is_finished":0}
      */
 
     private int error;
@@ -52,6 +52,7 @@ public class TaskRecDetailResponse {
     public static class DataBean {
         /**
          * id : 770
+         * userno:  770
          * task_name : 3820步达标赛
          * task_days : 31
          * target_step : 3820
@@ -79,6 +80,17 @@ public class TaskRecDetailResponse {
          */
 
         private int id;
+
+
+        public String getUserno() {
+            return userno;
+        }
+
+        public void setUserno(String userno) {
+            this.userno = userno;
+        }
+
+        private String userno;
         private String task_name;
         private int task_days;
         private int target_step;

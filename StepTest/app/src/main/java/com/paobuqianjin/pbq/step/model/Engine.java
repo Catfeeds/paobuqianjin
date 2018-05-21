@@ -59,6 +59,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostIncomeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostMessageParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.UserHomeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserRecordParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddBusinessResponse;
@@ -82,6 +83,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserCenterResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.VipNoResponse;
@@ -1078,17 +1080,54 @@ public final class Engine {
                 .execute(new NetStringCallBack(dynamicIndexUiInterface, Engine.COMMAND_GET_DYNAMIC_INDEX));
     }
 
-    //TODO 获取个人动态列表
-    public void getUserDynamic(String userid, int page, int pagesize) {
-        String url = NetApi.urlDynamic + "/getUserDynamic?userid=" + userid + "&page=" + String.valueOf(page)
-                + "&pagesize=" + pagesize;
-        LocalLog.d(TAG, "getUserDynamic() enter url = " + url);
+    //TODO 获取个人主页
+    public void getUserHome(String userid, String userno, int page, int pagesize, final InnerCallBack userCenterCallBack) {
+        final String url = NetApi.urlUserHome;
+        UserHomeParam userHomeParam = new UserHomeParam();
+        userHomeParam.setPage(page).setPagesize(pagesize);
+        if (!TextUtils.isEmpty(userid)) {
+            userHomeParam.setUserid(Integer.parseInt(userid));
+        } else {
+            if (!TextUtils.isEmpty(userno)) {
+                userHomeParam.setUserno(Integer.parseInt(userno));
+            } else {
+                LocalLog.e(TAG, "非法用户");
+                return;
+            }
+        }
+
+        LocalLog.d(TAG, "getUserHome() enter url = " + url + ", UserHomeParam = " + userHomeParam.paramString());
         OkHttpUtils
-                .get()
+                .post()
+                .params(userHomeParam.getParams())
                 .addHeader("headtoken", getToken(mContext))
                 .url(url)
                 .build()
-                .execute(new NetStringCallBack(userHomeInterface, COMMAND_GET_USER_DYNAMIC));
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        try {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            if (userCenterCallBack != null) {
+                                userCenterCallBack.innerCallBack(errorCode);
+                            }
+                        } catch (JsonSyntaxException j) {
+                            j.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        try {
+                            UserCenterResponse userCenterResponse = new Gson().fromJson(s, UserCenterResponse.class);
+                            if (userCenterCallBack != null) {
+                                userCenterCallBack.innerCallBack(userCenterResponse);
+                            }
+                        } catch (JsonSyntaxException j) {
+                            j.printStackTrace();
+                        }
+                    }
+                });
 
     }
 
@@ -3107,7 +3146,7 @@ public final class Engine {
                             try {
                                 ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                                 innerCallBack.innerCallBack(errorCode);
-                            }catch (JsonSyntaxException j){
+                            } catch (JsonSyntaxException j) {
                                 j.printStackTrace();
                             }
                         }

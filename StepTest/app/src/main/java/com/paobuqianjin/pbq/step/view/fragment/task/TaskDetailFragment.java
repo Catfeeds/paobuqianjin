@@ -187,7 +187,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
             targetMoney.setText("奖励金额: " + String.valueOf(taskRecDetailResponse.getData().getReward_amount()));
             Presenter.getInstance(getContext()).getPlaceErrorImage(releaseUseIco, taskRecDetailResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             dearName.setText(taskRecDetailResponse.getData().getNickname());
-            dearId.setText("ID:" + String.valueOf(taskRecDetailResponse.getData().getUserid()));
+            dearId.setText("跑步钱进号:" + taskRecDetailResponse.getData().getUserno());
             stepDesRun.setText(String.valueOf(taskRecDetailResponse.getData().getUser_step()) + "/" + String.valueOf(taskRecDetailResponse.getData().getTarget_step()));
             if (taskRecDetailResponse.getData().getVip() == 1) {
                 vipFlg.setVisibility(View.VISIBLE);

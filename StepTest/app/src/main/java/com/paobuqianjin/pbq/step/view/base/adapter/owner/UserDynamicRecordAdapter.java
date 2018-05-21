@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserCenterVoteData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserCenterResponse;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
@@ -96,8 +97,8 @@ public class UserDynamicRecordAdapter extends RecyclerView.Adapter<UserDynamicRe
         int size = mData.get(position).size();
         LocalLog.d(TAG, "当天日子条数 size");
         if (size > 0) {
-            if (mData.get(position).get(0) instanceof DynamicPersonResponse.DataBeanX.DataBean) {
-                long create_time = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position).get(0)).getCreate_time();
+            if (mData.get(position).get(0) instanceof UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) {
+                long create_time = ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position).get(0)).getCreate_time();
                 String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
                 holder.date.setText(create_timeStr);
             }

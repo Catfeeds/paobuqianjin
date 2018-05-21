@@ -152,7 +152,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
             codeInfo = NetApi.urlShareCd + id;
             title = "圈子二维码";
         } else {
-            userid = String.valueOf(Presenter.getInstance(getContext()).getId());
+            userid = Presenter.getInstance(getContext()).getCurrentUser().getNo();
             codeInfo = NetApi.urlShareIc + userid;
             descQrCode.setText("用“跑步钱进”APP扫描二维码关注我");
             title = "我的二维码";
@@ -170,17 +170,17 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         circleId = (TextView) viewRoot.findViewById(R.id.circle_id);
         if (!TextUtils.isEmpty(logo)) {
             if (logo.startsWith("/")) {
-                LocalLog.d(TAG,"本地路径");
+                LocalLog.d(TAG, "本地路径");
                 Presenter.getInstance(getContext()).getImage(logo, circleLogo);
             } else {
-                Presenter.getInstance(getContext()).getPlaceErrorImage(circleLogo, logo,R.drawable.default_head_ico,R.drawable.default_head_ico);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(circleLogo, logo, R.drawable.default_head_ico, R.drawable.default_head_ico);
             }
         }
         circleName.setText(name);
         if (id != null && !id.equals("")) {
             circleId.setText("ID:" + id);
         } else {
-            circleId.setText("ID:" + userid);
+            circleId.setText("跑步钱进号:" + userid);
         }
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getContext());

@@ -665,6 +665,11 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 toayStep.setText(String.valueOf(lastStep));
             }
         }
+        LocalLog.d(TAG, "stepToday = " + stepToday);
+        Message messageNet = Message.obtain();
+        messageNet.what = MSG_UPDATE_STEP;
+        messageNet.arg1 = stepToday;
+        updateHandler.sendMessageDelayed(messageNet, 10000);
     }
 
     @Override
@@ -742,6 +747,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         dialog.show();
 //                        popTargetView(getString(R.string.no_buess_pkg));
                     }
+                    redPkgEnable = true;
                 }
 
             } else {

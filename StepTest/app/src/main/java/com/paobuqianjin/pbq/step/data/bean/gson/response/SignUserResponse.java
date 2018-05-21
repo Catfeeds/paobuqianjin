@@ -10,7 +10,7 @@ public class SignUserResponse {
     /**
      * error : 0
      * message : 注册成功
-     * data : {"userid":"68",user_token : "1:kjF1GwBURNi9OSMFTbHArEAuTtjuWjlM"}
+     * data : {"id":"68","no":22247,user_token : "1:kjF1GwBURNi9OSMFTbHArEAuTtjuWjlM"}
      */
 
     private int error;
@@ -52,11 +52,29 @@ public class SignUserResponse {
 
     public static class DataBean implements Serializable {
         /**
-         * userid : 68
+         * id : 68
+         * no: 22247
          * user_token : 1:kjF1GwBURNi9OSMFTbHArEAuTtjuWjlM
          */
+        private int id;
+        private int no;
+        private String user_token;
 
-        private int userid;
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getNo() {
+            return no;
+        }
+
+        public void setNo(int no) {
+            this.no = no;
+        }
 
         public String getUser_token() {
             return user_token;
@@ -66,20 +84,11 @@ public class SignUserResponse {
             this.user_token = user_token;
         }
 
-        private String user_token;
-
-        public int getUserid() {
-            return userid;
-        }
-
-        public void setUserid(int userid) {
-            this.userid = userid;
-        }
-
         @Override
         public String toString() {
             return "DataBean{" +
-                    "userid='" + userid + '\'' +
+                    "id=" + id +
+                    ", no=" + no +
                     ", user_token='" + user_token + '\'' +
                     '}';
         }

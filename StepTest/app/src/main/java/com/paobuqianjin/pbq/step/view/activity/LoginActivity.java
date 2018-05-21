@@ -86,7 +86,6 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     private RelativeLayout.LayoutParams layoutParams, newLayoutParams;
 
     private String[] userInfo;
-    private ProgressDialog dialog;
     private ThirdPartyLoginParam thirdPartyLoginParam;
     LoginResponse loginResponse;
     private final static String START_STEP_ACTION = "com.paobuqianjin.step.START_STEP_ACTION";
@@ -154,7 +153,6 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     @Override
     protected void initView() {
         super.initView();
-        dialog = new ProgressDialog(this);
     }
 
 
@@ -335,7 +333,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             startActivity(intent);
             finish();*/
             Presenter.getInstance(this).steLogFlg(true);
-            Presenter.getInstance(this).setId(signUserResponse.getData().getUserid());
+            Presenter.getInstance(this).setId(signUserResponse.getData().getId());
             Presenter.getInstance(this).setToken(this, signUserResponse.getData().getUser_token());
             startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
 
@@ -346,7 +344,6 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         @Override
         public void onStart(SHARE_MEDIA share_media) {
             LocalLog.d(TAG, "授权开始callback:" + share_media.toString());
-            SocializeUtils.safeShowDialog(dialog);
         }
 
         @Override
@@ -470,13 +467,11 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
 
         @Override
         public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-            SocializeUtils.safeCloseDialog(dialog);
             Toast.makeText(LoginActivity.this, "失败：" + throwable.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA share_media, int i) {
-            SocializeUtils.safeCloseDialog(dialog);
             Toast.makeText(LoginActivity.this, "取消了", Toast.LENGTH_LONG).show();
         }
     };

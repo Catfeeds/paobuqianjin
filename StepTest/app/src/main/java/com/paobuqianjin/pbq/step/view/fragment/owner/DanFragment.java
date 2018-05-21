@@ -199,6 +199,9 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
     public void response(UserDanResponse userDanResponse) {
         LocalLog.d(TAG, "UserDanResponse() enter " + userDanResponse.toString());
         if (userDanResponse.getError() == 0) {
+            if (!isAdded() || danStepDes == null) {
+                return;
+            }
             userStep = userDanResponse.getData().getTotal_step_number();
             LocalLog.d(TAG, "用户当前步数");
             String stepStrFormat = getString(R.string.total_step_dan);

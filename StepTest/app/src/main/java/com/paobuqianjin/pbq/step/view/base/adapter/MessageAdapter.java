@@ -15,6 +15,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageContentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageLikeResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
@@ -116,7 +117,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getFrom_avatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                     ((MessageLikeViewHolder) holder).dearName.setText(((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getFrom_nickanme());
                     ((MessageLikeViewHolder) holder).contentText.setText(((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getTitle());
-                    String content = ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getContent();
+                    String content = Base64Util.getUidFromBase64(((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getContent());
                     LocalLog.d(TAG, "content = " + content);
                     if (content != null) {
                         for (int i = 0; i < emj.length; i++) {

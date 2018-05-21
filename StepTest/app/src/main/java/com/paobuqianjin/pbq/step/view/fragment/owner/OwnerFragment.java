@@ -326,7 +326,7 @@ public final class OwnerFragment extends BaseFragment {
                 LocalLog.d(TAG, "生成二维码");
                 intent.putExtra("usericon", urlIcon);
                 intent.putExtra("username", userName.getText().toString());
-                intent.putExtra("userid", String.valueOf(Presenter.getInstance(getContext()).getId()));
+                intent.putExtra("userid", Presenter.getInstance(getContext()).getCurrentUser().getNo());
                 intent.setClass(getContext(), QrCodeMakeActivity.class);
                 startActivity(intent);
                 break;
@@ -358,7 +358,7 @@ public final class OwnerFragment extends BaseFragment {
                 Presenter.getInstance(getContext()).setNickName(getContext(), userInfoResponse.getData().getNickname());
                 Presenter.getInstance(getContext()).getPlaceErrorImage(headIcon, userInfoResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                 userName.setText(userInfoResponse.getData().getNickname());
-                userId.setText("ID:" + String.valueOf(userInfoResponse.getData().getId()));
+                userId.setText("跑步钱进号:" + userInfoResponse.getData().getNo());
                 circle.setText(String.valueOf(userInfoResponse.getData().getCircleCount()));
                 friends.setText(String.valueOf(userInfoResponse.getData().getFollowCount()));
                 urlIcon = userInfoResponse.getData().getAvatar();

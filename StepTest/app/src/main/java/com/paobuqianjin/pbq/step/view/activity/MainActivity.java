@@ -239,12 +239,12 @@ public class MainActivity extends BaseActivity {
                 LocalLog.d(TAG, ScanResult);
                 if (ScanResult.startsWith(NetApi.urlShareIc)) {
                     LocalLog.d(TAG, "扫描个人");
-                    String userid = ScanResult.substring(NetApi.urlShareIc.length(), ScanResult.length());
-                    LocalLog.d(TAG, "userid = " + userid);
+                    String userNo = ScanResult.substring(NetApi.urlShareIc.length(), ScanResult.length());
+                    LocalLog.d(TAG, "userid = " + userNo);
                     try {
                         Intent intent = new Intent();
                         //TODO ACTION_SCAN_USERID
-                        intent.putExtra("userid", Integer.parseInt(userid));
+                        intent.putExtra("userno", userNo);
                         intent.setClass(this, UserCenterActivity.class);
                         startActivity(intent);
                     } catch (NumberFormatException e) {

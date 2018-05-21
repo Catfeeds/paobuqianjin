@@ -349,8 +349,8 @@ public final class Presenter {
     }
 
     //TODO  获取用户动态
-    public void getUserDynamic(String userid, int page, int pagesize) {
-        engine.getUserDynamic(userid, page, pagesize);
+    public void getUserHome(String userid, String userno, int page, int pagesize, InnerCallBack userCenterCallBack) {
+        engine.getUserHome(userid, userno, page, pagesize, userCenterCallBack);
     }
 
     public void getMyDynamic(int pageIndex, int pageSize) {
@@ -771,8 +771,8 @@ public final class Presenter {
         engine.postAddressBook(addressBook);
     }
 
-    public void inviteMsg(String phoneNum,Button button) {
-        engine.inviteMsg(phoneNum ,button);
+    public void inviteMsg(String phoneNum, Button button) {
+        engine.inviteMsg(phoneNum, button);
     }
 
     public void postTaskSponsorRelease(TaskSponsorParam taskSponsorParam) {

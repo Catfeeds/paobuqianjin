@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.UserCenterVoteData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserCenterResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -74,24 +75,24 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
         if (size == 1) {
             UserCenterVoteData userCenterVoteData = (UserCenterVoteData) payloads.get(0);
             LocalLog.d(TAG, "userCenterVoteData = " + userCenterVoteData.toString());
-            if (mData.get(position) instanceof DynamicPersonResponse.DataBeanX.DataBean) {
+            if (mData.get(position) instanceof UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) {
                 if (userCenterVoteData.getIs_vote() != -1) {
-                    ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).setIs_vote(userCenterVoteData.getIs_vote());
-                    if (((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getIs_vote() == 1) {
+                    ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).setIs_vote(userCenterVoteData.getIs_vote());
+                    if (((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getIs_vote() == 1) {
                         holder.likeNumIcon.setImageResource(R.drawable.fabulous_s);
                     } else {
                         holder.likeNumIcon.setImageResource(R.drawable.fabulous_n);
                     }
-                    holder.is_vote = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getIs_vote();
+                    holder.is_vote = ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getIs_vote();
                 }
                 if (userCenterVoteData.getComment() != -1) {
-                    ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).setComment(userCenterVoteData.getComment());
-                    int content = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getComment();
+                    ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).setComment(userCenterVoteData.getComment());
+                    int content = ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getComment();
                     holder.contentNumbers.setText(String.valueOf(content));
                 }
                 if (userCenterVoteData.getVote() != -1) {
-                    ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).setVote(userCenterVoteData.getVote());
-                    int likes = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getVote();
+                    ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).setVote(userCenterVoteData.getVote());
+                    int likes = ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getVote();
                     if (likes > 0) {
                         holder.contentSupports.setText(String.valueOf(likes));
                     } else {
@@ -104,21 +105,21 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
 
     private void updateListItem(UserDynamicRecordSecondViewHolder holder, int position) {
         LocalLog.d(TAG, "updateListItem() enter position =" + position);
-        if (mData.get(position) instanceof DynamicPersonResponse.DataBeanX.DataBean) {
-            holder.dynamicDes.setText(((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic());
-            int imageSize = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().size();
+        if (mData.get(position) instanceof UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) {
+            holder.dynamicDes.setText(((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getDynamic());
+            int imageSize = ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getImages().size();
             LocalLog.d(TAG, "imageSize = " + imageSize);
-            if (((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic().equals("")) {
+            if (((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getDynamic().equals("")) {
                 LocalLog.d(TAG, "无内容");
                 //holder.dynamicDes.setVisibility(View.GONE);
             } else {
-                String content = Base64Util.getUidFromBase64(((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getDynamic());
+                String content = Base64Util.getUidFromBase64(((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getDynamic());
                 holder.dynamicDes.setText(content);
             }
-            int likes = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getVote();
-            int content = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getComment();
+            int likes = ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getVote();
+            int content = ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getComment();
             LocalLog.d(TAG, "点赞数 = " + likes + ",评论数 = " + content);
-            if (((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getIs_vote() == 1) {
+            if (((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getIs_vote() == 1) {
                 holder.likeNumIcon.setImageResource(R.drawable.fabulous_s);
             } else {
                 holder.likeNumIcon.setImageResource(R.drawable.fabulous_n);
@@ -131,8 +132,8 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
 
             if (content > 0) {
                 holder.contentNumbers.setText(String.valueOf(content));
-                String firstContentDes = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getOne_comment().getNickname() + ":";
-                String firstContentText = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getOne_comment().getContent();
+                String firstContentDes = ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getOne_comment().getNickname() + ":";
+                String firstContentText = ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getOne_comment().getContent();
                 SpannableStringBuilder style = new SpannableStringBuilder(firstContentDes + firstContentText);
                 style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), 0, firstContentDes.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), firstContentDes.length(), (firstContentDes + firstContentText).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
@@ -142,15 +143,15 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
             }
 
             if (imageSize >= 1) {
-                if (!((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0).equals("")) {
+                if (!((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getImages().get(0).equals("")) {
                     holder.image.setVisibility(View.VISIBLE);
-                    Presenter.getInstance(context).getImage(holder.image, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
+                    Presenter.getInstance(context).getImage(holder.image, ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getImages().get(0));
                 }
             }
 
-            holder.dynamicId = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getId();
-            holder.userid = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
-            holder.is_vote = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getIs_vote();
+            holder.dynamicId = ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getId();
+            holder.userid = ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getUserid();
+            holder.is_vote = ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getIs_vote();
         }
 
     }
