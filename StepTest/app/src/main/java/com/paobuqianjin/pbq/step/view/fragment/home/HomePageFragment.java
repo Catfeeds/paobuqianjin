@@ -178,7 +178,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     public static int lastStep = 0;
     private int PERMISSION_REQUEST = 100;
     private boolean isBind = false;
-    private boolean redPkgEnable = true;
     SponsorRedPakAdapter sponsorRedPakAdapter;
     TextView totalRedPkg;
     TextView redRevTv;
@@ -376,6 +375,10 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
     public void popRedPkg(final SponsorRedPkgResponse sponsorRedPkgResponse) {
         LocalLog.d(TAG, "popRedPkg() enter");
+        if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
+            LocalLog.d(TAG, "红包在显示");
+            return;
+        }
         String canRevPkg = "";
         popRedPkgView = View.inflate(getContext(), R.layout.red_pkg_pop_window, null);
         totalRedPkg = (TextView) popRedPkgView.findViewById(R.id.total_red_pkg);
@@ -415,7 +418,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupRedPkgWindow.dismiss();
+                if (popupRedPkgWindow != null) {
+                    popupRedPkgWindow.dismiss();
+                }
             }
         });
         popupRedPkgWindow = new PopupWindow(popRedPkgView,
@@ -423,7 +428,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
-                redPkgEnable = true;
                 popupRedPkgWindow = null;
             }
         });
@@ -515,7 +519,10 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             });
             if (!normalDialog.isShowing()) {
                 normalDialog.show();
-
+            } else {
+                if (!normalDialog.isShowing()) {
+                    normalDialog.show();
+                }
             }
         }
     }
@@ -632,12 +639,14 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 @Override
                 public void run() {
                     int[] location = new int[2];
-                    processStepNow.getLocationOnScreen(location);
-                    if (stepProcessDrawable == null) {
-                        stepProcessDrawable = new StepProcessDrawable(getContext(), location[0], location[1], processStepNow.getWidth(), processStepNow.getHeight(),
-                                targetCircle.getWidth(), targetCircle.getHeight());
+                    if (processStepNow != null) {
+                        processStepNow.getLocationOnScreen(location);
+                        if (stepProcessDrawable == null) {
+                            stepProcessDrawable = new StepProcessDrawable(getContext(), location[0], location[1], processStepNow.getWidth(), processStepNow.getHeight(),
+                                    targetCircle.getWidth(), targetCircle.getHeight());
+                        }
+                        processStepNow.setImageDrawable(stepProcessDrawable.setmAngle(angelProcess));
                     }
-                    processStepNow.setImageDrawable(stepProcessDrawable.setmAngle(angelProcess));
                 }
             }, 500);
             canDrawProcess = false;
@@ -734,6 +743,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 //popTargetView();
                 LocalLog.d(TAG, "附近没有商家红包");
                 UserInfoResponse.DataBean userInfo = Presenter.getInstance(getContext()).getCurrentUser();
+                LocalLog.d(TAG, "userInfo = " + userInfo.toString());
                 if (userInfo != null) {
                     if (userInfo.getIs_perfect() == 0) {
                         showUseInfSettingDialog(userInfo);
@@ -746,10 +756,17 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                                 dialog.dismiss();
                             }
                         });
+                        dialog.setNoOnclickListener("取消", new NormalDialog.onNoOnclickListener() {
+                            @Override
+                            public void onNoClick() {
+                                dialog.dismiss();
+                            }
+                        });
                         dialog.show();
 //                        popTargetView(getString(R.string.no_buess_pkg));
                     }
-                    redPkgEnable = true;
+                } else {
+
                 }
 
             } else {
@@ -768,7 +785,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
             }
         }
-        redPkgEnable = true;
     }
 
     @Override
@@ -790,10 +806,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             switch (view.getId()) {
                 case R.id.out_red_pkg_image:
                     LocalLog.d(TAG, "领红包");
-                    if (redPkgEnable) {
-                        redPkgEnable = false;
-                        Presenter.getInstance(getContext()).getSponsorRedPkg();
-                    }
+                    Presenter.getInstance(getContext()).getSponsorRedPkg();
                     break;
                 case R.id.create_circle_image:
                     LocalLog.d(TAG, "发红包");
@@ -877,8 +890,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         } else {
-            if (!redPkgEnable)
-                redPkgEnable = true;
+
         }
     }
 

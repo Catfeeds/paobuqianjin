@@ -66,6 +66,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.AddBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CurrentStepResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CvipNoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
@@ -178,7 +179,6 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okio.BufferedSink;
 
-import static android.content.ContentValues.TAG;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlProtocol;
@@ -575,6 +575,14 @@ public final class Engine {
         FlagPreference.setUid(context, id);
     }
 
+    public String getNo(Context context) {
+        return FlagPreference.getNo(context);
+    }
+
+    public void setNo(Context context, String no) {
+        FlagPreference.setNo(context, no);
+    }
+
     public String getAvatar(Context context) {
         return FlagPreference.getAvatar(context);
     }
@@ -711,6 +719,9 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
+                        if (o == null) {
+                            return;
+                        }
                         try {
                             ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                             ToastUtils.showLongToast(mContext, errorCode.getMessage());
@@ -754,12 +765,13 @@ public final class Engine {
             return;
         }
         LocalLog.d(TAG, userInfo[0] + " ," + userInfo[2] + "," + userInfo[1]);
+
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
                 .url(urlRegisterPhone)
                 .addParams("mobile", userInfo[0])
-                .addParams("password", userInfo[2])
+                .addParams("password", MD5.md5Slat(userInfo[2]))
                 .addParams("code", userInfo[1])
                 .build()
                 .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_REG_BY_PHONE));
@@ -778,8 +790,11 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
+                        if (o == null) {
+                            return;
+                        }
                         if (nearByInterface != null) {
-                            ErrorCode errorCode = new ErrorCode();
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                             nearByInterface.response(errorCode);
                         }
                     }
@@ -989,18 +1004,14 @@ public final class Engine {
         }
     }
 
-    public void userLoginByPhoneNumber(String[] userInfo) {
-        LocalLog.d(TAG, "userLoginByPhoneNumber() enter");
-        if (!Utils.isMobile(userInfo[0])) {
-            Toast.makeText(mContext, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    public void userLoginByPhoneOrNo(String[] userInfo) {
+        LocalLog.d(TAG, "userLoginByPhoneOrNo() enter");
         if (userInfo[1] == null) {
             Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT).show();
             return;
         }
         String md5PassWord = MD5.md5Slat(userInfo[1]);
-        LocalLog.d(TAG, "password = " + userInfo[1] + ",md5PassWord = " + md5PassWord);
+        LocalLog.d(TAG, "md5PassWord = " + md5PassWord);
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
@@ -1107,6 +1118,9 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
+                        if (o == null) {
+                            return;
+                        }
                         try {
                             ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                             if (userCenterCallBack != null) {
@@ -1837,8 +1851,15 @@ public final class Engine {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
                         if (innerCallBack != null) {
-                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
-                            innerCallBack.innerCallBack(errorCode);
+                            if (o == null) {
+                                return;
+                            }
+                            try {
+                                ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                innerCallBack.innerCallBack(errorCode);
+                            } catch (JsonSyntaxException j) {
+                                j.printStackTrace();
+                            }
                         }
                     }
 
@@ -2092,6 +2113,9 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
+                        if (o == null) {
+                            return;
+                        }
                         if (innerCallBack != null) {
                             ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                             innerCallBack.innerCallBack(errorCode);
@@ -2134,6 +2158,9 @@ public final class Engine {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
                         if (innerCallBack != null) {
+                            if (o == null) {
+                                return;
+                            }
                             try {
                                 ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                                 if (innerCallBack != null) {
@@ -2172,6 +2199,9 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
+                        if (o == null) {
+                            return;
+                        }
                         if (innerCallBack != null) {
                             ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                             innerCallBack.innerCallBack(errorCode);
@@ -2205,6 +2235,9 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
+                        if (o == null) {
+                            return;
+                        }
                         if (innerCallBack != null) {
                             ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                             innerCallBack.innerCallBack(errorCode);
@@ -2238,6 +2271,9 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
+                        if(o == null){
+                            return;
+                        }
                         if (innerCallBack != null) {
                             ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                             innerCallBack.innerCallBack(errorCode);
@@ -2271,6 +2307,9 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
+                        if(o == null){
+                            return;
+                        }
                         if (innerCallBack != null) {
                             LocalLog.d("---------------", o.toString());
                             ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
@@ -2308,6 +2347,9 @@ public final class Engine {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
                         if (innerCallBack != null) {
+                            if (o == null) {
+                                return;
+                            }
                             ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                             innerCallBack.innerCallBack(errorCode);
                         }
@@ -2526,6 +2568,9 @@ public final class Engine {
                         .execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int i, Object o) {
+                                if (o == null) {
+                                    return;
+                                }
                                 try {
                                     ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                                     if (innerCallBack != null) {
@@ -2560,6 +2605,9 @@ public final class Engine {
                             @Override
                             public void onError(Call call, Exception e, int i, Object o) {
                                 try {
+                                    if (o == null) {
+                                        return;
+                                    }
                                     ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                                     if (innerCallBack != null) {
                                         innerCallBack.innerCallBack(errorCode);
@@ -2592,6 +2640,9 @@ public final class Engine {
                         .execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int i, Object o) {
+                                if (o == null) {
+                                    return;
+                                }
                                 try {
                                     ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                                     if (innerCallBack != null) {
@@ -2621,6 +2672,7 @@ public final class Engine {
     //TODO 添加关注/去关注
     public void postAddUserFollow(QueryFollowStateParam queryFollowStateParam) {
         LocalLog.d(TAG, "postAddUserFollow()");
+        queryFollowStateParam.setUserid(getId(mContext));
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
@@ -2824,6 +2876,37 @@ public final class Engine {
         }
     }
 
+    //TODO sponsor vip
+    public void postVipSponsorNo(VipPostParam vipPostParam, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "vipPostParam " + vipPostParam.paramString());
+        OkHttpUtils
+                .post()
+                .addHeader("headtoken", getToken(mContext))
+                .url(NetApi.urlSponsorVip)
+                .params(vipPostParam.getParams())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (o == null) {
+                            return;
+                        }
+                        ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                        if (innerCallBack != null) {
+                            innerCallBack.innerCallBack(errorCode);
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        CvipNoResponse cvipNoResponse = new Gson().fromJson(s, CvipNoResponse.class);
+                        if (innerCallBack != null) {
+                            innerCallBack.innerCallBack(cvipNoResponse);
+                        }
+                    }
+                });
+    }
+
     //TODO VIP  op
     public void postVipNo(VipPostParam vipPostParam, final InnerCallBack innerCallBack) {
         LocalLog.d(TAG, "vipPostParam " + vipPostParam.paramString());
@@ -2836,6 +2919,9 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
+                        if (o == null) {
+                            return;
+                        }
                         ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                         if (innerCallBack != null) {
                             innerCallBack.innerCallBack(errorCode);
@@ -2978,6 +3064,9 @@ public final class Engine {
                         .build().execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
+                        if (o == null) {
+                            return;
+                        }
                         if (innerCallBack != null) {
                             ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                             innerCallBack.innerCallBack(errorCode);
@@ -3018,6 +3107,9 @@ public final class Engine {
                         .build().execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
+                        if (o == null) {
+                            return;
+                        }
                         if (innerCallBack != null) {
                             ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
                             innerCallBack.innerCallBack(errorCode);
@@ -3143,6 +3235,9 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
+                        if (o == null) {
+                            return;
+                        }
                         if (innerCallBack != null) {
                             try {
                                 ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);

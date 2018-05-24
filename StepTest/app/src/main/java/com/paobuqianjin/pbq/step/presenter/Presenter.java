@@ -160,6 +160,14 @@ public final class Presenter {
         engine.setId(mContext, id);
     }
 
+    public String getNo() {
+        return engine.getNo(mContext);
+    }
+
+    public void setNo(String no) {
+        engine.setNo(mContext, no);
+    }
+
     public String getAvatar(Context context) {
         return engine.getAvatar(context);
     }
@@ -208,7 +216,7 @@ public final class Presenter {
     }
 
     public void userLoginByPhoneNumber(String[] userInfo) {
-        engine.userLoginByPhoneNumber(userInfo);
+        engine.userLoginByPhoneOrNo(userInfo);
     }
 
     //TODO 获取验证码
@@ -494,7 +502,11 @@ public final class Presenter {
     }
 
     public void getImage(String fileUrl, final ImageView imageView, int targetWidth, int targetHeight) {
-        if ("".equals(fileUrl)) {
+        if (TextUtils.isEmpty(fileUrl)) {
+            return;
+        }
+        if (targetHeight < 0 || targetWidth < 0) {
+            LocalLog.e(TAG, "At least one dimension has to be positive number");
             return;
         }
 
@@ -596,6 +608,10 @@ public final class Presenter {
 
     public void postVipNo(VipPostParam vipPostParam, InnerCallBack innerCallBack) {
         engine.postVipNo(vipPostParam, innerCallBack);
+    }
+
+    public void postVipSponsorNo(VipPostParam vipPostParam, InnerCallBack innerCallBack) {
+        engine.postVipSponsorNo(vipPostParam, innerCallBack);
     }
 
     //TODO 获取订单详情 WX

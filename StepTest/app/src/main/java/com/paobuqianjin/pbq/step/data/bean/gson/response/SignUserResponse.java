@@ -57,7 +57,7 @@ public class SignUserResponse {
          * user_token : 1:kjF1GwBURNi9OSMFTbHArEAuTtjuWjlM
          */
         private int id;
-        private int no;
+        private String no;
         private String user_token;
 
         public int getId() {
@@ -68,11 +68,11 @@ public class SignUserResponse {
             this.id = id;
         }
 
-        public int getNo() {
+        public String  getNo() {
             return no;
         }
 
-        public void setNo(int no) {
+        public void setNo(String no) {
             this.no = no;
         }
 

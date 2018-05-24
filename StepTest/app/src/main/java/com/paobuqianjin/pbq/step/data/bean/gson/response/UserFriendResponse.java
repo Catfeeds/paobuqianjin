@@ -147,6 +147,7 @@ public class UserFriendResponse {
              * nickname : 李五
              * followid : 2
              * vip : 1
+             * cusvip: 0,
              * is_distribute : 0
              */
 
@@ -156,6 +157,16 @@ public class UserFriendResponse {
             private int followid;
             private int vip;
             private int is_distribute;
+
+            public int getCusvip() {
+                return cusvip;
+            }
+
+            public void setCusvip(int cusvip) {
+                this.cusvip = cusvip;
+            }
+
+            private int cusvip;
 
             public boolean isSelected() {
                 return isSelected;
@@ -224,6 +235,7 @@ public class UserFriendResponse {
                         ", followid=" + followid +
                         ", vip=" + vip +
                         ", is_distribute=" + is_distribute +
+                        ", cusvip=" + cusvip +
                         ", isSelected=" + isSelected +
                         '}';
             }

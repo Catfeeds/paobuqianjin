@@ -224,7 +224,7 @@ public class PaoBuApplication extends MultiDexApplication {
             LocalLog.d(TAG, "intercept() enter" + response.toString());
             /*在此处定义缓存策略，图片缓存，信息缓存，验证码缓存.....,按链接性质过滤,选择缓存首页信息一段时间*/
             LocalLog.d(TAG, "String url =" + request.url());
-            long max_age = 30 * 24 * 3600;
+            long max_age = 24 * 3600;
             if (request.url().toString().startsWith(NetApi.url)) {
                 LocalLog.d(TAG, "request.url().toString() = " + request.url().toString());
                 max_age = 0;
@@ -250,35 +250,56 @@ public class PaoBuApplication extends MultiDexApplication {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
                 || !Environment.isExternalStorageRemovable()) {
             cachePath = context.getExternalCacheDir();
-            LocalLog.d(TAG, "getExternalCachdir() = " + cachePath.getPath());
+            LocalLog.d(TAG, "getExternalCachdir() = " + cachePath);
         } else {
             cachePath = context.getCacheDir();
-            LocalLog.d(TAG, "getCacheDir() = " + cachePath.getPath());
+            LocalLog.d(TAG, "getCacheDir() = " + cachePath);
         }
         return cachePath;
     }
 
     private void initHttpOk() {
         ClearableCookieJar cookieJar1 = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(getApplicationContext()));
-        Cache cache = new Cache(getDiskCacheDir(this), cacheSize);
+        File fileCache = getDiskCacheDir(this);
+        Cache cache = null;
+        if (fileCache != null) {
+            cache = new Cache(getDiskCacheDir(this), cacheSize);
+        }
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory(null, null, null);
-        LocalLog.d(TAG, "Cache: " + getDiskCacheDir(this).getPath());
 //        CookieJarImpl cookieJar1 = new CookieJarImpl(new MemoryCookieStore());
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(10000L, TimeUnit.MILLISECONDS)
-                .readTimeout(10000L, TimeUnit.MILLISECONDS)
-                .addInterceptor(new LoggerInterceptor("TAG"))
-                .cookieJar(cookieJar1)
-                .addNetworkInterceptor(new CacheInterceptor())
-                .cache(cache)
-                .hostnameVerifier(new HostnameVerifier() {
-                    @Override
-                    public boolean verify(String hostname, SSLSession session) {
-                        return true;
-                    }
-                })
-                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
-                .build();
+        OkHttpClient okHttpClient = null;
+        if (cache != null) {
+            okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(10000L, TimeUnit.MILLISECONDS)
+                    .readTimeout(10000L, TimeUnit.MILLISECONDS)
+                    .addInterceptor(new LoggerInterceptor("TAG"))
+                    .cookieJar(cookieJar1)
+                    .addNetworkInterceptor(new CacheInterceptor())
+                    .cache(cache)
+                    .hostnameVerifier(new HostnameVerifier() {
+                        @Override
+                        public boolean verify(String hostname, SSLSession session) {
+                            return true;
+                        }
+                    })
+                    .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+                    .build();
+        } else {
+            okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(10000L, TimeUnit.MILLISECONDS)
+                    .readTimeout(10000L, TimeUnit.MILLISECONDS)
+                    .addInterceptor(new LoggerInterceptor("TAG"))
+                    .cookieJar(cookieJar1)
+                    .addNetworkInterceptor(new CacheInterceptor())
+                    .hostnameVerifier(new HostnameVerifier() {
+                        @Override
+                        public boolean verify(String hostname, SSLSession session) {
+                            return true;
+                        }
+                    })
+                    .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+                    .build();
+        }
         OkHttpUtils.initClient(okHttpClient);
         LocalLog.d(TAG, "initHttpOk()  leave");
     }

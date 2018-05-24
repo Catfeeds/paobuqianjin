@@ -4,6 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/bar"
+        layout="@layout/bar_return_a_style"
+        ></include>
 
     <Button
         android:visibility="gone"
@@ -40,6 +44,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/btn_switch"
         android:layout_alignEnd="@+id/btn_hint2"
+        android:layout_below="@+id/bar"
         app:zxing_framing_rect_height="200dp"
         app:zxing_framing_rect_width="200dp"
         app:zxing_preview_scaling_strategy="fitXY"

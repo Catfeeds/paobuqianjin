@@ -790,6 +790,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     public void response(CircleDetailResponse circleDetailResponse) {
         if (circleDetailResponse.getError() == 0) {
             this.circleDetailResponse = circleDetailResponse;
+            if (!isAdded()) {
+                return;
+            }
             if (circleDetailResponse.getData().getIs_join() == 0) {
                 LocalLog.d(TAG, "还没有加入圈子");
                 joinIn.setVisibility(View.VISIBLE);

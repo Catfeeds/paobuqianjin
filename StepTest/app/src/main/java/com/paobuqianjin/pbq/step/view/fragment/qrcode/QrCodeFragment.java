@@ -152,7 +152,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
             codeInfo = NetApi.urlShareCd + id;
             title = "圈子二维码";
         } else {
-            userid = Presenter.getInstance(getContext()).getCurrentUser().getNo();
+            userid = Presenter.getInstance(getContext()).getNo();
             codeInfo = NetApi.urlShareIc + userid;
             descQrCode.setText("用“跑步钱进”APP扫描二维码关注我");
             title = "我的二维码";

@@ -416,7 +416,9 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
                     @Override
                     public void run() {
                         LocalLog.d(TAG, "滑动到顶端");
-                        myDynamicRecycler.scrollToPosition(0);
+                        if (myDynamicRecycler != null) {
+                            myDynamicRecycler.scrollToPosition(0);
+                        }
                     }
                 }, 100);
             }else{

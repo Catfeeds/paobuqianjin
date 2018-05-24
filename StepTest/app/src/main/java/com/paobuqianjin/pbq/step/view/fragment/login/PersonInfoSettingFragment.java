@@ -594,8 +594,10 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     public void response(UserInfoSetResponse userInfoSetResponse) {
         LocalLog.d(TAG, "UserInfoSetResponse() enter " + userInfoSetResponse.toString());
         if (userInfoSetResponse.getError() == 0) {
-            ToastUtils.showLongToast(getContext(), "资料填写成功");
-            getActivity().onBackPressed();
+            if (isAdded() && getActivity() != null) {
+                ToastUtils.showLongToast(getContext(), "资料填写成功");
+                getActivity().onBackPressed();
+            }
         } else if (userInfoSetResponse.getError() == -100) {
             exitTokenUnfect();
         } else {

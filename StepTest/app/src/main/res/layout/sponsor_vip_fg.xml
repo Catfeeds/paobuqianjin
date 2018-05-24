@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/vip_head_pan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="27dp"
+        android:layout_marginRight="27dp"
+        android:layout_marginTop="32dp">
+
+        <ImageView
+            android:id="@+id/vip_head_ico"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sponsor_vip" />
+
+        <TextView
+            android:id="@+id/vip_head_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/vip_head_ico"
+            android:layout_marginLeft="17dp"
+            android:layout_toEndOf="@+id/vip_head_ico"
+            android:text="会员标志"
+            android:textColor="@color/color_161727"
+            android:textSize="14dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/vip_head_des"
+            android:layout_below="@+id/vip_head_des"
+            android:text="开通商家会员，在你的个人资料，个人主页显示会员专属标志"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="14dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/vip_pkg_pan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vip_head_pan"
+        android:layout_marginLeft="27dp"
+        android:layout_marginRight="27dp"
+        android:layout_marginTop="25dp">
+
+        <ImageView
+            android:id="@+id/vip_pkg_ico"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sponsor_message" />
+
+        <TextView
+            android:id="@+id/vip_pkg_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/vip_pkg_ico"
+            android:layout_marginLeft="17dp"
+            android:layout_toEndOf="@+id/vip_pkg_ico"
+            android:text="精选信息"
+            android:textColor="@color/color_161727"
+            android:textSize="14dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/vip_pkg_des"
+            android:layout_below="@+id/vip_pkg_des"
+            android:text="优先获得精准客户信息"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="14dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/vip_data_pan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vip_pkg_pan"
+        android:layout_marginLeft="27dp"
+        android:layout_marginRight="27dp"
+        android:layout_marginTop="25dp">
+
+        <ImageView
+            android:id="@+id/vip_data_ico"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sponsor_more" />
+
+        <TextView
+            android:id="@+id/vip_data_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/vip_data_ico"
+            android:layout_marginLeft="17dp"
+            android:layout_toEndOf="@+id/vip_data_ico"
+            android:text="敬请期待"
+            android:textColor="@color/color_161727"
+            android:textSize="14dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/vip_data_des"
+            android:layout_below="@+id/vip_data_des"
+            android:text="后续更多VIP服务"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="14dp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/vip_friend"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/gold_angle_out_line"
+            android:stateListAnimator="@null"
+            android:text="赠送好友"
+            android:textColor="@color/color_161727"
+            android:textSize="18dp" />
+
+        <Button
+            android:id="@+id/vip_self"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/gold_angle_background"
+            android:stateListAnimator="@null"
+            android:text="我要购买"
+            android:textColor="@color/color_f8"
+            android:textSize="18dp" />
+    </LinearLayout>
+</RelativeLayout>

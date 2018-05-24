@@ -254,7 +254,9 @@ public class FollowMeFragment extends BaseFragment {
 
     public void add(FollowUserResponse.DataBeanX.DataBean dataBean) {
         followMeData.add(dataBean);
-        adapter.notifyItemRangeChanged(followMeData.size() - 1, 1);
+        if (isAdded() && adapter != null) {
+            adapter.notifyItemRangeChanged(followMeData.size() - 1, 1);
+        }
     }
 
     public void scrollTop() {

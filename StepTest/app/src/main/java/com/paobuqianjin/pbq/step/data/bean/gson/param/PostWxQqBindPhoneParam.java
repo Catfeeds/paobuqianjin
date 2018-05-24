@@ -1,12 +1,9 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.param;
 
-import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.MD5;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by pbq on 2018/3/23.
@@ -46,7 +43,6 @@ public class PostWxQqBindPhoneParam {
     public PostWxQqBindPhoneParam setPassword(String password) {
         this.password = password;
         String md5 = MD5.md5Slat(password);
-        LocalLog.d(TAG, "password = " + password + ",md5PassWord = " + md5);
         params.put("password", md5);
         return this;
     }

@@ -34,6 +34,8 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
     private final static String PAY_RECHARGE = "com.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
     private final static String ACTION_VIP_SELF = "com.paobuqianjin.pbq.setp.VIP_SELF_ACTION";
     private final static String ACTION_VIP_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_ACTION";
+    private final static String ACTION_VIP_SPONSOR_SELF = "com.paobuqianjin.pbq.setp.VIP_SELF_SPONSOR_ACTION";
+    private final static String ACTION_VIP_SPONSOR_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_SPONSOR_ACTION";
     private SharedPreferences sharedPreferences;
     private final static String PAY_RESULT_ACTION = "android.intent.action.paobuqianjin.PAY_RESULT";
     private CirclePayFragment circlePayFragment = new CirclePayFragment();
@@ -75,7 +77,9 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
                     .show(qrCodeFragment)
                     .commit();
             currentAction = intent.getAction();
-        } else if (ACTION_VIP_SELF.equals(intent.getAction()) || ACTION_VIP_FRIEND.equals(intent.getAction())) {
+        } else if (ACTION_VIP_SELF.equals(intent.getAction()) || ACTION_VIP_FRIEND.equals(intent.getAction())
+                || ACTION_VIP_SPONSOR_FRIEND.equals(intent.getAction())
+                || ACTION_VIP_SPONSOR_SELF.equals(intent.getAction())) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.pay_container, payVipFriendFragment)
                     .show(payVipFriendFragment)

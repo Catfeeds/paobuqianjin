@@ -162,7 +162,7 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
-    @OnClick({R.id.wechat_pay, R.id.confirm_crash, R.id.protocl_pay,R.id.select_icon})
+    @OnClick({R.id.wechat_pay, R.id.confirm_crash, R.id.protocl_pay, R.id.select_icon})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.wechat_pay:
@@ -174,6 +174,10 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                 break;
             case R.id.confirm_crash:
                 LocalLog.d(TAG, "确认转出");
+                if (TextUtils.isEmpty(canCrash.getText().toString())) {
+                    LocalLog.e(TAG, "填入提现金额");
+                    return;
+                }
                 if (Float.parseFloat(canCrash.getText().toString()) > canCrashNum) {
                     ToastUtils.showLongToast(getActivity(), "可用余额不足");
                     return;

@@ -89,7 +89,9 @@ public class LiveFragment extends BaseBarStyleTextViewFragment {
             } else if (object instanceof LiveResponse) {
                 if (((LiveResponse) object).getError() == 0) {
                     LocalLog.d(TAG, "LiveResponse " + ((LiveResponse) object).toString());
-                    liveRecycler.setAdapter(new LiveAdapter(getActivity(), ((LiveResponse) object).getData().getData()));
+                    if (liveRecycler != null) {
+                        liveRecycler.setAdapter(new LiveAdapter(getActivity(), ((LiveResponse) object).getData().getData()));
+                    }
                 } else if (((LiveResponse) object).getError() == 1) {
 
                 }

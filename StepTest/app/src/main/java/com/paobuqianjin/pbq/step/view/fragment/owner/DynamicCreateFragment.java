@@ -544,6 +544,9 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
 
 
             netPath = s;
+            if (!isAdded() || dynamicContent == null) {
+                return;
+            }
             String content = dynamicContent.getText().toString();
             if (!TextUtils.isEmpty(city) && !TextUtils.isEmpty(locationStr.getText().toString())) {
                 if (city.equals(locationStr.getText().toString())) {

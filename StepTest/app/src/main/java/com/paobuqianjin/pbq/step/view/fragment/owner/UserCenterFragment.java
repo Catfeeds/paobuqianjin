@@ -83,7 +83,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.targer_num)
     TextView targerNum;
     LinearLayoutManager layoutManager;
-    QueryFollowStateParam queryFollowStateParam;
+    QueryFollowStateParam queryFollowStateParam = new QueryFollowStateParam();
     @Bind(R.id.vip_flg)
     ImageView vipFlg;
     @Bind(R.id.scrollView_center)
@@ -216,7 +216,8 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                         vipFlg.setVisibility(View.VISIBLE);
                     }
                     //关注状态
-                    if (!TextUtils.isEmpty(userNo) && !userNo.equals(Presenter.getInstance(getContext()).getCurrentUser().getNo())) {
+                    if (!TextUtils.isEmpty(userNo) && !userNo.equals(Presenter.getInstance(getContext()).getNo())) {
+                        queryFollowStateParam.setFollowid(((UserCenterResponse) object).getData().getUser_data().getId());
                         if (((UserCenterResponse) object).getData().getIs_follow() == 0) {
                             LocalLog.d(TAG, "关注");
                             bntLike.setText("关注");

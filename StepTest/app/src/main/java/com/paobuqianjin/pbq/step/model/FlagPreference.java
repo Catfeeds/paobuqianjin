@@ -93,6 +93,21 @@ public final class FlagPreference {
         editor.commit();
     }
 
+    public static void setNo(Context context, String no) {
+        LocalLog.d(TAG, "setNo() " + no);
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putString("no", no);
+        editor.commit();
+    }
+
+    public static String getNo(Context context) {
+        LocalLog.d(TAG, "getNo() ");
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        String no = flagPreference.getString("no", "");
+        return no;
+    }
+
     public static String getAvatar(Context context) {
         LocalLog.d(TAG, "getAvatar() ");
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);

@@ -43,7 +43,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/search_icon"
-                android:layout_toRightOf="@+id/search_cancel"
                 android:background="@null"
                 android:focusable="true"
                 android:focusableInTouchMode="true"

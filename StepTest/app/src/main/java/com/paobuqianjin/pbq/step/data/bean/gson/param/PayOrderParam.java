@@ -44,6 +44,18 @@ taskid	任务ID	false	int
     private float total_fee;
     private int red_id;
 
+    public String getCvip_no() {
+        return cvip_no;
+    }
+
+    public PayOrderParam setCvip_no(String cvip_no) {
+        this.cvip_no = cvip_no;
+        params.put("cvip_no", cvip_no);
+        return this;
+    }
+
+    private String cvip_no;
+
     public String getVip_no() {
         return vip_no;
     }
@@ -53,6 +65,7 @@ taskid	任务ID	false	int
         params.put("vip_no", vip_no);
         return this;
     }
+
 
     private String vip_no;
 
@@ -121,7 +134,6 @@ taskid	任务ID	false	int
     }
 
 
-
     public Map<String, String> getParams() {
         return params;
     }
@@ -151,8 +163,9 @@ taskid	任务ID	false	int
                 ", taskno='" + taskno + '\'' +
                 ", userid=" + userid +
                 ", circleid=" + circleid +
-                ", red_id=" + red_id +
                 ", total_fee=" + total_fee +
+                ", red_id=" + red_id +
+                ", cvip_no='" + cvip_no + '\'' +
                 ", vip_no='" + vip_no + '\'' +
                 ", order_type='" + order_type + '\'' +
                 ", params=" + params +

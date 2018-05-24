@@ -11,7 +11,7 @@ public class LoginResponse {
     /**
      * error : 0
      * message : 登录成功
-     * data : {"id":1,"wx_openid":"","qq_openid":"","mobile":"18588278880","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额","levelid":3,"sex":0,"birthyear":2018,"birthmonth":2,"birthday":26,"height":166,"weight":"120.00","type":1,"province":"安徽省","city":"安庆市","balance":"68.08","target_step":10000,"credit":60,"status":0,"is_perfect":1,"create_time":1512699325,"delete_time":null,"logintimes":10,"h_long":null,"h_lat":null,"h_updatetime":0,"c_long":"0.00000","c_lat":"0.00000","c_updatetime":0,"n_long":"0.00000","n_lat":"0.00000","n_updatetime":0,"user_token":"1:kjF1GwBURNi9OSMFTbHArEAuTtjuWjlM"}
+     * data : {"id":1,"no":22258,"wx_openid":"","qq_openid":"","mobile":"18588278880","avatar":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/0988B1E1-E86E-4E9E-8584-A911925440EC.jpg","nickname":"嗯额","levelid":3,"sex":0,"birthyear":2018,"birthmonth":2,"birthday":26,"height":166,"weight":"120.00","type":1,"province":"安徽省","city":"安庆市","balance":"68.08","target_step":10000,"credit":60,"status":0,"is_perfect":1,"create_time":1512699325,"delete_time":null,"logintimes":10,"h_long":null,"h_lat":null,"h_updatetime":0,"c_long":"0.00000","c_lat":"0.00000","c_updatetime":0,"n_long":"0.00000","n_lat":"0.00000","n_updatetime":0,"user_token":"1:kjF1GwBURNi9OSMFTbHArEAuTtjuWjlM"}
      */
 
     private int error;
@@ -54,6 +54,7 @@ public class LoginResponse {
     public static class DataBean implements Serializable {
         /**
          * id : 1
+         * no:22258
          * wx_openid :
          * qq_openid :
          * mobile : 18588278880
@@ -87,9 +88,29 @@ public class LoginResponse {
          * n_lat : 0.00000
          * n_updatetime : 0
          * user_token : 1:kjF1GwBURNi9OSMFTbHArEAuTtjuWjlM
+         * cusvip: 0,
          */
 
         private int id;
+
+        public int getCusvip() {
+            return cusvip;
+        }
+
+        public void setCusvip(int cusvip) {
+            this.cusvip = cusvip;
+        }
+
+        private int cusvip;
+        public String getNo() {
+            return no;
+        }
+
+        public void setNo(String no) {
+            this.no = no;
+        }
+
+        private String no;
         private String wx_openid;
         private String qq_openid;
         private String mobile;
@@ -410,6 +431,8 @@ public class LoginResponse {
         public String toString() {
             return "DataBean{" +
                     "id=" + id +
+                    ", cusvip=" + cusvip +
+                    ", no='" + no + '\'' +
                     ", wx_openid='" + wx_openid + '\'' +
                     ", qq_openid='" + qq_openid + '\'' +
                     ", mobile='" + mobile + '\'' +

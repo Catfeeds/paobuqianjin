@@ -388,7 +388,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 content = content + imageBean.toString() + "\n";
             }
             LocalLog.d(TAG, "content = " + content);
-            if (resultList != null && resultList.size() == 1) {
+            if (resultList != null && resultList.size() == 1 && headIco != null) {
                 Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), headIco, resultList.get(0).getWidth() / 4
                         , resultList.get(0).getHeight() / 4);
                 localAvatar = resultList.get(0).getImagePath();

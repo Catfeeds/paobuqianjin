@@ -187,7 +187,18 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
                             displayTime = "周一至周日 " + "-" + dataBean.getE_do_time();
                         }
                         sponsorTimeNumStr.setText(displayTime);
-                        locationStr.setText(dataBean.getAddress());
+                        String locationDetail = "";
+                        if (!TextUtils.isEmpty(dataBean.getAddra())) {
+                            locationDetail = dataBean.getAddra();
+                        }
+                        if (!TextUtils.isEmpty(dataBean.getAddress())) {
+                            if (!TextUtils.isEmpty(locationDetail)) {
+                                locationDetail += "-" + dataBean.getAddress();
+                            } else {
+                                locationDetail = dataBean.getAddress();
+                            }
+                        }
+                        locationStr.setText(locationDetail);
 
                         if (!TextUtils.isEmpty(dataBean.getLogo())) {
                             View view = LayoutInflater.from(getContext()).inflate(R.layout.sponsor_image_view, null);

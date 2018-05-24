@@ -28,6 +28,7 @@ import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CvipNoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.VipNoResponse;
@@ -122,6 +123,8 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     private TranslateAnimation animationCircleType;
     private final static String ACTION_VIP_SELF = "com.paobuqianjin.pbq.setp.VIP_SELF_ACTION";
     private final static String ACTION_VIP_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_ACTION";
+    private final static String ACTION_VIP_SPONSOR_SELF = "com.paobuqianjin.pbq.setp.VIP_SELF_SPONSOR_ACTION";
+    private final static String ACTION_VIP_SPONSOR_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_SPONSOR_ACTION";
     FriendBundleData friendBundleData = null;
     private static final int SELECT_FRIENDS = 0;
     ArrayList<UserFriendResponse.DataBeanX.DataBean> dataBeans = null;
@@ -133,6 +136,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     private PayStyles payStyles = PayStyles.WxPay;
     private float payFloat = 0;
     private final static float VIP_FLOAT = 1.99f;
+    private final static float VIP_SPONSOR_FLOAT = 19.99f;
     private ProgressDialog dialog;
     private PayReq req;
     private VipPostParam vipPostParam = new VipPostParam();
@@ -141,6 +145,8 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     private boolean isSelfVipPay = false;
     private int number = 0;
     private final static String ACTION_VIP = "com.paobuqianjin.pbq.step.ACTION_VIP";
+    private final static String ACTION_SPONSOR_VIP = "com.paobuqianjin.pbq.step.ACTION_SPONSOR_VIP";
+    String action = "";
 
     public enum PayStyles {
         WxPay,//微信支付
@@ -211,14 +217,27 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             if (ACTION_VIP_SELF.equals(intent.getAction())) {
-                LocalLog.d(TAG, "自充VIP");
+                LocalLog.d(TAG, "自充个人VIP");
                 setVisibleFriendSelectGone();
                 payFloat = VIP_FLOAT;
-                isSelfVipPay = true;
                 userids = String.valueOf(Presenter.getInstance(getContext()).getId());
                 payMoneyNum.setText("￥" + String.valueOf(payFloat));
+                action = ACTION_VIP_SELF;
             } else if (ACTION_VIP_FRIEND.equals(intent.getAction())) {
-                LocalLog.d(TAG, "替充VIP");
+                LocalLog.d(TAG, "替充个人VIP");
+                action = ACTION_VIP_FRIEND;
+            } else if (ACTION_VIP_SPONSOR_FRIEND.equals(intent.getAction())) {
+                action = ACTION_VIP_SPONSOR_FRIEND;
+            } else if (ACTION_VIP_SPONSOR_SELF.equals(intent.getAction())) {
+                userids = String.valueOf(Presenter.getInstance(getContext()).getId());
+                LocalLog.d(TAG, "自充商家VIP");
+                setVisibleFriendSelectGone();
+                payFloat = VIP_SPONSOR_FLOAT;
+                userids = String.valueOf(Presenter.getInstance(getContext()).getId());
+                payMoneyNum.setText("￥" + String.valueOf(payFloat));
+                action = ACTION_VIP_SPONSOR_SELF;
+            } else {
+
             }
         }
         if (payStyles.ordinal() == CirclePayFragment.PayStyles.WxPay.ordinal()) {
@@ -261,6 +280,36 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                                 .setPayment_type("wallet")
                                 .setOrder_type("vip")
                                 .setVip_no(((VipNoResponse) object).getData().getVip_no())
+                                .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(payFloat);
+                        Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                    } else {
+                        Toast.makeText(getContext(), "其他支付方式暂时未开通,请选择微信", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } else if (object instanceof CvipNoResponse) {
+                LocalLog.d(TAG, ((CvipNoResponse) object).toString());
+                if (((CvipNoResponse) object).getError() == 0) {
+                    int style = getSelect();
+                    if (style == 0) {
+                        dialog = ProgressDialog.show(getContext(), "微信支付",
+                                "正在提交订单");
+                        PayOrderParam wxPayOrderParam = new PayOrderParam();
+                        wxPayOrderParam
+                                .setPayment_type("wx")
+                                .setOrder_type("cvip")
+                                .setCvip_no(((CvipNoResponse) object).getData().getCvip_no())
+                                .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(payFloat);
+                        Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+
+                    } else if (style == 1) {
+                        LocalLog.d(TAG, "钱包支付");
+                        dialog = ProgressDialog.show(getContext(), "钱包支付",
+                                "正在提交订单");
+                        PayOrderParam wxPayOrderParam = new PayOrderParam();
+                        wxPayOrderParam
+                                .setPayment_type("wallet")
+                                .setOrder_type("cvip")
+                                .setCvip_no(((CvipNoResponse) object).getData().getCvip_no())
                                 .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(payFloat);
                         Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
                     } else {
@@ -336,7 +385,18 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                     }
                     number = dataBeans.size();
 
-                    payFloat = 1.99f * number;
+                    if (!TextUtils.isEmpty(action)) {
+                        if (ACTION_VIP_FRIEND.equals(action)) {
+                            payFloat = VIP_FLOAT * number;
+
+                        } else if (ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
+                            payFloat = VIP_SPONSOR_FLOAT * number;
+
+                        }
+                    } else {
+                        LocalLog.d(TAG, "未知操作!");
+                        return;
+                    }
                     BigDecimal bd = new BigDecimal((double) payFloat);
                     bd = bd.setScale(2, 4);
                     payFloat = bd.floatValue();
@@ -357,7 +417,16 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 Intent intent = new Intent();
                 intent.putExtra(getActivity().getPackageName(), friendBundleData);
                 intent.setClass(getActivity(), SelectFriendActivity.class);
-                intent.setAction(ACTION_VIP);
+                if (!TextUtils.isEmpty(action)) {
+                    if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                        intent.setAction(ACTION_VIP);
+                    } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
+                        intent.setAction(ACTION_SPONSOR_VIP);
+                    } else {
+                        LocalLog.d(TAG, "Unknown op");
+                    }
+                }
+
                 startActivityForResult(intent, SELECT_FRIENDS);
                 break;
             case R.id.choice_ico_span:
@@ -392,7 +461,13 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 if (style == 1) {
                     popPayConfirm(getString(R.string.wallet_pay_confirm));
                 } else if (style == 0) {
-                    pay();
+                    if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                        pay();
+                    } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
+                        paySponsorVip();
+                    } else {
+                        LocalLog.d(TAG, "Unknown op");
+                    }
                 }
 
                 break;
@@ -425,7 +500,13 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             @Override
             public void onClick(View view) {
                 popupOpWindow.dismiss();
-                pay();
+                if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                    pay();
+                } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
+                    paySponsorVip();
+                } else {
+                    LocalLog.d(TAG, "Unknown op");
+                }
             }
         });
 
@@ -456,6 +537,15 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
         Presenter.getInstance(getContext()).postVipNo(vipPostParam, innerCallBack);
     }
 
+    public void paySponsorVip() {
+        vipPostParam.setUserids(userids).setSpend(String.valueOf(payFloat));
+        LocalLog.d(TAG, "参数检查");
+        if (TextUtils.isEmpty(userids)) {
+            Toast.makeText(getContext(), "请至少选择一个好友", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Presenter.getInstance(getContext()).postVipSponsorNo(vipPostParam, innerCallBack);
+    }
 
     @Override
     public void response(WxPayOrderResponse wxPayOrderResponse) {
@@ -476,7 +566,14 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             req.timeStamp = String.valueOf(wxPayOrderResponse.getData().getTimestamp());
 
             Presenter.getInstance(getContext()).setOutTradeNo(wxPayOrderResponse.getData().getOrder_no());
-            Presenter.getInstance(getContext()).setTradeStyle("vip");
+
+            if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                Presenter.getInstance(getContext()).setTradeStyle("vip");
+            } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_SELF.equals(action)) {
+                Presenter.getInstance(getContext()).setTradeStyle("cvip");
+            } else {
+                LocalLog.d(TAG, "Unknown op");
+            }
             msgApi.registerApp(req.appId);
             msgApi.sendReq(req);
         } else if (wxPayOrderResponse.getError() == -100) {
@@ -492,7 +589,13 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
         }
         if (walletPayOrderResponse.getError() == 0) {
             LocalLog.d(TAG, walletPayOrderResponse.toString());
-            Presenter.getInstance(getContext()).setTradeStyle("vip");
+            if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                Presenter.getInstance(getContext()).setTradeStyle("vip");
+            } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_SELF.equals(action)) {
+                Presenter.getInstance(getContext()).setTradeStyle("cvip");
+            } else {
+                LocalLog.d(TAG, "Unknown op");
+            }
             ((PaoBuPayActivity) getActivity()).showPaySuccessWallet(walletPayOrderResponse);
         } else if (walletPayOrderResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");

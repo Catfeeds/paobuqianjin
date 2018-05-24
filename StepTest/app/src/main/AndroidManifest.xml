@@ -59,7 +59,6 @@
         <meta-data
             android:name="design_height"
             android:value="1334" />
-
         <activity
             android:name=".view.activity.SplashActivity"
             android:screenOrientation="portrait"
@@ -76,11 +75,11 @@
             android:label="跑步钱进"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
-            <!-- <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION" />
             </intent-filter>
@@ -176,6 +175,8 @@
                 <action android:name="com.paobuqian.pbq.step.PAY_RECHARGE.ACTION" />
                 <action android:name="com.paobuqianjin.pbq.setp.VIP_SELF_ACTION" />
                 <action android:name="com.paobuqianjin.pbq.step.VIP_FRIEND_ACTION" />
+                <action android:name="com.paobuqianjin.pbq.setp.VIP_SELF_SPONSOR_ACTION"/>
+                <action android:name="com.paobuqianjin.pbq.step.VIP_FRIEND_SPONSOR_ACTION"/>
             </intent-filter>
         </activity>
         <activity
@@ -212,6 +213,7 @@
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.ACTION_TASK" />
                 <action android:name="com.paobuqianjin.pbq.step.ACTION_VIP" />
+                <action android:name="com.paobuqianjin.pbq.step.ACTION_SPONSOR_VIP" />
             </intent-filter>
         </activity>
         <!-- 任务详情 -->
@@ -490,7 +492,8 @@
         <activity
             android:name=".activity.sponsor.SponsorSearchPositionActivity"
             android:windowContentTransitions="true" />
-        <activity android:name=".activity.base.GalleryActivity" />
+        <activity
+            android:name=".activity.base.GalleryActivity"/>
     </application>
 
 </manifest>

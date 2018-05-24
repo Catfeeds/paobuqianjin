@@ -409,7 +409,9 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                     GetUserBusinessResponse.DataBeanX.DataBean bean = ((GetUserBusinessResponse) object).getData().getData().get(0);
                     if (bean.getDefaultX() == 1) {
                         businessId = bean.getBusinessid();
-                        sponorMsgDesDetail.setText(bean.getName());
+                        if (isAdded() && sponorMsgDesDetail != null) {
+                            sponorMsgDesDetail.setText(bean.getName());
+                        }
                     }
                 }
             }

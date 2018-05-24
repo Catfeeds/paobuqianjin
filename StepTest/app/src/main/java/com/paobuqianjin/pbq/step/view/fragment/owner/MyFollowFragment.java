@@ -209,7 +209,9 @@ public class MyFollowFragment extends BaseFragment {
         // 数据完更多数据，一定要掉用这个方法。
         // 第一个参数：表示此次数据是否为空。
         // 第二个参数：表示是否还有更多数据。
-        inviteDanRecycler.loadMoreFinish(false, true);
+        if (isAdded() && inviteDanRecycler != null) {
+            inviteDanRecycler.loadMoreFinish(false, true);
+        }
 
         // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
         // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。

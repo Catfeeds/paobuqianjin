@@ -127,7 +127,7 @@
     <string name="confirm_yes">确定</string>
     <string name="cancel_no">取消</string>
     <string name="wallet_pay_confirm">确定使用钱包支付?</string>
-    <string name="invite_string">①软件初期，我们将从受邀者获得的商家红包中抽取微量部分作为邀请者的奖励，普通用户邀请新用户一个奖励上限30元，会员邀请一个奖励上限50元。\n②由于每次都是微量抽取，且奖励是分批次积累，奖励金额的到账时间与多少由受邀者领取商家红包的时间和多少决定，奖够为止。</string>
+    <string name="invite_string">①软件初期，我们将从受邀者获得的商家红包中抽取微量部分作为邀请者的奖励，普通用户邀请新用户一个奖励上限30元。\n②由于每次都是微量抽取，且奖励是分批次积累，奖励金额的到账时间与多少由受邀者领取商家红包的时间和多少决定，奖够为止。</string>
     <string name="title_activity_sponsor_tmap">SponsorTMapActivity</string>
     <string name="per_x_x_txt">%1$s/%2$s字</string>
     <string name="had_bind">已绑定账号</string>
@@ -143,9 +143,9 @@
     <string name="money_invite">人民币（元）</string>
     <string name="invite_step_dollor">步币（个）</string>
     <string name="viewpager_indicator">%1$d/%2$d</string>
-    <string name="useinfo_setting">完善个人信息，领取商家红包的机会变大哦。</string>
+    <string name="useinfo_setting">手慢了亲！完善个人信息，抢红包胜数更大哟！</string>
     <string name="fit_info">去完善</string>
-    <string name="no_buess_pkg">很遗憾，你周围没有商家派发红包</string>
+    <string name="no_buess_pkg">手慢了亲！推荐更多商家免费打广告，抢红包的机率更多哟!</string>
     <string name="bind_card_tips">根据国家监控政策，你需要完成实名验证才能使用充值、转账，红包等功能，跑步钱进将严格保护你的信息和资金安全</string>
     <string name="tips_title">温馨提示：</string>
     <string name="next_step">下一步</string>
@@ -155,5 +155,8 @@
     <string name="error_red">手慢了，商家红包已领完</string>
     <string name="get_red">恭喜您获得</string>
 <string name="add_card">添加银行卡</string>
-    <string name="transfer_limite_tips" >1、每笔体现金额介于100.00-200.00元之间；\n2、每个用户单日仅可以提现一次；</string>
+    <string name="transfer_limite_tips" >1、每笔体现金额介于100.00-200.00元之间；
+        \n2、每个用户单日仅可以提现一次；
+        \n3.提现手续费为第三方平台收取，跑步钱进不收取手续费；
+        \n4.到账金额为提现金额扣除掉手续费的金额；</string>
 </resources>

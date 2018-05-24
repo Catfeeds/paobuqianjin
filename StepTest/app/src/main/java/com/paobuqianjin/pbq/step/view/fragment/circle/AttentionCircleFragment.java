@@ -81,7 +81,7 @@ public class AttentionCircleFragment extends BaseFragment {
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        LocalLog.d(TAG,"initView");
+        LocalLog.d(TAG, "initView");
         dynamicRecyclerView = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.dynamic_recyclerView);
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -326,7 +326,7 @@ public class AttentionCircleFragment extends BaseFragment {
             LocalLog.d(TAG, "DynamicAllIndexResponse() enter" + dynamicAllIndexResponse.toString());
             if (dynamicAllIndexResponse.getError() == 0) {
                 LocalLog.d(TAG, dynamicAllIndexResponse.getMessage());
-                if (dynamicRecyclerView == null) {
+                if (!isAdded() || dynamicRecyclerView == null) {
                     return;
                 }
                 pageCount = dynamicAllIndexResponse.getData().getPagenation().getTotalPage();
@@ -341,10 +341,12 @@ public class AttentionCircleFragment extends BaseFragment {
                         @Override
                         public void run() {
                             LocalLog.d(TAG, "滑动到顶端");
-                            dynamicRecyclerView.scrollToPosition(0);
+                            if (dynamicRecyclerView != null) {
+                                dynamicRecyclerView.scrollToPosition(0);
+                            }
                         }
                     }, 100);
-                }else{
+                } else {
                     loadMore((ArrayList<DynamicAllIndexResponse.DataBeanX.DataBean>) dynamicAllIndexResponse.getData().getData());
                 }
 

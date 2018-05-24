@@ -106,7 +106,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String loginStr = loginAccount.getText().toString().trim();
                 String pwdStr = loginPwd.getText().toString().trim();
-                if (loginStr.length() == 11 && pwdStr.length() >= 6 && pwdStr.length() <= 16) {
+                if (loginStr.length() >= 5 && pwdStr.length() >= 6 && pwdStr.length() <= 16) {
                     btnLogin.setEnabled(true);
                 } else {
                     btnLogin.setEnabled(false);
@@ -128,7 +128,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String pwdStr = loginPwd.getText().toString().trim();
                 String loginStr = loginAccount.getText().toString().trim();
-                if (loginStr.length() == 11 && pwdStr.length() >= 6 && pwdStr.length() <= 16) {
+                if (loginStr.length() >= 5 && pwdStr.length() >= 6 && pwdStr.length() <= 16) {
                     btnLogin.setEnabled(true);
                 } else {
                     btnLogin.setEnabled(false);
@@ -244,6 +244,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         * 暂时不做数据融合*/
         Presenter.getInstance(this).steLogFlg(true);
         Presenter.getInstance(this).setId(loginResponse.getData().getId());
+        Presenter.getInstance(this).setNo(loginResponse.getData().getNo());
         Presenter.getInstance(this).setToken(this, loginResponse.getData().getUser_token());
         Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
         startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
@@ -293,6 +294,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             } else {*/
             Presenter.getInstance(this).steLogFlg(true);
             Presenter.getInstance(this).setId(thirdPartyLoginResponse.getData().getId());
+            Presenter.getInstance(this).setNo(thirdPartyLoginResponse.getData().getNo());
             Presenter.getInstance(this).setMobile(this, thirdPartyLoginResponse.getData().getMobile());
             Presenter.getInstance(this).setToken(this, thirdPartyLoginResponse.getData().getUser_token());
             startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
@@ -334,6 +336,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             finish();*/
             Presenter.getInstance(this).steLogFlg(true);
             Presenter.getInstance(this).setId(signUserResponse.getData().getId());
+            Presenter.getInstance(this).setNo(signUserResponse.getData().getNo());
             Presenter.getInstance(this).setToken(this, signUserResponse.getData().getUser_token());
             startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
 

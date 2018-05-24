@@ -91,6 +91,8 @@ public class UserInfoResponse {
          * authentication_status : 4
          * messagesCount : 3
          * userAllincome: 0
+         * vip: 1,
+         * cusvip: 0,
          */
 
         private int id;
@@ -135,6 +137,16 @@ public class UserInfoResponse {
         private int authentication_status;
         private int messagesCount;
         private float userAllincome;
+
+        public int getCusvip() {
+            return cusvip;
+        }
+
+        public void setCusvip(int cusvip) {
+            this.cusvip = cusvip;
+        }
+
+        private int cusvip;
 
         public int getVip() {
             return vip;
@@ -438,6 +450,7 @@ public class UserInfoResponse {
                     ", authentication_status=" + authentication_status +
                     ", messagesCount=" + messagesCount +
                     ", userAllincome=" + userAllincome +
+                    ", cusvip=" + cusvip +
                     ", vip=" + vip +
                     '}';
         }

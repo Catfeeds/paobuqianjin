@@ -1,25 +1,32 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
-import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
+import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/4/25.
@@ -37,41 +44,11 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
     TextView barTvRight;
     @Bind(R.id.vip_banner)
     ImageView vipBanner;
-    @Bind(R.id.vip_des_title)
-    TextView vipDesTitle;
-    @Bind(R.id.vip_head_ico)
-    ImageView vipHeadIco;
-    @Bind(R.id.vip_head_des)
-    TextView vipHeadDes;
-    @Bind(R.id.vip_head_pan)
-    RelativeLayout vipHeadPan;
-    @Bind(R.id.vip_pkg_ico)
-    ImageView vipPkgIco;
-    @Bind(R.id.vip_pkg_des)
-    TextView vipPkgDes;
-    @Bind(R.id.vip_pkg_pan)
-    RelativeLayout vipPkgPan;
-    @Bind(R.id.vip_time_ico)
-    ImageView vipTimeIco;
-    @Bind(R.id.vip_timer_des)
-    TextView vipTimerDes;
-    @Bind(R.id.vip_time_pan)
-    RelativeLayout vipTimePan;
-    @Bind(R.id.vip_data_ico)
-    ImageView vipDataIco;
-    @Bind(R.id.vip_data_des)
-    TextView vipDataDes;
-    @Bind(R.id.vip_data_pan)
-    RelativeLayout vipDataPan;
-    @Bind(R.id.vip_friend)
-    Button vipFriend;
-    @Bind(R.id.vip_self)
-    Button vipSelf;
-    private final static String ACTION_VIP_SELF = "com.paobuqianjin.pbq.setp.VIP_SELF_ACTION";
-    private final static String ACTION_VIP_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_ACTION";
-    private final static int PAY_VIP_SELF_RESULT = 1;
-    private final static int PAY_VIP_FRIEND_RESULT = 2;
-    private int vip;
+    @Bind(R.id.vip_tab_bar)
+    TabLayout vipTabBar;
+    @Bind(R.id.vip_viewpager)
+    ViewPager vipViewpager;
+    String[] titles = {"普通会员", "商家会员"};
 
     @Override
     protected int getLayoutResId() {
@@ -84,16 +61,80 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
     }
 
     @Override
-    protected void initView(View viewRoot) {
+    protected void initView(final View viewRoot) {
         super.initView(viewRoot);
-        vipSelf = (Button) viewRoot.findViewById(R.id.vip_self);
-        Intent intent = getActivity().getIntent();
-        if (intent != null) {
-            vip = intent.getIntExtra("vip", 0);
-            if (vip == 1) {
-                vipSelf.setText("已购买");
-            }
+        SponsorVipFragment sponsorVipFragment = new SponsorVipFragment();
+        PersonVipFragment personVipFragment = new PersonVipFragment();
+        List<Fragment> fragments = new ArrayList<>();
+
+        fragments.add(personVipFragment);
+        fragments.add(sponsorVipFragment);
+
+        TabAdapter tabAdapter = new TabAdapter(getContext()
+                , getActivity().getSupportFragmentManager(), fragments, titles);
+        vipTabBar = (TabLayout) viewRoot.findViewById(R.id.vip_tab_bar);
+        vipViewpager = (ViewPager) viewRoot.findViewById(R.id.vip_viewpager);
+        vipViewpager.setAdapter(tabAdapter);
+        vipTabBar.setupWithViewPager(vipViewpager);
+        for (int i = 0; i < vipTabBar.getTabCount(); i++) {
+            LocalLog.d(TAG, "initView() i = " + i);
+            vipTabBar.getTabAt(i).setCustomView(getTabView(i));
         }
+
+        vipTabBar.post(new Runnable() {
+            @Override
+            public void run() {
+                if (vipTabBar != null) {
+                    setIndicator(vipTabBar, 20, 20);
+                }
+            }
+        });
+
+
+    }
+
+
+    public void setIndicator(TabLayout tab, int leftDip, int rightDip) {
+        Class<?> tabLayout = tab.getClass();
+        Field tabStrip = null;
+        try {
+            tabStrip = tabLayout.getDeclaredField("mTabStrip");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        tabStrip.setAccessible(true);
+        LinearLayout IITab = null;
+        try {
+            IITab = (LinearLayout) tabStrip.get(tab);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        int left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, leftDip, Resources.getSystem().getDisplayMetrics());
+        int right = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, rightDip, Resources.getSystem().getDisplayMetrics());
+
+        for (int i = 0; i < IITab.getChildCount(); i++) {
+            View child = IITab.getChildAt(i);
+            child.setPadding(0, 0, 0, 0);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+            params.leftMargin = left;
+            params.rightMargin = right;
+            child.setLayoutParams(params);
+            child.invalidate();
+        }
+    }
+
+    private View getTabView(int position) {
+        RelativeLayout view = (RelativeLayout) LayoutInflater.from(getContext()).inflate(R.layout.text_tab, null);
+        TextView textView = (TextView) view.findViewById(R.id.tab_text);
+        if (position == 0) {
+            textView.setText(titles[0]);
+            view.setGravity(Gravity.LEFT);
+        } else if (position == 1) {
+            textView.setText(titles[1]);
+            view.setGravity(Gravity.RIGHT);
+        }
+        return view;
     }
 
     @Override
@@ -110,34 +151,8 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.vip_friend, R.id.vip_self})
-    public void onClick(View view) {
-        Intent payIntent = new Intent();
-        switch (view.getId()) {
-            case R.id.vip_friend:
-                payIntent.setAction(ACTION_VIP_FRIEND);
-                payIntent.setClass(getContext(), PaoBuPayActivity.class);
-                startActivityForResult(payIntent, PAY_VIP_FRIEND_RESULT);
-                break;
-            case R.id.vip_self:
-                if (vip == 1) {
-                    LocalLog.d(TAG, "已经是VIP");
-                    return;
-                }
-                payIntent.setAction(ACTION_VIP_SELF);
-                payIntent.setClass(getContext(), PaoBuPayActivity.class);
-                startActivityForResult(payIntent, PAY_VIP_SELF_RESULT);
-                break;
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case PAY_VIP_SELF_RESULT:
-                LocalLog.d(TAG, "自充VIP");
-                break;
-        }
     }
 }

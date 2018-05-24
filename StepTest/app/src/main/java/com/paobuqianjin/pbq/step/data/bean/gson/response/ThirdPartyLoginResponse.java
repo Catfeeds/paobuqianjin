@@ -11,7 +11,7 @@ public class ThirdPartyLoginResponse {
     /**
      * error : 0
      * message : 登录成功
-     * data : {"id":30,"wx_openid":"oPd5d0SDHRV1oZF8dB80Jq0kH_tY","qq_openid":"","mobile":"13424156029","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","levelid":3,"sex":0,"birthyear":2016,"birthmonth":10,"birthday":1,"height":200,"weight":"45.00","type":1,"province":"广东","city":"深圳","balance":"9888.38","target_step":0,"credit":0,"status":0,"is_perfect":1,"create_time":1521794437,"delete_time":null,"logintimes":53,"h_long":null,"h_lat":null,"h_updatetime":0,"c_long":"0.00000","c_lat":"0.00000","c_updatetime":0,"n_long":"0.00000","n_lat":"0.00000","n_updatetime":0,"user_token":"30:FS4LtmiN3BhZadHFOS7ve6VraLicFDqj"}
+     * data : {"id":30,"no":39,"wx_openid":"oPd5d0SDHRV1oZF8dB80Jq0kH_tY","qq_openid":"","mobile":"13424156029","avatar":"http://thirdwx.qlogo.cn/mmopen/vi_32/Itaoxich6dW72MleNPMxR8icXGjflzuNGbicF1tOoebBGfpRONnDCIBwl3nJyickqgLSATxzfTGlLwAK5aprymCPzg/132","nickname":"黄钦平","levelid":3,"sex":0,"birthyear":2016,"birthmonth":10,"birthday":1,"height":200,"weight":"45.00","type":1,"province":"广东","city":"深圳","balance":"9888.38","target_step":0,"credit":0,"status":0,"is_perfect":1,"create_time":1521794437,"delete_time":null,"logintimes":53,"h_long":null,"h_lat":null,"h_updatetime":0,"c_long":"0.00000","c_lat":"0.00000","c_updatetime":0,"n_long":"0.00000","n_lat":"0.00000","n_updatetime":0,"user_token":"30:FS4LtmiN3BhZadHFOS7ve6VraLicFDqj"}
      */
 
     private int error;
@@ -78,9 +78,20 @@ public class ThirdPartyLoginResponse {
          * n_lat : 0.00000
          * n_updatetime : 0
          * user_token : 30:FS4LtmiN3BhZadHFOS7ve6VraLicFDqj
+         * cusvip: 0,
          */
 
         private int id;
+
+        public String getNo() {
+            return no;
+        }
+
+        public void setNo(String no) {
+            this.no = no;
+        }
+
+        private String no;
         private String wx_openid;
         private String qq_openid;
         private String mobile;
@@ -114,6 +125,16 @@ public class ThirdPartyLoginResponse {
         private String n_lat;
         private int n_updatetime;
         private String user_token;
+
+        public int getCusvip() {
+            return cusvip;
+        }
+
+        public void setCusvip(int cusvip) {
+            this.cusvip = cusvip;
+        }
+
+        private int cusvip;
 
         public int getVip() {
             return vip;
@@ -401,6 +422,7 @@ public class ThirdPartyLoginResponse {
         public String toString() {
             return "DataBean{" +
                     "id=" + id +
+                    ", no='" + no + '\'' +
                     ", wx_openid='" + wx_openid + '\'' +
                     ", qq_openid='" + qq_openid + '\'' +
                     ", mobile='" + mobile + '\'' +
@@ -434,6 +456,7 @@ public class ThirdPartyLoginResponse {
                     ", n_lat='" + n_lat + '\'' +
                     ", n_updatetime=" + n_updatetime +
                     ", user_token='" + user_token + '\'' +
+                    ", cusvip=" + cusvip +
                     ", vip=" + vip +
                     '}';
         }

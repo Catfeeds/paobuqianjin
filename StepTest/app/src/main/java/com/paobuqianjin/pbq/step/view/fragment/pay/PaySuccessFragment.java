@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.pay;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,8 +94,10 @@ public class PaySuccessFragment extends BaseBarStyleTextViewFragment {
     public void onClick() {
         LocalLog.d(TAG, "已确认支付结果");
         String payAction = Presenter.getInstance(getContext()).getTradeStyle();
-        LocalLog.d(TAG,"payAction =  " + payAction);
-        if ("user".equals(payAction) || "task".equals(payAction) || "vip".equals(payAction)|| "redpacket".equals(payAction)) {
+        LocalLog.d(TAG, "payAction =  " + payAction);
+        if ("user".equals(payAction) || "task".equals(payAction) || "vip".equals(payAction) || "redpacket".equals(payAction)
+                || "cvip".equals(payAction)) {
+            getActivity().setResult(Activity.RESULT_OK);
             getActivity().finish();
         } else {
             ((PaoBuPayActivity) getActivity()).showQrCodeFragment(this);

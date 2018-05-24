@@ -84,6 +84,9 @@ public class ReleaseTaskContainFragment extends BaseFragment {
     }
 
     public void setIndicator(TabLayout tab, int leftDip, int rightDip) {
+        if (tab == null) {
+            return;
+        }
         Class<?> tabLayout = tab.getClass();
         Field tabStrip = null;
         try {
