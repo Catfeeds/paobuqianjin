@@ -166,7 +166,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private final int REQUEST_RECHARGE = 333;
     String titleStr = "";
     private boolean is_join = false;
-    private int pageIndex = 1, PAGESIZE = 200;
+    private int pageIndex = 1, PAGESIZE = 20;
     private int position = -1;
     private final static String QUIT_ACTION = "com.paobuqianjin.pbq.step.QUIT";
     private final static String DELETE_ACTION = "com.paobuqianjin.pbq.step.DELETE_CIRCLE";
@@ -180,7 +180,6 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private PopupWindow popOpWindowRedButtonHori;
     private TextView pop_message_red_a;
     private TextView pop_message_red_b;
-
     @Override
     protected int getLayoutResId() {
         return R.layout.circle_detail_fg_no_admin;
@@ -607,7 +606,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 case R.id.exit_text:
                     LocalLog.d(TAG, "退出");
                     popQuitConfirm();
-                    popupOpWindowTop.dismiss();
+                    if (popupOpWindowTop != null) {
+                        popupOpWindowTop.dismiss();
+                    }
                     break;
                 case R.id.join_in:
                     LocalLog.d(TAG, "点击加入圈子");

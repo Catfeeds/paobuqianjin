@@ -84,6 +84,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UpdateBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserCenterResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
@@ -2323,7 +2324,8 @@ public final class Engine {
                         if (innerCallBack != null) {
                             LocalLog.d(TAG, "s = " + s);
                             try {
-                                innerCallBack.innerCallBack(s);
+                                UpdateBusinessResponse response = new Gson().fromJson(s, UpdateBusinessResponse.class);
+                                innerCallBack.innerCallBack(response);
                             } catch (JsonSyntaxException e) {
                                 e.printStackTrace();
                             }

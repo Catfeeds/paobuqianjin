@@ -20,6 +20,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.AddBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UpdateBusinessResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -372,6 +373,15 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                 intent.putExtra("businessId", Integer.parseInt(response.getData().getBusinessid()));
                 intent.putExtra("name", response.getData().getName());
                 setResult(10, intent);
+                finish();
+            }
+        } else if (object instanceof UpdateBusinessResponse) {
+            if (((UpdateBusinessResponse) object).getError() == 0) {
+                ToastUtils.showShortToast(this, "编辑成功");
+                if (businessId != -1) {
+                    intent.putExtra("businessId", businessId);
+                    setResult(10, intent);
+                }
                 finish();
             }
         }
