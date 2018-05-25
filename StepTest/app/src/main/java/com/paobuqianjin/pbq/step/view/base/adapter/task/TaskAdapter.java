@@ -110,11 +110,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                     holder.releaseDetails.setBackground(ContextCompat.getDrawable(context, R.drawable.task_reward_bg));
                 }
             }
-            if (((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+            /*if (((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
             } else {
                 holder.vipFlg.setVisibility(View.GONE);
-            }
+            }*/
 
             holder.taskId = ((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getId();
         }

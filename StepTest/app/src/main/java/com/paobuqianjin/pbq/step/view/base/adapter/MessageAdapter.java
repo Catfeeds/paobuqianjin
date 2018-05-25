@@ -108,9 +108,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     ((MessageContentViewHolder) holder).dynamicId = ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getDynamicid();
                     ((MessageContentViewHolder) holder).is_vote = ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getDynamicdata().getIs_vote();
                 }
-                if (((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                /*if (((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                     ((MessageContentViewHolder) holder).vipFlg.setVisibility(View.VISIBLE);
-                }
+                }*/
             } else if (mData.get(position) instanceof MessageLikeResponse.DataBeanX.DataBean) {
                 if (holder instanceof MessageLikeViewHolder) {
                     Presenter.getInstance(context).getPlaceErrorImage(((MessageLikeViewHolder) holder).rectIcon,
@@ -151,9 +151,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     ((MessageLikeViewHolder) holder).dynamicId = ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getDynamicid();
                     ((MessageLikeViewHolder) holder).is_vote = ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getDynamicdata().getIs_vote();
                 }
-                if (((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+                /*if (((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                     ((MessageLikeViewHolder) holder).vipFlg.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
         }
     }

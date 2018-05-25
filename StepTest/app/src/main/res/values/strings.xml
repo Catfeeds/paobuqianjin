@@ -154,8 +154,8 @@
     <string name="red_finish">您已领完商家红包</string>
     <string name="error_red">手慢了，商家红包已领完</string>
     <string name="get_red">恭喜您获得</string>
-<string name="add_card">添加银行卡</string>
-    <string name="transfer_limite_tips" >1、每笔体现金额介于100.00-200.00元之间；
+    <string name="add_card">添加银行卡</string>
+    <string name="transfer_limite_tips">1、每笔体现金额介于100.00-200.00元之间；
         \n2、每个用户单日仅可以提现一次；
         \n3.提现手续费为第三方平台收取，跑步钱进不收取手续费；
         \n4.到账金额为提现金额扣除掉手续费的金额；</string>

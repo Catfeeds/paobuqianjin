@@ -237,7 +237,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 }
                 if (userInfo.getVip() == 1) {
                     vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
-                    vipFlg.setVisibility(View.VISIBLE);
+                    /*vipFlg.setVisibility(View.VISIBLE);*/
                 }
                 birthDayTV.setText(userInfo.getBirthyear() + "年" + userInfo.getBirthmonth() + "月" + userInfo.getBirthday() + "日");
                 highNum.setText(String.valueOf(userInfo.getHeight()) + "cm");
@@ -729,6 +729,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 LocalLog.d(TAG, "distance = " + distance);
                 if (distance > 0) {
                     LocalLog.d(TAG, "unEffect time");
+                    ToastUtils.showShortToast(getContext(),"请选择正确的生日");
                     popupSelectWindow.dismiss();
                     return;
                 }

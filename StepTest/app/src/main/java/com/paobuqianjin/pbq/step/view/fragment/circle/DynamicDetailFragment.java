@@ -502,9 +502,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             dynamicUserName.setText(dynamicIdDetailResponse.getData().getNickname());
             long create_time = dynamicIdDetailResponse.getData().getCreate_time();
 
-            if (dynamicIdDetailResponse.getData().getVip() == 1) {
+            /*if (dynamicIdDetailResponse.getData().getVip() == 1) {
                 vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
             //服务器保存到秒级别，本地处理为毫秒级别
             LocalLog.d(TAG, "create_time = " + DateTimeUtil.formatDateTime(create_time * 1000));
             String create_timeStr = DateTimeUtil.formatFriendly(new Date(create_time * 1000));

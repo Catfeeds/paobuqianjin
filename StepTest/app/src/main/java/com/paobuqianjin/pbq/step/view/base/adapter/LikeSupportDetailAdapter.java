@@ -62,9 +62,9 @@ public class LikeSupportDetailAdapter extends RecyclerView.Adapter<LikeSupportDe
                 Presenter.getInstance(context).postFollowStatus(holder.loveNumber, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getUserid());
             }
 
-            if (((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+            /*if (((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         }
     }
 

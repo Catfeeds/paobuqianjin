@@ -128,6 +128,8 @@ public class PersonVipFragment extends BaseFragment {
         if (resultCode == RESULT_OK) {
             if (requestCode == PAY_VIP_SELF_RESULT) {
                 LocalLog.d(TAG, "购买个人VIP成功！");
+                vipSelf.setText("已购买");
+                vipSelf.setEnabled(false);
             }
         }
     }

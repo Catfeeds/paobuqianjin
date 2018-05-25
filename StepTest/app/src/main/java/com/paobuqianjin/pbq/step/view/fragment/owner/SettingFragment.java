@@ -115,7 +115,7 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                 Presenter.getInstance(getContext()).getPlaceErrorImage(userIco, userInfo.getAvatar(),R.drawable.default_head_ico,R.drawable.default_head_ico);
                 if (userInfo.getVip() == 1) {
                     vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
-                    vipFlg.setVisibility(View.VISIBLE);
+                    /*vipFlg.setVisibility(View.VISIBLE);*/
                 }
             }
         }

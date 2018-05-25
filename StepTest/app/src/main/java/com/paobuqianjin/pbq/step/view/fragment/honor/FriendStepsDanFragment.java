@@ -256,9 +256,9 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                 stepNumMy.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
                 Presenter.getInstance(getContext()).getPlaceErrorImage(headIconUser, friendStepRankDayResponse.getData().getData().getMydata().getAvatar()
                         , R.drawable.default_head_ico, R.drawable.default_head_ico);
-                if (friendStepRankDayResponse.getData().getData().getMydata().getVip() == 1) {
+                /*if (friendStepRankDayResponse.getData().getData().getMydata().getVip() == 1) {
                     vipFlg.setVisibility(View.VISIBLE);
-                }
+                }*/
                 adapter = new HonorDetailAdapter(getContext(), friendStepRankDayResponse.getData().getData().getMember());
                 danDetailRecycler.setAdapter(adapter);
                 if (friendStepRankDayResponse.getData().getData().getMember().size() > 0) {

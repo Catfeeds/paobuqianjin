@@ -76,9 +76,9 @@ public class CircleMemberBarAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else {
                 ((CircleMemberViewHolder) holder).memberNameInCircle.setText(mData.getCirclenickname());
             }
-            if (mData.getVip() == 1) {
+            /*if (mData.getVip() == 1) {
                 ((CircleMemberViewHolder) holder).vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
             if (mData.getIs_admin() == 2) {
                 ((CircleMemberViewHolder) holder).adminHead.setText("主管理员");
                 ((CircleMemberViewHolder) holder).adminHead.setBackgroundColor(ContextCompat.getColor(context, R.color.color_ffc400));

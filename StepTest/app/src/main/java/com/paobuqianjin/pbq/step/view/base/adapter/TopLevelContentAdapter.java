@@ -100,9 +100,9 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
             holder.parent_id = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getId();
             holder.reply_userid = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
             holder.dynamicid = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getDynamicid();
-            if (((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+            /*if (((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         }
     }
 

@@ -189,9 +189,9 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
             dearName.setText(taskRecDetailResponse.getData().getNickname());
             dearId.setText("跑步钱进号:" + taskRecDetailResponse.getData().getUserno());
             stepDesRun.setText(String.valueOf(taskRecDetailResponse.getData().getUser_step()) + "/" + String.valueOf(taskRecDetailResponse.getData().getTarget_step()));
-            if (taskRecDetailResponse.getData().getVip() == 1) {
+            /*if (taskRecDetailResponse.getData().getVip() == 1) {
                 vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
             long startTime = taskRecDetailResponse.getData().getActivity_start_time();
             String start_timeStr = DateTimeUtil.formatDateTime(startTime * 1000);
 

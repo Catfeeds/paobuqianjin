@@ -89,6 +89,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.VipNoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.AllPayOrderInterface;
@@ -3781,5 +3782,33 @@ public final class Engine {
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskSponsorInterface) {
             taskSponsorInterface = null;
         }
+    }
+
+    private Gson gsonPrint = new Gson();
+    public void post(String url, Map<String,String> params, PaoCallBack callBack) {
+        if(params==null) params = new HashMap<>();
+        LocalLog.d(TAG, gsonPrint.toJson(params));
+        callBack.setMyUrl(url);
+
+        OkHttpUtils
+                .post()
+                .addHeader("headtoken", getToken(mContext))
+                .url(url)
+                .params(params)
+                .build()
+                .execute(callBack);
+    }
+    public void get(String url, Map<String,String> params, PaoCallBack callBack) {
+        if(params==null) params = new HashMap<>();
+        LocalLog.d(TAG,"提交数据："+ new Gson().toJson(params));
+        callBack.setMyUrl(url);
+
+        OkHttpUtils
+                .get()
+                .addHeader("headtoken", getToken(mContext))
+                .url(url)
+                .params(params)
+                .build()
+                .execute(callBack);
     }
 }

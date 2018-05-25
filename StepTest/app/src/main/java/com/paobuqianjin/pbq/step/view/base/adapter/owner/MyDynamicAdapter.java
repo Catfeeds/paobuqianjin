@@ -105,9 +105,9 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
 
     private void upDataListItem(MyDynamicViewHolder holder, int position) {
         if (mData.get(position) instanceof DynamicPersonResponse.DataBeanX.DataBean) {
-            if (((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+            /*if (((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
             holder.dots = new ArrayList<>();
             holder.Mview = new ArrayList<>();
             LocalLog.d(TAG, "upDataListItem() enter  data " + ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).toString());

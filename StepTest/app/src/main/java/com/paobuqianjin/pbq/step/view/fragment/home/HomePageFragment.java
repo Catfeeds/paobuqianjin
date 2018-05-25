@@ -47,6 +47,7 @@ import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
 import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;

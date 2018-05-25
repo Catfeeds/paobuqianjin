@@ -74,9 +74,9 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
                 holder.btFollow.setText("关注");
             }
             holder.phoneNum = ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getPhone();
-            if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getVip() == 1) {
+           /* if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
             holder.userid = ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getUserid();
         } else if (mData.get(position) instanceof FriendAddResponse.DataBean.OutSystemBean) {
             holder.dearName.setText(((FriendAddResponse.DataBean.OutSystemBean) mData.get(position)).getName());

@@ -353,6 +353,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 LocalLog.d(TAG, "Date = " + date);
                 if (DateTimeUtil.gainCurrentDate().before(date)) {
                     LocalLog.d(TAG, "Uneffect date");
+                    ToastUtils.showShortToast(getContext(), "请选择正确的生日");
                     return;
                 }
                 birthYear = DateTimeUtil.formatDateTime(date, "yyyy");

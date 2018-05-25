@@ -361,7 +361,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             switch (circleDetailResponse.getData().getRed_packet_status()) {
                 case 0:
                     pop_message_red_a.setVisibility(View.INVISIBLE);
-                    pop_message_red_b.setText("未达标");
+                    pop_message_red_b.setText("步数未达标，还需继续努力！");
                     break;
                 case 2:
                     pop_message_red_a.setVisibility(View.INVISIBLE);

@@ -63,9 +63,9 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
             holder.stepNum.setText(String.valueOf(((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getNickname());
 
-            if (((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getVip() == 1) {
+            /*if (((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         } else if (mData.get(position) instanceof CircleStepRankResponse.DataBeanX.DataBean.CircleBean) {
             if (position == 0) {
                 holder.rankIcon.setImageResource(R.drawable.honor_master);
@@ -82,9 +82,9 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.stepNum.setText(String.valueOf(((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getNickname());
-            if (((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getVip() == 1) {
+            /*if (((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         } else if (mData.get(position) instanceof FriendWeekResponse.DataBeanX.DataBean.MemberBean) {
             if (position == 0) {
                 holder.rankIcon.setImageResource(R.drawable.honor_master);
@@ -101,9 +101,9 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.stepNum.setText(String.valueOf(((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getNickname());
-            if (((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getVip() == 1) {
+            /*if (((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         } else if (mData.get(position) instanceof StepRankResponse.DataBeanX.DataBean) {
             if (position == 0) {
                 holder.rankIcon.setImageResource(R.drawable.honor_master);
@@ -120,9 +120,9 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.stepNum.setText(String.valueOf(((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
-            if (((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+           /* if (((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         } else if (mData.get(position) instanceof StepRandWeekResponse.DataBeanX.DataBean.MemberBean) {
             if (position == 0) {
                 holder.rankIcon.setImageResource(R.drawable.honor_master);
@@ -139,9 +139,9 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.stepNum.setText(String.valueOf(((StepRandWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((StepRandWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getNickname());
-            if (((StepRandWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getVip() == 1) {
+            /*if (((StepRandWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         }
     }
 

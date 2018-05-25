@@ -21,16 +21,24 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
+import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
 import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
+import com.paobuqianjin.pbq.step.view.activity.TransferActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.WalletRedPkgIncomeAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -109,7 +117,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
     private int pageIndexYD = 1, pageIndexMonth = 1, pageIndexAll = 1;
     private int pageYDCount = 0, pageMonthCount = 0, pageAllCount = 0;
-    private final static int REQUEST_CRASH = 231;
+    public final static int REQUEST_CRASH = 231;
     private float totalMoney = 0.0f;
     private final int REQUEST_RECHARGE = 223;
 
@@ -215,10 +223,22 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 break;
             case R.id.crash:
                 LocalLog.d(TAG, "提现");
-                intent.setAction(CRASH_ACTION);
-                intent.putExtra("total", totalMoney);
-                intent.setClass(getContext(), CrashActivity.class);
-                startActivityForResult(intent, REQUEST_CRASH);
+                if (isVerificationIdentity()) {// TODO: 2018/5/17 waitdelete
+                    intent.setAction(CRASH_ACTION);
+                    intent.putExtra("total", totalMoney);
+                    intent.setClass(getContext(), CrashActivity.class);
+                    startActivityForResult(intent, REQUEST_CRASH);
+                    /*intent.setAction(CRASH_ACTION);
+                    intent.putExtra("total", totalMoney);
+                    intent.setClass(getContext(), TransferActivity.class);
+                    startActivityForResult(intent, REQUEST_CRASH);*/
+                }else{
+                    intent.setAction(CRASH_ACTION);
+                    intent.putExtra("total", totalMoney);
+                    intent.setClass(getContext(), IdentityAuth1Activity.class);
+                    startActivityForResult(intent, REQUEST_CRASH);
+                }
+
                 break;
             case R.id.yesterday_span:
                 LocalLog.d(TAG, "查看当前收益");
@@ -238,6 +258,15 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
             default:
                 break;
         }
+    }
+
+    /**
+     * 是否已经进行身份认证
+     * @return
+     */
+    private boolean isVerificationIdentity() {
+
+        return true;
     }
 
     /*
@@ -562,6 +591,27 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
             exitTokenUnfect();
         }
     }
+
+  /*  private void getCurrentState() {
+        Presenter.getInstance(getActivity()).postPaoBuSimple(NetApi.GET_PERSON_IDENTIFY_STATE + Presenter.getInstance(getActivity()).getId(), null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    JSONObject jsonObj = new JSONObject(s);
+                    jsonObj = jsonObj.getJSONObject("data");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null) {
+                    PaoToastUtils.showShortToast(getActivity(), errorBean.getMessage());
+                }
+            }
+        });
+    }*/
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

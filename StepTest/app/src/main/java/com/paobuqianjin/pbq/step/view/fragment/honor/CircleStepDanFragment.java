@@ -282,9 +282,9 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                 Presenter.getInstance(getContext()).getPlaceErrorImage(kingHeadIcon, stepRankResponse.getData().getData().get(0).getAvatar()
                         , R.drawable.default_head_ico, R.drawable.default_head_ico);
                 kingName.setText(stepRankResponse.getData().getData().get(0).getNickname());
-                if (stepRankResponse.getData().getData().get(0).getVip() == 1) {
+                /*if (stepRankResponse.getData().getData().get(0).getVip() == 1) {
                     vipFlg.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
             danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), stepRankResponse.getData().getData()));
         }

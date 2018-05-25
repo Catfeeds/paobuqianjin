@@ -66,9 +66,9 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             }
             holder.loveNumber.setText(dataBean.getTotal_fee() + "元");
             holder.userid = ((ReChargeRankResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
-            if (((ReChargeRankResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+            /*if (((ReChargeRankResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
 
         } else if (mData.get(position) instanceof StepRankResponse.DataBeanX.DataBean) {
             StepRankResponse.DataBeanX.DataBean dataBean = (StepRankResponse.DataBeanX.DataBean) mData.get(position);
@@ -81,9 +81,9 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             }
             holder.loveNumber.setText(dataBean.getStep_number() + "步");
             holder.userid = ((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
-            if (((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+            /*if (((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         }
     }
 

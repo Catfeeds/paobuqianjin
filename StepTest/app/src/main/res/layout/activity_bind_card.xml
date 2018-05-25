@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_f6f6f6"
+    tools:context="com.paobuqianjin.pbq.step.view.activity.BindCardActivity">
+
+    <include
+        android:id="@+id/bar"
+        layout="@layout/bar_return_a_style"
+        app:layout_constraintTop_toTopOf="parent"></include>
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/MyTextGray8a_Title16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="14dp"
+        android:text="请选择银行卡类型" />
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:background="@color/white"
+        >
+
+        <TextView
+            android:id="@+id/textView3"
+            style="@style/MyTextBlackTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="持卡人" />
+
+        <TextView
+            android:id="@+id/tv_person_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:paddingRight="14dp"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView3"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/default_text" />
+
+        <View
+            android:id="@+id/divide"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            android:background="@color/color_f6f6f6"
+             />
+
+        <TextView
+            android:id="@+id/textView4"
+            style="@style/MyTextBlackTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            android:text="卡号" />
+
+        <EditText
+            android:id="@+id/et_card_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:paddingRight="14dp"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_person_name"
+            app:layout_constraintTop_toTopOf="@+id/textView4" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginLeft="14dp"
+        android:background="@drawable/change_color_btn"
+        android:text="@string/next_step"
+        android:textColor="@color/white"
+         />
+
+
+</LinearLayout>

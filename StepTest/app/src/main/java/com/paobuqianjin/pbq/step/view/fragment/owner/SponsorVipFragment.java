@@ -21,6 +21,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by pbq on 2018/5/22.
  */
@@ -109,6 +111,18 @@ public class SponsorVipFragment extends BaseFragment {
                 payIntent.setClass(getContext(), PaoBuPayActivity.class);
                 startActivityForResult(payIntent, PAY_VIP_SPONSOR_SELF_RESULT);
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PAY_VIP_SPONSOR_SELF_RESULT) {
+                LocalLog.d(TAG, "购买个人VIP成功！");
+                vipSelf.setText("已购买");
+                vipSelf.setEnabled(false);
+            }
         }
     }
 }

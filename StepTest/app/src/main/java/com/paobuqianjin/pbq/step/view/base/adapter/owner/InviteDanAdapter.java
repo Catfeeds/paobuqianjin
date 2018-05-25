@@ -59,9 +59,9 @@ public class InviteDanAdapter extends RecyclerView.Adapter<InviteDanAdapter.Invi
             holder.inviteNumDes.setText(inviteStr);
             holder.inviteRank.setText(inviteDanStr);
 
-            if (((InviteDanResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+         /*   if (((InviteDanResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         }
     }
 

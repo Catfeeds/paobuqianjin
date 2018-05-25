@@ -76,6 +76,7 @@ public class PaoBuApplication extends MultiDexApplication {
         initTencentBugly();
         initHttpOk();
         initSDKService();
+        initHlb();
         sApplication = this;
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
@@ -114,6 +115,13 @@ public class PaoBuApplication extends MultiDexApplication {
 
             }
         });
+    }
+
+    private void initHlb() {
+//        if(Looper.getMainLooper() == Looper.myLooper())
+//        {
+//            HLSDK.init(this);
+//        }
     }
 
 

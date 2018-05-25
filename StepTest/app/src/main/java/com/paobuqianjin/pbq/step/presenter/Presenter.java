@@ -37,12 +37,15 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.ThirdPartyLoginParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.squareup.picasso.NetworkPolicy;
+
+import java.util.Map;
 
 
 /**
@@ -818,5 +821,13 @@ public final class Presenter {
 
     public void setCurrentUser(UserInfoResponse.DataBean currentUser) {
         this.currentUser = currentUser;
+    }
+
+    public void postPaoBuSimple(String url, Map<String,String> params, PaoCallBack callBack) {
+        engine.post(url, params, callBack);
+    }
+
+    public void getPaoBuSimple(String url, Map<String,String> params, PaoCallBack callBack) {
+        engine.get(url, params, callBack);
     }
 }

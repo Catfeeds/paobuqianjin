@@ -106,4 +106,8 @@ dependencies {
     implementation files('libs/TencentMapSDK_Raster_v_1.2.8.1.c02ec64.jar')
     implementation files('libs/TencentMapSearch_v1.1.7.1.3e04ee1.jar')
     implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.1'
+    implementation 'io.card:android-sdk:5.5.1'
+    //    implementation 'qs:quickPay:1.0.1'
+    implementation files('libs/UPPayPluginExPro.jar')
+    implementation files('libs/UPPayAssistEx.jar')
 }

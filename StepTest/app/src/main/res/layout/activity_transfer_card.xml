@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f6f6f6"
+    tools:context="com.paobuqianjin.pbq.step.view.activity.TransferCardActivity">
+
+    <include
+        android:id="@+id/bar"
+        layout="@layout/bar_return_a_style"
+        app:layout_constraintTop_toTopOf="parent"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/bar"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/crash_span"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/color_f8"
+                android:paddingBottom="25dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingTop="25dp"
+                >
+
+                <ImageView
+                    android:id="@+id/money_ico"
+                    android:layout_width="17dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/crash_to" />
+
+                <EditText
+                    android:id="@+id/tv_can_transfer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tv_transfer_all"
+                    android:layout_toRightOf="@+id/money_ico"
+                    android:background="@null"
+                    android:hint="可提现0.00元"
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="20dp"
+                    android:textColorHint="@color/color_cbcacf"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:id="@+id/tv_transfer_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="全部提现"
+                    android:textColor="@color/color_6d72c4"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:background="@color/white"
+
+                >
+
+             <!--   <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:descendantFocusability="blocksDescendants">
+-->
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_bank"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/item_select_card"
+                        ></android.support.v7.widget.RecyclerView>
+<!--
+
+                </LinearLayout>
+-->
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_marginLeft="55dp"
+                    android:background="@color/color_ebebed" />
+
+
+                <include
+                    layout="@layout/item_add_card" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/tips_title"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:layout_marginStart="24dp"
+                android:text="@string/transfer_limite_tips"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12sp"
+                />
+
+            <Button
+                android:id="@+id/btn_transfer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="14dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/change_color_btn"
+                android:text="@string/next_step"
+                android:textColor="@color/white"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:gravity="center"
+                android:paddingLeft="14dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="请认真阅读"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_protocol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:paddingRight="10dp"
+                    android:text="《用户协议》"
+                    android:textColor="@color/color_007aff"
+                    android:textSize="12sp" />
+
+                <CheckBox
+                    android:id="@+id/cb_agree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/circle_purple_selector"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>

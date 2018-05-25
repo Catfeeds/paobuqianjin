@@ -254,9 +254,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             }
             ((OneOrZeroViewHodler) holder).position = position;
-            if (data.get(position).getVip() == 1) {
+            /*if (data.get(position).getVip() == 1) {
                 ((OneOrZeroViewHodler) holder).vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         } else if (holder instanceof TwoPicViewHolder) {
             ((TwoPicViewHolder) holder).timeStmp.setText(create_timeStr);
             ((TwoPicViewHolder) holder).dynamicid = data.get(position).getId();
@@ -315,9 +315,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             LocalLog.d(TAG, "2图");
             ((TwoPicViewHolder) holder).position = position;
-            if (data.get(position).getVip() == 1) {
+            /*if (data.get(position).getVip() == 1) {
                 ((TwoPicViewHolder) holder).vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         } else if (holder instanceof ThreePicViewHolder) {
             ((ThreePicViewHolder) holder).timeStmp.setText(create_timeStr);
             ((ThreePicViewHolder) holder).dynamicid = data.get(position).getId();
@@ -370,9 +370,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
             }
             ((ThreePicViewHolder) holder).position = position;
-            if (data.get(position).getVip() == 1) {
+           /* if (data.get(position).getVip() == 1) {
                 ((ThreePicViewHolder) holder).vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         } else {
             LocalLog.e(TAG, " unknown data!");
         }

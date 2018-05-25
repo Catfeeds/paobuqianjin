@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.paobuqianjin.pbq.step.view.activity.TransferActivity">
+
+    <include
+        android:id="@+id/bar"
+        layout="@layout/bar_return_a_style"
+        app:layout_constraintTop_toTopOf="parent"></include>
+
+    <LinearLayout
+        android:id="@+id/linear_wechat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="14dp"
+        app:layout_constraintTop_toBottomOf="@+id/bar">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@mipmap/ic_c_weixin"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:paddingLeft="11dp"
+            android:textColor="@color/color_161727"
+            android:text="@string/umeng_socialize_text_weixin_key"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/ic_arrow_right26"/>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/color_ebebed"
+        android:layout_marginLeft="55dp"
+        app:layout_constraintTop_toBottomOf="@+id/linear_wechat" />
+
+    <LinearLayout
+        android:id="@+id/linear_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        android:padding="14dp"
+        app:layout_constraintTop_toBottomOf="@+id/bar">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/bank_icon"
+            android:padding="2dp"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:paddingLeft="11dp"
+            android:textColor="@color/color_161727"
+            android:text="银行卡"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/ic_arrow_right26"/>
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

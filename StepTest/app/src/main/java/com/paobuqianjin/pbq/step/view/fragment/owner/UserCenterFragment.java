@@ -213,7 +213,13 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                         }
 
                     }
-                    if (((UserCenterResponse) object).getData().getUser_data().getVip() == 1) {
+                    if (((UserCenterResponse) object).getData().getUser_data().getVip() == 1
+                            || ((UserCenterResponse) object).getData().getUser_data().getCusvip() == 1) {
+                        if(((UserCenterResponse) object).getData().getUser_data().getCusvip() == 0){
+
+                        }else{
+                            vipFlg.setImageResource(R.drawable.vip_sponsor);
+                        }
                         vipFlg.setVisibility(View.VISIBLE);
                     }
 

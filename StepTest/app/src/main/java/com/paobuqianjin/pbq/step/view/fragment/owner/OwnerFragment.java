@@ -23,6 +23,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.DanActivity;
 import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
 import com.paobuqianjin.pbq.step.view.activity.MessageActivity;
+import com.paobuqianjin.pbq.step.view.activity.MyBankCardActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyDynamicActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyFriendActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyReleaseActivity;
@@ -179,6 +180,7 @@ public final class OwnerFragment extends BaseFragment {
     ImageView vipFlg;
     private String userAvatar;
     private int vip = 0;
+    private int cVip = 0;
     private UserInfoResponse userInfoResponse;
 
     @Override
@@ -242,7 +244,7 @@ public final class OwnerFragment extends BaseFragment {
 
     @OnClick({R.id.bar_tv_right, R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span,
             R.id.dan_span, R.id.suggestion_span, R.id.friend_rel, R.id.circle_rel,
-            R.id.bar_return_drawable, R.id.task_release_span, R.id.setting_span, R.id.qrcode_rel, R.id.vip_span})
+            R.id.bar_return_drawable, R.id.task_release_span, R.id.setting_span, R.id.qrcode_rel, R.id.vip_span,R.id.bank_span})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -335,6 +337,10 @@ public final class OwnerFragment extends BaseFragment {
                 intent.setClass(getContext(), VipActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.bank_span:
+                intent.setClass(getContext(), MyBankCardActivity.class);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -364,8 +370,14 @@ public final class OwnerFragment extends BaseFragment {
                 friends.setText(String.valueOf(userInfoResponse.getData().getFollowCount()));
                 urlIcon = userInfoResponse.getData().getAvatar();
                 vip = userInfoResponse.getData().getVip();
-                if (vip == 1) {
+                cVip = userInfoResponse.getData().getCusvip();
+                if (vip == 1 || cVip == 1) {
                     LocalLog.d(TAG, "当前用户为VIP");
+                    if(cVip == 0){
+
+                    }else{
+                        vipFlg.setImageResource(R.drawable.vip_sponsor);
+                    }
                     vipFlg.setVisibility(View.VISIBLE);
                 }
                 if (userInfoResponse.getData().getSex() == 1) {

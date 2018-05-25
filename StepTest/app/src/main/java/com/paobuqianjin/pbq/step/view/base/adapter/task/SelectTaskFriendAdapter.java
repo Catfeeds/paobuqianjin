@@ -67,9 +67,9 @@ public class SelectTaskFriendAdapter extends RecyclerView.Adapter<SelectTaskFrie
                     holder.selectIcon.setImageResource(R.drawable.selected_icon);
                 }
             }
-            if (mData.get(position).getVip() == 1) {
+            /*if (mData.get(position).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
             if (resultData != null) {
                 for (int i = 0; i < resultData.size(); i++) {
                     if (mData.get(position).getId() == resultData.get(i).getId()) {

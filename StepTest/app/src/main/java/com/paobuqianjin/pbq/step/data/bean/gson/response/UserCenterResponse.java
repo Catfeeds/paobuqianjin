@@ -130,6 +130,7 @@ public class UserCenterResponse {
              * logintimes : 371
              * vip : 1
              * target_step : 5000
+             * cusvip: 0
              */
 
             private int id;
@@ -161,6 +162,16 @@ public class UserCenterResponse {
             private int logintimes;
             private int vip;
             private int target_step;
+
+            public int getCusvip() {
+                return cusvip;
+            }
+
+            public void setCusvip(int cusvip) {
+                this.cusvip = cusvip;
+            }
+
+            private int cusvip;
 
             public int getId() {
                 return id;
@@ -426,6 +437,7 @@ public class UserCenterResponse {
                         ", logintimes=" + logintimes +
                         ", vip=" + vip +
                         ", target_step=" + target_step +
+                        ", cusvip=" + cusvip +
                         '}';
             }
         }

@@ -93,9 +93,9 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
             holder.stytle = 0;
             holder.btFollow.setText("关注");
-            if (((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+            /*if (((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         } else if (mData.get(position) instanceof UserIdFollowResponse.DataBeanX.DataBean) {
             LocalLog.d(TAG, "我关注的");
             holder.dearName.setText(((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
@@ -106,9 +106,9 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_not_fllow_nearby));
             holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_646464));
             holder.stytle = 1;
-            if (((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+            /*if (((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         } else if (mData.get(position) instanceof UserFollowOtOResponse.DataBeanX.DataBean) {
             LocalLog.d(TAG, "互相关注");
             holder.dearName.setText(((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
@@ -119,9 +119,9 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
             holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
             holder.stytle = 2;
-            if (((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
+            /*if (((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
-            }
+            }*/
         } else {
             LocalLog.d(TAG, "not match");
         }
