@@ -800,7 +800,36 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             exitTokenUnfect();
         } else {
             if (sponsorRedPkgResponse.getMessage().equals("Not Found Data")) {
-                popTargetView(getString(R.string.no_buess_pkg));
+                UserInfoResponse.DataBean userInfo = Presenter.getInstance(getContext()).getCurrentUser();
+                LocalLog.d(TAG, "userInfo = " + userInfo.toString());
+                if (userInfo != null) {
+                    if (userInfo.getIs_perfect() == 0) {
+                        showUseInfSettingDialog(userInfo);
+                    } else {
+                        if (dialog == null) {
+                            dialog = new NormalDialog(getActivity());
+                            dialog.setMessage(getString(R.string.no_buess_pkg));
+                            dialog.setYesOnclickListener("好的", new NormalDialog.onYesOnclickListener() {
+                                @Override
+                                public void onYesClick() {
+                                    dialog.dismiss();
+                                }
+                            });
+                            dialog.setNoOnclickListener("取消", new NormalDialog.onNoOnclickListener() {
+                                @Override
+                                public void onNoClick() {
+                                    dialog.dismiss();
+                                }
+                            });
+                            dialog.show();
+                        } else {
+                            if (!dialog.isShowing()) {
+                                dialog.show();
+                            }
+                        }
+//                        popTargetView(getString(R.string.no_buess_pkg));
+                    }
+                }
             } else {
                 Toast.makeText(getContext(), sponsorRedPkgResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
