@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,7 +81,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     @Bind(R.id.total_span)
     RelativeLayout totalSpan;
     @Bind(R.id.income_outline)
-    RelativeLayout incomeOutline;
+    LinearLayout incomeOutline;
     @Bind(R.id.income_rel)
     RelativeLayout incomeRel;
     @Bind(R.id.charge_bar)
@@ -220,7 +221,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 startActivityForResult(intent, REQUEST_CRASH);
                 break;
             case R.id.yesterday_span:
-                LocalLog.d(TAG, "查看昨日收益");
+                LocalLog.d(TAG, "查看当前收益");
                 mIndex = 0;
                 onTabIndex(mIndex);
                 break;
@@ -264,12 +265,13 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         @Override
         public void onRefresh() {
             LocalLog.d(TAG, "刷新当前页面!");
+            walletRefresh.setRefreshing(false);
             if (mCurrentIndex == 0) {
-                loadYesterData(yesterData);
+                //loadYesterData(yesterData);
             } else if (mCurrentIndex == 1) {
-                loadMonthData(monthData);
+                //loadMonthData(monthData);
             } else if (mCurrentIndex == 2) {
-                loadAllData(allData);
+                //loadAllData(allData);
             }
         }
     };

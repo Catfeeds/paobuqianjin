@@ -11,22 +11,14 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_splash"
-            android:layout_marginTop="100dp"
-            android:layout_gravity="center_horizontal"
             />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:text="深圳市跑步钱进网络科技有限公司"
-            android:gravity="center"
-            android:textSize="13sp"
-            android:layout_gravity="bottom"
-            />
+
     </FrameLayout>
 
     <RelativeLayout

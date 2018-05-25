@@ -350,6 +350,11 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         wheelDatePicker.setOnDateSelectedListener(new WheelDatePicker.OnDateSelectedListener() {
             @Override
             public void onDateSelected(WheelDatePicker picker, Date date) {
+                LocalLog.d(TAG, "Date = " + date);
+                if (DateTimeUtil.gainCurrentDate().before(date)) {
+                    LocalLog.d(TAG, "Uneffect date");
+                    return;
+                }
                 birthYear = DateTimeUtil.formatDateTime(date, "yyyy");
                 birthMonth = DateTimeUtil.formatDateTime(date, "MM");
                 birthDay = DateTimeUtil.formatDateTime(date, "dd");
@@ -724,7 +729,9 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
                 result = putObjectSample.start(path);
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
-                url = result.cosXmlResult.accessUrl;
+                if (result != null && result.cosXmlResult != null) {
+                    url = result.cosXmlResult.accessUrl;
+                }
                 LocalLog.d(TAG, "url = " + url);
 
             }

@@ -94,6 +94,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
     private final static int REQUEST_DETAIL = 401;
     UserDynamicRecordAdapter adapter;
     private String userNo = "";
+    private int userid = -1;
 
     @Override
     protected String title() {
@@ -124,7 +125,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
         super.initView(viewRoot);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
-            int userid = intent.getIntExtra("userid", -1);
+            userid = intent.getIntExtra("userid", -1);
             userNo = intent.getStringExtra("userno");
             if (userid != -1) {
                 LocalLog.d(TAG, "userid =  " + userid);
@@ -215,6 +216,39 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                     if (((UserCenterResponse) object).getData().getUser_data().getVip() == 1) {
                         vipFlg.setVisibility(View.VISIBLE);
                     }
+
+                    if (TextUtils.isEmpty(userNo) && userid != -1 && Presenter.getInstance(getContext()).getId() != userid) {
+                        queryFollowStateParam.setFollowid(((UserCenterResponse) object).getData().getUser_data().getId());
+                        if (((UserCenterResponse) object).getData().getIs_follow() == 0) {
+                            LocalLog.d(TAG, "关注");
+                            bntLike.setText("关注");
+                        } else if (((UserCenterResponse) object).getData().getIs_follow() == 1) {
+                            LocalLog.d(TAG, "已关注");
+                            bntLike.setText("已关注");
+                        }
+                        bntLike.setVisibility(View.VISIBLE);
+                        bntLike.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                switch (view.getId()) {
+                                    case R.id.bnt_like:
+                                        switch (bntLike.getText().toString()) {
+                                            case "已关注":
+                                                LocalLog.d(TAG, "取消关注");
+                                                Presenter.getInstance(getContext()).postAddUserFollow(queryFollowStateParam);
+                                                break;
+                                            case "关注":
+                                                LocalLog.d(TAG, "去关注");
+                                                Presenter.getInstance(getContext()).postAddUserFollow(queryFollowStateParam);
+                                                break;
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        });
+                    }
                     //关注状态
                     if (!TextUtils.isEmpty(userNo) && !userNo.equals(Presenter.getInstance(getContext()).getNo())) {
                         queryFollowStateParam.setFollowid(((UserCenterResponse) object).getData().getUser_data().getId());
@@ -248,6 +282,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                             }
                         });
                     }
+
 
                     //个人动态列表
                     if (((UserCenterResponse) object).getData().getDynamic_data() != null) {

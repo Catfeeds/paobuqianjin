@@ -41,6 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
@@ -404,7 +405,11 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         @Override
         public void response(CircleTargetResponse targetResponse) {
             LocalLog.d(TAG, "CircleTargetResponse() enter");
-            if (targetResponse != null) {
+            if (targetResponse.getError() == 0) {
+                if (targetResponse.getData() == null) {
+                    LocalLog.d(TAG, "获取目标失败!");
+                    return;
+                }
                 int size = targetResponse.getData().size();
                 LocalLog.d(TAG, "size = " + size);
                 for (int i = 0; i < size; i++) {
@@ -926,7 +931,9 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
                 result = putObjectSample.start(path);
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
-                url = result.cosXmlResult.accessUrl;
+                if (result != null && result.cosXmlResult != null) {
+                    url = result.cosXmlResult.accessUrl;
+                }
                 LocalLog.d(TAG, "url = " + url);
 
             }
@@ -939,6 +946,9 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             super.onPostExecute(s);
             if (s != null && !"".equals(s)) {
                 createCircleBodyParam.setLogo(s);
+            }
+            if (s == null) {
+                ToastUtils.showShortToast(CreateCircleActivity.this, "图片上传失败");
             }
             if (checkcreateCircleBodyParam()) {
                 Presenter.getInstance(CreateCircleActivity.this).createCircle(createCircleBodyParam);

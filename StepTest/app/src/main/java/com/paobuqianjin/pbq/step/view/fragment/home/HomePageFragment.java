@@ -195,6 +195,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
     private static int DEFAULT_COUNT = 25;//默认动画25
     StepProcessDrawable stepProcessDrawable;
+    NormalDialog dialog;
 
     static {
         weatherMap.put("0", R.drawable.weather_0);
@@ -485,6 +486,17 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     desPkgTextView.setVisibility(View.VISIBLE);
                     return;
                 }
+                openRedPkgView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (openRedPkgView != null && openRedPkgView.getVisibility() == View.VISIBLE) {
+                            openRedPkgView.clearAnimation();
+                            errorTextView.setText(getString(R.string.error_red));
+                            errorTextView.setVisibility(View.VISIBLE);
+                            desPkgTextView.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }, 2 * 60 * 1000);
                 RedPkgRecParam redPkgRecParam = new RedPkgRecParam().setRedids(redids);
                 Presenter.getInstance(getContext()).postRedPkgRec(redPkgRecParam, innerRecRedCallBack);
             }
@@ -519,10 +531,10 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             });
             if (!normalDialog.isShowing()) {
                 normalDialog.show();
-            } else {
-                if (!normalDialog.isShowing()) {
-                    normalDialog.show();
-                }
+            }
+        } else {
+            if (!normalDialog.isShowing()) {
+                normalDialog.show();
             }
         }
     }
@@ -550,17 +562,18 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         redRevTv.setText(getString(R.string.get_red));
                         redRevTv.setVisibility(View.VISIBLE);
                         updateIncome();
+                        ArrayList<?> sponsorData = new ArrayList<>();
+                        sponsorData.addAll((ArrayList) ((RecRedPkgResponse) object).getData().getResult());
+                        if (sponsorRedPakAdapter != null) {
+                            sponsorRedPakAdapter.notifyDataSetChanged(sponsorData);
+                        }
                     } else {
                         openRedPkgView.setVisibility(View.INVISIBLE);
                         errorTextView.setText(getString(R.string.error_red));
                         errorTextView.setVisibility(View.VISIBLE);
                     }
                     desPkgTextView.setVisibility(View.VISIBLE);
-                    ArrayList<?> sponsorData = new ArrayList<>();
-                    sponsorData.addAll((ArrayList) ((RecRedPkgResponse) object).getData().getResult());
-                    if (sponsorRedPakAdapter != null) {
-                        sponsorRedPakAdapter.notifyDataSetChanged(sponsorData);
-                    }
+
                 } else if (((RecRedPkgResponse) object).getError() == -1) {
                     errorTextView.setText(getString(R.string.error_red));
                     errorTextView.setVisibility(View.VISIBLE);
@@ -748,25 +761,32 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     if (userInfo.getIs_perfect() == 0) {
                         showUseInfSettingDialog(userInfo);
                     } else {
-                        final NormalDialog dialog = new NormalDialog(getActivity());
-                        dialog.setMessage(getString(R.string.no_buess_pkg));
-                        dialog.setYesOnclickListener("好的", new NormalDialog.onYesOnclickListener() {
-                            @Override
-                            public void onYesClick() {
-                                dialog.dismiss();
+                        if (dialog == null) {
+                            dialog = new NormalDialog(getActivity());
+                            dialog.setMessage(getString(R.string.no_buess_pkg));
+                            dialog.setYesOnclickListener("好的", new NormalDialog.onYesOnclickListener() {
+                                @Override
+                                public void onYesClick() {
+                                    dialog.dismiss();
+                                }
+                            });
+                            dialog.setNoOnclickListener("取消", new NormalDialog.onNoOnclickListener() {
+                                @Override
+                                public void onNoClick() {
+                                    dialog.dismiss();
+                                }
+                            });
+                            dialog.show();
+                        } else {
+                            if (!dialog.isShowing()) {
+                                dialog.show();
                             }
-                        });
-                        dialog.setNoOnclickListener("取消", new NormalDialog.onNoOnclickListener() {
-                            @Override
-                            public void onNoClick() {
-                                dialog.dismiss();
-                            }
-                        });
-                        dialog.show();
+                        }
 //                        popTargetView(getString(R.string.no_buess_pkg));
                     }
                 } else {
-
+                    LocalLog.d(TAG, "userInfo had not get");
+                    return;
                 }
 
             } else {

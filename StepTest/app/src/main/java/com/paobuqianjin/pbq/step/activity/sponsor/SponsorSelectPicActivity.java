@@ -289,7 +289,10 @@ public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBar
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
                 result = putObjectSample.start(path.getImagePath());
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
-                String url = result.cosXmlResult.accessUrl;
+                String url = null;
+                if (result != null && result.cosXmlResult != null) {
+                    url = result.cosXmlResult.accessUrl;
+                }
                 final SelectPicBean selectPicBean = new SelectPicBean();
                 selectPicBean.setFileUrl(path.getImagePath());
                 selectPicBean.setImageUrl(url);

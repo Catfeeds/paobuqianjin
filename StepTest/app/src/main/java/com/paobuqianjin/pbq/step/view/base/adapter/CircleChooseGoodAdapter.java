@@ -173,6 +173,10 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
                         mContext.startActivity(intent);
                     } else {
                         if (is_pwd) {
+                            if (joinCircleParam == null) {
+                                joinCircleParam = new JoinCircleParam();
+                            }
+                            joinCircleParam.setCircleid(circleId);
                             popPassWordEdit();
                         } else {
                             Intent intent = new Intent();

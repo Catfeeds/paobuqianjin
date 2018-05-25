@@ -126,14 +126,18 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
                         UserFollowOtOResponse.DataBeanX.DataBean dataBean = (UserFollowOtOResponse.DataBeanX.DataBean) intent.getSerializableExtra("friendinfo");
                         if (dataBean != null) {
                             LocalLog.d(TAG, "关注我的的人变互相关注");
-                            followOtoFragment.add(dataBean);
+                            if (followOtoFragment != null) {
+                                followOtoFragment.add(dataBean);
+                            }
                         }
                         break;
                     case FOLLOW_OTO_ACTION:
                         FollowUserResponse.DataBeanX.DataBean dataBeanOt = (FollowUserResponse.DataBeanX.DataBean) intent.getSerializableExtra("friendinfo");
                         if (dataBeanOt != null) {
                             LocalLog.d(TAG, "互相关注的变成关注我的");
-                            followMeFragment.add(dataBeanOt);
+                            if (followMeFragment != null) {
+                                followMeFragment.add(dataBeanOt);
+                            }
                         }
                         break;
                     case MY_FOLLOW_ACTION:

@@ -133,7 +133,11 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private RechargeRankBundleData rechargeRankBundleData;
     private StepBundleData stepBundleData;
     private String target;
+    /**圈子余额*/
     private float total_money;
+    /**每日红包总金额*/
+    private float daily_red_pack_total;
+    /**已领红包金额*/
     private float red_pack_money;
     private View popCircleOpBar;
     private PopupWindow popupOpWindow;
@@ -802,7 +806,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 is_join = true;
             }
             total_money = Float.parseFloat(circleDetailResponse.getData().getTotal_amount());
-            red_pack_money = Float.parseFloat(circleDetailResponse.getData().getRed_packet_amount());
+            daily_red_pack_total = Float.parseFloat(circleDetailResponse.getData().getRed_packet_amount());
+            red_pack_money = Float.parseFloat(circleDetailResponse.getData().getRed_packet_money());
 
             String sMoneyFormat = mContext.getResources().getString(R.string.circle_total);
             String sMoney = String.format(sMoneyFormat, total_money);
@@ -812,7 +817,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             }
             circleObjDes.setText(target);
             moneyRet.setText(sMoney);
-            if (red_pack_money > total_money) {
+            if (circleDetailResponse.getData().getRed_packet_status() == 4) {
                 LocalLog.d(TAG, "余额不足当天的红包");
                 tvRedTipsMoney.setVisibility(View.VISIBLE);
             }

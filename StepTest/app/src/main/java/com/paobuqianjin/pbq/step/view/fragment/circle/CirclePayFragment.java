@@ -28,6 +28,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -120,7 +121,8 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private final static String PAY_ACTION = "android.intent.action.PAY";
     private final static String PAY_RECHARGE = "com.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
     private final static String PAY_FOR_STYLE = "pay_for_style";
-    private NormalDialog normalDialog;
+    private NormalDialog normalDialog, walletLeakDialog;
+    public UserInfoResponse.DataBean userInfo;
 
     public enum PayStyles {
         WxPay,//微信支付
@@ -255,6 +257,8 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             bankPaySpan = (RelativeLayout) viewRoot.findViewById(R.id.bank_pay_span);
             bankPaySpan.setVisibility(View.GONE);
         }
+
+        userInfo = Presenter.getInstance(getContext()).getCurrentUser();
     }
 
 
@@ -416,12 +420,45 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
 
     }
 
+    private boolean canUseWallet(float payFloat) {
+        boolean walletAble = true;
+        if (userInfo != null && Float.parseFloat(userInfo.getBalance()) < payFloat) {
+            LocalLog.d(TAG, "余额不足");
+            if (walletLeakDialog == null) {
+                walletLeakDialog = new NormalDialog(getActivity());
+                walletLeakDialog.setMessage("钱包余额不足，请选用其它支付方式");
+                walletLeakDialog.setYesOnclickListener(getContext().getString(R.string.confirm_yes), new NormalDialog.onYesOnclickListener() {
+                    @Override
+                    public void onYesClick() {
+                        walletLeakDialog.dismiss();
+                    }
+                });
+                walletLeakDialog.setNoOnclickListener(getContext().getString(R.string.cancel_no), new NormalDialog.onNoOnclickListener() {
+                    @Override
+                    public void onNoClick() {
+                        walletLeakDialog.dismiss();
+                    }
+                });
+            }
+            if (!walletLeakDialog.isShowing()) {
+                walletLeakDialog.show();
+            }
+            walletAble = false;
+        }
+
+        return walletAble;
+    }
+
     private void payWallet() {
         LocalLog.d(TAG, "钱包支付");
         float money = 0.0f;
         if (rechargeEdit.getVisibility() == View.VISIBLE) {
             try {
                 money = Float.parseFloat(rechargeEdit.getText().toString());
+                if (!canUseWallet(money)) {
+                    LocalLog.d(TAG, "余额不足");
+                    return;
+                }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();

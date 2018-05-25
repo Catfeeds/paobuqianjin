@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
@@ -31,6 +32,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CvipNoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.VipNoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
@@ -41,6 +43,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.SelectFriendActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.fragment.circle.CirclePayFragment;
 import com.tencent.mm.opensdk.modelpay.PayReq;
@@ -48,6 +51,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -135,8 +139,8 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     private IWXAPI msgApi;
     private PayStyles payStyles = PayStyles.WxPay;
     private float payFloat = 0;
-    private final static float VIP_FLOAT = 1.99f;
-    private final static float VIP_SPONSOR_FLOAT = 19.99f;
+    private final static float VIP_FLOAT = 3.00f;
+    private final static float VIP_SPONSOR_FLOAT = 25.00f;
     private ProgressDialog dialog;
     private PayReq req;
     private VipPostParam vipPostParam = new VipPostParam();
@@ -147,6 +151,8 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     private final static String ACTION_VIP = "com.paobuqianjin.pbq.step.ACTION_VIP";
     private final static String ACTION_SPONSOR_VIP = "com.paobuqianjin.pbq.step.ACTION_SPONSOR_VIP";
     String action = "";
+    private NormalDialog normalDialog, walletLeakDialog;
+    public UserInfoResponse.DataBean userInfo;
 
     public enum PayStyles {
         WxPay,//微信支付
@@ -196,7 +202,34 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
+        setToolBarListener(new BaseBarImageViewFragment.ToolBarListener() {
+            @Override
+            public void clickLeft() {
+                if (normalDialog == null) {
+                    normalDialog = new NormalDialog(getActivity());
+                    normalDialog.setMessage("是否取消VIP充值");
+                    normalDialog.setYesOnclickListener(getContext().getString(R.string.confirm_yes), new NormalDialog.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+                            normalDialog.dismiss();
+                            getActivity().finish();
+                        }
+                    });
+                    normalDialog.setNoOnclickListener(getContext().getString(R.string.cancel_no), new NormalDialog.onNoOnclickListener() {
+                        @Override
+                        public void onNoClick() {
+                            normalDialog.dismiss();
+                        }
+                    });
+                }
+                normalDialog.show();
+            }
 
+            @Override
+            public void clickRight() {
+
+            }
+        });
         addTaskFriend = (RelativeLayout) viewRoot.findViewById(R.id.add_task_friend);
         addFriendDes = (TextView) viewRoot.findViewById(R.id.add_friend_des);
         recvRecycler = (RecyclerView) viewRoot.findViewById(R.id.recv_recycler);
@@ -245,6 +278,8 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             walletPaySelect.setImageDrawable(null);
             selectPay[0] = true;
         }
+
+        userInfo = Presenter.getInstance(getContext()).getCurrentUser();
     }
 
     private InnerCallBack innerCallBack = new InnerCallBack() {
@@ -273,6 +308,10 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
 
                     } else if (style == 1) {
                         LocalLog.d(TAG, "钱包支付");
+                        if (!canUseWallet(payFloat)) {
+                            LocalLog.d(TAG, "余额不足");
+                            return;
+                        }
                         dialog = ProgressDialog.show(getContext(), "钱包支付",
                                 "正在提交订单");
                         PayOrderParam wxPayOrderParam = new PayOrderParam();
@@ -303,6 +342,10 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
 
                     } else if (style == 1) {
                         LocalLog.d(TAG, "钱包支付");
+                        if (!canUseWallet(payFloat)) {
+                            LocalLog.d(TAG, "余额不足");
+                            return;
+                        }
                         dialog = ProgressDialog.show(getContext(), "钱包支付",
                                 "正在提交订单");
                         PayOrderParam wxPayOrderParam = new PayOrderParam();
@@ -319,6 +362,35 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             }
         }
     };
+
+    private boolean canUseWallet(float payFloat) {
+        boolean walletAble = true;
+        if (userInfo != null && Float.parseFloat(userInfo.getBalance()) < payFloat) {
+            LocalLog.d(TAG, "余额不足");
+            if (walletLeakDialog == null) {
+                walletLeakDialog = new NormalDialog(getActivity());
+                walletLeakDialog.setMessage("钱包余额不足，请选用其它支付方式");
+                walletLeakDialog.setYesOnclickListener(getContext().getString(R.string.confirm_yes), new NormalDialog.onYesOnclickListener() {
+                    @Override
+                    public void onYesClick() {
+                        walletLeakDialog.dismiss();
+                    }
+                });
+                walletLeakDialog.setNoOnclickListener(getContext().getString(R.string.cancel_no), new NormalDialog.onNoOnclickListener() {
+                    @Override
+                    public void onNoClick() {
+                        walletLeakDialog.dismiss();
+                    }
+                });
+            }
+            if (!walletLeakDialog.isShowing()) {
+                walletLeakDialog.show();
+            }
+            walletAble = false;
+        }
+
+        return walletAble;
+    }
 
     private void UpdateUnSelect(int i) {
         for (int j = 0; j < selectPay.length; j++) {

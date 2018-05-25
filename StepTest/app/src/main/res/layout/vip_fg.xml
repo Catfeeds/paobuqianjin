@@ -14,15 +14,13 @@
         android:layout_height="185dp"
         android:layout_below="@+id/bar_vip"
         android:scaleType="centerCrop"
-        android:src="@drawable/vip_banner" />
+        android:src="@drawable/banner_personal" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/vip_tab_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_below="@+id/vip_banner"
-        android:layout_marginLeft="75dp"
-        android:layout_marginRight="75dp"
         app:tabIndicatorColor="@color/color_feb913"
         app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="@color/color_feb913"

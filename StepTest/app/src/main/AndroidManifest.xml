@@ -59,6 +59,7 @@
         <meta-data
             android:name="design_height"
             android:value="1334" />
+
         <activity
             android:name=".view.activity.SplashActivity"
             android:screenOrientation="portrait"
@@ -69,17 +70,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".view.activity.MainActivity"
             android:label="跑步钱进"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
-           <!-- <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION" />
             </intent-filter>
@@ -93,7 +96,7 @@
             android:theme="@style/ImageTranslucentTheme"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
-                <action android:name="com.paobuqianjin.pbq.step.RE_LOGIN"></action>
+                <action android:name="com.paobuqianjin.pbq.step.RE_LOGIN" />
             </intent-filter>
         </activity>
         <activity
@@ -141,7 +144,8 @@
         </activity>
         <activity
             android:name=".view.activity.DynamicActivity"
-            android:theme="@style/ImageTranslucentTheme" />
+            android:theme="@style/ImageTranslucentTheme"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".view.activity.LikeSupportActivity"
             android:theme="@style/ImageTranslucentTheme" />
@@ -175,8 +179,8 @@
                 <action android:name="com.paobuqian.pbq.step.PAY_RECHARGE.ACTION" />
                 <action android:name="com.paobuqianjin.pbq.setp.VIP_SELF_ACTION" />
                 <action android:name="com.paobuqianjin.pbq.step.VIP_FRIEND_ACTION" />
-                <action android:name="com.paobuqianjin.pbq.setp.VIP_SELF_SPONSOR_ACTION"/>
-                <action android:name="com.paobuqianjin.pbq.step.VIP_FRIEND_SPONSOR_ACTION"/>
+                <action android:name="com.paobuqianjin.pbq.setp.VIP_SELF_SPONSOR_ACTION" />
+                <action android:name="com.paobuqianjin.pbq.step.VIP_FRIEND_SPONSOR_ACTION" />
             </intent-filter>
         </activity>
         <activity
@@ -279,7 +283,7 @@
             android:name=".view.activity.CrashActivity"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
-                <action android:name="com.paobuqianjin.step.CRASH_ACTION"></action>
+                <action android:name="com.paobuqianjin.step.CRASH_ACTION" />
             </intent-filter>
         </activity>
         <!-- 邀请有礼 -->
@@ -492,8 +496,15 @@
         <activity
             android:name=".activity.sponsor.SponsorSearchPositionActivity"
             android:windowContentTransitions="true" />
-        <activity
-            android:name=".activity.base.GalleryActivity"/>
+        <activity android:name=".activity.base.GalleryActivity" />
+        <activity android:name=".view.activity.IdentityAuth1Activity" />
+        <activity android:name=".view.activity.IdentityAuth2Activity" />
+        <activity android:name=".view.activity.IdentityAuth3Activity" />
+        <activity android:name=".view.activity.TransferActivity" />
+        <activity android:name=".view.activity.TransferCardActivity" />
+        <activity android:name=".view.activity.BindCardActivity" />
+        <activity android:name=".view.activity.InputCardInfoActivity" />
+        <activity android:name=".view.activity.MyBankCardActivity"></activity>
     </application>
 
 </manifest>

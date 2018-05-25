@@ -69,7 +69,9 @@ public class FollowOtoFragment extends BaseFragment {
 
     public void add(UserFollowOtOResponse.DataBeanX.DataBean dataBean) {
         followOtoData.add(dataBean);
-        adapter.notifyItemRangeChanged(followOtoData.size() - 1, 1);
+        if (isAdded() && adapter != null) {
+            adapter.notifyItemRangeChanged(followOtoData.size() - 1, 1);
+        }
     }
 
 

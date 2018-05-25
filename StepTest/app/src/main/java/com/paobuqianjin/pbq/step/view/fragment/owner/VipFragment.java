@@ -49,6 +49,7 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.vip_viewpager)
     ViewPager vipViewpager;
     String[] titles = {"普通会员", "商家会员"};
+    private int selectPage = 0;
 
     @Override
     protected int getLayoutResId() {
@@ -63,6 +64,7 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
     @Override
     protected void initView(final View viewRoot) {
         super.initView(viewRoot);
+        vipBanner = (ImageView) viewRoot.findViewById(R.id.vip_banner);
         SponsorVipFragment sponsorVipFragment = new SponsorVipFragment();
         PersonVipFragment personVipFragment = new PersonVipFragment();
         List<Fragment> fragments = new ArrayList<>();
@@ -80,16 +82,45 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
             LocalLog.d(TAG, "initView() i = " + i);
             vipTabBar.getTabAt(i).setCustomView(getTabView(i));
         }
-
         vipTabBar.post(new Runnable() {
             @Override
             public void run() {
                 if (vipTabBar != null) {
-                    setIndicator(vipTabBar, 20, 20);
+                    setIndicator(vipTabBar, 40, 40);
                 }
             }
         });
+        vipTabBar.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                LocalLog.d(TAG, "onTabSelected() enter" + tab.getPosition());
+                switch (tab.getPosition()) {
+                    case 0:
+                        selectPage = 0;
+                        LocalLog.d(TAG, "onTabSelected() selectPage = " + selectPage);
+                        vipBanner.setImageResource(R.drawable.banner_personal);
+                        break;
+                    case 1:
+                        selectPage = 1;
+                        LocalLog.d(TAG, "onTabSelected() selectPage = " + selectPage);
+                        vipBanner.setImageResource(R.drawable.banner_business);
+                        break;
+                    default:
+                        break;
+                }
 
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
     }
 
@@ -129,10 +160,10 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
         TextView textView = (TextView) view.findViewById(R.id.tab_text);
         if (position == 0) {
             textView.setText(titles[0]);
-            view.setGravity(Gravity.LEFT);
+            view.setGravity(Gravity.CENTER);
         } else if (position == 1) {
             textView.setText(titles[1]);
-            view.setGravity(Gravity.RIGHT);
+            view.setGravity(Gravity.CENTER);
         }
         return view;
     }

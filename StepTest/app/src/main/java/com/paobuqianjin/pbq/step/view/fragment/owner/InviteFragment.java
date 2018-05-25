@@ -268,26 +268,28 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
  /*权限适配*/
 
     private void requestPermission(String... permissions) {
-        AndPermission.with(this)
-                .permission(permissions)
-                .rationale(mRationale)
-                .onGranted(new Action() {
-                    @Override
-                    public void onAction(List<String> permissions) {
-                        LocalLog.d(TAG, "获取权限成功");
-                        share_media = SHARE_MEDIA.QQ;
-                        new ShareAction(getActivity()).withMedia(web)
-                                .setPlatform(share_media)
-                                .setCallback(shareListener).share();
+        if (isAdded()) {
+            AndPermission.with(this)
+                    .permission(permissions)
+                    .rationale(mRationale)
+                    .onGranted(new Action() {
+                        @Override
+                        public void onAction(List<String> permissions) {
+                            LocalLog.d(TAG, "获取权限成功");
+                            share_media = SHARE_MEDIA.QQ;
+                            new ShareAction(getActivity()).withMedia(web)
+                                    .setPlatform(share_media)
+                                    .setCallback(shareListener).share();
+                        }
+                    }).onDenied(new Action() {
+                @Override
+                public void onAction(List<String> permissions) {
+                    if (AndPermission.hasAlwaysDeniedPermission(getActivity(), permissions)) {
+                        mSetting.showSetting(permissions);
                     }
-                }).onDenied(new Action() {
-            @Override
-            public void onAction(List<String> permissions) {
-                if (AndPermission.hasAlwaysDeniedPermission(getActivity(), permissions)) {
-                    mSetting.showSetting(permissions);
                 }
-            }
-        }).start();
+            }).start();
+        }
     }
 
     private View getTabView(int position) {
@@ -305,6 +307,9 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
 
 
     public void setIndicator(TabLayout tab, int leftDip, int rightDip) {
+        if (tab == null) {
+            return;
+        }
         Class<?> tabLayout = tab.getClass();
         Field tabStrip = null;
         try {

@@ -496,7 +496,9 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
                 result = putObjectSample.start(path);
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
-                url = result.cosXmlResult.accessUrl;
+                if (result != null && result.cosXmlResult != null) {
+                    url = result.cosXmlResult.accessUrl;
+                }
                 LocalLog.d(TAG, "url = " + url);
 
             }
@@ -708,9 +710,31 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             @Override
             public void onClick(View view) {
                 LocalLog.d(TAG, "确认");
-                birthYear = wheelDatePicker.getCurrentYear()+"";
-                birthMonth = wheelDatePicker.getCurrentMonth()+"";
-                birthDay = wheelDatePicker.getCurrentDay()+"";
+                int selectYear = wheelDatePicker.getCurrentYear();
+                int selectMonth = wheelDatePicker.getCurrentMonth();
+                int selectDay = wheelDatePicker.getCurrentDay();
+                String fromSelect = selectYear + "-";
+                if (selectMonth < 10) {
+                    fromSelect += "0" + selectMonth;
+                } else {
+                    fromSelect += selectMonth;
+                }
+
+                if (selectDay < 10) {
+                    fromSelect += "-0" + selectDay;
+                } else {
+                    fromSelect += "-" + selectDay;
+                }
+                long distance = DateTimeUtil.getTimeIntervalDay(fromSelect);
+                LocalLog.d(TAG, "distance = " + distance);
+                if (distance > 0) {
+                    LocalLog.d(TAG, "unEffect time");
+                    popupSelectWindow.dismiss();
+                    return;
+                }
+                birthYear = selectYear + "";
+                birthMonth = selectMonth + "";
+                birthDay = selectDay + "";
                 birthDayTV.setText(birthYear + "年" + birthMonth + "月" + birthDay + "日");
 
                 putUserInfoParam.setBirthyear(birthYear).setBirthmonth(birthMonth).setBirthday(birthDay);
@@ -950,14 +974,16 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
     @Override
     public void response(UserInfoSetResponse userInfoSetResponse) {
         if (userInfoSetResponse.getError() == 0) {
-            Toast.makeText(getContext(), "修改资料成功", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent();
-            if (!TextUtils.isEmpty(strChangeIco)) {
-                intent.putExtra(getContext().getPackageName() + "avatar", strChangeIco);
+            if (isAdded()) {
+                Toast.makeText(getContext(), "修改资料成功", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent();
+                if (!TextUtils.isEmpty(strChangeIco)) {
+                    intent.putExtra(getContext().getPackageName() + "avatar", strChangeIco);
+                }
+                intent.putExtra("userinfo", userInfo);
+                getActivity().setResult(RESULT_OK, intent);
+                getActivity().finish();
             }
-            intent.putExtra("userinfo", userInfo);
-            getActivity().setResult(RESULT_OK, intent);
-            getActivity().finish();
         } else if (userInfoSetResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

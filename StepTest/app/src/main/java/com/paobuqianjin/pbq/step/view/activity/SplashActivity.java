@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -87,7 +88,8 @@ public class SplashActivity extends AppCompatActivity {
         final List<View> list = new ArrayList<>();
         for (int i = 0; i < guideImages.length; i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.view_single_image, null);
-            view.setBackgroundResource(guideImages[i]);
+            ImageView iv_page = (ImageView) view.findViewById(R.id.iv_page);
+            iv_page.setImageResource(guideImages[i]);
             if (i == guideImages.length - 1) {
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override

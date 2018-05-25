@@ -144,6 +144,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15dp"
                     android:layout_toEndOf="@+id/head_icon_user"
+                    android:maxEms="10"
+                    android:maxLines="1"
                     android:text=""
                     android:textColor="@color/color_161727"
                     android:textSize="16dp" />

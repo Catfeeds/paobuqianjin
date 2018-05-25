@@ -338,6 +338,12 @@ public final class DateTimeUtil {
     }
 
     @SuppressLint("SimpleDateFormat")
+    public static String getCurrentYear() {
+        format = new SimpleDateFormat("yyyy");
+        return format.format(Calendar.getInstance().getTime());
+    }
+
+    @SuppressLint("SimpleDateFormat")
     public static String getLocalTime() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(calendar.YEAR);
@@ -542,6 +548,23 @@ public final class DateTimeUtil {
         return interval;
     }
 
+    /**
+     * 获取两个日期的时间差
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static int getTimeIntervalDay(String date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        int interval = 0;
+        try {
+            Date currentTime = new Date();// 获取现在的时间
+            Date beginTime = dateFormat.parse(date);
+            interval = (int) ((beginTime.getTime() - currentTime.getTime()) / (1000));// 时间差
+            // 单位秒
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return interval;
+    }
     /**
      * 获取两个日期的时间差 yyyy.MM.dd HH.mm.ss
      */

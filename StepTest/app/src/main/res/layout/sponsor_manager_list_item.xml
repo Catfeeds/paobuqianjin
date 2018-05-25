@@ -21,6 +21,8 @@
         android:layout_alignLeft="@+id/name"
         android:layout_below="@+id/name"
         android:layout_marginTop="4dp"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textColor="@color/color_161727"
         android:textSize="14sp" />
 
