@@ -118,10 +118,10 @@ public class PaoBuApplication extends MultiDexApplication {
     }
 
     private void initHlb() {
-//        if(Looper.getMainLooper() == Looper.myLooper())
-//        {
-//            HLSDK.init(this);
-//        }
+/*        if(Looper.getMainLooper() == Looper.myLooper())
+        {
+            HLSDK.init(this);
+        }*/
     }
 
 

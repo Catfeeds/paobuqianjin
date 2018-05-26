@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.activity.sponsor.SponsorTMapActivity;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -149,7 +148,6 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private final static String PAY_FOR_STYLE = "pay_for_style";
     private NormalDialog normalDialog, walletLeakDialog;
     public UserInfoResponse.DataBean userInfo;
-    private YsPayOrderResponse ysPayOrderResponse;
 
     public enum PayStyles {
         WxPay,//微信支付
@@ -446,11 +444,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                     popPayConfirm(getString(R.string.wallet_pay_confirm));
                 } else if (style == 2) {
                     LocalLog.d(TAG, "使用云闪付");
-                    if (UPPayAssistEx.checkInstalled(getActivity())) {
-                        payYunSanRequest();
-                    } else {
-                        ToastUtils.showShortToast(getActivity(), "未安装银联APK");
-                    }
+                    payYunSanRequest();
                 } else {
                     Toast.makeText(getContext(), "请选择一种支付方式", Toast.LENGTH_SHORT).show();
                 }
@@ -768,44 +762,24 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     }
 
 
-    UPQuerySEPayInfoCallback upQuerySEPayInfoCallback = new UPQuerySEPayInfoCallback() {
-        @Override
-        public void onResult(String s, String s1, int i, Bundle bundle) {
-            LocalLog.d(TAG, "云闪付当前SEName = " + s + ",seType = " + ",cardNumbers =" + i +
-                    "");
-            if (i > 0 && !TextUtils.isEmpty(s) && !TextUtils.isEmpty(s1)) {
-                if (CirclePayFragment.this.ysPayOrderResponse != null) {
-                    if (CirclePayFragment.this.ysPayOrderResponse.getData() != null) {
-                        String prePayId = CirclePayFragment.this.ysPayOrderResponse.getData().getPrePayId();
-                        if (!TextUtils.isEmpty(prePayId)) {
-                            int result = UPPayAssistEx.startPay(getActivity(), null, null, prePayId, serverMode);
-                            if (UPPayAssistEx.PLUGIN_VALID == result) {
-                                LocalLog.d(TAG, "已经安装控件，并启动控件 ");
-                            } else if (UPPayAssistEx.PLUGIN_NOT_FOUND == result) {
-                                LocalLog.d(TAG, "尚未安装支付控件，需要先安装支付控件 ");
-                                ToastUtils.showShortToast(getActivity(), "未安装云闪付控件");
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
-
-        @Override
-        public void onError(String s, String s1, String s2, String s3) {
-            LocalLog.d(TAG, "云闪付出错SEName =" + s
-                    + ",SeType = " + s1 + ",errorCode =  " + s2 + ",errorDesc = " + s3);
-        }
-    };
-
     @Override
     public void response(YsPayOrderResponse ysPayOrderResponse) {
         LocalLog.d(TAG, "云闪付订单");
         if (isAdded()) {
             if (ysPayOrderResponse.getError() == 0) {
-                this.ysPayOrderResponse = ysPayOrderResponse;
-                UPPayAssistEx.getSEPayInfo(getActivity(), upQuerySEPayInfoCallback);
+                if (ysPayOrderResponse.getData() != null) {
+                    String prePayId = ysPayOrderResponse.getData().getPrePayId();
+                    if (!TextUtils.isEmpty(prePayId)) {
+                        int result = UPPayAssistEx.startPay(getActivity(), null, null, prePayId, serverMode);
+                        if (UPPayAssistEx.PLUGIN_VALID == result) {
+                            LocalLog.d(TAG, "已经安装控件，并启动控件 ");
+                        } else if (UPPayAssistEx.PLUGIN_NOT_FOUND == result) {
+                            LocalLog.d(TAG, "尚未安装支付控件，需要先安装支付控件 ");
+                            ToastUtils.showShortToast(getActivity(), "未安装云闪付控件");
+                        }
+                    }
+                }
+
             }
         }
     }

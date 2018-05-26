@@ -175,7 +175,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private final int REQUEST_RECHARGE = 333;
     String titleStr = "";
     private boolean is_join = false;
-    private int pageIndex = 1, PAGESIZE = 200;
+    private int pageIndex = 1, PAGESIZE = 20, pageIndexStep = 1;
     private int position = -1;
     private final static String QUIT_ACTION = "com.paobuqianjin.pbq.step.QUIT";
     private final static String DELETE_ACTION = "com.paobuqianjin.pbq.step.DELETE_CIRCLE";
@@ -566,6 +566,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             @Override
             public void scrollOritention(int l, int t, int oldl, int oldt) {
                 LocalLog.d(TAG, "l =  " + l + ",t = " + t + ",oldl= " + oldl + "," + oldt);
+                LocalLog.d(TAG, "pageIndex = " + pageIndexStep );
             }
         });
     }
@@ -872,8 +873,10 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             Log.d(TAG, "titleStr = " + titleStr);
             setTitle(titleStr);
             /*Presenter.getInstance(getContext()).getImage(circleCover, circleDetailResponse.getData().getLogo());*/
+            pageIndexStep = 1;
+            pageIndex = 1;
             Presenter.getInstance(getContext()).getCircleRechargeRand(circleId, pageIndex, PAGESIZE);
-            Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndex, PAGESIZE);
+            Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndexStep, PAGESIZE);
 
 
         } else if (circleDetailResponse.getError() == -1) {
@@ -965,7 +968,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 if (requestCode == REQUEST_MEMBER) {
                     LocalLog.d(TAG, "执行过成员删除操作!");
                     if (circleId != -1) {
-                        Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndex, PAGESIZE);
+                        Presenter.getInstance(getContext()).getCircleDetail(circleId);
                     }
                 } else if (requestCode == REQUEST_EDIT) {
                     LocalLog.d(TAG, "编辑过圈子");
