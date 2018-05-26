@@ -757,7 +757,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 //popTargetView();
                 LocalLog.d(TAG, "附近没有商家红包");
                 UserInfoResponse.DataBean userInfo = Presenter.getInstance(getContext()).getCurrentUser();
-                LocalLog.d(TAG, "userInfo = " + userInfo.toString());
                 if (userInfo != null) {
                     if (userInfo.getIs_perfect() == 0) {
                         showUseInfSettingDialog(userInfo);

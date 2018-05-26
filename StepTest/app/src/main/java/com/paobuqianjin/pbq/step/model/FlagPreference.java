@@ -145,7 +145,7 @@ public final class FlagPreference {
 
     public static int getTarget(Context context) {
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
-        int target = flagPreference.getInt("target", 5000);
+        int target = flagPreference.getInt("target", 10000);
         LocalLog.d(TAG, "getTarget() 获取目标" + target);
         return target;
     }

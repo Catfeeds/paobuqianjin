@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
@@ -22,6 +24,7 @@ import com.paobuqianjin.pbq.step.view.fragment.pay.PaySuccessFragment;
 import com.paobuqianjin.pbq.step.view.fragment.pay.PayVipFriendFragment;
 import com.paobuqianjin.pbq.step.view.fragment.qrcode.QrCodeFragment;
 import com.umeng.socialize.UMShareAPI;
+import com.unionpay.UPPayAssistEx;
 
 /**
  * Created by pbq on 2018/1/27.
@@ -199,6 +202,21 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        LocalLog.d(TAG, "onActivityResult() enter");
+        if (data == null) {
+            return;
+        }
+        String msg = "";
+        String str = data.getExtras().getString("pay_result");
+        if (!TextUtils.isEmpty(str)) {
+            if (str.equalsIgnoreCase("success")) {
+
+            } else if (str.equalsIgnoreCase("fail")) {
+
+            } else if (str.equalsIgnoreCase("cancel")) {
+                ToastUtils.showShortToast(this, "已取消本次支付！");
+            }
+        }
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

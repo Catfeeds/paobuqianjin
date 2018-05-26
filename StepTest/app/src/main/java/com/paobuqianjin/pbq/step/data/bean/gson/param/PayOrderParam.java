@@ -44,6 +44,31 @@ taskid	任务ID	false	int
     private float total_fee;
     private int red_id;
 
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public PayOrderParam setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+        params.put("deviceType", deviceType);
+        return this;
+    }
+
+    public String getTerminalId() {
+        return terminalId;
+    }
+
+    public PayOrderParam setTerminalId(String terminalId) {
+        this.terminalId = terminalId;
+        params.put("terminalId", terminalId);
+        return this;
+    }
+
+    /*增加云闪付，设备类型，1，安卓，2，苹果
+        * 设备IMEI号*/
+    private String deviceType;
+    private String terminalId;
+
     public String getCvip_no() {
         return cvip_no;
     }

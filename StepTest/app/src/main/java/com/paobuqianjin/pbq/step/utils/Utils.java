@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.input.InputManager;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -28,9 +29,10 @@ public class Utils {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
+
     //dp转px
-    public static int dp2px(Context context,int dpValue){
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dpValue,context.getResources().getDisplayMetrics());
+    public static int dp2px(Context context, int dpValue) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
     }
 
     /**
@@ -89,6 +91,7 @@ public class Utils {
         manager.hideSoftInputFromWindow(((Activity) context).getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
+
     /**
      * EditText获取焦点并显示软键盘
      */
@@ -120,6 +123,7 @@ public class Utils {
 
     /**
      * 获取屏幕宽高
+     *
      * @param context
      * @return {width,height}
      */
@@ -127,6 +131,28 @@ public class Utils {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         wm.getDefaultDisplay().getMetrics(displayMetrics);
-        return new int[]{displayMetrics.widthPixels,displayMetrics.heightPixels};
+        return new int[]{displayMetrics.widthPixels, displayMetrics.heightPixels};
+    }
+
+    /*@desc
+    *@function getIMEI
+    *@param
+    *@return 
+    */
+    public static final String getIMEI(Context context) {
+        try {
+            //实例化TelephonyManager对象
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            //获取IMEI号
+            String imei = telephonyManager.getDeviceId();
+            //在次做个验证，也不是什么时候都能获取到的啊
+            if (imei == null) {
+                imei = "";
+            }
+            return imei;
+        } catch (SecurityException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

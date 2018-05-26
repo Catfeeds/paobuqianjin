@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
 
+import com.paobuqianjin.pbq.step.utils.LocalLog;
+
 /**
  * Created by pbq on 2018/1/25.
  */
@@ -195,6 +197,8 @@ public class BounceScrollView extends ScrollView {
         super.onScrollChanged(l, t, oldl, oldt);
         if (mListener != null) {
             mListener.scrollOritention(l, t, oldl, oldt);
+            LocalLog.d(TAG, "upDownSlide = " + upDownSlide);
+            LocalLog.d(TAG, "l =  " + l + ",t = " + t + ",oldl= " + oldl + "," + oldt);
         }
     }
 

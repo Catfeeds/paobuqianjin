@@ -52,6 +52,7 @@ import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.RankAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.RechargeRankSimpleAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.paobuqianjin.pbq.step.view.base.view.Rotate3dAnimation;
 
 import java.util.ArrayList;
@@ -122,6 +123,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     RelativeLayout circleDetailFg;
     @Bind(R.id.scan_more)
     TextView scanMore;
+    @Bind(R.id.circle_detail_scroll)
+    BounceScrollView circleDetailScroll;
 
     private boolean is_password = false;
 
@@ -172,7 +175,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private final int REQUEST_RECHARGE = 333;
     String titleStr = "";
     private boolean is_join = false;
-    private int pageIndex = 1, PAGESIZE = 20, pageIndexStep = 1;
+    private int pageIndex = 1, PAGESIZE = 200;
     private int position = -1;
     private final static String QUIT_ACTION = "com.paobuqianjin.pbq.step.QUIT";
     private final static String DELETE_ACTION = "com.paobuqianjin.pbq.step.DELETE_CIRCLE";
@@ -186,8 +189,6 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private PopupWindow popOpWindowRedButtonHori;
     private TextView pop_message_red_a;
     private TextView pop_message_red_b;
-    private RankAdapter mRankAdapter;
-    private ArrayList<StepRankResponse.DataBeanX.DataBean> mStepRankData = new ArrayList<>();
 
     @Override
     protected int getLayoutResId() {
@@ -530,6 +531,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             }
         }
 
+        if (circleId != -1) {
+            Presenter.getInstance(getContext()).getCircleDetail(circleId);
+        }
         circleObjDes = (TextView) viewRoot.findViewById(R.id.circle_obj_des);
         rankRecycler = (RecyclerView) viewRoot.findViewById(R.id.rank_recycler);
         stepRecycler = (RecyclerView) viewRoot.findViewById(R.id.step_recycler);
@@ -557,12 +561,13 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         reChargeBt.setOnClickListener(onClickListener);
         rankMoney = (RelativeLayout) viewRoot.findViewById(R.id.rank_money);
         tvRedTipsMoney = (TextView) viewRoot.findViewById(R.id.tv_red_tips_money);
-
-        mRankAdapter = new RankAdapter(getContext(), mStepRankData);
-        stepRecycler.setAdapter(mRankAdapter);
-        if (circleId != -1) {
-            Presenter.getInstance(getContext()).getCircleDetail(circleId);
-        }
+        circleDetailScroll = (BounceScrollView) viewRoot.findViewById(R.id.circle_detail_scroll);
+        circleDetailScroll.setScrollListener(new BounceScrollView.ScrollListener() {
+            @Override
+            public void scrollOritention(int l, int t, int oldl, int oldt) {
+                LocalLog.d(TAG, "l =  " + l + ",t = " + t + ",oldl= " + oldl + "," + oldt);
+            }
+        });
     }
 
 
@@ -736,10 +741,11 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         @Override
         public void response(StepRankResponse stepRankResponse) {
             LocalLog.d(TAG, "StepRankResponse() ");
-            if (stepRankResponse.getError() == 0 && isAdded()) {
+            if (stepRankResponse.getError() == 0) {
                 if (stepRecycler == null) {
                     return;
                 }
+                stepRecycler.setAdapter(new RankAdapter(getContext(), stepRankResponse.getData().getData()));
                 String sAgeFormat = mContext.getResources().getString(R.string.member_total);
                 String sFinalMember = String.format(sAgeFormat, stepRankResponse.getData().getPagenation().getTotalCount());
                 memberNumDes.setText(sFinalMember);
@@ -754,22 +760,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     getActivity().setResult(RESULT_OK, intent);
                 }
                 memberNum = stepRankResponse.getData().getPagenation().getTotalCount();
-                int pageCount = stepRankResponse.getData().getPagenation().getTotalPage();
-                LocalLog.d(TAG, "加载第 " + pageIndexStep + "," + stepRankResponse.getData().getPagenation().getPage() + "页");
-                if (pageIndexStep != stepRankResponse.getData().getPagenation().getPage()) {
-                    return;
-                }
-                if (stepRecycler.getLayoutManager() == null) {
-                    stepRecycler.setLayoutManager(stepLayoutManager);
-                }
-                mStepRankData.addAll(stepRankResponse.getData().getData());
-                mRankAdapter.notifyItemRangeInserted(mStepRankData.size() - stepRankResponse.getData().getData().size(),
-                        stepRankResponse.getData().getData().size());
-                stepBundleData = new StepBundleData(mStepRankData);
-                if (pageIndexStep < pageCount) {
-                    pageIndexStep++;
-                    Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndexStep, PAGESIZE);
-                }
+                stepBundleData = new StepBundleData(
+                        (ArrayList<StepRankResponse.DataBeanX.DataBean>)
+                                stepRankResponse.getData().getData());
             } else if (stepRankResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();
@@ -879,11 +872,8 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             Log.d(TAG, "titleStr = " + titleStr);
             setTitle(titleStr);
             /*Presenter.getInstance(getContext()).getImage(circleCover, circleDetailResponse.getData().getLogo());*/
-            pageIndexStep = 1;
-            pageIndex = 1;
-            mStepRankData.clear();
             Presenter.getInstance(getContext()).getCircleRechargeRand(circleId, pageIndex, PAGESIZE);
-            Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndexStep, PAGESIZE);
+            Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndex, PAGESIZE);
 
 
         } else if (circleDetailResponse.getError() == -1) {
@@ -975,9 +965,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 if (requestCode == REQUEST_MEMBER) {
                     LocalLog.d(TAG, "执行过成员删除操作!");
                     if (circleId != -1) {
-                        pageIndexStep = 1;
-                        mStepRankData.clear();
-                        Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndexStep, PAGESIZE);
+                        Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndex, PAGESIZE);
                     }
                 } else if (requestCode == REQUEST_EDIT) {
                     LocalLog.d(TAG, "编辑过圈子");

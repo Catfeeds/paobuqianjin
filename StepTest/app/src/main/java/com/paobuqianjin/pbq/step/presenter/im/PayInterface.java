@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.presenter.im;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.YsPayOrderResponse;
 
 /**
  * Created by pbq on 2017/12/1.
@@ -16,5 +17,7 @@ public interface PayInterface extends CallBackInterface {
     public void response(WalletPayOrderResponse walletPayOrderResponse);
     //支付宝支付
 
-    public  void response(ErrorCode errorCode);
+    public void response(YsPayOrderResponse ysPayOrderResponse);
+
+    public void response(ErrorCode errorCode);
 }

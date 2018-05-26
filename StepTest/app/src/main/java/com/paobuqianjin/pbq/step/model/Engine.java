@@ -354,6 +354,7 @@ public final class Engine {
     public final static int COMMAND_UPDATE_ADDRESS_BOOK = 85;
     public final static int COMMAND_CIRCLE_ORDER_POST_ALI = 86;
     public final static int COMMAND_CIRCLE_ORDER_POST_WALLET = 87;
+    public final static int COMMAND_CIRCLE_ORDER_POST_YSPAY = 100;
     public final static int COMMAND_FRIEND_HONOR_WEEK = 88;
     public final static int COMMAND_HONOR_DAN_DAY_STEP = 89;
     public final static int COMMAND_HONOR_WEEK_STEP = 90;
@@ -2974,6 +2975,16 @@ public final class Engine {
                         .params(wxPayOrderParam.getParams())
                         .build()
                         .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST_WALLET));
+                break;
+            case "yspay":
+                LocalLog.d(TAG,"云闪付");
+                OkHttpUtils
+                        .post()
+                        .addHeader("headtoken", getToken(mContext))
+                        .url(NetApi.urlPayOrder)
+                        .params(wxPayOrderParam.getParams())
+                        .build()
+                        .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST_YSPAY));
                 break;
         }
 

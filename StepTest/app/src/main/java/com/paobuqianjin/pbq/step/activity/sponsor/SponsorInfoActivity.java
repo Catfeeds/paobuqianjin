@@ -134,31 +134,26 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                                 if (!TextUtils.isEmpty(dataBean.getAddra()))
                                     editSponsorLocationPan.setText(dataBean.getAddra());
                                 editSponsorLocationDetailPan.setText(dataBean.getAddress());
+                                if (!TextUtils.isEmpty(dataBean.getLogo())) {
+                                    images = "";
+                                    editSponsorOutPics.setText("已上传1张");
+                                    images = dataBean.getLogo();
+                                } else {
+                                    editSponsorOutPics.setText("请上传照片");
+                                }
+
                                 List<SponsorDetailResponse.DataBean.EnvironmentImgsBean> imagesBean = dataBean.getEnvironment_imgs();
                                 if (imagesBean.size() == 0) {
-                                    editSponsorOutPics.setText("请上传照片");
-                                } else {
-                                    images = "";
-                                    for (SponsorDetailResponse.DataBean.EnvironmentImgsBean image : imagesBean) {
-                                        if (!TextUtils.isEmpty(images)) {
-                                            images += ",";
-                                        }
-                                        images += image.getUrl();
-                                    }
-                                    editSponsorOutPics.setText("已上传" + imagesBean.size() + "张");
-                                }
-                                List<SponsorDetailResponse.DataBean.GoodsImgsBean> goodsImgsBean = dataBean.getGoods_imgs();
-                                if (goodsImgsBean.size() == 0) {
                                     editSponsorInnerPics.setText("请上传照片");
                                 } else {
                                     imagesIn = "";
-                                    for (SponsorDetailResponse.DataBean.GoodsImgsBean image : goodsImgsBean) {
+                                    for (SponsorDetailResponse.DataBean.EnvironmentImgsBean image : imagesBean) {
                                         if (!TextUtils.isEmpty(imagesIn)) {
                                             imagesIn += ",";
                                         }
                                         imagesIn += image.getUrl();
                                     }
-                                    editSponsorInnerPics.setText("已上传" + goodsImgsBean.size() + "张");
+                                    editSponsorInnerPics.setText("已上传" + imagesBean.size() + "张");
                                 }
 
                             }

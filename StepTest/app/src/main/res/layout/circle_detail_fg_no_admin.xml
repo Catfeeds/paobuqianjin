@@ -9,6 +9,7 @@
         layout="@layout/bar_return_b_style"></include>
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:id="@+id/circle_detail_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/join_in"
@@ -24,12 +25,12 @@
                 android:layout_height="wrap_content">
 
 
-                    <ImageView
-                        android:id="@+id/circle_cover"
-                        android:layout_width="match_parent"
-                        android:layout_height="120dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/circle_live_default_b" />
+                <ImageView
+                    android:id="@+id/circle_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/circle_live_default_b" />
 
                 <TextView
                     android:id="@+id/circle_obj_des"
@@ -65,16 +66,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/circle_cover"
-                    android:textSize="10sp"
-                    android:textColor="@color/color_e4393c"
                     android:background="@color/color_f6f6f6"
-                    android:paddingTop="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:paddingBottom="5dp"
                     android:paddingLeft="14dp"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:visibility="gone"
-                    android:text="@string/circle_have_enouth_money"/>
+                    android:paddingTop="5dp"
+                    android:text="@string/circle_have_enouth_money"
+                    android:textColor="@color/color_e4393c"
+                    android:textSize="10sp"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -146,8 +147,7 @@
                 android:id="@+id/step_rank"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rank_money"
-                >
+                android:layout_below="@+id/rank_money">
 
                 <ImageView
                     android:id="@+id/line_rank_step"

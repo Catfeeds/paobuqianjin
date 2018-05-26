@@ -36,6 +36,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.VipNoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.YsPayOrderResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
@@ -677,6 +678,11 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             getActivity().finish();
             System.exit(0);
         }
+    }
+
+    @Override
+    public void response(YsPayOrderResponse ysPayOrderResponse) {
+
     }
 
     @Override

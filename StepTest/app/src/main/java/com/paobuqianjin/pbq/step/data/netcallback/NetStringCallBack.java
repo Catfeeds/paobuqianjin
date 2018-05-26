@@ -93,6 +93,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.YsPayOrderResponse;
 import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.BindThirdAccoutInterface;
@@ -595,6 +596,13 @@ public class NetStringCallBack extends StringCallback {
                 try {
                     WalletPayOrderResponse walletPayOrderResponse = new Gson().fromJson(s, WalletPayOrderResponse.class);
                     ((PayInterface) callBackInterface).response(walletPayOrderResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
+            } else if (command == Engine.COMMAND_CIRCLE_ORDER_POST_YSPAY) {
+                try {
+                    YsPayOrderResponse ysPayOrderResponse = new Gson().fromJson(s, YsPayOrderResponse.class);
+                    ((PayInterface) callBackInterface).response(ysPayOrderResponse);
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
                 }

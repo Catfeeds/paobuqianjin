@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/circle_pay_fg"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include
@@ -133,11 +133,65 @@
                 android:background="@color/color_ebebed" />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/yuns_pay_span"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/bank_pay_span"
+            android:background="@color/color_f8">
+
+            <ImageView
+                android:id="@+id/yuns_pay_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/yuns_icon" />
+
+            <TextView
+                android:id="@+id/yuns_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/yuns_pay_icon"
+                android:layout_alignTop="@+id/yuns_pay_icon"
+                android:layout_marginLeft="20dp"
+                android:layout_toEndOf="@+id/yuns_pay_icon"
+                android:gravity="center"
+                android:text="云闪付"
+                android:textColor="@color/color_161727"
+                android:textSize="17dp" />
+
+            <RelativeLayout
+                android:id="@+id/yuns_ico_span"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="14dp">
+
+                <ImageView
+                    android:id="@+id/yuns_pay_select"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/shape_25_dp"
+                    android:src="@drawable/selected_icon" />
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/color_ebebed" />
+        </RelativeLayout>
+
         <TextView
             android:id="@+id/pay_num_des"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/bank_pay_span"
+            android:layout_below="@+id/yuns_pay_span"
             android:layout_marginTop="20dp"
             android:background="@color/color_f8"
             android:gravity="center_vertical|left"
