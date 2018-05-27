@@ -1640,7 +1640,7 @@ public final class Engine {
 
 
     /* TODO 圈子接口*/
-    public void getCircleStepRank(int circleId, int page, int pagesize) {
+    public synchronized void getCircleStepRank(int circleId, int page, int pagesize) {
 
         String url = NetApi.urlCircleRank + "/?circleid=" + String.valueOf(circleId)
                 + "&action=step" + "&page=" + String.valueOf(page) + "&pagesize=" + pagesize;
@@ -2274,7 +2274,7 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
-                        if(o == null){
+                        if (o == null) {
                             return;
                         }
                         if (innerCallBack != null) {
@@ -2310,7 +2310,7 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
-                        if(o == null){
+                        if (o == null) {
                             return;
                         }
                         if (innerCallBack != null) {
@@ -2977,7 +2977,7 @@ public final class Engine {
                         .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST_WALLET));
                 break;
             case "yspay":
-                LocalLog.d(TAG,"云闪付");
+                LocalLog.d(TAG, "云闪付");
                 OkHttpUtils
                         .post()
                         .addHeader("headtoken", getToken(mContext))
@@ -3798,8 +3798,9 @@ public final class Engine {
     }
 
     private Gson gsonPrint = new Gson();
-    public void post(String url, Map<String,String> params, PaoCallBack callBack) {
-        if(params==null) params = new HashMap<>();
+
+    public void post(String url, Map<String, String> params, PaoCallBack callBack) {
+        if (params == null) params = new HashMap<>();
         LocalLog.d(TAG, gsonPrint.toJson(params));
         callBack.setMyUrl(url);
 
@@ -3811,9 +3812,10 @@ public final class Engine {
                 .build()
                 .execute(callBack);
     }
-    public void get(String url, Map<String,String> params, PaoCallBack callBack) {
-        if(params==null) params = new HashMap<>();
-        LocalLog.d(TAG,"提交数据："+ new Gson().toJson(params));
+
+    public void get(String url, Map<String, String> params, PaoCallBack callBack) {
+        if (params == null) params = new HashMap<>();
+        LocalLog.d(TAG, "提交数据：" + new Gson().toJson(params));
         callBack.setMyUrl(url);
 
         OkHttpUtils

@@ -210,7 +210,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
         String str = data.getExtras().getString("pay_result");
         if (!TextUtils.isEmpty(str)) {
             if (str.equalsIgnoreCase("success")) {
-
+                
             } else if (str.equalsIgnoreCase("fail")) {
 
             } else if (str.equalsIgnoreCase("cancel")) {

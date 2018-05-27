@@ -32,9 +32,16 @@ public class BounceScrollView extends ScrollView {
     private float distanceY = 0;
     private boolean upDownSlide = false; //判断上下滑动的flag
     private ScrollListener mListener;
+    private TopBottomListener topBottomListener;
+    private final static int BOTTOM = 1, TOP = 0;
+    private int topOrBottom = 0;
 
     public static interface ScrollListener {
         public void scrollOritention(int l, int t, int oldl, int oldt);
+    }
+
+    public static interface TopBottomListener {
+        public void topBottom(int topOrBottom);
     }
 
     public BounceScrollView(Context context, AttributeSet attrs) {
@@ -179,17 +186,28 @@ public class BounceScrollView extends ScrollView {
         int scrollY = getScrollY();
         // 0是顶部，后面那个是底部
         if (scrollY == 0 || scrollY == offset) {
+            if (scrollY == offset) {
+                LocalLog.d(TAG, "底部");
+                topOrBottom = BOTTOM;
+            } else {
+                LocalLog.d(TAG, "顶部");
+                topOrBottom = TOP;
+            }
             return true;
         }
         return false;
     }
 
     private void clear0() {
+        LocalLog.d(TAG, "clear0() upDownSlide = " + upDownSlide);
         lastX = 0;
         lastY = 0;
         distanceX = 0;
         distanceY = 0;
         upDownSlide = false;
+        if (topBottomListener != null) {
+            topBottomListener.topBottom(topOrBottom);
+        }
     }
 
     @Override
@@ -197,12 +215,14 @@ public class BounceScrollView extends ScrollView {
         super.onScrollChanged(l, t, oldl, oldt);
         if (mListener != null) {
             mListener.scrollOritention(l, t, oldl, oldt);
-            LocalLog.d(TAG, "upDownSlide = " + upDownSlide);
-            LocalLog.d(TAG, "l =  " + l + ",t = " + t + ",oldl= " + oldl + "," + oldt);
         }
     }
 
     public void setScrollListener(ScrollListener scrollListener) {
         this.mListener = scrollListener;
+    }
+
+    public void setTopBottomListener(TopBottomListener topBottomListener) {
+        this.topBottomListener = topBottomListener;
     }
 }

@@ -703,4 +703,5 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             popupOpWindow = null;
         }
     }
+
 }

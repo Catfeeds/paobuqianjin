@@ -262,17 +262,13 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             if (stepRankResponse.getError() == 0) {
                 this.stepRankResponse = stepRankResponse;
             }
-            numDes.setText("人员数：" + String.valueOf(stepRankResponse.getData().getData().size()));
+            numDes.setText("人员数：" + String.valueOf(stepRankResponse.getData().getPagenation().getTotalCount()));
             updateDayRank(stepRankResponse);
             Presenter.getInstance(getContext()).getCircleRankNum(circleId);
             Presenter.getInstance(getContext()).getCircleStepRankWeek(circleId, pageIndexWeek, PAGE_SIZE);
         } else if (stepRankResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
