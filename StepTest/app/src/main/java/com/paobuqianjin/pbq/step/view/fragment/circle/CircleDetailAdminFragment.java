@@ -767,7 +767,6 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     rankAdapter = new RankAdapter(getContext(), stepData);
                     stepRecycler.setAdapter(rankAdapter);
                 } else {
-                    LocalLog.d(TAG,"添加数据");
                     stepData.addAll(stepRankResponse.getData().getData());
                     rankAdapter.notifyItemRangeInserted(stepData.size() - stepRankResponse.getData().getData().size(),
                             stepRankResponse.getData().getData().size());
