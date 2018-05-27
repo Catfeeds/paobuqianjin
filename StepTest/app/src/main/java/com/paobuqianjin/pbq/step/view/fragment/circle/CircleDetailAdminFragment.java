@@ -544,7 +544,6 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         stepLayoutManager = new LinearLayoutManager(getContext());
         rankRecycler.setLayoutManager(reChargeLayoutManager);
         rankRecycler.addItemDecoration(new RechargeRankSimpleAdapter.SpaceItemDecoration(30));
-        stepRecycler.setLayoutManager(stepLayoutManager);
         stepRecycler.setHasFixedSize(true);
         stepRecycler.setNestedScrollingEnabled(false);
 
@@ -765,13 +764,14 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     stepData.addAll(stepRankResponse.getData().getData());
                     rankAdapter = new RankAdapter(getContext(), stepData);
                     stepRecycler.setAdapter(rankAdapter);
+                    stepRecycler.setLayoutManager(stepLayoutManager);
                 } else {
                     stepData.addAll(stepRankResponse.getData().getData());
                     rankAdapter.notifyItemRangeInserted(stepData.size() - stepRankResponse.getData().getData().size(),
                             stepRankResponse.getData().getData().size());
                     rankAdapter.notifyItemRangeChanged(stepData.size() - stepRankResponse.getData().getData().size(),
                             stepRankResponse.getData().getData().size());
-                    stepRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+                    stepRecycler.setLayoutManager(stepLayoutManager);
                 }
 
                 String sAgeFormat = mContext.getResources().getString(R.string.member_total);
