@@ -53,6 +53,7 @@ import com.paobuqianjin.pbq.step.view.base.adapter.RankAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.RechargeRankSimpleAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
+import com.paobuqianjin.pbq.step.view.base.view.FullyLinearLayoutManager;
 import com.paobuqianjin.pbq.step.view.base.view.Rotate3dAnimation;
 
 import java.util.ArrayList;
@@ -542,6 +543,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         reChargeLayoutManager = new LinearLayoutManager(getContext());
         reChargeLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         stepLayoutManager = new LinearLayoutManager(getContext());
+        stepRecycler.setLayoutManager(stepLayoutManager);
         rankRecycler.setLayoutManager(reChargeLayoutManager);
         rankRecycler.addItemDecoration(new RechargeRankSimpleAdapter.SpaceItemDecoration(30));
         stepRecycler.setHasFixedSize(true);
@@ -764,14 +766,12 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     stepData.addAll(stepRankResponse.getData().getData());
                     rankAdapter = new RankAdapter(getContext(), stepData);
                     stepRecycler.setAdapter(rankAdapter);
-                    stepRecycler.setLayoutManager(stepLayoutManager);
                 } else {
+                    LocalLog.d(TAG,"添加数据");
                     stepData.addAll(stepRankResponse.getData().getData());
                     rankAdapter.notifyItemRangeInserted(stepData.size() - stepRankResponse.getData().getData().size(),
                             stepRankResponse.getData().getData().size());
-                    rankAdapter.notifyItemRangeChanged(stepData.size() - stepRankResponse.getData().getData().size(),
-                            stepRankResponse.getData().getData().size());
-                    stepRecycler.setLayoutManager(stepLayoutManager);
+                    stepRecycler.setAdapter(rankAdapter);
                 }
 
                 String sAgeFormat = mContext.getResources().getString(R.string.member_total);
