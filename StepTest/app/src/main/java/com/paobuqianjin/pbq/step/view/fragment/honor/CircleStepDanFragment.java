@@ -31,6 +31,7 @@ import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -84,6 +85,8 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     TextView timesToday;
     @Bind(R.id.vip_flg)
     ImageView vipFlg;
+    @Bind(R.id.circle_scroll)
+    BounceScrollView circleScroll;
     private int circleId = -1;
     LinearLayoutManager layoutManager;
     private final static String ACTION_CIRCLE_HONOR = "com.paobuqianjin.pbq.ACTION_CIRCLE_HONOR";
@@ -93,7 +96,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     CircleStepRankWeekResponse circleStepRankWeekResponse;
     private int pageIndexDay = 1, pageDayCount = 0;
     private int pageIndexWeek = 1, pageWeekCount = 0;
-    private final static int PAGE_SIZE = 10;
+    private final static int PAGE_SIZE = 15;
     private View popCircleOpBar;
     private PopupWindow popupOpWindowTop;
     private TranslateAnimation animationCircleType;
@@ -121,7 +124,6 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-
         kingHeadIcon = (CircleImageView) viewRoot.findViewById(R.id.king_head_icon);
         kingName = (TextView) viewRoot.findViewById(R.id.king_name);
         yourDan = (TextView) viewRoot.findViewById(R.id.your_dan);
@@ -146,6 +148,25 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
         timesToday = (TextView) viewRoot.findViewById(R.id.times_today);
         timesToday.setText(DateTimeUtil.getLocalTime());
         vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
+        circleScroll = (BounceScrollView) viewRoot.findViewById(R.id.circle_scroll);
+        circleScroll.setTopBottomListener(new BounceScrollView.TopBottomListener() {
+            @Override
+            public void topBottom(int topOrBottom) {
+                if (topOrBottom == 0) {
+
+                } else if (topOrBottom == 1) {
+                    if (timeGo.getText().equals("今日")) {
+                        if (pageIndexDay <= pageDayCount) {
+                            Presenter.getInstance(getContext()).getCircleStepRankDay(circleId, pageIndexDay, PAGE_SIZE);
+                        }
+                    } else {
+                        if (pageIndexWeek <= pageWeekCount) {
+                            Presenter.getInstance(getContext()).getCircleStepRankWeek(circleId, pageIndexWeek, PAGE_SIZE);
+                        }
+                    }
+                }
+            }
+        });
         Intent intent = getActivity().getIntent();
         if (intent != null && ACTION_CIRCLE_HONOR.equals(intent.getAction())) {
             circleId = intent.getIntExtra("circleid", -1);
@@ -153,7 +174,6 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                 Presenter.getInstance(getContext()).getUserCircleRankDetail(circleId);
                 Presenter.getInstance(getContext()).getCircleDetailInCircleDan(circleId);
                 Presenter.getInstance(getContext()).getCircleStepRankDay(circleId, pageIndexDay, PAGE_SIZE);
-
             }
         }
 
@@ -176,8 +196,10 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                     if (popupOpWindowTop != null) {
                         popupOpWindowTop.dismiss();
                     }
-                    updateCircleStepRank(circleStepRankResponse);
-                    updateDayRank(stepRankResponse);
+                    if (circleStepRankWeekResponse == null) {
+                        updateCircleStepRank(circleStepRankResponse);
+                        updateDayRank(stepRankResponse);
+                    }
                     break;
                 case R.id.week_text:
                     LocalLog.d(TAG, "本周");
@@ -185,8 +207,14 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                     if (popupOpWindowTop != null) {
                         popupOpWindowTop.dismiss();
                     }
-                    updateCircleStepWeekRank(circleStepRankWeekResponse);
-                    updateWeekRank(stepRandWeekResponse);
+                    if (circleStepRankWeekResponse == null) {
+                        pageIndexWeek = 1;
+                        Presenter.getInstance(getContext()).getCircleRankNum(circleId);
+                        Presenter.getInstance(getContext()).getCircleStepRankWeek(circleId, pageIndexWeek, PAGE_SIZE);
+                    } else {
+                        updateCircleStepWeekRank(circleStepRankWeekResponse);
+                        updateWeekRank(stepRandWeekResponse);
+                    }
                     break;
             }
         }
@@ -264,8 +292,6 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             }
             numDes.setText("人员数：" + String.valueOf(stepRankResponse.getData().getPagenation().getTotalCount()));
             updateDayRank(stepRankResponse);
-            Presenter.getInstance(getContext()).getCircleRankNum(circleId);
-            Presenter.getInstance(getContext()).getCircleStepRankWeek(circleId, pageIndexWeek, PAGE_SIZE);
         } else if (stepRankResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
@@ -292,11 +318,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             circleTarget.setText("圈子目标：" + String.valueOf(circleDetailResponse.getData().getTarget()));
         } else if (circleDetailResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -310,11 +332,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             //updateWeekRank(stepRandWeekResponse);
         } else if (stepRandWeekResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
@@ -339,11 +357,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             //updateCircleStepWeekRank(circleStepRankWeekResponse);
         } else if (circleStepRankWeekResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 

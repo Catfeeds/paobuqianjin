@@ -215,6 +215,10 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                 break;
             case R.id.btn_confirm: {
                 commit();
+                if (confirm == null) {
+                    confirm = (Button) findViewById(R.id.btn_confirm);
+                    confirm.setEnabled(false);
+                }
             }
             break;
         }
@@ -379,6 +383,9 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                 }
                 finish();
             }
+        }
+        if (confirm != null) {
+            confirm.setEnabled(true);
         }
     }
 }

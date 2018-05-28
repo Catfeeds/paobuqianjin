@@ -53,7 +53,6 @@ import com.paobuqianjin.pbq.step.view.base.adapter.RankAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.RechargeRankSimpleAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
-import com.paobuqianjin.pbq.step.view.base.view.FullyLinearLayoutManager;
 import com.paobuqianjin.pbq.step.view.base.view.Rotate3dAnimation;
 
 import java.util.ArrayList;
@@ -192,6 +191,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private TextView pop_message_red_b;
     private RankAdapter rankAdapter;
     private ArrayList<StepRankResponse.DataBeanX.DataBean> stepData = new ArrayList<>();
+    private boolean isLoadingData = false;
 
     @Override
     protected int getLayoutResId() {
@@ -571,8 +571,11 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 if (topOrBottom == 0) {
 
                 } else if (topOrBottom == 1) {
-                    if (pageIndexStep <= pageCount) {
+                    if (pageIndexStep <= pageCount && !isLoadingData) {
                         Presenter.getInstance(getContext()).getCircleStepRank(circleId, pageIndexStep, PAGESIZE);
+                        isLoadingData = true;
+                    } else {
+                        LocalLog.d(TAG, "正在加载或没有更多数据了");
                     }
                 }
             }
@@ -792,6 +795,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();
             }
+            isLoadingData = false;
 
         }
 
@@ -862,7 +866,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             moneyRet.setText(sMoney);
             if (circleDetailResponse.getData().getRed_packet_status() == 4) {
                 LocalLog.d(TAG, "余额不足当天的红包");
-                tvRedTipsMoney.setVisibility(View.VISIBLE);
+                if (circleDetailResponse.getData().getIs_recharge() == 1) {
+                    tvRedTipsMoney.setVisibility(View.VISIBLE);
+                }
             }
             if (circleDetailResponse.getData().getIs_pwd() == 1) {
                 is_password = true;

@@ -1,9 +1,10 @@
 package com.paobuqianjin.pbq.step.view.fragment.pay;
 
-import android.app.ProgressDialog;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,10 +24,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CvipNoResponse;
@@ -41,19 +42,25 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.SelectFriendActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
+import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.fragment.circle.CirclePayFragment;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.unionpay.UPPayAssistEx;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -121,6 +128,18 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     RelativeLayout bankPaySpan;
     @Bind(R.id.confirm_pay)
     Button confirmPay;
+    @Bind(R.id.yuns_pay_icon)
+    ImageView yunsPayIcon;
+    @Bind(R.id.yuns_des)
+    TextView yunsDes;
+    @Bind(R.id.yuns_pay_select)
+    ImageView yunsPaySelect;
+    @Bind(R.id.yuns_ico_span)
+    RelativeLayout yunsIcoSpan;
+    @Bind(R.id.yuns_pay_span)
+    RelativeLayout yunsPaySpan;
+    @Bind(R.id.pay_vip_fg)
+    RelativeLayout payVipFg;
     private View popCircleOpBar;
     private PopupWindow popupOpWindow;
     TextView cancelText;
@@ -135,14 +154,13 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     ArrayList<UserFriendResponse.DataBeanX.DataBean> dataBeans = null;
     private LinearLayoutManager layoutManager;
     private String friends;
-    private boolean[] selectPay = new boolean[2];
-    private ImageView[] selectIcon = new ImageView[2];
+    private boolean[] selectPay = new boolean[3];
+    private ImageView[] selectIcon = new ImageView[3];
     private IWXAPI msgApi;
     private PayStyles payStyles = PayStyles.WxPay;
     private float payFloat = 0;
     private final static float VIP_FLOAT = 3.00f;
     private final static float VIP_SPONSOR_FLOAT = 25.00f;
-    private ProgressDialog dialog;
     private PayReq req;
     private VipPostParam vipPostParam = new VipPostParam();
     private String userids;
@@ -154,6 +172,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     String action = "";
     private NormalDialog normalDialog, walletLeakDialog;
     public UserInfoResponse.DataBean userInfo;
+    private String serverMode = "00";
 
     public enum PayStyles {
         WxPay,//微信支付
@@ -245,8 +264,10 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
 
         wechatPaySelect = (ImageView) viewRoot.findViewById(R.id.wechat_pay_select);
         walletPaySelect = (ImageView) viewRoot.findViewById(R.id.wallet_pay_select);
+        yunsPaySelect = (ImageView) viewRoot.findViewById(R.id.yuns_pay_select);
         selectIcon[0] = wechatPaySelect;
         selectIcon[1] = walletPaySelect;
+        selectIcon[2] = yunsPaySelect;
         payMoneyNum = (TextView) viewRoot.findViewById(R.id.pay_money_num);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
@@ -279,7 +300,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             walletPaySelect.setImageDrawable(null);
             selectPay[0] = true;
         }
-
+        UpdateUnSelect(0);
         userInfo = Presenter.getInstance(getContext()).getCurrentUser();
     }
 
@@ -289,16 +310,11 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             if (object instanceof ErrorCode) {
                 LocalLog.e(TAG, ((ErrorCode) object).getMessage());
                 Toast.makeText(getContext(), ((ErrorCode) object).getMessage(), Toast.LENGTH_SHORT).show();
-                if (dialog != null) {
-                    dialog.dismiss();
-                }
             } else if (object instanceof VipNoResponse) {
                 LocalLog.d(TAG, ((VipNoResponse) object).toString());
                 if (((VipNoResponse) object).getError() == 0) {
                     int style = getSelect();
                     if (style == 0) {
-                        dialog = ProgressDialog.show(getContext(), "微信支付",
-                                "正在提交订单");
                         PayOrderParam wxPayOrderParam = new PayOrderParam();
                         wxPayOrderParam
                                 .setPayment_type("wx")
@@ -313,8 +329,6 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                             LocalLog.d(TAG, "余额不足");
                             return;
                         }
-                        dialog = ProgressDialog.show(getContext(), "钱包支付",
-                                "正在提交订单");
                         PayOrderParam wxPayOrderParam = new PayOrderParam();
                         wxPayOrderParam
                                 .setPayment_type("wallet")
@@ -322,6 +336,9 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                                 .setVip_no(((VipNoResponse) object).getData().getVip_no())
                                 .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(payFloat);
                         Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                    } else if (style == 2) {
+                        LocalLog.d(TAG, "云闪付");
+                        payYunSanRequest("vip", ((VipNoResponse) object).getData().getVip_no());
                     } else {
                         Toast.makeText(getContext(), "其他支付方式暂时未开通,请选择微信", Toast.LENGTH_SHORT).show();
                     }
@@ -331,8 +348,6 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 if (((CvipNoResponse) object).getError() == 0) {
                     int style = getSelect();
                     if (style == 0) {
-                        dialog = ProgressDialog.show(getContext(), "微信支付",
-                                "正在提交订单");
                         PayOrderParam wxPayOrderParam = new PayOrderParam();
                         wxPayOrderParam
                                 .setPayment_type("wx")
@@ -347,8 +362,6 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                             LocalLog.d(TAG, "余额不足");
                             return;
                         }
-                        dialog = ProgressDialog.show(getContext(), "钱包支付",
-                                "正在提交订单");
                         PayOrderParam wxPayOrderParam = new PayOrderParam();
                         wxPayOrderParam
                                 .setPayment_type("wallet")
@@ -356,6 +369,9 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                                 .setCvip_no(((CvipNoResponse) object).getData().getCvip_no())
                                 .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(payFloat);
                         Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                    } else if (style == 2) {
+                        LocalLog.d(TAG, "云闪付");
+                        payYunSanRequest("cvip", ((CvipNoResponse) object).getData().getCvip_no());
                     } else {
                         Toast.makeText(getContext(), "其他支付方式暂时未开通,请选择微信", Toast.LENGTH_SHORT).show();
                     }
@@ -363,6 +379,68 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             }
         }
     };
+
+    private void payYunSanRequest(String orderType, String cOvip) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] permissions = {
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            };
+            requestPermission(orderType, cOvip, permissions);
+        }
+    }
+
+    private void requestPermission(final String orderType, final String cOvipNo, String... permissions) {
+        DefaultRationale mRationale = new DefaultRationale();
+        final PermissionSetting mSetting = new PermissionSetting(getActivity());
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        String terminalId = Utils.getIMEI(getActivity());
+                        LocalLog.d(TAG, "terminalId = " + terminalId);
+                        if (!TextUtils.isEmpty(terminalId)) {
+                            payForYunSan(terminalId, orderType, cOvipNo);
+                        } else {
+                            ToastUtils.showShortToast(getActivity(), "获取手机IMEI失败无法进行云闪付");
+                        }
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                if (AndPermission.hasAlwaysDeniedPermission(getActivity(), permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
+    }
+
+    private void payForYunSan(String terminalId, String orderType, String cOrVipNo) {
+        PayOrderParam wxPayOrderParam = new PayOrderParam();
+        if ("vip".equals(orderType)) {
+            wxPayOrderParam
+                    .setPayment_type("yspay")
+                    .setOrder_type("vip")
+                    .setVip_no(cOrVipNo)
+                    .setTerminalId(terminalId)
+                    .setDeviceType("1")
+                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(payFloat);
+            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+        } else if ("cvip".equals(orderType)) {
+            wxPayOrderParam
+                    .setPayment_type("yspay")
+                    .setOrder_type("cvip")
+                    .setCvip_no(cOrVipNo)
+                    .setTerminalId(terminalId)
+                    .setDeviceType("1")
+                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(payFloat);
+            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+        }
+    }
+
 
     private boolean canUseWallet(float payFloat) {
         boolean walletAble = true;
@@ -482,7 +560,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
         }
     }
 
-    @OnClick({R.id.add_task_friend, R.id.choice_ico_span, R.id.bank_ico_span, R.id.bank_pay_span, R.id.confirm_pay})
+    @OnClick({R.id.add_task_friend, R.id.choice_ico_span, R.id.bank_ico_span, R.id.bank_pay_span, R.id.yuns_ico_span, R.id.confirm_pay})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add_task_friend:
@@ -517,7 +595,6 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 break;
             case R.id.bank_ico_span:
                 LocalLog.d(TAG, "钱包支付");
-                LocalLog.d(TAG, "点击选择钱包");
                 if (selectPay[1]) {
                     LocalLog.d(TAG, "点击选择钱包");
                     selectPay[1] = false;
@@ -529,11 +606,33 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                     selectPay[1] = true;
                 }
                 break;
+            case R.id.yuns_ico_span:
+                LocalLog.d(TAG, "钱包支付");
+                if (selectPay[2]) {
+                    LocalLog.d(TAG, "点击选择钱包");
+                    selectPay[2] = false;
+                    selectIcon[2].setImageDrawable(null);
+                } else {
+                    LocalLog.d(TAG, "选择钱包,设置其他为未选中状态");
+                    UpdateUnSelect(2);
+                    selectIcon[2].setImageDrawable(getDrawableResource(R.drawable.selected_icon));
+                    selectPay[2] = true;
+                }
+                break;
             case R.id.confirm_pay:
                 int style = getSelect();
                 if (style == 1) {
                     popPayConfirm(getString(R.string.wallet_pay_confirm));
                 } else if (style == 0) {
+                    if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                        pay();
+                    } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
+                        paySponsorVip();
+                    } else {
+                        LocalLog.d(TAG, "Unknown op");
+                    }
+                } else if (style == 2) {
+                    LocalLog.d(TAG, "使用云闪付!");
                     if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
                         pay();
                     } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
@@ -623,9 +722,6 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     @Override
     public void response(WxPayOrderResponse wxPayOrderResponse) {
         LocalLog.d(TAG, "订单结果");
-        if (dialog != null) {
-            dialog.dismiss();
-        }
         if (wxPayOrderResponse.getError() == 0) {
             req = new PayReq();
             LocalLog.d(TAG, "微信支付返回");
@@ -657,9 +753,6 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
 
     @Override
     public void response(WalletPayOrderResponse walletPayOrderResponse) {
-        if (dialog != null) {
-            dialog.dismiss();
-        }
         if (walletPayOrderResponse.getError() == 0) {
             LocalLog.d(TAG, walletPayOrderResponse.toString());
             if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
@@ -672,25 +765,34 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             ((PaoBuPayActivity) getActivity()).showPaySuccessWallet(walletPayOrderResponse);
         } else if (walletPayOrderResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
+            exitTokenUnfect();
         }
     }
 
     @Override
     public void response(YsPayOrderResponse ysPayOrderResponse) {
+        if (isAdded()) {
+            if (ysPayOrderResponse.getError() == 0) {
+                if (ysPayOrderResponse.getData() != null) {
+                    String prePayId = ysPayOrderResponse.getData().getPrePayId();
+                    if (!TextUtils.isEmpty(prePayId)) {
+                        int result = UPPayAssistEx.startPay(getActivity(), null, null, prePayId, serverMode);
+                        if (UPPayAssistEx.PLUGIN_VALID == result) {
+                            LocalLog.d(TAG, "已经安装控件，并启动控件 ");
+                        } else if (UPPayAssistEx.PLUGIN_NOT_FOUND == result) {
+                            LocalLog.d(TAG, "尚未安装支付控件，需要先安装支付控件 ");
+                            ToastUtils.showShortToast(getActivity(), "未安装云闪付控件");
+                        }
+                    }
+                }
 
+            }
+        }
     }
 
     @Override
     public void response(ErrorCode errorCode) {
         if (errorCode.getError() != 100) {
-            if (dialog != null) {
-                dialog.dismiss();
-            }
             Toast.makeText(getContext(), errorCode.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }

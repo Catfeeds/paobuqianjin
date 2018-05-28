@@ -26,6 +26,7 @@ import com.paobuqianjin.pbq.step.presenter.im.FriendHonorDetailInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -77,9 +78,11 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     ImageView rankIcon;
     @Bind(R.id.vip_flg)
     ImageView vipFlg;
+    @Bind(R.id.friend_scroll)
+    BounceScrollView friendScroll;
 
     private int pageIndexDay = 1, pageCountDay = 0, pageIndexWeek = 1, pageCountWeek = 0;
-    private final static int PAGE_DEFAULT_SIZE = 200;
+    private final static int PAGE_DEFAULT_SIZE = 15;
     LinearLayoutManager layoutManager;
     FriendStepRankDayResponse friendStepRankDayResponse;
     FriendWeekResponse friendWeekResponse;
@@ -110,7 +113,6 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         kingHeadIcon = (CircleImageView) viewRoot.findViewById(R.id.king_head_icon);
         kingName = (TextView) viewRoot.findViewById(R.id.king_name);
         yourDan = (TextView) viewRoot.findViewById(R.id.your_dan);
@@ -120,6 +122,8 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         danDetailRecycler = (RecyclerView) viewRoot.findViewById(R.id.dan_detail_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         danDetailRecycler.setLayoutManager(layoutManager);
+        danDetailRecycler.setHasFixedSize(true);
+        danDetailRecycler.setNestedScrollingEnabled(false);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
         barTitle.setText("好友步数排行");
         barReturnDrawable = (ImageView) viewRoot.findViewById(R.id.bar_return_drawable);
@@ -131,7 +135,25 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
         buttoneLeftBar = (RelativeLayout) viewRoot.findViewById(R.id.buttone_left_bar);
         vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
         buttoneLeftBar.setOnClickListener(onClickListener);
+        friendScroll = (BounceScrollView) viewRoot.findViewById(R.id.friend_scroll);
+        friendScroll.setTopBottomListener(new BounceScrollView.TopBottomListener() {
+            @Override
+            public void topBottom(int topOrBottom) {
+                if (topOrBottom == 0) {
 
+                } else if (topOrBottom == 1) {
+                    if (timeGo.getText().equals("今日")) {
+                        if (pageIndexDay <= pageCountDay) {
+                            Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndexDay, PAGE_DEFAULT_SIZE);
+                        }
+                    } else {
+                        if (pageIndexWeek <= pageCountWeek) {
+                            Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
+                        }
+                    }
+                }
+            }
+        });
         Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndexDay, PAGE_DEFAULT_SIZE);
 
     }
@@ -162,6 +184,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                         popupOpWindowTop.dismiss();
                     }
                     if (friendWeekResponse == null) {
+                        pageIndexWeek = 1;
                         Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
                     } else {
                         updateFriendWeekResponse(friendWeekResponse);
@@ -241,7 +264,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     @Override
     public void response(FriendStepRankDayResponse friendStepRankDayResponse) {
         LocalLog.d(TAG, "FriendStepRankDayResponse() enter" + friendStepRankDayResponse.toString());
-        if (friendStepRankDayResponse.getError() == 0) {
+        if (friendStepRankDayResponse.getError() == 0 && isAdded()) {
             if (this.friendStepRankDayResponse == null) {
                 this.friendStepRankDayResponse = friendStepRankDayResponse;
 
@@ -275,15 +298,8 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
             } else {
                 LocalLog.d(TAG, "加载到更多数据....");
                 loadMoreDay(friendStepRankDayResponse);
-                if (pageIndexDay < pageCountDay) {
-                    pageIndexDay++;
-                    if (getContext() == null) {
-                        return;
-                    }
-                    Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndexDay, PAGE_DEFAULT_SIZE);
-                }
             }
-
+            pageIndexDay++;
         } else if (friendStepRankDayResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
@@ -325,27 +341,18 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     @Override
     public void response(FriendWeekResponse friendWeekResponse) {
         LocalLog.d(TAG, "FriendWeekResponse() enter" + friendWeekResponse.toString());
-        if (friendWeekResponse.getError() == 0) {
+        if (friendWeekResponse.getError() == 0 && isAdded()) {
             if (this.friendWeekResponse == null) {
                 this.friendWeekResponse = friendWeekResponse;
                 pageCountWeek = friendWeekResponse.getData().getPagenation().getTotalPage();
                 LocalLog.d(TAG, "pageIndexWeek = " + pageIndexWeek + "pageCountWeek = " + pageCountWeek);
                 //adapter.notifyDataSetChanged(friendWeekResponse.getData().getData().getMember());
                 updateFriendWeekResponse(friendWeekResponse);
-                if (pageIndexWeek >= pageCountWeek) {
-                    return;
-                } else if (pageIndexWeek < pageCountWeek) {
-                    pageIndexWeek++;
-                    Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
-                }
             } else {
                 LocalLog.d(TAG, "加载到更多数据....");
                 loadMoreWeek(friendWeekResponse);
-                if (pageIndexWeek < pageCountWeek) {
-                    pageIndexWeek++;
-                    Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
-                }
             }
+            pageIndexWeek++;
         } else if (friendWeekResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

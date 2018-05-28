@@ -229,15 +229,15 @@ public class PaoBuApplication extends MultiDexApplication {
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
             Response response = chain.proceed(request);
-            LocalLog.d(TAG, "intercept() enter" + response.toString());
-            /*在此处定义缓存策略，图片缓存，信息缓存，验证码缓存.....,按链接性质过滤,选择缓存首页信息一段时间*/
-            LocalLog.d(TAG, "String url =" + request.url());
+/*            LocalLog.d(TAG, "intercept() enter" + response.toString());
+            *//*在此处定义缓存策略，图片缓存，信息缓存，验证码缓存.....,按链接性质过滤,选择缓存首页信息一段时间*//*
+            LocalLog.d(TAG, "String url =" + request.url());*/
             long max_age = 24 * 3600;
             if (request.url().toString().startsWith(NetApi.url)) {
-                LocalLog.d(TAG, "request.url().toString() = " + request.url().toString());
+/*                LocalLog.d(TAG, "request.url().toString() = " + request.url().toString());*/
                 max_age = 0;
             }
-            LocalLog.d(TAG, "max_age = " + max_age);
+/*            LocalLog.d(TAG, "max_age = " + max_age);*/
             Response response1 = response.newBuilder()
                     .removeHeader("Pragma")
                     .removeHeader("Cache-Control")

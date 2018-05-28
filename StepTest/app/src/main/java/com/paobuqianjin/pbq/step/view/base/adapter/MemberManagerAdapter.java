@@ -39,9 +39,9 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<MemberManagerAdap
     private final static int TYPE_NORMAL_MEM_DEFAULT = 3;
 
     private ArrayList<CircleMemberResponse.DataBeanX.DataBean> mData;
-    private  CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface;
+    private CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface;
 
-    private ArrayList toOneList(ArrayList mainAdmin, ArrayList admin) {
+    public static ArrayList toOneList(ArrayList mainAdmin, ArrayList admin) {
         ArrayList adminList = new ArrayList();
         if (mainAdmin != null) {
             for (int i = 0; i < mainAdmin.size(); i++) {
@@ -56,13 +56,13 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<MemberManagerAdap
         return adminList;
     }
 
-    public MemberManagerAdapter(Context context, ArrayList mainAdmin, ArrayList admin,CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
+    public MemberManagerAdapter(Context context, ArrayList mainAdmin, ArrayList admin, CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
         mContext = context;
-        mData = toOneList(mainAdmin, admin);
+        mData = mainAdmin;
         this.opCallBackInterface = opCallBackInterface;
     }
 
-    public MemberManagerAdapter(Context context, ArrayList memberNormal,CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
+    public MemberManagerAdapter(Context context, ArrayList memberNormal, CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
         mContext = context;
         mData = memberNormal;
         this.opCallBackInterface = opCallBackInterface;
@@ -83,7 +83,7 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<MemberManagerAdap
         holder.memberListRecycler.setLayoutManager(holder.layoutManager);
 /*        holder.layoutManager.scrollToPosition(1);
         holder.layoutManager.setStackFromEnd(true);*/
-        holder.memberListRecycler.setAdapter(new CircleMemberBarAdapter(mContext, mData.get(position),opCallBackInterface));
+        holder.memberListRecycler.setAdapter(new CircleMemberBarAdapter(mContext, mData.get(position), opCallBackInterface));
     }
 
     @Override

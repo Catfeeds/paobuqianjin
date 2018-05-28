@@ -258,8 +258,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@+id/bank_pay_span"
-        android:background="@color/color_f8"
-        android:visibility="gone">
+        android:background="@color/color_f8">
 
         <ImageView
             android:id="@+id/yuns_pay_icon"

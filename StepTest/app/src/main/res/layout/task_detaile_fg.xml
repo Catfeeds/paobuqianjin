@@ -156,16 +156,15 @@
 
             <ProgressBar
                 android:id="@+id/process_run"
+                style="@style/RunProgressBar"
                 android:layout_width="match_parent"
                 android:layout_height="6dp"
-                style="@style/RunProgressBar"
-                android:progressDrawable="@drawable/bg_progress_horizontal"
                 android:layout_alignLeft="@+id/button_1"
                 android:layout_below="@+id/man_run_ico"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="12dp"
                 android:progress="10"
-                 />
+                android:progressDrawable="@drawable/bg_progress_horizontal" />
 
             <Button
 
@@ -280,12 +279,12 @@
     <Button
         android:id="@+id/button_action"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
         android:background="@color/color_b8bbbd"
         android:gravity="center"
         android:stateListAnimator="@null"
         android:text=""
         android:textColor="@color/color_f8"
-        android:textSize="36dp" />
+        android:textSize="18dp" />
 </RelativeLayout>

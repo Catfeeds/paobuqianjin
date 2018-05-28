@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
@@ -20,6 +19,7 @@ import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.TaskAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 
 import java.util.List;
 
@@ -34,6 +34,8 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
     private final static String TAG = AllTaskFragment.class.getSimpleName();
     @Bind(R.id.all_task_recycler)
     RecyclerView allTaskRecycler;
+    @Bind(R.id.task_scroll)
+    BounceScrollView taskScroll;
     private LinearLayoutManager layoutManager;
     private TaskAdapter adapter;
     ReflashInterface reflashInterface;
@@ -66,7 +68,17 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
         adapter = new TaskAdapter(getContext());
         adapter.setReceiveTaskInterface(this);
         allTaskRecycler.setAdapter(adapter);
+        taskScroll = (BounceScrollView) viewRoot.findViewById(R.id.task_scroll);
+        taskScroll.setTopBottomListener(new BounceScrollView.TopBottomListener() {
+            @Override
+            public void topBottom(int topOrBottom) {
+                if (topOrBottom == 0) {
 
+                } else if (topOrBottom == 1) {
+
+                }
+            }
+        });
     }
 
     public void setData(List<MyRecTaskRecordResponse.DataBeanX.DataBean> data) {

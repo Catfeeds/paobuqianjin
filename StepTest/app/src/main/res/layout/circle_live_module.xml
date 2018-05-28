@@ -55,7 +55,7 @@
                 android:id="@+id/iv_live_a"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:src="@drawable/hot_live" />
+                android:src="@drawable/bitmap_null" />
 
             <TextView
                 android:id="@+id/live_a_desc"
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="跑步挑战"
+                android:text=""
                 android:textColor="@color/color_f8"
                 android:textSize="12dp"
                 android:visibility="gone" />
@@ -84,7 +84,7 @@
                 android:id="@+id/iv_live_b"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:src="@drawable/hot_livei" />
+                android:src="@drawable/bitmap_null" />
 
             <TextView
                 android:id="@+id/live_b_desc"
@@ -92,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="计步挑战"
+                android:text=""
                 android:textColor="@color/color_f8"
                 android:textSize="12dp"
                 android:visibility="gone" />
