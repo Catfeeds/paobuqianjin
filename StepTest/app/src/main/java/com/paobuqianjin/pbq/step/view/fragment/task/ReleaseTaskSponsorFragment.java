@@ -328,11 +328,17 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         ToastUtils.showShortToast(getActivity(), errorCode.getMessage());
     }
 
     @Override
     public void response(TaskSponsorRespone taskSponsorRespone) {
+        if (!isAdded()) {
+            return;
+        }
         if (taskSponsorRespone.getError() == 0) {
             Bundle bundle = new Bundle();
             bundle.putString(CIRCLE_ID, taskSponsorRespone.getData().getRed_id());
@@ -348,6 +354,9 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
 
     @Override
     public void responseLocation(String city, double latitude, double longitude) {
+        if (!isAdded()) {
+            return;
+        }
         if (isFirstLocal) {
             latitudeStr = latitude;
             longitudeStr = longitude;

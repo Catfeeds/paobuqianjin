@@ -105,7 +105,7 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
                             if (getContext() == null) {
                                 return;
                             }
-                            Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                            /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                             nearByRecycler.loadMoreFinish(false, true);
                             return;
                         }
@@ -188,6 +188,9 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
     @Override
     public void response(NearByResponse nearByResponse) {
         LocalLog.d(TAG, "NearByResponse() enter" + nearByResponse);
+        if (!isAdded()) {
+            return;
+        }
         if (nearByResponse.getError() == 0) {
             if (nearByRecycler != null) {
                 notFoundData.setVisibility(View.GONE);
@@ -226,6 +229,9 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

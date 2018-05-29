@@ -76,6 +76,9 @@ public class StepDollarDetailFragment extends BaseFragment implements StepDollar
     @Override
     public void response(StepDollarDetailResponse stepDollarDetailResponse) {
         LocalLog.d(TAG, "StepDollarDetailResponse() enter " + stepDollarDetailResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (stepDollarDetailResponse.getError() == 0) {
             if (crashRecord == null) {
                 return;
@@ -105,6 +108,9 @@ public class StepDollarDetailFragment extends BaseFragment implements StepDollar
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

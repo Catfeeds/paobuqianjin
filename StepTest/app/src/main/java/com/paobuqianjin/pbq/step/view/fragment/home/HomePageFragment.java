@@ -704,6 +704,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
     @Override
     public void responseTodayIncome(IncomeResponse incomeResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (incomeResponse.getError() == 0) {
             LocalLog.d(TAG, "responseTodayIncome() enter " + incomeResponse.toString());
             if (getContext() == null) {
@@ -721,6 +724,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
     @Override
     public void responseWeather(WeatherResponse weatherResponse) {
+        if (!isAdded()) {
+            return;
+        }
         LocalLog.d(TAG, "responseWeather() enter" + weatherResponse.toString());
         if (wendu == null) {
             return;
@@ -925,6 +931,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

@@ -113,6 +113,9 @@ public class FillInCodeFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void response(PostInviteCodeResponse postInviteCodeResponse) {
         LocalLog.d(TAG, "PostInviteCodeResponse() enter " + postInviteCodeResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (postInviteCodeResponse.getError() == 0) {
             ToastUtils.showLongToast(getContext(), postInviteCodeResponse.getMessage());
             getActivity().finish();
@@ -124,6 +127,9 @@ public class FillInCodeFragment extends BaseBarStyleTextViewFragment implements 
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

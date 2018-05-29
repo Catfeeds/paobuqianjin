@@ -171,12 +171,18 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
     @Override
     public void response(ErrorCode errorCode) {
         LocalLog.d(TAG, "ErrorCode() enter " + errorCode.toString());
+        if (!isAdded()) {
+            return;
+        }
         Presenter.getInstance(getContext()).getDanList();
     }
 
     @Override
     public void response(DanListResponse danListResponse) {
         LocalLog.d(TAG, "DanListResponse() enter " + danListResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (danListResponse.getError() == 0) {
             for (int i = 0; i < danListResponse.getData().size(); i++) {
                 if (userStep > danListResponse.getData().get(i).getTarget()) {
@@ -198,6 +204,9 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
     @Override
     public void response(UserDanResponse userDanResponse) {
         LocalLog.d(TAG, "UserDanResponse() enter " + userDanResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (userDanResponse.getError() == 0) {
             if (!isAdded() || danStepDes == null) {
                 return;

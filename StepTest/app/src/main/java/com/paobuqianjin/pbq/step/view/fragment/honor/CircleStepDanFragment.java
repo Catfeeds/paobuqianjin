@@ -266,6 +266,9 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     @Override
     public void response(CircleStepRankResponse circleStepRankResponse) {
         LocalLog.d(TAG, "CircleStepRankResponse() enter " + circleStepRankResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (circleStepRankResponse.getError() == 0) {
             if (this.circleStepRankResponse == null) {
                 this.circleStepRankResponse = circleStepRankResponse;
@@ -337,6 +340,9 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
 
     @Override
     public void response(CircleDetailResponse circleDetailResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (circleDetailResponse.getError() == 0) {
             circleTarget.setText("圈子目标：" + String.valueOf(circleDetailResponse.getData().getTarget()));
         } else if (circleDetailResponse.getError() == -100) {

@@ -471,6 +471,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(DynamicCommentListResponse dynamicCommentListResponse) {
         LocalLog.d(TAG, "DynamicCommentListResponse() enter " + dynamicCommentListResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (dynamicCommentListResponse.getError() == 0) {
             pageCount = dynamicCommentListResponse.getData().getPagenation().getPage();
             if (contentDetailsListItem == null) {
@@ -493,6 +496,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
     @Override
     public void response(DynamicIdDetailResponse dynamicIdDetailResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (dynamicIdDetailResponse.getError() == 0) {
             LocalLog.d(TAG, "DynamicIdDetailResponse() enter " + dynamicIdDetailResponse.toString());
             if (dynamicUserIcon == null) {
@@ -655,6 +661,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(DynamicLikeListResponse dynamicLikeListResponse) {
         LocalLog.d(TAG, "DynamicIdDetailResponse() enter " + dynamicLikeListResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (dynamicLikeListResponse.getError() == 0) {
             if (supportPics == null) {
                 return;
@@ -678,6 +687,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(PostDynamicContentResponse postDynamicContentResponse) {
         LocalLog.d(TAG, "PostDynamicContentResponse() enter " + postDynamicContentResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (postDynamicContentResponse.getError() == 0) {
             LocalLog.d(TAG, "评论成功");
             contentNum++;
@@ -700,6 +712,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(PutVoteResponse putVoteResponse) {
         LocalLog.d(TAG, "PutVoteResponse() enter " + putVoteResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         Toast.makeText(getContext(), putVoteResponse.getMessage(), Toast.LENGTH_SHORT).show();
         if (putVoteResponse.getError() == 0) {
             if (putVoteResponse.getMessage().equals("点赞成功")) {

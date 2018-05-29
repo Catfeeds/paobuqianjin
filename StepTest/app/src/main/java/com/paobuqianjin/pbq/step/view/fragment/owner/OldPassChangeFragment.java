@@ -143,11 +143,17 @@ public class OldPassChangeFragment extends BaseBarStyleTextViewFragment implemen
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         ToastUtils.showShortToast(getContext(), errorCode.getMessage());
     }
 
     @Override
     public void response(OldPassChangeResponse oldPassChangeResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (oldPassChangeResponse.getError() == 0) {
             LocalLog.d(TAG, "密码修改成功");
             ToastUtils.showLongToast(getContext(), oldPassChangeResponse.getMessage());

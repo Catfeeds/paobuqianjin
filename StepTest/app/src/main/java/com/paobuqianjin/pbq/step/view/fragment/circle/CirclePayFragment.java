@@ -724,6 +724,9 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
 /*        if (dialog != null) {
             dialog.dismiss();
         }*/
+        if (!isAdded()) {
+            return;
+        }
         if (wxPayOrderResponse.getError() == 0) {
             LocalLog.d(TAG, "微信支付返回");
             LocalLog.d(TAG, wxPayOrderResponse.toString());
@@ -752,6 +755,9 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
 /*        if (dialog != null) {
             dialog.dismiss();
         }*/
+        if (!isAdded()) {
+            return;
+        }
         if (walletPayOrderResponse.getError() == 0) {
             Presenter.getInstance(getContext()).setTradeStyle(payAction);
             ((PaoBuPayActivity) getActivity()).showPaySuccessWallet(walletPayOrderResponse);
@@ -791,6 +797,9 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

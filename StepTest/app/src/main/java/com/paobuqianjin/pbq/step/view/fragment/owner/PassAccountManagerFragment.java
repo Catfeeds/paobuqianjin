@@ -458,6 +458,9 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
 
     @Override
     public void response(PostBindStateResponse postBindStateResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (postBindStateResponse.getError() == 0) {
             if (weChatDes == null) {
                 return;
@@ -482,7 +485,9 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
 
     @Override
     public void response(PostBindResponse postBindResponse) {
-
+        if (!isAdded()) {
+            return;
+        }
         if (postBindResponse.getError() == 0) {
             ToastUtils.showShortToast(getContext(), postBindResponse.getMessage());
             switch (postBindResponse.getMessage()) {

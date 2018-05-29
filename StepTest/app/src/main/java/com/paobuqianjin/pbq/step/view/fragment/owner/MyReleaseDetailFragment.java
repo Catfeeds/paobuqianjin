@@ -131,6 +131,9 @@ public class MyReleaseDetailFragment extends BaseBarStyleTextViewFragment implem
 
     @Override
     public void response(MyReleaseTaskDetailResponse myReleaseTaskDetailResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (myReleaseTaskDetailResponse.getError() == 0) {
             LocalLog.d(TAG, "MyReleaseTaskDetailResponse() enter " + myReleaseTaskDetailResponse.toString());
             targetStep.setText(myReleaseTaskDetailResponse.getData().getTask().getTask_name());

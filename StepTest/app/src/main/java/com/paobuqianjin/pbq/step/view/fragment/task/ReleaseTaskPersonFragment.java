@@ -174,6 +174,9 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
         @Override
         public void response(TaskReleaseResponse taskReleaseResponse) {
             LocalLog.d(TAG, "TaskReleaseResponse() enter");
+            if (!isAdded()) {
+                return;
+            }
             if (taskReleaseResponse.getError() == 0) {
                 LocalLog.d(TAG, "任务生成，去充值");
                 //getActivity().finish();
@@ -193,6 +196,9 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
 
         @Override
         public void response(ErrorCode errorCode) {
+            if (!isAdded()) {
+                return;
+            }
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();

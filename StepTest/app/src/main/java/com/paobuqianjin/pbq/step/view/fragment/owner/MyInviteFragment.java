@@ -86,7 +86,9 @@ public class MyInviteFragment extends BaseFragment {
     private InnerCallBack innerCallBack = new InnerCallBack() {
         @Override
         public void innerCallBack(Object object) {
-            LocalLog.d(TAG, object.toString());
+            if (!isAdded()) {
+                return;
+            }
             if (object instanceof ErrorCode) {
                 ToastUtils.showLongToast(getContext(), ((ErrorCode) object).getMessage());
             } else if (object instanceof InviteCodeResponse) {

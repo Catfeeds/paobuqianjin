@@ -121,7 +121,7 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
                             if (getContext() == null) {
                                 return;
                             }
-                            Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                            /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                             releaseRecord.loadMoreFinish(false, true);
                             return;
                         }
@@ -202,6 +202,9 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         LocalLog.d(TAG, "ErrorCode() enter " + errorCode.toString());
         if (errorCode.getError() == 1) {
             LocalLog.d(TAG, "没有记录");
@@ -211,6 +214,9 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(ReleaseRecordResponse releaseRecordResponse) {
         LocalLog.d(TAG, "ReleaseRecordResponse() enter " + releaseRecordResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (releaseRecordResponse.getError() == 0) {
             if (releaseRefresh.getVisibility() == View.GONE) {
                 releaseRefresh.setVisibility(View.VISIBLE);

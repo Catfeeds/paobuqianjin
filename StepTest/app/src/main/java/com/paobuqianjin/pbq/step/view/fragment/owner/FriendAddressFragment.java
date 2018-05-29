@@ -213,6 +213,9 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(FriendAddResponse friendAddResponse) {
         LocalLog.d(TAG, "FriendAddResponse() enter ");
+        if (!isAdded()) {
+            return;
+        }
         if (friendAddResponse.getError() == 0) {
             if (regAppRecycler != null) {
                 regAppRecycler.setAdapter(new LocalContactAdapter(getContext(), friendAddResponse.getData().getIn_system()));
@@ -228,6 +231,9 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
 
     @Override
     public void response(InviteMessageResponse inviteMessageResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (inviteMessageResponse.getError() == 0) {
             
         }else if(inviteMessageResponse.getError() == -100){
@@ -240,6 +246,9 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

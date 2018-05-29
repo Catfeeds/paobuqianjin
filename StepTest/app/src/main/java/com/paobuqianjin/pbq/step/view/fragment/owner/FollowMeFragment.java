@@ -175,7 +175,7 @@ public class FollowMeFragment extends BaseFragment {
                 LocalLog.d(TAG, "第一次刷新");
             } else {
                 if (pageIndexFollowMe > pageFollowMeCount) {
-                    Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                    /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                     inviteDanRecycler.loadMoreFinish(false, true);
                     return;
                 }

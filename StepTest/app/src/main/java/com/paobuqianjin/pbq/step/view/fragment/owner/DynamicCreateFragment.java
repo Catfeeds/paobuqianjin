@@ -165,6 +165,9 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void response(ReleaseDynamicResponse releaseDynamicResponse) {
         LocalLog.d(TAG, "ReleaseDynamicResponse() enter" + releaseDynamicResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (releaseDynamicResponse.getError() == 0) {
             Toast.makeText(getContext(), "发布成功", Toast.LENGTH_SHORT).show();
             getActivity().finish();
@@ -682,6 +685,9 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

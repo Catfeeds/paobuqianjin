@@ -925,6 +925,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     @Override
     public void response(LoginOutResponse loginOutResponse) {
         LocalLog.d(TAG, "LoginOutResponse()  enter");
+        if (!isAdded()) {
+            return;
+        }
         if (loginOutResponse.getError() == 0) {
             //TODO 刷新上一层界面
             Intent intent = new Intent();
@@ -940,7 +943,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     @Override
     public void response(PostRevRedPkgResponse postRevRedPkgResponse) {
         LocalLog.d(TAG, "PostRevRedPkgResponse() enter " + postRevRedPkgResponse.toString());
-
+        if (!isAdded()) {
+            return;
+        }
         if (postRevRedPkgResponse.getError() == 0) {
             if (imageView != null) {
                 imageView.clearAnimation();
@@ -969,6 +974,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     @Override
     public void response(DeleteCircleResponse deleteCircleResponse) {
         LocalLog.d(TAG, "DeleteCircleResponse() enter" + deleteCircleResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (deleteCircleResponse.getError() == 0) {
             Toast.makeText(getContext(), deleteCircleResponse.getMessage(), Toast.LENGTH_SHORT).show();
             //TODO 通知上一层UI更新
@@ -984,6 +992,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

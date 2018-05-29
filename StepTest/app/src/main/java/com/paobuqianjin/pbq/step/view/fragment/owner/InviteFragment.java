@@ -379,6 +379,9 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     @Override
     public void response(InviteDanResponse inviteDanResponse) {
         LocalLog.d(TAG, "InviteDanResponse() enter " + inviteDanResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (inviteDanResponse.getError() == 0) {
             pageCountDan = inviteDanResponse.getData().getPagenation().getTotalPage();
             LocalLog.d(TAG, "pageIndex = " + pageIndexDan + "pageCount = " + pageCountDan);
@@ -400,6 +403,9 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

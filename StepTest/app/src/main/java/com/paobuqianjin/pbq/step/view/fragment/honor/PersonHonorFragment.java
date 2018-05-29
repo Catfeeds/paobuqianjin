@@ -116,6 +116,9 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
     @Override
     public void response(FriendStepRankDayResponse friendStepRankDayResponse) {
         LocalLog.d(TAG, "FriendStepRankDayResponse() enter  " + friendStepRankDayResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (friendStepRankDayResponse.getError() == 0) {
             this.friendStepRankDayResponse = friendStepRankDayResponse;
             if (rankHonor != null && stepNum != null && rankRecyclerView != null) {
@@ -131,6 +134,9 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

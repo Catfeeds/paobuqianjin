@@ -100,10 +100,17 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     RelativeLayout incomeContainer;
     /*    @Bind(R.id.scroll_view_income)
         BounceScrollView scrollViewIncome;*/
+    @Bind(R.id.line_current)
+    ImageView lineCurrent;
+    @Bind(R.id.line_month)
+    ImageView lineMonth;
+    @Bind(R.id.line_total)
+    ImageView lineTotal;
     @Bind(R.id.wallet_refresh)
     SwipeRefreshLayout walletRefresh;
     private int mIndex;//当前收入页面索引
     private Fragment[] fragments;
+    private ImageView[] lines;
     private int mCurrentIndex = 0;
     private ToDayIncomeFragment yesterDayIncomeFragment = new ToDayIncomeFragment();
     private MonthIncomeFragment monthIncomeFragment = new MonthIncomeFragment();
@@ -189,7 +196,10 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         allIncomeFragment.listen(mLoadMoreListener);
         monthIncomeFragment.setAdapter(monthAdapter);
         monthIncomeFragment.listen(mLoadMoreListener);
-
+        lineCurrent = (ImageView) viewRoot.findViewById(R.id.line_current);
+        lineMonth = (ImageView) viewRoot.findViewById(R.id.line_month);
+        lineTotal = (ImageView) viewRoot.findViewById(R.id.line_total);
+        lines = new ImageView[]{lineCurrent, lineMonth, lineTotal};
         loadYesterData(yesterData);
         loadMonthData(monthData);
         loadAllData(allData);
@@ -283,6 +293,12 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 trx.add(R.id.fragment_container, fragments[fragmentIndex]);
             }
             trx.show(fragments[fragmentIndex]).commit();
+            if (lines[mCurrentIndex].getVisibility() == View.VISIBLE) {
+                lines[mCurrentIndex].setVisibility(View.INVISIBLE);
+            }
+            if (lines[fragmentIndex].getVisibility() != View.VISIBLE) {
+                lines[fragmentIndex].setVisibility(View.VISIBLE);
+            }
         }
         mCurrentIndex = fragmentIndex;
     }
@@ -424,7 +440,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                     LocalLog.d(TAG, "第一次刷新");
                 } else {
                     if (pageIndexYD > pageYDCount) {
-                        Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                        /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                         yesterDayIncomeFragment.loadMoreFinish(false, true);
                         return;
                     }
@@ -436,7 +452,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                     LocalLog.d(TAG, "第一次刷新");
                 } else {
                     if (pageIndexMonth > pageMonthCount) {
-                        Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                        /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                         monthIncomeFragment.loadMoreFinish(false, true);
                         return;
                     }
@@ -449,7 +465,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                     LocalLog.d(TAG, "第一次刷新");
                 } else {
                     if (pageIndexAll > pageAllCount) {
-                        Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                        /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                         allIncomeFragment.loadMoreFinish(false, true);
                         return;
                     }
@@ -461,6 +477,9 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
 
     @Override
     public void responseAll(AllIncomeResponse allIncomeResponse) {
+        if (!isAdded()) {
+            return;
+        }
         LocalLog.d(TAG, " 所有收益 responseAll() enter" + allIncomeResponse.toString());
         if (allIncomeResponse.getError() == 0) {
             if (allIncomeResponse.getData() != null) {
@@ -489,6 +508,9 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     @Override
     public void responseMonth(IncomeResponse incomeResponse) {
         LocalLog.d(TAG, " 月收益 responseMonth() enter" + incomeResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (incomeResponse.getError() == 0) {
             monthIncomeFragment.nullDataVisibleSet(View.GONE);
             if (incomeResponse.getData() != null) {
@@ -518,6 +540,9 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     @Override
     public void responseToday(IncomeResponse incomeResponse) {
         LocalLog.d(TAG, "今天收益 responseToday() enter" + incomeResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (incomeResponse.getError() == 0) {
             yesterDayIncomeFragment.nullDataVisibleSet(View.GONE);
             if (incomeDes == null) {
@@ -571,7 +596,9 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
 
     @Override
     public void response(UserInfoResponse userInfoResponse) {
-
+        if (!isAdded()) {
+            return;
+        }
         if (userInfoResponse.getError() == 0) {
             if (incomeMoney == null) {
                 return;
@@ -586,6 +613,9 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

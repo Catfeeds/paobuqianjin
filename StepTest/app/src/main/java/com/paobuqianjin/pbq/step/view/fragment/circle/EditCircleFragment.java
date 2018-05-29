@@ -552,6 +552,9 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
 
     @Override
     public void response(EditCircleResponse editCircleResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (editCircleResponse.getError() == 0) {
             LocalLog.d(TAG, "编辑成功，通知详情界面更新");
             Toast.makeText(getContext(), "编辑成功", Toast.LENGTH_SHORT).show();
@@ -563,6 +566,9 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void response(CircleTargetResponse circleTargetResponse) {
         LocalLog.d(TAG, "CircleTargetResponse() enter");
+        if (!isAdded()) {
+            return;
+        }
         if (circleTargetResponse.getError() == 0) {
             int size = circleTargetResponse.getData().size();
             LocalLog.d(TAG, "size = " + size);

@@ -159,6 +159,9 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
     private InnerCallBack sponsorInnerCallBack = new InnerCallBack() {
         @Override
         public void innerCallBack(Object object) {
+            if (!isAdded()) {
+                return;
+            }
             if (object instanceof ErrorCode) {
 
             } else if (object instanceof SponsorDetailResponse) {

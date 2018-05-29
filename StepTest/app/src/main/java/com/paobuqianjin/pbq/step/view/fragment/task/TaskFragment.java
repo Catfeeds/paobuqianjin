@@ -324,6 +324,9 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
     @Override
     public void response(MyRecTaskRecordResponse myRecvTaskRecordResponse) {
         LocalLog.d(TAG, "MyRecTaskRecordResponse() enter" + myRecvTaskRecordResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (myRecvTaskRecordResponse.getError() == 0) {
             pageCount = myRecvTaskRecordResponse.getData().getPagenation().getTotalPage();
             LocalLog.d(TAG, "pageIndex =  " + pageIndex + ",pageCount =" + pageCount);
@@ -384,6 +387,9 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             exitTokenUnfect();
         }

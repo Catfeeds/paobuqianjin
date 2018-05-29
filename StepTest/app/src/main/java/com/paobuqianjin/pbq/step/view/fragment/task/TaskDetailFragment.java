@@ -163,6 +163,9 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void response(TaskRecDetailResponse taskRecDetailResponse) {
         LocalLog.d(TAG, "TaskRecDetailResponse() enter " + taskRecDetailResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (taskRecDetailResponse.getError() == 0) {
             if (targetStep == null) {
                 return;
@@ -267,6 +270,9 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
     @Override
     public void response(RecPayResponse recPayResponse) {
         LocalLog.d(TAG, "RecPayResponse() " + recPayResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (recPayResponse.getError() == 0) {
             buttonAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_b8bbbd));
         } else if (recPayResponse.getError() == -100) {
@@ -279,6 +285,9 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

@@ -196,6 +196,9 @@ public class SponsorRedLocationFragment extends BaseBarStyleTextViewFragment imp
     @Override
     public void response(String city, double latitude, double longitude) {
         LocalLog.d(TAG,"city:"+city+",latitude:"+latitude+";longitude:"+longitude);
+        if (!isAdded()) {
+            return;
+        }
         if (isFirstLocation) {
             isFirstLocation = false;
             setMarker(latitude, longitude);

@@ -974,6 +974,9 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
 
     @Override
     public void response(UserInfoSetResponse userInfoSetResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (userInfoSetResponse.getError() == 0) {
             if (isAdded()) {
                 Toast.makeText(getContext(), "修改资料成功", Toast.LENGTH_SHORT).show();
@@ -1023,6 +1026,9 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

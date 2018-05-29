@@ -101,6 +101,15 @@
                             android:textColor="@color/color_f8"
                             android:textSize="15dp"
                             android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/line_current"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@color/color_feb913" />
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -132,6 +141,16 @@
                             android:textColor="@color/color_f8"
                             android:textSize="15dp"
                             android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/line_month"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@color/color_feb913"
+                            android:visibility="invisible" />
                     </RelativeLayout>
 
 
@@ -164,6 +183,16 @@
                             android:textColor="@color/color_f8"
                             android:textSize="15dp"
                             android:textStyle="bold" />
+
+                        <ImageView
+                            android:id="@+id/line_total"
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@color/color_feb913"
+                            android:visibility="invisible" />
                     </RelativeLayout>
                 </LinearLayout>
             </RelativeLayout>

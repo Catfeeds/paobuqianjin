@@ -127,6 +127,9 @@ public class RechargeWalletFragment extends BaseBarStyleTextViewFragment impleme
 
     @Override
     public void response(WxPayOrderResponse wxPayOrderResponse) {
+        if (!isAdded()) {
+            return;
+        }
         LocalLog.d(TAG, "订单结果");
         if (dialog != null) {
             dialog.dismiss();
@@ -157,7 +160,9 @@ public class RechargeWalletFragment extends BaseBarStyleTextViewFragment impleme
 
     @Override
     public void response(ErrorCode errorCode) {
-
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

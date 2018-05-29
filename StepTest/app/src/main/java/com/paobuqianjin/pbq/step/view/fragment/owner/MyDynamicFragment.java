@@ -336,7 +336,7 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
                             if (getContext() == null) {
                                 return;
                             }
-                            Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                            /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                             myDynamicRecycler.loadMoreFinish(false, true);
                             return;
                         }
@@ -395,6 +395,9 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
     @Override
     public void response(DynamicPersonResponse dynamicPersonResponse) {
         LocalLog.d(TAG, "DynamicPersonResponse() enter" + dynamicPersonResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (dynamicPersonResponse.getError() == 0) {
             LocalLog.d(TAG, dynamicPersonResponse.getMessage());
             pageCount = dynamicPersonResponse.getData().getPagenation().getTotalPage();
@@ -434,6 +437,9 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

@@ -263,7 +263,7 @@ public class AttentionCircleFragment extends BaseFragment {
                         LocalLog.d(TAG, "第一次刷新");
                     } else {
                         if (pageIndex > pageCount) {
-                            Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                            /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                             dynamicRecyclerView.loadMoreFinish(false, true);
                             return;
                         }
@@ -324,6 +324,9 @@ public class AttentionCircleFragment extends BaseFragment {
         @Override
         public void response(DynamicAllIndexResponse dynamicAllIndexResponse) {
             LocalLog.d(TAG, "DynamicAllIndexResponse() enter" + dynamicAllIndexResponse.toString());
+            if (!isAdded()) {
+                return;
+            }
             if (dynamicAllIndexResponse.getError() == 0) {
                 LocalLog.d(TAG, dynamicAllIndexResponse.getMessage());
                 if (!isAdded() || dynamicRecyclerView == null) {
@@ -364,6 +367,9 @@ public class AttentionCircleFragment extends BaseFragment {
 
         @Override
         public void response(ErrorCode errorCode) {
+            if (!isAdded()) {
+                return;
+            }
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();

@@ -221,7 +221,7 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
                         LocalLog.d(TAG, "第一次刷新");
                     } else {
                         if (pageIndex > pageCount) {
-                            Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                            /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                             incomeRecycler.loadMoreFinish(false, true);
                             return;
                         }
@@ -295,6 +295,9 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
     @Override
     public void response(CrashListDetailResponse crashListDetailResponse) {
         LocalLog.d(TAG, "CrashListDetailResponse() enter " + crashListDetailResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (crashListDetailResponse.getError() == 0) {
             LocalLog.d(TAG, crashListDetailResponse.getMessage());
             notFoundData.setVisibility(View.GONE);
@@ -328,6 +331,9 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

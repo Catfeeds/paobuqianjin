@@ -216,7 +216,7 @@ public class RechargeDetailFragment extends BaseFragment implements RechargeDeta
                             if (getContext() == null) {
                                 return;
                             }
-                            Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                            /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                             outDetailRecycler.loadMoreFinish(false, true);
                             return;
                         }
@@ -295,6 +295,9 @@ public class RechargeDetailFragment extends BaseFragment implements RechargeDeta
     @Override
     public void response(RechargeDetailResponse rechargeDetailResponse) {
         LocalLog.d(TAG, "RechargeDetailResponse() enter  " + rechargeDetailResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (rechargeDetailResponse.getError() == 0) {
             //outDetailRecycler.setAdapter(new IncomeAdater(getContext(), rechargeDetailResponse.getData().getData()));
             LocalLog.d(TAG, rechargeDetailResponse.getMessage());
@@ -328,6 +331,9 @@ public class RechargeDetailFragment extends BaseFragment implements RechargeDeta
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

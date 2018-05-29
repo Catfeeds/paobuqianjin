@@ -105,6 +105,9 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
 
     @Override
     public void response(MyHotCircleResponse myHotCircleResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (myHotCircleResponse.getError() == 0) {
             pageCount = myHotCircleResponse.getData().getPagenation().getTotalPage();
             totalCircle = myHotCircleResponse.getData().getPagenation().getTotalCount();
@@ -148,6 +151,9 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
 
     @Override
     public void response(CircleStepRankResponse circleStepRankResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (circleStepRankResponse.getError() == 0) {
             load(circleStepRankResponse);
         } else if (circleStepRankResponse.getError() == -100) {
@@ -209,6 +215,9 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

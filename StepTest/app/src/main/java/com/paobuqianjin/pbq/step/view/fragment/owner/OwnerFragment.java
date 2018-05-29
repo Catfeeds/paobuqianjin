@@ -350,6 +350,9 @@ public final class OwnerFragment extends BaseFragment {
     private OwnerUiInterface ownerUiInterface = new OwnerUiInterface() {
         @Override
         public void response(UserInfoResponse userInfoResponse) {
+            if (!isAdded()) {
+                return;
+            }
             if (userInfoResponse.getError() == 0) {
                 LocalLog.d(TAG, "UserInfoResponse() enter" + userInfoResponse.toString());
                 OwnerFragment.this.userInfoResponse = userInfoResponse;
@@ -401,6 +404,9 @@ public final class OwnerFragment extends BaseFragment {
 
         @Override
         public void response(ErrorCode errorCode) {
+            if (!isAdded()) {
+                return;
+            }
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();

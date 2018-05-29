@@ -243,6 +243,9 @@ public class SelectSponsorVipFragment extends BaseFragment implements SelectUser
     @Override
     public void response(UserFriendResponse userFriendResponse) {
         LocalLog.d(TAG, "UserFriendResponse() enter " + userFriendResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (userFriendResponse.getError() == 0) {
 
             if (friendScroll != null && friendScroll.getVisibility() == View.GONE) {
@@ -292,6 +295,9 @@ public class SelectSponsorVipFragment extends BaseFragment implements SelectUser
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

@@ -110,6 +110,9 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
     @Override
     public void response(ReceiveTaskResponse receiveTaskResponse) {
         LocalLog.d(TAG, "ReceiveTaskResponse() enter " + receiveTaskResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (receiveTaskResponse.getError() == 0) {
             LocalLog.d(TAG, "领取任务成功");
             if (this.reflashInterface != null) {
@@ -127,6 +130,9 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

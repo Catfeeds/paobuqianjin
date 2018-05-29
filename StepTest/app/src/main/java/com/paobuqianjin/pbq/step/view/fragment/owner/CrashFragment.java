@@ -221,6 +221,9 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     @Override
     public void response(BindCardListResponse bindCardListResponse) {
         LocalLog.d(TAG, "BindCardListResponse() enter " + bindCardListResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (bindCardListResponse.getError() == 0) {
         } else if (bindCardListResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
@@ -234,6 +237,9 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     @Override
     public void response(CrashResponse crashResponse) {
         LocalLog.d(TAG, "CrashResponse()  enter  " + crashResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (crashResponse.getError() == 0) {
             ToastUtils.showLongToast(getActivity(), crashResponse.getMessage());
             ((CrashActivity) getActivity()).showCrashResult(crashResponse);

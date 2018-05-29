@@ -475,6 +475,9 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
     private AddDeleteFollowInterface addDeleteFollowInterface = new AddDeleteFollowInterface() {
         @Override
         public void response(AddDeleteFollowResponse addDeleteFollowResponse) {
+            if (!isAdded()) {
+                return;
+            }
             if (addDeleteFollowResponse.getError() == 0) {
                 if (addDeleteFollowResponse.getMessage().equals("取消关注成功")) {
                     bntLike.setText("关注");
@@ -489,6 +492,9 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
 
         @Override
         public void response(ErrorCode errorCode) {
+            if (!isAdded()) {
+                return;
+            }
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();

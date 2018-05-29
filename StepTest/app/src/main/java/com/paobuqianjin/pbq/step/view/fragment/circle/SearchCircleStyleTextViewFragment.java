@@ -296,7 +296,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
                             if (getContext() == null) {
                                 return;
                             }
-                            Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                            /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                             recyclerView.loadMoreFinish(false, true);
                             return;
                         }
@@ -486,6 +486,9 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
 
     @Override
     public void response(ChoiceCircleResponse choiceCircleResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (choiceCircleResponse.getError() == 0) {
             if (notFoundData != null && notFoundData.getVisibility() == View.VISIBLE) {
                 swipeRefreshLayout.setVisibility(View.VISIBLE);

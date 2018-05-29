@@ -121,6 +121,9 @@ public class MyFollowFragment extends BaseFragment {
     private InnerCallBack myFollowCallBack = new InnerCallBack() {
         @Override
         public void innerCallBack(Object object) {
+            if (!isAdded()) {
+                return;
+            }
             if (object instanceof UserIdFollowResponse) {
                 if (((UserIdFollowResponse) object).getError() == 0) {
                     if (((UserIdFollowResponse) object).getData() != null) {
@@ -338,7 +341,7 @@ public class MyFollowFragment extends BaseFragment {
                 LocalLog.d(TAG, "第一次刷新");
             } else {
                 if (pageIndexMyFollow > pageMyFollowCount) {
-                    Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                   /* Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                     inviteDanRecycler.loadMoreFinish(false, true);
                     return;
                 }

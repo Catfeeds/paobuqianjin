@@ -238,6 +238,9 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
 
     @Override
     public void response(CircleMemberResponse circleMemberResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (circleMemberResponse.getError() == 0) {
             if (currentMember != 0 && circleMemberResponse.getData().getPagenation().getTotalCount() != currentMember) {
                 Intent intent = new Intent();
@@ -365,6 +368,9 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     @Override
     public void response(AddDeleteAdminResponse addDeleteAdminResponse) {
         LocalLog.d(TAG, "AddDeleteAdminResponse() enter " + addDeleteAdminResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (addDeleteAdminResponse.getError() == 0) {
             hasDelete = true;
             Toast.makeText(getContext(), addDeleteAdminResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -379,6 +385,9 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     @Override
     public void response(MemberDeleteResponse memberDeleteResponse) {
         LocalLog.d(TAG, "MemberDeleteResponse() enter" + memberDeleteResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         //TODO 更新本地UI
         if (memberDeleteResponse.getError() == 0) {
             if (deleteMemberConfim == null) {
@@ -415,6 +424,9 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

@@ -134,7 +134,7 @@ public class OwnerJoinFragment extends BaseFragment {
                     } else {
                         if (pageIndex > pageCount) {
                             if (getContext() != null) {
-                                Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                                /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                                 ownerJoinCircleLists.loadMoreFinish(false, true);
                             }
                             return;
@@ -223,6 +223,9 @@ public class OwnerJoinFragment extends BaseFragment {
     private MyJoinCircleInterface myJoinCircleInterface = new MyJoinCircleInterface() {
         @Override
         public void response(MyJoinCircleResponse myJoinCircleResponse) {
+            if (!isAdded()) {
+                return;
+            }
             if (notFoundData == null) {
                 return;
             }
@@ -276,6 +279,9 @@ public class OwnerJoinFragment extends BaseFragment {
 
         @Override
         public void response(ErrorCode errorCode) {
+            if (!isAdded()) {
+                return;
+            }
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();

@@ -129,6 +129,9 @@ public class FollowOtoFragment extends BaseFragment {
     private InnerCallBack OtoFriendCallBack = new InnerCallBack() {
         @Override
         public void innerCallBack(Object object) {
+            if (!isAdded()) {
+                return;
+            }
             if (object instanceof UserFollowOtOResponse) {
                 if (((UserFollowOtOResponse) object).getError() == 0) {
                     if (((UserFollowOtOResponse) object).getData() != null) {
@@ -379,7 +382,7 @@ public class FollowOtoFragment extends BaseFragment {
                 LocalLog.d(TAG, "第一次刷新");
             } else {
                 if (pageIndexFollowOto > pageFollowOtoCount) {
-                    Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                    /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                     inviteDanRecycler.loadMoreFinish(false, true);
                     return;
                 }

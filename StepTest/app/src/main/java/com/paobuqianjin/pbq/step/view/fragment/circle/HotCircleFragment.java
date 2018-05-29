@@ -377,6 +377,9 @@ public class HotCircleFragment extends BaseFragment {
 
         @Override
         public void response(ErrorCode errorCode) {
+            if (!isAdded()) {
+                return;
+            }
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();
@@ -385,6 +388,9 @@ public class HotCircleFragment extends BaseFragment {
 
         @Override
         public void response(MyHotCircleResponse myHotCircleResponse) {
+            if (!isAdded()) {
+                return;
+            }
             if (myHotCircleResponse.getError() == 0) {
                 LocalLog.d(TAG, "myHotCircleResponse ");
                 int size = myHotCircleResponse.getData().getData().size();
@@ -434,6 +440,9 @@ public class HotCircleFragment extends BaseFragment {
 
         @Override
         public void response(CircleTypeResponse circleTypeResponse) {
+            if (!isAdded()) {
+                return;
+            }
             LocalLog.d(TAG, "CircleTypeResponse() ");
             int size = circleTypeResponse.getData().size();
             for (int i = 0; i < size; i++) {
@@ -480,6 +489,9 @@ public class HotCircleFragment extends BaseFragment {
 
         @Override
         public void response(ChoiceCircleResponse choiceCircleResponse) {
+            if (!isAdded()) {
+                return;
+            }
             if (choiceCircleResponse.getError() == 0) {
                 LocalLog.d(TAG, " response() 更新精选圈子 size = " + choiceCircleResponse.getData().getData().size());
                 choiceCircleData = (ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData();
@@ -516,6 +528,9 @@ public class HotCircleFragment extends BaseFragment {
     private QueryRedPkgInterface queryRedPkgInterface = new QueryRedPkgInterface() {
         @Override
         public void response(ErrorCode errorCode) {
+            if (!isAdded()) {
+                return;
+            }
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();
@@ -525,6 +540,9 @@ public class HotCircleFragment extends BaseFragment {
         @Override
         public void response(CircleDetailResponse circleDetailResponse) {
             LocalLog.d(TAG, "获取圈子详情");
+            if (!isAdded()) {
+                return;
+            }
             if (circleDetailResponse.getError() == 0) {
                 if (circleDetailResponse.getData().getIs_red_packet() == 1) {
                     if (circleIdA == circleDetailResponse.getData().getId()) {

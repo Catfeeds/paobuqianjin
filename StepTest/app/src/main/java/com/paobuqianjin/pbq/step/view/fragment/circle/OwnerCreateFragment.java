@@ -149,7 +149,7 @@ public class OwnerCreateFragment extends BaseFragment {
                             if (getContext() == null) {
                                 return;
                             }
-                            Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                            /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                             ownerCreateCircleLists.loadMoreFinish(false, true);
                             return;
                         }
@@ -240,6 +240,9 @@ public class OwnerCreateFragment extends BaseFragment {
     private MyCreatCircleInterface myCreatCircleInterface = new MyCreatCircleInterface() {
         @Override
         public void response(MyCreateCircleResponse myCreateCircleResponse) {
+            if (!isAdded()) {
+                return;
+            }
             if (myCreateCircleResponse.getError() == 0) {
                 LocalLog.d(TAG, myCreateCircleResponse.getMessage());
                 if (createCircleSwipe == null) {
@@ -297,6 +300,9 @@ public class OwnerCreateFragment extends BaseFragment {
 
         @Override
         public void response(ErrorCode errorCode) {
+            if (!isAdded()) {
+                return;
+            }
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();
@@ -313,6 +319,9 @@ public class OwnerCreateFragment extends BaseFragment {
 
         @Override
         public void response(ErrorCode errorCode) {
+            if (!isAdded()) {
+                return;
+            }
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();

@@ -180,6 +180,9 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
 
     @Override
     public void response(MessageLikeResponse messageLikeResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (messageLikeResponse.getError() == 0) {
             this.messageLikeResponse = messageLikeResponse;
         } else if (messageLikeResponse.getError() == -100) {
@@ -190,6 +193,9 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
 
     @Override
     public void response(MessageSystemResponse messageSystemResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (messageSystemResponse.getError() == 0) {
             this.messageSystemResponse = messageSystemResponse;
             if (likeDesMsg == null) {
@@ -204,6 +210,9 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
 
     @Override
     public void response(MessageContentResponse messageContentResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (messageContentResponse.getError() == 0) {
             this.messageContentResponse = messageContentResponse;
             if (contentDesMsg == null) {
@@ -218,6 +227,9 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

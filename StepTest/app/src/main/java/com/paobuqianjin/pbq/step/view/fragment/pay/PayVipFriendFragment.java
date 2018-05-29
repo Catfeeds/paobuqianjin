@@ -722,6 +722,9 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     @Override
     public void response(WxPayOrderResponse wxPayOrderResponse) {
         LocalLog.d(TAG, "订单结果");
+        if (!isAdded()) {
+            return;
+        }
         if (wxPayOrderResponse.getError() == 0) {
             req = new PayReq();
             LocalLog.d(TAG, "微信支付返回");
@@ -753,6 +756,9 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
 
     @Override
     public void response(WalletPayOrderResponse walletPayOrderResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (walletPayOrderResponse.getError() == 0) {
             LocalLog.d(TAG, walletPayOrderResponse.toString());
             if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
@@ -792,6 +798,9 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
 
     @Override
     public void response(ErrorCode errorCode) {
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() != 100) {
             Toast.makeText(getContext(), errorCode.getMessage(), Toast.LENGTH_SHORT).show();
         }

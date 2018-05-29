@@ -150,7 +150,7 @@ public class MyReleaseFragment extends BaseBarStyleTextViewFragment implements M
                             if (getContext() == null) {
                                 return;
                             }
-                            Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();
+                            /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
                             myReleaseRecycler.loadMoreFinish(false, true);
                             return;
                         }
@@ -234,6 +234,9 @@ public class MyReleaseFragment extends BaseBarStyleTextViewFragment implements M
     @Override
     public void response(TaskMyReleaseResponse taskMyReleaseResponse) {
         LocalLog.d(TAG, "TaskMyReleaseResponse() enter");
+        if (!isAdded()) {
+            return;
+        }
         if (taskMyReleaseResponse.getError() == 1) {
             if (noReleaseRecord == null) {
                 return;
@@ -286,6 +289,9 @@ public class MyReleaseFragment extends BaseBarStyleTextViewFragment implements M
     @Override
     public void response(ErrorCode errorCode) {
         LocalLog.d(TAG, "ErrorCode() enter " + errorCode.getMessage());
+        if (!isAdded()) {
+            return;
+        }
         if (errorCode.getError() == 1) {
             LocalLog.d(TAG, "没有数据");
             if (myReleaseScroll.getVisibility() == View.VISIBLE) {
