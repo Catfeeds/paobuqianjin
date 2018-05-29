@@ -193,6 +193,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     private int stepAnimation = 0;
     private int SPEED_DEFAULT = 40;
     private int showStep = 0;
+    private int targetStep = 1000;
 
     private static int DEFAULT_COUNT = 25;//默认动画25
     StepProcessDrawable stepProcessDrawable;
@@ -348,7 +349,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         isBind = Presenter.getInstance(getContext()).bindService(null, TodayStepService.class);
         targetCircle = (ImageView) viewRoot.findViewById(R.id.target_step_circle);
         targetSteps = (TextView) viewRoot.findViewById(R.id.target_steps);
-        int targetStep = Presenter.getInstance(getContext()).getTarget(getContext());
+        targetStep = Presenter.getInstance(getContext()).getTarget(getContext());
         targetSteps.setText(String.valueOf(targetStep));
     }
 
@@ -644,9 +645,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
     public void drawProcess(int target, final int currentStep) {
         float angle = (float) currentStep * 360.0f / target;
-        if (angle > 360.0f) {
+        /*if (angle > 360.0f) {
             angle = 360.0f;
-        }
+        }*/
         final float angelProcess = angle;
         if (canDrawProcess) {
             targetCircle.postDelayed(new Runnable() {
@@ -669,8 +670,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
     @Override
     public void responseStepToday(final int stepToday) {
-        int targetStep = Presenter.getInstance(getContext()).getTarget(getContext());
-
         if (showStep == 0) {
             LocalLog.d(TAG, "新进入Homepage 数字变化动画 ");
             lastStep = stepToday;
