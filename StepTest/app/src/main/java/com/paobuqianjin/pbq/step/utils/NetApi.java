@@ -12,8 +12,7 @@ public class NetApi {
     获取我加入的圈子--地址：http://119.29.10.64/v1/Circle/?action=join&userid=1
     获取我创建的圈子--地址：http://119.29.10.64/v1/Circle/?action=create&userid=1*/
     public final static String url = "https://api.runmoneyin.com/";
-/*    public final static String url = "http://api-test.runmoneyin.com/";*/
-    /*public final static String url = "http://119.29.10.64/";*/
+    /*    public final static String url = "http://api-test.runmoneyin.com/";*/
     public final static String urlCircle = url + "v1/Circle";
     public final static String urlCircleRank = url + "v1/Circle/getRank";
     //TODO 圈子类型接口
@@ -159,10 +158,12 @@ public class NetApi {
     public final static String urlLocation = url + "v1/UserLocation/setLocation";
     //TODO share
     public final static String urlShare = "http://share.runmoneyin.com/in.html?";
+
+    public final static String urlShareCircle ="http://share.runmoneyin.com/dd.html?";
     //TODO 个人码
     public final static String urlShareIc = urlShare + "ic=";
     //TODO 圈子码
-    public final static String urlShareCd = urlShare + "cd=";
+    public final static String urlShareCd = urlShareCircle + "cd=";
     //TODO 商户发红包
     public final static String urlSendTaskRedBag = url + "v1/Redpacket";
     //TODO VIP

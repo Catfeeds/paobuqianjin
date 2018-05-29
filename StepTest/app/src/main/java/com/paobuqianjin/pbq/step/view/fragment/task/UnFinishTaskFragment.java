@@ -12,6 +12,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.TaskAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 
 import java.util.List;
 
@@ -27,7 +28,10 @@ public class UnFinishTaskFragment extends BaseFragment {
     @Bind(R.id.task_unfinished_recycler)
     RecyclerView taskUnfinishedRecycler;
     LinearLayoutManager layoutManager;
+    @Bind(R.id.unfinish_scroll)
+    BounceScrollView unfinishScroll;
     private TaskAdapter adapter;
+    TaskFragment.ReloadDataInterface reloadDataInterface;
 
     @Override
     protected int getLayoutResId() {
@@ -50,7 +54,23 @@ public class UnFinishTaskFragment extends BaseFragment {
         taskUnfinishedRecycler.setLayoutManager(layoutManager);
         adapter = new TaskAdapter(getContext());
         taskUnfinishedRecycler.setAdapter(adapter);
+        unfinishScroll = (BounceScrollView) viewRoot.findViewById(R.id.unfinish_scroll);
+        unfinishScroll.setTopBottomListener(new BounceScrollView.TopBottomListener() {
+            @Override
+            public void topBottom(int topOrBottom) {
+                if (topOrBottom == 0) {
+                    if (isAdded() && reloadDataInterface != null) {
+                        reloadDataInterface.reloadData();
+                    }
+                } else if (topOrBottom == 1) {
 
+                }
+            }
+        });
+    }
+
+    public void setReloadDataInterface(TaskFragment.ReloadDataInterface reloadDataInterface) {
+        this.reloadDataInterface = reloadDataInterface;
     }
 
     public void setData(List<MyRecTaskRecordResponse.DataBeanX.DataBean> data) {

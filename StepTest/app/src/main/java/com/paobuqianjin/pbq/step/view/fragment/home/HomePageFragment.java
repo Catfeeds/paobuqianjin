@@ -770,12 +770,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                                     dialog.dismiss();
                                 }
                             });
-                            dialog.setNoOnclickListener("取消", new NormalDialog.onNoOnclickListener() {
-                                @Override
-                                public void onNoClick() {
-                                    dialog.dismiss();
-                                }
-                            });
+                            dialog.setSingleBtn(true);
                             dialog.show();
                         } else {
                             if (!dialog.isShowing()) {
@@ -808,15 +803,10 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         if (dialog == null) {
                             dialog = new NormalDialog(getActivity());
                             dialog.setMessage(getString(R.string.no_buess_pkg));
+                            dialog.setSingleBtn(true);
                             dialog.setYesOnclickListener("好的", new NormalDialog.onYesOnclickListener() {
                                 @Override
                                 public void onYesClick() {
-                                    dialog.dismiss();
-                                }
-                            });
-                            dialog.setNoOnclickListener("取消", new NormalDialog.onNoOnclickListener() {
-                                @Override
-                                public void onNoClick() {
                                     dialog.dismiss();
                                 }
                             });

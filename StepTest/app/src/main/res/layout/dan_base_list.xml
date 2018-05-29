@@ -6,15 +6,16 @@
 
     <ImageView
         android:id="@+id/rank_icon"
-        android:layout_width="19dp"
+        android:layout_width="38dp"
         android:layout_height="24dp"
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
+        android:scaleType="centerInside"
         android:src="@drawable/honor_master" />
 
     <TextView
         android:id="@+id/rank_num"
-        android:layout_width="19dp"
+        android:layout_width="38dp"
         android:layout_height="24dp"
         android:layout_alignBottom="@+id/rank_icon"
         android:layout_alignLeft="@+id/rank_icon"

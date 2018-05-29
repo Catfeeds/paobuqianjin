@@ -84,6 +84,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.RecPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UpdateBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserCenterResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
@@ -1653,6 +1654,48 @@ public final class Engine {
                 .execute(new NetStringCallBack(uiStepAndLoveRankInterface, COMMAND_STEP_RANK));
     }
 
+    public synchronized void getCircleRankMoreDetail(int circleId, int page, int pagesize, final InnerCallBack innerCallBack) {
+        String url = NetApi.urlCircleRank + "/?circleid=" + String.valueOf(circleId)
+                + "&action=step" + "&page=" + String.valueOf(page) + "&pagesize=" + pagesize;
+        LocalLog.d(TAG, "圈子步数排行：getCircleStepRank() enter url = " + url);
+        OkHttpUtils
+                .get()
+                .addHeader("headtoken", getToken(mContext))
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (e != null) {
+                            e.printStackTrace();
+                            return;
+                        }
+                        if (o != null) {
+                            try {
+                                ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                if (innerCallBack != null) {
+                                    innerCallBack.innerCallBack(errorCode);
+                                }
+                            } catch (JsonSyntaxException j) {
+                                j.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        try {
+                            if (innerCallBack != null) {
+                                StepRankResponse stepRankResponse = new Gson().fromJson(s, StepRankResponse.class);
+                                innerCallBack.innerCallBack(stepRankResponse);
+                            }
+                        } catch (JsonSyntaxException j) {
+                            j.printStackTrace();
+                        }
+                    }
+                });
+    }
+
     public void getUserCircleRank(int circleId) {
         String url = NetApi.urlUserCircleRank + String.valueOf(getId(mContext)) + "&circleid=" + String.valueOf(circleId);
         LocalLog.d(TAG, "getUserCircleRank() enter  url = " + url);
@@ -1667,7 +1710,7 @@ public final class Engine {
     public void getCircleStepRankDay(int circleId, int page, int pagesize) {
         String url = NetApi.urlCircleRank + "/?circleid=" + String.valueOf(circleId)
                 + "&action=step" + "&page=" + String.valueOf(page) + "&pagesize=" + pagesize;
-        LocalLog.d(TAG, "圈子步数排行：getCircleStepRank() enter url = " + url);
+        LocalLog.d(TAG, "圈子步数排行：getCircleStepRankDay() enter url = " + url);
         OkHttpUtils
                 .get()
                 .addHeader("headtoken", getToken(mContext))

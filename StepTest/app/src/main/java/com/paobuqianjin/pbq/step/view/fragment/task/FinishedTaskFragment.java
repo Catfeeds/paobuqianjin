@@ -6,11 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyRecTaskRecordResponse;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.TaskAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 
 import java.util.List;
 
@@ -25,8 +27,11 @@ public class FinishedTaskFragment extends BaseFragment {
     private final static String TAG = FinishedTaskFragment.class.getSimpleName();
     @Bind(R.id.finished_task_recycler)
     RecyclerView finishedTaskRecycler;
+    @Bind(R.id.finish_scroll)
+    BounceScrollView finishScroll;
     private LinearLayoutManager layoutManager;
     private TaskAdapter adapter;
+    TaskFragment.ReloadDataInterface reloadDataInterface;
 
     @Override
     protected int getLayoutResId() {
@@ -41,6 +46,9 @@ public class FinishedTaskFragment extends BaseFragment {
         return rootView;
     }
 
+    public void setReloadDataInterface(TaskFragment.ReloadDataInterface reloadDataInterface) {
+        this.reloadDataInterface = reloadDataInterface;
+    }
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
@@ -49,6 +57,19 @@ public class FinishedTaskFragment extends BaseFragment {
         finishedTaskRecycler.setLayoutManager(layoutManager);
         adapter = new TaskAdapter(getContext());
         finishedTaskRecycler.setAdapter(adapter);
+        finishScroll = (BounceScrollView) viewRoot.findViewById(R.id.finish_scroll);
+        finishScroll.setTopBottomListener(new BounceScrollView.TopBottomListener() {
+            @Override
+            public void topBottom(int topOrBottom) {
+                if (topOrBottom == 0) {
+
+                } else if (topOrBottom == 1) {
+                    if (isAdded() && reloadDataInterface != null) {
+                        reloadDataInterface.reloadData();
+                    }
+                }
+            }
+        });
     }
 
     public void setData(List<MyRecTaskRecordResponse.DataBeanX.DataBean> data) {

@@ -195,6 +195,7 @@
         android:background="@color/color_f8">
 
         <TextView
+            android:id="@+id/tv_adress_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -207,6 +208,7 @@
             android:id="@+id/edit_sponsor_location_detail_pan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_adress_title"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
@@ -214,8 +216,9 @@
             android:ellipsize="end"
             android:gravity="right"
             android:hint="输入详情地址"
-            android:maxEms="32"
-            android:maxLines="1"
+            android:maxLength="32"
+            android:inputType="textMultiLine"
+            android:paddingLeft="14dp"
             android:textSize="15dp" />
 
     </RelativeLayout>

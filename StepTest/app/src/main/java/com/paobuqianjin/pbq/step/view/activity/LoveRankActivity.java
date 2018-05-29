@@ -42,12 +42,7 @@ public class LoveRankActivity extends BaseActivity {
                     loveRankFragment.setRankData(rechargeRankBundleData.getRechargeRankData());
                 }
             } else if (ACTION_STEP_RANK.equals(intent.getAction())) {
-                stepBundleData = (StepBundleData) intent.getParcelableExtra(getPackageName() + "circle_detail");
-                if (stepBundleData == null) {
-                    return;
-                } else {
-                    loveRankFragment.setRankData(stepBundleData.getStepRankData());
-                }
+
             }
         }
         getSupportFragmentManager().beginTransaction()

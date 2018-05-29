@@ -601,6 +601,27 @@
                     android:src="@drawable/more" />
 
                 <ImageView
+                    android:id="@+id/iv_three_stars"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/suggestion_desc"
+                    android:layout_marginLeft="8dp"
+                    android:src="@mipmap/three_star" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/iv_three_stars"
+                    android:layout_toLeftOf="@+id/go_to_suggestion"
+                    android:textSize="12sp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:ellipsize="end"
+                    android:text="欢迎多提建议，有大奖伺候" />
+
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_alignLeft="@+id/suggestion_desc"

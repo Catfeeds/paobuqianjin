@@ -39,10 +39,15 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
     private LinearLayoutManager layoutManager;
     private TaskAdapter adapter;
     ReflashInterface reflashInterface;
+    TaskFragment.ReloadDataInterface reloadDataInterface;
 
     @Override
     protected int getLayoutResId() {
         return R.layout.task_all_fg;
+    }
+
+    public void setReloadDataInterface(TaskFragment.ReloadDataInterface reloadDataInterface) {
+        this.reloadDataInterface = reloadDataInterface;
     }
 
     @Override
@@ -73,7 +78,9 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
             @Override
             public void topBottom(int topOrBottom) {
                 if (topOrBottom == 0) {
-
+                    if (isAdded() && reloadDataInterface != null) {
+                        reloadDataInterface.reloadData();
+                    }
                 } else if (topOrBottom == 1) {
 
                 }

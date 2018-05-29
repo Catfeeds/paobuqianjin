@@ -52,7 +52,9 @@ public class IdentityAuth1Activity extends BaseBarActivity {
 //        btnNext.setEnabled(false);
         Bundle bundle = new Bundle();
         bundle.putString("cardNum", cardNum);
-        startActivity(IdentityAuth2Activity.class, bundle);
+        Intent intent = new Intent(this, IdentityAuth2Activity.class);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, 200);
     }
     public void onScanPress(View v) {
         Intent scanIntent = new Intent(this, CardIOActivity.class);
@@ -106,6 +108,9 @@ public class IdentityAuth1Activity extends BaseBarActivity {
                 resultDisplayStr = "Scan was canceled.";
             }
             // do something with resultDisplayStr, maybe display it in a textView
+        } else if (resultCode == 200) {
+            finish();
         }
     }
+
 }

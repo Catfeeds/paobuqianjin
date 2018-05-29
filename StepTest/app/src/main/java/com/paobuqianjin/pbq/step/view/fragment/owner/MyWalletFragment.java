@@ -266,7 +266,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
      */
     private boolean isVerificationIdentity() {
 
-        return true;
+        return false;
     }
 
     /*

@@ -278,8 +278,8 @@ public class PaoBuApplication extends MultiDexApplication {
         OkHttpClient okHttpClient = null;
         if (cache != null) {
             okHttpClient = new OkHttpClient.Builder()
-                    .connectTimeout(10000L, TimeUnit.MILLISECONDS)
-                    .readTimeout(10000L, TimeUnit.MILLISECONDS)
+                    .connectTimeout(60000L, TimeUnit.MILLISECONDS)
+                    .readTimeout(60000L, TimeUnit.MILLISECONDS)
                     .addInterceptor(new LoggerInterceptor("TAG"))
                     .cookieJar(cookieJar1)
                     .addNetworkInterceptor(new CacheInterceptor())
@@ -294,8 +294,8 @@ public class PaoBuApplication extends MultiDexApplication {
                     .build();
         } else {
             okHttpClient = new OkHttpClient.Builder()
-                    .connectTimeout(10000L, TimeUnit.MILLISECONDS)
-                    .readTimeout(10000L, TimeUnit.MILLISECONDS)
+                    .connectTimeout(60000L, TimeUnit.MILLISECONDS)
+                    .readTimeout(60000L, TimeUnit.MILLISECONDS)
                     .addInterceptor(new LoggerInterceptor("TAG"))
                     .cookieJar(cookieJar1)
                     .addNetworkInterceptor(new CacheInterceptor())

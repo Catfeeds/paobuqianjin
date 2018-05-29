@@ -7,116 +7,150 @@
         android:id="@+id/suggetion_bar"
         layout="@layout/bar_return_a_style"></include>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/suggetion_bar"
-        android:background="@color/color_f3f3f5">
-
-        <TextView
-            android:id="@+id/content_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="20dp"
-            android:text="内容"
-            android:textColor="@color/color_5c5c5c"
-            android:textSize="14dp" />
-
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/suggetion_bar"
+        >
         <RelativeLayout
-            android:id="@+id/content_span"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/content_text"
-            android:layout_marginTop="14dp"
-            android:background="@color/color_f8">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/suggetion_bar"
+            android:background="@color/color_f3f3f5">
+
+            <TextView
+                android:id="@+id/content_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="20dp"
+                android:text="内容"
+                android:textColor="@color/color_5c5c5c"
+                android:textSize="14dp" />
+
+            <RelativeLayout
+                android:id="@+id/content_span"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/content_text"
+                android:layout_marginTop="14dp"
+                android:background="@color/color_f8">
+
+                <EditText
+                    android:id="@+id/content_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="@null"
+                    android:padding="15dp"
+                    android:gravity="top|left"
+                    android:textSize="14sp"
+                    android:hint="请简要描述你的问题和意见  （必须）"
+                    android:inputType="textMultiLine" />
+
+                <TextView
+                    android:id="@+id/content_bound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/content_edit"
+                    android:layout_alignParentRight="true"
+                    android:padding="8dp"
+                    android:text="0/200" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/phone_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/content_span"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="20dp"
+                android:text="联系电话" />
 
             <EditText
-                android:id="@+id/content_edit"
+                android:id="@+id/connect_us"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:background="@null"
-                android:padding="15dp"
-                android:gravity="top|left"
-                android:textSize="14sp"
-                android:inputType="textMultiLine" />
+                android:layout_height="45dp"
+                android:layout_below="@+id/content_span"
+                android:layout_marginTop="45dp"
+                android:background="@color/color_f8"
+                android:gravity="center|left"
+                android:hint="选填，便于我们与你联系"
+                android:paddingLeft="14dp"
+                android:textColorHint="@color/color_cbcacf"
+                android:inputType="phone"
+                android:textSize="14dp" />
 
-            <TextView
-                android:id="@+id/content_bound"
+            <Button
+                android:id="@+id/suggetion_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/connect_us"
+                android:layout_marginLeft="62dp"
+                android:layout_marginRight="62dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/change_color_btn"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="提交"
+                android:textColor="@color/color_f8"
+                android:textSize="18sp" />
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/content_edit"
-                android:layout_alignParentRight="true"
-                android:padding="8dp"
-                android:text="0/200" />
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/phone_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/content_span"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="20dp"
-            android:text="联系电话" />
-
-        <EditText
-            android:id="@+id/connect_us"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_below="@+id/content_span"
-            android:layout_marginTop="45dp"
-            android:background="@color/color_f8"
-            android:gravity="center|left"
-            android:hint="选填，便于我们与你联系"
-            android:paddingLeft="14dp"
-            android:textColorHint="@color/color_cbcacf"
-            android:inputType="phone"
-            android:textSize="14dp" />
-
-        <Button
-            android:id="@+id/suggetion_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/connect_us"
-            android:layout_marginLeft="62dp"
-            android:layout_marginRight="62dp"
-            android:layout_marginTop="40dp"
-            android:background="@drawable/change_color_btn"
-            android:enabled="false"
-            android:gravity="center"
-            android:text="提交"
-            android:textColor="@color/color_f8"
-            android:textSize="18sp" />
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="26dp">
-
-            <TextView
-                android:id="@+id/help"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:text="如需要帮助或获取更多信息，请关注或联系："
-                android:textColor="@color/color_8a8a8a"
-                android:visibility="invisible"
-                android:textSize="12dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/help"
+                android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:text="微信公众号 跑步钱进"
-                android:textColor="@color/color_8a8a8a"
-                android:visibility="invisible"
-                android:textSize="12dp" />
-        </RelativeLayout>
+                android:layout_marginBottom="26dp">
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/help"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="如需要帮助或获取更多信息，请关注或联系："
+                    android:textColor="@color/color_8a8a8a"
+                    android:visibility="invisible"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/help"
+                    android:text="微信公众号 跑步钱进"
+                    android:textColor="@color/color_8a8a8a"
+                    android:visibility="invisible"
+                    android:textSize="12dp" />
+
+
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_tips_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/suggetion_btn"
+                android:layout_centerHorizontal="true"
+                android:text="爱心联盟 诚邀共建"
+                android:textColor="@color/color_161727"
+                android:layout_marginTop="30dp"
+                android:paddingBottom="8dp"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/tv_tips_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:text="@string/suggest_content"
+                android:layout_below="@+id/tv_tips_title"
+                android:textColor="@color/color_8a8a8a"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:paddingBottom="40dp"
+                android:textSize="12dp"
+                 />
+        </RelativeLayout>
+    </ScrollView>
+
 </RelativeLayout>

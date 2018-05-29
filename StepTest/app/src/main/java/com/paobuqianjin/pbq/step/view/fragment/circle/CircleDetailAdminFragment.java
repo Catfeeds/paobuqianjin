@@ -691,7 +691,9 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     LocalLog.d(TAG, "查看更多");
                     Intent intentStep = new Intent();
                     intentStep.setAction(ACTION_STEP_RANK);
-                    intentStep.putExtra(getActivity().getPackageName() + "circle_detail", stepBundleData);
+                    if (circleId != -1) {
+                        intentStep.putExtra(getActivity().getPackageName() + "circle_detail", circleId);
+                    }
                     intentStep.setClass(getContext(), LoveRankActivity.class);
                     startActivity(intentStep);
                     break;

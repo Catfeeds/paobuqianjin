@@ -76,8 +76,9 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
     private final static String REC_TASK_ACTION = "com.paobuqianjin.pbq.step.REC_TASK_ACTION";
     private final static String REC_GIFT_ACTION = "com.paobuqianjin.pbq.step.REC_GIFT_ACTION";
     private int pageIndex = 1, pageCount = 0;
-    private final static int PAGESIZE = 10;
+    private final static int PAGESIZE = 50;
     MainActivity.MoneyUpdateInterface moneyUpdateInterface;
+    private boolean isReloading = false;
 
     @Override
 
@@ -104,6 +105,20 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
         return rootView;
     }
 
+    public interface ReloadDataInterface {
+        public void reloadData();
+    }
+
+    private ReloadDataInterface reloadDataInterface = new ReloadDataInterface() {
+        @Override
+        public void reloadData() {
+            if (isAdded() && !isReloading) {
+                isReloading = true;
+                loadTaskData();
+            }
+        }
+    };
+
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
@@ -111,6 +126,9 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
         finishedTaskFragment = new FinishedTaskFragment();
         unFinishTaskFragment = new UnFinishTaskFragment();
         emptyTaskFragment = new EmptyTaskFragment();
+        allTaskFragment.setReloadDataInterface(reloadDataInterface);
+        finishedTaskFragment.setReloadDataInterface(reloadDataInterface);
+        unFinishTaskFragment.setReloadDataInterface(reloadDataInterface);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
         barTvRight = (TextView) viewRoot.findViewById(R.id.bar_tv_right);
         barTitle.setText("任务列表");
@@ -222,7 +240,6 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
 
     private void onTabIndex(int fragmentIndex) {
         LocalLog.d(TAG, "onTabIndex() enter mIndex " + fragmentIndex);
-
         if (mCurrentIndex != fragmentIndex) {
             FragmentTransaction trx = getActivity().getSupportFragmentManager().beginTransaction();
             trx.hide(mFragments[mCurrentIndex]);
@@ -292,7 +309,7 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
         }
     }
 
-    private void loadTaskData() {
+    public void loadTaskData() {
         pageIndex = 1;
         pageCount = 0;
         allTaskList = null;
@@ -362,6 +379,7 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         }
+        isReloading = false;
     }
 
     @Override

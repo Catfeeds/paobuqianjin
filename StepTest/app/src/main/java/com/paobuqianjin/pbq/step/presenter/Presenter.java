@@ -544,6 +544,10 @@ public final class Presenter {
         engine.getCircleStepRank(circleId, page, pagesize);
     }
 
+    public void getCircleRankMoreDetail(int circleId, int page, int pagesize, final InnerCallBack innerCallBack) {
+        engine.getCircleRankMoreDetail(circleId, page, pagesize, innerCallBack);
+    }
+
     public void getUserCircleRank(int circleId) {
         engine.getUserCircleRank(circleId);
     }

@@ -8,13 +8,15 @@
         layout="@layout/bar_return_a_style"></include>
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:id="@+id/love_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/owner_circle_bar">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rank_recycler"

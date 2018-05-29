@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -146,7 +147,10 @@ public class IdentityAuth2Activity extends BaseBarActivity {
                             bundle.putString("personName", personName);
                             bundle.putString("phoneNum", phoneNum);
                             bundle.putString("cardNum", cardNum);
-                            startActivity(IdentityAuth3Activity.class, bundle);
+
+                            Intent intent = new Intent(IdentityAuth2Activity.this, IdentityAuth3Activity.class);
+                            intent.putExtras(bundle);
+                            startActivityForResult(intent, 200);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -159,6 +163,15 @@ public class IdentityAuth2Activity extends BaseBarActivity {
                     }
                 });
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 200) {
+            setResult(200);
+            finish();
         }
     }
 }

@@ -137,19 +137,24 @@ public class IdentityAuth3Activity extends BaseBarActivity {
                     params.put("phone", phoneNum);
                     params.put("code", etCode.getText().toString());
                     params.put("account", personName);
-                    params.put("cardNo", cardNum);
+                    params.put("cardno", cardNum.replaceAll(" ", ""));
                     params.put("idcard", personId);
+//                    params.put("couplet", personId);//支行地址
                     Presenter.getInstance(this).postPaoBuSimple(NetApi.REAL_AUTH_ALL_INFO, params, new PaoCallBack() {
                         @Override
                         protected void onSuc(String s) {
                             PaoToastUtils.showShortToast(IdentityAuth3Activity.this, "验证成功");
-                            Intent intent = new Intent(IdentityAuth3Activity.this,targetActivity);
-                            startActivity(intent);
+//                            Intent intent = new Intent(IdentityAuth3Activity.this, targetActivity);
+//                            startActivity(intent);
+                            setResult(200);
+                            finish();
                         }
 
                         @Override
                         protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                            PaoToastUtils.showShortToast(IdentityAuth3Activity.this, errorBean.getMessage());
+                            if (errorBean != null) {
+                                PaoToastUtils.showShortToast(IdentityAuth3Activity.this, errorBean.getMessage());
+                            }
                             btnNext.setEnabled(true);
                             etCode.setEnabled(true);
                         }

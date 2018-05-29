@@ -246,8 +246,10 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
             incomeRecycler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    loadData(myCrashAllData);
-                    LocalLog.d(TAG, "加载数据");
+                    if (isAdded()) {
+                        loadData(myCrashAllData);
+                        LocalLog.d(TAG, "加载数据");
+                    }
                 }
             }, 1000); // 延时模拟请求服务器。
         }
