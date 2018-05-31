@@ -685,9 +685,14 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             if (lastStep >= stepToday) {
                 toayStep.setText(String.valueOf(lastStep));
             } else {
+                float addAngle = (stepToday - lastStep) * 360.0f / targetStep;
                 lastStep = stepToday;
                 toayStep.setText(String.valueOf(lastStep));
+                if (stepProcessDrawable != null) {
+                    stepProcessDrawable.add(addAngle);
+                }
             }
+
         }
         LocalLog.d(TAG, "stepToday = " + stepToday);
         Message messageNet = Message.obtain();

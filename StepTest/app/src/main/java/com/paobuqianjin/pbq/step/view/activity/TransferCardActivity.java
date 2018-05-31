@@ -1,11 +1,11 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BankListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -36,8 +37,7 @@ import butterknife.OnClick;
 
 public class TransferCardActivity extends BaseBarActivity {
 
-    @Bind(R.id.tv_can_transfer)
-    EditText tvCanTransfer;
+    private static final int REQ_ADD_CARD = 1;
     @Bind(R.id.tv_transfer_all)
     TextView tvTransferAll;
     @Bind(R.id.rv_bank)
@@ -46,8 +46,12 @@ public class TransferCardActivity extends BaseBarActivity {
     Button btnTransfer;
     @Bind(R.id.cb_agree)
     CheckBox cbAgree;
-    private List<BankListResponse.DataBeanX.DataBean> listData = new ArrayList<>();
+    @Bind(R.id.et_can_transfer)
+    EditText etCanTransfer;
+    private List<BankListResponse.CardBean> listData = new ArrayList<>();
     private BankSelectAdapter adapter;
+    private float canCrashNum;
+    private BankListResponse.CardBean selectBean;
 
     @Override
     protected String title() {
@@ -60,17 +64,26 @@ public class TransferCardActivity extends BaseBarActivity {
         setContentView(R.layout.activity_transfer_card);
         ButterKnife.bind(this);
 
+        Intent intent = getIntent();
+        if (intent != null) {
+            canCrashNum = intent.getFloatExtra("total", 0.0f);
+            String canCrashStrFormat = getString(R.string.can_crash);
+            String canCrashStr = String.format(canCrashStrFormat, canCrashNum);
+            etCanTransfer.setHint(canCrashStr);
+        }
+
         rvBank.setLayoutManager(new LinearLayoutManager(this));
         adapter = new BankSelectAdapter(this, listData);
         adapter.setItemClickListener(new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
 
-                for (BankListResponse.DataBeanX.DataBean bean :
+                for (BankListResponse.CardBean bean :
                         listData) {
                     bean.setStatus(0);
                 }
                 listData.get(position).setStatus(1);
+                selectBean = listData.get(position);
                 adapter.notifyDataSetChanged();
             }
 
@@ -89,17 +102,16 @@ public class TransferCardActivity extends BaseBarActivity {
     }
 
     private void initData() {
-        Map<String, String> params = new HashMap<>();
-        Presenter.getInstance(this).postPaoBuSimple(NetApi.GET_BANK_LIST, params, new PaoCallBack() {
+        Presenter.getInstance(this).getPaoBuSimple(NetApi.GET_BANK_LIST, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
-                for (int i = 0; i < 4; i++) {
-                    BankListResponse.DataBeanX.DataBean bean = new BankListResponse.DataBeanX.DataBean();
-                    if (i == 2) {
-                        bean.setStatus(1);
-                    }
-                    listData.add(bean);
-                }
+                BankListResponse bankGson = new Gson().fromJson(s, BankListResponse.class);
+                listData.clear();
+                listData.addAll(bankGson.getData());
+//                for (int i = 0; i < 4; i++) {
+//                    BankListResponse.CardBean bean = new BankListResponse.CardBean();
+//                    listData.add(bean);
+//                }
                 adapter.notifyDataSetChanged();
             }
 
@@ -112,17 +124,50 @@ public class TransferCardActivity extends BaseBarActivity {
         });
     }
 
-    @OnClick({R.id.btn_transfer, R.id.tv_protocol,R.id.linear_item_more})
+    @OnClick({R.id.btn_transfer, R.id.tv_protocol, R.id.linear_item_more,R.id.tv_transfer_all})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_transfer:
+                String transferMoneyStr = etCanTransfer.getText().toString();
+                if (TextUtils.isEmpty(transferMoneyStr)) {
+                    PaoToastUtils.showShortToast(this,"请输入需要提现的金额");
+                    return;
+                }
+                if (selectBean == null) {
+                    PaoToastUtils.showShortToast(this,"请选择银行卡");
+                    return;
+                }
+                Map<String, String> params = new HashMap<>();
+                params.put("cardid", selectBean.getCardid());
+                params.put("amount", transferMoneyStr);
+                params.put("typeid", "3");
+//                params.put("wx_openid", transferMoneyStr);//app对应的openid
+                Presenter.getInstance(this).postPaoBuSimple(NetApi.TRANSFER_BY_HELIBAO, params, new PaoCallBack() {
+                    @Override
+                    protected void onSuc(String s) {
+                        Intent intent = new Intent(TransferCardActivity.this, TransferResultActivity.class);
+                        intent.putExtra("is_success", true);
+                        startActivity(intent);
+                    }
 
+                    @Override
+                    protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                        Intent intent = new Intent(TransferCardActivity.this, TransferResultActivity.class);
+                        intent.putExtra("is_success", false);
+                        startActivity(intent);
+                    }
+                });
                 break;
             case R.id.tv_protocol:
                 startActivity(AgreementActivity.class, null, false, UserServiceProtcolFragment.USER_CRASH_ACTION);
                 break;
             case R.id.linear_item_more:
-                startActivity(BindCardActivity.class, null);
+                Intent intent = new Intent(this, BindCardActivity.class);
+                intent.putExtra("name", listData.get(0).getAccount_name());
+                startActivityForResult(intent,REQ_ADD_CARD);
+                break;
+            case R.id.tv_transfer_all:
+                etCanTransfer.setText(canCrashNum + "");
                 break;
         }
     }
@@ -130,20 +175,11 @@ public class TransferCardActivity extends BaseBarActivity {
     private class BankSelectAdapter extends RecyclerView.Adapter<BankItemHolder> {
 
         private Context context;
-        private List<BankListResponse.DataBeanX.DataBean> listData;
+        private List<BankListResponse.CardBean> listData;
         private RecyclerItemClickListener.OnItemClickListener itemClickListener;
         private LayoutInflater inflater;
-        private Map<String, Integer> bankMap = null;
 
-        {
-             bankMap = new HashMap<>();
-             bankMap.put("1", R.mipmap.ic_cheat_add);
-             bankMap.put("2", R.mipmap.ic_cheat_add);
-             bankMap.put("3", R.mipmap.ic_cheat_add);
-             bankMap.put("4", R.mipmap.ic_cheat_add);
-        }
-
-        public BankSelectAdapter(Context context, List<BankListResponse.DataBeanX.DataBean> listData) {
+        public BankSelectAdapter(Context context, List<BankListResponse.CardBean> listData) {
             this.context = context;
             this.listData = listData;
             inflater = LayoutInflater.from(context);
@@ -155,15 +191,17 @@ public class TransferCardActivity extends BaseBarActivity {
 
         @Override
         public BankItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new BankItemHolder(inflater.inflate(R.layout.item_select_card, parent,false));
+            return new BankItemHolder(inflater.inflate(R.layout.item_select_card, parent, false));
         }
 
         @Override
         public void onBindViewHolder(final BankItemHolder holder, final int position) {
-            BankListResponse.DataBeanX.DataBean itemBean = listData.get(position);
+            BankListResponse.CardBean itemBean = listData.get(position);
 
             holder.cb_select.setChecked(itemBean.getStatus() == 1);
-//            holder.iv_icon.setImageResource(getBankIcon(itemBean.getTypeid()));
+            holder.tv_card_num.setText("**** " + itemBean.getBank_card().substring(itemBean.getBank_card().length() - 4));
+            holder.tv_title.setText(itemBean.getBank_name());
+            Presenter.getInstance(context).getImage(holder.iv_icon, itemBean.getImg_url());
 
             if (itemClickListener != null) {
                 holder.itemRootView.setOnClickListener(new View.OnClickListener() {
@@ -174,14 +212,6 @@ public class TransferCardActivity extends BaseBarActivity {
                 });
             }
 
-        }
-
-        private int getBankIcon(int typeid) {
-            int result = bankMap.get("2");
-            if (result == 0) {
-                result = R.mipmap.ic_notification_default;
-            }
-            return result;
         }
 
         @Override
@@ -196,12 +226,24 @@ public class TransferCardActivity extends BaseBarActivity {
         CheckBox cb_select;
         ImageView iv_icon;
         View itemRootView;
+        TextView tv_card_num;
+        TextView tv_title;
+
         public BankItemHolder(View itemView) {
             super(itemView);
             itemRootView = itemView;
             cb_select = (CheckBox) itemView.findViewById(R.id.cb_select);
             iv_icon = (ImageView) itemView.findViewById(R.id.iv_icon);
+            tv_card_num = (TextView) itemView.findViewById(R.id.tv_card_num);
+            tv_title = (TextView) itemView.findViewById(R.id.tv_title);
+        }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_ADD_CARD) {
+            initData();
         }
     }
 }

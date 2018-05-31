@@ -157,7 +157,16 @@
     <string name="add_card">添加银行卡</string>
     <string name="transfer_limite_tips">1、每笔体现金额介于100.00-200.00元之间；
         \n2、每个用户单日仅可以提现一次；
-        \n3.提现手续费为第三方平台收取，跑步钱进不收取手续费；
-        \n4.到账金额为提现金额扣除掉手续费的金额；</string>
+        \n3、提现手续费为第三方平台收取，跑步钱进不收取手续费；
+        \n4、到账金额为提现金额扣除掉手续费的金额；</string>
     <string name="suggest_content">跑步钱进是一个以帮助孩子、大人、老人远离手机游戏，鼓励大家多走路多运动为目地的软件，这是一群深具人本情怀和春秋大义的中国人用传统智慧开创的利国利民的事业。我们不要百姓一分钱，我们开创了从此以后免费打广告的模式，商家的生意更好做一些。从此以后，每个人走走路，跑跑步就可以赚到钱。 \n你也可以通过她免费鼓励您的孩子、家人、亲朋好友，这是一个百利而无一害的好事业。 \n但是我们深知自己水平有限，一定有很多不完善的地方，需要您的智慧和提醒，您的任何建议我们都会铭记！您的任何帮助都在推动我们进步！您的卓越的建议不但会让我们铭刻在心，还会给予实际的红包奖励。我们开发团队的全体同仁再次向您致敬，感谢您的关注和支持！</string>
+    <string name="error_param">参数有误-100</string>
+    <string name="bank_card_phone_num_tips">银行预留手机号是在银行办卡时填写的手机号，若遗忘、换号可联系银行客服电话处理</string>
+    <string name="i_know">知道了</string>
+    <string name="phone_desc">手机号说明</string>
+    <string name="finish">完成</string>
+    <string name="apply_suc">申请成功</string>
+    <string name="apply_fal">申请失败</string>
+    <string name="transfer_do_by_3_day">我们将在三个工作日内处理您的提现申请</string>
+    <string name="have_no_bank">还没添加银行卡</string>
 </resources>

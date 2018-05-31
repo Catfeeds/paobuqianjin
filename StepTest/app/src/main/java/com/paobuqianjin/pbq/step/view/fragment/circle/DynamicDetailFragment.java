@@ -143,7 +143,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     TextView dynamicTime;
     @Bind(R.id.vip_flg)
     ImageView vipFlg;
-//    @Bind(R.id.dynamic_id_detail)
+    //    @Bind(R.id.dynamic_id_detail)
 //    RelativeLayout dynamicIdDetail;
     private ArrayList<DynamicLikeListResponse.DataBeanX.DataBean> likeData = new ArrayList<>();
     private EmotionKeyboard mEmotionKeyboard;
@@ -283,6 +283,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
     /**
      * 原来的popEdit
+     *
      * @param postDynamicContentParam
      * @param dearName
      */
@@ -330,8 +331,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         }
 
         if (dynamicUserName.getText().toString().equals(dearName)) {
-            commentEditText.setHint("请输入评论" );
-        }else{
+            commentEditText.setHint("请输入评论");
+        } else {
             commentEditText.setHint("回复:" + dearName);
         }
         Button button = (Button) linear_comment_root.findViewById(R.id.send_content);
@@ -413,7 +414,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     };
 
     private void resetCommentEdittext() {
-        PaoToastUtils.showShortToast(getActivity(),"评论成功");
+        PaoToastUtils.showShortToast(getActivity(), "评论成功");
         commentEditText.setText("");
         hideSoftInput(commentEditText.getWindowToken());
     }
@@ -434,6 +435,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                     Presenter.getInstance(getContext()).putVote(putVoteParam);
                     break;
                 case R.id.content_number_icon:
+                case R.id.dynamic_user_name:
+                case R.id.dynamic_user_icon:
+                case R.id.dynamic_content_text:
                     LocalLog.d(TAG, "弹出发表评论输入框");
                     PostDynamicContentParam postDynamicContentParam = new PostDynamicContentParam();
                     postDynamicContentParam.
@@ -822,7 +826,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     public void postDynamicAction(PostDynamicContentParam postDynamicContentParam, String dearName, ReflashInterface reflashInterface) {
         LocalLog.d(TAG, "PostDynamicContentParam() 弹出评论框" + postDynamicContentParam.paramString());
         //popEdit(postDynamicContentParam, dearName);
-        initEditView(postDynamicContentParam,dearName);
+        initEditView(postDynamicContentParam, dearName);
         this.reflashInterface = reflashInterface;
     }
 
@@ -907,7 +911,6 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 }
             }
         });
-
 
 
         if (!popupRedPkgWindow.isShowing()) {

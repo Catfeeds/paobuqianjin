@@ -388,7 +388,7 @@
             <RelativeLayout
                 android:id="@+id/bank_span"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="45dp"
                 android:layout_below="@+id/vip_span"
                 android:visibility="visible">
 
@@ -420,13 +420,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="14dp"
                     android:src="@drawable/more" />
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/bank_desc"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/color_ebebed" />
             </RelativeLayout>
 
             <ImageView

@@ -5,14 +5,14 @@ package com.paobuqianjin.pbq.step.utils;
  */
 
 public class NetApi {
-    public final static String MOB_APPKEY = "25f155e6bccf2";
     //TODO 圈子接口
     /*TODO 获取我的圈子--地址：http://119.29.10.64/v1/Circle/?action=my&userid=1（userid用户真实id）
     获取精选圈子--地址：http://119.29.10.64/v1/Circle/?action=choice&userid=1
     获取我加入的圈子--地址：http://119.29.10.64/v1/Circle/?action=join&userid=1
     获取我创建的圈子--地址：http://119.29.10.64/v1/Circle/?action=create&userid=1*/
     public final static String url = "https://api.runmoneyin.com/";
-    /*    public final static String url = "http://api-test.runmoneyin.com/";*/
+//    public final static String url = "http://api-test.runmoneyin.com/";
+    /*public final static String url = "http://119.29.10.64/";*/
     public final static String urlCircle = url + "v1/Circle";
     public final static String urlCircleRank = url + "v1/Circle/getRank";
     //TODO 圈子类型接口
@@ -97,7 +97,8 @@ public class NetApi {
     public final static String urlPayOrder = url + "v1/Pay/createOrder";
     //TODO WX 订单查询
     public final static String urlPayResultOrderNo = url + "v1/Pay/orderQuery";
-
+    //TODO yspay订单查询
+    public final static String urlYsPayResultOrderNo = url + "v1/Pay/quickPayQuery";
     //TODO 发布任务接口
     public final static String urlTask = url + "v1/Task";
     //TODO 用户步数接口
@@ -197,7 +198,7 @@ public class NetApi {
     //TODO 个人主页复合接口
     public final static String urlUserHome = url + "v1/Zcomposite/ouserData";
     //获取银行卡所属银行
-    public final static String URL_GET_CARD_BANK = "http://apicloud.mob.com/appstore/bank/card/query";//http://apicloud.mob.com/appstore/bank/card/query?key=appkey&card=6228482898203884775
+    public final static String URL_GET_CARD_BANK =  url + "v1/UserBankCard/getBankCardData";//http://apicloud.mob.com/appstore/bank/card/query?key=appkey&card=6228482898203884775
     //获取用户认证状态
     public final static String GET_PERSON_IDENTIFY_STATE = url + "v1/userauthentication/userAuthState";
     //绑定身份证信息
@@ -205,7 +206,9 @@ public class NetApi {
     //检验验证码
     public final static String REAL_AUTH_ALL_INFO = url + "v1/userauthentication/realAuth";
     //获取银行卡列表
-    public final static String GET_BANK_LIST = url + "v1/userinviter/getMyInviter";
+    public final static String GET_BANK_LIST = url + "v1/UserBankCard/getCardList";
+    //合利宝提现
+    public final static String TRANSFER_BY_HELIBAO = url + "v1/withdraw";
     //TODO 商户会员
     public final static String urlSponsorVip = url + "v1/UserVipCus";
 }

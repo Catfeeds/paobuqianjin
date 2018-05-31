@@ -775,6 +775,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             if (ysPayOrderResponse.getError() == 0) {
                 if (ysPayOrderResponse.getData() != null) {
                     String prePayId = ysPayOrderResponse.getData().getPrePayId();
+                    Presenter.getInstance(getContext()).setOutTradeNo(ysPayOrderResponse.getData().getOrderNum());
                     if (!TextUtils.isEmpty(prePayId)) {
                         int result = UPPayAssistEx.startPay(getActivity(), null, null, prePayId, serverMode);
                         if (UPPayAssistEx.PLUGIN_VALID == result) {
@@ -785,6 +786,10 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                         }
                     }
                 }
+
+            } else if (ysPayOrderResponse.getError() == 100) {
+                exitTokenUnfect();
+            } else {
 
             }
         }

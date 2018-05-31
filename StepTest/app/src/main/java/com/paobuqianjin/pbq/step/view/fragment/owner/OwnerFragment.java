@@ -393,7 +393,7 @@ public final class OwnerFragment extends BaseFragment {
                     man.setVisibility(View.GONE);
                 }
             } else if (userInfoResponse.getError() == 1) {
-
+                exitTokenUnfect();
             } else if (userInfoResponse.getError() == -1) {
 
             } else if (userInfoResponse.getError() == -100) {

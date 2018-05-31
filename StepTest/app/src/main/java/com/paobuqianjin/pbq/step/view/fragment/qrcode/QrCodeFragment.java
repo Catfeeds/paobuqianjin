@@ -259,7 +259,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
                         }
                     }
                 }
-            }, 200);
+            }, 500);
         } catch (WriterException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException iae) {

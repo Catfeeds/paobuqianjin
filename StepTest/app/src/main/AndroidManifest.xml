@@ -28,10 +28,11 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <uses-permission
-        android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc.hce"/>
+
+    <uses-feature android:name="android.hardware.nfc.hce" />
+
     <uses-permission android:name="org.simalliance.openmobileapi.SMARTCARD" />
 
     <!--  -->
@@ -251,6 +252,7 @@
         <!-- 我的钱包 -->
         <activity
             android:name=".view.activity.MyWalletActivity"
+            android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 商家详情 -->
         <activity
@@ -509,22 +511,26 @@
         <activity android:name=".view.activity.TransferCardActivity" />
         <activity android:name=".view.activity.BindCardActivity" />
         <activity android:name=".view.activity.InputCardInfoActivity" />
-        <activity android:name=".view.activity.MyBankCardActivity"></activity>
+        <activity android:name=".view.activity.MyBankCardActivity" />
 
-        <!--合利宝-->
+        <!-- 合利宝 -->
         <uses-library
-            android:name="org.simalliance.openmobileapi" android:required="false"/>
+            android:name="org.simalliance.openmobileapi"
+            android:required="false" />
+
         <activity
             android:name="com.unionpay.uppay.PayActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" android:configChanges="orientation|keyboardHidden"
+            android:configChanges="orientation|keyboardHidden"
             android:excludeFromRecents="true"
-            android:windowSoftInputMode="adjustResize"/>
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.unionpay.UPPayWapActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".view.activity.TransferResultActivity"></activity>
     </application>
 
 </manifest>

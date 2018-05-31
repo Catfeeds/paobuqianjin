@@ -24,21 +24,34 @@
         android:layout_height="wrap_content"
         android:button="@drawable/circle_purple_selector"
         android:text="@null"
-        android:enabled="false"
         android:focusable="false"
+        android:clickable="false"
+        android:focusableInTouchMode="false"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
          />
 
     <TextView
         android:id="@+id/tv_title"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:text="@string/add_card"
         android:textColor="@color/color_161727"
-        android:layout_toLeftOf="@+id/cb_select"
         android:layout_toRightOf="@+id/iv_icon"
         android:layout_centerVertical="true"
         android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_card_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="****"
+        android:textColor="@color/color_161727"
+        android:layout_toLeftOf="@+id/cb_select"
+        android:layout_toRightOf="@+id/tv_title"
+        android:paddingLeft="8dp"
+        android:layout_centerVertical="true"
+        android:textSize="12sp" />
+
+
 </RelativeLayout>

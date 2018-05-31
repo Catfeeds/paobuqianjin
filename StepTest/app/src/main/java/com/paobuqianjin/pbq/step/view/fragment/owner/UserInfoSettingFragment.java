@@ -228,7 +228,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 String paramStr = new Gson().toJson(userInfo);
                 putUserInfoParam = new Gson().fromJson(paramStr, PutUserInfoParam.class);
 
-                Presenter.getInstance(getContext()).getPlaceErrorImage(headIco, userInfo.getAvatar(),R.drawable.default_head_ico,R.drawable.default_head_ico);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(headIco, userInfo.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                 dearNameSetting.setText(userInfo.getNickname());
                 if (userInfo.getSex() == 1) {
                     maleText.setText("男");
@@ -494,7 +494,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 LocalLog.d(TAG, "path = " + path);
                 ResultHelper result = null;
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                result = putObjectSample.start(path);
+                result = putObjectSample.start(path, getActivity().getApplicationContext());
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
                 if (result != null && result.cosXmlResult != null) {
                     url = result.cosXmlResult.accessUrl;
@@ -729,7 +729,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 LocalLog.d(TAG, "distance = " + distance);
                 if (distance > 0) {
                     LocalLog.d(TAG, "unEffect time");
-                    ToastUtils.showShortToast(getContext(),"请选择正确的生日");
+                    ToastUtils.showShortToast(getContext(), "请选择正确的生日");
                     popupSelectWindow.dismiss();
                     return;
                 }

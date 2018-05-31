@@ -12,7 +12,9 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayResultResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.YsPayResultResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
@@ -199,6 +201,29 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
         }
     }
 
+    private InnerCallBack ySpayCallback = new InnerCallBack() {
+        @Override
+        public void innerCallBack(Object object) {
+            if (!PaoBuPayActivity.this.isFinishing()) {
+                if (object instanceof ErrorCode) {
+
+                } else if (object instanceof YsPayResultResponse) {
+                    if (((YsPayResultResponse) object).getError() == 0) {
+                        PaySuccessFragment paySuccessFragment = new PaySuccessFragment();
+                        paySuccessFragment.setPayNum(Float.parseFloat(((YsPayResultResponse) object).getData().getTotal_fee()));
+                        getSupportFragmentManager().beginTransaction()
+                                .hide(circlePayFragment)
+                                .hide(payVipFriendFragment)
+                                .add(R.id.pay_container, paySuccessFragment)
+                                .show(paySuccessFragment)
+                                .commit();
+                        setResult(RESULT_OK);
+                    }
+                }
+            }
+        }
+    };
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -210,9 +235,10 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
         String str = data.getExtras().getString("pay_result");
         if (!TextUtils.isEmpty(str)) {
             if (str.equalsIgnoreCase("success")) {
-                ToastUtils.showShortToast(this, "支付成功！");
+                String outTradeNo = Presenter.getInstance(this).getOutTradeNo();
+                Presenter.getInstance(this).postYsPayResultByOrderNo(outTradeNo, ySpayCallback);
             } else if (str.equalsIgnoreCase("fail")) {
-
+                ToastUtils.showShortToast(this, "支付失败！");
             } else if (str.equalsIgnoreCase("cancel")) {
                 ToastUtils.showShortToast(this, "已取消本次支付！");
             }

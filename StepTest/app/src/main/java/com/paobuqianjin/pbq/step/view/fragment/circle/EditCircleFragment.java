@@ -613,7 +613,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         }
     }
 
-    @OnClick({R.id.stand_circle_pan, R.id.logo_circle_pan, R.id.edit_circle_confim,R.id.password_circle_switch})
+    @OnClick({R.id.stand_circle_pan, R.id.logo_circle_pan, R.id.edit_circle_confim, R.id.password_circle_switch})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.stand_circle_pan:
@@ -669,7 +669,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                 LocalLog.d(TAG, "path = " + path);
                 ResultHelper result = null;
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                result = putObjectSample.start(path);
+                result = putObjectSample.start(path, getActivity().getApplicationContext());
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
                 url = result.cosXmlResult.accessUrl;
                 LocalLog.d(TAG, "url = " + url);

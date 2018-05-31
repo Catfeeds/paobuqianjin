@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.presenter;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -42,6 +43,7 @@ import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.im.CallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
+import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.squareup.picasso.NetworkPolicy;
 
@@ -626,6 +628,11 @@ public final class Presenter {
         engine.getWxPayResultByOrderNo(orderTradeNo, payment_type);
     }
 
+    //TODO 云闪付订单查询
+    public void postYsPayResultByOrderNo(String orderTraderNo, InnerCallBack innerCallBack) {
+        engine.postYsPayResultByOrderNo(orderTraderNo, innerCallBack);
+    }
+
     //TODO 三方登录
     public void postThirdPartyLogin(ThirdPartyLoginParam thirdPartyLoginParam) {
         engine.PostThirdPartyLogin(thirdPartyLoginParam);
@@ -823,6 +830,9 @@ public final class Presenter {
         return currentUser;
     }
 
+    public void getIdentifyStatu(final Activity activity, final OnIdentifyLis onIdentifyLis) {
+        engine.getVerifyIdentify(activity,onIdentifyLis);
+    }
     public void setCurrentUser(UserInfoResponse.DataBean currentUser) {
         this.currentUser = currentUser;
     }

@@ -14,7 +14,7 @@ public class BankListResponse {
 
     private int error;
     private String message;
-    private DataBeanX data;
+    private List<CardBean> data;
 
     public int getError() {
         return error;
@@ -32,13 +32,6 @@ public class BankListResponse {
         this.message = message;
     }
 
-    public DataBeanX getData() {
-        return data;
-    }
-
-    public void setData(DataBeanX data) {
-        this.data = data;
-    }
 
     @Override
     public String toString() {
@@ -49,194 +42,77 @@ public class BankListResponse {
                 '}';
     }
 
-    public static class DataBeanX {
-        /**
-         * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":4}
-         * data : [{"id":1,"userid":1,"typeid":1,"amount":"2000.00","actual_amount":"1980","status":0,"create_time":1513755628},{"id":31,"userid":1,"typeid":2,"amount":"240.00","actual_amount":"237.6","status":0,"create_time":1514186667},{"id":32,"userid":1,"typeid":1,"amount":"24.00","actual_amount":"23.76","status":0,"create_time":1514186628},{"id":35,"userid":1,"typeid":1,"amount":"1.00","actual_amount":"1","status":0,"create_time":1517816173}]
-         */
 
-        private PagenationBean pagenation;
-        private List<DataBean> data;
+    public static class CardBean {
+        /* "cardid":5,
+        "userid":11125,
+        "account_name":"黄钦平",
+        "bank_name":"光大银行",
+        "bank_code":"CEB",
+        "bank_card":"6226660405864808",
+        "img_url":"",
+        "region":"",
+        "couplet":"",
+        "is_bind":1,
+        "bind_time":1527585083,
+        "unbind_time":0*/
+        private String cardid;
+        private String account_name;
+        private String bank_name;
+        private String bank_card;
+        private String img_url;
+        private String bank_code;
+        private String region;
+        private String couplet;
+        private String is_bind;
+        private int status;//选中状态
 
-        public PagenationBean getPagenation() {
-            return pagenation;
+        public int getStatus() {
+            return status;
         }
 
-        public void setPagenation(PagenationBean pagenation) {
-            this.pagenation = pagenation;
+        public void setStatus(int status) {
+            this.status = status;
         }
 
-        public List<DataBean> getData() {
-            return data;
+        public String getCardid() {
+            return cardid;
         }
 
-        public void setData(List<DataBean> data) {
-            this.data = data;
+        public String getBank_name() {
+            return bank_name;
         }
 
-        @Override
-        public String toString() {
-            return "DataBeanX{" +
-                    "pagenation=" + pagenation +
-                    ", data=" + data +
-                    '}';
+        public String getAccount_name() {
+            return account_name;
         }
 
-        public static class PagenationBean {
-            /**
-             * page : 1
-             * pageSize : 10
-             * totalPage : 1
-             * totalCount : 4
-             */
-
-            private int page;
-            private int pageSize;
-            private int totalPage;
-            private int totalCount;
-
-            public int getPage() {
-                return page;
-            }
-
-            public void setPage(int page) {
-                this.page = page;
-            }
-
-            public int getPageSize() {
-                return pageSize;
-            }
-
-            public void setPageSize(int pageSize) {
-                this.pageSize = pageSize;
-            }
-
-            public int getTotalPage() {
-                return totalPage;
-            }
-
-            public void setTotalPage(int totalPage) {
-                this.totalPage = totalPage;
-            }
-
-            public int getTotalCount() {
-                return totalCount;
-            }
-
-            public void setTotalCount(int totalCount) {
-                this.totalCount = totalCount;
-            }
-
-            @Override
-            public String toString() {
-                return "PagenationBean{" +
-                        "page=" + page +
-                        ", pageSize=" + pageSize +
-                        ", totalPage=" + totalPage +
-                        ", totalCount=" + totalCount +
-                        '}';
-            }
+        public String getBank_card() {
+            return bank_card;
         }
 
-        public static class DataBean {
-            /**
-             * id : 1
-             * userid : 1
-             * typeid : 1
-             * amount : 2000.00
-             * actual_amount : 1980
-             * status : 0
-             * create_time : 1513755628
-             * type_name :提现到微信
-             */
-
-            private int id;
-            private int userid;
-            private int typeid;
-            private String amount;
-            private String actual_amount;
-            private int status;
-            private long create_time;
-
-            public String getType_name() {
-                return type_name;
-            }
-
-            public void setType_name(String type_name) {
-                this.type_name = type_name;
-            }
-
-            private String type_name;
-
-            public int getId() {
-                return id;
-            }
-
-            public void setId(int id) {
-                this.id = id;
-            }
-
-            public int getUserid() {
-                return userid;
-            }
-
-            public void setUserid(int userid) {
-                this.userid = userid;
-            }
-
-            public int getTypeid() {
-                return typeid;
-            }
-
-            public void setTypeid(int typeid) {
-                this.typeid = typeid;
-            }
-
-            public String getAmount() {
-                return amount;
-            }
-
-            public void setAmount(String amount) {
-                this.amount = amount;
-            }
-
-            public String getActual_amount() {
-                return actual_amount;
-            }
-
-            public void setActual_amount(String actual_amount) {
-                this.actual_amount = actual_amount;
-            }
-
-            public int getStatus() {
-                return status;
-            }
-
-            public void setStatus(int status) {
-                this.status = status;
-            }
-
-            public long getCreate_time() {
-                return create_time;
-            }
-
-            public void setCreate_time(long create_time) {
-                this.create_time = create_time;
-            }
-
-            @Override
-            public String toString() {
-                return "DataBean{" +
-                        "id=" + id +
-                        ", userid=" + userid +
-                        ", typeid=" + typeid +
-                        ", amount='" + amount + '\'' +
-                        ", actual_amount='" + actual_amount + '\'' +
-                        ", status=" + status +
-                        ", create_time=" + create_time +
-                        ", type_name='" + type_name + '\'' +
-                        '}';
-            }
+        public String getImg_url() {
+            return img_url;
         }
+
+        public String getBank_code() {
+            return bank_code;
+        }
+
+        public String getRegion() {
+            return region;
+        }
+
+        public String getCouplet() {
+            return couplet;
+        }
+
+        public String getIs_bind() {
+            return is_bind;
+        }
+    }
+
+    public List<CardBean> getData() {
+        return data;
     }
 }

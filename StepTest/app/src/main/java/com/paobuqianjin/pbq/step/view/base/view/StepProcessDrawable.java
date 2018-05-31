@@ -37,6 +37,8 @@ public class StepProcessDrawable extends Drawable {
     private long animationTime = 200;
     private int viewParentWidth = 0, viewParentHeight = 0, acrWidth = 0, arcHeight = 0, left = 0, top = 0;
     private int footWidth = 0;
+    private final static int ADD_STEP_MSG = 1;
+    private float addAngle = 0.0f;
 
     public StepProcessDrawable setmAngle(float mAngle) {
         this.mAngle = mAngle;
@@ -81,9 +83,20 @@ public class StepProcessDrawable extends Drawable {
                         }
                     }
                     break;
+                case ADD_STEP_MSG:
+                    LocalLog.d(TAG,"ADD_STEP_MSG ...");
+                    mCurrentAngle += addAngle;
+                    StepProcessDrawable.this.invalidateSelf();
+                    removeMessages(ADD_STEP_MSG);
+                    break;
             }
         }
     };
+
+    public void add(float addAngle) {
+        this.addAngle = addAngle;
+        handler.sendEmptyMessageDelayed(ADD_STEP_MSG, 5000);
+    }
 
     @TargetApi(19)
     public StepProcessDrawable(Context context, int left, int top, int width, int height, int parentWidth, int parentHeight) {

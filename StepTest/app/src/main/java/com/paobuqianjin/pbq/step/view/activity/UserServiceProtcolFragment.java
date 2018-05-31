@@ -8,13 +8,15 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ProtocolResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ProtocolResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ProtocolInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -40,8 +42,8 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
-    @Bind(R.id.protcol)
-    TextView protcol;
+    @Bind(R.id.webview)
+    WebView webview;
     private String action = "";
 
     @Override
@@ -71,7 +73,6 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
     @Override
     protected void initView(View viewRoot) {
         super.initView(viewRoot);
-        protcol = (TextView) viewRoot.findViewById(R.id.protcol);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             if (USER_SERVICE_AGREEMENT_ACTION.equals(intent.getAction())) {
@@ -104,14 +105,28 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
     @Override
     public void response(ProtocolResponse protocolResponse) {
         if (protocolResponse.getError() == 0) {
-            if (protcol == null) {
+            if (webview == null) {
                 return;
             }
             if ("4".equals(action)) {
                 getActivity().setResult(Activity.RESULT_OK);
             }
-            protcol.setText(Html.fromHtml(protocolResponse.getData().getContent()));
             setTitle(protocolResponse.getData().getTitle());
+
+            String content = protocolResponse.getData().getContent();
+
+            //支持javascript
+            webview.getSettings().setJavaScriptEnabled(true);
+// 设置可以支持缩放
+            webview.getSettings().setSupportZoom(true);
+// 设置出现缩放工具
+            webview.getSettings().setBuiltInZoomControls(true);
+//扩大比例的缩放
+//            webview.getSettings().setUseWideViewPort(true);
+//自适应屏幕
+//            webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+//            webview.getSettings().setLoadWithOverviewMode(true);
+            webview.loadData(content, "text/html", "UTF-8"); // 加载定义的代码，并设定编码格式和字符集。
         } else if (protocolResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

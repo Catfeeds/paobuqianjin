@@ -8,7 +8,7 @@ public class YsPayOrderResponse {
     /**
      * error : 0
      * message : success
-     * data : {"merchantNo":"C1800275339","prePayId":"959953308775817906916","userId":"30","appId":"c7317c6c84f3c13999fe3eb15abf564f"}
+     * data : {"merchantNo":"C1800275339","prePayId":"959953308775817906916","userId":"30","appId":"c7317c6c84f3c13999fe3eb15abf564f","orderNum":"201805300444541475"}
      */
 
     private int error;
@@ -45,12 +45,23 @@ public class YsPayOrderResponse {
          * prePayId : 959953308775817906916
          * userId : 30
          * appId : c7317c6c84f3c13999fe3eb15abf564f
+         * orderNum:201805300444541475
          */
 
         private String merchantNo;
         private String prePayId;
         private String userId;
         private String appId;
+
+        public String getOrderNum() {
+            return orderNum;
+        }
+
+        public void setOrderNum(String orderNum) {
+            this.orderNum = orderNum;
+        }
+
+        private String orderNum;
 
         public String getMerchantNo() {
             return merchantNo;

@@ -14,6 +14,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
@@ -28,6 +29,12 @@ import butterknife.OnClick;
 public class IdentityAuth3Activity extends BaseBarActivity {
 
     private static final long ALLTIME = 60 * 1000;
+    static final java.lang.String KEY_PERSON_ID = "personId";
+    static final java.lang.String KEY_PERSON_NAME = "personName";
+    static final java.lang.String KEY_PHONE_NUM = "phoneNum";
+    static final java.lang.String KEY_CARD_NUM = "cardNum";
+    public static final int RES_SUC = 200;
+    private final String TAG = getClass().getSimpleName();
     @Bind(R.id.tv_target_phone)
     TextView tvTargetPhone;
     @Bind(R.id.et_code)
@@ -44,6 +51,8 @@ public class IdentityAuth3Activity extends BaseBarActivity {
 
     public static Class<?> targetActivity = null;
 
+    private boolean isAddCard = false;
+
     @Override
     protected String title() {
         return "验证手机号";
@@ -55,18 +64,19 @@ public class IdentityAuth3Activity extends BaseBarActivity {
         setContentView(R.layout.activity_identity_auth3);
         ButterKnife.bind(this);
 
-//        bundle.putString("personId", personId);
-//        bundle.putString("personName", personName);
-//        bundle.putString("phoneNum", phoneNum);
         Bundle bundle = getBundle();
-        Map<String, String> dataMap = (Map<String, String>) bundle.getSerializable("dataMap");
-
         if (bundle != null) {
-            personId = bundle.getString("personId");
-            personName = bundle.getString("personName");
-            phoneNum = bundle.getString("phoneNum");
-            cardNum = bundle.getString("cardNum");
+            personId = bundle.getString(KEY_PERSON_ID);
+            isAddCard = TextUtils.isEmpty(personId) ? true : false;
+            personName = bundle.getString(KEY_PERSON_NAME);
+            phoneNum = bundle.getString(KEY_PHONE_NUM);
+            cardNum = bundle.getString(KEY_CARD_NUM);
+        }else {
+            LocalLog.e(TAG, getString(R.string.error_param));
+            finish();
         }
+
+        tvTargetPhone.setText(getString(R.string.title_code_already_send) + phoneNum.substring(0,3)+"****"+phoneNum.substring(7));
         getVCode(phoneNum);
     }
 
@@ -82,6 +92,7 @@ public class IdentityAuth3Activity extends BaseBarActivity {
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                 if(errorBean!=null) PaoToastUtils.showShortToast(IdentityAuth3Activity.this, errorBean.getMessage());
                 tvGetVcode.setEnabled(true);
+                tvGetVcode.setText("重新获取");
             }
         });
     }
@@ -136,17 +147,17 @@ public class IdentityAuth3Activity extends BaseBarActivity {
                     Map<String, String> params = new HashMap<>();
                     params.put("phone", phoneNum);
                     params.put("code", etCode.getText().toString());
-                    params.put("account", personName);
                     params.put("cardno", cardNum.replaceAll(" ", ""));
-                    params.put("idcard", personId);
+                    if (!isAddCard) {
+                        params.put("idcard", personId);
+                        params.put("account", personName);
+                    }
 //                    params.put("couplet", personId);//支行地址
                     Presenter.getInstance(this).postPaoBuSimple(NetApi.REAL_AUTH_ALL_INFO, params, new PaoCallBack() {
                         @Override
                         protected void onSuc(String s) {
-                            PaoToastUtils.showShortToast(IdentityAuth3Activity.this, "验证成功");
-//                            Intent intent = new Intent(IdentityAuth3Activity.this, targetActivity);
-//                            startActivity(intent);
-                            setResult(200);
+                            PaoToastUtils.showShortToast(IdentityAuth3Activity.this, isAddCard?"添加银行卡成功":"验证成功");
+                            setResult(RES_SUC);
                             finish();
                         }
 
@@ -172,7 +183,6 @@ public class IdentityAuth3Activity extends BaseBarActivity {
         }else{
             return true;
         }
-
     }
 
 }

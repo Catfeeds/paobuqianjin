@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.model;
 
+import android.app.Activity;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
@@ -90,6 +91,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserCenterResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.VipNoResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.YsPayResultResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.NetStringCallBack;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -127,6 +129,7 @@ import com.paobuqianjin.pbq.step.presenter.im.MyReleaseTaskDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.MyReleaseTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OlderPassInterface;
+import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
@@ -159,6 +162,7 @@ import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.MD5;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.view.PicassoTransformation;
 import com.squareup.picasso.NetworkPolicy;
@@ -166,8 +170,9 @@ import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 import com.today.step.lib.ISportStepInterface;
-import com.today.step.lib.TodayStepManager;
-import com.today.step.lib.TodayStepService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -2317,7 +2322,7 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
-                        if(o == null){
+                        if (o == null) {
                             return;
                         }
                         if (innerCallBack != null) {
@@ -2353,7 +2358,7 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
-                        if(o == null){
+                        if (o == null) {
                             return;
                         }
                         if (innerCallBack != null) {
@@ -2593,6 +2598,38 @@ public final class Engine {
                 .url(url)
                 .build()
                 .execute(new NetStringCallBack(userIncomInterface, COMMAND_GET_USER_INFO));
+    }
+
+    public void getVerifyIdentify(final Activity activity, final OnIdentifyLis onIdentifyLis) {
+        Presenter.getInstance(activity).getPaoBuSimple(NetApi.GET_PERSON_IDENTIFY_STATE, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                if (activity == null) return;
+                try {
+                    JSONObject jsonObj = new JSONObject(s);
+                    jsonObj = jsonObj.getJSONObject("data");
+                    String status = jsonObj.getString("status");
+                    if (status.equals("0")) {
+                        onIdentifyLis.onUnidentify();
+                        return;
+                    } else {
+                        onIdentifyLis.onIdentifed();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    onIdentifyLis.onGetIdentifyStatusError();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (activity == null) return;
+                if (errorBean != null) {
+                    PaoToastUtils.showShortToast(activity, errorBean.getMessage());
+                }
+                onIdentifyLis.onGetIdentifyStatusError();
+            }
+        });
     }
 
 
@@ -2841,7 +2878,7 @@ public final class Engine {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(79, 79).into(imageView);
+        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).into(imageView);
     }
 
     public void getOriginImage(String fileUrl, final ImageView imageView) {
@@ -2898,6 +2935,7 @@ public final class Engine {
             picasso.load(placeholderImageId).config(Bitmap.Config.RGB_565).transform(transformation).into(view);
             return;
         }
+
         if (networkPolicy == NetworkPolicy.OFFLINE) {
             picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation)
                     .placeholder(ContextCompat.getDrawable(mContext, placeholderImageId)).networkPolicy(networkPolicy)
@@ -2938,17 +2976,25 @@ public final class Engine {
                         if (o == null) {
                             return;
                         }
-                        ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
-                        if (innerCallBack != null) {
-                            innerCallBack.innerCallBack(errorCode);
+                        try {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            if (innerCallBack != null) {
+                                innerCallBack.innerCallBack(errorCode);
+                            }
+                        } catch (JsonSyntaxException j) {
+                            j.printStackTrace();
                         }
                     }
 
                     @Override
                     public void onResponse(String s, int i) {
-                        CvipNoResponse cvipNoResponse = new Gson().fromJson(s, CvipNoResponse.class);
-                        if (innerCallBack != null) {
-                            innerCallBack.innerCallBack(cvipNoResponse);
+                        try {
+                            CvipNoResponse cvipNoResponse = new Gson().fromJson(s, CvipNoResponse.class);
+                            if (innerCallBack != null) {
+                                innerCallBack.innerCallBack(cvipNoResponse);
+                            }
+                        } catch (JsonSyntaxException j) {
+                            j.printStackTrace();
                         }
                     }
                 });
@@ -2969,17 +3015,25 @@ public final class Engine {
                         if (o == null) {
                             return;
                         }
-                        ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
-                        if (innerCallBack != null) {
-                            innerCallBack.innerCallBack(errorCode);
+                        try {
+                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                            if (innerCallBack != null) {
+                                innerCallBack.innerCallBack(errorCode);
+                            }
+                        } catch (JsonSyntaxException j) {
+                            j.printStackTrace();
                         }
                     }
 
                     @Override
                     public void onResponse(String s, int i) {
-                        VipNoResponse vipNoResponse = new Gson().fromJson(s, VipNoResponse.class);
-                        if (innerCallBack != null) {
-                            innerCallBack.innerCallBack(vipNoResponse);
+                        try {
+                            VipNoResponse vipNoResponse = new Gson().fromJson(s, VipNoResponse.class);
+                            if (innerCallBack != null) {
+                                innerCallBack.innerCallBack(vipNoResponse);
+                            }
+                        } catch (JsonSyntaxException j) {
+                            j.printStackTrace();
                         }
                     }
                 });
@@ -3020,7 +3074,7 @@ public final class Engine {
                         .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST_WALLET));
                 break;
             case "yspay":
-                LocalLog.d(TAG,"云闪付");
+                LocalLog.d(TAG, "云闪付");
                 OkHttpUtils
                         .post()
                         .addHeader("headtoken", getToken(mContext))
@@ -3056,6 +3110,48 @@ public final class Engine {
                 .build()
                 .execute(new NetStringCallBack(payWxResultQueryInterface, COMMAND_PAY_RESULT_QUERY_WX));
 
+    }
+
+    //TODO 云闪付查单
+    public void postYsPayResultByOrderNo(String ysOrderNo, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "云闪付单号 +" + ysOrderNo);
+        OkHttpUtils
+                .post()
+                .addParams("order_no", ysOrderNo)
+                .addHeader("headtoken", getToken(mContext))
+                .url(NetApi.urlYsPayResultOrderNo)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        if (e != null) {
+                            e.printStackTrace();
+                            return;
+                        }
+                        if (o != null) {
+                            try {
+                                ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                if (innerCallBack != null) {
+                                    innerCallBack.innerCallBack(errorCode);
+                                }
+                            } catch (JsonSyntaxException j) {
+                                j.printStackTrace();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String s, int i) {
+                        try {
+                            YsPayResultResponse ysPayResultResponse = new Gson().fromJson(s, YsPayResultResponse.class);
+                            if (innerCallBack != null) {
+                                innerCallBack.innerCallBack(ysPayResultResponse);
+                            }
+                        } catch (JsonSyntaxException j) {
+                            j.printStackTrace();
+                        }
+                    }
+                });
     }
 
     //TODO 三方登录
@@ -3124,9 +3220,13 @@ public final class Engine {
                         if (o == null) {
                             return;
                         }
-                        if (innerCallBack != null) {
-                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
-                            innerCallBack.innerCallBack(errorCode);
+                        try {
+                            if (innerCallBack != null) {
+                                ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                innerCallBack.innerCallBack(errorCode);
+                            }
+                        } catch (JsonSyntaxException j) {
+                            j.printStackTrace();
                         }
                     }
 
@@ -3168,8 +3268,12 @@ public final class Engine {
                             return;
                         }
                         if (innerCallBack != null) {
-                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
-                            innerCallBack.innerCallBack(errorCode);
+                            try {
+                                ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                innerCallBack.innerCallBack(errorCode);
+                            } catch (JsonSyntaxException j) {
+                                j.printStackTrace();
+                            }
                         }
                     }
 
@@ -3498,13 +3602,17 @@ public final class Engine {
 
                     @Override
                     public void onResponse(String s, int i) {
-                        FollowStatusResponse followStatusResponse = new Gson().fromJson(s, FollowStatusResponse.class);
-                        if (button != null) {
-                            if (followStatusResponse.getData().getIs_follow() == 0) {
-                                button.setText("关注");
-                            } else if (followStatusResponse.getData().getIs_follow() == 1) {
-                                button.setText("已关注");
+                        try {
+                            FollowStatusResponse followStatusResponse = new Gson().fromJson(s, FollowStatusResponse.class);
+                            if (button != null) {
+                                if (followStatusResponse.getData().getIs_follow() == 0) {
+                                    button.setText("关注");
+                                } else if (followStatusResponse.getData().getIs_follow() == 1) {
+                                    button.setText("已关注");
+                                }
                             }
+                        } catch (JsonSyntaxException j) {
+                            j.printStackTrace();
                         }
                     }
                 });
@@ -3841,8 +3949,9 @@ public final class Engine {
     }
 
     private Gson gsonPrint = new Gson();
-    public void post(String url, Map<String,String> params, PaoCallBack callBack) {
-        if(params==null) params = new HashMap<>();
+
+    public void post(String url, Map<String, String> params, PaoCallBack callBack) {
+        if (params == null) params = new HashMap<>();
         LocalLog.d(TAG, gsonPrint.toJson(params));
         callBack.setMyUrl(url);
 
@@ -3854,9 +3963,10 @@ public final class Engine {
                 .build()
                 .execute(callBack);
     }
-    public void get(String url, Map<String,String> params, PaoCallBack callBack) {
-        if(params==null) params = new HashMap<>();
-        LocalLog.d(TAG,"提交数据："+ new Gson().toJson(params));
+
+    public void get(String url, Map<String, String> params, PaoCallBack callBack) {
+        if (params == null) params = new HashMap<>();
+        LocalLog.d(TAG, "提交数据：" + new Gson().toJson(params));
         callBack.setMyUrl(url);
 
         OkHttpUtils

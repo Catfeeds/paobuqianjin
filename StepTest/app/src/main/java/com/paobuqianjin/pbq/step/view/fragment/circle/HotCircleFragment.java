@@ -88,6 +88,8 @@ public class HotCircleFragment extends BaseFragment {
     private final static String ACTION_CREATE = "com.paobuqianjin.step.pbq.ACTION_CREATE";
     private final static String ACTION_DELETE_MEMBER = "com.paobuqianjin.step.pbq.ACTION_MEMBER_DELETE";
     private final static String ACTIONF_DELETE_CIRCLE = "com.paobuqjian.step.pbq.ACTION_DELETE_CIRCLE";
+    private final static String DELETE_ACTION = "com.paobuqianjin.pbq.step.DELETE_CIRCLE";
+    private final static String QUIT_ACTION = "com.paobuqianjin.pbq.step.QUIT";
 
     @Override
 
@@ -407,6 +409,11 @@ public class HotCircleFragment extends BaseFragment {
                     } else {
                         readPackAIV.setVisibility(View.GONE);
                     }
+
+                    if (myHotLb.getVisibility() == View.VISIBLE) {
+                        myHotLb.setVisibility(View.INVISIBLE);
+                        readPackBIV.setVisibility(View.GONE);
+                    }
                 } else if (size >= 2) {
                     setMyHotLa(myHotCircleResponse.getData().getData().get(0).getName(),
                             myHotCircleResponse.getData().getData().get(0).getLogo());
@@ -432,6 +439,11 @@ public class HotCircleFragment extends BaseFragment {
                     }
                 }
                 pageCounts[1] = myHotCircleResponse.getData().getPagenation().getTotalPage();
+            } else if (myHotCircleResponse.getError() == 1) {
+                myHotLa.setVisibility(View.INVISIBLE);
+                myHotLb.setVisibility(View.INVISIBLE);
+                readPackBIV.setVisibility(View.GONE);
+                readPackBIV.setVisibility(View.GONE);
             } else if (myHotCircleResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();
@@ -562,6 +574,12 @@ public class HotCircleFragment extends BaseFragment {
             LocalLog.d(TAG, "SEARCH_ADD ++++");
             LocalLog.d(TAG, "进行过加入圈子的操作");
             if (circleIdA == -1 || circleIdB == -1) {
+                updateMyHotCircle();
+            }
+        }
+        if (data != null) {
+            if (DELETE_ACTION.equals(data.getAction()) || QUIT_ACTION.equals(data.getAction())) {
+                LocalLog.d(TAG, "删除或者退出圈子");
                 updateMyHotCircle();
             }
         }

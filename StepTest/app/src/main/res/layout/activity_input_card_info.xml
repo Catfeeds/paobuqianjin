@@ -65,19 +65,21 @@
             android:text="手机号" />
 
         <EditText
-            android:id="@+id/tv_person_name"
+            android:id="@+id/et_person_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@null"
             android:hint="请输入银行卡预留手机号"
             android:paddingRight="14dp"
-            android:layout_weight="1"
+            android:inputType="number"
+            android:maxEms="11"
             android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/iv_phone_tips"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@mipmap/ic_c_purple_info" />
     </LinearLayout>
 

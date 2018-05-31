@@ -42,7 +42,7 @@
                     android:src="@drawable/crash_to" />
 
                 <EditText
-                    android:id="@+id/tv_can_transfer"
+                    android:id="@+id/et_can_transfer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/tv_transfer_all"

@@ -234,14 +234,14 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
             case R.id.crash:
                 LocalLog.d(TAG, "提现");
                 if (isVerificationIdentity()) {// TODO: 2018/5/17 waitdelete
-                    intent.setAction(CRASH_ACTION);
+                  /*  intent.setAction(CRASH_ACTION);
                     intent.putExtra("total", totalMoney);
                     intent.setClass(getContext(), CrashActivity.class);
-                    startActivityForResult(intent, REQUEST_CRASH);
-                    /*intent.setAction(CRASH_ACTION);
+                    startActivityForResult(intent, REQUEST_CRASH);*/
+                    intent.setAction(CRASH_ACTION);
                     intent.putExtra("total", totalMoney);
                     intent.setClass(getContext(), TransferActivity.class);
-                    startActivityForResult(intent, REQUEST_CRASH);*/
+                    startActivityForResult(intent, REQUEST_CRASH);
                 }else{
                     intent.setAction(CRASH_ACTION);
                     intent.putExtra("total", totalMoney);
@@ -276,7 +276,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
      */
     private boolean isVerificationIdentity() {
 
-        return false;
+        return true;
     }
 
     /*
@@ -644,13 +644,21 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     }*/
 
     @Override
+    public void onResume() {
+        super.onResume();
+        LocalLog.d(TAG, "充值成功或者提现成功");
+        Presenter.getInstance(getContext()).getUserPackageMoney();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_RECHARGE || requestCode == REQUEST_CRASH) {
-                LocalLog.d(TAG, "充值成功或者提现成功");
-                Presenter.getInstance(getContext()).getUserPackageMoney();
+//                LocalLog.d(TAG, "充值成功或者提现成功");
+//                Presenter.getInstance(getContext()).getUserPackageMoney();
             }
         }
     }
+
 }

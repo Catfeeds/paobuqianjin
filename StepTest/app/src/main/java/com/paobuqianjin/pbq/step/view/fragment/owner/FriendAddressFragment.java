@@ -24,12 +24,12 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PostAddressBookParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendAddResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteMessageResponse;
-import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.FriendAddressInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.LocalContactAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.yanzhenjie.permission.Action;
@@ -72,12 +72,23 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
     ImageView addFriendLineB;
     @Bind(R.id.un_reg_app_recycler)
     RecyclerView unRegAppRecycler;
+    @Bind(R.id.friend_scroll)
+    BounceScrollView friendScroll;
 
     private ContentResolver cr;
     private List<Map<String, String>> mp = new ArrayList<>();
     private LinearLayoutManager layoutManager, regLayoutManager;
     private Rationale mRationale;
     private PermissionSetting mSetting;
+    //单次最多上传500个联系人
+    private final static int UPLOAD_SIZE = 200;
+    private int currentIndex = 0;
+    private List<PostAddressBookParam.AddressPerson> list;
+    private LocalContactAdapter inContactAdapter;
+    private LocalContactAdapter ouContactAdapter;
+    private ArrayList<?> inContact = new ArrayList<>();
+    private ArrayList<?> ouContract = new ArrayList<>();
+    private boolean isLoading = false;
 
     @Override
     protected int getLayoutResId() {
@@ -115,8 +126,30 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
         unRegAppRecycler.setLayoutManager(layoutManager);
         regAppRecycler = (RecyclerView) viewRoot.findViewById(R.id.reg_app_recycler);
         regAppRecycler.setLayoutManager(regLayoutManager);
+        regAppRecycler.setHasFixedSize(true);
+        regAppRecycler.setNestedScrollingEnabled(false);
+        unRegAppRecycler.setHasFixedSize(true);
+        unRegAppRecycler.setNestedScrollingEnabled(false);
         requestPermission(Permission.Group.CONTACTS);
+        friendScroll = (BounceScrollView) viewRoot.findViewById(R.id.friend_scroll);
+        friendScroll.setTopBottomListener(new BounceScrollView.TopBottomListener() {
+            @Override
+            public void topBottom(int topOrBottom) {
+                if (topOrBottom == 0) {
 
+                } else if (topOrBottom == 1) {
+                    if (currentIndex < list.size()) {
+                        if (!isLoading) {
+                            postAddressBook();
+                            LocalLog.d(TAG, "加载更多.......");
+                        }
+                    } else {
+                        list.clear();
+                        System.gc();
+                    }
+                }
+            }
+        });
     }
 
     /*权限适配*/
@@ -133,7 +166,6 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
                 }).onDenied(new Action() {
             @Override
             public void onAction(List<String> permissions) {
-                toast(R.string.failure);
                 if (AndPermission.hasAlwaysDeniedPermission(getActivity(), permissions)) {
                     mSetting.showSetting(permissions);
                 }
@@ -142,7 +174,7 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
     }
 
     private void updateAddressBook(List<Map<String, String>> maps) {
-        List<PostAddressBookParam.AddressPerson> list = new ArrayList<>();
+        list = new ArrayList<>();
         if (maps != null) {
             int size = maps.size();
             LocalLog.d(TAG, "size = " + size);
@@ -159,16 +191,33 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
                 }
                 list.add(addressPerson);
             }
-            Type type = new TypeToken<List<PostAddressBookParam.AddressPerson>>() {
-            }.getType();
-            String json = new Gson().toJson(list, type);
-            LocalLog.d(TAG, "json = " + json);
-            Presenter.getInstance(getContext()).postAddressBook(json);
+            postAddressBook();
+            if (mp != null) {
+                mp.clear();
+                //
+                mp = null;
+                System.gc();
+            }
         }
     }
 
-    protected void toast(@StringRes int message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    private void postAddressBook() {
+        isLoading = true;
+        Type type = new TypeToken<List<PostAddressBookParam.AddressPerson>>() {
+        }.getType();
+        List<PostAddressBookParam.AddressPerson> upLoadList = null;
+        if (currentIndex + UPLOAD_SIZE > list.size()) {
+            upLoadList = list.subList(currentIndex, list.size() - 1);
+            currentIndex = list.size();
+        } else {
+            upLoadList = list.subList(currentIndex, currentIndex + UPLOAD_SIZE);
+            currentIndex += UPLOAD_SIZE;
+        }
+        if (upLoadList != null) {
+            String json = new Gson().toJson(upLoadList, type);
+            LocalLog.d(TAG, "json = " + json + ",size = " + upLoadList.toString());
+            Presenter.getInstance(getContext()).postAddressBook(json);
+        }
     }
 
     public List<Map<String, String>> getContacts() {
@@ -217,16 +266,35 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
             return;
         }
         if (friendAddResponse.getError() == 0) {
-            if (regAppRecycler != null) {
-                regAppRecycler.setAdapter(new LocalContactAdapter(getContext(), friendAddResponse.getData().getIn_system()));
-                unRegAppRecycler.setAdapter(new LocalContactAdapter(getContext(), friendAddResponse.getData().getOut_system()));
+            if (inContactAdapter == null) {
+                inContact.clear();
+                inContact.addAll((ArrayList) friendAddResponse.getData().getIn_system());
+                inContactAdapter = new LocalContactAdapter(getContext(), inContact);
+            } else {
+                inContact.addAll((ArrayList) friendAddResponse.getData().getIn_system());
+                inContactAdapter.notifyItemRangeInserted(inContact.size() - friendAddResponse.getData().getIn_system().size()
+                        , friendAddResponse.getData().getIn_system().size());
             }
-        }else if(friendAddResponse.getError() == -100){
+            regAppRecycler.setAdapter(inContactAdapter);
+
+            if (ouContactAdapter == null) {
+                ouContract.clear();
+                ouContract.addAll((ArrayList) friendAddResponse.getData().getOut_system());
+                ouContactAdapter = new LocalContactAdapter(getContext(), ouContract);
+            } else {
+                ouContract.addAll((ArrayList) friendAddResponse.getData().getOut_system());
+                ouContactAdapter.notifyItemRangeInserted(ouContract.size() - friendAddResponse.getData().getOut_system().size()
+                        , friendAddResponse.getData().getOut_system().size());
+            }
+            unRegAppRecycler.setAdapter(ouContactAdapter);
+        } else if (friendAddResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
-        }else{
+        } else {
             Toast.makeText(getContext(), friendAddResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        isLoading = false;
+
     }
 
     @Override
@@ -235,11 +303,11 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
             return;
         }
         if (inviteMessageResponse.getError() == 0) {
-            
-        }else if(inviteMessageResponse.getError() == -100){
+
+        } else if (inviteMessageResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
-        }else {
+        } else {
             Toast.makeText(getContext(), inviteMessageResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }

@@ -75,29 +75,14 @@ public class IdentityAuth2Activity extends BaseBarActivity {
 
     private void getCardType() {
         Map<String, String> params = new HashMap<>();
-        params.put("key", NetApi.MOB_APPKEY);
-        params.put("card", cardNum.replaceAll(" ",""));
+        params.put("cardno", cardNum.replaceAll(" ",""));
         Presenter.getInstance(this).getPaoBuSimple(NetApi.URL_GET_CARD_BANK, params, new PaoCallBack() {
-
-            /*       {
-  "msg": "success",
-  "result": {
-    "bank": "工商银行",
-    "bin": "622202",
-    "binNumber": 6,
-    "cardName": "E时代卡",
-    "cardNumber": 19,
-    "cardType": "借记卡"
-  },
-  "retCode": "200"
-}*/
             @Override
-            public void onResponse(String s, int i) {
-                super.onResponse(s,i);
+            protected void onSuc(String s) {
                 try {
                     JSONObject jsonObj = new JSONObject(s);
-                    jsonObj = jsonObj.getJSONObject("result");
-                    String bank = jsonObj.getString("bank");
+                    jsonObj = jsonObj.getJSONObject("data");
+                    String bank = jsonObj.getString("bankname");
                     // TODO: 2018/5/18 paobu test data
                     tvCardType.setText(bank);
                 } catch (JSONException e) {
@@ -106,17 +91,10 @@ public class IdentityAuth2Activity extends BaseBarActivity {
             }
 
             @Override
-            public void onError(Call call, Exception e, int i, Object o) {
-                super.onError(call, e, i, o);
-
-            }
-
-            @Override
-            protected void onSuc(String s) {
-            }
-
-            @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null) {
+                    PaoToastUtils.showShortToast(IdentityAuth2Activity.this, errorBean.getMessage());
+                }
             }
         });
     }
@@ -149,7 +127,7 @@ public class IdentityAuth2Activity extends BaseBarActivity {
                             bundle.putString("cardNum", cardNum);
 
                             Intent intent = new Intent(IdentityAuth2Activity.this, IdentityAuth3Activity.class);
-                            intent.putExtras(bundle);
+                            intent.putExtra(getPackageName(),bundle);
                             startActivityForResult(intent, 200);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -169,8 +147,8 @@ public class IdentityAuth2Activity extends BaseBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == 200) {
-            setResult(200);
+        if (resultCode == IdentityAuth3Activity.RES_SUC && requestCode == 200) {
+            setResult(IdentityAuth3Activity.RES_SUC);
             finish();
         }
     }

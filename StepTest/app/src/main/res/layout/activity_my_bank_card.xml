@@ -11,10 +11,44 @@
         layout="@layout/bar_return_a_style"
         app:layout_constraintTop_toTopOf="parent"></include>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_cards"
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:id="@+id/bank_scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bar" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/bar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_cards"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+    <RelativeLayout
+        android:id="@+id/empty_bank_pan"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/bar"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/empty_bank"
+            android:layout_width="145dp"
+            android:layout_height="85dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="175dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/bank_card_empty" />
+
+        <TextView
+            android:id="@+id/no_crard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/empty_bank"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/have_no_bank"
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="15dp" />
+    </RelativeLayout>
 
 </RelativeLayout>

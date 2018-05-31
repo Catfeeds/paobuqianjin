@@ -18,7 +18,14 @@ public abstract class PaoCallBack extends StringCallback {
     public void onError(Call call, Exception e, int i, Object o) {
         LocalLog.d(TAG, myUrl + "-----Http Code----> " + i + " \nError Object----> " +o.toString());
         e.printStackTrace();
-        onFal(e, o.toString(), null);
+        try {
+            ErrorCode code = new Gson().fromJson(o.toString(), ErrorCode.class);
+            onFal(e, o.toString(), code);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+            onFal(e, o.toString(), null);
+        }
+
     }
 
     @Override
