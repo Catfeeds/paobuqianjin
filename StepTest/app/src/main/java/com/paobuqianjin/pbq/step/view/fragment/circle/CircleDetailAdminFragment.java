@@ -134,7 +134,6 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private LinearLayoutManager reChargeLayoutManager;
     private LinearLayoutManager stepLayoutManager;
     private RechargeRankBundleData rechargeRankBundleData;
-    private StepBundleData stepBundleData;
     private String target;
     /**
      * 圈子余额
@@ -175,7 +174,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private final int REQUEST_RECHARGE = 333;
     String titleStr = "";
     private boolean is_join = false;
-    private int pageIndex = 1, PAGESIZE = 15, pageIndexStep = 1, pageCount = 0;
+    private int pageIndex = 1, PAGESIZE = 20, pageIndexStep = 1, pageCount = 0;
     private int position = -1;
     private final static String QUIT_ACTION = "com.paobuqianjin.pbq.step.QUIT";
     private final static String DELETE_ACTION = "com.paobuqianjin.pbq.step.DELETE_CIRCLE";
@@ -753,7 +752,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         }
 
         @Override
-        public synchronized void response(StepRankResponse stepRankResponse) {
+        public void response(StepRankResponse stepRankResponse) {
             LocalLog.d(TAG, "StepRankResponse() ");
             if (stepRankResponse.getError() == 0 && isAdded()) {
                 if (stepRecycler == null) {
@@ -775,7 +774,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     stepData.addAll(stepRankResponse.getData().getData());
                     rankAdapter.notifyItemRangeInserted(stepData.size() - stepRankResponse.getData().getData().size(),
                             stepRankResponse.getData().getData().size());
-                    stepRecycler.setAdapter(rankAdapter);
+                    stepRecycler.requestLayout();
                 }
 
                 String sAgeFormat = mContext.getResources().getString(R.string.member_total);
@@ -978,7 +977,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             return;
         }
         if (deleteCircleResponse.getError() == 0) {
-            ToastUtils.showShortToast(getContext(),"解散成功");
+            ToastUtils.showShortToast(getContext(), "解散成功");
             //TODO 通知上一层UI更新
             Intent intent = new Intent();
             intent.setAction(DELETE_ACTION);

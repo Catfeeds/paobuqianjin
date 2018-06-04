@@ -37,6 +37,7 @@ public class BankCardAdapter extends RecyclerView.Adapter<BankCardAdapter.BankCa
             Presenter.getInstance(mContext).getImage(holder.bankCardIco, ((BankListResponse.CardBean) mData.get(position)).getImg_url());
             holder.cardNoStr = ((BankListResponse.CardBean) mData.get(position)).getBank_card();
             String cardStr = holder.cardNoStr;
+            holder.bankCardFrom.setText(((BankListResponse.CardBean) mData.get(position)).getBank_name());
             if (!TextUtils.isEmpty(cardStr)) {
                 int length = cardStr.length();
                 if (length > 4) {

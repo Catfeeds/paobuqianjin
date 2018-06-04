@@ -143,7 +143,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     TextView dynamicTime;
     @Bind(R.id.vip_flg)
     ImageView vipFlg;
-    //    @Bind(R.id.dynamic_id_detail)
+//    @Bind(R.id.dynamic_id_detail)
 //    RelativeLayout dynamicIdDetail;
     private ArrayList<DynamicLikeListResponse.DataBeanX.DataBean> likeData = new ArrayList<>();
     private EmotionKeyboard mEmotionKeyboard;
@@ -283,7 +283,6 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
     /**
      * 原来的popEdit
-     *
      * @param postDynamicContentParam
      * @param dearName
      */
@@ -331,8 +330,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         }
 
         if (dynamicUserName.getText().toString().equals(dearName)) {
-            commentEditText.setHint("请输入评论");
-        } else {
+            commentEditText.setHint("请输入评论" );
+        }else{
             commentEditText.setHint("回复:" + dearName);
         }
         Button button = (Button) linear_comment_root.findViewById(R.id.send_content);
@@ -414,7 +413,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     };
 
     private void resetCommentEdittext() {
-        PaoToastUtils.showShortToast(getActivity(), "评论成功");
+        PaoToastUtils.showShortToast(getActivity(),"评论成功");
         commentEditText.setText("");
         hideSoftInput(commentEditText.getWindowToken());
     }
@@ -826,7 +825,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     public void postDynamicAction(PostDynamicContentParam postDynamicContentParam, String dearName, ReflashInterface reflashInterface) {
         LocalLog.d(TAG, "PostDynamicContentParam() 弹出评论框" + postDynamicContentParam.paramString());
         //popEdit(postDynamicContentParam, dearName);
-        initEditView(postDynamicContentParam, dearName);
+        initEditView(postDynamicContentParam,dearName);
         this.reflashInterface = reflashInterface;
     }
 
@@ -911,6 +910,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 }
             }
         });
+
 
 
         if (!popupRedPkgWindow.isShowing()) {

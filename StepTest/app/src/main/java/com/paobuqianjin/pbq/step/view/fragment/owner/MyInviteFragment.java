@@ -79,8 +79,14 @@ public class MyInviteFragment extends BaseFragment {
         invitNum = (TextView) viewRoot.findViewById(R.id.invit_num);
         invitMoney = (TextView) viewRoot.findViewById(R.id.invit_money);
         invitStepDollar = (TextView) viewRoot.findViewById(R.id.invit_step_dollar);
-        Presenter.getInstance(getContext()).getMyInviteMsg(innerCallBack, pageIndex, PAGESIZE);
-        Presenter.getInstance(getContext()).getMyCode(innerCallBack);
+        update();
+    }
+
+    public void update() {
+        if (isAdded()) {
+            Presenter.getInstance(getContext()).getMyInviteMsg(innerCallBack, pageIndex, PAGESIZE);
+            Presenter.getInstance(getContext()).getMyCode(innerCallBack);
+        }
     }
 
     private InnerCallBack innerCallBack = new InnerCallBack() {

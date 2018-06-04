@@ -103,9 +103,14 @@ public class IdentityAuth2Activity extends BaseBarActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_protocol:
-                startActivity(AgreementActivity.class, null, false, UserServiceProtcolFragment.USER_CRASH_ACTION);
+                startActivity(AgreementActivity.class, null, false, UserServiceProtcolFragment.USER_SERVICE_AGREEMENT_ACTION);
                 break;
             case R.id.btn_next:
+
+                if (!cbAgree.isChecked()) {
+                    PaoToastUtils.showShortToast(this, "请认真阅读" + getString(R.string.user_protcol) + "并确认勾选");
+                    return;
+                }
                 final String personId = etPersonId.getText().toString();
                 final String personName = etPersonName.getText().toString();
                 final String phoneNum = etPhoneNum.getText().toString();

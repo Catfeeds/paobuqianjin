@@ -40,9 +40,11 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.YsPayOrderResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.SelectFriendActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
@@ -620,27 +622,43 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 }
                 break;
             case R.id.confirm_pay:
-                int style = getSelect();
-                if (style == 1) {
-                    popPayConfirm(getString(R.string.wallet_pay_confirm));
-                } else if (style == 0) {
-                    if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
-                        pay();
-                    } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
-                        paySponsorVip();
-                    } else {
-                        LocalLog.d(TAG, "Unknown op");
+                Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
+                    @Override
+                    public void onIdentifed() {
+                        int style = getSelect();
+                        if (style == 1) {
+                            popPayConfirm(getString(R.string.wallet_pay_confirm));
+                        } else if (style == 0) {
+                            if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                                pay();
+                            } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
+                                paySponsorVip();
+                            } else {
+                                LocalLog.d(TAG, "Unknown op");
+                            }
+                        } else if (style == 2) {
+                            LocalLog.d(TAG, "使用云闪付!");
+                            if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                                pay();
+                            } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
+                                paySponsorVip();
+                            } else {
+                                LocalLog.d(TAG, "Unknown op");
+                            }
+                        }
                     }
-                } else if (style == 2) {
-                    LocalLog.d(TAG, "使用云闪付!");
-                    if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
-                        pay();
-                    } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
-                        paySponsorVip();
-                    } else {
-                        LocalLog.d(TAG, "Unknown op");
+
+                    @Override
+                    public void onUnidentify() {
+                        Intent intent = new Intent(getActivity(), IdentityAuth1Activity.class);
+                        startActivityForResult(intent, 1);
                     }
-                }
+
+                    @Override
+                    public void onGetIdentifyStatusError() {
+
+                    }
+                });
 
                 break;
         }

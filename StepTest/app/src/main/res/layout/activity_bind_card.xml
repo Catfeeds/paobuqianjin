@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="14dp"
-        android:text="请选择银行卡类型" />
+        android:text="请绑定持卡人本人的银行卡" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"

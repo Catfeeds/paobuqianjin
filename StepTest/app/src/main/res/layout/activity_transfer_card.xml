@@ -112,6 +112,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
+                android:layout_marginEnd="24dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/tips_title"
                 android:textColor="@color/color_8a8a8a"
@@ -123,6 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:layout_marginStart="24dp"
+                android:layout_marginEnd="20dp"
                 android:text="@string/transfer_limite_tips"
                 android:textColor="@color/color_8a8a8a"
                 android:textSize="12sp"
@@ -133,7 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="14dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="14dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/change_color_btn"
                 android:text="@string/next_step"
@@ -160,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:clickable="true"
                     android:paddingRight="10dp"
-                    android:text="《用户协议》"
+                    android:text="@string/transfer_protcol"
                     android:textColor="@color/color_007aff"
                     android:textSize="12sp" />
 

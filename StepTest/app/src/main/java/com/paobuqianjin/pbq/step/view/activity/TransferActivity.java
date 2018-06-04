@@ -34,40 +34,6 @@ public class TransferActivity extends BaseBarActivity {
         setContentView(R.layout.activity_transfer);
         ButterKnife.bind(this);
 
-        getCurrentState();
-    }
-
-    private void getCurrentState() {
-        Presenter.getInstance(this).getPaoBuSimple(NetApi.GET_PERSON_IDENTIFY_STATE, null, new PaoCallBack() {
-            @Override
-            protected void onSuc(String s) {
-                try {
-                    JSONObject jsonObj = new JSONObject(s);
-                    jsonObj = jsonObj.getJSONObject("data");
-                    String status = jsonObj.getString("status");
-                    if (status.equals("0")) {
-                        PaoToastUtils.showShortToast(TransferActivity.this, "当前用户还处于认证中，请稍后再试");
-//                        Intent intent = new Intent();
-//                        intent.setAction(CRASH_ACTION);
-//                        intent.putExtra("total", totalMoney);
-//                        intent.setClass(TransferActivity.this, IdentityAuth1Activity.class);
-//                        startActivityForResult(intent, REQUEST_CRASH);
-//                        finish();
-                        return;
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                if (errorBean != null) {
-                    PaoToastUtils.showShortToast(TransferActivity.this, errorBean.getMessage());
-                    finish();
-                }
-            }
-        });
     }
 
     @OnClick({R.id.linear_wechat, R.id.linear_card})
@@ -96,7 +62,6 @@ public class TransferActivity extends BaseBarActivity {
 
                     @Override
                     public void onGetIdentifyStatusError() {
-
                     }
                 });
                 break;

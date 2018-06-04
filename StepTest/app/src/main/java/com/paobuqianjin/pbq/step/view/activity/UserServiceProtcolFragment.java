@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 
 public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment implements ProtocolInterface {
     private final static String TAG = UserServiceProtcolFragment.class.getSimpleName();
-    private final static String USER_SERVICE_AGREEMENT_ACTION = "com.paobuqianjin.pbq.step.SERVICE_ACTION";
+    public final static String USER_SERVICE_AGREEMENT_ACTION = "com.paobuqianjin.pbq.step.SERVICE_ACTION";
     public final static String USER_CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
     private final static String USER_INVITE_AGREEMENT_ACTION = "com.paobuqianjin.step.pbq.INVITE_ACTION";
     @Bind(R.id.bar_return_drawable)
@@ -112,7 +112,6 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
                 getActivity().setResult(Activity.RESULT_OK);
             }
             setTitle(protocolResponse.getData().getTitle());
-
             String content = protocolResponse.getData().getContent();
 
             //支持javascript
@@ -125,8 +124,9 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
 //            webview.getSettings().setUseWideViewPort(true);
 //自适应屏幕
 //            webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
-//            webview.getSettings().setLoadWithOverviewMode(true);
-            webview.loadData(content, "text/html", "UTF-8"); // 加载定义的代码，并设定编码格式和字符集。
+//            webview.getSettings().setLoadWithOverviewMode(true)
+            webview.getSettings().setDefaultTextEncodingName("utf-8");
+            webview.loadDataWithBaseURL(null,content, "text/html", "utf-8",null); // 加载定义的代码，并设定编码格式和字符集。
         } else if (protocolResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BankListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
@@ -20,9 +23,12 @@ import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.BankCardAdapter;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
+import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -69,6 +75,8 @@ public class MyBankCardActivity extends BaseBarActivity implements BaseBarActivi
         super.onResume();
     }
 
+    private NormalDialog normalDialog;
+
     @Override
     protected void initView() {
         layoutManager = new LinearLayoutManager(this);
@@ -78,6 +86,68 @@ public class MyBankCardActivity extends BaseBarActivity implements BaseBarActivi
         emptyBankPan = (RelativeLayout) findViewById(R.id.empty_bank_pan);
         bankCardAdapter = new BankCardAdapter(this, listData);
         rvCards.setAdapter(bankCardAdapter);
+        rvCards.addOnItemTouchListener(new RecyclerItemClickListener(this, rvCards, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void OnItemLongClick(View view, int position) {
+
+            }
+
+            @Override
+            public void OnItemClick(View view, final int position) {
+                if (normalDialog == null) {
+                    normalDialog = new NormalDialog(MyBankCardActivity.this);
+                    String card = listData.get(position).getBank_card();
+                    String cardLastFour = "";
+                    if (!TextUtils.isEmpty(card)) {
+                        if (card.length() > 4) {
+                            cardLastFour = card.substring(card.length() - 4, card.length());
+                        }
+                    }
+                    String message = "储蓄卡尾号" + cardLastFour + "解除绑定？";
+                    normalDialog.setMessage(message);
+                    normalDialog.setYesOnclickListener(MyBankCardActivity.this.getString(R.string.confirm_yes), new NormalDialog.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+                            normalDialog.dismiss();
+                            Map<String, String> params = new HashMap<>();
+                            params.put("cardno", listData.get(position).getBank_card());
+                            Presenter.getInstance(getApplicationContext()).deletePaoBuSimple(NetApi.urlUserBankCard + "/" + listData.get(position).getCardid(),
+                                    params, new PaoCallBack() {
+                                        @Override
+                                        protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                                            ToastUtils.showShortToast(getApplicationContext(), "解绑失败");
+                                        }
+
+                                        @Override
+                                        protected void onSuc(String s) {
+                                            ToastUtils.showShortToast(getApplicationContext(), "解绑成功");
+                                            getBankList();
+                                        }
+                                    }
+                            );
+                        }
+                    });
+                    normalDialog.setNoOnclickListener(MyBankCardActivity.this.getString(R.string.cancel_no), new NormalDialog.onNoOnclickListener() {
+                        @Override
+                        public void onNoClick() {
+                            normalDialog.dismiss();
+                        }
+                    });
+                }else{
+                    String card = listData.get(position).getBank_card();
+                    String cardLastFour = "";
+                    if (!TextUtils.isEmpty(card)) {
+                        if (card.length() > 4) {
+                            cardLastFour = card.substring(card.length() - 4, card.length());
+                        }
+                    }
+                    String message = "储蓄卡尾号" + cardLastFour + "解除绑定？";
+                    normalDialog.setMessage(message);
+                }
+
+                normalDialog.show();
+            }
+        }));
         setToolBarListener(this);
         getBankList();
     }
@@ -86,6 +156,9 @@ public class MyBankCardActivity extends BaseBarActivity implements BaseBarActivi
         Presenter.getInstance(this).getPaoBuSimple(NetApi.GET_BANK_LIST, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
+                if (isFinishing()) {
+                    return;
+                }
                 bankScroll.setVisibility(View.VISIBLE);
                 emptyBankPan.setVisibility(View.GONE);
                 BankListResponse bankGson = new Gson().fromJson(s, BankListResponse.class);
@@ -101,7 +174,7 @@ public class MyBankCardActivity extends BaseBarActivity implements BaseBarActivi
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                 if (errorBean != null) {
-                    if (errorBean.getError() == 1) {
+                    if (errorBean.getError() == 1 && !isFinishing()) {
                         emptyBankPan.setVisibility(View.VISIBLE);
                         bankScroll.setVisibility(View.GONE);
                     } else {

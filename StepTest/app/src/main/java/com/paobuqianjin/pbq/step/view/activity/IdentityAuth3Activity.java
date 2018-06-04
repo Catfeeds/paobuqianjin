@@ -142,7 +142,6 @@ public class IdentityAuth3Activity extends BaseBarActivity {
                 break;
             case R.id.btn_next:
                 if (isFinishiAllInfo()) {
-                    btnNext.setEnabled(false);
                     etCode.setEnabled(false);
                     Map<String, String> params = new HashMap<>();
                     params.put("phone", phoneNum);
@@ -156,7 +155,7 @@ public class IdentityAuth3Activity extends BaseBarActivity {
                     Presenter.getInstance(this).postPaoBuSimple(NetApi.REAL_AUTH_ALL_INFO, params, new PaoCallBack() {
                         @Override
                         protected void onSuc(String s) {
-                            PaoToastUtils.showShortToast(IdentityAuth3Activity.this, isAddCard?"添加银行卡成功":"验证成功");
+                            PaoToastUtils.showShortToast(IdentityAuth3Activity.this, isAddCard ? "添加银行卡成功" : "验证成功");
                             setResult(RES_SUC);
                             finish();
                         }
@@ -166,7 +165,6 @@ public class IdentityAuth3Activity extends BaseBarActivity {
                             if (errorBean != null) {
                                 PaoToastUtils.showShortToast(IdentityAuth3Activity.this, errorBean.getMessage());
                             }
-                            btnNext.setEnabled(true);
                             etCode.setEnabled(true);
                         }
                     });

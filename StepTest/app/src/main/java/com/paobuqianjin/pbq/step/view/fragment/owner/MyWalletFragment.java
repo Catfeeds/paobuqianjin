@@ -233,22 +233,14 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 break;
             case R.id.crash:
                 LocalLog.d(TAG, "提现");
-                if (isVerificationIdentity()) {// TODO: 2018/5/17 waitdelete
                   /*  intent.setAction(CRASH_ACTION);
                     intent.putExtra("total", totalMoney);
                     intent.setClass(getContext(), CrashActivity.class);
                     startActivityForResult(intent, REQUEST_CRASH);*/
-                    intent.setAction(CRASH_ACTION);
-                    intent.putExtra("total", totalMoney);
-                    intent.setClass(getContext(), TransferActivity.class);
-                    startActivityForResult(intent, REQUEST_CRASH);
-                }else{
-                    intent.setAction(CRASH_ACTION);
-                    intent.putExtra("total", totalMoney);
-                    intent.setClass(getContext(), IdentityAuth1Activity.class);
-                    startActivityForResult(intent, REQUEST_CRASH);
-                }
-
+                intent.setAction(CRASH_ACTION);
+                intent.putExtra("total", totalMoney);
+                intent.setClass(getContext(), TransferActivity.class);
+                startActivityForResult(intent, REQUEST_CRASH);
                 break;
             case R.id.yesterday_span:
                 LocalLog.d(TAG, "查看当前收益");
@@ -268,15 +260,6 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
             default:
                 break;
         }
-    }
-
-    /**
-     * 是否已经进行身份认证
-     * @return
-     */
-    private boolean isVerificationIdentity() {
-
-        return true;
     }
 
     /*

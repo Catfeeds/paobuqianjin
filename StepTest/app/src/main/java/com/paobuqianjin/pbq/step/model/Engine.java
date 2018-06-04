@@ -66,6 +66,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CurrentStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CvipNoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DeleteDynamicResponse;
@@ -188,6 +189,7 @@ import okhttp3.RequestBody;
 import okio.BufferedSink;
 
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
+import static com.paobuqianjin.pbq.step.utils.NetApi.urlMemberSearch;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlProtocol;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlRegisterPhone;
@@ -1396,6 +1398,49 @@ public final class Engine {
                 .execute(new NetStringCallBack(circleMemberManagerInterface, COMMAND_GET_MEMBER));
     }
 
+    public void searchCircleMember(String circleid, int pageIndex, int pageSize, String keyWord, final InnerCallBack innerCallBack) {
+        LocalLog.d(TAG, "searchCircleMember() enter");
+        if (!TextUtils.isEmpty(keyWord)) {
+            String ulr = urlMemberSearch + circleid + "&page=" + String.valueOf(pageIndex) + "&pagesize=" + String.valueOf(pageSize) + "&keyword=" + keyWord;
+            LocalLog.d(TAG, "searchCircleMember() url = " + ulr);
+            OkHttpUtils
+                    .get()
+                    .addHeader("headtoken", getToken(mContext))
+                    .url(ulr)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Call call, Exception e, int i, Object o) {
+                            if (e != null) {
+                                e.printStackTrace();
+                            }
+                            if (o != null) {
+                                try {
+                                    ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                    if (innerCallBack != null) {
+                                        innerCallBack.innerCallBack(errorCode);
+                                    }
+                                } catch (JsonSyntaxException j) {
+                                    j.printStackTrace();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onResponse(String s, int i) {
+                            try {
+                                CircleMemberResponse circleMemberResponse = new Gson().fromJson(s, CircleMemberResponse.class);
+                                if (innerCallBack != null) {
+                                    innerCallBack.innerCallBack(circleMemberResponse);
+                                }
+                            } catch (JsonSyntaxException j) {
+                                j.printStackTrace();
+                            }
+                        }
+                    });
+        }
+    }
+
     public void deleteCircleMember(String idStr) {
         String url = NetApi.urlCircleMember + "/" + idStr;
         LocalLog.d(TAG, "deleteCircleMember()" + url);
@@ -1646,7 +1691,7 @@ public final class Engine {
 
 
     /* TODO 圈子接口*/
-    public synchronized void getCircleStepRank(int circleId, int page, int pagesize) {
+    public void getCircleStepRank(int circleId, int page, int pagesize) {
 
         String url = NetApi.urlCircleRank + "/?circleid=" + String.valueOf(circleId)
                 + "&action=step" + "&page=" + String.valueOf(page) + "&pagesize=" + pagesize;
@@ -2322,7 +2367,7 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
-                        if (o == null) {
+                        if(o == null){
                             return;
                         }
                         if (innerCallBack != null) {
@@ -2358,7 +2403,7 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
-                        if (o == null) {
+                        if(o == null){
                             return;
                         }
                         if (innerCallBack != null) {
@@ -2604,7 +2649,7 @@ public final class Engine {
         Presenter.getInstance(activity).getPaoBuSimple(NetApi.GET_PERSON_IDENTIFY_STATE, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
-                if (activity == null) return;
+                if(activity == null) return;
                 try {
                     JSONObject jsonObj = new JSONObject(s);
                     jsonObj = jsonObj.getJSONObject("data");
@@ -2612,7 +2657,7 @@ public final class Engine {
                     if (status.equals("0")) {
                         onIdentifyLis.onUnidentify();
                         return;
-                    } else {
+                    }else{
                         onIdentifyLis.onIdentifed();
                     }
                 } catch (JSONException e) {
@@ -2623,7 +2668,7 @@ public final class Engine {
 
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                if (activity == null) return;
+                if(activity == null) return;
                 if (errorBean != null) {
                     PaoToastUtils.showShortToast(activity, errorBean.getMessage());
                 }
@@ -2878,21 +2923,21 @@ public final class Engine {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).into(imageView);
+        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).fit().into(imageView);
     }
 
     public void getOriginImage(String fileUrl, final ImageView imageView) {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).into(imageView);
+        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).fit().into(imageView);
     }
 
     public void getImage(String fileUrl, final ImageView imageView, int targetWidth, int targetHeight) {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(targetWidth, targetHeight).into(imageView);
+        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(targetWidth, targetHeight).fit().into(imageView);
     }
 
     //网络图片获取接口
@@ -2903,9 +2948,9 @@ public final class Engine {
         //picasso.setLoggingEnabled(true);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         if (networkPolicy == NetworkPolicy.OFFLINE) {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).networkPolicy(networkPolicy).into(imageView);
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).networkPolicy(networkPolicy).fit().into(imageView);
         } else {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).into(imageView);
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).fit().into(imageView);
         }
 
         //Picasso.with(mContext).load(urlImage).into(imageView);
@@ -2935,15 +2980,14 @@ public final class Engine {
             picasso.load(placeholderImageId).config(Bitmap.Config.RGB_565).transform(transformation).into(view);
             return;
         }
-
         if (networkPolicy == NetworkPolicy.OFFLINE) {
             picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation)
                     .placeholder(ContextCompat.getDrawable(mContext, placeholderImageId)).networkPolicy(networkPolicy)
-                    .error(ContextCompat.getDrawable(mContext, errorId)).networkPolicy(networkPolicy).into(view);
+                    .error(ContextCompat.getDrawable(mContext, errorId)).networkPolicy(networkPolicy).fit().into(view);
         } else {
             picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation)
                     .placeholder(ContextCompat.getDrawable(mContext, placeholderImageId))
-                    .error(ContextCompat.getDrawable(mContext, errorId)).into(view);
+                    .error(ContextCompat.getDrawable(mContext, errorId)).fit().into(view);
         }
     }
 
@@ -2955,9 +2999,9 @@ public final class Engine {
         //picasso.setLoggingEnabled(true);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         if (networkPolicy == NetworkPolicy.OFFLINE) {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).networkPolicy(networkPolicy).into(imageView);
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).networkPolicy(networkPolicy).fit().into(imageView);
         } else {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).resize(targetWidth, targetHeight).into(imageView);
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).resize(targetWidth, targetHeight).fit().into(imageView);
         }
     }
 
@@ -3074,7 +3118,7 @@ public final class Engine {
                         .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST_WALLET));
                 break;
             case "yspay":
-                LocalLog.d(TAG, "云闪付");
+                LocalLog.d(TAG,"云闪付");
                 OkHttpUtils
                         .post()
                         .addHeader("headtoken", getToken(mContext))
@@ -3950,6 +3994,20 @@ public final class Engine {
 
     private Gson gsonPrint = new Gson();
 
+    public void delete(String url, Map<String, String> params, PaoCallBack callBack) {
+        if (params == null) params = new HashMap<>();
+        LocalLog.d(TAG, gsonPrint.toJson(params));
+        callBack.setMyUrl(url);
+
+        OkHttpUtils
+                .delete()
+                .addHeader("headtoken", getToken(mContext))
+                .url(url)
+                .params(params)
+                .build()
+                .execute(callBack);
+    }
+
     public void post(String url, Map<String, String> params, PaoCallBack callBack) {
         if (params == null) params = new HashMap<>();
         LocalLog.d(TAG, gsonPrint.toJson(params));
@@ -3963,10 +4021,9 @@ public final class Engine {
                 .build()
                 .execute(callBack);
     }
-
-    public void get(String url, Map<String, String> params, PaoCallBack callBack) {
-        if (params == null) params = new HashMap<>();
-        LocalLog.d(TAG, "提交数据：" + new Gson().toJson(params));
+    public void get(String url, Map<String,String> params, PaoCallBack callBack) {
+        if(params==null) params = new HashMap<>();
+        LocalLog.d(TAG,"提交数据："+ new Gson().toJson(params));
         callBack.setMyUrl(url);
 
         OkHttpUtils

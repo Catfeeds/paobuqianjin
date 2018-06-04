@@ -116,7 +116,8 @@ public class OwnerCreateFragment extends BaseFragment {
         layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         ownerCreateCircleLists.setLayoutManager(layoutManager);
-
+        ownerCreateCircleLists.setHasFixedSize(true);
+        ownerCreateCircleLists.setNestedScrollingEnabled(false);
         // 自定义的核心就是DefineLoadMoreView类。
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());
         ownerCreateCircleLists.addFooterView(loadMoreView); // 添加为Footer。

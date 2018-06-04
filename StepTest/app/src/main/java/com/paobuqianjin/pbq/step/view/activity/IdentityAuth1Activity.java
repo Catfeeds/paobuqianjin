@@ -72,7 +72,7 @@ public class IdentityAuth1Activity extends BaseBarActivity {
         scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, true);//不需要确认activity
 //        scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, true);//禁止键盘输入
 //        scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_INSTRUCTIONS, "请将银行卡至于此处\n系统将自动扫描识别");
-        scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_OVERLAY_LAYOUT_ID, false);
+//        scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_OVERLAY_LAYOUT_ID, false);
 
         // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
         startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);
@@ -109,6 +109,7 @@ public class IdentityAuth1Activity extends BaseBarActivity {
             }
             // do something with resultDisplayStr, maybe display it in a textView
         } else if (resultCode == IdentityAuth3Activity.RES_SUC) {
+            setResult(resultCode);
             finish();
         }
     }

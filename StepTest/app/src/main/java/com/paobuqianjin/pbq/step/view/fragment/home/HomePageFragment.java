@@ -193,11 +193,12 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     private int stepAnimation = 0;
     private int SPEED_DEFAULT = 40;
     private int showStep = 0;
-    private int targetStep = 1000;
+    private int targetStep = 10000;
 
     private static int DEFAULT_COUNT = 25;//默认动画25
     StepProcessDrawable stepProcessDrawable;
     NormalDialog dialog;
+    private SharedPreferences sharedPreferences;
 
     static {
         weatherMap.put("0", R.drawable.weather_0);
@@ -325,7 +326,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
+        sharedPreferences = Presenter.getInstance(getContext()).getSharePreferences();
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         processStepNow = (ImageView) viewRoot.findViewById(R.id.process_step_now);
         toayStep = (TextView) viewRoot.findViewById(R.id.toay_step);
         cityName = (TextView) viewRoot.findViewById(R.id.city_name);
@@ -370,6 +372,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         super.onDestroyView();
         ButterKnife.unbind(this);
         getContext().unregisterReceiver(stepLocationReciver);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
         if (isBind) {
             Presenter.getInstance(getContext()).unbindStepService();
             isBind = false;
@@ -948,12 +951,12 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if ("target".equals(key)) {
+        if ("target".equals(key) && isAdded()) {
             canDrawProcess = true;
             LocalLog.d(TAG, "用户目标值改变");
-            int target = Presenter.getInstance(getContext()).getTarget(getContext());
-            targetSteps.setText(String.valueOf(target));
-            drawProcess(target, lastStep);
+            targetStep = Presenter.getInstance(getContext()).getTarget(getContext());
+            targetSteps.setText(String.valueOf(targetStep));
+            drawProcess(targetStep, lastStep);
         }
     }
 }

@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.media.ExifInterface;
 
 import com.google.zxing.BarcodeFormat;
@@ -108,12 +109,12 @@ public class BitmapUtil {
         if (logo == null) {
             return src;
         }
-
+        Bitmap circleBitmap = createCircleImage(logo);
         //获取图片的宽高
         int srcWidth = src.getWidth();
         int srcHeight = src.getHeight();
-        int logoWidth = logo.getWidth();
-        int logoHeight = logo.getHeight();
+        int logoWidth = circleBitmap.getWidth();
+        int logoHeight = circleBitmap.getHeight();
 
         if (srcWidth == 0 || srcHeight == 0) {
             return null;
@@ -130,7 +131,7 @@ public class BitmapUtil {
             Canvas canvas = new Canvas(bitmap);
             canvas.drawBitmap(src, 0, 0, null);
             canvas.scale(scaleFactor, scaleFactor, srcWidth / 2, srcHeight / 2);
-            canvas.drawBitmap(logo, (srcWidth - logoWidth) / 2, (srcHeight - logoHeight) / 2, null);
+            canvas.drawBitmap(circleBitmap, (srcWidth - logoWidth) / 2, (srcHeight - logoHeight) / 2, null);
 
             canvas.save(Canvas.ALL_SAVE_FLAG);
             canvas.restore();
@@ -190,14 +191,15 @@ public class BitmapUtil {
 
     }
 
-    //转换为圆形状的bitmap
+    //转换为正方形形状的bitmap
     public static Bitmap createCircleImage(Bitmap source) {
         int length = source.getWidth() < source.getHeight() ? source.getWidth() : source.getHeight();
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         Bitmap target = Bitmap.createBitmap(length, length, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(target);
-        canvas.drawCircle(length / 2, length / 2, length / 2, paint);
+        //canvas.drawCircle(length / 2, length / 2, length / 2, paint);
+        canvas.drawRect(new Rect(0, 0, length, length), paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(source, 0, 0, paint);
         return target;

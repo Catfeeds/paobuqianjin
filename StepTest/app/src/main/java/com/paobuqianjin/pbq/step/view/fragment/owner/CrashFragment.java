@@ -27,9 +27,12 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
+import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
+import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
+import com.paobuqianjin.pbq.step.view.activity.TransferActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -190,7 +193,25 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                     }
                 }
                 crashToParam.setAmount(canCrash.getText().toString()).setTypeid(String.valueOf(1));
-                Presenter.getInstance(getContext()).postCrashTo(crashToParam);
+
+                Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
+                    @Override
+                    public void onIdentifed() {
+                        Presenter.getInstance(getContext()).postCrashTo(crashToParam);
+                    }
+
+                    @Override
+                    public void onUnidentify() {
+                        Intent intent = new Intent(getActivity(), IdentityAuth1Activity.class);
+                        startActivityForResult(intent, 1);
+                    }
+
+                    @Override
+                    public void onGetIdentifyStatusError() {
+
+                    }
+                });
+
                 break;
             case R.id.protocl_pay:
                 Intent intent = new Intent();

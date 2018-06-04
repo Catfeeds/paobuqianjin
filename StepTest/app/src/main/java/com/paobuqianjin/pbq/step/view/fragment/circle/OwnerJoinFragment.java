@@ -104,6 +104,8 @@ public class OwnerJoinFragment extends BaseFragment {
         ownerJoinCircleLists.setLayoutManager(layoutManager);
         joinCircleSwipe = (SwipeRefreshLayout) viewRoot.findViewById(R.id.join_circle_swipe);
         notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
+        ownerJoinCircleLists.setHasFixedSize(true);
+        ownerJoinCircleLists.setNestedScrollingEnabled(false);
         // 自定义的核心就是DefineLoadMoreView类。
         AttentionCircleFragment.DefineLoadMoreView loadMoreView = new AttentionCircleFragment.DefineLoadMoreView(getContext());
         ownerJoinCircleLists.addFooterView(loadMoreView); // 添加为Footer。

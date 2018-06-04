@@ -66,6 +66,7 @@ public class InputCardInfoActivity extends BaseBarActivity {
             finish();
             return;
         }
+        cbAgree.setChecked(Presenter.getInstance(this).getReadCrashProtocol(this));
 
         Map<String, String> params = new HashMap<>();
         params.put("cardno", cardNum.replaceAll(" ",""));
@@ -89,6 +90,7 @@ public class InputCardInfoActivity extends BaseBarActivity {
                 }
             }
         });
+
     }
 
     @OnClick({R.id.iv_phone_tips, R.id.tv_protocol, R.id.btn_next})
@@ -110,7 +112,7 @@ public class InputCardInfoActivity extends BaseBarActivity {
                 dialog.show();
                 break;
             case R.id.tv_protocol:
-                startActivity(AgreementActivity.class, null, false, UserServiceProtcolFragment.USER_CRASH_ACTION);
+                startActivity(AgreementActivity.class, null, false, UserServiceProtcolFragment.USER_SERVICE_AGREEMENT_ACTION);
                 break;
             case R.id.btn_next:
                 final String phoneNum = etPersonName.getText().toString();

@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.param;
 
+import android.text.TextUtils;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -174,6 +176,15 @@ public class AddBusinessParam {
         this.longitude = longitude;
         params.put("longitude", longitude);
         return this;
+    }
+
+
+    public boolean equals(AddBusinessParam obj) {
+        boolean result = false;
+        if (!TextUtils.isEmpty(obj.paramString())) {
+            result = obj.paramString().equals(paramString());
+        }
+        return result;
     }
 
     public Map<String, String> getParams() {

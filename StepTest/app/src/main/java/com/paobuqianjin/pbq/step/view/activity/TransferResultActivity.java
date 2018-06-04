@@ -26,7 +26,7 @@ public class TransferResultActivity extends BaseBarActivity implements BaseBarAc
 
     @Override
     protected String title() {
-        return isSuccess?getString(R.string.apply_suc):getString(R.string.apply_fal);
+        return getIntent().getBooleanExtra("is_success", false)?getString(R.string.apply_suc):getString(R.string.apply_fal);
     }
 
     @Override
@@ -54,6 +54,7 @@ public class TransferResultActivity extends BaseBarActivity implements BaseBarAc
 
     @Override
     public void clickLeft() {
+        onBackPressed();
         return;
     }
 

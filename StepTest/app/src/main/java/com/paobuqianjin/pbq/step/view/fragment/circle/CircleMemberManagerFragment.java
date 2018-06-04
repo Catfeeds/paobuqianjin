@@ -7,10 +7,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,16 +22,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.l.okhttppaobu.okhttp.OkHttpUtils;
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteAdminResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.AdminDeleteResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MemberDeleteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DearNameModifyActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleMemberBarAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.MemberManagerAdapter;
@@ -40,7 +47,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
-import static com.umeng.socialize.utils.DeviceConfig.context;
 
 /**
  * Created by pbq on 2017/12/18.
@@ -72,6 +78,10 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     BounceScrollView memberSpan;
     @Bind(R.id.delete_member_confim)
     Button deleteMemberConfim;
+    @Bind(R.id.cancel_icon)
+    RelativeLayout cancelIcon;
+    @Bind(R.id.circle_admin_span_rel)
+    RelativeLayout circleAdminSpanRel;
 
     private RecyclerView adminRecyclerView, normalRecyclerView;
     private LinearLayoutManager adminManager, normalManager;
@@ -81,16 +91,17 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     ArrayList<CircleMemberBarAdapter.AdapterCallInterface> adapterCallInterface;
     ArrayList<String> deleteArrList;
     private static final int DEAR_NAME_MODIFY = 0;
-    private int pageIndex = 1, pageCount = 0;
+    private int pageIndex = 1, pageCount = 0, pageIndexSearch = 1, pageCountSearch = 0;
     private final static int PAGESIZE = 15;
     private boolean hasDelete = false;
     private int currentMember = 0;
     private int position = -1;
     private boolean isLoadingData = false;
-    private MemberManagerAdapter adminAdapter, normalAdapter;
+    private MemberManagerAdapter adminAdapter, normalAdapter, searchAdapter;
     private ArrayList<CircleMemberResponse.DataBeanX.DataBean> mainAdminList = new ArrayList<>(),
-            normalAdminList = new ArrayList<>(), normalMemberList = new ArrayList<>();
+            searchList = new ArrayList<>(), normalMemberList = new ArrayList<>();
 
+    private String keyWord = "";
 
     @Override
     protected int getLayoutResId() {
@@ -141,11 +152,16 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                 if (topOrBottom == 0) {
 
                 } else if (topOrBottom == 1) {
-                    if (pageIndex <= pageCount && !isLoadingData) {
-                        isLoadingData = true;
-                        Presenter.getInstance(getActivity()).getCircleMemberAll(Integer.parseInt(id), pageIndex, PAGESIZE);
+                    if (!TextUtils.isEmpty(keyWord)) {
+                        if (pageIndexSearch <= pageCountSearch && !isLoadingData)
+                            Presenter.getInstance(getContext()).searchCircleMember(id, pageIndexSearch, PAGESIZE, keyWord, searchCallBack);
                     } else {
-                        LocalLog.d(TAG, "正在加载或没有更多数据了");
+                        if (pageIndex <= pageCount && !isLoadingData) {
+                            isLoadingData = true;
+                            Presenter.getInstance(getActivity()).getCircleMemberAll(Integer.parseInt(id), pageIndex, PAGESIZE);
+                        } else {
+                            LocalLog.d(TAG, "正在加载或没有更多数据了");
+                        }
                     }
                 }
             }
@@ -161,14 +177,99 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                 position = intent.getIntExtra(getContext().getPackageName() + "position", -1);
             }
         }
+
+        searchIcon = (RelativeLayout) viewRoot.findViewById(R.id.search_icon);
+        searchCircleText = (EditText) viewRoot.findViewById(R.id.search_circle_text);
+        searchCircleText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    pageIndexSearch = 1;
+                    searchKeyWord(searchCircleText.getText().toString());
+                    Utils.hideInput(getContext());
+                }
+                return false;
+            }
+        });
+        searchCircleText.addTextChangedListener(textWatcher);
+        cancelIcon = (RelativeLayout) viewRoot.findViewById(R.id.cancel_icon);
+        cancelIcon.setOnClickListener(onClickListener);
     }
+
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String temp = s.toString();
+            if (!TextUtils.isEmpty(temp)) {
+                LocalLog.d(TAG, "显示取消搜索界面");
+                cancelIcon.setVisibility(View.VISIBLE);
+                cancelIcon.setOnClickListener(onClickListener);
+            } else {
+                LocalLog.d(TAG, "隐藏搜索界面");
+                cancelIcon.setVisibility(View.GONE);
+                keyWord = "";
+                pageCountSearch = 0;
+                if (searchList.size() > 0 && isAdded()) {
+                    searchList.clear();
+                    normalRecyclerView.setAdapter(normalAdapter);
+                }
+            }
+        }
+    };
 
     @Override
     protected String title() {
         return "成员管理";
     }
 
+    private void searchKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+        if (Integer.parseInt(id) != -1) {
+            Presenter.getInstance(getContext()).searchCircleMember(id, pageIndexSearch, PAGESIZE, keyWord, searchCallBack);
+        }
+    }
 
+    private InnerCallBack searchCallBack = new InnerCallBack() {
+        @Override
+        public void innerCallBack(Object object) {
+            if (isAdded()) {
+                if (object instanceof ErrorCode) {
+
+                } else if (object instanceof CircleMemberResponse) {
+                    if (((CircleMemberResponse) object).getError() == 0) {
+                        LocalLog.d(TAG, "CircleMemberResponse() search " + ((CircleMemberResponse) object).toString());
+                        pageCountSearch = ((CircleMemberResponse) object).getData().getPagenation().getTotalPage();
+                        if (pageIndexSearch == 1) {
+                            searchList.clear();
+                        }
+                        searchList.addAll(((CircleMemberResponse) object).getData().getData());
+                        if (searchAdapter == null) {
+                            searchAdapter = new MemberManagerAdapter(getContext(), searchList, opCallBackInterface);
+                        } else {
+                            searchAdapter.notifyDataSetChanged();
+                        }
+                        normalRecyclerView.setAdapter(searchAdapter);
+                        pageIndexSearch++;
+                    } else if (((CircleMemberResponse) object).getError() == 1) {
+                        ToastUtils.showShortToast(getContext(), "没有相关成员");
+                    } else if (((CircleMemberResponse) object).getError() == 100) {
+                        exitTokenUnfect();
+                    }
+                }
+            }
+            isLoadingData = false;
+        }
+    };
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -186,6 +287,13 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                     if (!TextUtils.isEmpty(idStr)) {
                         Presenter.getInstance(getContext()).deleteCircleMember(idStr);
                     }
+                    break;
+                case R.id.cancel_icon:
+                    LocalLog.d(TAG, "取消搜索,显示原来的数据");
+                    searchCircleText.setText(null);
+                    keyWord = "";
+                    pageCountSearch = 0;
+                    pageIndexSearch = 1;
                     break;
             }
         }
@@ -269,7 +377,6 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                     adminAdapter = new MemberManagerAdapter(getContext(), mainAdminList, null, opCallBackInterface);
                 } else {
                     adminAdapter.notifyItemRangeInserted(mainAdminList.size() - toOneList.size(), toOneList.size());
-                    adminAdapter.notifyItemRangeChanged(mainAdminList.size() - toOneList.size(), toOneList.size());
                 }
             }
             adminRecyclerView.setAdapter(adminAdapter);
@@ -281,7 +388,6 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                     normalAdapter = new MemberManagerAdapter(getContext(), normalMemberList, opCallBackInterface);
                 } else {
                     normalAdapter.notifyItemRangeInserted(normalMemberList.size() - data[2].size(), data[2].size());
-                    normalAdapter.notifyItemRangeChanged(normalMemberList.size() - data[2].size(), data[2].size());
                 }
             }
             normalRecyclerView.setAdapter(normalAdapter);

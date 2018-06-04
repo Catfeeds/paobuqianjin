@@ -601,6 +601,10 @@ public final class Presenter {
         engine.getCircleMemberAll(circleId, pageInex, pageSize);
     }
 
+    public void searchCircleMember(String circleid, int pageIndex, int pageSize, String keyWord, final InnerCallBack innerCallBack) {
+        engine.searchCircleMember(circleid, pageIndex, pageSize, keyWord, innerCallBack);
+    }
+
     public void deleteCircleMember(String idStr) {
         engine.deleteCircleMember(idStr);
     }
@@ -839,6 +843,9 @@ public final class Presenter {
 
     public void postPaoBuSimple(String url, Map<String,String> params, PaoCallBack callBack) {
         engine.post(url, params, callBack);
+    }
+    public void deletePaoBuSimple(String url, Map<String,String> params, PaoCallBack callBack){
+        engine.delete(url,params,callBack);
     }
 
     public void getPaoBuSimple(String url, Map<String,String> params, PaoCallBack callBack) {

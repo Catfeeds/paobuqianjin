@@ -15,25 +15,24 @@
             android:id="@+id/bank_card_ico"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_alignBottom="@+id/card_message"
+            android:layout_alignTop="@+id/card_message"
             android:layout_marginLeft="14dp"
-            android:layout_marginTop="18dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/default_head_ico" />
+            android:scaleType="centerCrop" />
 
         <RelativeLayout
             android:id="@+id/card_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/bank_card_ico"
-            android:layout_alignTop="@+id/bank_card_ico"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="18dp"
             android:layout_toEndOf="@+id/bank_card_ico">
 
             <TextView
                 android:id="@+id/bank_card_from"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="招商银行"
+                android:text=""
                 android:textColor="@color/color_161727"
                 android:textSize="16dp" />
 

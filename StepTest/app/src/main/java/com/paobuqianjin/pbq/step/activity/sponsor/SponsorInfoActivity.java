@@ -91,6 +91,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     private String images;
     private String imagesIn;
     private Intent intent;
+    private AddBusinessParam oldParam = null;
 
     @Override
     protected String title() {
@@ -292,6 +293,15 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
             param.setBusinessId(businessId);
             Presenter.getInstance(this).updateBusiness(param, this);
         } else {
+            if (oldParam == null) {
+                oldParam = param;
+            } else {
+                if (param.equals(oldParam)) {
+                    ToastUtils.showShortToast(this, "不能重复创建!");
+                    return;
+                }
+                oldParam = param;
+            }
             Presenter.getInstance(this).AddBusiness(param, this);
         }
     }

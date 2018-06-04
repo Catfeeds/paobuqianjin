@@ -71,6 +71,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="14dp"
             android:background="@null"
+            android:inputType="phone"
             android:gravity="right"
             android:hint="输入真实电话号码"
             android:maxEms="16"

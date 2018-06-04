@@ -16,6 +16,9 @@ public abstract class PaoCallBack extends StringCallback {
 
     @Override
     public void onError(Call call, Exception e, int i, Object o) {
+        if(o == null){
+            return;
+        }
         LocalLog.d(TAG, myUrl + "-----Http Code----> " + i + " \nError Object----> " +o.toString());
         e.printStackTrace();
         try {

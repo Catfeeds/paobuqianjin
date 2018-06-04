@@ -12,7 +12,7 @@
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:id="@+id/friend_scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@+id/friend_dan"
         android:overScrollMode="never">
 

@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -21,6 +22,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.BankListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
@@ -94,10 +96,11 @@ public class TransferCardActivity extends BaseBarActivity {
         });
         rvBank.setAdapter(adapter);
         //设置Item增加、移除动画
-//        rvBank.setItemAnimator(new DefaultItemAnimator());
+        rvBank.setItemAnimator(new DefaultItemAnimator());
         //添加分割线
 //        rvBank.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
+        cbAgree.setChecked(Presenter.getInstance(this).getReadCrashProtocol(this));
         initData();
     }
 
@@ -108,10 +111,6 @@ public class TransferCardActivity extends BaseBarActivity {
                 BankListResponse bankGson = new Gson().fromJson(s, BankListResponse.class);
                 listData.clear();
                 listData.addAll(bankGson.getData());
-//                for (int i = 0; i < 4; i++) {
-//                    BankListResponse.CardBean bean = new BankListResponse.CardBean();
-//                    listData.add(bean);
-//                }
                 adapter.notifyDataSetChanged();
             }
 
@@ -137,6 +136,10 @@ public class TransferCardActivity extends BaseBarActivity {
                     PaoToastUtils.showShortToast(this,"请选择银行卡");
                     return;
                 }
+                if (!cbAgree.isChecked()) {
+                    PaoToastUtils.showShortToast(this, "请认真阅读" + getString(R.string.transfer_protcol) + "并确认勾选");
+                    return;
+                }
                 Map<String, String> params = new HashMap<>();
                 params.put("cardid", selectBean.getCardid());
                 params.put("amount", transferMoneyStr);
@@ -152,6 +155,7 @@ public class TransferCardActivity extends BaseBarActivity {
 
                     @Override
                     protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                        if(errorBean!=null) PaoToastUtils.showShortToast(TransferCardActivity.this,errorBean.getMessage());
                         Intent intent = new Intent(TransferCardActivity.this, TransferResultActivity.class);
                         intent.putExtra("is_success", false);
                         startActivity(intent);

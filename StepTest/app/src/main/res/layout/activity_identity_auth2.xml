@@ -172,7 +172,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:paddingRight="14dp"
-            android:text="《用户协议》"
+            android:text="@string/user_protcol"
             android:textColor="@color/color_007aff" />
 
         <CheckBox

@@ -29,8 +29,6 @@ import android.widget.Toast;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -39,6 +37,7 @@ import com.paobuqianjin.pbq.step.view.activity.FillInviteCodeActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.InviteDanAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.umeng.socialize.ShareAction;
@@ -47,7 +46,6 @@ import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
-import com.umeng.socialize.utils.SocializeUtils;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
@@ -90,6 +88,12 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     MyInviteFragment myInviteFragment;
     InviteDanFragment inviteDanFragment;
     String[] titles = {"邀请达人榜", "我的邀请"};
+    @Bind(R.id.line1)
+    RelativeLayout line1;
+    @Bind(R.id.invite_scroll)
+    BounceScrollView inviteScroll;
+    @Bind(R.id.invite_fg)
+    RelativeLayout inviteFg;
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
     private TranslateAnimation animationCircleType;
@@ -101,6 +105,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     InviteDanAdapter adapter;
     private Rationale mRationale;
     private PermissionSetting mSetting;
+    private boolean isLoading = false;
     private ArrayList<InviteDanResponse.DataBeanX.DataBean> inviteDan = new ArrayList<>();
 
     @Override
@@ -129,7 +134,6 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         myInviteFragment = new MyInviteFragment();
         inviteDanFragment = new InviteDanFragment();
 
@@ -169,9 +173,35 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         loadData(inviteDan);
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getContext());
+        inviteScroll = (BounceScrollView) viewRoot.findViewById(R.id.invite_scroll);
+        inviteScroll.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (inviteScroll != null) {
+                    inviteScroll.setTopBottomListener(new BounceScrollView.TopBottomListener() {
+                        @Override
+                        public void topBottom(int topOrBottom) {
+                            if (topOrBottom == 0 && !isLoading) {
+                                isLoading = true;
+                                update();
+                            }
+                        }
+                    });
+                }
+            }
+        }, 5000);
         Presenter.getInstance(getContext()).getInviteDan(pageIndexDan, PAGE_SIZE);
     }
 
+    private void update() {
+        if (myInviteFragment.isAdded() && inviteDanFragment.isAdded()) {
+            LocalLog.d(TAG, "update() enter");
+            inviteDan.clear();
+            pageIndexDan = 1;
+            Presenter.getInstance(getContext()).getInviteDan(pageIndexDan, PAGE_SIZE);
+            myInviteFragment.update();
+        }
+    }
 
     private UMShareListener shareListener = new UMShareListener() {
         @Override
@@ -258,7 +288,6 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
                     break;
                 case R.id.qq_icon:
                     requestPermission(Permission.Group.STORAGE);
-
                     break;
                 default:
                     break;
@@ -390,6 +419,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             if (pageIndexDan <= pageCountDan) {
                 Presenter.getInstance(getContext()).getInviteDan(pageIndexDan, PAGE_SIZE);
             }
+            isLoading = false;
         } else if (inviteDanResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
