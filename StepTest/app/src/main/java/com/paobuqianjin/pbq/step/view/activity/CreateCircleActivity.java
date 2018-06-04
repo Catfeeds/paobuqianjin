@@ -304,7 +304,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         mSetting = new PermissionSetting(this);
 
 
-        filter = new LimitLengthFilter();
+         filter = new LimitLengthFilter();
         cirNameDesc.setFilters(new InputFilter[]{filter});
         circleDescOfYour.addTextChangedListener(new TextWatcher() {
             @Override
@@ -319,7 +319,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
             @Override
             public void afterTextChanged(Editable s) {
-                boundText.setText(getString(R.string.per_x_x_txt, s.length() + "", "400"));
+                boundText.setText(getString(R.string.per_x_x_txt,s.length()+"","400"));
             }
         });
 
@@ -492,7 +492,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                     }, 500);
                 }
             });
-        } else if (passwordNumEditor.hasFocus()) {
+        }else if(passwordNumEditor.hasFocus()){
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -828,15 +828,15 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         String targetTaskStepNumStr = cirNameDesc.getText().toString();
         if (TextUtils.isEmpty(targetTaskStepNumStr.trim()) || filter.calculateLength(targetTaskStepNumStr) < 4
                 || filter.calculateLength(targetTaskStepNumStr) > 32) {
-            final NormalDialog normalDialog = new NormalDialog(this);
-            normalDialog.setMessage("请输入2-16位任务名称");
-            normalDialog.setSingleBtn(true);
-            normalDialog.setYesOnclickListener("确定", new NormalDialog.onYesOnclickListener() {
-                @Override
-                public void onYesClick() {
-                    normalDialog.dismiss();
-                }
-            });
+                final NormalDialog normalDialog = new NormalDialog(this);
+                normalDialog.setMessage("请输入2-16位任务名称");
+                normalDialog.setSingleBtn(true);
+                normalDialog.setYesOnclickListener("确定", new NormalDialog.onYesOnclickListener() {
+                    @Override
+                    public void onYesClick() {
+                        normalDialog.dismiss();
+                    }
+                });
             normalDialog.show();
             return false;
         }
@@ -859,11 +859,11 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             } else {
                 try {
                     if (Float.parseFloat(circleMoneyNumEditor.getText().toString().trim()) == 0) {
-                        PaoToastUtils.showShortToast(this, "金额不能为0");
+                        PaoToastUtils.showShortToast(this,"金额不能为0");
                         return false;
                     }
                 } catch (Exception e) {
-                    PaoToastUtils.showShortToast(this, "金额信息有误");
+                    PaoToastUtils.showShortToast(this,"金额信息有误");
                     return false;
                 }
             }
@@ -1086,6 +1086,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         LocalLog.d(TAG, "path = " + path);
         FileOutputStream fos = new FileOutputStream(path);
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+
     }
 
 }

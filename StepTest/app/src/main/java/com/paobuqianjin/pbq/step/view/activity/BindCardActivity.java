@@ -71,7 +71,7 @@ public class BindCardActivity extends BaseBarActivity {
         Intent scanIntent = new Intent(this, CardIOActivity.class);
 
         // customize these values to suit your needs.
-        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, false); // default: false
+        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, true); // default: false
         scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
         scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
         scanIntent.putExtra(CardIOActivity.EXTRA_HIDE_CARDIO_LOGO, true);
@@ -83,7 +83,6 @@ public class BindCardActivity extends BaseBarActivity {
         scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, true);//不需要确认activity
 //        scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, true);//禁止键盘输入
 //        scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_INSTRUCTIONS, "请将银行卡至于此处\n系统将自动扫描识别");
-//        scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_OVERLAY_LAYOUT_ID, false);
 
         // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
         startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);

@@ -130,18 +130,6 @@
                 android:textSize="12sp"
                 />
 
-            <Button
-                android:id="@+id/btn_transfer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="14dp"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/change_color_btn"
-                android:text="@string/next_step"
-                android:textColor="@color/white"
-                />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -149,11 +137,17 @@
                 android:gravity="center"
                 android:paddingLeft="14dp"
                 >
-
+                <CheckBox
+                    android:id="@+id/cb_agree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/circle_purple_selector"
+                    android:paddingRight="8dp"
+                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="请认真阅读"
+                    android:text="我已认真阅读"
                     android:textSize="12sp" />
 
                 <TextView
@@ -166,13 +160,19 @@
                     android:textColor="@color/color_007aff"
                     android:textSize="12sp" />
 
-                <CheckBox
-                    android:id="@+id/cb_agree"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@drawable/circle_purple_selector"
-                    />
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_transfer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="14dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/change_color_btn"
+                android:text="@string/next_step"
+                android:textColor="@color/white"
+                />
         </LinearLayout>
 
     </ScrollView>

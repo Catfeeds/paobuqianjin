@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.activity.sponsor;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -25,7 +26,16 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
+import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
+import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorInfoCollectFragment;
+import com.tencent.lbssearch.TencentSearch;
+import com.tencent.lbssearch.httpresponse.BaseObject;
+import com.tencent.lbssearch.httpresponse.HttpResponseListener;
+import com.tencent.lbssearch.object.param.Address2GeoParam;
+import com.tencent.lbssearch.object.result.Address2GeoResultObject;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
 
 import java.util.List;
 
@@ -34,7 +44,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddressWheel.OnSelectWheelItemListener, InnerCallBack {
-    private final static String TAG = SponsorInfoCollectFragment.class.getSimpleName();
+    private final static String TAG = SponsorInfoActivity.class.getSimpleName();
     public final static int REQ_TIME = 1;
     public final static int RES_TIME = 2;
     public final static int REQ_PIC = 3;
@@ -92,6 +102,11 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     private String imagesIn;
     private Intent intent;
     private AddBusinessParam oldParam = null;
+    //详细地址
+    private String longitude = "0.0000";
+    private String latitude = "0.0000";
+    private PermissionSetting mSetting;
+    private TencentSearch tencentSearch;
 
     @Override
     protected String title() {
@@ -135,6 +150,8 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                                 if (!TextUtils.isEmpty(dataBean.getAddra()))
                                     editSponsorLocationPan.setText(dataBean.getAddra());
                                 editSponsorLocationDetailPan.setText(dataBean.getAddress());
+                                latitude = dataBean.getLatitude();
+                                longitude = dataBean.getLongitude();
                                 if (!TextUtils.isEmpty(dataBean.getLogo())) {
                                     images = "";
                                     editSponsorOutPics.setText("已上传1张");
@@ -163,6 +180,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                 }
             });
         }
+        mSetting = new PermissionSetting(this);
     }
 
     @OnClick({R.id.sponsor_time_pan, R.id.sponsor_location_pan, R.id.sponsor_out_pics_pan,
@@ -215,7 +233,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                 chooseAddressWheel.show(editSponsorLocationPan);
                 break;
             case R.id.btn_confirm: {
-                commit();
+                commit(latitude, longitude);
                 if (confirm == null) {
                     confirm = (Button) findViewById(R.id.btn_confirm);
                     confirm.setEnabled(false);
@@ -225,7 +243,57 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
         }
     }
 
-    private void commit() {
+
+    private void requestPermission(String... permissions) {
+        DefaultRationale mRationale = new DefaultRationale();
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        getLocation();
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                if (AndPermission.hasAlwaysDeniedPermission(SponsorInfoActivity.this, permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
+    }
+
+    public void getLocation() {
+        if (tencentSearch == null) {
+            tencentSearch = new TencentSearch(this);
+        }
+
+        Address2GeoParam param = new Address2GeoParam()
+                .address(province + city + district + editSponsorName.getText().toString())
+                .region(province);
+        LocalLog.d(TAG, "province = " + province + ", " + editSponsorLocationDetailPan.getText().toString());
+        tencentSearch.address2geo(param, new HttpResponseListener() {
+            @Override
+            public void onSuccess(int i, BaseObject baseObject) {
+                Address2GeoResultObject object = (Address2GeoResultObject) baseObject;
+                if (object.result != null) {
+                    if (object.result.location != null) {
+                        commit(String.valueOf(object.result.location.lat), String.valueOf(object.result.location.lng));
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int i, String s, Throwable throwable) {
+                LocalLog.d(TAG, "获取经纬度失败！");
+                LocalLog.d(TAG, "i = " + i + ",s =" + s);
+                return;
+            }
+        });
+    }
+
+    private void commit(String latitude, String longitude) {
         String name = editSponsorName.getText().toString();
         if (TextUtils.isEmpty(name.trim())) {
             ToastUtils.showShortToast(this, "请输入店铺名称");
@@ -279,6 +347,18 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
         if (!"_省_市_区".equals(editSponsorLocationPan.getText().toString())) {
             param.setAddra(editSponsorLocationPan.getText().toString())
                     .setAddress(editSponsorLocationDetailPan.getText().toString());
+            if (latitude.startsWith("0.00") || longitude.startsWith("0.00")) {
+                LocalLog.d(TAG, "位置未知!");
+                String[] permissions = {
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.READ_PHONE_STATE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                };
+                requestPermission(permissions);
+            } else {
+                param.setLatitude(latitude);
+                param.setLongitude(longitude);
+            }
         }
         if (!TextUtils.isEmpty(images)) {
             param.setLogo(images);
@@ -368,7 +448,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
         this.province = province;
         this.city = city;
         this.district = district;
-        editSponsorLocationPan.setText(province + city + district);
+        editSponsorLocationPan.setText(province + "/" + city + "/" + district);
         // isDifferent = true;
     }
 

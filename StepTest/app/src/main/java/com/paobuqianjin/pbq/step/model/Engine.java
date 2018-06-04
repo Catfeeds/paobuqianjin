@@ -160,12 +160,12 @@ import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
+import com.paobuqianjin.pbq.step.utils.Constants;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.MD5;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
-import com.paobuqianjin.pbq.step.view.base.view.PicassoTransformation;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
@@ -395,9 +395,38 @@ public final class Engine {
                     .build();
             LocalLog.d(TAG, " 设置Picasso ");
             Picasso.setSingletonInstance(picasso);
-            transformation = new PicassoTransformation(mContext, 2);
-
         }
+    }
+    private static Transformation getTransformation(final ImageView view) {
+        return new Transformation() {
+            @Override
+            public Bitmap transform(Bitmap source) {
+                int targetWidth = view.getWidth();
+                LocalLog.d(TAG,"targetWidth  =" + targetWidth);
+                //返回原图
+                if (source.getWidth() == 0 || source.getWidth() < targetWidth) {
+                    return source;
+                }
+
+                //如果图片大小大于等于设置的宽度，则按照设置的宽度比例来缩放
+                double aspectRatio = (double) source.getHeight() / (double) source.getWidth();
+                int targetHeight = (int) (targetWidth * aspectRatio);
+                if (targetHeight == 0 || targetWidth == 0) {
+                    return source;
+                }
+                Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false);
+                if (result != source) {
+                    // Same bitmap is returned if sizes are the same
+                    source.recycle();
+                }
+                return result;
+            }
+
+            @Override
+            public String key() {
+                return "transformation" + " desiredWidth";
+            }
+        };
     }
 
     public static synchronized Engine getEngine(Context context) {
@@ -1017,10 +1046,7 @@ public final class Engine {
 
     public void userLoginByPhoneOrNo(String[] userInfo) {
         LocalLog.d(TAG, "userLoginByPhoneOrNo() enter");
-        if (userInfo[1] == null) {
-            Toast.makeText(mContext, "请输入密码", Toast.LENGTH_SHORT).show();
-            return;
-        }
+
         String md5PassWord = MD5.md5Slat(userInfo[1]);
         LocalLog.d(TAG, "md5PassWord = " + md5PassWord);
         OkHttpUtils
@@ -2285,7 +2311,7 @@ public final class Engine {
 
     //TODO 创建商户
     public void AddBusiness(AddBusinessParam addBusinessParam, final InnerCallBack innerCallBack) {
-        LocalLog.d(TAG, "AddBusiness() enter");
+        LocalLog.d(TAG, "AddBusiness() enter" + addBusinessParam.paramString());
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
@@ -2367,7 +2393,7 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
-                        if(o == null){
+                        if (o == null) {
                             return;
                         }
                         if (innerCallBack != null) {
@@ -2403,7 +2429,7 @@ public final class Engine {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int i, Object o) {
-                        if(o == null){
+                        if (o == null) {
                             return;
                         }
                         if (innerCallBack != null) {
@@ -2649,7 +2675,7 @@ public final class Engine {
         Presenter.getInstance(activity).getPaoBuSimple(NetApi.GET_PERSON_IDENTIFY_STATE, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
-                if(activity == null) return;
+                if (activity == null) return;
                 try {
                     JSONObject jsonObj = new JSONObject(s);
                     jsonObj = jsonObj.getJSONObject("data");
@@ -2657,7 +2683,7 @@ public final class Engine {
                     if (status.equals("0")) {
                         onIdentifyLis.onUnidentify();
                         return;
-                    }else{
+                    } else {
                         onIdentifyLis.onIdentifed();
                     }
                 } catch (JSONException e) {
@@ -2923,21 +2949,21 @@ public final class Engine {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).fit().into(imageView);
+        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).into(imageView);
     }
 
     public void getOriginImage(String fileUrl, final ImageView imageView) {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).fit().into(imageView);
+        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).into(imageView);
     }
 
     public void getImage(String fileUrl, final ImageView imageView, int targetWidth, int targetHeight) {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(targetWidth, targetHeight).fit().into(imageView);
+        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(targetWidth, targetHeight).into(imageView);
     }
 
     //网络图片获取接口
@@ -2948,9 +2974,9 @@ public final class Engine {
         //picasso.setLoggingEnabled(true);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         if (networkPolicy == NetworkPolicy.OFFLINE) {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).networkPolicy(networkPolicy).fit().into(imageView);
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(imageView)).networkPolicy(networkPolicy).into(imageView);
         } else {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).fit().into(imageView);
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(imageView)).into(imageView);
         }
 
         //Picasso.with(mContext).load(urlImage).into(imageView);
@@ -2977,17 +3003,17 @@ public final class Engine {
 
     public void getPlaceErrorImage(ImageView view, String urlImage, int placeholderImageId, int errorId) {
         if (TextUtils.isEmpty(urlImage)) {
-            picasso.load(placeholderImageId).config(Bitmap.Config.RGB_565).transform(transformation).into(view);
+            picasso.load(placeholderImageId).config(Bitmap.Config.RGB_565).transform(getTransformation(view)).into(view);
             return;
         }
         if (networkPolicy == NetworkPolicy.OFFLINE) {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation)
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(view))
                     .placeholder(ContextCompat.getDrawable(mContext, placeholderImageId)).networkPolicy(networkPolicy)
-                    .error(ContextCompat.getDrawable(mContext, errorId)).networkPolicy(networkPolicy).fit().into(view);
+                    .error(ContextCompat.getDrawable(mContext, errorId)).fit().centerCrop().into(view);
         } else {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation)
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(view))
                     .placeholder(ContextCompat.getDrawable(mContext, placeholderImageId))
-                    .error(ContextCompat.getDrawable(mContext, errorId)).fit().into(view);
+                    .error(ContextCompat.getDrawable(mContext, errorId)).fit().centerCrop().into(view);
         }
     }
 
@@ -2999,9 +3025,9 @@ public final class Engine {
         //picasso.setLoggingEnabled(true);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         if (networkPolicy == NetworkPolicy.OFFLINE) {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).networkPolicy(networkPolicy).fit().into(imageView);
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(imageView)).networkPolicy(networkPolicy).into(imageView);
         } else {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(transformation).resize(targetWidth, targetHeight).fit().into(imageView);
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(imageView)).resize(targetWidth, targetHeight).into(imageView);
         }
     }
 
@@ -3118,7 +3144,7 @@ public final class Engine {
                         .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST_WALLET));
                 break;
             case "yspay":
-                LocalLog.d(TAG,"云闪付");
+                LocalLog.d(TAG, "云闪付");
                 OkHttpUtils
                         .post()
                         .addHeader("headtoken", getToken(mContext))
@@ -4016,19 +4042,22 @@ public final class Engine {
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
+                .addHeader("limit_version_name", Constants.LIMITE_VERSION)
                 .url(url)
                 .params(params)
                 .build()
                 .execute(callBack);
     }
-    public void get(String url, Map<String,String> params, PaoCallBack callBack) {
-        if(params==null) params = new HashMap<>();
-        LocalLog.d(TAG,"提交数据："+ new Gson().toJson(params));
+
+    public void get(String url, Map<String, String> params, PaoCallBack callBack) {
+        if (params == null) params = new HashMap<>();
+        LocalLog.d(TAG, "提交数据：" + new Gson().toJson(params));
         callBack.setMyUrl(url);
 
         OkHttpUtils
                 .get()
                 .addHeader("headtoken", getToken(mContext))
+                .addHeader("limit_version_name", Constants.LIMITE_VERSION)
                 .url(url)
                 .params(params)
                 .build()

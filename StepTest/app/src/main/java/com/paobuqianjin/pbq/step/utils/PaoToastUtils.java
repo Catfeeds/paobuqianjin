@@ -13,6 +13,7 @@ import com.paobuqianjin.pbq.step.view.base.view.PaoToastView;
 
 public class PaoToastUtils {
     private static PaoToastView paoToastView;
+    private static long lastSecond;
 
     public PaoToastUtils() {
     }
@@ -22,6 +23,21 @@ public class PaoToastUtils {
             paoToastView = null;
         }
 
+        paoToastView = new PaoToastView(context);
+        paoToastView.setShowText(showMsg);
+        paoToastView.setDuration(Toast.LENGTH_SHORT);
+        paoToastView.show();
+    }
+
+    public static synchronized void showShortToastNoMore(Context context, String showMsg) {
+        if (null != paoToastView) {
+            if (paoToastView.getText().equals(showMsg) && System.currentTimeMillis() - lastSecond < 5000) {
+                return;
+            } else {
+                paoToastView = null;
+            }
+        }
+        lastSecond = System.currentTimeMillis();
         paoToastView = new PaoToastView(context);
         paoToastView.setShowText(showMsg);
         paoToastView.setDuration(Toast.LENGTH_SHORT);
@@ -45,7 +61,7 @@ public class PaoToastUtils {
                 if(null == PaoToastUtils.paoToastView) {
                     PaoToastUtils.paoToastView = new PaoToastView(context);
                     PaoToastUtils.paoToastView.setShowText(showMsg);
-                    PaoToastUtils.paoToastView.setDuration(0);
+                    PaoToastUtils.paoToastView.setDuration(Toast.LENGTH_SHORT);
                     PaoToastUtils.paoToastView.show();
                 } else {
                     PaoToastUtils.paoToastView.setShowText(showMsg);

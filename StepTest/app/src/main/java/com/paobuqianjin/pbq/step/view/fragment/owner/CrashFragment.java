@@ -143,7 +143,7 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
             String canCrashStr = String.format(canCrashStrFormat, canCrashNum);
             canCrash.setHint(canCrashStr);
         }
-        String part1 = "请认真阅读", part2 = "《提现协议》";
+        String part1 = "我已认真阅读", part2 = "《提现协议》";
         String protoclStr = part1 + part2;
         SpannableString spannableString = new SpannableString(protoclStr);
         ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.color_6c71c4));

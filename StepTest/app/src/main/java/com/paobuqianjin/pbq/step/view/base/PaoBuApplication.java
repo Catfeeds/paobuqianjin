@@ -65,7 +65,7 @@ public class PaoBuApplication extends MultiDexApplication {
     private final static String TAG = PaoBuApplication.class.getSimpleName();
     public LocationService locationService;
     private static boolean isAsyncRun = false;
-    private static final long cacheSize = 1024 * 1024 * 500;
+    private static final long cacheSize = 1024 * 1024 * 200;
     private static PaoBuApplication sApplication;
     private int appCount = 0;
     private final static String START_STEP_ACTION = "com.paobuqianjin.step.START_STEP_ACTION";

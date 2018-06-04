@@ -22,6 +22,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.BankListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.Constants;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
@@ -144,6 +145,7 @@ public class TransferCardActivity extends BaseBarActivity {
                 params.put("cardid", selectBean.getCardid());
                 params.put("amount", transferMoneyStr);
                 params.put("typeid", "3");
+                params.put("limit_version_name", Constants.LIMITE_VERSION);
 //                params.put("wx_openid", transferMoneyStr);//app对应的openid
                 Presenter.getInstance(this).postPaoBuSimple(NetApi.TRANSFER_BY_HELIBAO, params, new PaoCallBack() {
                     @Override

@@ -37,6 +37,10 @@ public class PaoToastView extends Toast {
         this.noticeText.setText(dialogNotice);
     }
 
+    public String getText() {
+        return this.noticeText.getText().toString();
+    }
+
     public void show() {
         this.toast.show();
     }

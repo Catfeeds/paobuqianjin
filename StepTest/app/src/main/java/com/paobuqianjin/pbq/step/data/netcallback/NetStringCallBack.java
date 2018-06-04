@@ -157,6 +157,10 @@ import com.paobuqianjin.pbq.step.presenter.im.UserInfoInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.view.base.PaoBuApplication;
+
+import java.net.UnknownHostException;
 
 import okhttp3.Call;
 
@@ -180,6 +184,10 @@ public class NetStringCallBack extends StringCallback {
 
     @Override
     public void onError(Call call, Exception e, int i, Object response) {
+        if (e instanceof UnknownHostException) {
+            LocalLog.d(TAG, "没有网络");
+            PaoToastUtils.showShortToastNoMore(PaoBuApplication.getApplication(),"网络连接异常，请检查手机网络是否已开启");
+        }
         e.printStackTrace();
         if (response != null) {
             LocalLog.d(TAG, "onError() enter" + response.toString());

@@ -72,26 +72,20 @@
                 android:background="@color/color_f3f3f5" />
         </RelativeLayout>
 
-        <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
-            android:id="@+id/invite_scroll"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/invite_swipe_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/invite_no_span"
-            android:layout_marginBottom="45dp"
-            android:fillViewport="true">
+            android:layout_marginBottom="45dp">
 
-            <RelativeLayout
+            <android.support.v4.view.ViewPager
+                android:id="@+id/step_dollar_viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/step_dollar_viewpager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                </android.support.v4.view.ViewPager>
-            </RelativeLayout>
-        </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+            </android.support.v4.view.ViewPager>
+        </android.support.v4.widget.SwipeRefreshLayout>
     </RelativeLayout>
 
 

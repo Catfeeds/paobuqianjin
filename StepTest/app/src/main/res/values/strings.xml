@@ -47,7 +47,7 @@
     <string name="error_incorrect_password">密码不正确</string>
     <string name="desc_login">全球计步运动领导品牌</string>
     <string name="desc_sign">为了孩子和老人福泽及全人类</string>
-    <string name="user_read">请认真阅读《跑步钱进服务协议》</string>
+    <string name="user_read">我已认真阅读《跑步钱进服务协议》</string>
     <string name="mu_biao">目标</string>
     <string name="member_number">"成员%1d人"</string>
     <string name="member_total">"共%1d人"</string>
@@ -155,7 +155,7 @@
     <string name="error_red">手慢了，商家红包已领完</string>
     <string name="get_red">恭喜您获得</string>
     <string name="add_card">添加银行卡</string>
-    <string name="transfer_limite_tips">1、初期为确保广大用户的资金安全，每天只能提现一次，满10元即可提现，目前最高200元。
+    <string name="transfer_limite_tips">1、初期为确保广大用户的资金安全，每天只能提现两次，满10元即可提现，目前每日最高提现200元。
         \n2、提现手续费为第三方支付通道收取，跑步钱进不收取手续费，到账金额为提现金额扣除手续费后的金额。
      </string>
     <string name="suggest_content">跑步钱进是一个以帮助孩子、大人、老人远离手机游戏，鼓励大家多走路多运动为目地的软件，这是一群深具人本情怀和春秋大义的中国人用传统智慧开创的利国利民的事业。我们不要百姓一分钱，我们开创了从此以后免费打广告的模式，商家的生意更好做一些。从此以后，每个人走走路，跑跑步就可以赚到钱。 \n你也可以通过她免费鼓励您的孩子、家人、亲朋好友，这是一个百利而无一害的好事业。 \n但是我们深知自己水平有限，一定有很多不完善的地方，需要您的智慧和提醒，您的任何建议我们都会铭记！您的任何帮助都在推动我们进步！您的卓越的建议不但会让我们铭刻在心，还会给予实际的红包奖励。我们开发团队的全体同仁再次向您致敬，感谢您的关注和支持！</string>

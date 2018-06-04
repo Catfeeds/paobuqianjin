@@ -203,24 +203,24 @@
         android:layout_marginTop="12dp"
         >
 
+        <ToggleButton
+            android:id="@+id/user_read_choose"
+            android:layout_centerVertical="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:onClick="onViewClicked"
+            android:background="@drawable/nochoose"
+            android:textOff=""
+            android:textOn="" />
+
         <TextView
             android:id="@+id/read_xieyi"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12dp"
-
+            android:layout_toRightOf="@+id/user_read_choose"
             android:text="@string/user_read" />
 
-        <ToggleButton
-            android:id="@+id/user_read_choose"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/read_xieyi"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:onClick="onViewClicked"
-            android:background="@drawable/nochoose"
-            android:textOff=""
-            android:textOn="" />
     </RelativeLayout>
 </RelativeLayout>

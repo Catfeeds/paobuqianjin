@@ -766,6 +766,8 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         } else if (wxPayOrderResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
+        } else {
+            ToastUtils.showShortToast(getContext(), wxPayOrderResponse.getMessage());
         }
 
     }
@@ -785,6 +787,8 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         } else if (walletPayOrderResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
+        } else {
+            ToastUtils.showShortToast(getContext(), walletPayOrderResponse.getMessage());
         }
     }
 
@@ -811,7 +815,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             } else if (ysPayOrderResponse.getError() == 100) {
                 exitTokenUnfect();
             } else {
-
+                ToastUtils.showShortToast(getContext(), ysPayOrderResponse.getMessage());
             }
         }
     }

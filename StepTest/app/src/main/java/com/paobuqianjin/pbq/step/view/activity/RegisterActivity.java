@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -139,7 +142,13 @@ public class RegisterActivity extends BaseActivity {
 
             }
         });
-
+        read_xieyi = (TextView) findViewById(R.id.read_xieyi);
+        String readText = "请认真阅读";
+        String protocol = "《跑步钱进用户协议》";
+        SpannableStringBuilder style = new SpannableStringBuilder(readText + protocol);
+        style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), readText.length()
+                , (readText + protocol).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        read_xieyi.setText(style);
     }
 
 

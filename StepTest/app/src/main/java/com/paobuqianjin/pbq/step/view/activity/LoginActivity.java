@@ -89,6 +89,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     private ThirdPartyLoginParam thirdPartyLoginParam;
     LoginResponse loginResponse;
     private final static String START_STEP_ACTION = "com.paobuqianjin.step.START_STEP_ACTION";
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         setContentView(R.layout.login_layout);
         ButterKnife.bind(this);
 
+        progressDialog = new ProgressDialog(this);
         loginAccount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -178,7 +180,12 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             switch (view.getId()) {
 
                 case R.id.btn_login:
+                    if (collectLoginUserInfo()[1] == null) {
+                        Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     Presenter.getInstance(this).userLoginByPhoneNumber(collectLoginUserInfo());
+                    showProgressDialog("正在使用手机号登录");
                     break;
                 case R.id.register:
                     startActivity(RegisterActivity.class, null, false);
@@ -248,7 +255,6 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         Presenter.getInstance(this).setToken(this, loginResponse.getData().getUser_token());
         Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
         startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
-
 
     }
 
@@ -471,11 +477,13 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         @Override
         public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
             Toast.makeText(LoginActivity.this, "失败：" + throwable.getMessage(), Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
         }
 
         @Override
         public void onCancel(SHARE_MEDIA share_media, int i) {
             Toast.makeText(LoginActivity.this, "取消了", Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
         }
     };
 
@@ -484,6 +492,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         if (view != null) {
             switch (view.getId()) {
                 case R.id.login_weixin:
+                    showProgressDialog("正在使用微信登录");
                     LocalLog.d(TAG, "微信三方登录");
                     LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.WEIXIN));
                     UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.WEIXIN, authListener);
@@ -491,6 +500,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
 
                     break;
                 case R.id.login_qq:
+                    showProgressDialog("正在使用QQ登录");
                     LocalLog.d(TAG, "xxxxxx install-=" + UMShareAPI.get(this).isInstall(this, SHARE_MEDIA.QQ));
                     UMShareAPI.get(this).doOauthVerify(this, SHARE_MEDIA.QQ, authListener);
                     //UMShareAPI.get(this).getPlatformInfo(this, SHARE_MEDIA.QQ, authListener);
@@ -499,6 +509,11 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             }
 
         }
+    }
+
+    private void showProgressDialog(String msg) {
+        progressDialog.setMessage(msg);
+        if(!progressDialog.isShowing())progressDialog.show();
     }
 
 
@@ -519,11 +534,13 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     public void response(ErrorCode errorCode) {
         LocalLog.d(TAG, "error: " + errorCode.toString());
         Toast.makeText(this, errorCode.getMessage(), Toast.LENGTH_SHORT).show();
+        progressDialog.dismiss();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(progressDialog.isShowing()) progressDialog.dismiss();
         Presenter.getInstance(this).dispatchUiInterface(this);
         UMShareAPI.get(this).release();
     }

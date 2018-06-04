@@ -9,5 +9,7 @@ public class Constants {
 
     public static final String SP_IS_FIRST_ENTER = "SP_IS_FIRST_ENTER";
 
+    public static final String LIMITE_VERSION = "5";
+
 
 }

@@ -774,7 +774,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     stepData.addAll(stepRankResponse.getData().getData());
                     rankAdapter.notifyItemRangeInserted(stepData.size() - stepRankResponse.getData().getData().size(),
                             stepRankResponse.getData().getData().size());
-                    stepRecycler.requestLayout();
+                    stepRecycler.setAdapter(rankAdapter);
                 }
 
                 String sAgeFormat = mContext.getResources().getString(R.string.member_total);

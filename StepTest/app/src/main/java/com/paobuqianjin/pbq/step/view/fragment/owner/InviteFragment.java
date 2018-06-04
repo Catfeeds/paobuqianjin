@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,7 +38,6 @@ import com.paobuqianjin.pbq.step.view.activity.FillInviteCodeActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.InviteDanAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
-import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.umeng.socialize.ShareAction;
@@ -90,10 +90,10 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     String[] titles = {"邀请达人榜", "我的邀请"};
     @Bind(R.id.line1)
     RelativeLayout line1;
-    @Bind(R.id.invite_scroll)
-    BounceScrollView inviteScroll;
     @Bind(R.id.invite_fg)
     RelativeLayout inviteFg;
+    @Bind(R.id.invite_swipe_layout)
+    SwipeRefreshLayout inviteSwipeLayout;
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
     private TranslateAnimation animationCircleType;
@@ -173,30 +173,32 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         loadData(inviteDan);
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getContext());
-        inviteScroll = (BounceScrollView) viewRoot.findViewById(R.id.invite_scroll);
-        inviteScroll.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (inviteScroll != null) {
-                    inviteScroll.setTopBottomListener(new BounceScrollView.TopBottomListener() {
-                        @Override
-                        public void topBottom(int topOrBottom) {
-                            if (topOrBottom == 0 && !isLoading) {
-                                isLoading = true;
-                                update();
-                            }
-                        }
-                    });
-                }
-            }
-        }, 5000);
         Presenter.getInstance(getContext()).getInviteDan(pageIndexDan, PAGE_SIZE);
+        inviteSwipeLayout = (SwipeRefreshLayout) viewRoot.findViewById(R.id.invite_swipe_layout);
+        inviteSwipeLayout.setRefreshing(false);
+        inviteSwipeLayout.setOnRefreshListener(mRefreshListener);
     }
+
+    /**
+     * 刷新。
+     */
+    private SwipeRefreshLayout.OnRefreshListener mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            if (inviteSwipeLayout != null && isAdded() && !isLoading) {
+                isLoading = true;
+                update();
+            }
+        }
+    };
 
     private void update() {
         if (myInviteFragment.isAdded() && inviteDanFragment.isAdded()) {
             LocalLog.d(TAG, "update() enter");
             inviteDan.clear();
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
             pageIndexDan = 1;
             Presenter.getInstance(getContext()).getInviteDan(pageIndexDan, PAGE_SIZE);
             myInviteFragment.update();
@@ -419,7 +421,6 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             if (pageIndexDan <= pageCountDan) {
                 Presenter.getInstance(getContext()).getInviteDan(pageIndexDan, PAGE_SIZE);
             }
-            isLoading = false;
         } else if (inviteDanResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
@@ -429,6 +430,8 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             }
             Toast.makeText(getContext(), inviteDanResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        isLoading = false;
+        inviteSwipeLayout.setRefreshing(false);
     }
 
     @Override

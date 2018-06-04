@@ -1,9 +1,16 @@
 package com.paobuqianjin.pbq.step.data.netcallback;
 
+import android.system.ErrnoException;
+
 import com.google.gson.Gson;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.view.base.PaoBuApplication;
+
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 import okhttp3.Call;
 
@@ -16,11 +23,17 @@ public abstract class PaoCallBack extends StringCallback {
 
     @Override
     public void onError(Call call, Exception e, int i, Object o) {
+        if (e instanceof UnknownHostException) {
+            LocalLog.d(TAG, "没有网络");
+            PaoToastUtils.showShortToastNoMore(PaoBuApplication.getApplication(),"网络连接异常，请检查手机网络是否已开启");
+        }
+
+        e.printStackTrace();
+
         if(o == null){
             return;
         }
         LocalLog.d(TAG, myUrl + "-----Http Code----> " + i + " \nError Object----> " +o.toString());
-        e.printStackTrace();
         try {
             ErrorCode code = new Gson().fromJson(o.toString(), ErrorCode.class);
             onFal(e, o.toString(), code);
