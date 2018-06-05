@@ -494,7 +494,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 LocalLog.d(TAG, "path = " + path);
                 ResultHelper result = null;
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                result = putObjectSample.start(path);
+                result = putObjectSample.start(path, getContext());
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
                 if (result != null && result.cosXmlResult != null) {
                     url = result.cosXmlResult.accessUrl;

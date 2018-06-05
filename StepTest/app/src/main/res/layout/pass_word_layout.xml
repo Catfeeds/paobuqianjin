@@ -16,7 +16,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="184dp"
-            android:background="@color/color_f8">
+            android:background="@drawable/free_dialog_bg">
 
             <EditText
                 android:id="@+id/pass_edit"
@@ -59,7 +59,7 @@
                     android:background="@color/color_f8"
                     android:gravity="center"
                     android:text="取消"
-                    android:textColor="@color/color_161727"
+                    android:textColor="#38ADFF"
                     android:textSize="17dp" />
 
                 <TextView
@@ -71,7 +71,7 @@
                     android:background="@color/color_f8"
                     android:gravity="center"
                     android:text="确定"
-                    android:textColor="@color/color_161727"
+                    android:textColor="#38ADFF"
                     android:textSize="17dp" />
             </RelativeLayout>
         </RelativeLayout>

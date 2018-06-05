@@ -8,7 +8,7 @@ android {
         targetSdkVersion 25
         multiDexEnabled true
         versionCode 5
-        versionName "3.1.1"
+        versionName "3.1.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -110,4 +110,5 @@ dependencies {
     //    implementation 'qs:quickPay:1.0.1'
     implementation files('libs/UPPayPluginExPro.jar')
     implementation files('libs/UPPayAssistEx.jar')
+    compile 'com.jungly:gridPasswordView:0.3'
 }

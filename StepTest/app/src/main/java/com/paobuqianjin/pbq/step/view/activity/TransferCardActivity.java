@@ -118,7 +118,9 @@ public class TransferCardActivity extends BaseBarActivity {
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                 if (errorBean != null) {
-                    PaoToastUtils.showShortToast(TransferCardActivity.this, errorBean.getMessage());
+                    if (errorBean.getError() != 1) {
+                        PaoToastUtils.showShortToast(TransferCardActivity.this, errorBean.getMessage());
+                    }
                 }
             }
         });
@@ -169,8 +171,10 @@ public class TransferCardActivity extends BaseBarActivity {
                 break;
             case R.id.linear_item_more:
                 Intent intent = new Intent(this, BindCardActivity.class);
-                intent.putExtra("name", listData.get(0).getAccount_name());
-                startActivityForResult(intent,REQ_ADD_CARD);
+                if (listData.size() >= 1) {
+                    intent.putExtra("name", listData.get(0).getAccount_name());
+                }
+                startActivityForResult(intent, REQ_ADD_CARD);
                 break;
             case R.id.tv_transfer_all:
                 etCanTransfer.setText(canCrashNum + "");

@@ -44,7 +44,7 @@ public class OtherRequest extends OkHttpRequest {
             requestBody = RequestBody.create(MEDIA_TYPE_PLAIN, content);
         }
         if (params != null) {
-            Log.e("OtherRequest", "BODY 设置参数");
+ /*           Log.e("OtherRequest", "BODY 设置参数");*/
             FormBody.Builder builder = new FormBody.Builder();
             addParams(builder);
             FormBody formBody = builder.build();

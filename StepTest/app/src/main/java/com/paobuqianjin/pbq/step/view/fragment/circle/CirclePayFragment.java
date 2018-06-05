@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
+import com.paobuqianjin.pbq.step.customview.WalletPassDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
@@ -114,11 +115,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     RelativeLayout yunsPaySpan;
     @Bind(R.id.circle_pay_fg)
     RelativeLayout circlePayFg;
-    private View popCircleOpBar;
-    private PopupWindow popupOpWindow;
-    TextView cancelText;
-    TextView confirmText;
-    private TranslateAnimation animationCircleType;
+    private WalletPassDialog walletPassDialog;
     private final static String CIRCLE_ID = "id";
     private final static String CIRCLE_NAME = "name";
     private final static String CIRCLE_LOGO = "logo";
@@ -327,10 +324,6 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (popupOpWindow != null) {
-            popupOpWindow.dismiss();
-            popupOpWindow = null;
-        }
     }
 
     private void UpdateUnSelect(int i) {
@@ -447,7 +440,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                             }
 
                         } else if (style == 1) {
-                            popPayConfirm(getString(R.string.wallet_pay_confirm));
+                            popPayConfirm();
                         } else if (style == 2) {
                             LocalLog.d(TAG, "使用云闪付");
                             payYunSanRequest();
@@ -689,54 +682,28 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         }
     }
 
-    private void popPayConfirm(String string) {
-        LocalLog.d(TAG, "popPayConfirm() enter 确认钱包支付");
-        popCircleOpBar = View.inflate(getContext(), R.layout.quit_circle_confirm, null);
-        TextView textViewTitle = (TextView) popCircleOpBar.findViewById(R.id.quit_title);
-        textViewTitle.setText(string);
-        popupOpWindow = new PopupWindow(popCircleOpBar, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        popupOpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                popupOpWindow = null;
-            }
-        });
-
-        cancelText = (TextView) popCircleOpBar.findViewById(R.id.cancel_quit_text);
-        cancelText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LocalLog.d(TAG, "取消支付");
-                popupOpWindow.dismiss();
-            }
-        });
-        confirmText = (TextView) popCircleOpBar.findViewById(R.id.confirm_quit_text);
-        confirmText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (popupOpWindow != null) {
-                    popupOpWindow.dismiss();
+    private void popPayConfirm() {
+        if (walletPassDialog == null) {
+            walletPassDialog = new WalletPassDialog(getActivity());
+            walletPassDialog.setPassEditListener(new WalletPassDialog.PassEditListener() {
+                @Override
+                public void onPassWord(String pass) {
+                    LocalLog.d(TAG, "pass =" + pass);
+                    walletPassDialog.dismiss();
                     payWallet();
                 }
+            });
 
-            }
-        });
-
-
-        popupOpWindow.setFocusable(true);
-        popupOpWindow.setOutsideTouchable(true);
-        popupOpWindow.setBackgroundDrawable(new BitmapDrawable());
-
-        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
-                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
-                1, Animation.RELATIVE_TO_PARENT, 0);
-        animationCircleType.setInterpolator(new
-
-                AccelerateInterpolator());
-        animationCircleType.setDuration(200);
-
-        popupOpWindow.showAtLocation(getActivity().findViewById(R.id.circle_pay_fg), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-        popCircleOpBar.startAnimation(animationCircleType);
+            walletPassDialog.setForgetPassOnclickListener(new WalletPassDialog.ForgetPassOnclickListener() {
+                @Override
+                public void onForgetPassClick() {
+                    LocalLog.d(TAG, "忘记支付密码");
+                }
+            });
+        }
+        if (!walletPassDialog.isShowing() && isAdded()) {
+            walletPassDialog.show();
+        }
     }
 
     @Override

@@ -577,7 +577,6 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    useName.setSelection(useName.getText().toString().trim().length());
                     putUserInfoParam.setNickname(useName.getText().toString());
                 }
             });
@@ -728,7 +727,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 LocalLog.d(TAG, "path = " + path);
                 ResultHelper result = null;
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                result = putObjectSample.start(path);
+                result = putObjectSample.start(path, getContext());
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
                 if (result != null && result.cosXmlResult != null) {
                     url = result.cosXmlResult.accessUrl;

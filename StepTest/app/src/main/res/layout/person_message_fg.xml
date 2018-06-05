@@ -88,6 +88,7 @@
             android:gravity="right"
             android:hint="必填"
             android:maxEms="16"
+            android:maxLength="32"
             android:maxLines="1"
             android:textColor="@color/color_161727"
             android:textColorHint="@color/color_8a8a8a"

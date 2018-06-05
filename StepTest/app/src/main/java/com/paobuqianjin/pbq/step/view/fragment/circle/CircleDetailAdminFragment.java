@@ -977,7 +977,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             return;
         }
         if (deleteCircleResponse.getError() == 0) {
-            ToastUtils.showShortToast(getContext(), "解散成功");
+            ToastUtils.showShortToast(getContext(),"解散成功");
             //TODO 通知上一层UI更新
             Intent intent = new Intent();
             intent.setAction(DELETE_ACTION);

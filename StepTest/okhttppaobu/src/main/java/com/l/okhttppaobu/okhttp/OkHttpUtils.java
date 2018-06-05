@@ -44,7 +44,7 @@ public class OkHttpUtils {
 
 
     public static OkHttpUtils initClient(OkHttpClient okHttpClient) {
-        Log.e(TAG,"com.squareup.okhttp3 Version == 3.8.1");
+        /*Log.e(TAG,"com.squareup.okhttp3 Version == 3.8.1");*/
         if (mInstance == null) {
             synchronized (OkHttpUtils.class) {
                 if (mInstance == null) {

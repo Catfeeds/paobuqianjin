@@ -287,7 +287,7 @@ public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBar
                 LocalLog.d(TAG, "path = " + path);
                 ResultHelper result = null;
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                result = putObjectSample.start(path.getImagePath());
+                result = putObjectSample.start(path.getImagePath(),getApplicationContext());
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
                 String url = null;
                 if (result != null && result.cosXmlResult != null) {

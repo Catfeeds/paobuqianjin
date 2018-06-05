@@ -37,7 +37,7 @@ public class PutObjectSample {
     private final static String TAG = PutObjectSample.class.getSimpleName();
     PutObjectRequest putObjectRequest;
     QServiceCfg qServiceCfg;
-    private final static long T2_M = 2 * 1024 * 1024;
+    private final static long T2_M = 2048;
 
     public PutObjectSample(QServiceCfg qServiceCfg) {
         this.qServiceCfg = qServiceCfg;
@@ -62,7 +62,8 @@ public class PutObjectSample {
         Bitmap bitmap = BitmapFactory.decodeFile(sourcePath, options);
         int optionsLimit = 100;
         bitmap.compress(Bitmap.CompressFormat.JPEG, optionsLimit, baos);
-        while (baos.toByteArray().length / 1024 > 500) {
+        while (baos.toByteArray().length / 1024 > 2048) {
+            LocalLog.d(TAG,"图片大于2M需要压缩");
             baos.reset();
             bitmap.compress(Bitmap.CompressFormat.JPEG, optionsLimit, baos);
             optionsLimit -= 10;

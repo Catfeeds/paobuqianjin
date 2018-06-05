@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
+import com.paobuqianjin.pbq.step.customview.WalletPassDialog;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
@@ -142,11 +143,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     RelativeLayout yunsPaySpan;
     @Bind(R.id.pay_vip_fg)
     RelativeLayout payVipFg;
-    private View popCircleOpBar;
-    private PopupWindow popupOpWindow;
-    TextView cancelText;
-    TextView confirmText;
-    private TranslateAnimation animationCircleType;
+    private WalletPassDialog walletPassDialog;
     private final static String ACTION_VIP_SELF = "com.paobuqianjin.pbq.setp.VIP_SELF_ACTION";
     private final static String ACTION_VIP_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_ACTION";
     private final static String ACTION_VIP_SPONSOR_SELF = "com.paobuqianjin.pbq.setp.VIP_SELF_SPONSOR_ACTION";
@@ -627,7 +624,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                     public void onIdentifed() {
                         int style = getSelect();
                         if (style == 1) {
-                            popPayConfirm(getString(R.string.wallet_pay_confirm));
+                            popPayConfirm();
                         } else if (style == 0) {
                             if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
                                 pay();
@@ -664,57 +661,34 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
         }
     }
 
-    private void popPayConfirm(String string) {
-        LocalLog.d(TAG, "popPayConfirm() enter 确认钱包支付");
-        popCircleOpBar = View.inflate(getContext(), R.layout.quit_circle_confirm, null);
-        TextView textViewTitle = (TextView) popCircleOpBar.findViewById(R.id.quit_title);
-        textViewTitle.setText(string);
-        popupOpWindow = new PopupWindow(popCircleOpBar, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        popupOpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                popupOpWindow = null;
-            }
-        });
-
-        cancelText = (TextView) popCircleOpBar.findViewById(R.id.cancel_quit_text);
-        cancelText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LocalLog.d(TAG, "取消支付");
-                popupOpWindow.dismiss();
-            }
-        });
-        confirmText = (TextView) popCircleOpBar.findViewById(R.id.confirm_quit_text);
-        confirmText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popupOpWindow.dismiss();
-                if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
-                    pay();
-                } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
-                    paySponsorVip();
-                } else {
-                    LocalLog.d(TAG, "Unknown op");
+    private void popPayConfirm() {
+        if (walletPassDialog == null) {
+            walletPassDialog = new WalletPassDialog(getActivity());
+            walletPassDialog.setPassEditListener(new WalletPassDialog.PassEditListener() {
+                @Override
+                public void onPassWord(String pass) {
+                    LocalLog.d(TAG, "pass =" + pass);
+                    walletPassDialog.dismiss();
+                    if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                        pay();
+                    } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
+                        paySponsorVip();
+                    } else {
+                        LocalLog.d(TAG, "Unknown op");
+                    }
                 }
-            }
-        });
+            });
 
-
-        popupOpWindow.setFocusable(true);
-        popupOpWindow.setOutsideTouchable(true);
-        popupOpWindow.setBackgroundDrawable(new BitmapDrawable());
-
-        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
-                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
-                1, Animation.RELATIVE_TO_PARENT, 0);
-        animationCircleType.setInterpolator(new
-
-                AccelerateInterpolator());
-        animationCircleType.setDuration(200);
-
-        popupOpWindow.showAtLocation(getActivity().findViewById(R.id.pay_vip_fg), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-        popCircleOpBar.startAnimation(animationCircleType);
+            walletPassDialog.setForgetPassOnclickListener(new WalletPassDialog.ForgetPassOnclickListener() {
+                @Override
+                public void onForgetPassClick() {
+                    LocalLog.d(TAG, "忘记支付密码");
+                }
+            });
+        }
+        if (!walletPassDialog.isShowing() && isAdded()) {
+            walletPassDialog.show();
+        }
     }
 
     public void pay() {
@@ -827,10 +801,6 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (popupOpWindow != null) {
-            popupOpWindow.dismiss();
-            popupOpWindow = null;
-        }
     }
 
 }
