@@ -107,6 +107,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     private String latitude = "0.0000";
     private PermissionSetting mSetting;
     private TencentSearch tencentSearch;
+    private boolean isRetry = false;
 
     @Override
     protected String title() {
@@ -288,6 +289,15 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
             public void onFailure(int i, String s, Throwable throwable) {
                 LocalLog.d(TAG, "获取经纬度失败！");
                 LocalLog.d(TAG, "i = " + i + ",s =" + s);
+                if (!isRetry) {
+                    Address2GeoParam param_retry = new Address2GeoParam()
+                            .address(province + city + district)
+                            .region(province);
+                    tencentSearch.address2geo(param_retry, this);
+                    isRetry = true;
+                } else {
+                    ToastUtils.showShortToast(getApplicationContext(), "没有相关地址哦！");
+                }
                 return;
             }
         });
@@ -355,6 +365,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                         Manifest.permission.WRITE_EXTERNAL_STORAGE
                 };
                 requestPermission(permissions);
+                return;
             } else {
                 param.setLatitude(latitude);
                 param.setLongitude(longitude);

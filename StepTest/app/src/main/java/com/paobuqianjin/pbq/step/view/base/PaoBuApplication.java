@@ -235,6 +235,7 @@ public class PaoBuApplication extends MultiDexApplication {
             long max_age = 24 * 3600;
             if (request.url().toString().startsWith(NetApi.url)) {
 /*                LocalLog.d(TAG, "request.url().toString() = " + request.url().toString());*/
+                LocalLog.d(TAG, "headtoken =" + request.header("headtoken"));
                 max_age = 0;
             }
 /*            LocalLog.d(TAG, "max_age = " + max_age);*/

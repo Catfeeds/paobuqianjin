@@ -376,7 +376,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     break;
                 case 2:
                     pop_message_red_a.setVisibility(View.INVISIBLE);
-                    pop_message_red_b.setText("红包已领完");
+                    pop_message_red_b.setText("手慢了，红包已被领完");
                     break;
                 case 3:
                     pop_message_red_a.setVisibility(View.VISIBLE);

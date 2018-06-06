@@ -7,7 +7,7 @@
     <string name="bind_phone_num">绑定手机号</string>
     <string name="try_ones">榜单</string>
     <string name="login_account">账号登录</string>
-    <string name="login_phoneNum">请输入手机号码</string>
+    <string name="login_phoneNum">请输入手机号码/跑步钱进号</string>
     <string name="login_phonePwd">请输入6-16位密码</string>
     <string name="new_phonePwd">请输入新密码</string>
     <string name="identifying_code">请输入验证码</string>

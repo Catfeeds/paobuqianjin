@@ -18,10 +18,12 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.WalletPassDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BankListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.Constants;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
@@ -39,7 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TransferCardActivity extends BaseBarActivity {
-
+    private final static String TAG = TransferCardActivity.class.getSimpleName();
     private static final int REQ_ADD_CARD = 1;
     @Bind(R.id.tv_transfer_all)
     TextView tvTransferAll;
@@ -55,6 +57,7 @@ public class TransferCardActivity extends BaseBarActivity {
     private BankSelectAdapter adapter;
     private float canCrashNum;
     private BankListResponse.CardBean selectBean;
+    private WalletPassDialog walletPassDialog;
 
     @Override
     protected String title() {
@@ -126,45 +129,24 @@ public class TransferCardActivity extends BaseBarActivity {
         });
     }
 
-    @OnClick({R.id.btn_transfer, R.id.tv_protocol, R.id.linear_item_more,R.id.tv_transfer_all})
+    @OnClick({R.id.btn_transfer, R.id.tv_protocol, R.id.linear_item_more, R.id.tv_transfer_all})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_transfer:
                 String transferMoneyStr = etCanTransfer.getText().toString();
                 if (TextUtils.isEmpty(transferMoneyStr)) {
-                    PaoToastUtils.showShortToast(this,"请输入需要提现的金额");
+                    PaoToastUtils.showShortToast(this, "请输入需要提现的金额");
                     return;
                 }
                 if (selectBean == null) {
-                    PaoToastUtils.showShortToast(this,"请选择银行卡");
+                    PaoToastUtils.showShortToast(this, "请选择银行卡");
                     return;
                 }
                 if (!cbAgree.isChecked()) {
                     PaoToastUtils.showShortToast(this, "请认真阅读" + getString(R.string.transfer_protcol) + "并确认勾选");
                     return;
                 }
-                Map<String, String> params = new HashMap<>();
-                params.put("cardid", selectBean.getCardid());
-                params.put("amount", transferMoneyStr);
-                params.put("typeid", "3");
-                params.put("limit_version_name", Constants.LIMITE_VERSION);
-//                params.put("wx_openid", transferMoneyStr);//app对应的openid
-                Presenter.getInstance(this).postPaoBuSimple(NetApi.TRANSFER_BY_HELIBAO, params, new PaoCallBack() {
-                    @Override
-                    protected void onSuc(String s) {
-                        Intent intent = new Intent(TransferCardActivity.this, TransferResultActivity.class);
-                        intent.putExtra("is_success", true);
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                        if(errorBean!=null) PaoToastUtils.showShortToast(TransferCardActivity.this,errorBean.getMessage());
-                        Intent intent = new Intent(TransferCardActivity.this, TransferResultActivity.class);
-                        intent.putExtra("is_success", false);
-                        startActivity(intent);
-                    }
-                });
+                crash();
                 break;
             case R.id.tv_protocol:
                 startActivity(AgreementActivity.class, null, false, UserServiceProtcolFragment.USER_CRASH_ACTION);
@@ -179,6 +161,70 @@ public class TransferCardActivity extends BaseBarActivity {
             case R.id.tv_transfer_all:
                 etCanTransfer.setText(canCrashNum + "");
                 break;
+        }
+    }
+
+    private void crash() {
+        String transferMoneyStr = etCanTransfer.getText().toString();
+        Map<String, String> params = new HashMap<>();
+        params.put("cardid", selectBean.getCardid());
+        params.put("amount", transferMoneyStr);
+        params.put("typeid", "3");
+        params.put("limit_version_name", Constants.LIMITE_VERSION);
+//                params.put("wx_openid", transferMoneyStr);//app对应的openid
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.TRANSFER_BY_HELIBAO, params, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                Intent intent = new Intent(TransferCardActivity.this, TransferResultActivity.class);
+                intent.putExtra("is_success", true);
+                startActivity(intent);
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null)
+                    PaoToastUtils.showShortToast(TransferCardActivity.this, errorBean.getMessage());
+                Intent intent = new Intent(TransferCardActivity.this, TransferResultActivity.class);
+                intent.putExtra("is_success", false);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void popPayPass() {
+        if (walletPassDialog == null) {
+            walletPassDialog = new WalletPassDialog(this);
+            walletPassDialog.setPassEditListener(new WalletPassDialog.PassEditListener() {
+                @Override
+                public void onPassWord(String pass) {
+                    LocalLog.d(TAG, "pass =" + pass);
+                    walletPassDialog.dismiss();
+                    String base64Pass = Base64Util.getUidFromBase64(pass);
+                    Map<String, String> params = new HashMap<>();
+                    params.put("paypw", base64Pass);
+                    Presenter.getInstance(TransferCardActivity.this).postPaoBuSimple(NetApi.urlPayPass, params, new PaoCallBack() {
+                        @Override
+                        protected void onSuc(String s) {
+
+                        }
+
+                        @Override
+                        protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                        }
+                    });
+                }
+            });
+
+            walletPassDialog.setForgetPassOnclickListener(new WalletPassDialog.ForgetPassOnclickListener() {
+                @Override
+                public void onForgetPassClick() {
+                    LocalLog.d(TAG, "忘记支付密码");
+                }
+            });
+        }
+        if (!walletPassDialog.isShowing() && !isFinishing()) {
+            walletPassDialog.show();
         }
     }
 

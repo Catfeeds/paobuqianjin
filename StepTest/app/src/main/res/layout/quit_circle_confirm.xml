@@ -15,7 +15,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginTop="184dp"
-            android:background="@color/color_f8">
+            android:background="@drawable/free_dialog_bg">
 
             <TextView
                 android:id="@+id/quit_title"
@@ -56,7 +56,7 @@
                     android:background="@color/color_f8"
                     android:gravity="center"
                     android:text="@string/cancel_no"
-                    android:textColor="@color/color_6c71c4"
+                    android:textColor="#38ADFF"
                     android:textSize="17dp" />
 
                 <TextView
@@ -68,7 +68,7 @@
                     android:background="@color/color_f8"
                     android:gravity="center"
                     android:text="@string/confirm_yes"
-                    android:textColor="@color/color_6c71c4"
+                    android:textColor="#38ADFF"
                     android:textSize="17dp" />
             </RelativeLayout>
         </RelativeLayout>

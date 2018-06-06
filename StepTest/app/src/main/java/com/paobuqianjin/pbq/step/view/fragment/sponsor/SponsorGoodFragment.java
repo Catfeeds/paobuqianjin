@@ -87,6 +87,7 @@ public class SponsorGoodFragment extends BaseBarStyleTextViewFragment implements
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (goodsImgsBeans != null) {
+                    LocalLog.d(TAG, "url " + goodsImgsBeans.get(position).getUrl());
                     popImageView(goodsImgsBeans.get(position).getUrl());
                 }
             }

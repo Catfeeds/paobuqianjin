@@ -185,7 +185,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                         return;
                     }
                     Presenter.getInstance(this).userLoginByPhoneNumber(collectLoginUserInfo());
-                    showProgressDialog("正在使用手机号登录");
+                    showProgressDialog("正在使用手机号/跑步钱进号登录");
                     break;
                 case R.id.register:
                     startActivity(RegisterActivity.class, null, false);

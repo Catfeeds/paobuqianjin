@@ -168,6 +168,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_toRightOf="@+id/sponsor_time_num"
+                    android:maxLines="3"
                     android:text=""
                     android:textColor="@color/color_8a8a8a"
                     android:textSize="14dp" />
@@ -183,7 +184,7 @@
             <RelativeLayout
                 android:id="@+id/sponsor_location_span"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="80dp"
                 android:layout_below="@+id/sponsor_time_span">
 
                 <ImageView
@@ -211,9 +212,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="16dp"
                     android:layout_marginRight="14dp"
+                    android:layout_marginTop="16dp"
                     android:layout_toRightOf="@+id/sponsor_location_num"
+                    android:ellipsize="end"
+                    android:maxLines="3"
                     android:text=""
                     android:textColor="@color/color_8a8a8a"
                     android:textSize="14dp" />

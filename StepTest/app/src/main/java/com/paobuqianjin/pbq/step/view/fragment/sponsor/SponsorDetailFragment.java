@@ -118,7 +118,6 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
         sponsorTelNumStr = (TextView) viewRoot.findViewById(R.id.sponsor_tel_num_str);
         sponsorTimeNumStr = (TextView) viewRoot.findViewById(R.id.sponsor_time_num_str);

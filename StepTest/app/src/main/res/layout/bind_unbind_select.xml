@@ -10,7 +10,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:background="@color/color_f8">
+        android:background="@drawable/free_dialog_bg">
 
         <TextView
             android:id="@+id/bind_op"
@@ -44,6 +44,12 @@
                 android:text="@string/cancel_no"
                 android:textColor="@color/color_6c71c4"
                 android:textSize="15dp" />
+
+            <ImageView
+                android:layout_gravity="center"
+                android:background="@color/color_d9d9d9"
+                android:layout_width="1dp"
+                android:layout_height="match_parent" />
 
             <Button
                 android:id="@+id/btn_confirm"
