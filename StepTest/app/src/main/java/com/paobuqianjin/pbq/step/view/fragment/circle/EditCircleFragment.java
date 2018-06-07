@@ -504,7 +504,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                         .cachePath(cachePath)//自定义缓存路径
                         .doCrop(1, 1, 0, 0)//裁剪功能需要调用这个方法，多选模式下无效
                         .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
-                        .start(getActivity(), REQUEST_CODE);
+                        .start(EditCircleFragment.this, REQUEST_CODE);
                 popupCircleTypeWindow.dismiss();
             }
         });
@@ -518,7 +518,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                         .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
                         .cachePath(cachePath)//自定义缓存路径
                         .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
-                        .start(getActivity(), REQUEST_CODE);
+                        .start(EditCircleFragment.this, REQUEST_CODE);
                 popupCircleTypeWindow.dismiss();
             }
         });

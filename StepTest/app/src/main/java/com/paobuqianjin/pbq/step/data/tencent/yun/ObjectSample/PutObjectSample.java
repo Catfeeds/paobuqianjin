@@ -59,7 +59,21 @@ public class PutObjectSample {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = false;
-        Bitmap bitmap = BitmapFactory.decodeFile(sourcePath, options);
+        Bitmap bitmap = null;
+        try {
+            bitmap = BitmapFactory.decodeFile(sourcePath, options);
+        } catch (OutOfMemoryError o) {
+            try {
+                options = new BitmapFactory.Options();
+                options.inSampleSize = 4;
+                bitmap = BitmapFactory.decodeFile(sourcePath, options);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (bitmap == null) {
+            return sourcePath;
+        }
         int optionsLimit = 100;
         bitmap.compress(Bitmap.CompressFormat.JPEG, optionsLimit, baos);
         while (baos.toByteArray().length / 1024 > 2048) {
@@ -130,11 +144,13 @@ public class PutObjectSample {
             resultHelper.qCloudServiceException = e;
             return resultHelper;
         } finally {
-            File bitmapFile = new File(cacheBitmapPath);
-            if (!bitmapFile.isDirectory()) {
-                bitmapFile.delete();
+            if (!srcPath.equals(cacheBitmapPath)) {
+                File bitmapFile = new File(cacheBitmapPath);
+                if (!bitmapFile.isDirectory()) {
+                    bitmapFile.delete();
+                }
+                bitmapFile = null;
             }
-            bitmapFile = null;
         }
     }
 

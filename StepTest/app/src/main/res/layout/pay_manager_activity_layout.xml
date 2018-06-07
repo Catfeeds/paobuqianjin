@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/bar_pay_manager"
+        layout="@layout/bar_return_a_style"></include>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_below="@+id/bar_pay_manager"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/pass_word_forget"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@+id/bar_add_from_address"
+            android:layout_weight="1"
+            android:background="@color/color_f8">
+
+            <ImageView
+                android:id="@+id/pass_forget_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:src="@drawable/pass_manager"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/pass_forget_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:layout_toRightOf="@+id/pass_forget_image"
+                android:text="忘记支付密码"
+                android:textColor="@color/color_161727"
+                android:textSize="17dp" />
+
+            <ImageView
+                android:layout_width="7dp"
+                android:layout_height="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="14dp"
+                android:src="@drawable/go_to" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignLeft="@+id/pass_forget_des"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="14dp"
+                android:background="@color/color_ebebed" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/pass_word_rest"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@+id/bar_add_from_address"
+            android:layout_weight="1"
+            android:background="@color/color_f8">
+
+            <ImageView
+                android:id="@+id/pass_word_rest_image"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:src="@drawable/pass_manager"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/pass_word_rest_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:layout_toRightOf="@+id/pass_word_rest_image"
+                android:text="修改支付密码"
+                android:textColor="@color/color_161727"
+                android:textSize="17dp" />
+
+            <ImageView
+                android:layout_width="7dp"
+                android:layout_height="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="14dp"
+                android:src="@drawable/go_to" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignLeft="@+id/pass_word_rest_des"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="14dp"
+                android:background="@color/color_ebebed" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/auth_real_person"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@+id/bar_add_from_address"
+            android:layout_weight="1"
+            android:background="@color/color_f8">
+
+            <ImageView
+                android:id="@+id/address_mail"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:src="@drawable/pass_manager"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/phone_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="14dp"
+                android:layout_toRightOf="@+id/address_mail"
+                android:text="实名认证"
+                android:textColor="@color/color_161727"
+                android:textSize="17dp" />
+
+            <TextView
+                android:id="@+id/auth_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:layout_toStartOf="@+id/go_to"
+                android:text=""
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="17dp" />
+
+            <ImageView
+                android:id="@+id/go_to"
+                android:layout_width="7dp"
+                android:layout_height="14dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="14dp"
+                android:src="@drawable/go_to" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignLeft="@+id/phone_address"
+                android:layout_alignParentBottom="true"
+                android:layout_marginRight="14dp"
+                android:background="@color/color_ebebed" />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>

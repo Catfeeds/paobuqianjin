@@ -29,6 +29,7 @@ import com.paobuqianjin.pbq.step.view.activity.MyFriendActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.PayManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeMakeActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.SettingActivity;
@@ -178,6 +179,16 @@ public final class OwnerFragment extends BaseFragment {
     RelativeLayout vipSpan;
     @Bind(R.id.vip_flg)
     ImageView vipFlg;
+    @Bind(R.id.pay_mananger_icon)
+    ImageView payManangerIcon;
+    @Bind(R.id.pay_mananger_desc)
+    TextView payManangerDesc;
+    @Bind(R.id.go_to_pay_manager)
+    ImageView goToPayManager;
+    @Bind(R.id.pay_mananger_span)
+    RelativeLayout payManangerSpan;
+    @Bind(R.id.iv_three_stars)
+    ImageView ivThreeStars;
     private String userAvatar;
     private int vip = 0;
     private int cVip = 0;
@@ -210,7 +221,6 @@ public final class OwnerFragment extends BaseFragment {
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         LocalLog.d(TAG, "initView() enter");
         barReturnDrawable = (ImageView) viewRoot.findViewById(R.id.bar_return_drawable);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
@@ -227,10 +237,6 @@ public final class OwnerFragment extends BaseFragment {
         dynamicSpan = (RelativeLayout) viewRoot.findViewById(R.id.dynamic_span);
         danSpan = (RelativeLayout) viewRoot.findViewById(R.id.dan_span);
         suggestionSpan = (RelativeLayout) viewRoot.findViewById(R.id.suggestion_span);
-        if (headIcon != null) {
-            LocalLog.d(TAG, "###############");
-        }
-
         vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
     }
 
@@ -244,7 +250,7 @@ public final class OwnerFragment extends BaseFragment {
 
     @OnClick({R.id.bar_tv_right, R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span,
             R.id.dan_span, R.id.suggestion_span, R.id.friend_rel, R.id.circle_rel,
-            R.id.bar_return_drawable, R.id.task_release_span, R.id.setting_span, R.id.qrcode_rel, R.id.vip_span,R.id.bank_span})
+            R.id.bar_return_drawable, R.id.task_release_span, R.id.setting_span, R.id.qrcode_rel, R.id.vip_span, R.id.bank_span, R.id.pay_mananger_span})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -341,6 +347,10 @@ public final class OwnerFragment extends BaseFragment {
                 intent.setClass(getContext(), MyBankCardActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.pay_mananger_span:
+                intent.setClass(getContext(), PayManagerActivity.class);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -376,9 +386,9 @@ public final class OwnerFragment extends BaseFragment {
                 cVip = userInfoResponse.getData().getCusvip();
                 if (vip == 1 || cVip == 1) {
                     LocalLog.d(TAG, "当前用户为VIP");
-                    if(cVip == 0){
+                    if (cVip == 0) {
 
-                    }else{
+                    } else {
                         vipFlg.setImageResource(R.drawable.vip_sponsor);
                     }
                     vipFlg.setVisibility(View.VISIBLE);

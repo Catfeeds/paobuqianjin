@@ -42,6 +42,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by pbq on
  * 2018/4/19.
@@ -55,6 +57,7 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     private static final int REQUEST_SPONSOR_INFO = 3;
     public static final int RESULT_NO_SPONSOR = 9;
     public static final int RESULT_DELETE_SPONSOR = 8;
+    public static final int REQUEST_PAY_SPONSOR_PKG = 9;
     @Bind(R.id.target_step_des)
     TextView targetStepDes;
     @Bind(R.id.target_task_step_num)
@@ -346,7 +349,11 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
             LocalLog.d(TAG, "创建成功,跳转支付");
             bundle.putString(PAY_FOR_STYLE, "redpacket");
             bundle.putString(CIRCLE_RECHARGE, targetTaskMoneyNum.getText().toString());
-            startActivity(PaoBuPayActivity.class, bundle, true, PAY_ACTION);
+            Intent intent = new Intent();
+            intent.setClass(getContext(), PaoBuPayActivity.class);
+            intent.putExtra(getActivity().getPackageName(), bundle);
+            intent.setAction(PAY_ACTION);
+            startActivityForResult(intent, REQUEST_PAY_SPONSOR_PKG);
         } else {
             ToastUtils.showShortToast(getContext(), taskSponsorRespone.getMessage());
         }
@@ -406,6 +413,9 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                 this.businessId = businessId;
                 sponorMsgDesDetail.setText(data.getStringExtra("name"));
             }
+        } else if (requestCode == REQUEST_PAY_SPONSOR_PKG && resultCode == RESULT_OK) {
+            LocalLog.d(TAG,"支付完成");
+            getActivity().finish();
         }
     }
 

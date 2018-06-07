@@ -512,6 +512,9 @@
         <activity android:name=".view.activity.BindCardActivity" />
         <activity android:name=".view.activity.InputCardInfoActivity" />
         <activity android:name=".view.activity.MyBankCardActivity" />
+        <!--密码管理-->
+        <activity android:name=".view.activity.PayManagerActivity" />
+        <activity android:name=".view.activity.ForgetPayWordActivity"/>
 
         <!-- 合利宝 -->
         <uses-library

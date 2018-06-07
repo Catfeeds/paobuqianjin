@@ -102,6 +102,8 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     private String imagesIn;
     private Intent intent;
     private AddBusinessParam oldParam = null;
+ 	private boolean isChangeImagesIn;//是否改变了店内环境
+    private boolean isChangeImagesOut;//是否改变了门店logo
     //详细地址
     private String longitude = "0.0000";
     private String latitude = "0.0000";

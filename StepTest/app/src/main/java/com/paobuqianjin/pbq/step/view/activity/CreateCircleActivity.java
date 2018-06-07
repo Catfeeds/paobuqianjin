@@ -472,6 +472,10 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                     startActivity(PaoBuPayActivity.class, bundle, true, QRCODE_ACTION);
                 }
             }
+            if (createCircleConfim == null) {
+                createCircleConfim = (Button) findViewById(R.id.create_circle_confim);
+            }
+            createCircleConfim.setEnabled(true);
         }
     };
 
@@ -697,6 +701,10 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                     return;
                 }
                 if (localAvatar != null) {
+                    if (createCircleConfim == null) {
+                        createCircleConfim = (Button) findViewById(R.id.create_circle_confim);
+                    }
+                    createCircleConfim.setEnabled(false);
                     LogoUpTask logoUpTask = new LogoUpTask();
                     logoUpTask.execute(localAvatar);
                 }
@@ -948,6 +956,10 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 createCircleBodyParam.setLogo(s);
             }
             if (s == null) {
+                if (createCircleConfim == null) {
+                    createCircleConfim = (Button) findViewById(R.id.create_circle_confim);
+                }
+                createCircleConfim.setEnabled(true);
                 ToastUtils.showShortToast(CreateCircleActivity.this, "图片上传失败");
             }
             if (checkcreateCircleBodyParam()) {

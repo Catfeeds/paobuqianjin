@@ -41,6 +41,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by pbq on 2018/1/26.
  */
@@ -58,6 +60,7 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
     private final static String TASK_NO = "taskno";
     private final static String CIRCLE_RECHARGE = "pay";
     private static final int SELECT_FRIENDS = 0;
+    private static final int REQUEST_PAY_FRIEND_PKG = 1;
     ArrayList<UserFriendResponse.DataBeanX.DataBean> dataBeans = null;
     @Bind(R.id.line1)
     ImageView line1;
@@ -183,8 +186,12 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 bundle.putString(PAY_FOR_STYLE, "task");
                 bundle.putString(TASK_NO, taskReleaseResponse.getData().getTask_no());
-                bundle.putString(CIRCLE_RECHARGE, String.format("%.2f",totalMoney));
-                startActivity(PaoBuPayActivity.class, bundle, true, PAY_ACTION);
+                bundle.putString(CIRCLE_RECHARGE, String.format("%.2f", totalMoney));
+                Intent intent = new Intent();
+                intent.setClass(getContext(), PaoBuPayActivity.class);
+                intent.putExtra(getActivity().getPackageName(), bundle);
+                intent.setAction(PAY_ACTION);
+                startActivityForResult(intent, REQUEST_PAY_FRIEND_PKG);
             } else if (taskReleaseResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();
@@ -317,6 +324,12 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                     this.friends = friends;
                     LocalLog.d(TAG, friends);
                     calculateResultMoney();
+                }
+                break;
+            case REQUEST_PAY_FRIEND_PKG:
+                if (resultCode == RESULT_OK) {
+                    LocalLog.d(TAG, "支付成功!");
+                    getActivity().finish();
                 }
                 break;
         }

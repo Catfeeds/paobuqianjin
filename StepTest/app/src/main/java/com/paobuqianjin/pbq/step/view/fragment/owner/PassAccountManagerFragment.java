@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
@@ -30,16 +29,13 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.PostBindStateResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.BindThirdAccoutInterface;
-import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.BindWeChatActivity;
-import com.paobuqianjin.pbq.step.view.activity.LoginActivity;
 import com.paobuqianjin.pbq.step.view.activity.OlderPassChangeActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.utils.Log;
 import com.umeng.socialize.utils.SocializeUtils;
 
 import java.util.Map;
@@ -68,7 +64,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
     ImageView addressMail;
     @Bind(R.id.phone_address)
     TextView phoneAddress;
-    @Bind(R.id.pass_word_layer)
+    @Bind(R.id.auth_real_person)
     RelativeLayout passWordLayer;
     @Bind(R.id.address_weichat)
     ImageView addressWeichat;
@@ -289,10 +285,10 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
     }
 
 
-    @OnClick({R.id.pass_word_layer, R.id.we_chat_des, R.id.qq_chat_des, R.id.phone_chat_des})
+    @OnClick({R.id.auth_real_person, R.id.we_chat_des, R.id.qq_chat_des, R.id.phone_chat_des})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.pass_word_layer:
+            case R.id.auth_real_person:
                 LocalLog.d(TAG, "修改密码");
                 if (phoneChatDes.getText().toString().equals(getString(R.string.had_bind))) {
                     startActivity(OlderPassChangeActivity.class, null);

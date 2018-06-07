@@ -10,7 +10,7 @@
         layout="@layout/bar_return_a_style"></include>
 
     <RelativeLayout
-        android:id="@+id/pass_word_layer"
+        android:id="@+id/auth_real_person"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@+id/bar_add_from_address"
@@ -56,7 +56,7 @@
         android:id="@+id/address_phone_layer"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@+id/pass_word_layer"
+        android:layout_below="@+id/auth_real_person"
         android:background="@color/color_f8">
 
         <ImageView

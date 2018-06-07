@@ -257,10 +257,53 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/pay_mananger_span"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/wallet_span">
+
+                <ImageView
+                    android:id="@+id/pay_mananger_icon"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:src="@drawable/wallet" />
+
+                <TextView
+                    android:id="@+id/pay_mananger_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toEndOf="@+id/pay_mananger_icon"
+                    android:includeFontPadding="false"
+                    android:text="支付管理"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:id="@+id/go_to_pay_manager"
+                    android:layout_width="14dp"
+                    android:layout_height="17dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="14dp"
+                    android:src="@drawable/more" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/pay_mananger_desc"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_ebebed" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/bank_span"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_below="@+id/wallet_span"
+                android:layout_below="@+id/pay_mananger_span"
                 android:visibility="visible">
 
                 <ImageView
@@ -291,6 +334,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="14dp"
                     android:src="@drawable/more" />
+
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"

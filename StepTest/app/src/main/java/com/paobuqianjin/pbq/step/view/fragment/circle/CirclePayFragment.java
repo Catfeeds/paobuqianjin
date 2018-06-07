@@ -719,7 +719,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
 
                         @Override
                         protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                            if (errorBean.getError() != 100) {
+                            if (errorBean != null && errorBean.getError() != 100) {
                                 ToastUtils.showShortToast(getContext(), errorBean.getMessage());
                             }
                         }

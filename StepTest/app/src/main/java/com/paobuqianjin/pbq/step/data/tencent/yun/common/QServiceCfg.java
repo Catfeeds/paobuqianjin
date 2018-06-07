@@ -172,9 +172,15 @@ public class QServiceCfg {
         getCosPath = uploadCosPath;
 
         //uploadFileUrl = context.getExternalCacheDir().getPath() + File.separator + "upload.txt";
-        multiUploadFileUrl = context.getExternalCacheDir().getPath() + File.separator + "bigfile.txt";
-        appendUploadFileUrl = context.getExternalCacheDir().getPath() + File.separator + "append.txt";
-        downloadDir = context.getExternalCacheDir().getPath() + File.separator + "download";
+
+        try {
+            multiUploadFileUrl = context.getExternalCacheDir().getPath() + File.separator + "bigfile.txt";
+            appendUploadFileUrl = context.getExternalCacheDir().getPath() + File.separator + "append.txt";
+            downloadDir = context.getExternalCacheDir().getPath() + File.separator + "download";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
         partNumberAndEtag = new LinkedHashMap<Integer, String>();
     }
