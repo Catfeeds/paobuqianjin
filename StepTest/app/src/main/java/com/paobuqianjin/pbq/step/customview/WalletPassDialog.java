@@ -34,6 +34,13 @@ public class WalletPassDialog extends Dialog {
         setCanceledOnTouchOutside(false);
         initView();
         initEvent();
+        pswView = (GridPasswordView)findViewById(R.id.pswView);
+    }
+
+    public void clearPassword() {
+        if (pswView != null) {
+            pswView.clearPassword();
+        }
     }
 
     private void initEvent() {

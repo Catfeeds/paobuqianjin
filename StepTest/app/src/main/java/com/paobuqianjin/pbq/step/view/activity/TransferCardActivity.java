@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.WalletPassDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BankListResponse;
@@ -146,7 +148,12 @@ public class TransferCardActivity extends BaseBarActivity {
                     PaoToastUtils.showShortToast(this, "请认真阅读" + getString(R.string.transfer_protcol) + "并确认勾选");
                     return;
                 }
-                crash();
+                if (Float.parseFloat(transferMoneyStr) > canCrashNum) {
+                    LocalLog.d(TAG, "提现金额大于可提现金额!");
+
+                    return;
+                }
+                popPayPass();
                 break;
             case R.id.tv_protocol:
                 startActivity(AgreementActivity.class, null, false, UserServiceProtcolFragment.USER_CRASH_ACTION);
@@ -199,18 +206,29 @@ public class TransferCardActivity extends BaseBarActivity {
                 public void onPassWord(String pass) {
                     LocalLog.d(TAG, "pass =" + pass);
                     walletPassDialog.dismiss();
-                    String base64Pass = Base64Util.getUidFromBase64(pass);
+                    String base64Pass = Base64Util.makeUidToBase64(pass);
                     Map<String, String> params = new HashMap<>();
                     params.put("paypw", base64Pass);
                     Presenter.getInstance(TransferCardActivity.this).postPaoBuSimple(NetApi.urlPayPass, params, new PaoCallBack() {
                         @Override
                         protected void onSuc(String s) {
+                            try {
+                                ErrorCode errorCode = new Gson().fromJson(s, ErrorCode.class);
+                                if ("密码正确".equals(errorCode.getMessage())) {
+                                    crash();
+                                } else {
 
+                                }
+                            } catch (JsonSyntaxException j) {
+                                LocalLog.d(TAG, "error data format!");
+                            }
                         }
 
                         @Override
                         protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-
+                            if (errorBean.getError() != 100) {
+                                ToastUtils.showShortToast(getApplicationContext(), errorBean.getMessage());
+                            }
                         }
                     });
                 }
@@ -224,6 +242,7 @@ public class TransferCardActivity extends BaseBarActivity {
             });
         }
         if (!walletPassDialog.isShowing() && !isFinishing()) {
+            walletPassDialog.clearPassword();
             walletPassDialog.show();
         }
     }

@@ -677,6 +677,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             LocalLog.d(TAG, "新进入Homepage 数字变化动画 ");
             lastStep = stepToday;
             stepAnimation = lastStep;
+            toayStep.setText(String.valueOf(lastStep));
             toayStep.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -684,6 +685,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 }
             }, 500);
             drawProcess(targetStep, lastStep);
+            showStep = stepToday;
         } else {
             if (lastStep >= stepToday) {
                 toayStep.setText(String.valueOf(lastStep));

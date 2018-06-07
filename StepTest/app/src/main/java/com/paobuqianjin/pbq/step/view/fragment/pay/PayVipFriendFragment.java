@@ -24,6 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
@@ -39,11 +41,14 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.VipNoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.YsPayOrderResponse;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
+import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
@@ -63,7 +68,9 @@ import com.yanzhenjie.permission.AndPermission;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -669,13 +676,40 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 public void onPassWord(String pass) {
                     LocalLog.d(TAG, "pass =" + pass);
                     walletPassDialog.dismiss();
-                    if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
-                        pay();
-                    } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
-                        paySponsorVip();
-                    } else {
-                        LocalLog.d(TAG, "Unknown op");
-                    }
+                    LocalLog.d(TAG, "pass =" + pass);
+                    walletPassDialog.dismiss();
+                    String base64Pass = Base64Util.makeUidToBase64(pass);
+                    Map<String, String> params = new HashMap<>();
+                    params.put("paypw", base64Pass);
+                    Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlPayPass, params, new PaoCallBack() {
+                        @Override
+                        protected void onSuc(String s) {
+                            try {
+                                ErrorCode errorCode = new Gson().fromJson(s, ErrorCode.class);
+                                if ("密码正确".equals(errorCode.getMessage())) {
+                                    if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                                        pay();
+                                    } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
+                                        paySponsorVip();
+                                    } else {
+                                        LocalLog.d(TAG, "Unknown op");
+                                    }
+                                } else {
+
+                                }
+                            } catch (JsonSyntaxException j) {
+                                LocalLog.d(TAG, "error data format!");
+                            }
+                        }
+
+                        @Override
+                        protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                            if (errorBean.getError() != 100) {
+                                ToastUtils.showShortToast(getContext(), errorBean.getMessage());
+                            }
+                        }
+                    });
+
                 }
             });
 
@@ -687,6 +721,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             });
         }
         if (!walletPassDialog.isShowing() && isAdded()) {
+            walletPassDialog.clearPassword();
             walletPassDialog.show();
         }
     }

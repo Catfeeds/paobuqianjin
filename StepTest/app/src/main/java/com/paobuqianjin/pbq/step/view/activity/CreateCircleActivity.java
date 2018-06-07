@@ -829,7 +829,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         if (TextUtils.isEmpty(targetTaskStepNumStr.trim()) || filter.calculateLength(targetTaskStepNumStr) < 4
                 || filter.calculateLength(targetTaskStepNumStr) > 32) {
                 final NormalDialog normalDialog = new NormalDialog(this);
-                normalDialog.setMessage("请输入2-16位任务名称");
+                normalDialog.setMessage("请输入4-16位圈子名称");
                 normalDialog.setSingleBtn(true);
                 normalDialog.setYesOnclickListener("确定", new NormalDialog.onYesOnclickListener() {
                     @Override
