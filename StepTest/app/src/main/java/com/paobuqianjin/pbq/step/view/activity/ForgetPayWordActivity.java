@@ -81,7 +81,7 @@ public class ForgetPayWordActivity extends BaseBarActivity {
         bankRecycler.addOnItemTouchListener(new RecyclerItemClickListener(this, bankRecycler, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
-
+                
             }
 
             @Override

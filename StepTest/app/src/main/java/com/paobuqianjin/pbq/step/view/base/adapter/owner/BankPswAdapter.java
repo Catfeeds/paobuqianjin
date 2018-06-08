@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BankListResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 
 import java.util.List;
 
@@ -32,21 +33,15 @@ public class BankPswAdapter extends RecyclerView.Adapter<BankPswAdapter.BankCard
     @Override
     public void onBindViewHolder(BankCardViewHolder holder, int position) {
         if (mData.get(position) instanceof BankListResponse.CardBean) {
-           /* Presenter.getInstance(mContext).getImage(holder.bankIco, ((BankListResponse.CardBean) mData.get(position)).getImg_url());*/
+            Presenter.getInstance(mContext).getImage(holder.bankIco, ((BankListResponse.CardBean) mData.get(position)).getImg_url());
             holder.cardNoStr = ((BankListResponse.CardBean) mData.get(position)).getBank_card();
             String cardStr = holder.cardNoStr;
             holder.bankName.setText(((BankListResponse.CardBean) mData.get(position)).getBank_name());
             if (!TextUtils.isEmpty(cardStr)) {
                 int length = cardStr.length();
                 if (length > 4) {
-                    String replaceStr = cardStr.substring(0, cardStr.length() - 4);
-                    String card4Str = cardStr.substring(cardStr.length() - 4, cardStr.length());
-                    char[] replaceOp = new char[replaceStr.length()];
-                    for (int j = 0; j < replaceOp.length; j++) {
-                        replaceOp[j] = '*';
-                    }
-                    replaceStr = replaceStr.replaceAll("", new String(replaceOp));
-                    holder.cardLastFour.setText("(" + replaceStr + card4Str + ")");
+                    String replaceStr = cardStr.substring(cardStr.length() - 4, cardStr.length());
+                    holder.cardLastFour.setText("(" + replaceStr + ")");
                 }
             }
         }
@@ -77,10 +72,10 @@ public class BankPswAdapter extends RecyclerView.Adapter<BankPswAdapter.BankCard
         }
 
         private void initView(View view) {
-            bankIco = (CircleImageView) view.findViewById(R.id.bank_card_ico);
-            bankName = (TextView) view.findViewById(R.id.bank_card_from);
-            cardStyle = (TextView) view.findViewById(R.id.card_style_des);
-            cardLastFour = (TextView) view.findViewById(R.id.card_no);
+            bankIco = (CircleImageView) view.findViewById(R.id.bank_ico);
+            bankName = (TextView) view.findViewById(R.id.bank_name);
+            cardStyle = (TextView) view.findViewById(R.id.card_style);
+            cardLastFour = (TextView) view.findViewById(R.id.card_last_four);
         }
     }
 }

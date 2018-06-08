@@ -72,25 +72,23 @@ public class PayManagerActivity extends BaseBarActivity {
         passWordLayer = (RelativeLayout) findViewById(R.id.auth_real_person);
         passWordLayer.setEnabled(false);
         getIdentifyStatus();
+        authDone = (TextView) findViewById(R.id.auth_done);
     }
 
     private void getIdentifyStatus() {
         Presenter.getInstance(this).getIdentifyStatu(this, new OnIdentifyLis() {
             @Override
             public void onIdentifed() {
-                if (authDone == null) {
-                    authDone = (TextView) findViewById(R.id.auth_done);
-                    authDone.setText("已认证");
-                }
+                authDone.setText("已认证");
+                passWordLayer.setEnabled(false);
             }
 
             @Override
             public void onUnidentify() {
                 if (passWordLayer != null) {
                     passWordLayer.setEnabled(true);
-                    authDone.setText("未认证");
                 }
-
+                authDone.setText("未认证");
             }
 
             @Override

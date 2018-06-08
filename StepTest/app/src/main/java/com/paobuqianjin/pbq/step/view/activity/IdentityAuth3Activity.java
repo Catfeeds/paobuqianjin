@@ -71,12 +71,12 @@ public class IdentityAuth3Activity extends BaseBarActivity {
             personName = bundle.getString(KEY_PERSON_NAME);
             phoneNum = bundle.getString(KEY_PHONE_NUM);
             cardNum = bundle.getString(KEY_CARD_NUM);
-        }else {
+        } else {
             LocalLog.e(TAG, getString(R.string.error_param));
             finish();
         }
 
-        tvTargetPhone.setText(getString(R.string.title_code_already_send) + phoneNum.substring(0,3)+"****"+phoneNum.substring(7));
+        tvTargetPhone.setText(getString(R.string.title_code_already_send) + phoneNum.substring(0, 3) + "****" + phoneNum.substring(7));
         getVCode(phoneNum);
     }
 
@@ -84,13 +84,14 @@ public class IdentityAuth3Activity extends BaseBarActivity {
         Presenter.getInstance(this).getPaoBuSimple(NetApi.urlSendMsg + phoneNum, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
-                PaoToastUtils.showShortToast(IdentityAuth3Activity.this,"获取验证码成功");
+                PaoToastUtils.showShortToast(IdentityAuth3Activity.this, "获取验证码成功");
                 startCutdownTime();
             }
 
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                if(errorBean!=null) PaoToastUtils.showShortToast(IdentityAuth3Activity.this, errorBean.getMessage());
+                if (errorBean != null)
+                    PaoToastUtils.showShortToast(IdentityAuth3Activity.this, errorBean.getMessage());
                 tvGetVcode.setEnabled(true);
                 tvGetVcode.setText("重新获取");
             }
@@ -156,6 +157,10 @@ public class IdentityAuth3Activity extends BaseBarActivity {
                         @Override
                         protected void onSuc(String s) {
                             PaoToastUtils.showShortToast(IdentityAuth3Activity.this, isAddCard ? "添加银行卡成功" : "验证成功");
+                            if (!isAddCard) {
+                                LocalLog.d(TAG, "设置密码");
+                                startActivity(PayPassWordActivity.class, null);
+                            }
                             setResult(RES_SUC);
                             finish();
                         }
@@ -178,7 +183,7 @@ public class IdentityAuth3Activity extends BaseBarActivity {
         if (TextUtils.isEmpty(etCode.getText().toString())) {
             PaoToastUtils.showShortToast(IdentityAuth3Activity.this, "请输入验证码");
             return false;
-        }else{
+        } else {
             return true;
         }
     }

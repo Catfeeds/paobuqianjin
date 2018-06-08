@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/bar_return_a_style"></include>
+
+    <TextView
+        android:id="@+id/title_pay_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="70dp"
+        android:text=""
+        android:textColor="@color/color_161727"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/first_page_des"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:text=""
+        android:textColor="@color/color_8a8a8a"
+        android:textSize="14dp" />
+
+    <com.jungly.gridpasswordview.GridPasswordView
+        android:id="@+id/pswView"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/line_pass"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        app:gpvGridColor="#ffffff"
+        app:gpvLineColor="@color/color_d9d9d9"
+        app:gpvLineWidth="1dp"
+        app:gpvPasswordLength="6"
+        app:gpvPasswordTransformation="*"
+        app:gpvPasswordType="numberPassword"
+        app:gpvTextColor="@color/color_161727"
+        app:gpvTextSize="17dp" />
+
+    <Button
+        android:id="@+id/confirm_button"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/rect_angle_diss_bt"
+        android:text="完成"
+        android:textColor="@color/color_f8"
+        android:textSize="18dp"
+        android:visibility="gone" />
+</LinearLayout>

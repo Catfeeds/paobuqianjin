@@ -32,7 +32,9 @@ class DateUtils {
             millionSeconds = SIMPLE_DATE_FORMAT.parse(dateString).getTime();
         } catch (ParseException e) {
             e.printStackTrace();
-        }// 毫秒
+        } catch (StringIndexOutOfBoundsException s) {
+            s.printStackTrace();
+        }
 
         return millionSeconds;
     }

@@ -9,8 +9,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="14dp"
-        android:visibility="invisible" />
+        android:layout_marginLeft="14dp" />
 
     <TextView
         android:id="@+id/bank_name"

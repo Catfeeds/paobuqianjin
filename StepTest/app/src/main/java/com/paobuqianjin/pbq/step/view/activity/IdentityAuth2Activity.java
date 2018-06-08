@@ -114,37 +114,16 @@ public class IdentityAuth2Activity extends BaseBarActivity {
                 final String personId = etPersonId.getText().toString();
                 final String personName = etPersonName.getText().toString();
                 final String phoneNum = etPhoneNum.getText().toString();
-                Map<String, String> params = new HashMap<>();
-                params.put("card_id", cardNum);
-                params.put("personId", personId);
-                params.put("personName", personName);
-                params.put("phoneNum", phoneNum);
-                Presenter.getInstance(this).postPaoBuSimple(NetApi.BIND_CARD_PERSON_INFO, params, new PaoCallBack() {
-                    @Override
-                    protected void onSuc(String s) {
-                        try {
-                            JSONObject jsonObj = new JSONObject(s);
-                            // TODO: 2018/5/18 paobu test data
-                            Bundle bundle = getBundle();
-                            bundle.putString("personId", personId);
-                            bundle.putString("personName", personName);
-                            bundle.putString("phoneNum", phoneNum);
-                            bundle.putString("cardNum", cardNum);
 
-                            Intent intent = new Intent(IdentityAuth2Activity.this, IdentityAuth3Activity.class);
-                            intent.putExtra(getPackageName(),bundle);
-                            startActivityForResult(intent, 200);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                Bundle bundle = getBundle();
+                bundle.putString("personId", personId);
+                bundle.putString("personName", personName);
+                bundle.putString("phoneNum", phoneNum);
+                bundle.putString("cardNum", cardNum);
 
-                    @Override
-                    protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                        if (errorBean != null)
-                            PaoToastUtils.showShortToast(IdentityAuth2Activity.this, errorBean.getMessage());
-                    }
-                });
+                Intent intent = new Intent(IdentityAuth2Activity.this, IdentityAuth3Activity.class);
+                intent.putExtra(getPackageName(),bundle);
+                startActivityForResult(intent, 200);
                 break;
         }
     }

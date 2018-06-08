@@ -61,6 +61,9 @@ import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.unionpay.UPPayAssistEx;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -153,7 +156,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private final static String PAY_ACTION = "android.intent.action.PAY";
     private final static String PAY_RECHARGE = "com.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
     private final static String PAY_FOR_STYLE = "pay_for_style";
-    private NormalDialog normalDialog, walletLeakDialog;
+    private NormalDialog normalDialog, walletLeakDialog, passWordSetDialog;
     public UserInfoResponse.DataBean userInfo;
 
     public enum PayStyles {
@@ -205,7 +208,6 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         setToolBarListener(new BaseBarImageViewFragment.ToolBarListener() {
             @Override
             public void clickLeft() {
@@ -448,7 +450,50 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                             }
 
                         } else if (style == 1) {
-                            popPayConfirm();
+                            //TODO 判断是否设置过密码
+                            Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
+                                @Override
+                                protected void onSuc(String s) {
+                                    if (!isAdded()) return;
+                                    try {
+                                        JSONObject jsonObj = new JSONObject(s);
+                                        jsonObj = jsonObj.getJSONObject("data");
+                                        String status = jsonObj.getString("setpw");
+                                        if (status.equals("1")) {
+                                            popPayConfirm();
+                                        } else if (status.equals("0")) {
+                                            if (passWordSetDialog == null) {
+                                                passWordSetDialog = new NormalDialog(getActivity());
+                                            }
+                                            passWordSetDialog.setMessage("您还未设置支付密码，去上设置支付密码?");
+                                            passWordSetDialog.setYesOnclickListener("去设置", new NormalDialog.onYesOnclickListener() {
+                                                @Override
+                                                public void onYesClick() {
+                                                    if (passWordSetDialog != null)
+                                                        passWordSetDialog.dismiss();
+                                                }
+                                            });
+                                        }
+                                        passWordSetDialog.setNoOnclickListener("不设置", new NormalDialog.onNoOnclickListener() {
+                                            @Override
+                                            public void onNoClick() {
+                                                if (passWordSetDialog != null)
+                                                    passWordSetDialog.dismiss();
+                                            }
+                                        });
+                                        if (!passWordSetDialog.isShowing())
+                                            passWordSetDialog.show();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                                }
+                            });
+
                         } else if (style == 2) {
                             LocalLog.d(TAG, "使用云闪付");
                             payYunSanRequest();

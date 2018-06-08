@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.ChooseOneItemWheelPopWindow;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
@@ -357,34 +358,50 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
      */
     private void calculateResultMoney() {
         int dayNum = 0;
-        float dailyMoney = 0f;
+        float taskTotalMoney = 0f;
         int friendsNum = 0;
         if (targetTaskMoneyNum.getText() == null || targetTaskMoneyNum.getText().toString().equals("")) {
 //            Toast.makeText(getContext(), "请输入奖励金额", Toast.LENGTH_SHORT).show();
-            dailyMoney = 0f;
-        }else{
-            dailyMoney = Float.parseFloat(targetTaskMoneyNum.getText().toString());
+            taskTotalMoney = 0f;
+        } else {
+            taskTotalMoney = Float.parseFloat(targetTaskMoneyNum.getText().toString());
         }
 
         if (targetTaskDayNum.getText() == null || targetTaskDayNum.getText().toString().equals("")) {
 //            Toast.makeText(getContext(), "请输入任务天数", Toast.LENGTH_SHORT).show();
             dayNum = 0;
-        }else{
+        } else {
             dayNum = Integer.parseInt(targetTaskDayNum.getText().toString());
         }
 
-        if (TextUtils.isEmpty(friends) && dataBeans==null || dataBeans.size()==0) {
+        if (TextUtils.isEmpty(friends) && dataBeans == null || dataBeans.size() == 0) {
 //            Toast.makeText(getContext(), "请选择好友", Toast.LENGTH_SHORT).show();
             friendsNum = 0;
-        }else{
+        } else {
             friendsNum = dataBeans.size();
         }
 
-        totalMoney = dailyMoney * dayNum * friendsNum;
-        String dailyMoneyStr = String.format("%.2f", dailyMoney);
-        String dayNumStr = dayNum+"";
-        String personNumStr = friendsNum+"";
-        String allMoneyStr = String.format("%.2f", totalMoney);
-        tvCalculate.setText(getString(R.string.calculate_person_send_rbag,allMoneyStr,dailyMoneyStr,dayNumStr,personNumStr));
+        totalMoney = taskTotalMoney;
+        float perMoney = 0.0f;
+        if (dayNum == 0 || friendsNum == 0) {
+            perMoney = taskTotalMoney;
+        } else {
+            perMoney = taskTotalMoney / (dayNum * friendsNum);
+        }
+        LocalLog.d(TAG, "per one per day money " + perMoney);
+        if (perMoney < 1.00f && dayNum >= 1 && friendsNum >= 1) {
+            ToastUtils.showShortToast(getContext(), "单日单个人奖励不能低于1.00元");
+            return;
+        }
+
+        if (perMoney > 200.00f && dayNum >= 1 && friendsNum >= 1) {
+            ToastUtils.showShortToast(getContext(), "单日单个人最高奖励不能高于200.00元");
+            return;
+        }
+        String dailyMoneyStr = String.format("%.2f", taskTotalMoney);
+        String dayNumStr = dayNum + "";
+        String personNumStr = friendsNum + "";
+        String allMoneyStr = String.format("%.2f", perMoney);
+        tvCalculate.setText(getString(R.string.calculate_person_send_rbag, allMoneyStr, dailyMoneyStr, dayNumStr, personNumStr));
     }
 }

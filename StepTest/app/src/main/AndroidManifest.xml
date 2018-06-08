@@ -515,6 +515,7 @@
         <!--密码管理-->
         <activity android:name=".view.activity.PayManagerActivity" />
         <activity android:name=".view.activity.ForgetPayWordActivity"/>
+        <activity android:name=".view.activity.PayPassWordActivity"/>
 
         <!-- 合利宝 -->
         <uses-library

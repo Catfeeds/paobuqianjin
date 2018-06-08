@@ -88,6 +88,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     private String keyWord = "";
     private int mCurrentAllPageIndex = 2;
     private ArrayList<Integer> circleIdArray = new ArrayList<>();
+    private final static int PAGE_SIZE = 10;//PAGESIZE 必须和上一层一致，否则页数对不上
 
     public void setChoiceCircleData(ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData) {
         this.choiceCircleData = choiceCircleData;
@@ -171,7 +172,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
             LocalLog.d(TAG, "choiceCircleData null");
             pageIndex = 1;
             choiceCircleData = new ArrayList<>();
-            Presenter.getInstance(getContext()).getMoreCircle(pageIndex, Utils.PAGE_SIZE_DEFAULT, keyWord);
+            Presenter.getInstance(getContext()).getMoreCircle(pageIndex, PAGE_SIZE, keyWord);
         }
         loadData(choiceCircleData);
         /*searchIcon.setOnClickListener(new View.OnClickListener() {
@@ -193,7 +194,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         pageIndex = 1;
         searchData = new ArrayList<>();
         loadData(searchData);
-        Presenter.getInstance(getContext()).getMoreCircle(pageIndex, Utils.PAGE_SIZE_DEFAULT, keyWord);
+        Presenter.getInstance(getContext()).getMoreCircle(pageIndex, PAGE_SIZE, keyWord);
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -305,7 +306,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
                         return;
                     }
                     LocalLog.d(TAG, "pageIndex = " + pageIndex + ", keyWord = " + keyWord);
-                    Presenter.getInstance(getContext()).getMoreCircle(pageIndex, Utils.PAGE_SIZE_DEFAULT, keyWord);
+                    Presenter.getInstance(getContext()).getMoreCircle(pageIndex, PAGE_SIZE, keyWord);
                 }
             }, 1000);
         }

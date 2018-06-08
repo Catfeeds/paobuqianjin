@@ -116,7 +116,6 @@ public class HotCircleFragment extends BaseFragment {
 
     @Override
     protected int getLayoutResId() {
-        LocalLog.d(TAG, "getLayoutResId() layout R " + R.layout.hot_circle_fragment);
         return R.layout.hot_circle_fragment;
     }
 
