@@ -24,6 +24,7 @@ import butterknife.OnClick;
 
 public class PayManagerActivity extends BaseBarActivity {
     private final static String TAG = PayManagerActivity.class.getSimpleName();
+    private final static String ACTION_RESET = "com.paobuqianjin.pbq.step.ACTION_RESET";
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -104,7 +105,10 @@ public class PayManagerActivity extends BaseBarActivity {
                 startActivity(ForgetPayWordActivity.class, null);
                 break;
             case R.id.pass_word_rest:
-
+                Intent intentReset = new Intent();
+                intentReset.setClass(getApplicationContext(), PayPassWordActivity.class);
+                intentReset.setAction(ACTION_RESET);
+                startActivity(intentReset);
                 break;
             case R.id.auth_real_person:
                 LocalLog.d(TAG, "未认证");

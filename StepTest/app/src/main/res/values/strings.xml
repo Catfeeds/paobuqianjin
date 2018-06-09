@@ -7,7 +7,7 @@
     <string name="bind_phone_num">绑定手机号</string>
     <string name="try_ones">榜单</string>
     <string name="login_account">账号登录</string>
-    <string name="login_phoneNum">请输入手机号码/跑步钱进号</string>
+    <string name="login_phoneNum">请输入手机号码</string>
     <string name="login_phonePwd">请输入6-16位密码</string>
     <string name="new_phonePwd">请输入新密码</string>
     <string name="identifying_code">请输入验证码</string>
@@ -170,6 +170,8 @@
     <string name="have_no_bank">还没添加银行卡</string>
     <string name="transfer_protcol">《提现协议》</string>
     <string name="user_protcol">《用户协议》</string>
+    <string name="pay_pass_reset_idtify">请输入支付密码,以验证身份</string>
+    <string name="pay_pass_reset_title">修改密码</string>
     <string name="pay_pass_title_first">设置支付密码</string>
     <string name="pay_des_first">请设置钱包支付密码，用于支付验证。</string>
     <string name="pay_pass_try_again">请再次填写以确认</string>

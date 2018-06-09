@@ -1,9 +1,11 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -33,6 +35,7 @@ import butterknife.ButterKnife;
  */
 
 public class ForgetPayWordActivity extends BaseBarActivity {
+    private final static String ACTION_FORGET_PSW = "com.paobuqianjin.pbq.setp.ACTION_FORGET_PSW";
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -81,7 +84,23 @@ public class ForgetPayWordActivity extends BaseBarActivity {
         bankRecycler.addOnItemTouchListener(new RecyclerItemClickListener(this, bankRecycler, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
-                
+                String cardStr = listData.get(position).getBank_card();
+                String replaceStr = "";
+                if (!TextUtils.isEmpty(cardStr)) {
+                    int length = cardStr.length();
+                    if (length > 4) {
+                        replaceStr = cardStr.substring(cardStr.length() - 4, cardStr.length());
+                    }
+                }
+                Intent intent = new Intent();
+                intent.setAction(ACTION_FORGET_PSW);
+                intent.setClass(getApplicationContext(), IdentityAuth2Activity.class);
+                String cardInfo = listData.get(position).getBank_name() + " " + "储蓄卡" + " " + "(" + replaceStr + ")";
+                Bundle bundle = new Bundle();
+                bundle.putString("cardinfo", cardInfo);
+                bundle.putString("cardid", listData.get(position).getCardid());
+                intent.putExtra(getPackageName(), bundle);
+                startActivity(intent);
             }
 
             @Override

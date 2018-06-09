@@ -221,4 +221,10 @@ public class NetApi {
     public final static String urlSettingPass = url + "v1/PayPassword/addPw";
     //TODO 检测是否设置密码
     public final static String urlPassCheck = url + "v1/PayPassword/chcekPw";
+    //TODO 添加支付密码,实名认证
+    public final static String urlAddPassIdentify = url + "v1/PayPassword/realAddPw";
+    //TODO 验证银行卡信息
+    public final static String urlValidateBank = url + "v1/PayPassword/validateUserBank";
+    //TODO 实名强制修改密码
+    public final static String urlPowerModify = url + "v1/PayPassword/powerModifyPw";
 }

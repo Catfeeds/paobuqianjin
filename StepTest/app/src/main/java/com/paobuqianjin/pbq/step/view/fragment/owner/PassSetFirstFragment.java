@@ -40,7 +40,7 @@ public class PassSetFirstFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.first_page_des)
     TextView firstPageDes;
     private NormalDialog normalDialog;
-
+    private String pws ="";
     @Override
     protected String title() {
         return null;
@@ -66,8 +66,7 @@ public class PassSetFirstFragment extends BaseBarStyleTextViewFragment {
 
             @Override
             public void onInputFinish(String psw) {
-                LocalLog.d(TAG, "psw = " + psw);
-                ((PayPassWordActivity) getActivity()).showSenCondPassWord(psw);
+                ((PayPassWordActivity) getActivity()).showSenCondPassWord(psw,pws);
             }
         });
         setToolBarListener(new BaseBarImageViewFragment.ToolBarListener() {
@@ -107,6 +106,10 @@ public class PassSetFirstFragment extends BaseBarStyleTextViewFragment {
         if (pswView != null) {
             pswView.clearPassword();
         }
+    }
+
+    public void setPsw(String psw) {
+        pws = psw;
     }
 
     @Override

@@ -27,7 +27,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class IdentityAuth3Activity extends BaseBarActivity {
-
+    private final static String ACTION_FIRST = "com.paobuqianjin.pbq.step.ACTION_FIRSTSET";
+    private final static String ACTION_FORGET_REST = "com.paobuqianjin.pbq.setp.ACTION_FORGET_RESET";
+    private final static String ACTION_BIND_NEW_CARD = "com.paobuqianjin.pbq.step.ACTION_ADD_CARD";
+    private final static String ACTION_FIRST_CARD = "com.paobuqianjin.pbq.step.ACTION_FIRST_CARD";
+    private final static String ACTION_RESET_BANK = "com.paobuqianjin.pbq.step.ACTION_RESET_BANK";
     private static final long ALLTIME = 60 * 1000;
     static final java.lang.String KEY_PERSON_ID = "personId";
     static final java.lang.String KEY_PERSON_NAME = "personName";
@@ -48,7 +52,8 @@ public class IdentityAuth3Activity extends BaseBarActivity {
     private String personName;
     private String phoneNum;
     private String cardNum;
-
+    private String action = "";
+    private String cardId = "";
     public static Class<?> targetActivity = null;
 
     private boolean isAddCard = false;
@@ -64,6 +69,10 @@ public class IdentityAuth3Activity extends BaseBarActivity {
         setContentView(R.layout.activity_identity_auth3);
         ButterKnife.bind(this);
 
+        Intent intent = getIntent();
+        if (intent != null) {
+            action = intent.getAction();
+        }
         Bundle bundle = getBundle();
         if (bundle != null) {
             personId = bundle.getString(KEY_PERSON_ID);
@@ -71,6 +80,7 @@ public class IdentityAuth3Activity extends BaseBarActivity {
             personName = bundle.getString(KEY_PERSON_NAME);
             phoneNum = bundle.getString(KEY_PHONE_NUM);
             cardNum = bundle.getString(KEY_CARD_NUM);
+            cardId = getBundle().getString("cardid");
         } else {
             LocalLog.e(TAG, getString(R.string.error_param));
             finish();
@@ -143,36 +153,73 @@ public class IdentityAuth3Activity extends BaseBarActivity {
                 break;
             case R.id.btn_next:
                 if (isFinishiAllInfo()) {
-                    etCode.setEnabled(false);
-                    Map<String, String> params = new HashMap<>();
-                    params.put("phone", phoneNum);
-                    params.put("code", etCode.getText().toString());
-                    params.put("cardno", cardNum.replaceAll(" ", ""));
-                    if (!isAddCard) {
-                        params.put("idcard", personId);
-                        params.put("account", personName);
-                    }
+                    if (ACTION_BIND_NEW_CARD.equals(action) || ACTION_FIRST.equals(action)) {
+                        etCode.setEnabled(false);
+                        Map<String, String> params = new HashMap<>();
+                        params.put("phone", phoneNum);
+                        params.put("code", etCode.getText().toString());
+                        params.put("cardno", cardNum.replaceAll(" ", ""));
+                        if (!isAddCard) {
+                            params.put("idcard", personId);
+                            params.put("account", personName);
+                        }
 //                    params.put("couplet", personId);//支行地址
-                    Presenter.getInstance(this).postPaoBuSimple(NetApi.REAL_AUTH_ALL_INFO, params, new PaoCallBack() {
-                        @Override
-                        protected void onSuc(String s) {
-                            PaoToastUtils.showShortToast(IdentityAuth3Activity.this, isAddCard ? "添加银行卡成功" : "验证成功");
-                            if (!isAddCard) {
-                                LocalLog.d(TAG, "设置密码");
-                                startActivity(PayPassWordActivity.class, null);
+                        Presenter.getInstance(this).postPaoBuSimple(NetApi.REAL_AUTH_ALL_INFO, params, new PaoCallBack() {
+                            @Override
+                            protected void onSuc(String s) {
+                                PaoToastUtils.showShortToast(IdentityAuth3Activity.this, isAddCard ? "添加银行卡成功" : "验证成功");
+                                if (!isAddCard) {
+                                    LocalLog.d(TAG, "设置密码");
+                                    Intent intent = new Intent();
+                                    intent.setAction(ACTION_FIRST_CARD);
+                                    intent.setClass(getApplicationContext(), PayPassWordActivity.class);
+                                    startActivity(intent);
+                                }
+                                setResult(RES_SUC);
+                                finish();
                             }
-                            setResult(RES_SUC);
-                            finish();
-                        }
 
-                        @Override
-                        protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                            if (errorBean != null) {
-                                PaoToastUtils.showShortToast(IdentityAuth3Activity.this, errorBean.getMessage());
+                            @Override
+                            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                                if (errorBean != null) {
+                                    PaoToastUtils.showShortToast(IdentityAuth3Activity.this, errorBean.getMessage());
+                                }
+                                etCode.setEnabled(true);
                             }
-                            etCode.setEnabled(true);
+                        });
+                    } else {
+                        if (ACTION_FORGET_REST.equals(action)) {
+                            LocalLog.d(TAG, "通过银行卡找回密码");
+                            etCode.setEnabled(false);
+                            Map<String, String> params = new HashMap<>();
+                            params.put("phone", phoneNum);
+                            params.put("code", etCode.getText().toString());
+                            params.put("cardno", cardNum.replaceAll(" ", ""));
+                            params.put("idcard", personId);
+                            params.put("account", personName);
+                            if (!TextUtils.isEmpty(cardId)) {
+                                params.put("cardid", cardId);
+                            } else {
+                                return;
+                            }
+                            Presenter.getInstance(getApplicationContext()).postPaoBuSimple(NetApi.urlValidateBank, params, new PaoCallBack() {
+                                @Override
+                                protected void onSuc(String s) {
+                                    LocalLog.d(TAG, "验证成功!");
+                                    Intent intent = new Intent();
+                                    intent.setAction(ACTION_RESET_BANK);
+                                    intent.setClass(getApplicationContext(), PayPassWordActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                                @Override
+                                protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                                }
+                            });
                         }
-                    });
+                    }
                 }
 
                 break;

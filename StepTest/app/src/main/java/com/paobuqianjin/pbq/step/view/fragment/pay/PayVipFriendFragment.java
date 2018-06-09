@@ -50,6 +50,7 @@ import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.IdentifedSetPassActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.SelectFriendActivity;
@@ -65,6 +66,9 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.unionpay.UPPayAssistEx;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -176,7 +180,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     private final static String ACTION_VIP = "com.paobuqianjin.pbq.step.ACTION_VIP";
     private final static String ACTION_SPONSOR_VIP = "com.paobuqianjin.pbq.step.ACTION_SPONSOR_VIP";
     String action = "";
-    private NormalDialog normalDialog, walletLeakDialog;
+    private NormalDialog normalDialog, walletLeakDialog, passWordSetDialog;
     public UserInfoResponse.DataBean userInfo;
     private String serverMode = "00";
 
@@ -631,7 +635,51 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                     public void onIdentifed() {
                         int style = getSelect();
                         if (style == 1) {
-                            popPayConfirm();
+                            //TODO 判断是否设置过密码
+                            Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
+                                @Override
+                                protected void onSuc(String s) {
+                                    if (!isAdded()) return;
+                                    try {
+                                        JSONObject jsonObj = new JSONObject(s);
+                                        jsonObj = jsonObj.getJSONObject("data");
+                                        String status = jsonObj.getString("setpw");
+                                        if (status.equals("1")) {
+                                            popPayConfirm();
+                                        } else if (status.equals("0")) {
+                                            if (passWordSetDialog == null) {
+                                                passWordSetDialog = new NormalDialog(getActivity());
+                                            }
+                                            passWordSetDialog.setMessage("您还未设置支付密码，去上设置支付密码?");
+                                            passWordSetDialog.setYesOnclickListener("去设置", new NormalDialog.onYesOnclickListener() {
+                                                @Override
+                                                public void onYesClick() {
+                                                    startActivity(IdentifedSetPassActivity.class, null);
+                                                    if (passWordSetDialog != null)
+                                                        passWordSetDialog.dismiss();
+                                                }
+                                            });
+                                            passWordSetDialog.setNoOnclickListener("不设置", new NormalDialog.onNoOnclickListener() {
+                                                @Override
+                                                public void onNoClick() {
+                                                    if (passWordSetDialog != null)
+                                                        passWordSetDialog.dismiss();
+                                                }
+                                            });
+                                            if (!passWordSetDialog.isShowing())
+                                                passWordSetDialog.show();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                @Override
+                                protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                                }
+                            });
+
                         } else if (style == 0) {
                             if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
                                 pay();

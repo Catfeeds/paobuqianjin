@@ -3,5 +3,84 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    
+
+    <include
+        android:id="@+id/bar_idenfity"
+        layout="@layout/bar_return_a_style"></include>
+
+    <EditText
+        android:id="@+id/real_name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@null"
+        android:hint="真实姓名"
+        android:maxEms="16"
+        android:maxLength="32"
+        android:maxLines="1"
+        android:paddingLeft="14dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_d9d9d9" />
+
+    <EditText
+        android:id="@+id/id_number"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@null"
+        android:hint="身份证号"
+        android:maxLength="18"
+        android:maxLines="1"
+        android:paddingLeft="14dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_d9d9d9" />
+
+    <EditText
+        android:id="@+id/pass_word"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@null"
+        android:hint="请输入密码"
+        android:inputType="numberPassword"
+        android:maxLength="6"
+        android:maxLines="1"
+        android:paddingLeft="14dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_d9d9d9" />
+
+    <EditText
+        android:id="@+id/pass_word_again"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@null"
+        android:hint="请再次输入密码"
+        android:inputType="numberPassword"
+        android:maxLength="6"
+        android:maxLines="1"
+        android:paddingLeft="14dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/color_d9d9d9" />
+
+    <Button
+        android:id="@+id/button_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rect_angle_background"
+        android:enabled="false"
+        android:text="确认"
+        android:textColor="@color/color_f8"
+        android:textSize="18dp" />
 </LinearLayout>

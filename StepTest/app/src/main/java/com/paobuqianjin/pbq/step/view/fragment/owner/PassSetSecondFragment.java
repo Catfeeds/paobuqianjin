@@ -1,6 +1,8 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.activity.PayPassWordActivity;
@@ -33,6 +36,9 @@ import butterknife.ButterKnife;
 
 public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = PassSetSecondFragment.class.getSimpleName();
+    private final static String ACTION_FIRST_CARD = "com.paobuqianjin.pbq.step.ACTION_FIRST_CARD";
+    private final static String ACTION_RESET = "com.paobuqianjin.pbq.step.ACTION_RESET";
+    private final static String ACTION_RESET_BANK = "com.paobuqianjin.pbq.step.ACTION_RESET_BANK";
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -51,6 +57,8 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
     Button confirmButton;
     private String pswOlder = "";
     private String pswNew = "";
+    private String srcPsw = "";
+    private String action = "";
 
     @Override
     protected String title() {
@@ -64,6 +72,10 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected void initView(View viewRoot) {
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            action = intent.getAction();
+        }
         titlePayFirst = (TextView) viewRoot.findViewById(R.id.title_pay_first);
         firstPageDes = (TextView) viewRoot.findViewById(R.id.first_page_des);
         titlePayFirst.setText(getString(R.string.pay_pass_title_first));
@@ -71,30 +83,82 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
         pswView = (GridPasswordView) viewRoot.findViewById(R.id.pswView);
         confirmButton = (Button) viewRoot.findViewById(R.id.confirm_button);
         confirmButton.setEnabled(false);
+        confirmButton.setVisibility(View.VISIBLE);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 LocalLog.d(TAG, "设置密码!");
                 if (pswNew.equals(pswOlder)) {
-                    Map<String, String> params = new HashMap<>();
-                    Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlSettingPass, params, new PaoCallBack() {
-                        @Override
-                        protected void onSuc(String s) {
-                            ToastUtils.showShortToast(getContext(), "密码设置成功");
-                            getActivity().finish();
-                        }
+                    if (ACTION_FIRST_CARD.equals(action)) {
+                        //第一次认证绑卡设置密码
+                        Map<String, String> params = new HashMap<>();
+                        params.put("paypw", Base64Util.makeUidToBase64(pswNew));
+                        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlSettingPass, params, new PaoCallBack() {
+                            @Override
+                            protected void onSuc(String s) {
+                                ToastUtils.showShortToast(getContext(), "密码设置成功");
+                                getActivity().finish();
+                            }
 
-                        @Override
-                        protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                            if (errorBean != null) {
-                                if (errorBean.getError() == 100) {
-                                    exitTokenUnfect();
-                                } else {
-                                    ToastUtils.showShortToast(getContext(), errorBean.getMessage());
+                            @Override
+                            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                                if (errorBean != null) {
+                                    if (errorBean.getError() == 100) {
+                                        exitTokenUnfect();
+                                    } else {
+                                        ToastUtils.showShortToast(getContext(), errorBean.getMessage());
+                                    }
                                 }
                             }
+                        });
+                    } else if (ACTION_RESET_BANK.equals(action)) {
+                        //通过银行卡重置
+                        Map<String, String> params = new HashMap<>();
+                        params.put("paypw", Base64Util.makeUidToBase64(pswNew));
+                        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlPowerModify, params, new PaoCallBack() {
+                            @Override
+                            protected void onSuc(String s) {
+                                ToastUtils.showShortToast(getContext(), "密码设置成功");
+                                getActivity().finish();
+                            }
+
+                            @Override
+                            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                                if (errorBean != null) {
+                                    if (errorBean.getError() == 100) {
+                                        exitTokenUnfect();
+                                    } else {
+                                        ToastUtils.showShortToast(getContext(), errorBean.getMessage());
+                                    }
+                                }
+                            }
+                        });
+
+                    } else if (ACTION_RESET.equals(action)) {
+                        //通过旧密码重置
+                        LocalLog.d(TAG, "srcPsw = " + srcPsw);
+                        if (!TextUtils.isEmpty(srcPsw)) {
+                            Map<String, String> params = new HashMap<>();
+                            params.put("paypw", Base64Util.makeUidToBase64(pswNew));
+                            params.put("oldpw", Base64Util.makeUidToBase64(srcPsw));
+                            Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlPayPassModify, params, new PaoCallBack() {
+                                @Override
+                                protected void onSuc(String s) {
+                                    ToastUtils.showShortToast(getContext(), "密码设置成功");
+                                    getActivity().finish();
+                                }
+
+                                @Override
+                                protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                                    if (errorBean.getError() == 100) {
+                                        exitTokenUnfect();
+                                    } else {
+                                        ToastUtils.showShortToast(getContext(), errorBean.getMessage());
+                                    }
+                                }
+                            });
                         }
-                    });
+                    }
                 } else {
                     ToastUtils.showShortToast(getContext(), "两次输入的密码不一致");
                     pswView.clearPassword();
@@ -111,7 +175,7 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
             public void onInputFinish(String pws) {
                 LocalLog.d(TAG, "psw = " + pswOlder);
                 pswNew = pws;
-                if (!pws.equals(pswOlder)) {
+                if (pws.equals(pswOlder)) {
                     confirmButton.setBackground(getDrawableResource(R.drawable.rect_angle_background));
                     confirmButton.setEnabled(true);
                 }
@@ -120,7 +184,7 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
         setToolBarListener(new BaseBarImageViewFragment.ToolBarListener() {
             @Override
             public void clickLeft() {
-                ((PayPassWordActivity) getActivity()).showFirstSetPassWord();
+                ((PayPassWordActivity) getActivity()).showFirstSetPassWord(srcPsw);
             }
 
             @Override
@@ -130,8 +194,9 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
         });
     }
 
-    public void setPws(String pws) {
+    public void setPws(String pws, String psw) {
         this.pswOlder = pws;
+        srcPsw = psw;
     }
 
     @Override

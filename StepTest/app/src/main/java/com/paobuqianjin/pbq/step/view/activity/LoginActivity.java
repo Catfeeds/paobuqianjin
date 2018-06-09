@@ -246,16 +246,17 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     @Override
     public void response(LoginResponse loginResponse) {
         LocalLog.d(TAG, "手机号登入成功! 去获取用户信息!");
-        this.loginResponse = loginResponse;
+        if (loginResponse.getError() == 0) {
+            this.loginResponse = loginResponse;
         /*startStep();
         * 暂时不做数据融合*/
-        Presenter.getInstance(this).steLogFlg(true);
-        Presenter.getInstance(this).setId(loginResponse.getData().getId());
-        Presenter.getInstance(this).setNo(loginResponse.getData().getNo());
-        Presenter.getInstance(this).setToken(this, loginResponse.getData().getUser_token());
-        Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
-        startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
-
+            Presenter.getInstance(this).steLogFlg(true);
+            Presenter.getInstance(this).setId(loginResponse.getData().getId());
+            Presenter.getInstance(this).setNo(loginResponse.getData().getNo());
+            Presenter.getInstance(this).setToken(this, loginResponse.getData().getUser_token());
+            Presenter.getInstance(this).setMobile(this, loginResponse.getData().getMobile());
+            startActivity(MainActivity.class, null, true, LOGIN_SUCCESS_ACTION);
+        }
     }
 
     @Override

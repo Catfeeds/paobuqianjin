@@ -46,6 +46,7 @@ import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.IdentifedSetPassActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.TransferCardActivity;
@@ -469,20 +470,21 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                                             passWordSetDialog.setYesOnclickListener("去设置", new NormalDialog.onYesOnclickListener() {
                                                 @Override
                                                 public void onYesClick() {
+                                                    startActivity(IdentifedSetPassActivity.class, null);
                                                     if (passWordSetDialog != null)
                                                         passWordSetDialog.dismiss();
                                                 }
                                             });
+                                            passWordSetDialog.setNoOnclickListener("不设置", new NormalDialog.onNoOnclickListener() {
+                                                @Override
+                                                public void onNoClick() {
+                                                    if (passWordSetDialog != null)
+                                                        passWordSetDialog.dismiss();
+                                                }
+                                            });
+                                            if (!passWordSetDialog.isShowing())
+                                                passWordSetDialog.show();
                                         }
-                                        passWordSetDialog.setNoOnclickListener("不设置", new NormalDialog.onNoOnclickListener() {
-                                            @Override
-                                            public void onNoClick() {
-                                                if (passWordSetDialog != null)
-                                                    passWordSetDialog.dismiss();
-                                            }
-                                        });
-                                        if (!passWordSetDialog.isShowing())
-                                            passWordSetDialog.show();
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class InputCardInfoActivity extends BaseBarActivity {
-
+    private final static String ACTION_BIND_NEW_CARD = "com.paobuqianjin.pbq.step.ACTION_ADD_CARD";
     private static final int REQ_ADD_CARD = 1;
     private final String TAG = getClass().getSimpleName();
     private String cardNum;
@@ -125,6 +125,7 @@ public class InputCardInfoActivity extends BaseBarActivity {
                 bundle.putString(IdentityAuth3Activity.KEY_PHONE_NUM, phoneNum);
 
                 Intent intent = new Intent(this, IdentityAuth3Activity.class);
+                intent.setAction(ACTION_BIND_NEW_CARD);
                 intent.putExtra(getPackageName(), bundle);
                 startActivityForResult(intent, REQ_ADD_CARD);
                 break;

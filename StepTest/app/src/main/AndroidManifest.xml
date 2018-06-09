@@ -505,8 +505,19 @@
             android:windowContentTransitions="true" />
         <activity android:name=".activity.base.GalleryActivity" />
         <activity android:name=".view.activity.IdentityAuth1Activity" />
-        <activity android:name=".view.activity.IdentityAuth2Activity" />
-        <activity android:name=".view.activity.IdentityAuth3Activity" />
+        <activity android:name=".view.activity.IdentityAuth2Activity">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.setp.ACTION_AUTH1" />
+                <action android:name="com.paobuqianjin.pbq.setp.ACTION_FORGET_PSW" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".view.activity.IdentityAuth3Activity">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.ACTION_ADD_CARD" />
+                <action android:name="com.paobuqianjin.pbq.step.ACTION_FIRSTSET" />
+                <action android:name="com.paobuqianjin.pbq.setp.ACTION_FORGET_RESET" />
+            </intent-filter>
+        </activity>
         <activity android:name=".view.activity.TransferActivity" />
         <activity android:name=".view.activity.TransferCardActivity" />
         <activity android:name=".view.activity.BindCardActivity" />
@@ -514,8 +525,15 @@
         <activity android:name=".view.activity.MyBankCardActivity" />
         <!--密码管理-->
         <activity android:name=".view.activity.PayManagerActivity" />
-        <activity android:name=".view.activity.ForgetPayWordActivity"/>
-        <activity android:name=".view.activity.PayPassWordActivity"/>
+        <activity android:name=".view.activity.ForgetPayWordActivity" />
+        <activity android:name=".view.activity.PayPassWordActivity">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.ACTION_FIRST_CARD" />
+                <action android:name="com.paobuqianjin.pbq.step.ACTION_RESET" />
+                <action android:name="com.paobuqianjin.pbq.step.ACTION_RESET_BANK" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".view.activity.IdentifedSetPassActivity"/>
 
         <!-- 合利宝 -->
         <uses-library

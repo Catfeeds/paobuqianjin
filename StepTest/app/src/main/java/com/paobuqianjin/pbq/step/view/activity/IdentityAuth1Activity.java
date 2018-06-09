@@ -20,7 +20,7 @@ import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
 public class IdentityAuth1Activity extends BaseBarActivity {
-
+    private final static String ACTION_AUTH1 = "com.paobuqianjin.pbq.setp.ACTION_AUTH1";
     private static final int MY_SCAN_REQUEST_CODE = 100;
     private final String TAG = this.getClass().getSimpleName();
     @Bind(R.id.et_card_number)
@@ -45,7 +45,7 @@ public class IdentityAuth1Activity extends BaseBarActivity {
 
         String cardNum = etCardNumber.getText().toString();
         if (TextUtils.isEmpty(cardNum.trim())) {
-            PaoToastUtils.showShortToast(this,"请输入银行卡号");
+            PaoToastUtils.showShortToast(this, "请输入银行卡号");
             return;
         }
         IdentityAuth3Activity.targetActivity = MainActivity.class;
@@ -53,9 +53,11 @@ public class IdentityAuth1Activity extends BaseBarActivity {
         Bundle bundle = new Bundle();
         bundle.putString("cardNum", cardNum);
         Intent intent = new Intent(this, IdentityAuth2Activity.class);
-        intent.putExtra(getPackageName(),bundle);
+        intent.setAction(ACTION_AUTH1);
+        intent.putExtra(getPackageName(), bundle);
         startActivityForResult(intent, 200);
     }
+
     public void onScanPress(View v) {
         Intent scanIntent = new Intent(this, CardIOActivity.class);
 
@@ -77,6 +79,7 @@ public class IdentityAuth1Activity extends BaseBarActivity {
         // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
         startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -104,7 +107,7 @@ public class IdentityAuth1Activity extends BaseBarActivity {
                 if (scanResult.postalCode != null) {
                     resultDisplayStr += "Postal Code: " + scanResult.postalCode + "\n";
                 }
-            }else {
+            } else {
                 resultDisplayStr = "Scan was canceled.";
             }
             // do something with resultDisplayStr, maybe display it in a textView
