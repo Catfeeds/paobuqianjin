@@ -184,6 +184,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                         Toast.makeText(this, "请输入密码", Toast.LENGTH_SHORT).show();
                         return;
                     }
+                    hideSoftInputView();
                     Presenter.getInstance(this).userLoginByPhoneNumber(collectLoginUserInfo());
                     showProgressDialog("正在使用手机号/跑步钱进号登录");
                     break;

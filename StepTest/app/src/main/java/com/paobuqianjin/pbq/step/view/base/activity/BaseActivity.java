@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.umeng.message.PushAgent;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class BaseActivity extends AppCompatActivity {
         resetDensity();
         highApiEffects();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        PushAgent.getInstance(this).onAppStart();
     }
 
     @Override

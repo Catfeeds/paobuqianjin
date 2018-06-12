@@ -181,9 +181,15 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                 Presenter.getInstance(getContext()).getUserCircleRankDetail(circleId);
                 Presenter.getInstance(getContext()).getCircleDetailInCircleDan(circleId);
                 Presenter.getInstance(getContext()).getCircleStepRankDay(circleId, pageIndexDay, PAGE_SIZE);
+                upDateCircleDetail(kingName, kingHeadIcon, null, circleId);
             }
         }
 
+    }
+
+    private void upDateCircleDetail(TextView myName, ImageView imageView, TextView stepNum, int circleId) {
+        LocalLog.d(TAG, "upDateCircleDetail() enter" + circleId);
+        Presenter.getInstance(getContext()).getCircleDetailView(myName, imageView, stepNum, circleId);
     }
 
     View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -314,14 +320,6 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
 
     private void updateDayRank(StepRankResponse stepRankResponse) {
         if (stepRankResponse != null) {
-            if (this.stepRankResponse.getData().getPagenation().getTotalCount() > 0) {
-                Presenter.getInstance(getContext()).getPlaceErrorImage(kingHeadIcon, this.stepRankResponse.getData().getData().get(0).getAvatar()
-                        , R.drawable.default_head_ico, R.drawable.default_head_ico);
-                kingName.setText(this.stepRankResponse.getData().getData().get(0).getNickname());
-                /*if (stepRankResponse.getData().getData().get(0).getVip() == 1) {
-                    vipFlg.setVisibility(View.VISIBLE);
-                }*/
-            }
             if (honorDetailAdapter == null || this.stepRankResponse == stepRankResponse) {
                 honorDetailAdapter = new HonorDetailAdapter(getContext(), this.stepRankResponse.getData().getData());
                 pageIndexDay++;
@@ -382,11 +380,6 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
 
     private void updateWeekRank(StepRandWeekResponse stepRandWeekResponse) {
         if (stepRandWeekResponse != null) {
-            if (this.stepRandWeekResponse.getData().getPagenation().getTotalCount() > 0) {
-                Presenter.getInstance(getContext()).getPlaceErrorImage(kingHeadIcon, this.stepRandWeekResponse.getData().getData().getMember().get(0).getAvatar()
-                        , R.drawable.default_head_ico, R.drawable.default_head_ico);
-                kingName.setText(this.stepRandWeekResponse.getData().getData().getMember().get(0).getNickname());
-            }
             if (honorDetailAdapter == null || this.stepRandWeekResponse == stepRandWeekResponse) {
                 honorDetailAdapter = new HonorDetailAdapter(getContext(), this.stepRandWeekResponse.getData().getData().getMember());
                 pageIndexWeek++;

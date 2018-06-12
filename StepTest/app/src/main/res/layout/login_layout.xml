@@ -47,7 +47,7 @@
                 android:layout_toRightOf="@id/login_account_img"
                 android:background="@null"
                 android:drawablePadding="15dp"
-                android:hint="@string/login_phoneNum"
+                android:hint="@string/logine_phone_or_num"
                 android:inputType="number"
                 android:singleLine="true"
                 android:textSize="14dp" />

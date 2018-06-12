@@ -129,6 +129,9 @@ public abstract class BaseFragment extends Fragment {
                     exitDialog = null;
                 }
             });
+            if (getActivity() == null) {
+                return;
+            }
             if (!getActivity().isFinishing()) {
                 exitDialog.show();
             }

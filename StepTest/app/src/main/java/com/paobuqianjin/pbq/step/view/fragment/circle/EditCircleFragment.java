@@ -669,7 +669,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                 LocalLog.d(TAG, "path = " + path);
                 ResultHelper result = null;
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                result = putObjectSample.start(path,getContext());
+                result = putObjectSample.start(path,getContext().getApplicationContext());
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
                 url = result.cosXmlResult.accessUrl;
                 LocalLog.d(TAG, "url = " + url);

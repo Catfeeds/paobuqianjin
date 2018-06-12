@@ -21,6 +21,9 @@ import com.paobuqianjin.pbq.step.utils.Constants;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.SharedPreferencesUtil;
 import com.paobuqianjin.pbq.step.view.base.PaoBuApplication;
+import com.umeng.message.UmengNotifyClickActivity;
+
+import org.android.agoo.common.AgooConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ import java.util.List;
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends UmengNotifyClickActivity {
 
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
 
@@ -38,6 +41,7 @@ public class SplashActivity extends AppCompatActivity {
      * and a change of the status and navigation bar.
      */
     private static final int UI_ANIMATION_DELAY = 300;
+    private static final String TAG = "SplashActivity";
     private final Handler mHideHandler = new Handler();
     private View mContentView;
     private ViewPager vp_first_income;
@@ -147,11 +151,20 @@ public class SplashActivity extends AppCompatActivity {
 
     private void hide() {
         // Hide UI first
-        ActionBar actionBar = getSupportActionBar();
+        /*ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
-        }
+        }*/
         mHideHandler.postDelayed(mHidePart2Runnable,UI_ANIMATION_DELAY);
     }
 
+    @Override
+    public void onMessage(Intent intent) {
+        super.onMessage(intent);
+        // TODO: 推送处理动作
+        String body = intent.getStringExtra(AgooConstants.MESSAGE_BODY);
+        LocalLog.d(TAG, body);
+
+
+    }
 }

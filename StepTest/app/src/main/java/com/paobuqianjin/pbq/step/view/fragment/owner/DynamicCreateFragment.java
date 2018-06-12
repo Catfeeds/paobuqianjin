@@ -523,7 +523,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
                     LocalLog.d(TAG, "path = " + lists[i].get(j));
                     ResultHelper result = null;
                     PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                    result = putObjectSample.start(lists[i].get(j), getContext());
+                    result = putObjectSample.start(lists[i].get(j), getContext().getApplicationContext());
                     if (result != null && result.cosXmlResult != null) {
                         url.add(result.cosXmlResult.accessUrl);
                     }

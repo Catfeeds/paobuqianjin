@@ -81,11 +81,11 @@ public class IdentityAuth2Activity extends BaseBarActivity {
             if (ACTION_AUTH1.equals(intent.getAction())) {
                 barTitle.setText("填写银行卡信息");
                 action = ACTION_AUTH1;
-                getCardType();
                 tvCardType.setHint("--");
                 cardNum = getBundle().getString("cardNum");
                 tvCardType.setFocusable(false);
                 tvCardType.setFocusableInTouchMode(false);
+                getCardType();
             } else if (ACTION_FORGET_PSW.equals(intent.getAction())) {
                 barTitle.setText("忘记支付密码");
                 textView7.setVisibility(View.GONE);

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
@@ -215,7 +216,11 @@ public class IdentityAuth3Activity extends BaseBarActivity {
 
                                 @Override
                                 protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-
+                                    if (errorBean != null) {
+                                        if (errorBean.getError() != 100) {
+                                            ToastUtils.showLongToast(getApplicationContext(), errorBean.getMessage());
+                                        }
+                                    }
                                 }
                             });
                         }

@@ -66,8 +66,16 @@
             android:name="design_height"
             android:value="1334" />
 
+        <!--umeng-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5a5718adf43e482eb000012a" />
+        <!-- Channel ID用来标识App的推广渠道，作为推送消息时给用户分组的一个维度。-->
+
         <activity
             android:name=".view.activity.SplashActivity"
+            android:launchMode="singleTask"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme">
             <intent-filter>
@@ -386,11 +394,6 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!-- 友盟appkey -->
-        <meta-data
-            android:name="UMENG_APPKEY"
-            android:value="5a5718adf43e482eb000012a" />
-        <!--  -->
 
         <service
             android:name="com.today.step.lib.TodayStepService"
@@ -553,6 +556,24 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".view.activity.TransferResultActivity"></activity>
+        <activity android:name=".view.activity.MipushTestActivity"
+            android:launchMode="singleTask"
+            android:exported="true"></activity>
+        <!--魅族push应用定义消息receiver声明 -->
+        <receiver android:name=".MeizuTestReceiver">
+            <intent-filter>
+                <!-- 接收push消息 -->
+                <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
+                <!-- 接收register消息 -->
+                <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
+                <!-- 接收unregister消息-->
+                <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK" />
+                <!-- 兼容低版本Flyme3推送服务配置 -->
+                <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
+                <action android:name="com.meizu.c2dm.intent.RECEIVE" />
+                <category android:name="com.paobuqianjin.pbq.step"></category>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

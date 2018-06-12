@@ -11,7 +11,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="171dp"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
@@ -25,14 +25,14 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="20dp"
-                android:maxEms="16"
                 android:text=""
+                android:clickable="true"
                 android:textColor="@color/color_161727"
-                android:textSize="17dp" />
+                android:textSize="14dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/quit_title"
                 android:layout_marginTop="20dp">
 
@@ -49,9 +49,10 @@
                     android:layout_centerInParent="true"
                     android:gravity="center"
                     android:text="好的"
+                    android:padding="14dp"
                     android:textColor="@color/color_6c71c4"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
+                    android:textSize="18dp"
+                     />
             </RelativeLayout>
 
         </RelativeLayout>

@@ -685,7 +685,7 @@ public final class Engine {
     public void putUserInfo(int userid, PutUserInfoParam putUserInfoParam) {
         String url = NetApi.urlUser + String.valueOf(userid);
         LocalLog.d(TAG, "putUserInfo() enter url = " + url + "   ,putUserInfoParam = " + putUserInfoParam.paramString());
-        if (putUserInfoParam.paramString() == null) {
+        if (TextUtils.isEmpty(putUserInfoParam.paramString())) {
             Toast.makeText(mContext, "至少修改一项资料", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -2030,6 +2030,9 @@ public final class Engine {
 
     public void createCircle(CreateCircleBodyParam createCircleBodyParam) {
         LocalLog.d(TAG, "  创建圈子createCircle() enter " + createCircleBodyParam.paramString());
+        if (TextUtils.isEmpty(createCircleBodyParam.paramString())) {
+            return;
+        }
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))

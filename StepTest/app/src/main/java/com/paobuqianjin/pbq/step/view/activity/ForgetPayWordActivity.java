@@ -34,8 +34,9 @@ import butterknife.ButterKnife;
  * Created by pbq on 2018/6/7.
  */
 
-public class ForgetPayWordActivity extends BaseBarActivity {
+public class ForgetPayWordActivity extends BaseBarActivity implements BaseBarActivity.ToolBarListener {
     private final static String ACTION_FORGET_PSW = "com.paobuqianjin.pbq.setp.ACTION_FORGET_PSW";
+    private final static int BIND_CARD_RESULT = 100;
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -70,6 +71,34 @@ public class ForgetPayWordActivity extends BaseBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forget_pay_pwd_activity_layout);
         ButterKnife.bind(this);
+    }
+
+    @Override
+    public Object right() {
+        return R.mipmap.ic_add_white;
+    }
+
+    @Override
+    public void clickLeft() {
+        onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == BIND_CARD_RESULT) {
+            getBankList();
+        }
+    }
+
+    @Override
+    public void clickRight() {
+        Intent intent = new Intent();
+        intent.setClass(this, BindCardActivity.class);
+        if (listData.size() > 0) {
+            intent.putExtra("name", listData.get(0).getAccount_name());
+        }
+        startActivityForResult(intent, BIND_CARD_RESULT);
     }
 
     @Override
@@ -109,6 +138,7 @@ public class ForgetPayWordActivity extends BaseBarActivity {
             }
         }));
         getBankList();
+        setToolBarListener(this);
     }
 
     private void getBankList() {

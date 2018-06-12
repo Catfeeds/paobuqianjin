@@ -46,9 +46,11 @@ import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.ForgetPayWordActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentifedSetPassActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
+import com.paobuqianjin.pbq.step.view.activity.PayManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.TransferCardActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -778,6 +780,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                 @Override
                 public void onForgetPassClick() {
                     LocalLog.d(TAG, "忘记支付密码");
+                    startActivity(ForgetPayWordActivity.class, null);
                 }
             });
         }

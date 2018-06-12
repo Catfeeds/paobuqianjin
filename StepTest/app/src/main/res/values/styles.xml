@@ -84,4 +84,9 @@
         <item name="android:textColor">@color/color_8a8a8a</item>
         <item name="android:textSize">16sp</item>
     </style>
+
+    <style name="MyTextPurple6c_Title12" >
+        <item name="android:textColor">@color/color_6c71c4</item>
+        <item name="android:textSize">12sp</item>
+    </style>
 </resources>

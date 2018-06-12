@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -164,7 +165,8 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         });
 
         dialog = new ProgressDialog(getContext());
-        web = new UMWeb(NetApi.urlShareIc + String.valueOf(Presenter.getInstance(getContext()).getId()));
+        UserInfoResponse.DataBean userInfo = Presenter.getInstance(getContext()).getCurrentUser();
+        web = new UMWeb(NetApi.urlShareIc + userInfo.getNo());
         web.setTitle("跑步钱进");
         web.setThumb(new UMImage(getContext(), R.mipmap.app_icon));
         web.setDescription("邀请好友");
@@ -189,6 +191,14 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
                 isLoading = true;
                 update();
             }
+            inviteSwipeLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if(inviteSwipeLayout != null){
+                        inviteSwipeLayout.setRefreshing(false);
+                    }
+                }
+            },2000);
         }
     };
 
@@ -443,5 +453,6 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         }
+        inviteSwipeLayout.setRefreshing(false);
     }
 }

@@ -727,7 +727,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 LocalLog.d(TAG, "path = " + path);
                 ResultHelper result = null;
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                result = putObjectSample.start(path, getContext());
+                result = putObjectSample.start(path, getContext().getApplicationContext());
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
                 if (result != null && result.cosXmlResult != null) {
                     url = result.cosXmlResult.accessUrl;

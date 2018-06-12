@@ -8,11 +8,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -55,6 +63,8 @@ public class PayManagerActivity extends BaseBarActivity {
     TextView authDone;
     @Bind(R.id.go_to)
     ImageView goTo;
+    private boolean isIdentify = false;
+    private NormalDialog passWordSetDialog;
 
     @Override
     protected String title() {
@@ -82,6 +92,7 @@ public class PayManagerActivity extends BaseBarActivity {
             public void onIdentifed() {
                 authDone.setText("已认证");
                 passWordLayer.setEnabled(false);
+                isIdentify = true;
             }
 
             @Override
@@ -90,6 +101,7 @@ public class PayManagerActivity extends BaseBarActivity {
                     passWordLayer.setEnabled(true);
                 }
                 authDone.setText("未认证");
+                isIdentify = false;
             }
 
             @Override
@@ -102,13 +114,109 @@ public class PayManagerActivity extends BaseBarActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pass_word_forget:
-                startActivity(ForgetPayWordActivity.class, null);
+                if (!isIdentify) {
+                    LocalLog.d(TAG, "未认证");
+                    ToastUtils.showLongToast(getApplicationContext(), "请先去认证");
+                    return;
+                }
+                //TODO 判断是否设置过密码
+                Presenter.getInstance(this).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
+                    @Override
+                    protected void onSuc(String s) {
+                        try {
+                            JSONObject jsonObj = new JSONObject(s);
+                            jsonObj = jsonObj.getJSONObject("data");
+                            String status = jsonObj.getString("setpw");
+                            if (status.equals("1")) {
+                                startActivity(ForgetPayWordActivity.class, null);
+                                LocalLog.d(TAG, "已经设置密码");
+                            } else if (status.equals("0")) {
+                                LocalLog.d(TAG, "还没有设置密码");
+                                if (passWordSetDialog == null) {
+                                    passWordSetDialog = new NormalDialog(PayManagerActivity.this);
+                                }
+                                passWordSetDialog.setMessage("您还未设置支付密码，去上设置支付密码?");
+                                passWordSetDialog.setYesOnclickListener("去设置", new NormalDialog.onYesOnclickListener() {
+                                    @Override
+                                    public void onYesClick() {
+                                        startActivity(IdentifedSetPassActivity.class, null);
+                                        if (passWordSetDialog != null)
+                                            passWordSetDialog.dismiss();
+                                    }
+                                });
+                                passWordSetDialog.setNoOnclickListener("不设置", new NormalDialog.onNoOnclickListener() {
+                                    @Override
+                                    public void onNoClick() {
+                                        if (passWordSetDialog != null)
+                                            passWordSetDialog.dismiss();
+                                    }
+                                });
+                                if (!passWordSetDialog.isShowing())
+                                    passWordSetDialog.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                    }
+                });
                 break;
             case R.id.pass_word_rest:
-                Intent intentReset = new Intent();
-                intentReset.setClass(getApplicationContext(), PayPassWordActivity.class);
-                intentReset.setAction(ACTION_RESET);
-                startActivity(intentReset);
+                if (!isIdentify) {
+                    LocalLog.d(TAG, "未认证");
+                    ToastUtils.showLongToast(getApplicationContext(), "请先去认证");
+                    return;
+                }
+                //TODO 判断是否设置过密码
+                Presenter.getInstance(this).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
+                    @Override
+                    protected void onSuc(String s) {
+                        try {
+                            JSONObject jsonObj = new JSONObject(s);
+                            jsonObj = jsonObj.getJSONObject("data");
+                            String status = jsonObj.getString("setpw");
+                            if (status.equals("1")) {
+                                Intent intentReset = new Intent();
+                                intentReset.setClass(getApplicationContext(), PayPassWordActivity.class);
+                                intentReset.setAction(ACTION_RESET);
+                                startActivity(intentReset);
+                            } else if (status.equals("0")) {
+                                if (passWordSetDialog == null) {
+                                    passWordSetDialog = new NormalDialog(PayManagerActivity.this);
+                                }
+                                passWordSetDialog.setMessage("您还未设置支付密码，去上设置支付密码?");
+                                passWordSetDialog.setYesOnclickListener("去设置", new NormalDialog.onYesOnclickListener() {
+                                    @Override
+                                    public void onYesClick() {
+                                        startActivity(IdentifedSetPassActivity.class, null);
+                                        if (passWordSetDialog != null)
+                                            passWordSetDialog.dismiss();
+                                    }
+                                });
+                                passWordSetDialog.setNoOnclickListener("不设置", new NormalDialog.onNoOnclickListener() {
+                                    @Override
+                                    public void onNoClick() {
+                                        if (passWordSetDialog != null)
+                                            passWordSetDialog.dismiss();
+                                    }
+                                });
+                                if (!passWordSetDialog.isShowing())
+                                    passWordSetDialog.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                    }
+                });
                 break;
             case R.id.auth_real_person:
                 LocalLog.d(TAG, "未认证");

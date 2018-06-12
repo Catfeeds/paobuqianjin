@@ -92,7 +92,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
     ArrayList<String> deleteArrList;
     private static final int DEAR_NAME_MODIFY = 0;
     private int pageIndex = 1, pageCount = 0, pageIndexSearch = 1, pageCountSearch = 0;
-    private final static int PAGESIZE = 15;
+    private final static int PAGESIZE = 10;
     private boolean hasDelete = false;
     private int currentMember = 0;
     private int position = -1;
@@ -266,8 +266,14 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                         exitTokenUnfect();
                     }
                 }
+                normalRecyclerView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isLoadingData = false;
+                    }
+                }, 500);
             }
-            isLoadingData = false;
+
         }
     };
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -375,28 +381,37 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                 mainAdminList.addAll(toOneList);
                 if (pageIndex == 1) {
                     adminAdapter = new MemberManagerAdapter(getContext(), mainAdminList, null, opCallBackInterface);
+                    adminRecyclerView.setAdapter(adminAdapter);
                 } else {
                     adminAdapter.notifyItemRangeInserted(mainAdminList.size() - toOneList.size(), toOneList.size());
+                    adminAdapter.notifyItemRangeChanged(mainAdminList.size() - toOneList.size(), toOneList.size());
+                    adminRecyclerView.requestLayout();
                 }
             }
-            adminRecyclerView.setAdapter(adminAdapter);
 
             /*MemberManagerAdapter normalAdapter = new MemberManagerAdapter(getContext(), data[2], opCallBackInterface);*/
             if (data[2] != null) {
                 normalMemberList.addAll(data[2]);
                 if (pageIndex == 1) {
                     normalAdapter = new MemberManagerAdapter(getContext(), normalMemberList, opCallBackInterface);
+                    normalRecyclerView.setAdapter(normalAdapter);
                 } else {
                     normalAdapter.notifyItemRangeInserted(normalMemberList.size() - data[2].size(), data[2].size());
+                    normalAdapter.notifyItemRangeChanged(normalMemberList.size() - data[2].size(), data[2].size());
+                    normalRecyclerView.requestLayout();
                 }
             }
-            normalRecyclerView.setAdapter(normalAdapter);
             pageIndex++;
         } else if (circleMemberResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         }
-        isLoadingData = false;
+        normalRecyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                isLoadingData = false;
+            }
+        }, 500);
     }
 
     public interface OpCallBackInterface {

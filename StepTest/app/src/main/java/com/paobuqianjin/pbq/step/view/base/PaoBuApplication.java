@@ -2,14 +2,18 @@ package com.paobuqianjin.pbq.step.view.base;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Looper;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
+import android.text.TextUtils;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
@@ -31,15 +35,29 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.emoji.IImageLoader;
 import com.paobuqianjin.pbq.step.view.emoji.LQREmotionKit;
 import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.today.step.lib.TodayStepManager;
 import com.today.step.lib.TodayStepService;
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.message.IUmengRegisterCallback;
+import com.umeng.message.PushAgent;
+import com.umeng.message.UTrack;
+import com.umeng.message.UmengMessageHandler;
+import com.umeng.message.entity.UMessage;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
+
+import org.android.agoo.huawei.HuaWeiRegister;
+import org.android.agoo.mezu.MeizuRegister;
+import org.android.agoo.xiaomi.MiPushRegistar;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,6 +81,8 @@ import okhttp3.internal.cache.InternalCache;
 
 public class PaoBuApplication extends MultiDexApplication {
     private final static String TAG = PaoBuApplication.class.getSimpleName();
+    private static final String XIAOMI_ID = "2882303761517807651";
+    private static final String XIAOMI_KEY = "5331780797651";
     public LocationService locationService;
     private static boolean isAsyncRun = false;
     private static final long cacheSize = 1024 * 1024 * 200;
@@ -77,6 +97,7 @@ public class PaoBuApplication extends MultiDexApplication {
         initHttpOk();
         initSDKService();
         initHlb();
+        initUmeng();
         sApplication = this;
 
         registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
@@ -115,6 +136,81 @@ public class PaoBuApplication extends MultiDexApplication {
 
             }
         });
+    }
+
+    private void initUmeng() {
+        UMConfigure.setLogEnabled(true);
+        UMConfigure.init(this, UMConfigure.DEVICE_TYPE_PHONE, "b60a2f688d8f367430384085199ba353");
+        PushAgent mPushAgent = PushAgent.getInstance(this);
+        //注册推送服务，每次调用register方法都会回调该接口
+        mPushAgent.register(new IUmengRegisterCallback() {
+            @Override
+            public void onSuccess(String deviceToken) {
+                //注册成功会返回device token
+                LocalLog.d(TAG, "IUmengRegisterCallback.onSuccess() deviceToken : " + deviceToken);
+            }
+            @Override
+            public void onFailure(String s, String s1) {
+                LocalLog.d(TAG, "IUmengRegisterCallback.onFailure() s : " + s + "   ;s1:" + s1);
+            }
+        });
+
+
+        UmengMessageHandler messageHandler = new UmengMessageHandler(){
+            @Override
+            public void dealWithCustomMessage(final Context context, final UMessage msg) {
+                LocalLog.d(TAG,new Gson().toJson(msg));
+                new Handler(getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+//                         //对于自定义消息，PushSDK默认只统计送达。若开发者需要统计点击和忽略，则需手动调用统计方法。
+//                        boolean isClickOrDismissed = true;
+//                        if(isClickOrDismissed) {
+                            //自定义消息的点击统计
+                            UTrack.getInstance(getApplicationContext()).trackMsgClick(msg);
+//                        } else {
+//                            //自定义消息的忽略统计
+//                            UTrack.getInstance(getApplicationContext()).trackMsgDismissed(msg);
+//                        }
+//                            PaoToastUtils.showShortToast(getApplicationContext(), msg.custom);
+
+                        if (!TextUtils.isEmpty(msg.custom)) {
+                            try {
+                                // TODO: 推送处理动作
+                                JSONObject jsonObject = new JSONObject(msg.custom);
+                                String is_pull_step_service = jsonObject.getString("pull_service");
+                                if (is_pull_step_service != null) {
+                                    if (is_pull_step_service.equals("step") && !Utils.isServiceRunning(PaoBuApplication.getApplication(),TodayStepService.class.getName())) {
+                                        Intent intent = new Intent();
+                                        intent.setAction(START_STEP_ACTION);
+                                        intent.setClass(getApplicationContext(), TodayStepService.class);
+                                        TodayStepManager.init(PaoBuApplication.getApplication(), intent);
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public Notification getNotification(Context context, UMessage uMessage) {
+                return super.getNotification(context, uMessage);
+            }
+
+            //            @Override
+//            public void dealWithNotificationMessage(Context context, UMessage uMessage) {
+//                //调用super则会走通知展示流程，不调用super则不展示通知
+//                super.dealWithNotificationMessage(context, uMessage);
+//            }
+        };
+        mPushAgent.setMessageHandler(messageHandler);
+        MiPushRegistar.register(this,XIAOMI_ID, XIAOMI_KEY);
+        HuaWeiRegister.register(this);
+        MeizuRegister.register(this, "1000750", "b7afc36952cc4167af1bd6d27b5a7354");
+
     }
 
     private void initHlb() {
@@ -235,7 +331,6 @@ public class PaoBuApplication extends MultiDexApplication {
             long max_age = 24 * 3600;
             if (request.url().toString().startsWith(NetApi.url)) {
 /*                LocalLog.d(TAG, "request.url().toString() = " + request.url().toString());*/
-                LocalLog.d(TAG, "headtoken =" + request.header("headtoken"));
                 max_age = 0;
             }
 /*            LocalLog.d(TAG, "max_age = " + max_age);*/

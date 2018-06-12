@@ -244,7 +244,9 @@ public class OwnerJoinFragment extends BaseFragment {
                             @Override
                             public void run() {
                                 LocalLog.d(TAG, "滑动到顶端");
-                                ownerJoinCircleLists.scrollToPosition(0);
+                                if (ownerJoinCircleLists != null) {
+                                    ownerJoinCircleLists.scrollToPosition(0);
+                                }
                             }
                         }, 10);
                     }

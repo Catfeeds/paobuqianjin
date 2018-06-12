@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -12,7 +13,14 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.TextAppearanceSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,8 +54,8 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
-import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
 import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
@@ -496,6 +504,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     public void run() {
                         if (openRedPkgView != null && openRedPkgView.getVisibility() == View.VISIBLE) {
                             openRedPkgView.clearAnimation();
+                            openRedPkgView.setVisibility(View.INVISIBLE);
                             errorTextView.setText(getString(R.string.error_red));
                             errorTextView.setVisibility(View.VISIBLE);
                             desPkgTextView.setVisibility(View.VISIBLE);
@@ -593,7 +602,21 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         popupRedPkgWindow = new PopupWindow(popTargetView,
                 WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         TextView textView = (TextView) popTargetView.findViewById(R.id.quit_title);
-        textView.setText(titleContent);
+        SpannableString text = new SpannableString(titleContent+"\n"+"\n"+"为了准确地统计到用户的步数，建议用户将该应用设置为自启动或添加到白名单。");
+        ClickableSpan clickSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                LocalLog.d(TAG,"设置白名单");
+                Utils.jumpStartInterface(getActivity());
+            }
+        };
+//        text.setSpan(new TextAppearanceSpan(getContext(),R.style.MyTextPurple6c_Title12),titleContent.length()+2,text.length(),SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        text.setSpan(clickSpan,titleContent.length()+2+22,text.length(),SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+        text.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.color_6c71c4)), titleContent.length()+2+22,text.length(),
+                Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+        textView.setText(text);
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
         popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -876,9 +899,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     startActivity(InviteActivity.class, null);
                     break;
                 case R.id.scan_img:
-                    // TODO: 2018/5/17 waitdelete
                     requestPermissionScan(Permission.Group.CAMERA);
-//                    startActivity(IdentityAuth1Activity.class,null);
                     break;
                 case R.id.step_desc_span:
                     LocalLog.d(TAG, "目标说明");
@@ -888,9 +909,17 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         }
     };
 
-    @OnClick(R.id.today_income_num)
-    public void onClick() {
-    }
+/*    @OnClick({R.id.toay_step_span, R.id.target_steps_span})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.toay_step_span:
+            case R.id.target_steps_span:
+                LocalLog.d(TAG, "目标说明");
+                popTargetView(getString(R.string.target_desc));
+                break;
+        }
+    }*/
+
 
     private static class UpdateHandler extends Handler {
         WeakReference<HomePageFragment> weakReference;

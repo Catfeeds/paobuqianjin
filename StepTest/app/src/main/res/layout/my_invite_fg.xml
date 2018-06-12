@@ -108,43 +108,50 @@
         android:textColor="@color/color_161727"
         android:textSize="12dp" />
 
-    <RelativeLayout
-        android:id="@+id/go_rule_span"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/desc"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/go_rule_span"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/invite_rule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="邀请规则"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12dp" />
+
+            <ImageView
+                android:layout_width="7dp"
+                android:layout_height="14dp"
+                android:layout_alignBottom="@+id/invite_rule"
+                android:layout_alignTop="@+id/invite_rule"
+                android:layout_marginLeft="5dp"
+                android:layout_toEndOf="@+id/invite_rule"
+                android:scaleType="centerInside"
+                android:src="@drawable/go_to" />
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/invite_rule"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="邀请规则"
-            android:textColor="@color/color_8a8a8a"
-            android:textSize="12dp" />
+            android:id="@+id/invite_code"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/go_rule_span"
+            android:background="@color/color_f6f6f6"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/color_161727"
+            android:textSize="15dp" />
+    </LinearLayout>
 
-        <ImageView
-            android:layout_width="7dp"
-            android:layout_height="14dp"
-            android:layout_alignBottom="@+id/invite_rule"
-            android:layout_alignTop="@+id/invite_rule"
-            android:layout_marginLeft="5dp"
-            android:layout_toEndOf="@+id/invite_rule"
-            android:scaleType="centerInside"
-            android:src="@drawable/go_to" />
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/invite_code"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/go_rule_span"
-        android:gravity="center"
-        android:layout_marginBottom="45dp"
-        android:background="@color/color_f6f6f6"
-        android:text=""
-        android:textColor="@color/color_161727"
-        android:textSize="15dp" />
 </RelativeLayout>

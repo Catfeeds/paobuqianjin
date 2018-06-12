@@ -333,7 +333,12 @@ public class NetStringCallBack extends StringCallback {
             if (command == Engine.COMMAND_LOGIN_IN_BY_PHONE) {
                 try {
                     LoginResponse loginResponse = new Gson().fromJson(s, LoginResponse.class);
-                    ((LoginSignCallbackInterface) callBackInterface).response(loginResponse);
+                    if (loginResponse.getError() == 0) {
+                        ((LoginSignCallbackInterface) callBackInterface).response(loginResponse);
+                    }else{
+                        onError(null,new Exception("MT"),i,s);
+                    }
+
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
                 }

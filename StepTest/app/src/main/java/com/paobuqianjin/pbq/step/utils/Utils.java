@@ -2,9 +2,14 @@ package com.paobuqianjin.pbq.step.utils;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.input.InputManager;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -178,5 +183,75 @@ public class Utils {
             }
         }
         return false;
+    }
+    /**
+     * Get Mobile Type
+     *
+     * @return
+     */
+    private static String getMobileType() {
+        return Build.MANUFACTURER;
+    }
+
+    /**
+     * GoTo Open Self Setting Layout
+     * Compatible Mainstream Models 兼容市面主流机型
+     *
+     * @param context
+     */
+    public static void jumpStartInterface(Context context) {
+        Intent intent = new Intent();
+        try {
+            ComponentName componentName = null;
+
+            String brand = android.os.Build.BRAND;
+
+            switch (brand.toLowerCase()){
+                case "samsung":
+                    componentName = new ComponentName("com.samsung.android.sm",
+                            "com.samsung.android.sm.app.dashboard.SmartManagerDashBoardActivity");
+                    break;
+                case "huawei":
+                    componentName = new ComponentName("com.huawei.systemmanager",
+                            "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity");
+                    break;
+                case "xiaomi":
+                    componentName = new ComponentName("com.miui.securitycenter",
+                            "com.miui.permcenter.autostart.AutoStartManagementActivity");
+                    break;
+                case "vivo":
+                    componentName = new ComponentName("com.iqoo.secure",
+                            "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity");
+                    break;
+                case "oppo":
+                    componentName = new ComponentName("com.coloros.oppoguardelf",
+                            "com.coloros.powermanager.fuelgaue.PowerUsageModelActivity");
+                    break;
+                case "360":
+                    componentName = new ComponentName("com.yulong.android.coolsafe",
+                            "com.yulong.android.coolsafe.ui.activity.autorun.AutoRunListActivity");
+                    break;
+                case "meizu":
+                    componentName = new ComponentName("com.meizu.safe",
+                            "com.meizu.safe.permission.SmartBGActivity");
+                    break;
+                case "oneplus":
+                    componentName = new ComponentName("com.oneplus.security",
+                            "com.oneplus.security.chainlaunch.view.ChainLaunchAppListActivity");
+                    break;
+                default:
+                    break;
+            }
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if(componentName!=null){
+                intent.setComponent(componentName);
+            }else{
+                intent.setAction(Settings.ACTION_SETTINGS);
+            }
+            context.startActivity(intent);
+        } catch (Exception e) {//抛出异常就直接打开设置页面
+            intent = new Intent(Settings.ACTION_SETTINGS);
+            context.startActivity(intent);
+        }
     }
 }

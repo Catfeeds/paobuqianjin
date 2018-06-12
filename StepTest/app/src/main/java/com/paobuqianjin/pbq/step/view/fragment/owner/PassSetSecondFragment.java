@@ -173,7 +173,7 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
 
             @Override
             public void onInputFinish(String pws) {
-                LocalLog.d(TAG, "psw = " + pswOlder);
+
                 pswNew = pws;
                 if (pws.equals(pswOlder)) {
                     confirmButton.setBackground(getDrawableResource(R.drawable.rect_angle_background));
