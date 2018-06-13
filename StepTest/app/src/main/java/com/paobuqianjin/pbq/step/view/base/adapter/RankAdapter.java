@@ -14,6 +14,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 
@@ -58,7 +59,8 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
             holder.rankNum.setVisibility(View.VISIBLE);
             holder.rankNum.setText(String.valueOf(position + 1));
             ReChargeRankResponse.DataBeanX.DataBean dataBean = (ReChargeRankResponse.DataBeanX.DataBean) mData.get(position);
-            Presenter.getInstance(mContext).getPlaceErrorImage(holder.circleLogoSearch, dataBean.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+            /*Presenter.getInstance(mContext).getPlaceErrorImage(holder.circleLogoSearch, dataBean.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(mContext, holder.circleLogoSearch, dataBean.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             if (!TextUtils.isEmpty(dataBean.getCirclenickname())) {
                 holder.searchCircleDesListName.setText(dataBean.getCirclenickname());
             } else {
@@ -72,7 +74,9 @@ public class RankAdapter extends RecyclerView.Adapter<RankAdapter.RankViewHolder
 
         } else if (mData.get(position) instanceof StepRankResponse.DataBeanX.DataBean) {
             StepRankResponse.DataBeanX.DataBean dataBean = (StepRankResponse.DataBeanX.DataBean) mData.get(position);
-            Presenter.getInstance(mContext).getPlaceErrorImage(holder.circleLogoSearch, dataBean.getAvatar()
+/*            Presenter.getInstance(mContext).getPlaceErrorImage(holder.circleLogoSearch, dataBean.getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(mContext, holder.circleLogoSearch, dataBean.getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             if (!TextUtils.isEmpty(dataBean.getCirclenickname())) {
                 holder.searchCircleDesListName.setText(dataBean.getCirclenickname());

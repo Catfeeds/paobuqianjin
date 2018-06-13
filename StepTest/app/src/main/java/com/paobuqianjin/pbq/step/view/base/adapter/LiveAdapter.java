@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LiveResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.view.activity.LiveDetailActivity;
 
 import java.util.List;
@@ -25,9 +27,9 @@ import butterknife.Bind;
 public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.LiveViewHolder> {
     private final static String TAG = LiveAdapter.class.getSimpleName();
     private List<?> mData;
-    private Context context;
+    private Activity context;
 
-    public LiveAdapter(Context context, List<?> data) {
+    public LiveAdapter(Activity context, List<?> data) {
         this.context = context;
         mData = data;
     }
@@ -35,7 +37,8 @@ public class LiveAdapter extends RecyclerView.Adapter<LiveAdapter.LiveViewHolder
     @Override
     public void onBindViewHolder(LiveViewHolder holder, int position) {
         if (mData.get(position) instanceof LiveResponse.DataBeanX.DataBean) {
-            Presenter.getInstance(context).getImage(holder.liveImag, ((LiveResponse.DataBeanX.DataBean) mData.get(position)).getConver());
+            /*Presenter.getInstance(context).getImage(holder.liveImag, ((LiveResponse.DataBeanX.DataBean) mData.get(position)).getConver());*/
+            LoadBitmap.glideLoad(context,holder.liveImag,((LiveResponse.DataBeanX.DataBean) mData.get(position)).getConver());
             if (((LiveResponse.DataBeanX.DataBean) mData.get(position)).getIs_process() == 0) {
                 holder.liveStates.setText("未开赛");
             } else if (((LiveResponse.DataBeanX.DataBean) mData.get(position)).getIs_process() == 2) {

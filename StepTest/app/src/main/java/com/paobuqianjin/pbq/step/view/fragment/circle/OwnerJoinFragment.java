@@ -112,7 +112,7 @@ public class OwnerJoinFragment extends BaseFragment {
         ownerJoinCircleLists.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         ownerJoinCircleLists.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
 
-        adapter = new OwnerCreateAdapter(getContext(), this, null);
+        adapter = new OwnerCreateAdapter(getActivity(), this, null);
         ownerJoinCircleLists.setAdapter(adapter);
 
         joinCircleSwipe.setOnRefreshListener(mRefreshListener);

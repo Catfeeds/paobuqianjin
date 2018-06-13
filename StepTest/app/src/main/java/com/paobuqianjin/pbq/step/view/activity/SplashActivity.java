@@ -162,9 +162,9 @@ public class SplashActivity extends UmengNotifyClickActivity {
     public void onMessage(Intent intent) {
         super.onMessage(intent);
         // TODO: 推送处理动作
-        String body = intent.getStringExtra(AgooConstants.MESSAGE_BODY);
-        LocalLog.d(TAG, body);
-
-
+        if (intent != null) {
+            String body = intent.getStringExtra(AgooConstants.MESSAGE_BODY);
+            LocalLog.d(TAG, body);
+        }
     }
 }

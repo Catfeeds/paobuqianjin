@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,7 +25,7 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<MemberManagerAdap
     private final static String TAG = MemberManagerAdapter.class.getSimpleName();
     @Bind(R.id.member_list_recycler)
     RecyclerView memberListRecycler;
-    private Context mContext;
+    private Activity mContext;
     private int defaultValue = 10;
     private int spanType = 0;
 
@@ -56,13 +57,13 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<MemberManagerAdap
         return adminList;
     }
 
-    public MemberManagerAdapter(Context context, ArrayList mainAdmin, ArrayList admin, CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
+    public MemberManagerAdapter(Activity context, ArrayList mainAdmin, ArrayList admin, CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
         mContext = context;
         mData = mainAdmin;
         this.opCallBackInterface = opCallBackInterface;
     }
 
-    public MemberManagerAdapter(Context context, ArrayList memberNormal, CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
+    public MemberManagerAdapter(Activity context, ArrayList memberNormal, CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
         mContext = context;
         mData = memberNormal;
         this.opCallBackInterface = opCallBackInterface;

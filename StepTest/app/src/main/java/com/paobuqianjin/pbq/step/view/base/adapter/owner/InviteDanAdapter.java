@@ -12,6 +12,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 
 import java.util.List;
 
@@ -53,7 +54,9 @@ public class InviteDanAdapter extends RecyclerView.Adapter<InviteDanAdapter.Invi
                     ((InviteDanResponse.DataBeanX.DataBean) mData.get(position)).getAllmoney());
             String inviteDanStrFormat = context.getString(R.string.invite_dan_rank);
             String inviteDanStr = String.format(inviteDanStrFormat, position + 1);
-            Presenter.getInstance(context).getPlaceErrorImage(holder.userHeadIcon, ((InviteDanResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.userHeadIcon, ((InviteDanResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.userHeadIcon, ((InviteDanResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.incomeReadPkg.setText(inviteRedPkgStr);
             holder.inviteNumDes.setText(inviteStr);

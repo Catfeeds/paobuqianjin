@@ -29,6 +29,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 
@@ -87,7 +88,9 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             LocalLog.d(TAG, "关注我的");
             holder.dearName.setText(((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.userid = ((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
-            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.userNearIcon, ((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
             holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
@@ -100,7 +103,9 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             LocalLog.d(TAG, "我关注的");
             holder.dearName.setText(((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.userid = ((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
-            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.userNearIcon, ((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.btFollow.setText("已关注");
             holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_not_fllow_nearby));
@@ -113,7 +118,9 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             LocalLog.d(TAG, "互相关注");
             holder.dearName.setText(((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.userid = ((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
-            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.userNearIcon, ((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.btFollow.setText("互相关注");
             holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));

@@ -51,6 +51,7 @@ import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
@@ -177,6 +178,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     private String cachePath;
     private final int REQUEST_CODE = 111;
     private String localAvatar;
+    private Context context;
 
     @Override
     protected int getLayoutResId() {
@@ -189,6 +191,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         Presenter.getInstance(getContext()).attachUiInterface(this);
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getContext());
+        this.context = context;
 
     }
 
@@ -559,7 +562,8 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             } else {
                 settingHeight.setText(high + "厘米");
             }
-            Presenter.getInstance(getContext()).getPlaceErrorImage(userIcon, dataBean.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+/*            Presenter.getInstance(getContext()).getPlaceErrorImage(userIcon, dataBean.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(getActivity(), userIcon, dataBean.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             userNameOldStr = dataBean.getNickname();
             useName.requestFocus();
             useName.setText(dataBean.getNickname());
@@ -727,7 +731,9 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 LocalLog.d(TAG, "path = " + path);
                 ResultHelper result = null;
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                result = putObjectSample.start(path, getContext().getApplicationContext());
+                if (context != null) {
+                    result = putObjectSample.start(path, context.getApplicationContext());
+                }
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
                 if (result != null && result.cosXmlResult != null) {
                     url = result.cosXmlResult.accessUrl;
@@ -763,8 +769,9 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             }
             LocalLog.d(TAG, "content = " + content);
             if (resultList != null && resultList.size() == 1) {
-                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), userIcon, resultList.get(0).getWidth() / 4
-                        , resultList.get(0).getHeight() / 4);
+/*                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), userIcon, resultList.get(0).getWidth() / 4
+                        , resultList.get(0).getHeight() / 4);*/
+                LoadBitmap.glideLoad(getActivity(), userIcon, resultList.get(0).getImagePath());
                 localAvatar = resultList.get(0).getImagePath();
             } else {
                 LocalLog.d(TAG, "未知操作");

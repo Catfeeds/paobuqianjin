@@ -145,6 +145,7 @@
         android:textSize="15dp" />
 
     <RelativeLayout
+        android:visibility="gone"
         android:id="@+id/wechat_pay_span"
         android:layout_width="match_parent"
         android:layout_height="60dp"

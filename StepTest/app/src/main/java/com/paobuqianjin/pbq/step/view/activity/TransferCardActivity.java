@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.Constants;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
@@ -276,7 +277,8 @@ public class TransferCardActivity extends BaseBarActivity {
             holder.cb_select.setChecked(itemBean.getStatus() == 1);
             holder.tv_card_num.setText("**** " + itemBean.getBank_card().substring(itemBean.getBank_card().length() - 4));
             holder.tv_title.setText(itemBean.getBank_name());
-            Presenter.getInstance(context).getImage(holder.iv_icon, itemBean.getImg_url());
+            /*Presenter.getInstance(context).getImage(holder.iv_icon, itemBean.getImg_url());*/
+            LoadBitmap.glideLoad(TransferCardActivity.this, holder.iv_icon, itemBean.getImg_url());
 
             if (itemClickListener != null) {
                 holder.itemRootView.setOnClickListener(new View.OnClickListener() {

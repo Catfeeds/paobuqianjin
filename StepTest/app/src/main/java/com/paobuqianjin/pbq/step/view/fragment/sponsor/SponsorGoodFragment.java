@@ -99,7 +99,7 @@ public class SponsorGoodFragment extends BaseBarStyleTextViewFragment implements
 
             if (goodImageData != null) {
                 goodsImgsBeans = goodImageData.getGoodsImgsBeans();
-                sponsorView.setAdapter(new GridAdpter(getContext(), goodsImgsBeans, mColumnWidth));
+                sponsorView.setAdapter(new GridAdpter(getActivity(), goodsImgsBeans, mColumnWidth));
             }
         }
     }

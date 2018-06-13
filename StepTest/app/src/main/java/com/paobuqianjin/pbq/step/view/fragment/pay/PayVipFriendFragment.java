@@ -593,6 +593,9 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 startActivityForResult(intent, SELECT_FRIENDS);
                 break;
             case R.id.choice_ico_span:
+                if (TextUtils.isEmpty(payMoneyNum.getText().toString())) {
+                    return;
+                }
                 LocalLog.d(TAG, "微信支付");
                 if (selectPay[0]) {
                     LocalLog.d(TAG, "取消微信支付");
@@ -606,6 +609,9 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 }
                 break;
             case R.id.bank_ico_span:
+                if (TextUtils.isEmpty(payMoneyNum.getText().toString())) {
+                    return;
+                }
                 LocalLog.d(TAG, "钱包支付");
                 if (selectPay[1]) {
                     LocalLog.d(TAG, "点击选择钱包");
@@ -619,7 +625,10 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 }
                 break;
             case R.id.yuns_ico_span:
-                LocalLog.d(TAG, "钱包支付");
+                if (TextUtils.isEmpty(payMoneyNum.getText().toString())) {
+                    return;
+                }
+                LocalLog.d(TAG, "云闪付");
                 if (selectPay[2]) {
                     LocalLog.d(TAG, "点击选择钱包");
                     selectPay[2] = false;

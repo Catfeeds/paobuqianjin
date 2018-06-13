@@ -347,6 +347,9 @@ public class FollowOtoFragment extends BaseFragment {
         LocalLog.d(TAG, "loadFollowOtOMore() enter");
         if (isAdded() && inviteDanRecycler != null) {
         /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+            if (newData.size() <= 0) {
+                return;
+            }
             for (int i = 0; i < newData.size(); i++) {
                 for (int j = 0; j < followOtoData.size(); j++) {
                     if (followOtoData.get(j).getUserid() == newData.get(i).getUserid()) {

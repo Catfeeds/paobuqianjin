@@ -130,6 +130,9 @@ public class IdentityAuth2Activity extends BaseBarActivity {
     }
 
     private void getCardType() {
+        if (TextUtils.isEmpty(cardNum)) {
+            return;
+        }
         Map<String, String> params = new HashMap<>();
         params.put("cardno", cardNum.replaceAll(" ", ""));
         Presenter.getInstance(this).getPaoBuSimple(NetApi.URL_GET_CARD_BANK, params, new PaoCallBack() {

@@ -27,7 +27,7 @@
                 android:id="@+id/income_rel"
                 android:layout_width="match_parent"
                 android:layout_height="209dp"
-                android:background="@drawable/wallet_bg">
+                android:hardwareAccelerated="false">
 
                 <TextView
                     android:id="@+id/all_income"

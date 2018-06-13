@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
@@ -48,7 +50,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 
     private List<DynamicAllIndexResponse.DataBeanX.DataBean> data;
-    private Context mContext;
+    private Activity mContext;
     private Fragment fragment;
     private final static int DYNAMIC_DETAIL = 205;
 
@@ -59,7 +61,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ITEM_TYPE_THREE_IMG
     }
 
-    public AttentionCircleAdapter(Context context, List<DynamicAllIndexResponse.DataBeanX.DataBean> data, Fragment fragment) {
+    public AttentionCircleAdapter(Activity context, List<DynamicAllIndexResponse.DataBeanX.DataBean> data, Fragment fragment) {
         super();
         mContext = context;
         this.data = data;
@@ -149,9 +151,10 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((OneOrZeroViewHodler) holder).is_vote = data.get(position).getIs_vote();
             if (((OneOrZeroViewHodler) holder).viewType == 1) {
                 ((OneOrZeroViewHodler) holder).timeStmp.setText(create_timeStr);
-                Presenter.getInstance(mContext).getPlaceErrorImage(((OneOrZeroViewHodler) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
-                Presenter.getInstance(mContext).getPlaceErrorImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
-
+                /*Presenter.getInstance(mContext).getPlaceErrorImage(((OneOrZeroViewHodler) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(mContext).getPlaceErrorImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+                LoadBitmap.glideLoad(mContext, ((OneOrZeroViewHodler) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                LoadBitmap.glideLoad(mContext, ((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
 
                 String content = Base64Util.getUidFromBase64(data.get(position).getDynamic());
                 LocalLog.d(TAG, "content = " + content);
@@ -204,7 +207,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             } else if (((OneOrZeroViewHodler) holder).viewType == 0) {
                 LocalLog.d(TAG, "1图");
                 ((OneOrZeroViewHodler) holder).timeStmp.setText(create_timeStr);
-                Presenter.getInstance(mContext).getPlaceErrorImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+                /*Presenter.getInstance(mContext).getPlaceErrorImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+                LoadBitmap.glideLoad(mContext, ((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                 ((OneOrZeroViewHodler) holder).is_vote = data.get(position).getIs_vote();
                 String content = Base64Util.getUidFromBase64(data.get(position).getDynamic());
                 LocalLog.d(TAG, "content = " + content);
@@ -262,9 +266,12 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((TwoPicViewHolder) holder).dynamicid = data.get(position).getId();
             ((TwoPicViewHolder) holder).userid = data.get(position).getUserid();
             ((TwoPicViewHolder) holder).is_vote = data.get(position).getIs_vote();
-            Presenter.getInstance(mContext).getPlaceErrorImage(((TwoPicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+/*            Presenter.getInstance(mContext).getPlaceErrorImage(((TwoPicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
             Presenter.getInstance(mContext).getPlaceErrorImage(((TwoPicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
-            Presenter.getInstance(mContext).getPlaceErrorImage(((TwoPicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+            Presenter.getInstance(mContext).getPlaceErrorImage(((TwoPicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(mContext, ((TwoPicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+            LoadBitmap.glideLoad(mContext, ((TwoPicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
+            LoadBitmap.glideLoad(mContext, ((TwoPicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             String content = Base64Util.getUidFromBase64(data.get(position).getDynamic());
             LocalLog.d(TAG, "content = " + content);
             if (content != null) {
@@ -324,10 +331,14 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((ThreePicViewHolder) holder).userid = data.get(position).getUserid();
             ((ThreePicViewHolder) holder).is_vote = data.get(position).getIs_vote();
             ((ThreePicViewHolder) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
-            Presenter.getInstance(mContext).getPlaceErrorImage(((ThreePicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+/*            Presenter.getInstance(mContext).getPlaceErrorImage(((ThreePicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
             Presenter.getInstance(mContext).getPlaceErrorImage(((ThreePicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
             Presenter.getInstance(mContext).getPlaceErrorImage(((ThreePicViewHolder) holder).dynamicPicThree, data.get(position).getImages().get(2), R.drawable.bitmap_null, R.drawable.bitmap_null);
-            Presenter.getInstance(mContext).getPlaceErrorImage(((ThreePicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+            Presenter.getInstance(mContext).getPlaceErrorImage(((ThreePicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(mContext, ((ThreePicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+            LoadBitmap.glideLoad(mContext, ((ThreePicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
+            LoadBitmap.glideLoad(mContext, ((ThreePicViewHolder) holder).dynamicPicThree, data.get(position).getImages().get(2), R.drawable.bitmap_null, R.drawable.bitmap_null);
+            LoadBitmap.glideLoad(mContext, ((ThreePicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             String content = Base64Util.getUidFromBase64(data.get(position).getDynamic());
             ((ThreePicViewHolder) holder).dynamicContentText.setText(content);
             ((ThreePicViewHolder) holder).dynamicUserName.setText(data.get(position).getNickname());

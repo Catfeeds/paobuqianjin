@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendAddResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import java.util.List;
@@ -57,7 +58,9 @@ public class LocalContactAdapter extends RecyclerView.Adapter<LocalContactAdapte
 
     private void updateListItem(LocalContactViewHolder holder, int position) {
         if (mData.get(position) instanceof FriendAddResponse.DataBean.InSystemBean) {
-            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getAvatar()
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.userNearIcon, ((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.dearName.setText(((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getName());
             if (((FriendAddResponse.DataBean.InSystemBean) mData.get(position)).getFollow_type() == 2) {

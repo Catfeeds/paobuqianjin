@@ -15,6 +15,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendWeekResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRandWeekResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 
 import java.util.List;
 
@@ -58,7 +59,9 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                 holder.rankNum.setText(String.valueOf(position + 1));
                 holder.rankIcon.setVisibility(View.INVISIBLE);
             }
-            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar()
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.headIconUser, ((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.stepNum.setText(String.valueOf(((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getNickname());
@@ -78,7 +81,9 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                 holder.rankNum.setText(String.valueOf(position + 1));
                 holder.rankIcon.setVisibility(View.INVISIBLE);
             }
-            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getAvatar()
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.headIconUser, ((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.stepNum.setText(String.valueOf(((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getNickname());
@@ -97,7 +102,9 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                 holder.rankNum.setText(String.valueOf(position + 1));
                 holder.rankIcon.setVisibility(View.INVISIBLE);
             }
-            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar()
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.headIconUser, ((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.stepNum.setText(String.valueOf(((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((FriendWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getNickname());
@@ -116,7 +123,9 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                 holder.rankNum.setText(String.valueOf(position + 1));
                 holder.rankIcon.setVisibility(View.INVISIBLE);
             }
-            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.headIconUser, ((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.stepNum.setText(String.valueOf(((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((StepRankResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
@@ -135,7 +144,9 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                 holder.rankNum.setText(String.valueOf(position + 1));
                 holder.rankIcon.setVisibility(View.INVISIBLE);
             }
-            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((StepRandWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar()
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((StepRandWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.headIconUser, ((StepRandWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.stepNum.setText(String.valueOf(((StepRandWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((StepRandWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getNickname());

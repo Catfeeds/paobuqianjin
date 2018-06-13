@@ -121,7 +121,7 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
     private float totalMoney;
     private ChooseOneItemWheelPopWindow wheelPopWindow;
     private final int DEVALUE_STEP = 10000;//默认步数
-    private String[] targetStepArr = {"10", "100", "5000", "6000", "7000", "8000", "9000", "10000"};
+    private String[] targetStepArr = {"3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"};
 
     @Override
     protected int getLayoutResId() {

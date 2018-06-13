@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.util.Log;
 
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultActivity;
@@ -27,7 +25,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 
 /**
@@ -56,34 +53,6 @@ public class PutObjectSample {
     }
 
 
-    /**
-     * 读取图片文件旋转的角度
-     *
-     * @param path 图片绝对路径
-     * @return 图片旋转的角度
-     */
-    public static int getPicRotate(String path) {
-        int degree = 0;
-        try {
-            ExifInterface exifInterface = new ExifInterface(path);
-            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-            switch (orientation) {
-                case ExifInterface.ORIENTATION_ROTATE_90:
-                    degree = 90;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_180:
-                    degree = 180;
-                    break;
-                case ExifInterface.ORIENTATION_ROTATE_270:
-                    degree = 270;
-                    break;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return degree;
-    }
-
     private String saveImage(String sourcePath, String cosPath, Context context) throws FileNotFoundException {
         if (context == null) {
             return null;
@@ -107,15 +76,6 @@ public class PutObjectSample {
         }
         if (bitmap == null) {
             return sourcePath;
-        }
-        int degree = getPicRotate(sourcePath);
-        LocalLog.d(TAG, "degree = " + degree);
-        if (degree != 0) {
-            Matrix matrix = new Matrix();
-            int width = bitmap.getWidth();
-            int height = bitmap.getHeight();
-            matrix.setRotate(degree);
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
         }
         int optionsLimit = 100;
         bitmap.compress(Bitmap.CompressFormat.JPEG, optionsLimit, baos);

@@ -26,6 +26,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.ReceiveTaskInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.TaskDetailActivity;
 
@@ -84,7 +85,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     private void updateListItem(TaskViewHolder holder, int position) {
         if (mData.get(position) instanceof MyRecTaskRecordResponse.DataBeanX.DataBean) {
-            Presenter.getInstance(context).getPlaceErrorImage(holder.headIcon, ((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.headIcon, ((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.headIcon, ((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.taskDesc.setText(((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getTask_name());
             holder.taskInvite.setText("派发人: " + ((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getNickname());

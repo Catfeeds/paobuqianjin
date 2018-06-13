@@ -20,6 +20,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserDanResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.DanAdapter;
@@ -134,7 +135,8 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
         if (intent != null) {
             String usrIcon = intent.getStringExtra("usericon");
             if (usrIcon != null && !usrIcon.equals("")) {
-                Presenter.getInstance(getContext()).getPlaceErrorImage(userIcon, usrIcon, R.drawable.default_head_ico, R.drawable.default_head_ico);
+                /*Presenter.getInstance(getContext()).getPlaceErrorImage(userIcon, usrIcon, R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+                LoadBitmap.glideLoad(getActivity(), userIcon, usrIcon, R.drawable.default_head_ico, R.drawable.default_head_ico);
             }
         }
         barNull = (RelativeLayout) (viewRoot.findViewById(R.id.dan_bar));

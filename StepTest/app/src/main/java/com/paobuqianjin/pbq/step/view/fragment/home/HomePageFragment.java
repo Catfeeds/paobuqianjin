@@ -502,6 +502,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 openRedPkgView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        if (!isAdded()) {
+                            return;
+                        }
                         if (openRedPkgView != null && openRedPkgView.getVisibility() == View.VISIBLE) {
                             openRedPkgView.clearAnimation();
                             openRedPkgView.setVisibility(View.INVISIBLE);

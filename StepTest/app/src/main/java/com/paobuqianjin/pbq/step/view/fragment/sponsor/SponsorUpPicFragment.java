@@ -100,7 +100,7 @@ public class SponsorUpPicFragment extends BaseBarStyleTextViewFragment {
         super.initView(viewRoot);
         gridView = (GridView) viewRoot.findViewById(R.id.grid_view);
         calColumn();
-        gridView.setAdapter(new GridAdpter(getContext(), null,mColumnWidth ));
+        gridView.setAdapter(new GridAdpter(getActivity(), null,mColumnWidth ));
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

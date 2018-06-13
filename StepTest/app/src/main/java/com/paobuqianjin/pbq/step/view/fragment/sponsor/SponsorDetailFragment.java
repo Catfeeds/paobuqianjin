@@ -17,6 +17,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
@@ -205,7 +206,8 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
                         if (!TextUtils.isEmpty(dataBean.getLogo())) {
                             View view = LayoutInflater.from(getContext()).inflate(R.layout.sponsor_image_view, null);
                             ImageView imageView = (ImageView) view.findViewById(R.id.sponsor_env_img);
-                            Presenter.getInstance(getContext()).getImage(imageView, dataBean.getLogo());
+                            /*Presenter.getInstance(getContext()).getImage(imageView, dataBean.getLogo());*/
+                            LoadBitmap.glideLoad(getActivity(), imageView, dataBean.getLogo(), R.drawable.bitmap_null, R.drawable.bitmap_null);
                             Mview.add(view);
                         }
                        /* int sizeEnv = 0;
@@ -236,20 +238,32 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
                             goodsImgsBeans.addAll(dataBean.getEnvironment_imgs());
                             if (size == 1) {
                                 goodsA.setVisibility(View.VISIBLE);
-                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getEnvironment_imgs().get(0).getUrl());
+                                /*Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getEnvironment_imgs().get(0).getUrl());*/
+                                LoadBitmap.glideLoad(getActivity(), goodsA, dataBean.getEnvironment_imgs().get(0).getUrl(),
+                                        R.drawable.bitmap_null, R.drawable.bitmap_null);
                             } else if (size == 2) {
                                 goodsA.setVisibility(View.VISIBLE);
                                 centerPic.setVisibility(View.VISIBLE);
-                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getEnvironment_imgs().get(0).getUrl());
-                                Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getEnvironment_imgs().get(1).getUrl());
+/*                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getEnvironment_imgs().get(0).getUrl());
+                                Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getEnvironment_imgs().get(1).getUrl());*/
+                                LoadBitmap.glideLoad(getActivity(), goodsA, dataBean.getEnvironment_imgs().get(0).getUrl(),
+                                        R.drawable.bitmap_null, R.drawable.bitmap_null);
+                                LoadBitmap.glideLoad(getActivity(), centerPic, dataBean.getEnvironment_imgs().get(1).getUrl(),
+                                        R.drawable.bitmap_null, R.drawable.bitmap_null);
                             } else if (size >= 3) {
 
                                 goodsA.setVisibility(View.VISIBLE);
                                 centerPic.setVisibility(View.VISIBLE);
                                 goodsB.setVisibility(View.VISIBLE);
-                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getEnvironment_imgs().get(0).getUrl());
+/*                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getEnvironment_imgs().get(0).getUrl());
                                 Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getEnvironment_imgs().get(1).getUrl());
-                                Presenter.getInstance(getContext()).getImage(goodsB, dataBean.getEnvironment_imgs().get(2).getUrl());
+                                Presenter.getInstance(getContext()).getImage(goodsB, dataBean.getEnvironment_imgs().get(2).getUrl());*/
+                                LoadBitmap.glideLoad(getActivity(), goodsA, dataBean.getEnvironment_imgs().get(0).getUrl(),
+                                        R.drawable.bitmap_null, R.drawable.bitmap_null);
+                                LoadBitmap.glideLoad(getActivity(), centerPic, dataBean.getEnvironment_imgs().get(1).getUrl(),
+                                        R.drawable.bitmap_null, R.drawable.bitmap_null);
+                                LoadBitmap.glideLoad(getActivity(), goodsB, dataBean.getEnvironment_imgs().get(2).getUrl(),
+                                        R.drawable.bitmap_null, R.drawable.bitmap_null);
                             }
                         }
                     }

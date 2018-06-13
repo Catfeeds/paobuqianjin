@@ -254,7 +254,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                         }
                         searchList.addAll(((CircleMemberResponse) object).getData().getData());
                         if (searchAdapter == null) {
-                            searchAdapter = new MemberManagerAdapter(getContext(), searchList, opCallBackInterface);
+                            searchAdapter = new MemberManagerAdapter(getActivity(), searchList, opCallBackInterface);
                         } else {
                             searchAdapter.notifyDataSetChanged();
                         }
@@ -380,7 +380,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                 ArrayList<CircleMemberResponse.DataBeanX.DataBean> toOneList = MemberManagerAdapter.toOneList(data[0], data[1]);
                 mainAdminList.addAll(toOneList);
                 if (pageIndex == 1) {
-                    adminAdapter = new MemberManagerAdapter(getContext(), mainAdminList, null, opCallBackInterface);
+                    adminAdapter = new MemberManagerAdapter(getActivity(), mainAdminList, null, opCallBackInterface);
                     adminRecyclerView.setAdapter(adminAdapter);
                 } else {
                     adminAdapter.notifyItemRangeInserted(mainAdminList.size() - toOneList.size(), toOneList.size());
@@ -393,7 +393,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
             if (data[2] != null) {
                 normalMemberList.addAll(data[2]);
                 if (pageIndex == 1) {
-                    normalAdapter = new MemberManagerAdapter(getContext(), normalMemberList, opCallBackInterface);
+                    normalAdapter = new MemberManagerAdapter(getActivity(), normalMemberList, opCallBackInterface);
                     normalRecyclerView.setAdapter(normalAdapter);
                 } else {
                     normalAdapter.notifyItemRangeInserted(normalMemberList.size() - data[2].size(), data[2].size());

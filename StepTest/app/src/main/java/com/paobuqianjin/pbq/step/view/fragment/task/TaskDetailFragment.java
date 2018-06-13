@@ -25,6 +25,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.TaskDetailRecInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -188,7 +189,8 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
             }
             targetStep.setText(taskRecDetailResponse.getData().getTask_name());
             targetMoney.setText("奖励金额: " + String.valueOf(taskRecDetailResponse.getData().getReward_amount()));
-            Presenter.getInstance(getContext()).getPlaceErrorImage(releaseUseIco, taskRecDetailResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+            /*Presenter.getInstance(getContext()).getPlaceErrorImage(releaseUseIco, taskRecDetailResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(getActivity(), releaseUseIco, taskRecDetailResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             dearName.setText(taskRecDetailResponse.getData().getNickname());
             dearId.setText("跑步钱进号:" + taskRecDetailResponse.getData().getUserno());
             stepDesRun.setText(String.valueOf(taskRecDetailResponse.getData().getUser_step()) + "/" + String.valueOf(taskRecDetailResponse.getData().getTarget_step()));
@@ -209,7 +211,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
             taskRulsDetail.setText(Html.fromHtml(taskRecDetailResponse.getData().getTask_desc()));
 
             buttonAction.setOnClickListener(onClickListener);
-            processRun.setProgress((int) (taskRecDetailResponse.getData().getUser_step()*100.0f/taskRecDetailResponse.getData().getTarget_step()));
+            processRun.setProgress((int) (taskRecDetailResponse.getData().getUser_step() * 100.0f / taskRecDetailResponse.getData().getTarget_step()));
         } else if (taskRecDetailResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

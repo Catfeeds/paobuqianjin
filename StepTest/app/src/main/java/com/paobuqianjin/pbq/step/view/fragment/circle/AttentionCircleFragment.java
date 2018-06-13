@@ -87,7 +87,7 @@ public class AttentionCircleFragment extends BaseFragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         dynamicRecyclerView.setLayoutManager(layoutManager);
         dynamicRecyclerView.setSwipeItemClickListener(mItemClickListener);
-        adapter = new AttentionCircleAdapter(getContext(), null, getRootFragment());
+        adapter = new AttentionCircleAdapter(getActivity(), null, getRootFragment());
 
         // 自定义的核心就是DefineLoadMoreView类。
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());

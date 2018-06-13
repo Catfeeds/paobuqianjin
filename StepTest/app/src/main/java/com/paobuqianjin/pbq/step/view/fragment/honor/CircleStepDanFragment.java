@@ -28,6 +28,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CircleStepDetailDanInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorDetailAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -291,7 +292,9 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             userNameRank.setText(String.valueOf(circleStepRankResponse.getData().getData().getNickname()));
             yourDan.setText(String.valueOf(circleStepRankResponse.getData().getData().getRank()));
             stepNumMy.setText(String.valueOf(circleStepRankResponse.getData().getData().getStep_number()));
-            Presenter.getInstance(getContext()).getImage(headIconUser, circleStepRankResponse.getData().getData().getAvatar());
+            /*Presenter.getInstance(getContext()).getImage(headIconUser, circleStepRankResponse.getData().getData().getAvatar());*/
+            LoadBitmap.glideLoad(getActivity(), headIconUser, circleStepRankResponse.getData().getData().getAvatar(),
+                    R.drawable.default_head_ico, R.drawable.default_head_ico);
         }
     }
 
@@ -401,7 +404,9 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             userNameRank.setText(String.valueOf(circleStepRankWeekResponse.getData().getNickname()));
             yourDan.setText(String.valueOf(circleStepRankWeekResponse.getData().getRank()));
             stepNumMy.setText(String.valueOf(circleStepRankWeekResponse.getData().getStep_number()));
-            Presenter.getInstance(getContext()).getImage(headIconUser, circleStepRankWeekResponse.getData().getAvatar());
+            /*Presenter.getInstance(getContext()).getImage(headIconUser, circleStepRankWeekResponse.getData().getAvatar());*/
+            LoadBitmap.glideLoad(getActivity(), headIconUser, circleStepRankWeekResponse.getData().getAvatar(),
+                    R.drawable.default_head_ico, R.drawable.default_head_ico);
         }
     }
 }

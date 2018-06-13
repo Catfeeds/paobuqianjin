@@ -44,7 +44,7 @@
                     android:padding="15dp"
                     android:gravity="top|left"
                     android:textSize="14sp"
-                    android:hint="请简要描述你的问题和意见  （必须）"
+                    android:hint="您的建议与反馈是我们前进的动力，对于提建议的活跃用户，将有可能获得我们的红包奖励。"
                     android:inputType="textMultiLine" />
 
                 <TextView

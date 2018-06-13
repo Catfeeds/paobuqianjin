@@ -17,6 +17,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 
@@ -58,7 +59,9 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
     private void upDateListItem(NearByViewHolder holder, int position) {
         LocalLog.d(TAG, "upDateListItem() enter");
         if (mData.get(position) instanceof NearByResponse.DataBeanX.DataBean) {
-            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((NearByResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((NearByResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context,holder.userNearIcon, ((NearByResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.dearName.setText(((NearByResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             String stepFormat = context.getResources().getString(R.string.near_by_step);

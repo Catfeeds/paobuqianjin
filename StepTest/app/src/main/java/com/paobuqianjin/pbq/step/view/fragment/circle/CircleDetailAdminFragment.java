@@ -754,7 +754,10 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
         @Override
         public void response(StepRankResponse stepRankResponse) {
             LocalLog.d(TAG, "StepRankResponse() ");
-            if (stepRankResponse.getError() == 0 && isAdded()) {
+            if (!isAdded()) {
+                return;
+            }
+            if (stepRankResponse.getError() == 0) {
                 if (stepRecycler == null) {
                     return;
                 }

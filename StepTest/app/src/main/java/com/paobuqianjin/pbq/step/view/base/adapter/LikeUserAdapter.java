@@ -12,6 +12,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 
 import java.util.List;
 
@@ -47,13 +48,17 @@ public class LikeUserAdapter extends RecyclerView.Adapter<LikeUserAdapter.LikeUs
 
     private void updateListItem(LikeUserViewHolder holder, int position) {
         if (mData.get(position) instanceof DynamicLikeListResponse.DataBeanX.DataBean) {
-            Presenter.getInstance(context).getPlaceErrorImage(holder.shareIcon, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar(),
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.shareIcon, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar(),
+                    R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.shareIcon, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar(),
                     R.drawable.default_head_ico, R.drawable.default_head_ico);
             /*if (((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
             }*/
         } else if (mData.get(position) instanceof UserFriendResponse.DataBeanX.DataBean) {
-            Presenter.getInstance(context).getPlaceErrorImage(holder.shareIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar(),
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.shareIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar(),
+                    R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.shareIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar(),
                     R.drawable.default_head_ico, R.drawable.default_head_ico);
             /*if (((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);

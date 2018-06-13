@@ -58,6 +58,7 @@ import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -488,22 +489,26 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     }
 
     private void showA(String imagePath) {
-        Presenter.getInstance(getContext()).getImage(imagePath, picA);
+        /*Presenter.getInstance(getContext()).getImage(imagePath, picA);*/
+        LoadBitmap.glideLoad(getActivity(), picA, imagePath);
         picB.setVisibility(View.VISIBLE);
     }
 
     private void showB(String imagePath) {
-        Presenter.getInstance(getContext()).getImage(imagePath, picB);
+        /*Presenter.getInstance(getContext()).getImage(imagePath, picB);*/
+        LoadBitmap.glideLoad(getActivity(), picB, imagePath);
         picC.setVisibility(View.VISIBLE);
     }
 
     private void showC(String imagePath) {
-        Presenter.getInstance(getContext()).getImage(imagePath, picC);
+        /*Presenter.getInstance(getContext()).getImage(imagePath, picC);*/
+        LoadBitmap.glideLoad(getActivity(), picC, imagePath);
         picD.setVisibility(View.VISIBLE);
     }
 
     private void showD(String imagePath) {
-        Presenter.getInstance(getContext()).getImage(imagePath, picD);
+        /*Presenter.getInstance(getContext()).getImage(imagePath, picD);*/
+        LoadBitmap.glideLoad(getActivity(), picD, imagePath);
     }
 
     public class LogoUpTask extends AsyncTask<List<String>, Integer, List<String>> {

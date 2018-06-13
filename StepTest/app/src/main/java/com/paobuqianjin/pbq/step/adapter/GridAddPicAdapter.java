@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.Utils;
 
 import java.util.ArrayList;
@@ -21,13 +23,13 @@ public class GridAddPicAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
     private int selectedPosition = -1;
-    private Context mContext;
+    private Activity mContext;
     private int mMaxSize = 12;
     private List<SelectPicBean> mData = new ArrayList<>();
 
     private OnDeleteListener listener;
 
-    public GridAddPicAdapter(Context context, int maxSize) {
+    public GridAddPicAdapter(Activity context, int maxSize) {
         inflater = LayoutInflater.from(context);
         mContext = context;
         mMaxSize = maxSize;
@@ -89,11 +91,13 @@ public class GridAddPicAdapter extends BaseAdapter {
         } else {
             holder.image.setVisibility(View.VISIBLE);
             if (TextUtils.isEmpty(mData.get(position).getFileUrl())) {
-                Presenter.getInstance(mContext).getImage(holder.image, mData.get(position).getImageUrl(),
-                        Utils.dip2px(mContext, 100), Utils.dip2px(mContext, 100));
+     /*           Presenter.getInstance(mContext).getImage(holder.image, mData.get(position).getImageUrl(),
+                        Utils.dip2px(mContext, 100), Utils.dip2px(mContext, 100));*/
+                LoadBitmap.glideLoad(mContext, holder.image, mData.get(position).getImageUrl());
             } else {
-                Presenter.getInstance(mContext).getImage(mData.get(position).getFileUrl(), holder.image,
-                        Utils.dip2px(mContext, 100), Utils.dip2px(mContext, 100));
+/*                Presenter.getInstance(mContext).getImage(mData.get(position).getFileUrl(), holder.image,
+                        Utils.dip2px(mContext, 100), Utils.dip2px(mContext, 100));*/
+                LoadBitmap.glideLoad(mContext, holder.image, mData.get(position).getFileUrl());
             }
             holder.delete.setVisibility(View.VISIBLE);
             holder.delete.setOnClickListener(new View.OnClickListener() {

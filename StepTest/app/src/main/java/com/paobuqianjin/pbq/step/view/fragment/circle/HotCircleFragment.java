@@ -33,6 +33,7 @@ import com.paobuqianjin.pbq.step.presenter.im.InOutCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.QueryRedPkgInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
@@ -204,8 +205,10 @@ public class HotCircleFragment extends BaseFragment {
 //                        live_a_desc.setVisibility(View.VISIBLE);
                         iv_live_b.setVisibility(View.VISIBLE);
 //                        live_b_desc.setVisibility(View.VISIBLE);
-                        Presenter.getInstance(getActivity()).getImage(iv_live_a, listBean.get(0).getConver());
-                        Presenter.getInstance(getActivity()).getImage(iv_live_b, listBean.get(1).getConver());
+                        /*Presenter.getInstance(getActivity()).getImage(iv_live_a, listBean.get(0).getConver());
+                        Presenter.getInstance(getActivity()).getImage(iv_live_b, listBean.get(1).getConver());*/
+                        LoadBitmap.glideLoad(getActivity(), iv_live_a, listBean.get(0).getConver());
+                        LoadBitmap.glideLoad(getActivity(), iv_live_b, listBean.get(1).getConver());
                         iv_live_a.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -237,7 +240,8 @@ public class HotCircleFragment extends BaseFragment {
 //                        live_a_desc.setVisibility(View.VISIBLE);
                         iv_live_b.setVisibility(View.INVISIBLE);
 //                        live_b_desc.setVisibility(View.INVISIBLE);
-                        Presenter.getInstance(getActivity()).getImage(iv_live_a, listBean.get(0).getConver());
+                        /*Presenter.getInstance(getActivity()).getImage(iv_live_a, listBean.get(0).getConver());*/
+                        LoadBitmap.glideLoad(getActivity(), iv_live_a, listBean.get(0).getConver());
                         iv_live_a.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -364,14 +368,16 @@ public class HotCircleFragment extends BaseFragment {
         myHotLa.setVisibility(View.VISIBLE);
         myHotCircleTV.setText(name);
 
-        Presenter.getInstance(mContext).getImage(myHotCircleIV, urlImage);
+       /* Presenter.getInstance(mContext).getImage(myHotCircleIV, urlImage);*/
+        LoadBitmap.glideLoad(getActivity(), myHotCircleIV, urlImage);
 
     }
 
     public void setMyHotLb(String name, String urlImage) {
         myHotLb.setVisibility(View.VISIBLE);
         secondHotCircleTV.setText(name);
-        Presenter.getInstance(mContext).getImage(secondHotCircleIV, urlImage);
+        /*Presenter.getInstance(mContext).getImage(secondHotCircleIV, urlImage);*/
+        LoadBitmap.glideLoad(getActivity(), secondHotCircleIV, urlImage);
     }
 
     private UiHotCircleInterface uiHotCircleInterface = new UiHotCircleInterface() {

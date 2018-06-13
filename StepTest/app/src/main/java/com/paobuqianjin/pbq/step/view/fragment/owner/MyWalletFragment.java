@@ -173,7 +173,8 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
+        incomeRel = (RelativeLayout) viewRoot.findViewById(R.id.income_rel);
+        incomeRel.setBackground(getDrawableResource(R.drawable.wallet_bg));
         setToolBarListener(toolBarListener);
         crash = (Button) viewRoot.findViewById(R.id.crash);
         fragments = new Fragment[]{yesterDayIncomeFragment, monthIncomeFragment, allIncomeFragment};

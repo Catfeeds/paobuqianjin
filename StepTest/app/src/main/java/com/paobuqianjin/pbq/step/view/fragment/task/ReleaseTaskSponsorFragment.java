@@ -137,7 +137,7 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
 
     private ChooseOneItemWheelPopWindow wheelPopWindow;
     private final int DEVALUE_STEP = 10000;//默认步数
-    private String[] targetStepArr = {"100", "5000", "6000", "7000", "8000", "9000", "10000"};
+    private String[] targetStepArr = {"3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"};
 
     @Override
     protected int getLayoutResId() {
@@ -414,7 +414,7 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                 sponorMsgDesDetail.setText(data.getStringExtra("name"));
             }
         } else if (requestCode == REQUEST_PAY_SPONSOR_PKG && resultCode == RESULT_OK) {
-            LocalLog.d(TAG,"支付完成");
+            LocalLog.d(TAG, "支付完成");
             getActivity().finish();
         }
     }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.SelectTaskFriendAdapter;
 
@@ -51,7 +52,8 @@ public class SelectVipAdapter extends RecyclerView.Adapter<SelectVipAdapter.Sele
     public void onBindViewHolder(SelectTaskFriendViewHolder holder, int position) {
         if (mData.get(position) instanceof UserFriendResponse.DataBeanX.DataBean) {
             LocalLog.d(TAG, " before mData.get(position) " + mData.get(position).toString());
-            Presenter.getInstance(context).getPlaceErrorImage(holder.dearIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.dearIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.dearIcon, ((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.dearName.setText(((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.position = position;
             holder.is_distrubute = mData.get(position).getVip();

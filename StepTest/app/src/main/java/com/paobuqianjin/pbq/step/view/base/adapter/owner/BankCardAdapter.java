@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BankListResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 
 import java.util.List;
 
@@ -23,10 +25,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class BankCardAdapter extends RecyclerView.Adapter<BankCardAdapter.BankCardViewHolder> {
-    private Context mContext;
+    private Activity mContext;
     private List<?> mData;
 
-    public BankCardAdapter(Context context, List<?> data) {
+    public BankCardAdapter(Activity context, List<?> data) {
         mContext = context;
         mData = data;
     }
@@ -34,7 +36,8 @@ public class BankCardAdapter extends RecyclerView.Adapter<BankCardAdapter.BankCa
     @Override
     public void onBindViewHolder(BankCardViewHolder holder, int position) {
         if (mData.get(position) instanceof BankListResponse.CardBean) {
-            Presenter.getInstance(mContext).getImage(holder.bankCardIco, ((BankListResponse.CardBean) mData.get(position)).getImg_url());
+            /*Presenter.getInstance(mContext).getImage(holder.bankCardIco, ((BankListResponse.CardBean) mData.get(position)).getImg_url());*/
+            LoadBitmap.glideLoad(mContext, holder.bankCardIco, ((BankListResponse.CardBean) mData.get(position)).getImg_url());
             holder.cardNoStr = ((BankListResponse.CardBean) mData.get(position)).getBank_card();
             String cardStr = holder.cardNoStr;
             holder.bankCardFrom.setText(((BankListResponse.CardBean) mData.get(position)).getBank_name());

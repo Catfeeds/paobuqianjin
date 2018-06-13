@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
@@ -166,10 +167,12 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
 
         dialog = new ProgressDialog(getContext());
         UserInfoResponse.DataBean userInfo = Presenter.getInstance(getContext()).getCurrentUser();
-        web = new UMWeb(NetApi.urlShareIc + userInfo.getNo());
-        web.setTitle("跑步钱进");
-        web.setThumb(new UMImage(getContext(), R.mipmap.app_icon));
-        web.setDescription("邀请好友");
+        if (userInfo != null) {
+            web = new UMWeb(NetApi.urlShareIc + userInfo.getNo());
+            web.setTitle("跑步钱进");
+            web.setThumb(new UMImage(getContext(), R.mipmap.app_icon));
+            web.setDescription("邀请好友");
+        }
         adapter = new InviteDanAdapter(getContext(), null);
         inviteDanFragment.setDanAdapter(adapter);
         loadData(inviteDan);
@@ -288,12 +291,20 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             switch (view.getId()) {
                 case R.id.friend_circle:
                     share_media = SHARE_MEDIA.WEIXIN_CIRCLE;
+                    if (web == null) {
+                        ToastUtils.showLongToast(getContext(), "分享失败");
+                        return;
+                    }
                     new ShareAction(getActivity()).withMedia(web)
                             .setPlatform(share_media)
                             .setCallback(shareListener).share();
                     break;
                 case R.id.we_chat:
                     share_media = SHARE_MEDIA.WEIXIN;
+                    if (web == null) {
+                        ToastUtils.showLongToast(getContext(), "分享失败");
+                        return;
+                    }
                     new ShareAction(getActivity()).withMedia(web)
                             .setPlatform(share_media)
                             .setCallback(shareListener).share();
@@ -318,6 +329,10 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
                         public void onAction(List<String> permissions) {
                             LocalLog.d(TAG, "获取权限成功");
                             share_media = SHARE_MEDIA.QQ;
+                            if (web == null) {
+                                ToastUtils.showLongToast(getContext(), "分享失败");
+                                return;
+                            }
                             new ShareAction(getActivity()).withMedia(web)
                                     .setPlatform(share_media)
                                     .setCallback(shareListener).share();

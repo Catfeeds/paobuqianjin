@@ -64,6 +64,10 @@ public class CircleHonorFragment extends BaseFragment{
     }
 
     @Override
+    protected void initView(View viewRoot) {
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);

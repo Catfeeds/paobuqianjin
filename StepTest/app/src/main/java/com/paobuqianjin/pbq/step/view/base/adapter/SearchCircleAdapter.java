@@ -30,6 +30,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InOutCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 
@@ -103,7 +104,8 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
         LocalLog.d(TAG, "city = " + tmpData.getCity() +
                 ", name =" + tmpData.getName() + "logo url = " + tmpData.getLogo() + " ,member_number ="
                 + tmpData.getMember_number());
-        Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, tmpData.getLogo());
+        /*Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, tmpData.getLogo());*/
+        LoadBitmap.glideLoad(activity, holder.circleLogoSearch, tmpData.getLogo());
         holder.locationDescSearchList.setText(tmpData.getCity());
         holder.searchCircleDesListName.setText(tmpData.getName());
         String sAgeFormat = mContext.getResources().getString(R.string.member_number);

@@ -17,6 +17,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 
@@ -66,7 +67,9 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
     private void updateListItem(TopLevelViewHolder holder, int position) {
         if (mData.get(position) instanceof DynamicCommentListResponse.DataBeanX.DataBean) {
             LocalLog.d(TAG, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).toString());
-            Presenter.getInstance(context).getPlaceErrorImage(holder.contentUserIcon, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+/*            Presenter.getInstance(context).getPlaceErrorImage(holder.contentUserIcon, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, holder.contentUserIcon, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.dearName = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getNickname();
             holder.userContentName.setText(((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getNickname());

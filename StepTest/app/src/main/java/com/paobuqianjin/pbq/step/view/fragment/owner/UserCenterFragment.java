@@ -28,6 +28,7 @@ import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.UserDynamicRecordAdapter;
@@ -195,7 +196,9 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                     String stepFormat = getContext().getResources().getString(R.string.user_target);
                     String stepStr = String.format(stepFormat, ((UserCenterResponse) object).getData().getUser_data().getTarget_step());
                     targerNum.setText(stepStr);
-                    Presenter.getInstance(getContext()).getPlaceErrorImage(userHeadIco, ((UserCenterResponse) object).getData().getUser_data().getAvatar(),
+/*                    Presenter.getInstance(getContext()).getPlaceErrorImage(userHeadIco, ((UserCenterResponse) object).getData().getUser_data().getAvatar(),
+                            R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+                    LoadBitmap.glideLoad(getActivity(), userHeadIco, ((UserCenterResponse) object).getData().getUser_data().getAvatar(),
                             R.drawable.default_head_ico, R.drawable.default_head_ico);
                     if (((UserCenterResponse) object).getData().getUser_data().getCity().equals(((UserCenterResponse) object).getData().getUser_data().getProvince())) {
                         locationCity.setText(((UserCenterResponse) object).getData().getUser_data().getCity());
@@ -215,9 +218,9 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                     }
                     if (((UserCenterResponse) object).getData().getUser_data().getVip() == 1
                             || ((UserCenterResponse) object).getData().getUser_data().getCusvip() == 1) {
-                        if(((UserCenterResponse) object).getData().getUser_data().getCusvip() == 0){
+                        if (((UserCenterResponse) object).getData().getUser_data().getCusvip() == 0) {
 
-                        }else{
+                        } else {
                             vipFlg.setImageResource(R.drawable.vip_sponsor);
                         }
                         vipFlg.setVisibility(View.VISIBLE);
@@ -302,7 +305,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                                 }
                                 dynamicRecordRecycler.addItemDecoration(new UserDynamicRecordAdapter.SpaceItemDecoration(45));
                                 if (adapter == null) {
-                                    adapter = new UserDynamicRecordAdapter(getContext(), map, UserCenterFragment.this);
+                                    adapter = new UserDynamicRecordAdapter(getActivity(), map, UserCenterFragment.this);
                                     dynamicRecordRecycler.setAdapter(adapter);
                                 }
                             }

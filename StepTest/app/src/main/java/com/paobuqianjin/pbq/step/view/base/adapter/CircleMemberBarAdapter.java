@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.fragment.circle.CircleMemberManagerFragment;
 
@@ -30,12 +32,12 @@ public class CircleMemberBarAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private int DEFAULT_COUNT = 2;
     private CircleMemberResponse.DataBeanX.DataBean mData;
-    private Context context;
+    private Activity context;
     private CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface;
     private CircleMemberViewHolder circleMemberViewHolder;
     private CircleMemberRightViewHolder circleMemberRightViewHolder;
 
-    public CircleMemberBarAdapter(Context context, CircleMemberResponse.DataBeanX.DataBean data, CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
+    public CircleMemberBarAdapter(Activity context, CircleMemberResponse.DataBeanX.DataBean data, CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
         mData = data;
         this.context = context;
         this.opCallBackInterface = opCallBackInterface;
@@ -68,7 +70,8 @@ public class CircleMemberBarAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private void updateListItem(RecyclerView.ViewHolder holder, int position) {
         if (position == 0) {
-            Presenter.getInstance(context).getPlaceErrorImage(((CircleMemberViewHolder) holder).memberHeadIconInCircle, mData.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+           /* Presenter.getInstance(context).getPlaceErrorImage(((CircleMemberViewHolder) holder).memberHeadIconInCircle, mData.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+            LoadBitmap.glideLoad(context, ((CircleMemberViewHolder) holder).memberHeadIconInCircle, mData.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             LocalLog.d(TAG, "" + mData.toString());
 
             if ("".equals(mData.getCirclenickname())) {

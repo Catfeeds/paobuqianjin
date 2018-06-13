@@ -14,6 +14,7 @@ import com.lwkandroid.imagepicker.widget.photoview.OnPhotoTapListener;
 import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 
 import java.util.List;
 
@@ -56,7 +57,8 @@ public class ImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image, container, false);
         image = (PhotoView) view.findViewById(R.id.image);
-        Presenter.getInstance(getContext()).getOriginImage(mData.get(imageUrl).getImagePath(), image);
+        /*Presenter.getInstance(getContext()).getOriginImage(mData.get(imageUrl).getImagePath(), image);*/
+        LoadBitmap.glideLoad(getActivity(), image, mData.get(imageUrl).getImagePath());
         image.setOnPhotoTapListener(new OnPhotoTapListener() {
             @Override
             public void onPhotoTap(ImageView view, float x, float y) {

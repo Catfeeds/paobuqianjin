@@ -56,6 +56,7 @@ import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.EditCircleInterface;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
@@ -267,7 +268,8 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                 moneyMumPan = (RelativeLayout) viewRoot.findViewById(R.id.money_mum_pan);
                 switchCircleMoneyAddOff = (ImageView) viewRoot.findViewById(R.id.switch_circle_money_add_off);
                 logoCirclePic = (CircleImageView) viewRoot.findViewById(R.id.logo_circle_pic);
-                Presenter.getInstance(getContext()).getImage(logoCirclePic, dataBean.getLogo());
+                /*Presenter.getInstance(getContext()).getImage(logoCirclePic, dataBean.getLogo());*/
+                LoadBitmap.glideLoad(getActivity(), logoCirclePic, dataBean.getLogo());
                 if (1 == dataBean.getIs_recharge()) {
                     switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a));
                     switchCircleMoneyAddOff.setAlpha(0.5f);
@@ -603,8 +605,9 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
             }
             LocalLog.d(TAG, "content = " + content);
             if (resultList != null && resultList.size() == 1) {
-                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), logoCirclePic, resultList.get(0).getWidth() / 4
-                        , resultList.get(0).getHeight() / 4);
+/*                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), logoCirclePic, resultList.get(0).getWidth() / 4
+                        , resultList.get(0).getHeight() / 4);*/
+                LoadBitmap.glideLoad(getActivity(), logoCirclePic, resultList.get(0).getImagePath());
                 localAvatar = resultList.get(0).getImagePath();
             } else {
                 LocalLog.d(TAG, "未知操作");
@@ -613,7 +616,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         }
     }
 
-    @OnClick({R.id.stand_circle_pan, R.id.logo_circle_pan, R.id.edit_circle_confim,R.id.password_circle_switch})
+    @OnClick({R.id.stand_circle_pan, R.id.logo_circle_pan, R.id.edit_circle_confim, R.id.password_circle_switch})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.stand_circle_pan:
@@ -669,7 +672,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                 LocalLog.d(TAG, "path = " + path);
                 ResultHelper result = null;
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                result = putObjectSample.start(path,getContext().getApplicationContext());
+                result = putObjectSample.start(path, getContext().getApplicationContext());
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
                 url = result.cosXmlResult.accessUrl;
                 LocalLog.d(TAG, "url = " + url);

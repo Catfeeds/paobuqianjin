@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
@@ -30,6 +31,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InOutCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 
@@ -92,7 +94,8 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
         LocalLog.d(TAG, "city = " + tmpData.getCity() +
                 ", name =" + tmpData.getName() + "logo url = " + tmpData.getLogo() + " ,member_number ="
                 + tmpData.getMember_number());
-        Presenter.getInstance(mContext).getImage(holder.circleLogo, tmpData.getLogo());
+        /*Presenter.getInstance(mContext).getImage(holder.circleLogo, tmpData.getLogo());*/
+        LoadBitmap.glideLoad(activity, holder.circleLogo, tmpData.getLogo(), R.drawable.bitmap_null, R.drawable.bitmap_null);
         holder.circleLocation.setText(tmpData.getCity());
         holder.circleName.setText(tmpData.getName());
         String sAgeFormat = mContext.getResources().getString(R.string.member_number);

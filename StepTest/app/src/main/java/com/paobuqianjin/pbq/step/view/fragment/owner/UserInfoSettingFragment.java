@@ -55,6 +55,7 @@ import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -228,7 +229,8 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 String paramStr = new Gson().toJson(userInfo);
                 putUserInfoParam = new Gson().fromJson(paramStr, PutUserInfoParam.class);
 
-                Presenter.getInstance(getContext()).getPlaceErrorImage(headIco, userInfo.getAvatar(),R.drawable.default_head_ico,R.drawable.default_head_ico);
+                /*Presenter.getInstance(getContext()).getPlaceErrorImage(headIco, userInfo.getAvatar(),R.drawable.default_head_ico,R.drawable.default_head_ico);*/
+                LoadBitmap.glideLoad(getActivity(), headIco, userInfo.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                 dearNameSetting.setText(userInfo.getNickname());
                 if (userInfo.getSex() == 1) {
                     maleText.setText("男");
@@ -389,8 +391,9 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             }
             LocalLog.d(TAG, "content = " + content);
             if (resultList != null && resultList.size() == 1 && headIco != null) {
-                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), headIco, resultList.get(0).getWidth() / 4
-                        , resultList.get(0).getHeight() / 4);
+/*                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), headIco, resultList.get(0).getWidth() / 4
+                        , resultList.get(0).getHeight() / 4);*/
+                LoadBitmap.glideLoad(getActivity(), headIco, resultList.get(0).getImagePath());
                 localAvatar = resultList.get(0).getImagePath();
             } else {
                 LocalLog.d(TAG, "未知操作");
@@ -729,7 +732,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 LocalLog.d(TAG, "distance = " + distance);
                 if (distance > 0) {
                     LocalLog.d(TAG, "unEffect time");
-                    ToastUtils.showShortToast(getContext(),"请选择正确的生日");
+                    ToastUtils.showShortToast(getContext(), "请选择正确的生日");
                     popupSelectWindow.dismiss();
                     return;
                 }

@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.support.v4.app.Fragment;
@@ -35,11 +36,11 @@ import butterknife.Bind;
 */
 public class UserDynamicRecordAdapter extends RecyclerView.Adapter<UserDynamicRecordAdapter.UserDynamicRecordViewHolder> {
     private final static String TAG = UserDynamicRecordAdapter.class.getSimpleName();
-    Context context;
+    Activity context;
     List<List> mData;
     private Fragment fragment;
 
-    public UserDynamicRecordAdapter(Context context, List<List> map, Fragment fragment) {
+    public UserDynamicRecordAdapter(Activity context, List<List> map, Fragment fragment) {
         this.context = context;
         this.mData = map;
         this.fragment = fragment;

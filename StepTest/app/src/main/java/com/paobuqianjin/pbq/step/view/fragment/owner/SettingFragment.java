@@ -18,6 +18,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.CacheCleanManager;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.AboutActivity;
 import com.paobuqianjin.pbq.step.view.activity.AccoutManagerActivity;
@@ -112,7 +113,8 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
         if (intent != null) {
             userInfo = (UserInfoResponse.DataBean) intent.getSerializableExtra("userinfo");
             if (userInfo != null) {
-                Presenter.getInstance(getContext()).getPlaceErrorImage(userIco, userInfo.getAvatar(),R.drawable.default_head_ico,R.drawable.default_head_ico);
+                /*Presenter.getInstance(getContext()).getPlaceErrorImage(userIco, userInfo.getAvatar(),R.drawable.default_head_ico,R.drawable.default_head_ico);*/
+                LoadBitmap.glideLoad(getActivity(), userIco, userInfo.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                 if (userInfo.getVip() == 1) {
                     vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
                     /*vipFlg.setVisibility(View.VISIBLE);*/
@@ -206,10 +208,11 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                         String ico = data.getStringExtra(getContext().getPackageName() + "avatar");
                         LocalLog.d(TAG, "ico = " + ico);
                         if (!TextUtils.isEmpty(ico)) {
-                            Presenter.getInstance(getContext()).getImage(ico, userIco);
+                            /*Presenter.getInstance(getContext()).getImage(ico, userIco);*/
+                            LoadBitmap.glideLoad(getActivity(), userIco, ico);
                         }
                         UserInfoResponse.DataBean dataBean = (UserInfoResponse.DataBean) data.getSerializableExtra("userinfo");
-                        if (dataBean!=null) userInfo = dataBean;
+                        if (dataBean != null) userInfo = dataBean;
                     }
                 }
                 break;

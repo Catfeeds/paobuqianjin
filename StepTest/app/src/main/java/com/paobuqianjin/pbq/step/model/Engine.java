@@ -161,6 +161,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.Constants;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.MD5;
 import com.paobuqianjin.pbq.step.utils.NetApi;
@@ -397,12 +398,13 @@ public final class Engine {
             Picasso.setSingletonInstance(picasso);
         }
     }
+
     private static Transformation getTransformation(final ImageView view) {
         return new Transformation() {
             @Override
             public Bitmap transform(Bitmap source) {
                 int targetWidth = view.getWidth();
-                LocalLog.d(TAG,"targetWidth  =" + targetWidth);
+                LocalLog.d(TAG, "targetWidth  =" + targetWidth);
                 //返回原图
                 if (source.getWidth() == 0 || source.getWidth() < targetWidth) {
                     return source;
@@ -2078,7 +2080,8 @@ public final class Engine {
                                 myName.setText(circleDetailResponse.getData().getName());
                             }
                             if (imageView != null) {
-                                Presenter.getInstance(mContext).getImage(imageView, circleDetailResponse.getData().getLogo());
+                                /*Presenter.getInstance(mContext).getImage(imageView, circleDetailResponse.getData().getLogo());*/
+                                LoadBitmap.glideLoad(mContext, imageView, circleDetailResponse.getData().getLogo());
                             }
                             if (stepNum != null) {
                                 stepNum.setText(String.valueOf(circleDetailResponse.getData().getTarget()));
@@ -2364,8 +2367,12 @@ public final class Engine {
                             return;
                         }
                         if (innerCallBack != null) {
-                            ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
-                            innerCallBack.innerCallBack(errorCode);
+                            try {
+                                ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
+                                innerCallBack.innerCallBack(errorCode);
+                            } catch (JsonSyntaxException j) {
+                                j.printStackTrace();
+                            }
                         }
                     }
 
@@ -2697,7 +2704,7 @@ public final class Engine {
 
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                if(activity == null) return;
+                if (activity == null) return;
                 if (errorBean != null) {
                     PaoToastUtils.showShortToast(activity, errorBean.getMessage());
                 }

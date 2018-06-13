@@ -19,6 +19,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.DanActivity;
 import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
@@ -376,7 +377,8 @@ public final class OwnerFragment extends BaseFragment {
                 Presenter.getInstance(getContext()).setAvatar(getContext(), userAvatar);
                 Presenter.getInstance(getContext()).setNo(userInfoResponse.getData().getNo());
                 Presenter.getInstance(getContext()).setNickName(getContext(), userInfoResponse.getData().getNickname());
-                Presenter.getInstance(getContext()).getPlaceErrorImage(headIcon, userInfoResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+                /*Presenter.getInstance(getContext()).getPlaceErrorImage(headIcon, userInfoResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+                LoadBitmap.glideLoad(getActivity(), headIcon, userInfoResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                 userName.setText(userInfoResponse.getData().getNickname());
                 userId.setText("跑步钱进号:" + userInfoResponse.getData().getNo());
                 circle.setText(String.valueOf(userInfoResponse.getData().getCircleCount()));

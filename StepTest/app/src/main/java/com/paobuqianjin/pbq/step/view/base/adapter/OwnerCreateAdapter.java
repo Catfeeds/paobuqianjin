@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicAllIndexResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.MemberManagerActivity;
@@ -30,7 +32,7 @@ import java.util.List;
 
 public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.OwnerCreateViewHolder> {
     private final static String TAG = OwnerCreateAdapter.class.getSimpleName();
-    private Context mContext;
+    private Activity mContext;
     private List<?> data;
     private Fragment fragment;
     private final static String CIRCLE_ID = "id";
@@ -41,7 +43,7 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
     private MyJoinCircleResponse.DataBeanX.DataBean tmpData1;
     private final static String ACTION_ENTER_ICON = "coma.paobuqian.pbq.step.ICON_ACTION";
 
-    public OwnerCreateAdapter(Context context, final Fragment fragment, List<?> data) {
+    public OwnerCreateAdapter(Activity context, final Fragment fragment, List<?> data) {
         super();
         this.data = data;
         mContext = context;
@@ -118,7 +120,8 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
             LocalLog.d(TAG, "city = " + tmpData.getCity() +
                     ", name =" + tmpData.getName() + "logo url = " + tmpData.getLogo() + " ,member_number ="
                     + tmpData.getMember_number());
-            Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, tmpData.getLogo());
+            /*Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, tmpData.getLogo());*/
+            LoadBitmap.glideLoad(mContext, holder.circleLogoSearch, tmpData.getLogo());
             holder.locationDescSearchList.setText(tmpData.getCity());
             holder.searchCircleDesListName.setText(tmpData.getName());
             String sAgeFormat = mContext.getResources().getString(R.string.member_number);
@@ -137,7 +140,8 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
             LocalLog.d(TAG, "city = " + tmpData1.getCity() +
                     ", name =" + tmpData1.getName() + "logo url = " + tmpData1.getLogo() + " ,member_number ="
                     + tmpData1.getMember_number());
-            Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, tmpData1.getLogo());
+            /*Presenter.getInstance(mContext).getImage(holder.circleLogoSearch, tmpData1.getLogo());*/
+            LoadBitmap.glideLoad(mContext, holder.circleLogoSearch, tmpData1.getLogo());
             holder.locationDescSearchList.setText(tmpData1.getCity());
             holder.searchCircleDesListName.setText(tmpData1.getName());
             String sAgeFormat = mContext.getResources().getString(R.string.member_number);

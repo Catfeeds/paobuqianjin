@@ -28,6 +28,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.BitmapUtil;
 import com.paobuqianjin.pbq.step.utils.Defaultcontent;
+import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.Utils;
@@ -170,9 +171,11 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
         if (!TextUtils.isEmpty(logo)) {
             if (logo.startsWith("/")) {
                 LocalLog.d(TAG, "本地路径");
-                Presenter.getInstance(getContext()).getImage(logo, circleLogo);
+                /*Presenter.getInstance(getContext()).getImage(logo, circleLogo);*/
+                LoadBitmap.glideLoad(getActivity(), circleLogo, logo);
             } else {
-                Presenter.getInstance(getContext()).getPlaceErrorImage(circleLogo, logo, R.drawable.default_head_ico, R.drawable.default_head_ico);
+                /*Presenter.getInstance(getContext()).getPlaceErrorImage(circleLogo, logo, R.drawable.default_head_ico, R.drawable.default_head_ico);*/
+                LoadBitmap.glideLoad(getActivity(), circleLogo, logo, R.drawable.default_head_ico, R.drawable.default_head_ico);
             }
         }
         circleName.setText(name);
