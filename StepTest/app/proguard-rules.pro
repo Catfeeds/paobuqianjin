@@ -43,7 +43,8 @@
 	-keep public interface com.umeng.scrshot.**
 	-keep class com.android.dingtalk.share.ddsharemodule.** { *; }
 	-keep public class com.umeng.socialize.* {*;}
-
+    #
+    -keep class com.bumptech.glide.integration.okhttp3.OkHttpGlideModule
 
 	-keep class com.facebook.**
 	-keep class com.facebook.** { *; }

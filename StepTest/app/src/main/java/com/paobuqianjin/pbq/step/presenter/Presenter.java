@@ -487,7 +487,7 @@ public final class Presenter {
     private void getTest() {
         LocalLog.d(TAG, "getTest() enter  批量测试所有接口API");
     }
-
+/*
     public void getImage(ImageView view, String urlImg) {
         if ("".equals(urlImg)) {
             return;
@@ -530,7 +530,7 @@ public final class Presenter {
             return;
         }
         engine.getOriginImage(fileUrl, imageView);
-    }
+    }*/
 
     //TODO 加入圈子
     public void joinCircle(JoinCircleParam joinCircleParam) {

@@ -390,13 +390,13 @@ public final class Engine {
     private NetworkPolicy networkPolicy = NetworkPolicy.NO_STORE;
 
     private Engine() {
-        if (picasso == null) {
+/*        if (picasso == null) {
             picasso = new Picasso.Builder(mContext)
                     .downloader(new OkHttp3Downloader(OkHttpUtils.getInstance().getOkHttpClient()))
                     .build();
             LocalLog.d(TAG, " 设置Picasso ");
             Picasso.setSingletonInstance(picasso);
-        }
+        }*/
     }
 
     private static Transformation getTransformation(final ImageView view) {
@@ -2955,28 +2955,28 @@ public final class Engine {
                 .execute(new NetStringCallBack(friendHonorDetailInterface, COMMAND_FRIEND_HONOR_WEEK));
     }
 
-    public void getImage(String fileUrl, final ImageView imageView) {
+/*    public void getImage(String fileUrl, final ImageView imageView) {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).into(imageView);
-    }
+    }*/
 
-    public void getOriginImage(String fileUrl, final ImageView imageView) {
+    /*public void getOriginImage(String fileUrl, final ImageView imageView) {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).into(imageView);
-    }
+    }*/
 
-    public void getImage(String fileUrl, final ImageView imageView, int targetWidth, int targetHeight) {
+    /*public void getImage(String fileUrl, final ImageView imageView, int targetWidth, int targetHeight) {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(targetWidth, targetHeight).into(imageView);
-    }
+    }*/
 
-    //网络图片获取接口
+    /*//网络图片获取接口
     public void getImage(ImageView imageView, String urlImage) {
         LocalLog.d(TAG, "getImage() enter");
         Picasso picasso = Picasso.with(mContext);
@@ -2988,30 +2988,9 @@ public final class Engine {
         } else {
             picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(imageView)).into(imageView);
         }
+    }*/
 
-        //Picasso.with(mContext).load(urlImage).into(imageView);
-/*        OkHttpUtils
-                .get()
-                .url(urlImage)
-                .build()
-                .connTimeOut(20000)
-                .readTimeOut(20000)
-                .writeTimeOut(20000)
-                .execute(new BitmapCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int i, Object o) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onResponse(Bitmap bitmap, int i) {
-                        if(imageView != null){
-                        imageView.setImageBitmap(bitmap);}
-                    }
-                });*/
-    }
-
-    public void getPlaceErrorImage(ImageView view, String urlImage, int placeholderImageId, int errorId) {
+    /*public void getPlaceErrorImage(ImageView view, String urlImage, int placeholderImageId, int errorId) {
         if (TextUtils.isEmpty(urlImage)) {
             picasso.load(placeholderImageId).config(Bitmap.Config.RGB_565).transform(getTransformation(view)).into(view);
             return;
@@ -3025,8 +3004,8 @@ public final class Engine {
                     .placeholder(ContextCompat.getDrawable(mContext, placeholderImageId))
                     .error(ContextCompat.getDrawable(mContext, errorId)).fit().centerCrop().into(view);
         }
-    }
-
+    }*/
+/*
     //网络图片获取接口
     public void getImage(ImageView imageView, String urlImage, int targetWidth, int targetHeight) {
         LocalLog.d(TAG, "getImage() enter");
@@ -3039,7 +3018,7 @@ public final class Engine {
         } else {
             picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(imageView)).resize(targetWidth, targetHeight).into(imageView);
         }
-    }
+    }*/
 
     //TODO sponsor vip
     public void postVipSponsorNo(VipPostParam vipPostParam, final InnerCallBack innerCallBack) {
