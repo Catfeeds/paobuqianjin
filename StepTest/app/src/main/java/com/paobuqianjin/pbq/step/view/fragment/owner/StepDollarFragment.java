@@ -177,6 +177,9 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment {
     }
 
     public void setIndicator(TabLayout tab, int leftDip, int rightDip) {
+        if (tab == null) {
+            return;
+        }
         Class<?> tabLayout = tab.getClass();
         Field tabStrip = null;
         try {

@@ -15,7 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorInfoActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
@@ -25,17 +26,22 @@ import com.paobuqianjin.pbq.step.customview.LimitLengthFilter;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.GetUserBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskSponsorRespone;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.TaskSponsorInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import butterknife.Bind;
@@ -137,8 +143,8 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
 
     private ChooseOneItemWheelPopWindow wheelPopWindow;
     private final int DEVALUE_STEP = 10000;//默认步数
-    private String[] targetStepArr = {"3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"};
-
+   /* private String[] targetStepArr = {"3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"};*/
+   private ArrayList<String> targetStepArr = new ArrayList<>();
     @Override
     protected int getLayoutResId() {
         return R.layout.release_task_sponor_fg;
@@ -161,9 +167,29 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         targetStepDayNum = (EditText) viewRoot.findViewById(R.id.target_step_day_num);
         targetStepDayNum.setText(DEVALUE_STEP + "");
+        Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlTarget, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                LocalLog.d(TAG, "");
+                try {
+                    CircleTargetResponse circleTargetResponse = new Gson().fromJson(s, CircleTargetResponse.class);
+                    if (circleTargetResponse.getData() != null && circleTargetResponse.getData().size() > 0) {
+                        for (int i = 0; i < circleTargetResponse.getData().size(); i++) {
+                            targetStepArr.add(String.valueOf(circleTargetResponse.getData().get(i).getTarget()));
+                        }
+                    }
+                } catch (JsonSyntaxException j) {
+                    j.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
     }
 
     @Override
@@ -196,8 +222,8 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
             case R.id.day_step_target_span:
             case R.id.target_step_day_num:
                 LocalLog.d(TAG, "商家设置任务目标步数");
-                if (wheelPopWindow == null) {
-                    wheelPopWindow = new ChooseOneItemWheelPopWindow(getActivity(), Arrays.asList(targetStepArr));
+                if (wheelPopWindow == null && targetStepArr.size() >0) {
+                    wheelPopWindow = new ChooseOneItemWheelPopWindow(getActivity(), targetStepArr);
                     wheelPopWindow.setItemConfirmListener(new ChooseOneItemWheelPopWindow.OnWheelItemConfirmListener() {
                         @Override
                         public void onItemSelectLis(String result) {
@@ -272,8 +298,11 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                     return;
                 }
                 try {
-                    if (TextUtils.isEmpty(targetTaskMoneyNumStr.trim()) || Integer.parseInt(targetTaskMoneyNumStr) < 50) {
-                        ToastUtils.showShortToast(getActivity(), "商家红包单日金额不能低于50元");
+/*                    if (TextUtils.isEmpty(targetTaskMoneyNumStr.trim()) || Integer.parseInt(targetTaskMoneyNumStr) < 10) {
+                        ToastUtils.showShortToast(getActivity(), "商家每次发红包金额不低于10元");
+                        return;
+                    }*/
+                    if (TextUtils.isEmpty(targetTaskMoneyNumStr.trim())) {
                         return;
                     }
                 } catch (NumberFormatException e) {
@@ -334,7 +363,7 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
         if (!isAdded()) {
             return;
         }
-        ToastUtils.showShortToast(getActivity(), errorCode.getMessage());
+        PaoToastUtils.showShortToast(getActivity(), errorCode.getMessage());
     }
 
     @Override
@@ -355,7 +384,7 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
             intent.setAction(PAY_ACTION);
             startActivityForResult(intent, REQUEST_PAY_SPONSOR_PKG);
         } else {
-            ToastUtils.showShortToast(getContext(), taskSponsorRespone.getMessage());
+            PaoToastUtils.showShortToast(getContext(), taskSponsorRespone.getMessage());
         }
     }
 

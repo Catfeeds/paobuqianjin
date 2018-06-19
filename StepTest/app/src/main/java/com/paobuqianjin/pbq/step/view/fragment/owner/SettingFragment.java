@@ -212,7 +212,7 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
                             LoadBitmap.glideLoad(getActivity(), userIco, ico);
                         }
                         UserInfoResponse.DataBean dataBean = (UserInfoResponse.DataBean) data.getSerializableExtra("userinfo");
-                        if (dataBean != null) userInfo = dataBean;
+                        if (dataBean!=null) userInfo = dataBean;
                     }
                 }
                 break;

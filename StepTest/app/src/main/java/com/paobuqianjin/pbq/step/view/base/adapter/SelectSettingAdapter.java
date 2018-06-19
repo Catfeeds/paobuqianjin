@@ -57,7 +57,7 @@ public class SelectSettingAdapter extends RecyclerView.Adapter<SelectSettingAdap
     }
 
     public String getSelectContent() {
-        if (data != null) {
+        if (data != null && data.size() > 0) {
             return data.get(selectPosition);
         }
         return null;

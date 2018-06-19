@@ -35,7 +35,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
@@ -53,6 +52,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
@@ -356,7 +356,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                 LocalLog.d(TAG, "Date = " + date);
                 if (DateTimeUtil.gainCurrentDate().before(date)) {
                     LocalLog.d(TAG, "Uneffect date");
-                    ToastUtils.showShortToast(getContext(), "请选择正确的生日");
+                    PaoToastUtils.showShortToast(getContext(), "请选择正确的生日");
                     return;
                 }
                 birthYear = DateTimeUtil.formatDateTime(date, "yyyy");
@@ -498,7 +498,8 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                         putUserInfoParam.setHeight(high);
                     }
                 }
-                popupSelectWindow.dismiss();
+                if (popupSelectWindow != null)
+                    popupSelectWindow.dismiss();
             }
         });
         cancelBt.setOnClickListener(new View.OnClickListener() {
@@ -604,14 +605,15 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         LocalLog.d(TAG, "UserInfoSetResponse() enter " + userInfoSetResponse.toString());
         if (userInfoSetResponse.getError() == 0) {
             if (isAdded() && getActivity() != null) {
-                ToastUtils.showLongToast(getContext(), "资料填写成功");
-                getActivity().onBackPressed();
+                PaoToastUtils.showLongToast(getContext(), "资料填写成功");
+                //修改异常
+                getActivity().finish();
             }
         } else if (userInfoSetResponse.getError() == -100) {
             exitTokenUnfect();
         } else {
-            ToastUtils.showLongToast(getContext(), userInfoSetResponse.getMessage());
-            getActivity().onBackPressed();
+            PaoToastUtils.showLongToast(getContext(), userInfoSetResponse.getMessage());
+            getActivity().finish();
         }
     }
 
@@ -705,7 +707,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
                         logoUpTask.execute(localAvatar);
                     } else {
                         if (TextUtils.isEmpty(putUserInfoParam.paramString())) {
-                            ToastUtils.showLongToast(getContext(), "没有修改");
+                            PaoToastUtils.showLongToast(getContext(), "没有修改");
                             return;
                         }
                         Presenter.getInstance(getContext()).putUserInfo(userid, putUserInfoParam);
@@ -896,7 +898,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         } else {
-            ToastUtils.showLongToast(getContext(), errorCode.getMessage());
+            PaoToastUtils.showLongToast(getContext(), errorCode.getMessage());
         }
     }
 }

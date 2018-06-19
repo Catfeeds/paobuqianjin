@@ -27,7 +27,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteDanResponse;
@@ -36,6 +35,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InviteInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.FillInviteCodeActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.InviteDanAdapter;
@@ -292,7 +292,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
                 case R.id.friend_circle:
                     share_media = SHARE_MEDIA.WEIXIN_CIRCLE;
                     if (web == null) {
-                        ToastUtils.showLongToast(getContext(), "分享失败");
+                        PaoToastUtils.showLongToast(getContext(), "分享失败");
                         return;
                     }
                     new ShareAction(getActivity()).withMedia(web)
@@ -302,7 +302,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
                 case R.id.we_chat:
                     share_media = SHARE_MEDIA.WEIXIN;
                     if (web == null) {
-                        ToastUtils.showLongToast(getContext(), "分享失败");
+                        PaoToastUtils.showLongToast(getContext(), "分享失败");
                         return;
                     }
                     new ShareAction(getActivity()).withMedia(web)
@@ -330,7 +330,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
                             LocalLog.d(TAG, "获取权限成功");
                             share_media = SHARE_MEDIA.QQ;
                             if (web == null) {
-                                ToastUtils.showLongToast(getContext(), "分享失败");
+                                PaoToastUtils.showLongToast(getContext(), "分享失败");
                                 return;
                             }
                             new ShareAction(getActivity()).withMedia(web)

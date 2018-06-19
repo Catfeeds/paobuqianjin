@@ -228,6 +228,9 @@ public class FollowMeFragment extends BaseFragment {
 
     private void loadFollowMeMore(ArrayList<FollowUserResponse.DataBeanX.DataBean> newData) {
         LocalLog.d(TAG, "loadFollowMeMore() enter");
+        if (!isAdded()) {
+            return;
+        }
         /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
         for (int i = 0; i < newData.size(); i++) {
             for (int j = 0; j < followMeData.size(); j++) {

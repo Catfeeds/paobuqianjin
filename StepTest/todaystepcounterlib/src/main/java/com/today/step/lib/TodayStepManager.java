@@ -33,7 +33,11 @@ public class TodayStepManager {
         }
 
 
-        startTodayStepService(application,intent);
+        try {
+            startTodayStepService(application, intent);
+        }catch (SecurityException e){
+            Logger.e(TAG, "start step error");
+        }
     }
 
     public static void startTodayStepService(Application application,Intent intent) {

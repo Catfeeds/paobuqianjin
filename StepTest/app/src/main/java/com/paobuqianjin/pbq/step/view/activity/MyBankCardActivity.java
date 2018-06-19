@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BankListResponse;
@@ -115,12 +114,12 @@ public class MyBankCardActivity extends BaseBarActivity implements BaseBarActivi
                                     params, new PaoCallBack() {
                                         @Override
                                         protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                                            ToastUtils.showShortToast(getApplicationContext(), "解绑失败");
+                                            PaoToastUtils.showShortToast(getApplicationContext(), "解绑失败");
                                         }
 
                                         @Override
                                         protected void onSuc(String s) {
-                                            ToastUtils.showShortToast(getApplicationContext(), "解绑成功");
+                                            PaoToastUtils.showShortToast(getApplicationContext(), "解绑成功");
                                             getBankList();
                                         }
                                     }

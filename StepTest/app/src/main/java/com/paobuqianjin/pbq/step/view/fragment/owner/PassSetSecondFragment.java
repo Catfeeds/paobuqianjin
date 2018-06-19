@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.jungly.gridpasswordview.GridPasswordView;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
@@ -20,6 +19,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.PayPassWordActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -96,7 +96,7 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
                         Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlSettingPass, params, new PaoCallBack() {
                             @Override
                             protected void onSuc(String s) {
-                                ToastUtils.showShortToast(getContext(), "密码设置成功");
+                                PaoToastUtils.showShortToast(getContext(), "密码设置成功");
                                 getActivity().finish();
                             }
 
@@ -106,7 +106,7 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
                                     if (errorBean.getError() == 100) {
                                         exitTokenUnfect();
                                     } else {
-                                        ToastUtils.showShortToast(getContext(), errorBean.getMessage());
+                                        PaoToastUtils.showShortToast(getContext(), errorBean.getMessage());
                                     }
                                 }
                             }
@@ -118,7 +118,7 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
                         Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlPowerModify, params, new PaoCallBack() {
                             @Override
                             protected void onSuc(String s) {
-                                ToastUtils.showShortToast(getContext(), "密码设置成功");
+                                PaoToastUtils.showShortToast(getContext(), "密码设置成功");
                                 getActivity().finish();
                             }
 
@@ -128,7 +128,7 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
                                     if (errorBean.getError() == 100) {
                                         exitTokenUnfect();
                                     } else {
-                                        ToastUtils.showShortToast(getContext(), errorBean.getMessage());
+                                        PaoToastUtils.showShortToast(getContext(), errorBean.getMessage());
                                     }
                                 }
                             }
@@ -144,7 +144,7 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
                             Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlPayPassModify, params, new PaoCallBack() {
                                 @Override
                                 protected void onSuc(String s) {
-                                    ToastUtils.showShortToast(getContext(), "密码设置成功");
+                                    PaoToastUtils.showShortToast(getContext(), "密码设置成功");
                                     getActivity().finish();
                                 }
 
@@ -153,14 +153,14 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
                                     if (errorBean.getError() == 100) {
                                         exitTokenUnfect();
                                     } else {
-                                        ToastUtils.showShortToast(getContext(), errorBean.getMessage());
+                                        PaoToastUtils.showShortToast(getContext(), errorBean.getMessage());
                                     }
                                 }
                             });
                         }
                     }
                 } else {
-                    ToastUtils.showShortToast(getContext(), "两次输入的密码不一致");
+                    PaoToastUtils.showShortToast(getContext(), "两次输入的密码不一致");
                     pswView.clearPassword();
                 }
             }

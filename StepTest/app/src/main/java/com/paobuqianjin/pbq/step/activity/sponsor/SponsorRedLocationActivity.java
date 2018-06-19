@@ -35,7 +35,6 @@ import com.baidu.mapapi.search.poi.PoiIndoorResult;
 import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.ChooseListPop;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -44,6 +43,7 @@ import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.BaiduMapInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
 import java.io.IOException;
@@ -242,7 +242,7 @@ public class SponsorRedLocationActivity extends BaseBarActivity implements Baidu
         public void onGetPoiResult(PoiResult poiResult) {
             LocalLog.d(TAG, "获得POI结果");
             if (poiResult.getAllPoi() == null || poiResult.getAllPoi().size() == 0) {
-                ToastUtils.showShortToast(SponsorRedLocationActivity.this, "暂无搜索结果");
+                PaoToastUtils.showShortToast(SponsorRedLocationActivity.this, "暂无搜索结果");
                 if (pageNum != 0) {
                     pop.setLoad(false);
                 }

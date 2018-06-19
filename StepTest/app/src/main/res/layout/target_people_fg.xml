@@ -186,7 +186,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="4dp"
             android:layout_toStartOf="@+id/go_to"
-            android:text="选择目标位置" />
+            android:text="选择目标位置(必选)" />
 
         <ImageView
             android:layout_width="match_parent"

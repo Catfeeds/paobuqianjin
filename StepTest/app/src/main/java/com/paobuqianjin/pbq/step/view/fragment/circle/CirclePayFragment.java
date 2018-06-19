@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.customview.WalletPassDialog;
@@ -45,6 +44,7 @@ import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.ForgetPayWordActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentifedSetPassActivity;
@@ -630,7 +630,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                         if (!TextUtils.isEmpty(terminalId)) {
                             payForYunSan(terminalId);
                         } else {
-                            ToastUtils.showShortToast(getActivity(), "获取手机IMEI失败无法进行云闪付");
+                            PaoToastUtils.showShortToast(getActivity(), "获取手机IMEI失败无法进行云闪付");
                         }
                     }
                 }).onDenied(new Action() {
@@ -769,7 +769,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                         @Override
                         protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                             if (errorBean != null && errorBean.getError() != 100) {
-                                ToastUtils.showShortToast(getContext(), errorBean.getMessage());
+                                PaoToastUtils.showShortToast(getContext(), errorBean.getMessage());
                             }
                         }
                     });
@@ -818,7 +818,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         } else {
-            ToastUtils.showShortToast(getContext(), wxPayOrderResponse.getMessage());
+            PaoToastUtils.showShortToast(getContext(), wxPayOrderResponse.getMessage());
         }
 
     }
@@ -839,7 +839,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         } else {
-            ToastUtils.showShortToast(getContext(), walletPayOrderResponse.getMessage());
+            PaoToastUtils.showShortToast(getContext(), walletPayOrderResponse.getMessage());
         }
     }
 
@@ -852,13 +852,14 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                 if (ysPayOrderResponse.getData() != null) {
                     String prePayId = ysPayOrderResponse.getData().getPrePayId();
                     Presenter.getInstance(getContext()).setOutTradeNo(ysPayOrderResponse.getData().getOrderNum());
+                    Presenter.getInstance(getContext()).setTradeStyle(payAction);
                     if (!TextUtils.isEmpty(prePayId)) {
                         int result = UPPayAssistEx.startPay(getActivity(), null, null, prePayId, serverMode);
                         if (UPPayAssistEx.PLUGIN_VALID == result) {
                             LocalLog.d(TAG, "已经安装控件，并启动控件 ");
                         } else if (UPPayAssistEx.PLUGIN_NOT_FOUND == result) {
                             LocalLog.d(TAG, "尚未安装支付控件，需要先安装支付控件 ");
-                            ToastUtils.showShortToast(getActivity(), "未安装云闪付控件");
+                            PaoToastUtils.showShortToast(getActivity(), "未安装云闪付控件");
                         }
                     }
                 }
@@ -866,7 +867,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             } else if (ysPayOrderResponse.getError() == 100) {
                 exitTokenUnfect();
             } else {
-                ToastUtils.showShortToast(getContext(), ysPayOrderResponse.getMessage());
+                PaoToastUtils.showShortToast(getContext(), ysPayOrderResponse.getMessage());
             }
         }
     }

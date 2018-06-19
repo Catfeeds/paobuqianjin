@@ -14,10 +14,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.adapter.SearchPositionAdapter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.tencent.lbssearch.TencentSearch;
 import com.tencent.lbssearch.httpresponse.BaseObject;
 import com.tencent.lbssearch.httpresponse.HttpResponseListener;
@@ -140,7 +140,7 @@ public class SponsorSearchPositionActivity extends AppCompatActivity implements 
 
         @Override
         public void onFailure(int i, String s, Throwable throwable) {
-            ToastUtils.showShortToast(SponsorSearchPositionActivity.this, s);
+            PaoToastUtils.showShortToast(SponsorSearchPositionActivity.this, s);
             isLoad = false;
         }
     };

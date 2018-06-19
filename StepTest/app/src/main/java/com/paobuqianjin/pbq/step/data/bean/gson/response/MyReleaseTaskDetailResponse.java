@@ -10,7 +10,7 @@ public class MyReleaseTaskDetailResponse {
     /**
      * error : 0
      * message : success
-     * data : {"task":{"id":9,"task_name":"8000步达标赛","target_step":8000,"reward_amount":"10.00","task_days":10,"task_rule":"达标即可获得红包奖励，未达标者无奖励","task_desc":"①任务每天晚上12点重置，未达标者的红包退回到派发人账户;\\n②运动数据以跑步钱进的APP为准;"},"task_record":[{"activity_start_time":1517500800,"is_receive":0},{"activity_start_time":1517587200,"is_receive":0},{"activity_start_time":1517673600,"is_receive":0},{"activity_start_time":1517760000,"is_receive":0},{"activity_start_time":1517846400,"is_receive":0},{"activity_start_time":1517932800,"is_receive":0},{"activity_start_time":1518019200,"is_receive":0},{"activity_start_time":1518105600,"is_receive":0},{"activity_start_time":1518192000,"is_receive":0},{"activity_start_time":1518278400,"is_receive":0}]}
+     * data : {"task":{"id":9,"task_name":"8000步达标赛","target_step":8000,"reward_amount":"10.00","avgmoney":"10.00","task_days":10,"task_rule":"达标即可获得红包奖励，未达标者无奖励","task_desc":"①任务每天晚上12点重置，未达标者的红包退回到派发人账户;\\n②运动数据以跑步钱进的APP为准;"},"task_record":[{"activity_start_time":1517500800,"is_receive":0},{"activity_start_time":1517587200,"is_receive":0},{"activity_start_time":1517673600,"is_receive":0},{"activity_start_time":1517760000,"is_receive":0},{"activity_start_time":1517846400,"is_receive":0},{"activity_start_time":1517932800,"is_receive":0},{"activity_start_time":1518019200,"is_receive":0},{"activity_start_time":1518105600,"is_receive":0},{"activity_start_time":1518192000,"is_receive":0},{"activity_start_time":1518278400,"is_receive":0}]}
      */
 
     private int error;
@@ -52,7 +52,7 @@ public class MyReleaseTaskDetailResponse {
 
     public static class DataBean {
         /**
-         * task : {"id":9,"task_name":"8000步达标赛","target_step":8000,"reward_amount":"10.00","task_days":10,"task_rule":"达标即可获得红包奖励，未达标者无奖励","task_desc":"①任务每天晚上12点重置，未达标者的红包退回到派发人账户;\\n②运动数据以跑步钱进的APP为准;"}
+         * task : {"id":9,"task_name":"8000步达标赛","target_step":8000,"reward_amount":"10.00","avgmoney":"10.00","task_days":10,"task_rule":"达标即可获得红包奖励，未达标者无奖励","task_desc":"①任务每天晚上12点重置，未达标者的红包退回到派发人账户;\\n②运动数据以跑步钱进的APP为准;"}
          * task_record : [{"activity_start_time":1517500800,"is_receive":0},{"activity_start_time":1517587200,"is_receive":0},{"activity_start_time":1517673600,"is_receive":0},{"activity_start_time":1517760000,"is_receive":0},{"activity_start_time":1517846400,"is_receive":0},{"activity_start_time":1517932800,"is_receive":0},{"activity_start_time":1518019200,"is_receive":0},{"activity_start_time":1518105600,"is_receive":0},{"activity_start_time":1518192000,"is_receive":0},{"activity_start_time":1518278400,"is_receive":0}]
          */
 
@@ -89,6 +89,7 @@ public class MyReleaseTaskDetailResponse {
              * task_name : 8000步达标赛
              * target_step : 8000
              * reward_amount : 10.00
+             * avgmoney :10.00
              * task_days : 10
              * task_rule : 达标即可获得红包奖励，未达标者无奖励
              * task_desc : ①任务每天晚上12点重置，未达标者的红包退回到派发人账户;\n②运动数据以跑步钱进的APP为准;
@@ -98,6 +99,16 @@ public class MyReleaseTaskDetailResponse {
             private String task_name;
             private int target_step;
             private float reward_amount;
+
+            public float getAvgmoney() {
+                return avgmoney;
+            }
+
+            public void setAvgmoney(float avgmoney) {
+                this.avgmoney = avgmoney;
+            }
+
+            private float avgmoney;
             private float allmoney;
             private int task_days;
             private String task_rule;
@@ -174,6 +185,7 @@ public class MyReleaseTaskDetailResponse {
                         ", task_name='" + task_name + '\'' +
                         ", target_step=" + target_step +
                         ", reward_amount=" + reward_amount +
+                        ", avgmoney=" + avgmoney +
                         ", allmoney=" + allmoney +
                         ", task_days=" + task_days +
                         ", task_rule='" + task_rule + '\'' +

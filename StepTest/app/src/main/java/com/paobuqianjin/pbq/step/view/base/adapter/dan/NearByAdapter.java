@@ -71,17 +71,19 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
             String distanceFormat = context.getResources().getString(R.string.near_by_distance);
             String distanceNum = String.format(distanceFormat, ((NearByResponse.DataBeanX.DataBean) mData.get(position)).getDistance());
             holder.distance.setText(distanceNum);
-
-            if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getIs_follow() == 0) {
-                LocalLog.d(TAG, "未关注");
-                holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
-                holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
-                holder.btFollow.setText("关注");
-            } else {
-                LocalLog.d(TAG, "已关注");
-                holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_not_fllow_nearby));
-                holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_646464));
-                holder.btFollow.setText("已关注");
+            if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getUserid() != Presenter.getInstance(context).getId()) {
+                LocalLog.d(TAG, "自己不能关注自己");
+                if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getIs_follow() == 0) {
+                    LocalLog.d(TAG, "未关注");
+                    holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
+                    holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
+                    holder.btFollow.setText("关注");
+                } else {
+                    LocalLog.d(TAG, "已关注");
+                    holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_not_fllow_nearby));
+                    holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_646464));
+                    holder.btFollow.setText("已关注");
+                }
             }
             if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getSex() == 1) {
                 holder.sexIcon.setImageResource(R.drawable.man);

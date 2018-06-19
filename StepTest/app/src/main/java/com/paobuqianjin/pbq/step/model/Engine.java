@@ -27,7 +27,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
 import com.l.okhttppaobu.okhttp.callback.StringCallback;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AuthenticationParam;
@@ -404,7 +403,7 @@ public final class Engine {
             @Override
             public Bitmap transform(Bitmap source) {
                 int targetWidth = view.getWidth();
-                LocalLog.d(TAG, "targetWidth  =" + targetWidth);
+                LocalLog.d(TAG,"targetWidth  =" + targetWidth);
                 //返回原图
                 if (source.getWidth() == 0 || source.getWidth() < targetWidth) {
                     return source;
@@ -766,7 +765,7 @@ public final class Engine {
                         }
                         try {
                             ErrorCode errorCode = new Gson().fromJson(o.toString(), ErrorCode.class);
-                            ToastUtils.showLongToast(mContext, errorCode.getMessage());
+                            PaoToastUtils.showLongToast(mContext, errorCode.getMessage());
                         } catch (JsonSyntaxException s) {
                             s.printStackTrace();
                         }
@@ -778,7 +777,7 @@ public final class Engine {
                             InviteMessageResponse inviteMessageResponse = new Gson().fromJson(s, InviteMessageResponse.class);
                             if (inviteMessageResponse.getError() == 0) {
                                 if (button != null) {
-                                    ToastUtils.showLongToast(mContext, "发送邀请成功");
+                                    PaoToastUtils.showLongToast(mContext, "发送邀请成功");
                                     /*button.setText("邀请过");*/
                                 }
                             }
@@ -1047,7 +1046,7 @@ public final class Engine {
     }
 
     public void userLoginByPhoneOrNo(String[] userInfo) {
-        LocalLog.d(TAG, "userLoginByPhoneOrNo() enter");
+        LocalLog.d(TAG, "userLoginByPhoneOrNo() enter ");
 
         String md5PassWord = MD5.md5Slat(userInfo[1]);
         LocalLog.d(TAG, "md5PassWord = " + md5PassWord);
@@ -1291,7 +1290,7 @@ public final class Engine {
     public void postContent(PostDynamicContentParam postDynamicContentParam) {
         LocalLog.d(TAG, "postContent() enter " + postDynamicContentParam.paramString());
         if (String.valueOf(getId(mContext)).equals(String.valueOf(postDynamicContentParam.getReply_userid()))) {
-            ToastUtils.showLongToast(mContext, "不能评论自己");
+            PaoToastUtils.showLongToast(mContext, "不能评论自己");
             return;
         }
         OkHttpUtils
@@ -3624,7 +3623,7 @@ public final class Engine {
                             try {
                                 PostBindResponse postBindResponse = new Gson().fromJson(s, PostBindResponse.class);
                                 if (postBindResponse.getError() == 0) {
-                                    ToastUtils.showShortToast(mContext, "解绑成功");
+                                    PaoToastUtils.showShortToast(mContext, "解绑成功");
                                     textView.setText("尚未绑定");
                                 }
                             } catch (JsonSyntaxException j) {

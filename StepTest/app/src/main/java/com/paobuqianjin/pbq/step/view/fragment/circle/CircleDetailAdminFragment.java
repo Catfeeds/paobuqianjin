@@ -24,7 +24,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.RechargeRankBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.StepBundleData;
@@ -706,7 +705,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
     private JoinCircleInterface joinCircleInterface = new JoinCircleInterface() {
         @Override
         public void response(JoinCircleResponse joinCircleResponse) {
-            if (joinCircleResponse.getError() == 0) {
+            if (joinCircleResponse.getError() == 0 && isAdded()) {
                 LocalLog.d(TAG, "加入成功");
                 joinIn.setVisibility(View.GONE);
                 is_join = true;
@@ -723,10 +722,14 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
 
         @Override
         public void response(ErrorCode errorCode) {
+            if (!isAdded()) {
+                return;
+            }
             if (errorCode.getMessage().equals("请输入密码")) {
                 popPassWordEdit();
             } else {
-                ToastUtils.showShortToast(getContext(), errorCode.getMessage());
+                if (getContext() != null)
+                    PaoToastUtils.showShortToast(getContext(), errorCode.getMessage());
             }
         }
     };
@@ -801,12 +804,16 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();
             }
-            stepRecycler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    isLoadingData = false;
-                }
-            }, 500);
+            if (stepRecycler != null) {
+                stepRecycler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isLoadingData = false;
+                    }
+                }, 200);
+            } else {
+                isLoadingData = false;
+            }
 
 
         }
@@ -988,7 +995,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
             return;
         }
         if (deleteCircleResponse.getError() == 0) {
-            ToastUtils.showShortToast(getContext(), "解散成功");
+            PaoToastUtils.showShortToast(getContext(), "解散成功");
             //TODO 通知上一层UI更新
             Intent intent = new Intent();
             intent.setAction(DELETE_ACTION);

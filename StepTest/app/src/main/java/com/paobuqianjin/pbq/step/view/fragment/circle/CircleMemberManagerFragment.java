@@ -23,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.l.okhttppaobu.okhttp.OkHttpUtils;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutDearNameParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteAdminResponse;
@@ -34,6 +33,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CircleMemberManagerInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DearNameModifyActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleMemberBarAdapter;
@@ -261,7 +261,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                         normalRecyclerView.setAdapter(searchAdapter);
                         pageIndexSearch++;
                     } else if (((CircleMemberResponse) object).getError() == 1) {
-                        ToastUtils.showShortToast(getContext(), "没有相关成员");
+                        PaoToastUtils.showShortToast(getContext(), "没有相关成员");
                     } else if (((CircleMemberResponse) object).getError() == 100) {
                         exitTokenUnfect();
                     }
@@ -271,7 +271,7 @@ public class CircleMemberManagerFragment extends BaseBarImageViewFragment implem
                     public void run() {
                         isLoadingData = false;
                     }
-                }, 500);
+                }, 200);
             }
 
         }

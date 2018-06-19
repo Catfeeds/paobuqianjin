@@ -132,8 +132,10 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
                 @Override
                 public void run() {
                     //loadData(nearByData);
-                    nearRefresh.setRefreshing(false);
-                    LocalLog.d(TAG, "加载数据");
+                    if (nearRefresh != null) {
+                        nearRefresh.setRefreshing(false);
+                        LocalLog.d(TAG, "加载数据");
+                    }
                 }
             }, 1000); // 延时模拟请求服务器。
         }

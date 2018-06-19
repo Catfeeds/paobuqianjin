@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -18,6 +17,7 @@ import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
 import java.util.HashMap;
@@ -120,16 +120,16 @@ public class IdentifedSetPassActivity extends BaseBarActivity {
     @OnClick(R.id.button_confirm)
     public void onClick() {
         if (realName.getText().toString().trim().length() <= 1) {
-            ToastUtils.showShortToast(getApplicationContext(), "请填写正确的姓名");
+            PaoToastUtils.showShortToast(getApplicationContext(), "请填写正确的姓名");
             return;
         }
         if (!(idNumber.getText().toString().trim().length() >= 15
                 && idNumber.getText().toString().trim().length() <= 18)) {
-            ToastUtils.showShortToast(getApplicationContext(), "请输入正确身份证号码");
+            PaoToastUtils.showShortToast(getApplicationContext(), "请输入正确身份证号码");
             return;
         }
         if (!passWord.getText().toString().equals(passWordAgain.getText().toString())) {
-            ToastUtils.showShortToast(getApplicationContext(), "两次输入的密码不一致");
+            PaoToastUtils.showShortToast(getApplicationContext(), "两次输入的密码不一致");
             return;
         }
         String psw = passWordAgain.getText().toString();
@@ -140,14 +140,14 @@ public class IdentifedSetPassActivity extends BaseBarActivity {
         Presenter.getInstance(this).postPaoBuSimple(NetApi.urlAddPassIdentify, params, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
-                ToastUtils.showLongToast(getApplicationContext(), "密码设置成功!");
+                PaoToastUtils.showLongToast(getApplicationContext(), "密码设置成功!");
                 finish();
             }
 
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                 if (errorBean != null) {
-                    ToastUtils.showLongToast(getApplicationContext(), errorBean.getMessage());
+                    PaoToastUtils.showLongToast(getApplicationContext(), errorBean.getMessage());
                 }
             }
         });

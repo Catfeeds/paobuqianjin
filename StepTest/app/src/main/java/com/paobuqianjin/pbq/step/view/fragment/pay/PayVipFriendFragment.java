@@ -26,7 +26,6 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.customview.WalletPassDialog;
@@ -49,6 +48,7 @@ import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.ForgetPayWordActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentifedSetPassActivity;
@@ -417,7 +417,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                         if (!TextUtils.isEmpty(terminalId)) {
                             payForYunSan(terminalId, orderType, cOvipNo);
                         } else {
-                            ToastUtils.showShortToast(getActivity(), "获取手机IMEI失败无法进行云闪付");
+                            PaoToastUtils.showShortToast(getActivity(), "获取手机IMEI失败无法进行云闪付");
                         }
                     }
                 }).onDenied(new Action() {
@@ -735,8 +735,6 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 public void onPassWord(String pass) {
                     LocalLog.d(TAG, "pass =" + pass);
                     walletPassDialog.dismiss();
-                    LocalLog.d(TAG, "pass =" + pass);
-                    walletPassDialog.dismiss();
                     String base64Pass = Base64Util.makeUidToBase64(pass);
                     Map<String, String> params = new HashMap<>();
                     params.put("paypw", base64Pass);
@@ -764,7 +762,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                         @Override
                         protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                             if (errorBean.getError() != 100) {
-                                ToastUtils.showShortToast(getContext(), errorBean.getMessage());
+                                PaoToastUtils.showShortToast(getContext(), errorBean.getMessage());
                             }
                         }
                     });
@@ -868,13 +866,20 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             if (ysPayOrderResponse.getError() == 0) {
                 if (ysPayOrderResponse.getData() != null) {
                     String prePayId = ysPayOrderResponse.getData().getPrePayId();
+                    if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                        Presenter.getInstance(getContext()).setTradeStyle("vip");
+                    } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_SELF.equals(action)) {
+                        Presenter.getInstance(getContext()).setTradeStyle("cvip");
+                    } else {
+                        LocalLog.d(TAG, "Unknown op");
+                    }
                     if (!TextUtils.isEmpty(prePayId)) {
                         int result = UPPayAssistEx.startPay(getActivity(), null, null, prePayId, serverMode);
                         if (UPPayAssistEx.PLUGIN_VALID == result) {
                             LocalLog.d(TAG, "已经安装控件，并启动控件 ");
                         } else if (UPPayAssistEx.PLUGIN_NOT_FOUND == result) {
                             LocalLog.d(TAG, "尚未安装支付控件，需要先安装支付控件 ");
-                            ToastUtils.showShortToast(getActivity(), "未安装云闪付控件");
+                            PaoToastUtils.showShortToast(getActivity(), "未安装云闪付控件");
                         }
                     }
                 }

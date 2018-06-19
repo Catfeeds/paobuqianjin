@@ -97,7 +97,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
     CircleStepRankWeekResponse circleStepRankWeekResponse;
     private int pageIndexDay = 1, pageDayCount = 0;
     private int pageIndexWeek = 1, pageWeekCount = 0;
-    private final static int PAGE_SIZE = 15;
+    private final static int PAGE_SIZE = 10;
     private View popCircleOpBar;
     private PopupWindow popupOpWindowTop;
     private TranslateAnimation animationCircleType;
@@ -325,6 +325,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
         if (stepRankResponse != null) {
             if (honorDetailAdapter == null || this.stepRankResponse == stepRankResponse) {
                 honorDetailAdapter = new HonorDetailAdapter(getContext(), this.stepRankResponse.getData().getData());
+                danDetailRecycler.setAdapter(honorDetailAdapter);
                 pageIndexDay++;
             } else {
                 this.stepRankResponse.getData().getData().addAll(stepRankResponse.getData().getData());
@@ -333,8 +334,8 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                 honorDetailAdapter.notifyItemRangeChanged(this.stepRankResponse.getData().getData().size() - stepRankResponse.getData().getData().size(),
                         stepRankResponse.getData().getData().size());
                 pageIndexDay++;
+                danDetailRecycler.requestLayout();
             }
-            danDetailRecycler.setAdapter(honorDetailAdapter);
         }
         isLoading = false;
     }
@@ -386,6 +387,7 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
             if (honorDetailAdapter == null || this.stepRandWeekResponse == stepRandWeekResponse) {
                 honorDetailAdapter = new HonorDetailAdapter(getContext(), this.stepRandWeekResponse.getData().getData().getMember());
                 pageIndexWeek++;
+                danDetailRecycler.setAdapter(honorDetailAdapter);
             } else {
                 this.stepRandWeekResponse.getData().getData().getMember().addAll(stepRandWeekResponse.getData().getData().getMember());
                 honorDetailAdapter.notifyItemRangeInserted(this.stepRandWeekResponse.getData().getData().getMember().size() - stepRandWeekResponse.getData().getData().getMember().size(),
@@ -393,8 +395,8 @@ public class CircleStepDanFragment extends BaseFragment implements CircleStepDet
                 honorDetailAdapter.notifyItemRangeChanged(this.stepRandWeekResponse.getData().getData().getMember().size() - stepRandWeekResponse.getData().getData().getMember().size(),
                         stepRandWeekResponse.getData().getData().getMember().size());
                 pageIndexWeek++;
+                danDetailRecycler.requestLayout();
             }
-            danDetailRecycler.setAdapter(honorDetailAdapter);
         }
         isLoading = false;
     }

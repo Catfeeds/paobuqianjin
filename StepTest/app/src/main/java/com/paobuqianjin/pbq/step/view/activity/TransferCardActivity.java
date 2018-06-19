@@ -18,8 +18,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.customview.WalletPassDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BankListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -33,6 +33,9 @@ import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,6 +64,7 @@ public class TransferCardActivity extends BaseBarActivity {
     private float canCrashNum;
     private BankListResponse.CardBean selectBean;
     private WalletPassDialog walletPassDialog;
+    private NormalDialog passWordSetDialog;
 
     @Override
     protected String title() {
@@ -151,10 +155,52 @@ public class TransferCardActivity extends BaseBarActivity {
                 }
                 if (Float.parseFloat(transferMoneyStr) > canCrashNum) {
                     LocalLog.d(TAG, "提现金额大于可提现金额!");
-
+                    PaoToastUtils.showShortToast(this, "提现金额大于可提现金额");
                     return;
                 }
-                popPayPass();
+                //TODO 判断是否设置过密码
+                Presenter.getInstance(this).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
+                    @Override
+                    protected void onSuc(String s) {
+                        try {
+                            JSONObject jsonObj = new JSONObject(s);
+                            jsonObj = jsonObj.getJSONObject("data");
+                            String status = jsonObj.getString("setpw");
+                            if (status.equals("1")) {
+                                popPayPass();
+                            } else if (status.equals("0")) {
+                                if (passWordSetDialog == null) {
+                                    passWordSetDialog = new NormalDialog(TransferCardActivity.this);
+                                }
+                                passWordSetDialog.setMessage("您还未设置支付密码，去上设置支付密码?");
+                                passWordSetDialog.setYesOnclickListener("去设置", new NormalDialog.onYesOnclickListener() {
+                                    @Override
+                                    public void onYesClick() {
+                                        startActivity(IdentifedSetPassActivity.class, null);
+                                        if (passWordSetDialog != null)
+                                            passWordSetDialog.dismiss();
+                                    }
+                                });
+                                passWordSetDialog.setNoOnclickListener("不设置", new NormalDialog.onNoOnclickListener() {
+                                    @Override
+                                    public void onNoClick() {
+                                        if (passWordSetDialog != null)
+                                            passWordSetDialog.dismiss();
+                                    }
+                                });
+                                if (!passWordSetDialog.isShowing())
+                                    passWordSetDialog.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                    }
+                });
                 break;
             case R.id.tv_protocol:
                 startActivity(AgreementActivity.class, null, false, UserServiceProtcolFragment.USER_CRASH_ACTION);
@@ -228,7 +274,7 @@ public class TransferCardActivity extends BaseBarActivity {
                         @Override
                         protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                             if (errorBean.getError() != 100) {
-                                ToastUtils.showShortToast(getApplicationContext(), errorBean.getMessage());
+                                PaoToastUtils.showShortToast(getApplicationContext(), errorBean.getMessage());
                             }
                         }
                     });
@@ -239,6 +285,7 @@ public class TransferCardActivity extends BaseBarActivity {
                 @Override
                 public void onForgetPassClick() {
                     LocalLog.d(TAG, "忘记支付密码");
+                    startActivity(ForgetPayWordActivity.class, null);
                 }
             });
         }
@@ -277,9 +324,7 @@ public class TransferCardActivity extends BaseBarActivity {
             holder.cb_select.setChecked(itemBean.getStatus() == 1);
             holder.tv_card_num.setText("**** " + itemBean.getBank_card().substring(itemBean.getBank_card().length() - 4));
             holder.tv_title.setText(itemBean.getBank_name());
-            /*Presenter.getInstance(context).getImage(holder.iv_icon, itemBean.getImg_url());*/
-            LoadBitmap.glideLoad(TransferCardActivity.this, holder.iv_icon, itemBean.getImg_url());
-
+            LoadBitmap.glideLoad(TransferCardActivity.this,holder.iv_icon,itemBean.getImg_url());
             if (itemClickListener != null) {
                 holder.itemRootView.setOnClickListener(new View.OnClickListener() {
                     @Override

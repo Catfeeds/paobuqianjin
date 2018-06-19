@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.jungly.gridpasswordview.GridPasswordView;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
@@ -20,6 +19,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.PayPassWordActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -99,7 +99,7 @@ public class PassSetZeroFragment extends BaseBarStyleTextViewFragment {
                     @Override
                     protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                         if (errorBean != null && errorBean.getError() != 100) {
-                            ToastUtils.showShortToast(getContext(), errorBean.getMessage());
+                            PaoToastUtils.showShortToast(getContext(), errorBean.getMessage());
                         }
                     }
                 });

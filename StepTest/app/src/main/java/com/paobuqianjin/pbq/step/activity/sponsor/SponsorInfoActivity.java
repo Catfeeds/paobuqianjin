@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.ChooseAddressWheel;
 import com.paobuqianjin.pbq.step.customview.ProUtils;
@@ -25,6 +24,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UpdateBusinessResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
@@ -298,7 +298,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                     tencentSearch.address2geo(param_retry, this);
                     isRetry = true;
                 } else {
-                    ToastUtils.showShortToast(getApplicationContext(), "没有相关地址哦！");
+                    PaoToastUtils.showShortToast(getApplicationContext(), "没有相关地址哦！");
                 }
                 return;
             }
@@ -308,7 +308,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     private void commit(String latitude, String longitude) {
         String name = editSponsorName.getText().toString();
         if (TextUtils.isEmpty(name.trim())) {
-            ToastUtils.showShortToast(this, "请输入店铺名称");
+            PaoToastUtils.showShortToast(this, "请输入店铺名称");
             return;
         }
         AddBusinessParam param = new AddBusinessParam();
@@ -390,7 +390,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                 oldParam = param;
             } else {
                 if (param.equals(oldParam)) {
-                    ToastUtils.showShortToast(this, "不能重复创建!");
+                    PaoToastUtils.showShortToast(this, "不能重复创建!");
                     return;
                 }
                 oldParam = param;
@@ -468,7 +468,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     @Override
     public void innerCallBack(Object object) {
         if (object instanceof ErrorCode) {
-            ToastUtils.showShortToast(this, ((ErrorCode) object).getMessage());
+            PaoToastUtils.showShortToast(this, ((ErrorCode) object).getMessage());
         } else if (object instanceof AddBusinessResponse) {
             AddBusinessResponse response = (AddBusinessResponse) object;
             if (response.getError() == 0) {
@@ -479,7 +479,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
             }
         } else if (object instanceof UpdateBusinessResponse) {
             if (((UpdateBusinessResponse) object).getError() == 0) {
-                ToastUtils.showShortToast(this, "编辑成功");
+                PaoToastUtils.showShortToast(this, "编辑成功");
                 if (businessId != -1) {
                     intent.putExtra("businessId", businessId);
                     setResult(10, intent);

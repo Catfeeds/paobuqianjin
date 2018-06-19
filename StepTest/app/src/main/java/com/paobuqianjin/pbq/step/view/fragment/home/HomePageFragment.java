@@ -393,6 +393,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             LocalLog.d(TAG, "红包在显示");
             return;
         }
+        if (!isAdded()) {
+            return;
+        }
         String canRevPkg = "";
         popRedPkgView = View.inflate(getContext(), R.layout.red_pkg_pop_window, null);
         totalRedPkg = (TextView) popRedPkgView.findViewById(R.id.total_red_pkg);

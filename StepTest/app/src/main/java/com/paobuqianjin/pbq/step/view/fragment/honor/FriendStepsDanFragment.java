@@ -83,7 +83,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     BounceScrollView friendScroll;
 
     private int pageIndexDay = 1, pageCountDay = 0, pageIndexWeek = 1, pageCountWeek = 0;
-    private final static int PAGE_DEFAULT_SIZE = 15;
+    private final static int PAGE_DEFAULT_SIZE = 10;
     LinearLayoutManager layoutManager;
     FriendStepRankDayResponse friendStepRankDayResponse;
     FriendWeekResponse friendWeekResponse;
@@ -91,6 +91,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
     private PopupWindow popupOpWindowTop;
     private TranslateAnimation animationCircleType;
     HonorDetailAdapter adapter;
+    private boolean isLoading = false;
 
     @Override
     protected int getLayoutResId() {
@@ -144,17 +145,22 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
 
                 } else if (topOrBottom == 1) {
                     if (timeGo.getText().equals("今日")) {
-                        if (pageIndexDay <= pageCountDay) {
+                        if (pageIndexDay <= pageCountDay && !isLoading) {
+                            isLoading = true;
                             Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndexDay, PAGE_DEFAULT_SIZE);
+                            LocalLog.d(TAG,"今日加载中。。。。");
                         }
                     } else {
-                        if (pageIndexWeek <= pageCountWeek) {
+                        if (pageIndexWeek <= pageCountWeek && !isLoading) {
+                            isLoading = true;
                             Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
+                            LocalLog.d(TAG,"本周加载中。。。。");
                         }
                     }
                 }
             }
         });
+        isLoading = true;
         Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndexDay, PAGE_DEFAULT_SIZE);
 
     }
@@ -186,6 +192,7 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                     }
                     if (friendWeekResponse == null) {
                         pageIndexWeek = 1;
+                        isLoading = true;
                         Presenter.getInstance(getContext()).getFriendWeekHonor(pageIndexWeek, PAGE_DEFAULT_SIZE);
                     } else {
                         updateFriendWeekResponse(friendWeekResponse);
@@ -243,6 +250,10 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
             adapter.notifyItemRangeInserted(friendStepRankDayResponse.getData().getData().getMember().size()
                             - moreData.getData().getData().getMember().size()
                     , moreData.getData().getData().getMember().size());
+            adapter.notifyItemRangeChanged(friendStepRankDayResponse.getData().getData().getMember().size()
+                            - moreData.getData().getData().getMember().size()
+                    , moreData.getData().getData().getMember().size());
+            danDetailRecycler.requestLayout();
         }
 
     }
@@ -259,6 +270,10 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
             adapter.notifyItemRangeInserted(friendWeekResponse.getData().getData().getMember().size()
                             - moreData.getData().getData().getMember().size()
                     , moreData.getData().getData().getMember().size());
+            adapter.notifyItemRangeChanged(friendWeekResponse.getData().getData().getMember().size()
+                            - moreData.getData().getData().getMember().size()
+                    , moreData.getData().getData().getMember().size());
+            danDetailRecycler.requestLayout();
         }
     }
 
@@ -296,13 +311,18 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                 }
                 if (pageIndexDay >= pageCountDay) {
                     return;
-                } else if (pageIndexDay < pageCountDay) {
-                    pageIndexDay++;
-                    Presenter.getInstance(getContext()).getFriendHonorDetail(pageIndexDay, PAGE_DEFAULT_SIZE);
                 }
             } else {
                 LocalLog.d(TAG, "加载到更多数据....");
                 loadMoreDay(friendStepRankDayResponse);
+            }
+            if (danDetailRecycler != null) {
+                danDetailRecycler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isLoading = false;
+                    }
+                }, 200);
             }
             pageIndexDay++;
         } else if (friendStepRankDayResponse.getError() == -100) {
@@ -347,7 +367,8 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
                         , R.drawable.default_head_ico, R.drawable.default_head_ico);
                 kingName.setText(friendWeekResponse.getData().getData().getMember().get(0).getNickname());
             }
-            danDetailRecycler.setAdapter(new HonorDetailAdapter(getContext(), friendWeekResponse.getData().getData().getMember()));
+            adapter = new HonorDetailAdapter(getContext(), friendWeekResponse.getData().getData().getMember());
+            danDetailRecycler.setAdapter(adapter);
         }
     }
 
@@ -364,6 +385,15 @@ public class FriendStepsDanFragment extends BaseFragment implements FriendHonorD
             } else {
                 LocalLog.d(TAG, "加载到更多数据....");
                 loadMoreWeek(friendWeekResponse);
+            }
+            if (danDetailRecycler != null) {
+                danDetailRecycler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        LocalLog.d(TAG,"加载更多!!!");
+                        isLoading = false;
+                    }
+                }, 200);
             }
             pageIndexWeek++;
         } else if (friendWeekResponse.getError() == -100) {

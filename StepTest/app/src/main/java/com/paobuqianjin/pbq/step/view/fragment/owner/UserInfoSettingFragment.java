@@ -33,7 +33,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
@@ -57,6 +56,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
@@ -497,6 +497,10 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 LocalLog.d(TAG, "path = " + path);
                 ResultHelper result = null;
                 PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
+                if (getContext() == null) {
+                    LocalLog.d(TAG, "取消上传");
+                    return null;
+                }
                 result = putObjectSample.start(path, getContext().getApplicationContext());
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
                 if (result != null && result.cosXmlResult != null) {
@@ -513,6 +517,9 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             LocalLog.d(TAG, "onPostExecute() enter");
             super.onPostExecute(s);
             //SocializeUtils.safeCloseDialog(dialog);
+            if (!isAdded()) {
+                return;
+            }
             putUserInfoParam.setAvatar(s);
             userInfo.setAvatar(s);
             strChangeIco = localAvatar;
@@ -732,7 +739,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 LocalLog.d(TAG, "distance = " + distance);
                 if (distance > 0) {
                     LocalLog.d(TAG, "unEffect time");
-                    ToastUtils.showShortToast(getContext(), "请选择正确的生日");
+                    PaoToastUtils.showShortToast(getContext(),"请选择正确的生日");
                     popupSelectWindow.dismiss();
                     return;
                 }
@@ -1036,7 +1043,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         } else {
-            ToastUtils.showLongToast(getActivity(), errorCode.getMessage());
+            PaoToastUtils.showLongToast(getActivity(), errorCode.getMessage());
         }
     }
 }

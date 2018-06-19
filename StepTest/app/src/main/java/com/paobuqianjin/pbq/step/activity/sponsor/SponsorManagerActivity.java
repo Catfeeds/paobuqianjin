@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.GetUserBusinessParam;
@@ -22,6 +21,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.NormalResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorAdapter;
 import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
@@ -162,7 +162,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
     @Override
     public void innerCallBack(Object object) {
         if (object instanceof ErrorCode) {
-            ToastUtils.showShortToast(this, ((ErrorCode) object).getMessage());
+            PaoToastUtils.showShortToast(this, ((ErrorCode) object).getMessage());
         } else if (object instanceof GetUserBusinessResponse) {
             if (((GetUserBusinessResponse) object).getError() == 0) {
                 if (isRefresh) {
@@ -298,11 +298,11 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                     @Override
                     public void innerCallBack(Object object) {
                         if (object instanceof ErrorCode) {
-                            ToastUtils.showShortToast(SponsorManagerActivity.this, ((ErrorCode) object).getMessage());
+                            PaoToastUtils.showShortToast(SponsorManagerActivity.this, ((ErrorCode) object).getMessage());
                         } else if (object instanceof NormalResponse) {
                             if (((NormalResponse) object).getError() == 0) {
                                 LocalLog.d(TAG, SponsorManagerActivity.this.businessId + "------" + businessid);
-                                ToastUtils.showShortToast(SponsorManagerActivity.this, "删除成功");
+                                PaoToastUtils.showShortToast(SponsorManagerActivity.this, "删除成功");
                                 if (SponsorManagerActivity.this.businessId != -1 &&
                                         SponsorManagerActivity.this.businessId == businessid) {
                                     SponsorManagerActivity.this.isDelete = true;
@@ -310,7 +310,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                                 deleteNormal.dismiss();
                                 refresh();
                             } else {
-                                ToastUtils.showShortToast(SponsorManagerActivity.this, ((NormalResponse) object).getMessage());
+                                PaoToastUtils.showShortToast(SponsorManagerActivity.this, ((NormalResponse) object).getMessage());
                             }
                         }
                     }

@@ -269,6 +269,9 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
      * 第一次加载数据。
      */
     private void loadData(ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data) {
+        if (!isAdded()) {
+            return;
+        }
         adapter.notifyDataSetChanged(data);
 
         swipeRefreshLayout.setRefreshing(false);
@@ -328,9 +331,11 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
                 }
             }, 100);
         }
-        choiceCircleData.addAll(newData);
-        // notifyItemRangeInserted()或者notifyDataSetChanged().
-        adapter.notifyItemRangeInserted(choiceCircleData.size() - newData.size(), newData.size());
+        if (newData.size() > 0) {
+            choiceCircleData.addAll(newData);
+            // notifyItemRangeInserted()或者notifyDataSetChanged().
+            adapter.notifyItemRangeInserted(choiceCircleData.size() - newData.size(), newData.size());
+        }
 
         // 数据完更多数据，一定要掉用这个方法。
         // 第一个参数：表示此次数据是否为空。

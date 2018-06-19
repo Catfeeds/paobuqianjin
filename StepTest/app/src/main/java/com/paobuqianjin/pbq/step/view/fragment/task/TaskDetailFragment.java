@@ -207,7 +207,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
             stepTarget.setText("开始时间: " + dateStartStr);
             targetMoneys.setText("结束时间:" + dateEndStr);
             tryDaysDes.setText("目标步数: " + taskRecDetailResponse.getData().getTarget_step() + " 步");
-            tryTarget.setText("奖励金额: " + taskRecDetailResponse.getData().getReward_amount() + "元");
+            tryTarget.setText("奖励金额: " + taskRecDetailResponse.getData().getAvgmoney() + "元");
             taskRulsDetail.setText(Html.fromHtml(taskRecDetailResponse.getData().getTask_desc()));
 
             buttonAction.setOnClickListener(onClickListener);

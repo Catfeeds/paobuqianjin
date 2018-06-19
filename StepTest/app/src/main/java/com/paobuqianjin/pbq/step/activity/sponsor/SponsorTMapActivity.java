@@ -14,12 +14,12 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.adapter.SearchPositionAdapter;
 import com.paobuqianjin.pbq.step.customview.ProUtils;
 import com.paobuqianjin.pbq.step.data.bean.SelectPoisitonListBean;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
@@ -322,7 +322,7 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
             tencentMap.setOnMapCameraChangeListener(onMapCameraChangeListener);
             setPosition(latitude, longitude, true, true);
         } else {
-            ToastUtils.showShortToast(this, reason);
+            PaoToastUtils.showShortToast(this, reason);
         }
     }
 

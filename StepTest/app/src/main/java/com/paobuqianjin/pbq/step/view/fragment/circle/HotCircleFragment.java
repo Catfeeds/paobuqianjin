@@ -193,6 +193,9 @@ public class HotCircleFragment extends BaseFragment {
     private InnerCallBack innerCallBack = new InnerCallBack() {
         @Override
         public void innerCallBack(Object object) {
+            if (!isAdded()) {
+                return;
+            }
             if (object instanceof ErrorCode) {
                 Toast.makeText(getContext(), ((ErrorCode) object).getMessage(), Toast.LENGTH_SHORT).show();
             } else if (object instanceof LiveResponse) {

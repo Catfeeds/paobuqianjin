@@ -19,7 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
@@ -29,6 +28,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
@@ -182,13 +182,13 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                     return;
                 }
                 if (Float.parseFloat(canCrash.getText().toString()) > canCrashNum) {
-                    ToastUtils.showLongToast(getActivity(), "可用余额不足");
+                    PaoToastUtils.showLongToast(getActivity(), "可用余额不足");
                     return;
                 }
                 action = "wx";
                 if ("wx".equals(action)) {
                     if (TextUtils.isEmpty(crashToParam.getWx_openid())) {
-                        ToastUtils.showLongToast(getContext(), "至少绑定一个微信");
+                        PaoToastUtils.showLongToast(getContext(), "至少绑定一个微信");
                         return;
                     }
                 }
@@ -262,13 +262,13 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
             return;
         }
         if (crashResponse.getError() == 0) {
-            ToastUtils.showLongToast(getActivity(), crashResponse.getMessage());
+            PaoToastUtils.showLongToast(getActivity(), crashResponse.getMessage());
             ((CrashActivity) getActivity()).showCrashResult(crashResponse);
         } else if (crashResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         } else {
-            ToastUtils.showLongToast(getActivity(), crashResponse.getMessage());
+            PaoToastUtils.showLongToast(getActivity(), crashResponse.getMessage());
         }
     }
 

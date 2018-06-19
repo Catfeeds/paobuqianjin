@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,12 +75,15 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdap
                 }
             }
 
-            SpannableStringBuilder style = new SpannableStringBuilder(nameA + reply + nameB + ":" + content);
-            style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), 0, nameA.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), nameA.length(), (nameA + reply).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), (nameA + reply).length(), (nameA + reply + nameB).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), (nameA + reply + nameB).length(), (nameA + reply + nameB + ":" + content).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            holder.itemContent.setText(style);
+
+            if (!TextUtils.isEmpty(nameA)) {
+                SpannableStringBuilder style = new SpannableStringBuilder(nameA + reply + nameB + ":" + content);
+                style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), 0, nameA.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), nameA.length(), (nameA + reply).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), (nameA + reply).length(), (nameA + reply + nameB).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), (nameA + reply + nameB).length(), (nameA + reply + nameB + ":" + content).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                holder.itemContent.setText(style);
+            }
 
             holder.parent_id = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getId();
             holder.reply_userid = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getUserid();

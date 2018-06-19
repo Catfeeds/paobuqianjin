@@ -146,7 +146,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     TextView dynamicTime;
     @Bind(R.id.vip_flg)
     ImageView vipFlg;
-    //    @Bind(R.id.dynamic_id_detail)
+//    @Bind(R.id.dynamic_id_detail)
 //    RelativeLayout dynamicIdDetail;
     private ArrayList<DynamicLikeListResponse.DataBeanX.DataBean> likeData = new ArrayList<>();
     private EmotionKeyboard mEmotionKeyboard;
@@ -286,7 +286,6 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
     /**
      * 原来的popEdit
-     *
      * @param postDynamicContentParam
      * @param dearName
      */
@@ -334,8 +333,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
         }
 
         if (dynamicUserName.getText().toString().equals(dearName)) {
-            commentEditText.setHint("请输入评论");
-        } else {
+            commentEditText.setHint("请输入评论" );
+        }else{
             commentEditText.setHint("回复:" + dearName);
         }
         Button button = (Button) linear_comment_root.findViewById(R.id.send_content);
@@ -417,7 +416,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
     };
 
     private void resetCommentEdittext() {
-        PaoToastUtils.showShortToast(getActivity(), "评论成功");
+        PaoToastUtils.showShortToast(getActivity(),"评论成功");
         commentEditText.setText("");
         hideSoftInput(commentEditText.getWindowToken());
     }
@@ -842,7 +841,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             if (images == null) {
                 return;
             }
-            LocalLog.d(TAG, "查看大图 index = " + index);
+            LocalLog.d(TAG, "查看大图 index = "  + index);
             popBirthSelectView = View.inflate(getContext(), R.layout.big_image_view_pager, null);
             ImageViewPager bigImageViewPager = (ImageViewPager) popBirthSelectView.findViewById(R.id.big_image_viewpager);
             List<View> bigImageViews = new ArrayList<>();

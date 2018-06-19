@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWxQqBindPhoneParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
@@ -28,6 +27,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.LogBindPhoneResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.LoginBindPhoneInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
@@ -185,21 +185,21 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
     @Override
     public void response(GetSignCodeResponse getSignCodeResponse) {
         if (getSignCodeResponse.getError() == 0) {
-            ToastUtils.showShortToast(getContext(), "验证码发送成功");
+            PaoToastUtils.showShortToast(getContext(), "验证码发送成功");
         }
     }
 
     @Override
     public void response(LogBindPhoneResponse logBindPhoneResponse) {
         if (logBindPhoneResponse.getError() == 0) {
-            ToastUtils.showShortToast(getContext(), "绑定手机号成功");
+            PaoToastUtils.showShortToast(getContext(), "绑定手机号成功");
             getActivity().setResult(Activity.RESULT_OK);
             getActivity().onBackPressed();
         } else if (logBindPhoneResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         } else {
-            ToastUtils.showShortToast(getContext(), logBindPhoneResponse.getMessage());
+            PaoToastUtils.showShortToast(getContext(), logBindPhoneResponse.getMessage());
         }
     }
 
@@ -251,7 +251,7 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
                 Presenter.getInstance(getContext()).checkLoginBindPhone(checkSignCodeParam);*/
                 PostWxQqBindPhoneParam postWxQqBindPhoneParam = new PostWxQqBindPhoneParam();
                 if (TextUtils.isEmpty(passWordEdit.getText().toString())) {
-                    ToastUtils.showLongToast(getContext(), "密码必填");
+                    PaoToastUtils.showLongToast(getContext(), "密码必填");
                     return;
                 }
                 postWxQqBindPhoneParam.setCode(signCodeEdit.getText().toString())
@@ -327,7 +327,7 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         } else {
-            ToastUtils.showShortToast(getActivity(), errorCode.getMessage());
+            PaoToastUtils.showShortToast(getActivity(), errorCode.getMessage());
         }
     }
 }

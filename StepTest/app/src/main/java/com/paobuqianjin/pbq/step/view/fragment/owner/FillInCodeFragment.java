@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostInviteCodeParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -22,6 +21,7 @@ import com.paobuqianjin.pbq.step.model.Engine;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
@@ -117,10 +117,10 @@ public class FillInCodeFragment extends BaseBarStyleTextViewFragment implements 
             return;
         }
         if (postInviteCodeResponse.getError() == 0) {
-            ToastUtils.showLongToast(getContext(), postInviteCodeResponse.getMessage());
+            PaoToastUtils.showLongToast(getContext(), postInviteCodeResponse.getMessage());
             getActivity().finish();
         } else {
-            ToastUtils.showLongToast(getContext(), postInviteCodeResponse.getMessage());
+            PaoToastUtils.showLongToast(getContext(), postInviteCodeResponse.getMessage());
         }
 
     }

@@ -157,6 +157,9 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
 
     @Override
     public void response(PassWordResponse passWordResponse) {
+        if (!isAdded()) {
+            return;
+        }
         if (passWordResponse.getError() == 0) {
             Toast.makeText(getContext(), "密码修改成功，请重新登录", Toast.LENGTH_SHORT).show();
             getActivity().finish();

@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorInfoActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
@@ -21,6 +20,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.NormalResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
 
 import java.util.ArrayList;
@@ -114,11 +114,11 @@ public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorV
                     @Override
                     public void innerCallBack(Object object) {
                         if (object instanceof ErrorCode) {
-                            ToastUtils.showShortToast(context, ((ErrorCode) object).getMessage());
+                            PaoToastUtils.showShortToast(context, ((ErrorCode) object).getMessage());
                         } else if (object instanceof NormalResponse) {
                             if (((NormalResponse) object).getError() == 0) {
                                 LocalLog.d(TAG, ((SponsorManagerActivity) context).businessId + "------" + businessid);
-                                ToastUtils.showShortToast(context, "删除成功");
+                                PaoToastUtils.showShortToast(context, "删除成功");
                                 if (((SponsorManagerActivity) context).businessId != -1 &&
                                         ((SponsorManagerActivity) context).businessId == businessid) {
                                     ((SponsorManagerActivity) context).isDelete = true;
@@ -126,7 +126,7 @@ public class SponsorAdapter extends RecyclerView.Adapter<SponsorAdapter.SponsorV
                                 deleteNormal.dismiss();
                                 ((SponsorManagerActivity) context).refresh();
                             } else {
-                                ToastUtils.showShortToast(context, ((NormalResponse) object).getMessage());
+                                PaoToastUtils.showShortToast(context, ((NormalResponse) object).getMessage());
                             }
                         }
                     }

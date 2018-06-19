@@ -18,17 +18,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.ChooseOneItemWheelPopWindow;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.SelectFriendActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
@@ -121,7 +126,8 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
     private float totalMoney;
     private ChooseOneItemWheelPopWindow wheelPopWindow;
     private final int DEVALUE_STEP = 10000;//默认步数
-    private String[] targetStepArr = {"3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"};
+    /* private String[] targetStepArr = null*//*{"3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"}*//*;*/
+    private ArrayList<String> targetStepArr = new ArrayList<>();
 
     @Override
     protected int getLayoutResId() {
@@ -151,7 +157,6 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         targetTaskStepNum = (EditText) viewRoot.findViewById(R.id.target_task_step_num);
         targetTaskMoneyNum = (EditText) viewRoot.findViewById(R.id.target_task_money_num);
         targetTaskDayNum = (EditText) viewRoot.findViewById(R.id.target_task_day_num);
@@ -172,6 +177,27 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
         targetTaskDayNum.addTextChangedListener(textWatcher);
         targetTaskStepNum.setText(DEVALUE_STEP + "");
         calculateResultMoney();
+        Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlTarget, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                LocalLog.d(TAG, "");
+                try {
+                    CircleTargetResponse circleTargetResponse = new Gson().fromJson(s, CircleTargetResponse.class);
+                    if (circleTargetResponse.getData() != null && circleTargetResponse.getData().size() > 0) {
+                        for (int i = 0; i < circleTargetResponse.getData().size(); i++) {
+                            targetStepArr.add(String.valueOf(circleTargetResponse.getData().get(i).getTarget()));
+                        }
+                    }
+                } catch (JsonSyntaxException j) {
+                    j.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
     }
 
     private TaskReleaseInterface taskReleaseInterface = new TaskReleaseInterface() {
@@ -221,8 +247,8 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
             case R.id.target_task_span:
             case R.id.target_task_step_num:
                 LocalLog.d(TAG, "设置任务目标步数");
-                if (wheelPopWindow == null) {
-                    wheelPopWindow = new ChooseOneItemWheelPopWindow(getActivity(), Arrays.asList(targetStepArr));
+                if (wheelPopWindow == null && targetStepArr.size() > 0) {
+                    wheelPopWindow = new ChooseOneItemWheelPopWindow(getActivity(), targetStepArr);
                     wheelPopWindow.setItemConfirmListener(new ChooseOneItemWheelPopWindow.OnWheelItemConfirmListener() {
                         @Override
                         public void onItemSelectLis(String result) {
@@ -390,12 +416,12 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
         }
         LocalLog.d(TAG, "per one per day money " + perMoney);
         if (perMoney < 1.00f && dayNum >= 1 && friendsNum >= 1) {
-            ToastUtils.showShortToast(getContext(), "单日单个人奖励不能低于1.00元");
+            PaoToastUtils.showShortToast(getContext(), "单日单个人奖励不能低于1.00元");
             return;
         }
 
         if (perMoney > 200.00f && dayNum >= 1 && friendsNum >= 1) {
-            ToastUtils.showShortToast(getContext(), "单日单个人最高奖励不能高于200.00元");
+            PaoToastUtils.showShortToast(getContext(), "单日单个人最高奖励不能高于200.00元");
             return;
         }
         String dailyMoneyStr = String.format("%.2f", taskTotalMoney);

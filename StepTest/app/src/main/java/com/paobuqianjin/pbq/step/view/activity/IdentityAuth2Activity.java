@@ -13,7 +13,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
@@ -175,7 +174,7 @@ public class IdentityAuth2Activity extends BaseBarActivity {
                 final String phoneNum = etPhoneNum.getText().toString();
                 if (TextUtils.isEmpty(personId) || TextUtils.isEmpty(personName) || TextUtils.isEmpty(phoneNum)
                         || TextUtils.isEmpty(cardNum)) {
-                    ToastUtils.showLongToast(this, "请填写完信息");
+                    PaoToastUtils.showLongToast(this, "请填写完信息");
                     return;
                 }
                 Bundle bundle = getBundle();

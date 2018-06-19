@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.Toast;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
@@ -17,6 +16,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -238,9 +238,9 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
                 String outTradeNo = Presenter.getInstance(this).getOutTradeNo();
                 Presenter.getInstance(this).postYsPayResultByOrderNo(outTradeNo, ySpayCallback);
             } else if (str.equalsIgnoreCase("fail")) {
-                ToastUtils.showShortToast(this, "支付失败！");
+                PaoToastUtils.showShortToast(this, "支付失败！");
             } else if (str.equalsIgnoreCase("cancel")) {
-                ToastUtils.showShortToast(this, "已取消本次支付！");
+                PaoToastUtils.showShortToast(this, "已取消本次支付！");
             }
         }
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);

@@ -9,13 +9,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyInviteResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -90,7 +90,7 @@ public class MyInviteFragment extends BaseFragment {
                 return;
             }
             if (object instanceof ErrorCode) {
-                ToastUtils.showLongToast(getContext(), ((ErrorCode) object).getMessage());
+                PaoToastUtils.showLongToast(getContext(), ((ErrorCode) object).getMessage());
             } else if (object instanceof InviteCodeResponse) {
                 if (inviteCode != null) {
                     if (((InviteCodeResponse) object).getError() == 0) {
@@ -111,7 +111,7 @@ public class MyInviteFragment extends BaseFragment {
                         invitStepDollar.setText(String.valueOf(((MyInviteResponse) object).getData().getIcredit()));
                     }
                 } else {
-                    ToastUtils.showLongToast(getContext(), ((MyInviteResponse) object).getMessage());
+                    PaoToastUtils.showLongToast(getContext(), ((MyInviteResponse) object).getMessage());
                 }
             }
         }

@@ -68,6 +68,10 @@ public class SplashActivity extends UmengNotifyClickActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        if (isFirstOpen()) {
+            return;
+        }
+
         mContentView = findViewById(R.id.fullscreen_content);
         vp_first_income = (ViewPager) findViewById(R.id.vp_first_income);
 
@@ -166,5 +170,18 @@ public class SplashActivity extends UmengNotifyClickActivity {
             String body = intent.getStringExtra(AgooConstants.MESSAGE_BODY);
             LocalLog.d(TAG, body);
         }
+    }
+
+    private boolean isFirstOpen() {
+        if (!isTaskRoot()) {
+            Intent intent = getIntent();
+            String action = intent.getAction();
+            if (intent.hasCategory(Intent.CATEGORY_LAUNCHER) && action.equals(Intent.ACTION_MAIN)) {
+
+                finish();
+                return true;
+            }
+        }
+        return false;
     }
 }

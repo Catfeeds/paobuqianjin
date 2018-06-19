@@ -109,7 +109,7 @@ public class PersonVipFragment extends BaseFragment {
                 break;
             case R.id.vip_self:
                 LocalLog.d(TAG, "pay for self person vip");
-                if (currentUser.getVip() == 1) {
+                if (currentUser != null && currentUser.getVip() == 1) {
                     LocalLog.d(TAG, "已经是个人VIP");
                     return;
                 }

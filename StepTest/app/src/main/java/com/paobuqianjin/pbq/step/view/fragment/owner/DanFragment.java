@@ -228,6 +228,9 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
             processBar.post(new Runnable() {
                 @Override
                 public void run() {
+                    if (processBar == null) {
+                        return;
+                    }
                     int width = processBar.getWidth();
                     int height = processBar.getHeight();
                     LocalLog.d(TAG, "width = " + width + ",height = " + height);

@@ -48,6 +48,7 @@ public class MainActivity extends BaseActivity {
             {R.drawable.task_n, R.drawable.task_s},
             {R.drawable.list_n, R.drawable.list_s}, {R.drawable.me_n, R.drawable.me_s}};
     private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.SCAN_ACTION";
+    private final static String RE_LOGIN_ACTION = "com.paobuqianjin.pbq.step.RE_LOGIN";
     public static final int REQUEST_CODE = 0x0000c0de; // Only use bottom 16 bits
 
     @Override
@@ -211,7 +212,7 @@ public class MainActivity extends BaseActivity {
             if (!mFragments[fragmentIndex].isAdded()) {
                 trx.add(R.id.fragment_container, mFragments[fragmentIndex]);
             }
-            trx.show(mFragments[fragmentIndex]).commit();
+            trx.show(mFragments[fragmentIndex]).commitAllowingStateLoss();
         }
         mCurrentIndex = fragmentIndex;
     }
@@ -225,6 +226,19 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.getAction() != null) {
+            if (intent.getAction().equals("login_other_phone")) {
+                Intent intentLogin = new Intent(this, LoginActivity.class);
+                intentLogin.setAction(RE_LOGIN_ACTION);
+                startActivity(intentLogin);
+                finish();
+            }
+        }
+
+    }
 
     @Override
 // 通过 onActivityResult的方法获取 扫描回来的 值

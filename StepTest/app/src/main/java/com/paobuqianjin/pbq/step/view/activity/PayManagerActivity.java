@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -17,6 +16,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
 import org.json.JSONException;
@@ -116,7 +116,7 @@ public class PayManagerActivity extends BaseBarActivity {
             case R.id.pass_word_forget:
                 if (!isIdentify) {
                     LocalLog.d(TAG, "未认证");
-                    ToastUtils.showLongToast(getApplicationContext(), "请先去认证");
+                    PaoToastUtils.showLongToast(getApplicationContext(), "请先去认证");
                     return;
                 }
                 //TODO 判断是否设置过密码
@@ -168,7 +168,7 @@ public class PayManagerActivity extends BaseBarActivity {
             case R.id.pass_word_rest:
                 if (!isIdentify) {
                     LocalLog.d(TAG, "未认证");
-                    ToastUtils.showLongToast(getApplicationContext(), "请先去认证");
+                    PaoToastUtils.showLongToast(getApplicationContext(), "请先去认证");
                     return;
                 }
                 //TODO 判断是否设置过密码

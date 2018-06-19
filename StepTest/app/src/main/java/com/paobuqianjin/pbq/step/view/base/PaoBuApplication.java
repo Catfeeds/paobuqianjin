@@ -12,6 +12,7 @@ import android.os.Looper;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -26,6 +27,8 @@ import com.l.okhttppaobu.okhttp.https.HttpsUtils;
 import com.l.okhttppaobu.okhttp.log.LoggerInterceptor;
 import com.lljjcoder.style.citylist.utils.CityListLoader;
 import com.lljjcoder.style.citypickerview.CityPickerView;
+import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CurrentStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.model.services.baidu.LocationService;
@@ -37,6 +40,8 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.LoginActivity;
+import com.paobuqianjin.pbq.step.view.activity.MainActivity;
 import com.paobuqianjin.pbq.step.view.emoji.IImageLoader;
 import com.paobuqianjin.pbq.step.view.emoji.LQREmotionKit;
 import com.tencent.bugly.Bugly;
@@ -89,6 +94,8 @@ public class PaoBuApplication extends MultiDexApplication {
     private static PaoBuApplication sApplication;
     private int appCount = 0;
     private final static String START_STEP_ACTION = "com.paobuqianjin.step.START_STEP_ACTION";
+    private Activity currentActivity = null;
+    private NormalDialog exitDialog;
 
     @Override
     public void onCreate() {
@@ -113,7 +120,7 @@ public class PaoBuApplication extends MultiDexApplication {
 
             @Override
             public void onActivityResumed(Activity activity) {
-
+                currentActivity = activity;
             }
 
             @Override
@@ -180,12 +187,46 @@ public class PaoBuApplication extends MultiDexApplication {
                                 JSONObject jsonObject = new JSONObject(msg.custom);
                                 String is_pull_step_service = jsonObject.getString("pull_service");
                                 if (is_pull_step_service != null) {
-                                    if (is_pull_step_service.equals("step") && !Utils.isServiceRunning(PaoBuApplication.getApplication(),TodayStepService.class.getName())) {
-                                        Intent intent = new Intent();
-                                        intent.setAction(START_STEP_ACTION);
-                                        intent.setClass(getApplicationContext(), TodayStepService.class);
-                                        TodayStepManager.init(PaoBuApplication.getApplication(), intent);
+                                    switch (is_pull_step_service) {
+                                        case "step":
+                                            if (!Utils.isServiceRunning(PaoBuApplication.getApplication(),TodayStepService.class.getName())) {
+                                                Intent intent = new Intent();
+                                                intent.setAction(START_STEP_ACTION);
+                                                intent.setClass(getApplicationContext(), TodayStepService.class);
+                                                TodayStepManager.init(PaoBuApplication.getApplication(), intent);
+                                            }
+                                            break;
+
+                                        case "login":
+                                            if(exitDialog!=null && exitDialog.isShowing()) exitDialog.dismiss();
+
+                                            String tipsMsg = jsonObject.getString("msg");
+                                            if (TextUtils.isEmpty(tipsMsg)) {
+                                                tipsMsg = "登录过期，点击确定重新登录";
+                                            }
+                                            exitDialog = new NormalDialog(getApplication());
+                                            exitDialog.setMessage(tipsMsg);
+                                            exitDialog.setSingleBtn(true);
+                                            exitDialog.setYesOnclickListener(getApplication().getString(R.string.confirm_yes), new NormalDialog.onYesOnclickListener() {
+                                                @Override
+                                                public void onYesClick() {
+                                                    exitDialog.dismiss();
+                                                    Presenter.getInstance(getApplication()).setId(-1);
+                                                    Presenter.getInstance(getApplication()).steLogFlg(false);
+                                                    Presenter.getInstance(getApplication()).setToken(getApplication(), "");
+
+                                                    if (currentActivity != null) {
+                                                        Intent intent = new Intent(currentActivity, MainActivity.class);
+                                                        intent.setAction("login_other_phone");
+                                                        startActivity(intent);
+                                                    }
+                                                }
+                                            });
+                                            exitDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                                            exitDialog.show();
+                                            break;
                                     }
+
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -325,8 +366,9 @@ public class PaoBuApplication extends MultiDexApplication {
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
             Response response = chain.proceed(request);
-            /*在此处定义缓存策略，图片缓存，信息缓存，验证码缓存.....,按链接性质过滤,选择缓存首页信息一段时间*/
-            LocalLog.d(TAG, "String url =" + request.url());
+/*            LocalLog.d(TAG, "intercept() enter" + response.toString());
+            *//*在此处定义缓存策略，图片缓存，信息缓存，验证码缓存.....,按链接性质过滤,选择缓存首页信息一段时间*//*
+            LocalLog.d(TAG, "String url =" + request.url());*/
             long max_age = 24 * 3600;
             if (request.url().toString().startsWith(NetApi.url)) {
 /*                LocalLog.d(TAG, "request.url().toString() = " + request.url().toString());*/

@@ -118,8 +118,10 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
         }
         if (tmpData.getIs_join() == 0) {
             holder.joinIn.setText("加入");
+            holder.isJoin = false;
         } else if (tmpData.getIs_join() == 1) {
             holder.joinIn.setText("已加入");
+            holder.isJoin = true;
         }
         holder.circleId = tmpData.getCircleid();
 
@@ -140,6 +142,7 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
         int circleId;
         boolean is_password;
         int circleMember = 0;
+        boolean isJoin = false;
 
         public SearchCirCleViewHolder(View view) {
             super(view);
@@ -153,6 +156,7 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
                 if (joinCircleResponse.getError() == 0) {
                     LocalLog.d(TAG, "加入成功");
                     joinIn.setText("已加入");
+                    isJoin = true;
                     if (inOutCallBackInterface != null) {
                         inOutCallBackInterface.inCallBack(circleId);
                     }
@@ -192,6 +196,11 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.circle_logo_search:
+                        if (is_password && !isJoin) {
+                            LocalLog.d(TAG, "需要密码");
+                            popPassWordEdit();
+                            return;
+                        }
                         Intent intent = new Intent();
                         intent.setClass(mContext, CirCleDetailActivity.class);
                         intent.setAction(ACTION_ENTER_ICON);
@@ -224,7 +233,11 @@ public class SearchCircleAdapter extends RecyclerView.Adapter<SearchCircleAdapte
                     case R.id.confirm_text:
                         LocalLog.d(TAG, "确定");
                         if (popupOpWindow != null) {
+                            if (joinCircleParam == null) {
+                                joinCircleParam = new JoinCircleParam();
+                            }
                             joinCircleParam.setPassword(passEdit.getText().toString());
+                            joinCircleParam.setCircleid(circleId);
                             popupOpWindow.dismiss();
                         }
                         Presenter.getInstance(mContext).attachUiInterface(joinCircleInterface);

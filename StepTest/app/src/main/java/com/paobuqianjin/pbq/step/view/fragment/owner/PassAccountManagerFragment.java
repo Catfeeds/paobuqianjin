@@ -20,7 +20,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostBindUnBindWqParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -30,6 +29,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.BindThirdAccoutInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.BindWeChatActivity;
 import com.paobuqianjin.pbq.step.view.activity.OlderPassChangeActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -293,7 +293,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                 if (phoneChatDes.getText().toString().equals(getString(R.string.had_bind))) {
                     startActivity(OlderPassChangeActivity.class, null);
                 } else {
-                    ToastUtils.showLongToast(getContext(), "未绑定手机号码，不可修改密码");
+                    PaoToastUtils.showLongToast(getContext(), "未绑定手机号码，不可修改密码");
                 }
                 break;
             case R.id.we_chat_des:
@@ -485,7 +485,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
             return;
         }
         if (postBindResponse.getError() == 0) {
-            ToastUtils.showShortToast(getContext(), postBindResponse.getMessage());
+            PaoToastUtils.showShortToast(getContext(), postBindResponse.getMessage());
             switch (postBindResponse.getMessage()) {
                 case "解绑成功":
                     if (action != null) {
@@ -507,7 +507,7 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                     break;
             }
         } else if (postBindResponse.getError() == 1) {
-            ToastUtils.showShortToast(getContext(), postBindResponse.getMessage());
+            PaoToastUtils.showShortToast(getContext(), postBindResponse.getMessage());
         } else if (postBindResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

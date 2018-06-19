@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
+            android:paddingRight="39dp"
             android:layout_toRightOf="@id/target_step_des"
             android:background="@color/color_f8"
             android:gravity="right"
@@ -79,11 +79,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
+            android:paddingRight="39dp"
             android:layout_toRightOf="@id/target_money_des"
             android:background="@null"
             android:gravity="right"
-            android:hint="单日红包50元起"
+            android:hint="请输入红包金额"
             android:inputType="numberDecimal"
             android:maxLength="6"
             android:maxLines="1"
@@ -132,7 +132,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
+            android:paddingRight="39dp"
             android:layout_toRightOf="@id/target_day_des"
             android:background="@null"
             android:gravity="right"
@@ -185,7 +185,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
+            android:paddingRight="39dp"
             android:layout_toRightOf="@id/pack_day_des"
             android:background="@null"
             android:gravity="right"
@@ -293,7 +293,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="39dp"
             android:gravity="right"
-            android:hint="立即筛选(选填)"
+            android:hint="立即筛选(必填)"
             android:textColor="@color/color_161727"
             android:textSize="14sp" />
 
@@ -348,6 +348,7 @@
     </RelativeLayout>
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -357,13 +358,14 @@
         android:text="温馨提示：" />
 
     <TextView
+        android:visibility="gone"
         android:id="@+id/tv_tip1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_tip"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
-        android:text="商家红包单日金额不能低于50元，单个红包金额不能低于1元；" />
+        android:text="商家每次发红包金额不低于10元，单个红包金额不低于0.3元；" />
 
 
     <Button

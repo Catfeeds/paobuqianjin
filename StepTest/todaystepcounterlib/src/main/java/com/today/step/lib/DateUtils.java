@@ -20,7 +20,12 @@ class DateUtils {
     public static String getCurrentDate(String pattern) {
         SIMPLE_DATE_FORMAT.applyPattern(pattern);
         Date date = new Date(System.currentTimeMillis());
-        String dateString = SIMPLE_DATE_FORMAT.format(date);
+        String dateString = "";
+        try {
+            dateString = SIMPLE_DATE_FORMAT.format(date);
+        } catch (StringIndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
         return dateString;
 
     }

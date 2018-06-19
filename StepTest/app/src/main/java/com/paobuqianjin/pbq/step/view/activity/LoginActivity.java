@@ -40,6 +40,7 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.fragment.login.ForgetPassFragment;
 import com.today.step.lib.TodayStepManager;
 import com.today.step.lib.TodayStepService;
+import com.umeng.message.PushAgent;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -211,6 +212,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         userInfo = new String[3];
         userInfo[0] = loginAccount.getText().toString();
         userInfo[1] = loginPwd.getText().toString();
+        userInfo[2] = PushAgent.getInstance(this).getRegistrationId();
         return userInfo;
     }
 

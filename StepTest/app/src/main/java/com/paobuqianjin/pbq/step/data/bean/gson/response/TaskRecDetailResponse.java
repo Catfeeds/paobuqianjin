@@ -57,6 +57,7 @@ public class TaskRecDetailResponse {
          * task_days : 31
          * target_step : 3820
          * reward_amount : 100.00
+         * avgmoney :10.00
          * userid : 193
          * avatar : http://thirdwx.qlogo.cn/mmopen/vi_32/YXr2VhxJpdg2dcIZMrju42mmGXmLabwpbTiaoKq9lP5WbdkhcTkkZ6pjuBwLIQdC0u68UhqUkpb5yZ89PoyMiarA/132
          * nickname : 李
@@ -95,6 +96,16 @@ public class TaskRecDetailResponse {
         private int task_days;
         private int target_step;
         private String reward_amount;
+
+        public String getAvgmoney() {
+            return avgmoney;
+        }
+
+        public void setAvgmoney(String avgmoney) {
+            this.avgmoney = avgmoney;
+        }
+
+        private String avgmoney;
         private int userid;
         private String avatar;
         private String nickname;
@@ -249,10 +260,12 @@ public class TaskRecDetailResponse {
         public String toString() {
             return "DataBean{" +
                     "id=" + id +
+                    ", userno='" + userno + '\'' +
                     ", task_name='" + task_name + '\'' +
                     ", task_days=" + task_days +
                     ", target_step=" + target_step +
                     ", reward_amount='" + reward_amount + '\'' +
+                    ", avgmoney='" + avgmoney + '\'' +
                     ", userid=" + userid +
                     ", avatar='" + avatar + '\'' +
                     ", nickname='" + nickname + '\'' +
