@@ -156,6 +156,7 @@ public class PaoBuApplication extends MultiDexApplication {
                 //注册成功会返回device token
                 LocalLog.d(TAG, "IUmengRegisterCallback.onSuccess() deviceToken : " + deviceToken);
             }
+
             @Override
             public void onFailure(String s, String s1) {
                 LocalLog.d(TAG, "IUmengRegisterCallback.onFailure() s : " + s + "   ;s1:" + s1);
@@ -163,18 +164,18 @@ public class PaoBuApplication extends MultiDexApplication {
         });
 
 
-        UmengMessageHandler messageHandler = new UmengMessageHandler(){
+        UmengMessageHandler messageHandler = new UmengMessageHandler() {
             @Override
             public void dealWithCustomMessage(final Context context, final UMessage msg) {
-                LocalLog.d(TAG,new Gson().toJson(msg));
+                LocalLog.d(TAG, new Gson().toJson(msg));
                 new Handler(getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
 //                         //对于自定义消息，PushSDK默认只统计送达。若开发者需要统计点击和忽略，则需手动调用统计方法。
 //                        boolean isClickOrDismissed = true;
 //                        if(isClickOrDismissed) {
-                            //自定义消息的点击统计
-                            UTrack.getInstance(getApplicationContext()).trackMsgClick(msg);
+                        //自定义消息的点击统计
+                        UTrack.getInstance(getApplicationContext()).trackMsgClick(msg);
 //                        } else {
 //                            //自定义消息的忽略统计
 //                            UTrack.getInstance(getApplicationContext()).trackMsgDismissed(msg);
@@ -189,7 +190,7 @@ public class PaoBuApplication extends MultiDexApplication {
                                 if (is_pull_step_service != null) {
                                     switch (is_pull_step_service) {
                                         case "step":
-                                            if (!Utils.isServiceRunning(PaoBuApplication.getApplication(),TodayStepService.class.getName())) {
+                                            if (!Utils.isServiceRunning(PaoBuApplication.getApplication(), TodayStepService.class.getName())) {
                                                 Intent intent = new Intent();
                                                 intent.setAction(START_STEP_ACTION);
                                                 intent.setClass(getApplicationContext(), TodayStepService.class);
@@ -198,7 +199,8 @@ public class PaoBuApplication extends MultiDexApplication {
                                             break;
 
                                         case "login":
-                                            if(exitDialog!=null && exitDialog.isShowing()) exitDialog.dismiss();
+                                            if (exitDialog != null && exitDialog.isShowing())
+                                                exitDialog.dismiss();
 
                                             String tipsMsg = jsonObject.getString("msg");
                                             if (TextUtils.isEmpty(tipsMsg)) {
@@ -248,7 +250,7 @@ public class PaoBuApplication extends MultiDexApplication {
 //            }
         };
         mPushAgent.setMessageHandler(messageHandler);
-        MiPushRegistar.register(this,XIAOMI_ID, XIAOMI_KEY);
+        MiPushRegistar.register(this, XIAOMI_ID, XIAOMI_KEY);
         HuaWeiRegister.register(this);
         MeizuRegister.register(this, "1000750", "b7afc36952cc4167af1bd6d27b5a7354");
 
@@ -347,7 +349,6 @@ public class PaoBuApplication extends MultiDexApplication {
                 UMShareAPI.get(app);
                 LocalLog.d(TAG, "DetectThread run() 初始化网络、计步服务、定位SDK、三方登陆注册、三方支付SDK等");
                 app.initWXapi(app);
-                app.loadCitySelect(app);
                 /*boolean netAccess = Presenter.getInstance(app).getCurrentStep(innerCallBack);
                 * 暂时不做数据融合显示，只显示本手机的步数*/
 
@@ -367,8 +368,8 @@ public class PaoBuApplication extends MultiDexApplication {
             Request request = chain.request();
             Response response = chain.proceed(request);
 /*            LocalLog.d(TAG, "intercept() enter" + response.toString());
-            *//*在此处定义缓存策略，图片缓存，信息缓存，验证码缓存.....,按链接性质过滤,选择缓存首页信息一段时间*//*
-            LocalLog.d(TAG, "String url =" + request.url());*/
+            在此处定义缓存策略，图片缓存，信息缓存，验证码缓存.....,按链接性质过滤,选择缓存首页信息一段时间*/
+            LocalLog.d(TAG, "String url =" + request.url());
             long max_age = 24 * 3600;
             if (request.url().toString().startsWith(NetApi.url)) {
 /*                LocalLog.d(TAG, "request.url().toString() = " + request.url().toString());*/

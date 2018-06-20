@@ -102,6 +102,8 @@
 	-keep class com.linkedin.** { *; }
 	-keepattributes Signature
 
+    -keep public class * extends com.bumptech.glide.module.AppGlideModule
+    -keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
 #地区3级联动选择器
 
 -keep class com.lljjcoder.**{
