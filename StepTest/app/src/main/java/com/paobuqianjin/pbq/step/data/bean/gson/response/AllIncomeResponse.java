@@ -166,6 +166,7 @@ public class AllIncomeResponse {
              * source_id : 100360
              * circleid : 100360
              * circlename : 一样一样咿呀咿呀哟以后呀呀呀
+             * businessid:1454
              */
 
             private int id;
@@ -176,6 +177,16 @@ public class AllIncomeResponse {
             private int source_id;
             private int circleid;
             private String circlename;
+
+            public String getBusinessid() {
+                return businessid;
+            }
+
+            public void setBusinessid(String businessid) {
+                this.businessid = businessid;
+            }
+
+            private String businessid;
 
             public int getId() {
                 return id;

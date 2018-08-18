@@ -1,7 +1,6 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
@@ -11,6 +10,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +27,12 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
+import com.paobuqianjin.pbq.step.view.activity.FriendDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
+import com.paobuqianjin.pbq.step.view.emoji.MoonUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -50,7 +51,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
 
     private List<DynamicAllIndexResponse.DataBeanX.DataBean> data;
-    private Activity mContext;
+    private Context mContext;
     private Fragment fragment;
     private final static int DYNAMIC_DETAIL = 205;
 
@@ -61,7 +62,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         ITEM_TYPE_THREE_IMG
     }
 
-    public AttentionCircleAdapter(Activity context, List<DynamicAllIndexResponse.DataBeanX.DataBean> data, Fragment fragment) {
+    public AttentionCircleAdapter(Context context, List<DynamicAllIndexResponse.DataBeanX.DataBean> data, Fragment fragment) {
         super();
         mContext = context;
         this.data = data;
@@ -151,10 +152,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((OneOrZeroViewHodler) holder).is_vote = data.get(position).getIs_vote();
             if (((OneOrZeroViewHodler) holder).viewType == 1) {
                 ((OneOrZeroViewHodler) holder).timeStmp.setText(create_timeStr);
-                /*Presenter.getInstance(mContext).getPlaceErrorImage(((OneOrZeroViewHodler) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
-                Presenter.getInstance(mContext).getPlaceErrorImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-                LoadBitmap.glideLoad(mContext, ((OneOrZeroViewHodler) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
-                LoadBitmap.glideLoad(mContext, ((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+                Presenter.getInstance(mContext).getPlaceErrorImage(((OneOrZeroViewHodler) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(mContext).getPlaceErrorImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+
 
                 String content = Base64Util.getUidFromBase64(data.get(position).getDynamic());
                 LocalLog.d(TAG, "content = " + content);
@@ -165,6 +165,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
 
                 ((OneOrZeroViewHodler) holder).dynamicContentText.setText(content);
+                MoonUtils.identifyFaceExpression(mContext,((OneOrZeroViewHodler) holder).dynamicContentText, content, ImageSpan.ALIGN_BOTTOM);
                 ((OneOrZeroViewHodler) holder).dynamicUserName.setText(data.get(position).getNickname());
                 ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getShowAddress());
                 ((OneOrZeroViewHodler) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
@@ -201,14 +202,14 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length()
                                 , Spanned.SPAN_INCLUSIVE_INCLUSIVE);
                         ((OneOrZeroViewHodler) holder).firstContent.setText(spannableString);
+                        MoonUtils.identifyFaceExpression(mContext,((OneOrZeroViewHodler) holder).firstContent, spannableString, ImageSpan.ALIGN_BOTTOM);
                     }
                 }
 
             } else if (((OneOrZeroViewHodler) holder).viewType == 0) {
                 LocalLog.d(TAG, "1图");
                 ((OneOrZeroViewHodler) holder).timeStmp.setText(create_timeStr);
-                /*Presenter.getInstance(mContext).getPlaceErrorImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-                LoadBitmap.glideLoad(mContext, ((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+                Presenter.getInstance(mContext).getPlaceErrorImage(((OneOrZeroViewHodler) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                 ((OneOrZeroViewHodler) holder).is_vote = data.get(position).getIs_vote();
                 String content = Base64Util.getUidFromBase64(data.get(position).getDynamic());
                 LocalLog.d(TAG, "content = " + content);
@@ -218,6 +219,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     }
                 }
                 ((OneOrZeroViewHodler) holder).dynamicContentText.setText(content);
+                MoonUtils.identifyFaceExpression(mContext,((OneOrZeroViewHodler) holder).dynamicContentText, content, ImageSpan.ALIGN_BOTTOM);
                 ((OneOrZeroViewHodler) holder).dynamicUserName.setText(data.get(position).getNickname());
                 ((OneOrZeroViewHodler) holder).dynamicLocationCity.setText(data.get(position).getShowAddress());
                 ((OneOrZeroViewHodler) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
@@ -253,7 +255,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                         spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length()
                                 , Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                        ((OneOrZeroViewHodler) holder).firstContent.setText(spannableString);
+                        /*((OneOrZeroViewHodler) holder).firstContent.setText(spannableString);*/
+                        MoonUtils.identifyFaceExpression(mContext,((OneOrZeroViewHodler) holder).firstContent, spannableString, ImageSpan.ALIGN_BOTTOM);
                     }
                 }
             }
@@ -266,12 +269,9 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((TwoPicViewHolder) holder).dynamicid = data.get(position).getId();
             ((TwoPicViewHolder) holder).userid = data.get(position).getUserid();
             ((TwoPicViewHolder) holder).is_vote = data.get(position).getIs_vote();
-/*            Presenter.getInstance(mContext).getPlaceErrorImage(((TwoPicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+            Presenter.getInstance(mContext).getPlaceErrorImage(((TwoPicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
             Presenter.getInstance(mContext).getPlaceErrorImage(((TwoPicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
-            Presenter.getInstance(mContext).getPlaceErrorImage(((TwoPicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(mContext, ((TwoPicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
-            LoadBitmap.glideLoad(mContext, ((TwoPicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
-            LoadBitmap.glideLoad(mContext, ((TwoPicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+            Presenter.getInstance(mContext).getPlaceErrorImage(((TwoPicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             String content = Base64Util.getUidFromBase64(data.get(position).getDynamic());
             LocalLog.d(TAG, "content = " + content);
             if (content != null) {
@@ -281,6 +281,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
 
             ((TwoPicViewHolder) holder).dynamicContentText.setText(content);
+            MoonUtils.identifyFaceExpression(mContext,((TwoPicViewHolder) holder).dynamicContentText, content, ImageSpan.ALIGN_BOTTOM);
             ((TwoPicViewHolder) holder).dynamicUserName.setText(data.get(position).getNickname());
             ((TwoPicViewHolder) holder).dynamicLocationCity.setText(data.get(position).getShowAddress());
             ((TwoPicViewHolder) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
@@ -316,7 +317,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                     spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length()
                             , Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                    ((TwoPicViewHolder) holder).firstContent.setText(spannableString);
+                    /*((TwoPicViewHolder) holder).firstContent.setText(spannableString);*/
+                    MoonUtils.identifyFaceExpression(mContext,  ((TwoPicViewHolder) holder).firstContent, spannableString, ImageSpan.ALIGN_BOTTOM);
                 }
             }
 
@@ -331,14 +333,10 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((ThreePicViewHolder) holder).userid = data.get(position).getUserid();
             ((ThreePicViewHolder) holder).is_vote = data.get(position).getIs_vote();
             ((ThreePicViewHolder) holder).contentNumbers.setText(String.valueOf(data.get(position).getComment()));
-/*            Presenter.getInstance(mContext).getPlaceErrorImage(((ThreePicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+            Presenter.getInstance(mContext).getPlaceErrorImage(((ThreePicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
             Presenter.getInstance(mContext).getPlaceErrorImage(((ThreePicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
             Presenter.getInstance(mContext).getPlaceErrorImage(((ThreePicViewHolder) holder).dynamicPicThree, data.get(position).getImages().get(2), R.drawable.bitmap_null, R.drawable.bitmap_null);
-            Presenter.getInstance(mContext).getPlaceErrorImage(((ThreePicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(mContext, ((ThreePicViewHolder) holder).dynamicPicOne, data.get(position).getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
-            LoadBitmap.glideLoad(mContext, ((ThreePicViewHolder) holder).dynamicPicTwo, data.get(position).getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
-            LoadBitmap.glideLoad(mContext, ((ThreePicViewHolder) holder).dynamicPicThree, data.get(position).getImages().get(2), R.drawable.bitmap_null, R.drawable.bitmap_null);
-            LoadBitmap.glideLoad(mContext, ((ThreePicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+            Presenter.getInstance(mContext).getPlaceErrorImage(((ThreePicViewHolder) holder).dynamicUserIcon, data.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             String content = Base64Util.getUidFromBase64(data.get(position).getDynamic());
             ((ThreePicViewHolder) holder).dynamicContentText.setText(content);
             ((ThreePicViewHolder) holder).dynamicUserName.setText(data.get(position).getNickname());
@@ -377,7 +375,8 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.color_6c71c4));
                     spannableString.setSpan(colorSpan, 0, data.get(position).getOne_comment().getNickname().length(),
                             Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-                    ((ThreePicViewHolder) holder).firstContent.setText(spannableString);
+                    /*((ThreePicViewHolder) holder).firstContent.setText(spannableString);*/
+                    MoonUtils.identifyFaceExpression(mContext, ((ThreePicViewHolder) holder).firstContent, spannableString, ImageSpan.ALIGN_BOTTOM);
                 }
             }
             ((ThreePicViewHolder) holder).position = position;
@@ -526,7 +525,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
                         Intent intentPersonDetial = new Intent();
                         intentPersonDetial.putExtra("userid", userid);
-                        intentPersonDetial.setClass(mContext, UserCenterActivity.class);
+                        intentPersonDetial.setClass(mContext, FriendDetailActivity.class);
                         fragment.startActivityForResult(intentPersonDetial, DYNAMIC_DETAIL);
                         break;
                 }
@@ -663,7 +662,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
                         Intent intentPersonDetial = new Intent();
                         intentPersonDetial.putExtra("userid", userid);
-                        intentPersonDetial.setClass(mContext, UserCenterActivity.class);
+                        intentPersonDetial.setClass(mContext, FriendDetailActivity.class);
                         fragment.startActivityForResult(intentPersonDetial, DYNAMIC_DETAIL);
                         break;
                 }
@@ -800,7 +799,7 @@ public class AttentionCircleAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                         LocalLog.d(TAG, "dynamicId = " + dynamicid + ",userId = " + userid);
                         Intent intentPersonDetial = new Intent();
                         intentPersonDetial.putExtra("userid", userid);
-                        intentPersonDetial.setClass(mContext, UserCenterActivity.class);
+                        intentPersonDetial.setClass(mContext, FriendDetailActivity.class);
                         fragment.startActivityForResult(intentPersonDetial, DYNAMIC_DETAIL);
                         break;
                 }

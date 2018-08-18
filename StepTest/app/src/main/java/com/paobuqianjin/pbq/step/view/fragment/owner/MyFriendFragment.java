@@ -1,14 +1,11 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
@@ -28,8 +25,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.AddFriendAddressActivity;
@@ -51,7 +46,7 @@ import butterknife.ButterKnife;
 public class MyFriendFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = MyFriendFragment.class.getSimpleName();
 
-    String[] titles = {"互相关注", "已关注", "关注我的"};
+    String[] titles = {"已关注", "关注我的"};
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -76,16 +71,9 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
     RelativeLayout cancelIcon;
     @Bind(R.id.my_friend_fg)
     RelativeLayout myFriendFg;
-    private FollowOtoFragment followOtoFragment;
     private MyFollowFragment myFollowFragment;
     private FollowMeFragment followMeFragment;
     private int selectPage = 0;
-    private IntentFilter intentFilter;
-    private LocalBroadcastManager localBroadcastManager;
-    private LocalReceiver localReceiver;
-    private final static String FOLLOW_OTO_ACTION = "com.paobuqianjin.pbq.action.OTO_ACTION";
-    private final static String MY_FOLLOW_ACTION = "com.paobuqianjin.pbq.action.MY_FOLLOW_ACTION";
-    private final static String FOLLOW_ME_ACTION = "com.paobuqianjin.pbq.action.FOLLOME_ACTION";
     private String keyWord = "";
 
     @Override
@@ -96,7 +84,7 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected String title() {
-        return "我的关注";
+        return "关注";
     }
 
     @Override
@@ -116,52 +104,16 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
         this.keyWord = keyWord;
     }
 
-    private class LocalReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            LocalLog.d(TAG, "收到本地广播 ");
-            if (intent != null) {
-                switch (intent.getAction()) {
-                    case FOLLOW_ME_ACTION:
-                        UserFollowOtOResponse.DataBeanX.DataBean dataBean = (UserFollowOtOResponse.DataBeanX.DataBean) intent.getSerializableExtra("friendinfo");
-                        if (dataBean != null) {
-                            LocalLog.d(TAG, "关注我的的人变互相关注");
-                            if (followOtoFragment != null) {
-                                followOtoFragment.add(dataBean);
-                            }
-                        }
-                        break;
-                    case FOLLOW_OTO_ACTION:
-                        FollowUserResponse.DataBeanX.DataBean dataBeanOt = (FollowUserResponse.DataBeanX.DataBean) intent.getSerializableExtra("friendinfo");
-                        if (dataBeanOt != null) {
-                            LocalLog.d(TAG, "互相关注的变成关注我的");
-                            if (followMeFragment != null) {
-                                followMeFragment.add(dataBeanOt);
-                            }
-                        }
-                        break;
-                    case MY_FOLLOW_ACTION:
-                        LocalLog.d(TAG, "不再关注");
-                        break;
-                }
-            }
-        }
-    }
-
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         setToolBarListener(toolBarListener);
         followTab = (TabLayout) viewRoot.findViewById(R.id.follow_tab);
         friendRecyclerViewpager = (ViewPager) viewRoot.findViewById(R.id.friend_recycler_viewpager);
         createCircleSwipe = (SwipeRefreshLayout) viewRoot.findViewById(R.id.create_circle_swipe);
 
-        followOtoFragment = new FollowOtoFragment();
         myFollowFragment = new MyFollowFragment();
         followMeFragment = new FollowMeFragment();
         List<Fragment> fragments = new ArrayList<>();
-
-        fragments.add(followOtoFragment);
         fragments.add(myFollowFragment);
         fragments.add(followMeFragment);
         TabAdapter tabAdapter = new TabAdapter(getContext()
@@ -171,6 +123,7 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
 
         followTab.setupWithViewPager(friendRecyclerViewpager);
         searchCircleText = (EditText) viewRoot.findViewById(R.id.search_circle_text);
+        searchCircleText.setHint("搜索昵称");
         searchIcon = (RelativeLayout) viewRoot.findViewById(R.id.search_icon);
         searchCircleText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -178,10 +131,8 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
                 if (i == EditorInfo.IME_ACTION_SEARCH) {
                     LocalLog.d(TAG, "onEditorAction() selectPage = " + selectPage);
                     if (selectPage == 0) {
-                        followOtoFragment.searchKeyWord(searchCircleText.getText().toString());
-                    } else if (selectPage == 1) {
                         myFollowFragment.searchKeyWord(searchCircleText.getText().toString());
-                    } else if (selectPage == 2) {
+                    } else if (selectPage == 1) {
                         followMeFragment.searchKeyWord(searchCircleText.getText().toString());
                     }
                     Utils.hideInput(getContext());
@@ -220,10 +171,6 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
                         selectPage = 1;
                         LocalLog.d(TAG, "onTabSelected() selectPage = " + selectPage);
                         break;
-                    case 2:
-                        selectPage = 2;
-                        LocalLog.d(TAG, "onTabSelected() selectPage = " + selectPage);
-                        break;
                     default:
                         break;
                 }
@@ -241,14 +188,6 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
             }
         });
 
-        intentFilter = new IntentFilter();
-        intentFilter.addAction(FOLLOW_OTO_ACTION);
-        intentFilter.addAction(FOLLOW_ME_ACTION);
-        intentFilter.addAction(MY_FOLLOW_ACTION);
-
-        localReceiver = new LocalReceiver();
-        localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
-        localBroadcastManager.registerReceiver(localReceiver, intentFilter);
     }
 
 
@@ -288,10 +227,8 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
                 keyWord = "";
                 LocalLog.d(TAG, "afterTextChanged() enter selectPage" + selectPage);
                 if (selectPage == 0) {
-                    followOtoFragment.searchKeyWord("");
-                } else if (selectPage == 1) {
                     myFollowFragment.searchKeyWord("");
-                } else if (selectPage == 2) {
+                } else if (selectPage == 1) {
                     followMeFragment.searchKeyWord("");
                 }
             }
@@ -305,10 +242,8 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
         public void onRefresh() {
             LocalLog.d(TAG, "刷新当前页面! selectPage" + selectPage);
             if (selectPage == 0) {
-                //followOtoFragment.update();
-            } else if (selectPage == 1) {
                 //myFollowFragment.update();
-            } else if (selectPage == 2) {
+            } else if (selectPage == 1) {
                 //followMeFragment.update();
             }
             if (createCircleSwipe != null) {
@@ -349,6 +284,9 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
 
 
     public void setIndicator(TabLayout tab, int leftDip, int rightDip) {
+        if (tab == null) {
+            return;
+        }
         Class<?> tabLayout = tab.getClass();
         Field tabStrip = null;
         try {
@@ -387,7 +325,6 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        localBroadcastManager.unregisterReceiver(localReceiver);
     }
 
     private BaseBarImageViewFragment.ToolBarListener toolBarListener = new BaseBarImageViewFragment.ToolBarListener() {
@@ -398,7 +335,6 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
 
         @Override
         public void clickRight() {
-            LocalLog.d(TAG, "邀请好友");
             Intent friendAddressIntent = new Intent();
             friendAddressIntent.setClass(getContext(), AddFriendAddressActivity.class);
             startActivity(friendAddressIntent);

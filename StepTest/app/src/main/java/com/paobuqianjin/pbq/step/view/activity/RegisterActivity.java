@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -23,8 +25,13 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.presenter.im.PhoneSignInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 
 import butterknife.Bind;
@@ -33,7 +40,7 @@ import butterknife.OnClick;
 
 import static com.paobuqianjin.pbq.step.R.id.user_read_choose;
 
-public class RegisterActivity extends BaseActivity {
+public class RegisterActivity extends BaseActivity implements PhoneSignInterface {
     private final static String TAG = RegisterActivity.class.getSimpleName();
     private boolean showLoginPass = false, showSignPass = false;
 
@@ -72,6 +79,7 @@ public class RegisterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sign_edit_layout);
         ButterKnife.bind(this);
+        Presenter.getInstance(this).attachUiInterface(this);
         newAccount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -85,7 +93,6 @@ public class RegisterActivity extends BaseActivity {
                     getCode.setEnabled(true);
                 } else {
                     getCode.setEnabled(false);
-
                 }
             }
 
@@ -103,15 +110,7 @@ public class RegisterActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String newAccountStr = newAccount.getText().toString().trim();
-                String newPwdStr = newPwd.getText().toString().trim();
-                String indntifyingCodeStr = indntifyingCode.getText().toString().trim();
-                if ((newAccountStr.length() == 11) && (newPwdStr.length() >= 6) && (newPwdStr.length() <= 12) && (indntifyingCodeStr.length() == 6)) {
-                    newBtnRegister.setEnabled(true);
-                } else {
-                    newBtnRegister.setEnabled(false);
-                }
-
+                checkConfirmEnable();
             }
 
             @Override
@@ -127,14 +126,7 @@ public class RegisterActivity extends BaseActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String newAccountStr = newAccount.getText().toString().trim();
-                String newPwdStr = newPwd.getText().toString().trim();
-                String indntifyingCodeStr = indntifyingCode.getText().toString().trim();
-                if ((newAccountStr.length() == 11) && (newPwdStr.length() >= 6) && (newPwdStr.length() <= 12) && (indntifyingCodeStr.length() == 6)) {
-                    newBtnRegister.setEnabled(true);
-                } else {
-                    newBtnRegister.setEnabled(false);
-                }
+                checkConfirmEnable();
             }
 
             @Override
@@ -151,6 +143,16 @@ public class RegisterActivity extends BaseActivity {
         read_xieyi.setText(style);
     }
 
+    private void checkConfirmEnable() {
+        String newAccountStr = newAccount.getText().toString().trim();
+        String newPwdStr = newPwd.getText().toString().trim();
+        String indntifyingCodeStr = indntifyingCode.getText().toString().trim();
+        if ((newAccountStr.length() == 11) && (newPwdStr.length() >= 8) && (newPwdStr.length() <= 16) && (indntifyingCodeStr.length() == 6)) {
+            newBtnRegister.setEnabled(true);
+        } else {
+            newBtnRegister.setEnabled(false);
+        }
+    }
 
     @OnClick({R.id.register_img_back, R.id.indntifying_code, R.id.read_xieyi, R.id.get_code, R.id.register_eyes, R.id.new_btn_register, R.id.user_read_choose})
     public void onViewClicked(View view) {
@@ -212,6 +214,36 @@ public class RegisterActivity extends BaseActivity {
                 }
                 break;
         }
+    }
+
+    @Override
+    public void response(SignUserResponse signUserResponse) {
+        if (signUserResponse.getError() == 0) {
+            LocalLog.d(TAG, "注册成功! 去登陆页");
+            PaoToastUtils.showLongToast(this, "注册成功!");
+            Presenter.getInstance(this).steLogFlg(true);
+            Presenter.getInstance(this).setId(signUserResponse.getData().getId());
+            Presenter.getInstance(this).setNo(signUserResponse.getData().getNo());
+            Presenter.getInstance(this).setToken(this, signUserResponse.getData().getUser_token());
+            Intent intent = new Intent();
+            intent.putExtra("r_id",signUserResponse.getData().getId());
+            intent.putExtra("r_no",signUserResponse.getData().getNo());
+            intent.putExtra("r_user_token",signUserResponse.getData().getUser_token());
+            intent.putExtra("r_chat_token",signUserResponse.getData().getChat_token());
+            setResult(Activity.RESULT_OK,intent);
+            finish();
+        }
+    }
+
+    @Override
+    public void response(ErrorCode errorCode) {
+        PaoToastUtils.showLongToast(this, errorCode.getMessage());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Presenter.getInstance(this).dispatchUiInterface(this);
     }
 
     /**

@@ -3,10 +3,12 @@ package com.paobuqianjin.pbq.step.view.base.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.emoji.MoonUtils;
 
 import java.util.List;
 
@@ -77,13 +80,15 @@ public class MiddleContentAdapter extends RecyclerView.Adapter<MiddleContentAdap
 
 
             if (!TextUtils.isEmpty(nameA)) {
-                SpannableStringBuilder style = new SpannableStringBuilder(nameA + reply + nameB + ":" + content);
+                SpannableString style = new SpannableString(nameA + reply + nameB + ":" + content);
                 style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), 0, nameA.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), nameA.length(), (nameA + reply).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), (nameA + reply).length(), (nameA + reply + nameB).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), (nameA + reply + nameB).length(), (nameA + reply + nameB + ":" + content).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                holder.itemContent.setText(style);
+                /*holder.itemContent.setText(style);*/
+                MoonUtils.identifyFaceExpression(context,holder.itemContent, style, ImageSpan.ALIGN_BOTTOM);
             }
+
 
             holder.parent_id = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getId();
             holder.reply_userid = ((DynamicCommentListResponse.DataBeanX.DataBean.ChildBean) mData.get(position)).getUserid();

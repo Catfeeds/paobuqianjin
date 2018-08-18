@@ -3,10 +3,15 @@ package com.paobuqianjin.pbq.step.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.TypefaceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +32,6 @@ import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.Constants;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
@@ -59,6 +63,8 @@ public class TransferCardActivity extends BaseBarActivity {
     CheckBox cbAgree;
     @Bind(R.id.et_can_transfer)
     EditText etCanTransfer;
+    @Bind(R.id.transfer_limit)
+    TextView transferLimit;
     private List<BankListResponse.CardBean> listData = new ArrayList<>();
     private BankSelectAdapter adapter;
     private float canCrashNum;
@@ -112,6 +118,13 @@ public class TransferCardActivity extends BaseBarActivity {
 //        rvBank.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         cbAgree.setChecked(Presenter.getInstance(this).getReadCrashProtocol(this));
+        String partA = getString(R.string.transfer_limite_tips);
+        String partB = getString(R.string.transfer_limite_tip_part2);
+        SpannableString spannableString = new SpannableString(partA + partB);
+        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.color_161727)),
+                partA.length(), (partA + partB).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new TypefaceSpan("bold"), partA.length(), (partA + partB).length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        transferLimit.setText(spannableString);
         initData();
     }
 
@@ -324,7 +337,8 @@ public class TransferCardActivity extends BaseBarActivity {
             holder.cb_select.setChecked(itemBean.getStatus() == 1);
             holder.tv_card_num.setText("**** " + itemBean.getBank_card().substring(itemBean.getBank_card().length() - 4));
             holder.tv_title.setText(itemBean.getBank_name());
-            LoadBitmap.glideLoad(TransferCardActivity.this,holder.iv_icon,itemBean.getImg_url());
+            Presenter.getInstance(context).getImage(holder.iv_icon, itemBean.getImg_url());
+
             if (itemClickListener != null) {
                 holder.itemRootView.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -30,6 +30,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.PassWordResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ForgetPassWordInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.ForgotPasswordActivity;
 import com.paobuqianjin.pbq.step.view.activity.LoginActivity;
 import com.paobuqianjin.pbq.step.view.activity.RegisterActivity;
@@ -111,14 +112,7 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String forgotpwdAccountStr = forgotpwdAccount.getText().toString().trim();
-                String forgotpwdPwdStr = forgotpwdPwd.getText().toString().trim();
-                String forgotpwdIindntifyingCodeStr = forgotpwdIindntifyingCode.getText().toString().trim();
-                if ((forgotpwdAccountStr.length() == 11) && (forgotpwdPwdStr.length() >= 6) && (forgotpwdPwdStr.length() <= 16) && (forgotpwdIindntifyingCodeStr.length() == 6)) {
-                    forgotpwdOk.setEnabled(true);
-                } else {
-                    forgotpwdOk.setEnabled(false);
-                }
+                checkConfirmEnable();
 
             }
 
@@ -135,15 +129,7 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String forgotpwdAccountStr = forgotpwdAccount.getText().toString().trim();
-                String forgotpwdPwdStr = forgotpwdPwd.getText().toString().trim();
-                String forgotpwdIindntifyingCodeStr = forgotpwdIindntifyingCode.getText().toString().trim();
-                if ((forgotpwdAccountStr.length() == 11) && (forgotpwdPwdStr.length() >= 6) && (forgotpwdPwdStr.length() <= 16) && (forgotpwdIindntifyingCodeStr.length() == 6)) {
-                    forgotpwdOk.setEnabled(true);
-                } else {
-                    forgotpwdOk.setEnabled(false);
-                }
-
+                checkConfirmEnable();
             }
 
             @Override
@@ -154,6 +140,16 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
         return rootView;
     }
 
+    private void checkConfirmEnable() {
+        String forgotpwdAccountStr = forgotpwdAccount.getText().toString().trim();
+        String forgotpwdPwdStr = forgotpwdPwd.getText().toString().trim();
+        String forgotpwdIindntifyingCodeStr = forgotpwdIindntifyingCode.getText().toString().trim();
+        if ((forgotpwdAccountStr.length() == 11) && (forgotpwdPwdStr.length() >= 8) && (forgotpwdPwdStr.length() <= 16) && (forgotpwdIindntifyingCodeStr.length() == 6)) {
+            forgotpwdOk.setEnabled(true);
+        } else {
+            forgotpwdOk.setEnabled(false);
+        }
+    }
 
     @Override
     public void response(PassWordResponse passWordResponse) {
@@ -161,10 +157,12 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
             return;
         }
         if (passWordResponse.getError() == 0) {
-            Toast.makeText(getContext(), "密码修改成功，请重新登录", Toast.LENGTH_SHORT).show();
+            PaoToastUtils.showLongToast(getContext(), "密码修改成功，请重新登录");
             getActivity().finish();
         } else if (passWordResponse.getError() == -100) {
             exitTokenUnfect();
+        } else {
+            PaoToastUtils.showLongToast(getContext(), passWordResponse.getMessage());
         }
     }
 

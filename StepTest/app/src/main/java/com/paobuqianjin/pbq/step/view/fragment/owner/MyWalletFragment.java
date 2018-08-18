@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -9,36 +10,33 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
-import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.utils.NetApi;
-import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
-import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
-import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
 import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.MyBankCardActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
+import com.paobuqianjin.pbq.step.view.activity.PayManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.TransferActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.WalletRedPkgIncomeAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -53,7 +51,7 @@ import static com.paobuqianjin.pbq.step.utils.Utils.PAGE_SIZE_DEFAULT;
  * Created by pbq on 2018/1/15.
  */
 
-public class MyWalletFragment extends BaseBarStyleTextViewFragment implements UserIncomInterface {
+public class MyWalletFragment extends BaseBarImageViewFragment implements UserIncomInterface {
     private final static String TAG = MyWalletFragment.class.getSimpleName();
 
     @Bind(R.id.bar_return_drawable)
@@ -63,7 +61,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     @Bind(R.id.bar_title)
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
-    TextView barTvRight;
+    ImageView barTvRight;
     @Bind(R.id.all_income)
     TextView allIncome;
     @Bind(R.id.income_des)
@@ -108,6 +106,9 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     ImageView lineTotal;
     @Bind(R.id.wallet_refresh)
     SwipeRefreshLayout walletRefresh;
+    private View popWalletBar;
+    private PopupWindow popupWalletWindow;
+    private TranslateAnimation animationCircleType;
     private int mIndex;//当前收入页面索引
     private Fragment[] fragments;
     private ImageView[] lines;
@@ -121,7 +122,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
     ArrayList<AllIncomeResponse.DataBeanX.DataBean> allData = new ArrayList<>();
     private final static String PAY_FOR_STYLE = "pay_for_style";
     private final static String PAY_RECHARGE = "com.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
-    private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
+    /*    private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";*/
     private int pageIndexYD = 1, pageIndexMonth = 1, pageIndexAll = 1;
     private int pageYDCount = 0, pageMonthCount = 0, pageAllCount = 0;
     public final static int REQUEST_CRASH = 231;
@@ -140,7 +141,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
 
     @Override
     public Object right() {
-        return "明细";
+        return getDrawableResource(R.drawable.exit);
     }
 
     @Override
@@ -167,7 +168,56 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
         @Override
         public void clickRight() {
             LocalLog.d(TAG, "查看明细");
-            startActivity(InoutcomDetailActivity.class, null);
+
+            //startActivity(InoutcomDetailActivity.class, null);
+            popWalletSelect();
+        }
+    };
+
+    private void popWalletSelect() {
+        LocalLog.d(TAG, "popNoAdminSelect() enter");
+        popWalletBar = View.inflate(getContext(), R.layout.wallet_select_bar, null);
+        popupWalletWindow = new PopupWindow(popWalletBar,
+                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupWalletWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popWindow dismiss() ");
+                popupWalletWindow = null;
+            }
+        });
+        TextView walletPay = (TextView) popWalletBar.findViewById(R.id.wallet_pay_manager);
+        TextView walletBank = (TextView) popWalletBar.findViewById(R.id.wallet_my_bank);
+        walletPay.setOnClickListener(onClickListener);
+        walletBank.setOnClickListener(onClickListener);
+        popupWalletWindow.setFocusable(true);
+        popupWalletWindow.setOutsideTouchable(true);
+        popupWalletWindow.setBackgroundDrawable(new BitmapDrawable());
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupWalletWindow.showAsDropDown(barTvRight, 20, -10);
+        popWalletBar.startAnimation(animationCircleType);
+    }
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (popupWalletWindow != null) {
+                popupWalletWindow.dismiss();
+            }
+            switch (v.getId()) {
+                case R.id.wallet_pay_manager:
+                    startActivity(PayManagerActivity.class, null);
+                    break;
+                case R.id.wallet_my_bank:
+                    startActivity(MyBankCardActivity.class, null);
+                    break;
+            }
         }
     };
 
@@ -232,17 +282,17 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
                 intent.setAction(PAY_RECHARGE);
                 startActivityForResult(intent, REQUEST_RECHARGE);
                 break;
-            case R.id.crash:
+            /*case R.id.crash:
                 LocalLog.d(TAG, "提现");
-                  /*  intent.setAction(CRASH_ACTION);
+                  *//*  intent.setAction(CRASH_ACTION);
                     intent.putExtra("total", totalMoney);
                     intent.setClass(getContext(), CrashActivity.class);
-                    startActivityForResult(intent, REQUEST_CRASH);*/
+                    startActivityForResult(intent, REQUEST_CRASH);*//*
                 intent.setAction(CRASH_ACTION);
                 intent.putExtra("total", totalMoney);
                 intent.setClass(getContext(), TransferActivity.class);
                 startActivityForResult(intent, REQUEST_CRASH);
-                break;
+                break;*/
             case R.id.yesterday_span:
                 LocalLog.d(TAG, "查看当前收益");
                 mIndex = 0;
@@ -587,7 +637,7 @@ public class MyWalletFragment extends BaseBarStyleTextViewFragment implements Us
             if (incomeMoney == null) {
                 return;
             }
-            incomeMoney.setText("总金额:" + userInfoResponse.getData().getBalance());
+            incomeMoney.setText("钱包余额:" + userInfoResponse.getData().getBalance());
             totalMoney = Float.parseFloat(userInfoResponse.getData().getBalance());
         } else if (userInfoResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");

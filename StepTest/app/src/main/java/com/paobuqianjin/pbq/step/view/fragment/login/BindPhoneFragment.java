@@ -134,17 +134,12 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
         signCodeEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                String signcode = signCodeEdit.getText().toString().trim();
-                if (signcode.length() != 6) {
-                    confirm.setEnabled(false);
-                } else {
-                    
-                }
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                checkConfirmEnable();
             }
 
             @Override
@@ -155,17 +150,12 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
         passWordEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                String passWord = signCodeEdit.getText().toString().trim();
-                if (passWord.length() < 6) {
-                    confirm.setEnabled(false);
-                } else {
-                    confirm.setEnabled(true);
-                }
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                checkConfirmEnable();
             }
 
             @Override
@@ -173,6 +163,19 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
 
             }
         });
+    }
+
+    private void checkConfirmEnable() {
+        String passWord = passWordEdit.getText().toString().trim();
+        String signcode = signCodeEdit.getText().toString().trim();
+        String forgotpwdAccountStr = phoneEdit.getText().toString().trim();
+        if (forgotpwdAccountStr.length() == 11 && signcode.length() == 6 && passWord.length() >= 8 && passWord.length() <= 16) {
+            confirm.setEnabled(true);
+            confirm.setBackground(getDrawableResource(R.drawable.rect_angle_background));
+        } else {
+            confirm.setEnabled(false);
+            confirm.setBackground(getDrawableResource(R.drawable.rect_angle_diss_bt));
+        }
     }
 
     @Override
@@ -231,12 +234,12 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
                     LocalLog.d(TAG, " onClick() 设置显示密码!");
                     passWordEdit.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     showSignPass = true;
-                    passY.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_yes));
+                    passY.setImageDrawable(getResources().getDrawable(R.drawable.forgotpwd_eyes));
                 } else {
                     LocalLog.d(TAG, " onClick() 设置不显示密码!");
                     passWordEdit.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     showSignPass = false;
-                    passY.setImageDrawable(getResources().getDrawable(R.drawable.pass_eye_no));
+                    passY.setImageDrawable(getResources().getDrawable(R.drawable.register_eyes));
                 }
                 break;
             case R.id.btn_confirm:

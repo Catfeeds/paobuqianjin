@@ -41,20 +41,18 @@ public class EmojiManager {
 
     static {
         Context context = LQREmotionKit.getContext();
-/*
 
         load(context, EMOT_DIR + "emoji.xml");
-*/
 
         mPattern = makePattern();
 
-/*        mDrawableCache = new LruCache<String, Bitmap>(CACHE_MAX_SIZE) {
+        mDrawableCache = new LruCache<String, Bitmap>(CACHE_MAX_SIZE) {
             @Override
             protected void entryRemoved(boolean evicted, String key, Bitmap oldValue, Bitmap newValue) {
                 if (oldValue != newValue)
                     oldValue.recycle();
             }
-        };*/
+        };
     }
 
     public static final int getDisplayCount() {

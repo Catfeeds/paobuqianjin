@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/bar_return_a_style"></include>
+
+    <include layout="@layout/search_bar_text"></include>
+
+    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+        android:id="@+id/search_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+
+    <TextView
+        android:id="@+id/not_found_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="没有找到相关内容"
+        android:textColor="@color/color_8a8a8a"
+        android:textSize="14dp"
+        android:visibility="gone" />
+</LinearLayout>

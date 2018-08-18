@@ -1,9 +1,9 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +13,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.bundle.MessageSystemBundleData;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicCommentListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageContentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageLikeResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MessageSystemResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
+import com.paobuqianjin.pbq.step.view.emoji.MoonUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -37,10 +40,10 @@ import static com.paobuqianjin.pbq.step.view.emoji.EmotionViewPagerAdapter.numTo
 
 public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final static String TAG = MessageAdapter.class.getSimpleName();
-    private Activity context;
+    private Context context;
     private List<?> mData;
 
-    public MessageAdapter(Activity context, List<?> data) {
+    public MessageAdapter(Context context, List<?> data) {
         this.context = context;
         mData = data;
     }
@@ -62,6 +65,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         } else if (viewType == 1) {
             LocalLog.d(TAG, "MessageLikeResponse");
             return new MessageLikeViewHolder(LayoutInflater.from(context).inflate(R.layout.like_list, parent, false));
+        } else if (viewType == 2) {
+            return new MessageSystemViewHolder(LayoutInflater.from(context).inflate(R.layout.system_msg_item, parent, false));
         }
         return null;
     }
@@ -72,9 +77,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             int[] emj = context.getResources().getIntArray(R.array.emjio_list);
             if (mData.get(position) instanceof MessageContentResponse.DataBeanX.DataBean) {
                 if (holder instanceof MessageContentViewHolder) {
-/*                    Presenter.getInstance(context).getPlaceErrorImage(((MessageContentViewHolder) holder).rectIcon,
-                            ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getFrom_avatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-                    LoadBitmap.glideLoad(context, ((MessageContentViewHolder) holder).rectIcon,
+                    Presenter.getInstance(context).getPlaceErrorImage(((MessageContentViewHolder) holder).rectIcon,
                             ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getFrom_avatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                     ((MessageContentViewHolder) holder).dearName.setText(((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getFrom_nickanme());
                     ((MessageContentViewHolder) holder).contentText.setText(((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getTitle());
@@ -86,6 +89,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         }
                     }
                     ((MessageContentViewHolder) holder).contentTextDes.setText(content);
+                    MoonUtils.identifyFaceExpression(context,  ((MessageContentViewHolder) holder).contentTextDes, content, ImageSpan.ALIGN_BOTTOM);
                     //服务器保存到秒级别，本地处理为毫秒级别
                     long create_time = ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
                     LocalLog.d(TAG, "create_time = " + DateTimeUtil.formatDateTime(create_time * 1000));
@@ -94,32 +98,20 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     int size = ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().size();
                     if (size == 1) {
                         ((MessageContentViewHolder) holder).imageA.setVisibility(View.VISIBLE);
-                        /*Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageA, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));*/
-                        LoadBitmap.glideLoad(context, ((MessageContentViewHolder) holder).imageA, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
-                                R.drawable.bitmap_null, R.drawable.bitmap_null);
+                        Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageA, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                     } else if (size == 2) {
                         ((MessageContentViewHolder) holder).imageA.setVisibility(View.VISIBLE);
-                        /*Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageA, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));*/
-                        LoadBitmap.glideLoad(context, ((MessageContentViewHolder) holder).imageA, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0)
-                                , R.drawable.bitmap_null, R.drawable.bitmap_null);
+                        Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageA, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                         ((MessageContentViewHolder) holder).imageB.setVisibility(View.VISIBLE);
-                        /*Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageB, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));*/
-                        LoadBitmap.glideLoad(context, ((MessageContentViewHolder) holder).imageB, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1),
-                                R.drawable.bitmap_null, R.drawable.bitmap_null);
+                        Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageB, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
 
                     } else if (size >= 3) {
                         ((MessageContentViewHolder) holder).imageA.setVisibility(View.VISIBLE);
-                        /*Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageA, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));*/
-                        LoadBitmap.glideLoad(context, ((MessageContentViewHolder) holder).imageA, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0)
-                                , R.drawable.bitmap_null, R.drawable.bitmap_null);
+                        Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageA, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                         ((MessageContentViewHolder) holder).imageB.setVisibility(View.VISIBLE);
-                        /*Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageB, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));*/
-                        LoadBitmap.glideLoad(context, ((MessageContentViewHolder) holder).imageB, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1),
-                                R.drawable.bitmap_null, R.drawable.bitmap_null);
+                        Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageB, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
                         ((MessageContentViewHolder) holder).imageC.setVisibility(View.VISIBLE);
-                        /*Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageC, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));*/
-                        LoadBitmap.glideLoad(context, ((MessageContentViewHolder) holder).imageC, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2),
-                                R.drawable.bitmap_null, R.drawable.bitmap_null);
+                        Presenter.getInstance(context).getImage(((MessageContentViewHolder) holder).imageC, ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));
                     }
                     ((MessageContentViewHolder) holder).dynamicId = ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getDynamicid();
                     ((MessageContentViewHolder) holder).is_vote = ((MessageContentResponse.DataBeanX.DataBean) mData.get(position)).getDynamicdata().getIs_vote();
@@ -129,9 +121,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }*/
             } else if (mData.get(position) instanceof MessageLikeResponse.DataBeanX.DataBean) {
                 if (holder instanceof MessageLikeViewHolder) {
-/*                    Presenter.getInstance(context).getPlaceErrorImage(((MessageLikeViewHolder) holder).rectIcon,
-                            ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getFrom_avatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-                    LoadBitmap.glideLoad(context, ((MessageLikeViewHolder) holder).rectIcon,
+                    Presenter.getInstance(context).getPlaceErrorImage(((MessageLikeViewHolder) holder).rectIcon,
                             ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getFrom_avatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
                     ((MessageLikeViewHolder) holder).dearName.setText(((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getFrom_nickanme());
                     ((MessageLikeViewHolder) holder).contentText.setText(((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getTitle());
@@ -139,10 +129,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     LocalLog.d(TAG, "content = " + content);
                     if (content != null) {
                         for (int i = 0; i < emj.length; i++) {
+//                            content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
                             content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
                         }
                     }
                     ((MessageLikeViewHolder) holder).contentTextDes.setText(content);
+                    MoonUtils.identifyFaceExpression(context,((MessageLikeViewHolder) holder).contentTextDes, content, ImageSpan.ALIGN_BOTTOM);
+
                     //服务器保存到秒级别，本地处理为毫秒级别
                     long create_time = ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
                     LocalLog.d(TAG, "create_time = " + DateTimeUtil.formatDateTime(create_time * 1000));
@@ -151,32 +144,20 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     int size = ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().size();
                     if (size == 1) {
                         ((MessageLikeViewHolder) holder).imageA.setVisibility(View.VISIBLE);
-                        /*Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageA, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));*/
-                        LoadBitmap.glideLoad(context, ((MessageLikeViewHolder) holder).imageA, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
-                                R.drawable.bitmap_null, R.drawable.bitmap_null);
+                        Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageA, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                     } else if (size == 2) {
                         ((MessageLikeViewHolder) holder).imageA.setVisibility(View.VISIBLE);
-  /*                      Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageA, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));*/
-                        LoadBitmap.glideLoad(context, ((MessageLikeViewHolder) holder).imageA, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
-                                R.drawable.bitmap_null, R.drawable.bitmap_null);
+                        Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageA, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                         ((MessageLikeViewHolder) holder).imageB.setVisibility(View.VISIBLE);
-/*                        Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageB, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));*/
-                        LoadBitmap.glideLoad(context, ((MessageLikeViewHolder) holder).imageB, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1),
-                                R.drawable.bitmap_null, R.drawable.bitmap_null);
+                        Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageB, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
 
                     } else if (size >= 3) {
                         ((MessageLikeViewHolder) holder).imageA.setVisibility(View.VISIBLE);
-                        /*Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageA, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));*/
-                        LoadBitmap.glideLoad(context, ((MessageLikeViewHolder) holder).imageA, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
-                                R.drawable.bitmap_null, R.drawable.bitmap_null);
+                        Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageA, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                         ((MessageLikeViewHolder) holder).imageB.setVisibility(View.VISIBLE);
-                        /*Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageB, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));*/
-                        LoadBitmap.glideLoad(context, ((MessageLikeViewHolder) holder).imageB, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1),
-                                R.drawable.bitmap_null, R.drawable.bitmap_null);
+                        Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageB, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
                         ((MessageLikeViewHolder) holder).imageC.setVisibility(View.VISIBLE);
-                        /*Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageC, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));*/
-                        LoadBitmap.glideLoad(context, ((MessageLikeViewHolder) holder).imageC, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2),
-                                R.drawable.bitmap_null, R.drawable.bitmap_null);
+                        Presenter.getInstance(context).getImage(((MessageLikeViewHolder) holder).imageC, ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));
                     }
                     ((MessageLikeViewHolder) holder).dynamicId = ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getDynamicid();
                     ((MessageLikeViewHolder) holder).is_vote = ((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getDynamicdata().getIs_vote();
@@ -184,6 +165,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 /*if (((MessageLikeResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                     ((MessageLikeViewHolder) holder).vipFlg.setVisibility(View.VISIBLE);
                 }*/
+            } else if (mData.get(position) instanceof MessageSystemResponse.DataBeanX.DataBean) {
+                long create_time = ((MessageSystemResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
+                String time_day_str = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_YYYY_MM_DD);
+                ((MessageSystemViewHolder) holder).timeTv.setText(time_day_str);
+                ((MessageSystemViewHolder) holder).contentTv.setText(((MessageSystemResponse.DataBeanX.DataBean) mData.get(position)).getContent());
             }
         }
     }
@@ -195,6 +181,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 return 0;
             } else if (mData.get(position) instanceof MessageLikeResponse.DataBeanX.DataBean) {
                 return 1;
+            } else if (mData.get(position) instanceof MessageSystemResponse.DataBeanX.DataBean) {
+                return 2;
             }
         }
         return -1;
@@ -319,6 +307,20 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             imageC = (ImageView) view.findViewById(R.id.image_c);
             timeStmap = (TextView) view.findViewById(R.id.time_stmap);
             vipFlg = (ImageView) view.findViewById(R.id.vip_flg);
+        }
+    }
+
+    public class MessageSystemViewHolder extends RecyclerView.ViewHolder {
+        TextView timeTv, contentTv;
+
+        public MessageSystemViewHolder(View view) {
+            super(view);
+            initView(view);
+        }
+
+        private void initView(View view) {
+            timeTv = (TextView) view.findViewById(R.id.time);
+            contentTv = (TextView) view.findViewById(R.id.content);
         }
     }
 }

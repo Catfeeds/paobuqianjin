@@ -10,7 +10,6 @@ public class AddBusinessResponse {
      * message : success
      * data : {"businessid":"355","name":"哈哈"}
      */
-
     private int error;
     private String message;
     private DataBean data;

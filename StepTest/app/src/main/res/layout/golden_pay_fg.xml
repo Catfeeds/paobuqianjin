@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/pay_bar"
+        layout="@layout/bar_return_a_style" />
+
+    <TextView
+        android:id="@+id/golden_times"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/pay_bar"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:paddingLeft="14dp"
+        android:text="开通商家金牌会员: 365.00元/年"
+        android:textColor="@color/color_161727"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/pay_style"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/golden_times"
+        android:background="@color/color_d9d9d9"
+        android:gravity="center_vertical"
+        android:paddingLeft="14dp"
+        android:text="支付方式"
+        android:textColor="@color/color_161727"
+        android:textSize="15dp" />
+
+    <RelativeLayout
+        android:id="@+id/wechat_pay_span"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/pay_style"
+        android:layout_marginTop="15dp"
+        android:background="@color/color_f8"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/wechat_pay_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/wechatpay" />
+
+        <TextView
+            android:id="@+id/pay_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/wechat_pay_icon"
+            android:layout_alignTop="@+id/wechat_pay_icon"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/wechat_pay_icon"
+            android:gravity="center"
+            android:text="微信"
+            android:textColor="@color/color_161727"
+            android:textSize="17dp" />
+
+        <RelativeLayout
+            android:id="@+id/choice_ico_span"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp">
+
+            <ImageView
+                android:id="@+id/wechat_pay_select"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/shape_25_dp"
+                android:src="@drawable/selected_icon" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_ebebed" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ali_pay_span"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/pay_style"
+        android:background="@color/color_f8">
+
+        <ImageView
+            android:id="@+id/ali_pay_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/alipay" />
+
+        <TextView
+            android:id="@+id/ali_pay_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ali_pay_icon"
+            android:layout_alignTop="@+id/ali_pay_icon"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/ali_pay_icon"
+            android:gravity="center"
+            android:text="支付宝"
+            android:textColor="@color/color_161727"
+            android:textSize="17dp" />
+
+        <RelativeLayout
+            android:id="@+id/ali_ico_span"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp">
+
+            <ImageView
+                android:id="@+id/ali_pay_select"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/shape_25_dp"
+                android:src="@drawable/selected_icon" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_ebebed" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bank_pay_span"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/ali_pay_span"
+        android:background="@color/color_f8">
+
+        <ImageView
+            android:id="@+id/bank_pay_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/money_wallet" />
+
+        <TextView
+            android:id="@+id/bank_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/bank_pay_icon"
+            android:layout_alignTop="@+id/bank_pay_icon"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/bank_pay_icon"
+            android:gravity="center"
+            android:text="钱包"
+            android:textColor="@color/color_161727"
+            android:textSize="17dp" />
+
+        <RelativeLayout
+            android:id="@+id/bank_ico_span"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp">
+
+            <ImageView
+                android:id="@+id/wallet_pay_select"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/shape_25_dp"
+                android:src="@drawable/selected_icon" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_ebebed" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/yuns_pay_span"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/bank_pay_span"
+        android:background="@color/color_f8">
+
+        <ImageView
+            android:id="@+id/yuns_pay_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/yuns_icon" />
+
+        <TextView
+            android:id="@+id/yuns_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/yuns_pay_icon"
+            android:layout_alignTop="@+id/yuns_pay_icon"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/yuns_pay_icon"
+            android:gravity="center"
+            android:text="云闪付"
+            android:textColor="@color/color_161727"
+            android:textSize="17dp" />
+
+        <RelativeLayout
+            android:id="@+id/yuns_ico_span"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp">
+
+            <ImageView
+                android:id="@+id/yuns_pay_select"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/shape_25_dp"
+                android:src="@drawable/selected_icon" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_ebebed" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/yuns_pay_span"
+        android:padding="14dp"
+        android:text="温馨提示：云闪付是中国银联的官方支付平台，是目前支付手续费用最低的，请放心使用。支付宝、微信等其他支付平台近期开通，敬请期待。"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/confirm_pay"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@drawable/rect_no_corner"
+        android:gravity="center"
+        android:stateListAnimator="@null"
+        android:text="确认支付"
+        android:textColor="@color/color_f8"
+        android:textSize="18dp"></Button>
+</RelativeLayout>

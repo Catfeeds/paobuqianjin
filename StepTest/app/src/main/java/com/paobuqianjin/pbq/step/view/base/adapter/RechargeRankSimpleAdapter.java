@@ -13,8 +13,8 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReChargeRankResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.FriendDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 
 import java.util.List;
@@ -64,8 +64,7 @@ public class RechargeRankSimpleAdapter extends RecyclerView.Adapter<RechargeRank
     private void updateList(RechargeRankSimpleViewHolder holder, int position) {
         holder.moneyNumDes.setText(mData.get(position).getTotal_fee() + "元");
         holder.userid = mData.get(position).getUserid();
-/*        Presenter.getInstance(context).getPlaceErrorImage(holder.userIconMoney, mData.get(position).getAvatar(),R.drawable.default_head_ico,R.drawable.default_head_ico);*/
-        LoadBitmap.glideLoad(context, holder.userIconMoney, mData.get(position).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+        Presenter.getInstance(context).getPlaceErrorImage(holder.userIconMoney, mData.get(position).getAvatar(),R.drawable.default_head_ico,R.drawable.default_head_ico);
         /*if (mData.get(position).getVip() == 1) {
             holder.vipFlg.setVisibility(View.VISIBLE);
         }*/
@@ -100,7 +99,7 @@ public class RechargeRankSimpleAdapter extends RecyclerView.Adapter<RechargeRank
                         LocalLog.d(TAG, "点击个人用户头像");
                         Intent intent = new Intent();
                         intent.putExtra("userid", userid);
-                        intent.setClass(context, UserCenterActivity.class);
+                        intent.setClass(context, FriendDetailActivity.class);
                         context.startActivity(intent);
                         break;
                 }

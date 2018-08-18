@@ -1,18 +1,31 @@
 package com.paobuqianjin.pbq.step.view.fragment.pay;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -56,6 +69,9 @@ public class PaySuccessFragment extends BaseBarStyleTextViewFragment {
     }
 
     private float payNum;
+    private View popRedPkgView;
+    private PopupWindow popupRedPkgWindow;
+    private TranslateAnimation animationCircleType;
 
     @Override
     protected String title() {
@@ -82,6 +98,61 @@ public class PaySuccessFragment extends BaseBarStyleTextViewFragment {
         paySuccessResult = (TextView) viewRoot.findViewById(R.id.pay_success_result);
         String payResult = String.format("你已成功付款%.2f元", payNum);
         paySuccessResult.setText(payResult);
+        String payAction = Presenter.getInstance(getContext()).getTradeStyle();
+        if ("gvip".equals(payAction)) {
+            goldenSponsorSuccess(viewRoot);
+        }
+    }
+
+    private void goldenSponsorSuccess(View view) {
+        if (!isAdded()) {
+            return;
+        }
+        if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
+            return;
+        }
+        popRedPkgView = View.inflate(getContext(), R.layout.golden_sponsor_success, null);
+        popupRedPkgWindow = new PopupWindow(popRedPkgView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupRedPkgWindow = null;
+            }
+        });
+        final TextView wxCode = popRedPkgView.findViewById(R.id.wx_code);
+        LinearLayout linearLayout = (LinearLayout) popRedPkgView.findViewById(R.id.copy);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager cmb = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData textClipData = ClipData.newPlainText("Label", wxCode.getText().toString().trim());
+                cmb.setPrimaryClip(textClipData);
+                LocalLog.d(TAG, "  msg = " + cmb.getText());
+                PaoToastUtils.showLongToast(getActivity(), "微信号复制成功");
+            }
+        });
+
+        popupRedPkgWindow.setFocusable(true);
+        popupRedPkgWindow.setOutsideTouchable(true);
+        popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        popRedPkgView.findViewById(R.id.close_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupRedPkgWindow.dismiss();
+            }
+        });
+
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+        popupRedPkgWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        popRedPkgView.startAnimation(animationCircleType);
+
     }
 
     @Override
@@ -96,7 +167,7 @@ public class PaySuccessFragment extends BaseBarStyleTextViewFragment {
         String payAction = Presenter.getInstance(getContext()).getTradeStyle();
         LocalLog.d(TAG, "payAction =  " + payAction);
         if ("user".equals(payAction) || "task".equals(payAction) || "vip".equals(payAction) || "redpacket".equals(payAction)
-                || "cvip".equals(payAction)) {
+                || "cvip".equals(payAction) || "gvip".equals(payAction) || "red_map".equals(payAction)) {
             getActivity().setResult(Activity.RESULT_OK);
             getActivity().finish();
         } else {

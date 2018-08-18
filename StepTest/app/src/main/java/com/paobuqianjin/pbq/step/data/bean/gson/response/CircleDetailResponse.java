@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 圈子详情应答
@@ -58,6 +59,7 @@ public class CircleDetailResponse {
          * userid : 30
          * name : 原因1
          * cover : http://www.paobu.com/img/bg01.png
+         * chat_banner : http://www.paobu.com/img/bg01.png
          * target : 8000
          * mobile : 13424156029
          * logo : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/IMG_20180101_094810_HDR.jpg
@@ -82,6 +84,7 @@ public class CircleDetailResponse {
         private int userid;
         private String name;
         private String cover;
+        private List<ChatImagesResponse.ChatImageBean> chat_banner;
         private int target;
         private String mobile;
         private String logo;
@@ -98,6 +101,7 @@ public class CircleDetailResponse {
         private int is_join;
         private int is_admin;
         private int is_red_packet;
+        private int disband;
         /**
          * 个人红包状态：0步数未达标|1有红包|2红包已领完|3用户已经领过红包|4圈子余额不足
          */
@@ -134,6 +138,14 @@ public class CircleDetailResponse {
 
         public void setCover(String cover) {
             this.cover = cover;
+        }
+
+        public List<ChatImagesResponse.ChatImageBean> getChat_banner() {
+            return chat_banner;
+        }
+
+        public void setChat_banner(List<ChatImagesResponse.ChatImageBean> chat_banner) {
+            this.chat_banner = chat_banner;
         }
 
         public int getTarget() {
@@ -284,6 +296,14 @@ public class CircleDetailResponse {
             this.red_packet_money = red_packet_money;
         }
 
+        /**
+         * 0未解散|1已解散
+         * @return
+         */
+        public int getDisband() {
+            return disband;
+        }
+
         @Override
         public String toString() {
             return "DataBean{" +
@@ -291,6 +311,7 @@ public class CircleDetailResponse {
                     ", userid=" + userid +
                     ", name='" + name + '\'' +
                     ", cover='" + cover + '\'' +
+                    ", chat_banner='" + chat_banner + '\'' +
                     ", target=" + target +
                     ", mobile='" + mobile + '\'' +
                     ", logo='" + logo + '\'' +
@@ -309,6 +330,7 @@ public class CircleDetailResponse {
                     ", is_red_packet=" + is_red_packet +
                     ", red_packet_status=" + red_packet_status +
                     ", red_packet_money=" + red_packet_money +
+                    ", disband=" + disband +
                     '}';
         }
     }

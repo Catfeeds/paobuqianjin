@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.CirclePassDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.JoinCircleParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -31,8 +32,8 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.JoinCircleResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InOutCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.JoinCircleInterface;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 
 import java.util.ArrayList;
@@ -52,23 +53,14 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
     private final static int defaultCount = 3;
     private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data = new ArrayList<>();
     private ChoiceCircleResponse.DataBeanX.DataBean tmpData;
-    private View popCircleOpBar;
-    private PopupWindow popupOpWindow;
-    private TranslateAnimation animationCircleType;
-    private Activity activity;
-    EditText passEdit;
-    ImageView lineMid;
-    TextView cancelText;
-    TextView confirmText;
-    RelativeLayout partTwo;
     private JoinCircleParam joinCircleParam;
     private final static String ACTION_ENTER_ICON = "coma.paobuqian.pbq.step.ICON_ACTION";
     InOutCallBackInterface inOutCallBackInterface;
+    CirclePassDialog circlePassDialog;
 
     public CircleChooseGoodAdapter(final Activity activity, Context context,
                                    ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> data, InOutCallBackInterface inOutCallBackInterface) {
         super();
-        this.activity = activity;
         mContext = context;
         this.data = data;
         this.inOutCallBackInterface = inOutCallBackInterface;
@@ -94,8 +86,7 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
         LocalLog.d(TAG, "city = " + tmpData.getCity() +
                 ", name =" + tmpData.getName() + "logo url = " + tmpData.getLogo() + " ,member_number ="
                 + tmpData.getMember_number());
-        /*Presenter.getInstance(mContext).getImage(holder.circleLogo, tmpData.getLogo());*/
-        LoadBitmap.glideLoad(activity, holder.circleLogo, tmpData.getLogo(), R.drawable.bitmap_null, R.drawable.bitmap_null);
+        Presenter.getInstance(mContext).getImage(holder.circleLogo, tmpData.getLogo());
         holder.circleLocation.setText(tmpData.getCity());
         holder.circleName.setText(tmpData.getName());
         String sAgeFormat = mContext.getResources().getString(R.string.member_number);
@@ -200,52 +191,46 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
             circleNumDesc = (TextView) view.findViewById(R.id.circle_num_desc);
             circleJoin = (Button) view.findViewById(R.id.circle_join);
             lock = (ImageView) view.findViewById(R.id.lock);
-            Presenter.getInstance(mContext).attachUiInterface(joinCircleInterface);
-
         }
 
 
         public void popPassWordEdit() {
-            LocalLog.d(TAG, "popPassWordEdit() enter 弹出密码输入框");
-            popCircleOpBar = View.inflate(mContext, R.layout.pass_word_layout, null);
-            popupOpWindow = new PopupWindow(popCircleOpBar, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-            popupOpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    popupOpWindow = null;
-                }
-            });
+            if (circlePassDialog == null) {
+                circlePassDialog = new CirclePassDialog(mContext);
+                circlePassDialog.setNoOnclickListener(new CirclePassDialog.onNoOnclickListener() {
+                    @Override
+                    public void onNoClick() {
+                        circlePassDialog.dismiss();
+                    }
+                });
 
-            passEdit = (EditText) popCircleOpBar.findViewById(R.id.pass_edit);
-            passEdit.setOnClickListener(onClickListener);
-            cancelText = (TextView) popCircleOpBar.findViewById(R.id.cancel_text);
-            cancelText.setOnClickListener(onClickListener);
-            confirmText = (TextView) popCircleOpBar.findViewById(R.id.confirm_text);
-            confirmText.setOnClickListener(onClickListener);
-
-
-            popupOpWindow.setFocusable(true);
-            popupOpWindow.setOutsideTouchable(true);
-            popupOpWindow.setBackgroundDrawable(new BitmapDrawable());
-
-            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
-                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
-                    1, Animation.RELATIVE_TO_PARENT, 0);
-            animationCircleType.setInterpolator(new
-
-                    AccelerateInterpolator());
-            animationCircleType.setDuration(200);
-
-            popupOpWindow.showAtLocation(activity.findViewById(R.id.main_activity_layout), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
-            popCircleOpBar.startAnimation(animationCircleType);
+                circlePassDialog.setYesOnclickListener(new CirclePassDialog.onYesOnclickListener() {
+                    @Override
+                    public void onYesClick(String passWord) {
+                        circlePassDialog.dismiss();
+                        if(TextUtils.isEmpty(passWord)){
+                            return;
+                        }
+                        if (joinCircleParam == null) {
+                            joinCircleParam = new JoinCircleParam();
+                        }
+                        joinCircleParam.setPassword(passWord);
+                        Presenter.getInstance(mContext).attachUiInterface(joinCircleInterface);
+                        Presenter.getInstance(mContext).joinCircle(joinCircleParam);
+                    }
+                });
+            }
+            if (!circlePassDialog.isShowing())
+                circlePassDialog.show();
         }
 
-        private JoinCircleInterface joinCircleInterface = new JoinCircleInterface() {
+        private JoinCircleInterface joinCircleInterface = new  JoinCircleInterface() {
             @Override
             public void response(JoinCircleResponse joinCircleResponse) {
                 LocalLog.d(TAG, " JoinCircleResponse() " + joinCircleResponse.toString());
                 if (joinCircleResponse.getError() == 0) {
                     LocalLog.d(TAG, "加入成功");
+                    PaoToastUtils.showLongToast(mContext,"加入成功");
                     circleJoin.setText("已加入");
                     circleJoin.setTextColor(mContext.getResources().getColor(R.color.color_9999));
                     circleJoin.setBackgroundResource(R.drawable.round5_gray999999);
@@ -303,24 +288,9 @@ public class CircleChooseGoodAdapter extends RecyclerView.Adapter<CircleChooseGo
                         break;
                     case R.id.confirm_text:
                         LocalLog.d(TAG, "确定");
-                        if (popupOpWindow != null) {
-                            if (joinCircleParam == null) {
-                                joinCircleParam = new JoinCircleParam();
-                            }
-                            if (passEdit.getText().toString().equals("")) {
-                                return;
-                            }
-                            joinCircleParam.setPassword(passEdit.getText().toString());
-                            popupOpWindow.dismiss();
-                        }
-                        Presenter.getInstance(mContext).attachUiInterface(joinCircleInterface);
-                        Presenter.getInstance(mContext).joinCircle(joinCircleParam);
                         break;
                     case R.id.cancel_text:
                         LocalLog.d(TAG, "取消");
-                        if (popupOpWindow != null) {
-                            popupOpWindow.dismiss();
-                        }
                         break;
                     default:
                         break;

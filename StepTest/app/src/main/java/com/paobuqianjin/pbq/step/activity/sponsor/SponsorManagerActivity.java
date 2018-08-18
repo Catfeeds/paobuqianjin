@@ -254,6 +254,8 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                 intent.setAction("com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION");
                 intent.setClass(SponsorManagerActivity.this, SponsorInfoActivity.class);
                 intent.putExtra("businessId", dataBean.getBusinessid());
+                intent.putExtra("latitude", dataBean.getLatitude());
+                intent.putExtra("longitude", dataBean.getLongitude());
                 startActivityForResult(intent, REQUEST_SPONSOR_INFO);
             }
         });

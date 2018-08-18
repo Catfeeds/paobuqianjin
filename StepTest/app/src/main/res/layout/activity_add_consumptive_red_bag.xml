@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    tools:context="com.paobuqianjin.pbq.step.view.activity.AddConsumptiveRedBagActivity">
+
+    <include
+        android:id="@+id/frame_top_bar"
+        layout="@layout/bar_return_a_style" />
+    <ScrollView
+        android:layout_below="@+id/frame_top_bar"
+        android:layout_above="@+id/linear_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linear_open_vip"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@+id/people_target_span"
+                android:gravity="center_vertical"
+                android:background="@color/color_efefef">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="@string/tips_open_vip"
+                    android:textColor="@color/color_717171"
+                    android:textSize="12sp" />
+
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="19dp"
+                    android:src="@drawable/go_to" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="14dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="消费红包名称"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/et_red_bag_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:layout_toRightOf="@id/circle_name_text"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:focusable="true"
+                        android:gravity="right|center_vertical"
+                        android:hint="请输入消费红包名称"
+                        android:inputType="text"
+                        android:lines="1"
+                        android:maxLength="32"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+
+                    <requestFocus />
+
+                </LinearLayout>
+                <include layout="@layout/h_divide" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="14dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="消费红包金额"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/et_money"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@id/circle_name_text"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:gravity="right|center_vertical"
+                        android:hint="请输入消费红包金额"
+                        android:inputType="number"
+                        android:lines="1"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:paddingRight="14dp"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp"
+                        android:layout_marginRight="14dp"
+                        android:text="元"/>
+
+                </LinearLayout>
+                <include layout="@layout/h_divide" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="14dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="消费红包使用规则"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="满"
+                        android:textColor="@color/color_161727"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/et_limite_money"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_toRightOf="@id/circle_name_text"
+                        android:cursorVisible="true"
+                        android:gravity="right|center_vertical"
+                        android:inputType="number"
+                        android:lines="1"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="元可用"
+                        android:layout_marginRight="14dp"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
+                </LinearLayout>
+                <include layout="@layout/h_divide" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="14dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="有效期"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/et_day_num"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:layout_toRightOf="@id/circle_name_text"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:gravity="right|center_vertical"
+                        android:hint="有效期不超过30天"
+                        android:lines="1"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:maxLines="1"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp"
+                        android:layout_marginRight="14dp"
+                        android:text="天"/>
+                </LinearLayout>
+                <include layout="@layout/h_divide" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="14dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="消费红包数量"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
+
+                    <EditText
+                        android:id="@+id/et_num"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:layout_toRightOf="@id/circle_name_text"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:cursorVisible="true"
+                        android:gravity="right|center_vertical"
+                        android:hint="请输入消费红包数量"
+                        android:lines="1"
+                        android:inputType="number"
+                        android:maxLength="6"
+                        android:maxLines="1"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp"
+                        android:layout_marginRight="14dp"
+                        android:text="张"/>
+
+                </LinearLayout>
+                <include layout="@layout/h_divide" />
+
+                <RelativeLayout
+                    android:id="@+id/stand_circle_pan"
+                    android:layout_width="match_parent"
+                    android:layout_height="49dp"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="14dp"
+                        android:text="选择步数"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
+
+                    <ImageView
+                        android:id="@+id/switch_stand"
+                        android:layout_width="13dp"
+                        android:layout_height="7dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:src="@drawable/menu_age" />
+
+                    <TextView
+                        android:id="@+id/tv_step"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="14dp"
+                        android:layout_toLeftOf="@+id/switch_stand"
+                        android:text=""
+                        android:textColor="@color/color_161727"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="12dp"
+                android:background="@color/color_efefef"></View>
+            <RelativeLayout
+                android:id="@+id/sponor_msg_span"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/people_target_span"
+                android:background="@color/color_f8">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="商铺信息"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/sponor_msg_des_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="39dp"
+                    android:gravity="right"
+                    android:hint="立即完善"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="19dp"
+                    android:src="@drawable/go_to" />
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:id="@+id/linear_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/create_button"
+            android:stateListAnimator="@null"
+            android:text="确定"
+            android:textColor="@color/color_fefefe"
+            android:textSize="16dp" />
+    </LinearLayout>
+
+
+</RelativeLayout>

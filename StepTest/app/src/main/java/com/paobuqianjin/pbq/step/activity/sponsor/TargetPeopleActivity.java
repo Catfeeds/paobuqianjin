@@ -11,10 +11,19 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.ChooseTargetWheel;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.TargetDistanceResponse;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
+
+import org.json.JSONException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -120,11 +129,33 @@ public class TargetPeopleActivity extends BaseBarActivity implements ChooseTarge
         longitude = data.getDoubleExtra("longitudeStr", 0);
         latitude = data.getDoubleExtra("latitudeStr", 0);
         targetSelectStr = data.getStringExtra("targetSelectStr");
-        if (!TextUtils.isEmpty(targetSelectStr))
-            targetSelect.setText(chooseTargetWheel.getContentByDistance(targetSelectStr));
         city = data.getStringExtra("city");
         if (!TextUtils.isEmpty(address))
             locationSelect.setText(address);
+        Presenter.getInstance(this).getPaoBuSimple(NetApi.urlRedPkgTarget, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    TargetDistanceResponse targetDistanceResponse = new Gson().fromJson(s, TargetDistanceResponse.class);
+                    if (targetDistanceResponse.getData() != null && targetDistanceResponse.getData().size() > 0) {
+                        String[] target = new String[targetDistanceResponse.getData().size()];
+                        for (int i = 0; i < targetDistanceResponse.getData().size(); i++) {
+                            target[i] = String.valueOf(targetDistanceResponse.getData().get(i).getDistance());
+                        }
+                        chooseTargetWheel.setDistances(target);
+                        if (!TextUtils.isEmpty(targetSelectStr))
+                            targetSelect.setText(chooseTargetWheel.getContentByDistance(targetSelectStr));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
     }
 
     @OnClick({R.id.location_pan, R.id.location_radius, R.id.btn_confirm})

@@ -3,15 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/bar_release_record"
-        layout="@layout/bar_return_a_style" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/release_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bar_release_record">
+        android:layout_height="wrap_content">
 
         <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
             android:id="@+id/release_record"
@@ -24,26 +20,41 @@
         android:id="@+id/empty_record_span"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/bar_release_record"
         android:visibility="gone">
 
         <ImageView
-            android:id="@+id/empty_record"
-            android:layout_width="115dp"
+            android:id="@+id/no_record"
+            android:layout_width="105dp"
             android:layout_height="101dp"
+            android:layout_below="@+id/bar_empty"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="96dp"
             android:src="@drawable/task_norecord" />
 
         <TextView
+            android:id="@+id/no_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/empty_record"
+            android:layout_below="@+id/no_record"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="27dp"
-            android:text="你还没发布过任务哦!"
+            android:text="暂时没有任务奖励哦！要不给好友派发一个任务吧！"
             android:textColor="@color/color_9999"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/go_to_release"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/no_task"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/rect_angle_background"
+            android:gravity="center"
+            android:text="发布任务"
+            android:textColor="@color/color_f8"
+            android:textSize="18dp" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -89,7 +89,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     Button inviteBtn;
     MyInviteFragment myInviteFragment;
     InviteDanFragment inviteDanFragment;
-    String[] titles = {"邀请达人榜", "我的邀请"};
+    String[] titles = {"邀请周榜", "我的邀请"};
     @Bind(R.id.line1)
     RelativeLayout line1;
     @Bind(R.id.invite_fg)
@@ -103,7 +103,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
     private ProgressDialog dialog;
     private UMWeb web;
     private int pageIndexDan = 1, pageCountDan = 0;
-    private final static int PAGE_SIZE = 100;
+    private final static int PAGE_SIZE = 30;
     InviteDanAdapter adapter;
     private Rationale mRationale;
     private PermissionSetting mSetting;
@@ -117,7 +117,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
 
     @Override
     protected String title() {
-        return "邀请奖钱";
+        return "邀请好友";
     }
 
     @Override
@@ -169,9 +169,9 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         UserInfoResponse.DataBean userInfo = Presenter.getInstance(getContext()).getCurrentUser();
         if (userInfo != null) {
             web = new UMWeb(NetApi.urlShareIc + userInfo.getNo());
-            web.setTitle("跑步钱进");
+            web.setTitle("大道之行,跑步钱进");
             web.setThumb(new UMImage(getContext(), R.mipmap.app_icon));
-            web.setDescription("邀请好友");
+            web.setDescription("邀请好友成功注册,有机会获得30元邀请奖励");
         }
         adapter = new InviteDanAdapter(getContext(), null);
         inviteDanFragment.setDanAdapter(adapter);
@@ -197,11 +197,11 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             inviteSwipeLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if(inviteSwipeLayout != null){
+                    if (inviteSwipeLayout != null) {
                         inviteSwipeLayout.setRefreshing(false);
                     }
                 }
-            },2000);
+            }, 2000);
         }
     };
 
@@ -443,9 +443,9 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             LocalLog.d(TAG, "pageIndex = " + pageIndexDan + "pageCount = " + pageCountDan);
             loadMore((ArrayList<InviteDanResponse.DataBeanX.DataBean>) inviteDanResponse.getData().getData());
             pageIndexDan++;
-            if (pageIndexDan <= pageCountDan) {
+            /*if (pageIndexDan <= pageCountDan) {
                 Presenter.getInstance(getContext()).getInviteDan(pageIndexDan, PAGE_SIZE);
-            }
+            }*/
         } else if (inviteDanResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

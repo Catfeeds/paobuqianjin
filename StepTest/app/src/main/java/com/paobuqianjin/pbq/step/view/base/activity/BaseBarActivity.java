@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.base.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -23,6 +24,7 @@ public abstract class BaseBarActivity extends BaseActivity {
     private ImageView tv_left;
     private TextView tv_right;
     private RelativeLayout rv_left;
+    private ProgressDialog progressDialog;
 
     /*@desc 设置导航栏标题
     *@function title
@@ -162,5 +164,9 @@ public abstract class BaseBarActivity extends BaseActivity {
         void clickLeft();
 
         void clickRight();
+    }
+
+    public void showLoadingBar(String loadingTips) {
+
     }
 }

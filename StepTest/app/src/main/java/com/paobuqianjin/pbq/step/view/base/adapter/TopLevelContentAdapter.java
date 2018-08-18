@@ -1,8 +1,10 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +19,10 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.FriendDetailActivity;
+import com.paobuqianjin.pbq.step.view.emoji.MoonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,15 +67,22 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
         updateListItem(holder, position);
     }
 
-    private void updateListItem(TopLevelViewHolder holder, int position) {
+    private void updateListItem(TopLevelViewHolder holder, final int position) {
         if (mData.get(position) instanceof DynamicCommentListResponse.DataBeanX.DataBean) {
             LocalLog.d(TAG, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).toString());
-/*            Presenter.getInstance(context).getPlaceErrorImage(holder.contentUserIcon, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
-                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(context, holder.contentUserIcon, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+            Presenter.getInstance(context).getPlaceErrorImage(holder.contentUserIcon, ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.dearName = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getNickname();
             holder.userContentName.setText(((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
+            holder.contentUserIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent();
+                    intent.putExtra("userid", ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getUserid());
+                    intent.setClass(context, FriendDetailActivity.class);
+                    context.startActivity(intent);
+                }
+            });
             long create_time = ((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
             String time_day_str = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_MM_DD_MM);
             String time_min_str = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_HH_MM);
@@ -89,6 +99,7 @@ public class TopLevelContentAdapter extends RecyclerView.Adapter<TopLevelContent
             }
 
             holder.userContentRanka.setText(content);
+            MoonUtils.identifyFaceExpression(context,holder.userContentRanka, content, ImageSpan.ALIGN_BOTTOM);
 
             if (((DynamicCommentListResponse.DataBeanX.DataBean) mData.get(position)).getChild() != null) {
                 if (holder.middleContentAdapter == null) {

@@ -20,7 +20,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserDanResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DanInterface;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.DanAdapter;
@@ -98,6 +97,7 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
     LinearLayoutManager layoutManager;
     RelativeLayout relativeLayout;
     RelativeLayout barNull;
+    private long firstRankStep = 20000;
 
     @Override
     protected String title() {
@@ -117,8 +117,6 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
-
         userIcon = (CircleImageView) viewRoot.findViewById(R.id.user_icon);
         danStepDes = (TextView) viewRoot.findViewById(R.id.dan_step_des);
         danPercent = (TextView) viewRoot.findViewById(R.id.dan_percent);
@@ -135,8 +133,7 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
         if (intent != null) {
             String usrIcon = intent.getStringExtra("usericon");
             if (usrIcon != null && !usrIcon.equals("")) {
-                /*Presenter.getInstance(getContext()).getPlaceErrorImage(userIcon, usrIcon, R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-                LoadBitmap.glideLoad(getActivity(), userIcon, usrIcon, R.drawable.default_head_ico, R.drawable.default_head_ico);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(userIcon, usrIcon, R.drawable.default_head_ico, R.drawable.default_head_ico);
             }
         }
         barNull = (RelativeLayout) (viewRoot.findViewById(R.id.dan_bar));
@@ -152,6 +149,7 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
                 }
             }
         });
+        Presenter.getInstance(getContext()).getDanList();
     }
 
     @Override
@@ -159,7 +157,6 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getUserDan();
         return rootView;
     }
 
@@ -176,7 +173,6 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
         if (!isAdded()) {
             return;
         }
-        Presenter.getInstance(getContext()).getDanList();
     }
 
     @Override
@@ -191,6 +187,7 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
                     danListResponse.getData().get(i).setFinished(true);
                 }
             }
+            firstRankStep = danListResponse.getData().get(0).getTarget();
             if (danRecycler != null) {
                 danRecycler.setAdapter(new DanAdapter(getContext(), danListResponse.getData()));
             }
@@ -201,6 +198,7 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
         } else {
             Toast.makeText(getContext(), danListResponse.getMessage(), Toast.LENGTH_SHORT).show();
         }
+        Presenter.getInstance(getContext()).getUserDan();
     }
 
     @Override
@@ -221,10 +219,17 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
             String beatStrFormat = getString(R.string.beat_nums);
             String beatStr = String.format(beatStrFormat, userDanResponse.getData().getBeat());
             danPercent.setText(beatStr);
+            long end = 0L;
+            if (userDanResponse.getData().getTotal_step_number() < firstRankStep) {
+                LocalLog.d(TAG, "first rank");
+                end = firstRankStep;
+            } else {
+                end = userDanResponse.getData().getEnd() + 1;
+            }
             String processDanFormat = getString(R.string.steps_should_add_to);
-            String processDanStr = String.format(processDanFormat, userDanResponse.getData().getTarget());
+            String processDanStr = String.format(processDanFormat, end);
             processDan.setText(processDanStr);
-            final float percents = (float) userDanResponse.getData().getTotal_step_number() / userDanResponse.getData().getTarget();
+            final float percents = (float) userDanResponse.getData().getTotal_step_number() / end;
             processBar.post(new Runnable() {
                 @Override
                 public void run() {
@@ -246,7 +251,6 @@ public class DanFragment extends BaseBarStyleTextViewFragment implements DanInte
             String peopleNumFormat = getString(R.string.people_finished);
             String peopleNumStr = String.format(peopleNumFormat, userDanResponse.getData().getNumber());
             processDes.setText(peopleNumStr);
-            Presenter.getInstance(getContext()).getDanList();
         } else if (userDanResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

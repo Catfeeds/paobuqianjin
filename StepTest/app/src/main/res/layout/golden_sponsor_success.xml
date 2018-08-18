@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_800000">
+
+    <RelativeLayout
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/bg_golden"
+            android:layout_width="match_parent"
+            android:layout_height="331dp"
+            android:layout_alignBottom="@+id/textView9"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/crash_step_dol_bg" />
+
+        <ImageView
+            android:id="@+id/golden_sponsor"
+            android:layout_width="94dp"
+            android:layout_height="94dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/golden_open" />
+
+        <TextView
+            android:id="@+id/concute_you"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/golden_sponsor"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
+            android:text="恭喜您"
+            android:textColor="#E5594B"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/concute_you_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/concute_you"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="已经开通商家金牌会员"
+            android:textColor="#E5594B"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/sponsor_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/concute_you_success"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="16dp"
+            android:text="推广广告需添加公司客服微信号，由公司工作人员帮您完成过上线广告宣传。"
+            android:textColor="@color/color_161727"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/weixin_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sponsor_des"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="10dp"
+            android:text="微信号:"
+            android:textColor="@color/color_161727"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/wx_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/weixin_code"
+            android:layout_alignTop="@+id/weixin_code"
+            android:layout_toEndOf="@+id/weixin_code"
+            android:enabled="true"
+            android:focusable="true"
+            android:longClickable="true"
+            android:text="AFO13926599820"
+            android:textColor="@color/color_161727"
+            android:textIsSelectable="true"
+            android:textSize="14dp" />
+
+        <LinearLayout
+            android:id="@+id/copy"
+            android:orientation="vertical"
+            android:layout_alignBottom="@+id/wx_code"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/wx_code"
+            android:layout_marginRight="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="复制"
+                android:textColor="@color/color_161727"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/afo_qr"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:layout_below="@+id/weixin_code"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="9dp"
+            android:src="@drawable/afo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/afo_qr"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:text="微信二维码"
+            android:textColor="@color/color_161727"
+            android:textSize="14dp"
+            android:id="@+id/textView9" />
+
+        <ImageView
+            android:id="@+id/close_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/bg_golden"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/close_reg_pkg" />
+    </RelativeLayout>
+</RelativeLayout>

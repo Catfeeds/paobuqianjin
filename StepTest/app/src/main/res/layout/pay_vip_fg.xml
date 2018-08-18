@@ -63,7 +63,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="9dp"
             android:layout_toEndOf="@+id/task_recv_ico"
-            android:text="领取人"
+            android:text="赠送人"
             android:textColor="@color/color_161727"
             android:textSize="15dp" />
 
@@ -145,13 +145,13 @@
         android:textSize="15dp" />
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/wechat_pay_span"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@+id/pay_style"
         android:layout_marginTop="15dp"
-        android:background="@color/color_f8">
+        android:background="@color/color_f8"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/wechat_pay_icon"
@@ -201,10 +201,64 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/ali_pay_span"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/pay_style"
+        android:background="@color/color_f8">
+
+        <ImageView
+            android:id="@+id/ali_pay_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/alipay" />
+
+        <TextView
+            android:id="@+id/ali_pay_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ali_pay_icon"
+            android:layout_alignTop="@+id/ali_pay_icon"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/ali_pay_icon"
+            android:gravity="center"
+            android:text="支付宝"
+            android:textColor="@color/color_161727"
+            android:textSize="17dp" />
+
+        <RelativeLayout
+            android:id="@+id/ali_ico_span"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp">
+
+            <ImageView
+                android:id="@+id/ali_pay_select"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/shape_25_dp"
+                android:src="@drawable/selected_icon" />
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_ebebed" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/bank_pay_span"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@+id/wechat_pay_span"
+        android:layout_below="@+id/ali_pay_span"
         android:background="@color/color_f8">
 
         <ImageView

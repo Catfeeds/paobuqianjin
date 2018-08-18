@@ -12,7 +12,7 @@
         android:id="@+id/circle_detail_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/join_in"
+        android:layout_above="@+id/frame_bottom"
         android:layout_below="@+id/title_bar">
 
         <RelativeLayout
@@ -207,6 +207,11 @@
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 
+    <FrameLayout
+        android:id="@+id/frame_bottom"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <Button
         android:id="@+id/join_in"
         android:layout_width="match_parent"
@@ -219,4 +224,17 @@
         android:textColor="@color/color_f8"
         android:textSize="18dp"
         android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_chat"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/color_6c71c4"
+        android:gravity="center"
+        android:stateListAnimator="@null"
+        android:text="进入聊天"
+        android:textColor="@color/color_f8"
+        android:textSize="18dp"
+        android:visibility="gone" />
+    </FrameLayout>
 </RelativeLayout>

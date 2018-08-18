@@ -9,6 +9,7 @@
         android:background="@color/color_d9d9d9" />
 
     <TextView
+        android:textSize="12dp"
         android:id="@+id/time_stmap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,6 +19,20 @@
         android:textColor="@color/color_161727" />
 
     <TextView
+        android:id="@+id/name_rec"
+        android:maxLines="1"
+        android:maxEms="8"
+        android:textSize="12dp"
+        android:ellipsize="end"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_alignBaseline="@+id/time_stmap"
+        android:layout_alignBottom="@+id/time_stmap"
+        android:layout_toStartOf="@+id/states"
+        android:layout_width="wrap_content" />
+
+    <TextView
+        android:textSize="12dp"
         android:id="@+id/states"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

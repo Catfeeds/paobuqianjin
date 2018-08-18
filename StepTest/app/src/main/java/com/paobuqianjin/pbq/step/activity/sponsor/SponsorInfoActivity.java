@@ -465,6 +465,22 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
         // isDifferent = true;
     }
 
+    private void showSponsorError(String message) {
+        String error = message;
+        switch (message) {
+            case "店铺LOGO必传":
+            case "店铺名称必填":
+            case "电话必填":
+            case "省市区必填":
+            case "详细地址必填":
+            case "经营时间必填":
+            case "店铺环境照片必传":
+                error = "还有信息未填写";
+                break;
+        }
+        PaoToastUtils.showLongToast(this, error);
+    }
+
     @Override
     public void innerCallBack(Object object) {
         if (object instanceof ErrorCode) {
@@ -476,6 +492,10 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                 intent.putExtra("name", response.getData().getName());
                 setResult(10, intent);
                 finish();
+            } else {
+                oldParam = null;
+                if (!TextUtils.isEmpty(((AddBusinessResponse) object).getMessage()))
+                    showSponsorError(((AddBusinessResponse) object).getMessage());
             }
         } else if (object instanceof UpdateBusinessResponse) {
             if (((UpdateBusinessResponse) object).getError() == 0) {
@@ -485,6 +505,10 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                     setResult(10, intent);
                 }
                 finish();
+            } else {
+                oldParam = null;
+                if (!TextUtils.isEmpty(((AddBusinessResponse) object).getMessage()))
+                    showSponsorError(((AddBusinessResponse) object).getMessage());
             }
         }
         if (confirm != null) {

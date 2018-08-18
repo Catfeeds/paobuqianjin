@@ -10,16 +10,24 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
+import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.bundle.ChoiceBundleData;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ChoiceCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
@@ -28,21 +36,28 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.LiveResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyHotCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyJoinCircleResponse;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InOutCallBackInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.QueryRedPkgInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.LiveDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.LiveListActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleChooseGoodAdapter;
+import com.paobuqianjin.pbq.step.view.emoji.LQREmotionKit;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +80,7 @@ public class HotCircleFragment extends BaseFragment {
     private ImageView readPackAIV, readPackBIV;
     private ImageView iv_live_a, iv_live_b;
     private TextView live_a_desc, live_b_desc;
+    private Banner banner;
     private Context mContext;
     private ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData;
     private ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> myCreateCircle;
@@ -91,6 +107,8 @@ public class HotCircleFragment extends BaseFragment {
     private final static String ACTIONF_DELETE_CIRCLE = "com.paobuqjian.step.pbq.ACTION_DELETE_CIRCLE";
     private final static String DELETE_ACTION = "com.paobuqianjin.pbq.step.DELETE_CIRCLE";
     private final static String QUIT_ACTION = "com.paobuqianjin.pbq.step.QUIT";
+    private EditText searchEdit;
+    private ArrayList<AdObject> adList;
 
     @Override
 
@@ -144,7 +162,6 @@ public class HotCircleFragment extends BaseFragment {
 
     @Override
     protected void initView(View rootView) {
-        super.initView(rootView);
         LocalLog.d(TAG, "initView() enter");
         //TODO 圈子活动
         //TODO 精选圈子
@@ -178,6 +195,7 @@ public class HotCircleFragment extends BaseFragment {
         iv_live_b = (ImageView) rootView.findViewById(R.id.iv_live_b);
         live_a_desc = (TextView) rootView.findViewById(R.id.live_a_desc);
         live_b_desc = (TextView) rootView.findViewById(R.id.live_b_desc);
+        banner = (Banner) rootView.findViewById(R.id.banner);
 
         moreMyCircleTV = (TextView) rootView.findViewById(R.id.find_more_my_circle);
         moreMyCircleTV.setOnClickListener(onClickListener);
@@ -186,16 +204,21 @@ public class HotCircleFragment extends BaseFragment {
         moreChoiceTV.setOnClickListener(onClickListener);
         moreLiveTV = (TextView) rootView.findViewById(R.id.more_lives);
         moreLiveTV.setOnClickListener(onClickListener);
+        EditText search_circle_text = rootView.findViewById(R.id.search_circle_text);
+        search_circle_text.setClickable(true);
+        search_circle_text.setFocusable(false);
+        search_circle_text.setOnClickListener(onClickListener);
+
         Presenter.getInstance(mContext).attachUiInterface(uiHotCircleInterface);
         Presenter.getInstance(mContext).attachUiInterface(queryRedPkgInterface);
+        loadBanner();
+        searchEdit = (EditText) rootView.findViewById(R.id.search_pan).findViewById(R.id.search_circle_text);
+        searchEdit.setHint("请输入圈子名称/ID");
     }
 
     private InnerCallBack innerCallBack = new InnerCallBack() {
         @Override
         public void innerCallBack(Object object) {
-            if (!isAdded()) {
-                return;
-            }
             if (object instanceof ErrorCode) {
                 Toast.makeText(getContext(), ((ErrorCode) object).getMessage(), Toast.LENGTH_SHORT).show();
             } else if (object instanceof LiveResponse) {
@@ -208,10 +231,8 @@ public class HotCircleFragment extends BaseFragment {
 //                        live_a_desc.setVisibility(View.VISIBLE);
                         iv_live_b.setVisibility(View.VISIBLE);
 //                        live_b_desc.setVisibility(View.VISIBLE);
-                        /*Presenter.getInstance(getActivity()).getImage(iv_live_a, listBean.get(0).getConver());
-                        Presenter.getInstance(getActivity()).getImage(iv_live_b, listBean.get(1).getConver());*/
-                        LoadBitmap.glideLoad(getActivity(), iv_live_a, listBean.get(0).getConver());
-                        LoadBitmap.glideLoad(getActivity(), iv_live_b, listBean.get(1).getConver());
+                        Presenter.getInstance(getActivity()).getImage(iv_live_a, listBean.get(0).getConver());
+                        Presenter.getInstance(getActivity()).getImage(iv_live_b, listBean.get(1).getConver());
                         iv_live_a.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -243,8 +264,7 @@ public class HotCircleFragment extends BaseFragment {
 //                        live_a_desc.setVisibility(View.VISIBLE);
                         iv_live_b.setVisibility(View.INVISIBLE);
 //                        live_b_desc.setVisibility(View.INVISIBLE);
-                        /*Presenter.getInstance(getActivity()).getImage(iv_live_a, listBean.get(0).getConver());*/
-                        LoadBitmap.glideLoad(getActivity(), iv_live_a, listBean.get(0).getConver());
+                        Presenter.getInstance(getActivity()).getImage(iv_live_a, listBean.get(0).getConver());
                         iv_live_a.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -351,6 +371,12 @@ public class HotCircleFragment extends BaseFragment {
                     intentSearch.setClass(getActivity(), SearchCircleActivity.class);
                     startActivityForResult(intentSearch, SEARCH_ADD);
                     break;
+                case R.id.search_circle_text:
+                    Intent intentSearchCircle = new Intent();
+                    intentSearchCircle.setClass(getActivity(), SearchCircleActivity.class);
+                    intentSearchCircle.putExtra("isInitData", false);
+                    startActivityForResult(intentSearchCircle, SEARCH_ADD);
+                    break;
                 case R.id.more_lives:
                     LocalLog.d(TAG, "查看更多活动");
                     Intent liveIntent = new Intent();
@@ -371,16 +397,14 @@ public class HotCircleFragment extends BaseFragment {
         myHotLa.setVisibility(View.VISIBLE);
         myHotCircleTV.setText(name);
 
-       /* Presenter.getInstance(mContext).getImage(myHotCircleIV, urlImage);*/
-        LoadBitmap.glideLoad(getActivity(), myHotCircleIV, urlImage);
+        Presenter.getInstance(mContext).getImage(myHotCircleIV, urlImage);
 
     }
 
     public void setMyHotLb(String name, String urlImage) {
         myHotLb.setVisibility(View.VISIBLE);
         secondHotCircleTV.setText(name);
-        /*Presenter.getInstance(mContext).getImage(secondHotCircleIV, urlImage);*/
-        LoadBitmap.glideLoad(getActivity(), secondHotCircleIV, urlImage);
+        Presenter.getInstance(mContext).getImage(secondHotCircleIV, urlImage);
     }
 
     private UiHotCircleInterface uiHotCircleInterface = new UiHotCircleInterface() {
@@ -574,6 +598,57 @@ public class HotCircleFragment extends BaseFragment {
             }
         }
     };
+
+    private void loadBanner() {
+        String bannerUrl = NetApi.urlAd + "?position=circle_list";
+        LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
+        Presenter.getInstance(getActivity()).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
+                    adList = new ArrayList<>();
+                    if (adresponse.getData() != null && adresponse.getData().size() > 0) {
+                        int size = adresponse.getData().size();
+                        for (int i = 0; i < size; i++) {
+                            if (adresponse.getData().get(i).getImgs() != null
+                                    && adresponse.getData().get(i).getImgs().size() > 0) {
+                                int imgSize = adresponse.getData().get(i).getImgs().size();
+                                for (int j = 0; j < imgSize; j++) {
+                                    AdObject adObject = new AdObject();
+                                    adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
+                                    adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
+                                    adList.add(adObject);
+                                }
+                            }
+                        }
+                    }
+                    banner.setImageLoader(new BannerImageLoader())
+                            .setImages(adList)
+                            .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                            .setBannerAnimation(Transformer.Default)
+                            .isAutoPlay(true)
+                            .setDelayTime(2000)
+                            .setIndicatorGravity(BannerConfig.CENTER)
+                            .setOnBannerListener(new OnBannerListener() {
+                                @Override
+                                public void OnBannerClick(int position) {
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if(!TextUtils.isEmpty(targetUrl)) startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url",targetUrl));
+                                }
+                            })
+                            .start();
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                LocalLog.d(TAG, "获取失败!");
+            }
+        });
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

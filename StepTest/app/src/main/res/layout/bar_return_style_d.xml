@@ -15,6 +15,7 @@
             android:id="@+id/bar_return_drawable"
             android:layout_width="19dp"
             android:layout_height="19dp"
+            android:visibility="gone"
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
             android:src="@drawable/message_left" />

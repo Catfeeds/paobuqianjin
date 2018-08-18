@@ -70,6 +70,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ReceiveTaskResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RechargeDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseRecordResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SevenAliPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepRandWeekResponse;
@@ -128,6 +129,7 @@ import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OlderPassInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
+import com.paobuqianjin.pbq.step.presenter.im.PhoneSignInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ProtocolInterface;
 import com.paobuqianjin.pbq.step.presenter.im.QueryRedPkgInterface;
@@ -160,6 +162,8 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.PaoBuApplication;
 
+import org.json.JSONObject;
+
 import java.net.UnknownHostException;
 
 import okhttp3.Call;
@@ -186,14 +190,13 @@ public class NetStringCallBack extends StringCallback {
     public void onError(Call call, Exception e, int i, Object response) {
         if (e instanceof UnknownHostException) {
             LocalLog.d(TAG, "没有网络");
-            PaoToastUtils.showShortToastNoMore(PaoBuApplication.getApplication(),"网络连接异常，请检查手机网络是否已开启");
+            PaoToastUtils.showShortToastNoMore(PaoBuApplication.getApplication(), "网络连接异常，请检查手机网络是否已开启");
         }
         e.printStackTrace();
         if (response != null) {
             LocalLog.d(TAG, "onError() enter" + response.toString());
             try {
                 ErrorCode errorCode = new Gson().fromJson(response.toString(), ErrorCode.class);
-
                 if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface) {
                     ((LoginSignCallbackInterface) callBackInterface).response(errorCode);
                 } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {
@@ -203,7 +206,7 @@ public class NetStringCallBack extends StringCallback {
                 } else if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface
                         && command == Engine.COMMAND_REFRESH_PASSWORD) {
                     ((LoginSignCallbackInterface) callBackInterface).response(errorCode);
-                } else if (callBackInterface != null && callBackInterface instanceof MyCreateCircleResponse
+                } else if (callBackInterface != null && callBackInterface instanceof MyCreatCircleInterface
                         && command == Engine.COMMAND_GET_MY_CREATE_CIRCLE) {
                     callBackInterface.response(errorCode);
                 } else if (callBackInterface != null && callBackInterface instanceof UiHotCircleInterface
@@ -314,9 +317,17 @@ public class NetStringCallBack extends StringCallback {
                     ((UserInfoLoginSetInterface) callBackInterface).response(errorCode);
                 } else {
                     LocalLog.e(TAG, " dispatch not match");
+                    if (callBackInterface != null) {
+                        callBackInterface.response(errorCode);
+                    }
                 }
             } catch (JsonSyntaxException j) {
                 LocalLog.e(TAG, "未知错误");
+                ErrorCode errorCode = new ErrorCode();
+                errorCode.setError(-1);
+                errorCode.setMessage("开小差了，请稍后再试");
+                if (callBackInterface != null)
+                    callBackInterface.response(errorCode);
             }
         }
     }
@@ -328,6 +339,15 @@ public class NetStringCallBack extends StringCallback {
     }
 
     private void disPatchResponse(String s, int i) {
+        if (s != null) {
+            if (s.contains("提交内容不符合相关规范")) {
+                ErrorCode errorCode = new ErrorCode();
+                errorCode.setError(-1);
+                errorCode.setMessage("提交内容不符合相关规范");
+                callBackInterface.response(errorCode);
+                return;
+            }
+        }
         if (callBackInterface != null && callBackInterface instanceof LoginSignCallbackInterface) {
 
             if (command == Engine.COMMAND_LOGIN_IN_BY_PHONE) {
@@ -335,8 +355,8 @@ public class NetStringCallBack extends StringCallback {
                     LoginResponse loginResponse = new Gson().fromJson(s, LoginResponse.class);
                     if (loginResponse.getError() == 0) {
                         ((LoginSignCallbackInterface) callBackInterface).response(loginResponse);
-                    }else{
-                        onError(null,new Exception("MT"),i,s);
+                    } else {
+                        onError(null, new Exception("MT"), i, s);
                     }
 
                 } catch (JsonSyntaxException e) {
@@ -347,13 +367,6 @@ public class NetStringCallBack extends StringCallback {
                 try {
                     ThirdPartyLoginResponse thirdPartyLoginResponse = new Gson().fromJson(s, ThirdPartyLoginResponse.class);
                     ((LoginSignCallbackInterface) callBackInterface).response(thirdPartyLoginResponse);
-                } catch (JsonSyntaxException e) {
-                    e.printStackTrace();
-                }
-            } else if (command == Engine.COMMAND_REG_BY_PHONE) {
-                try {
-                    SignUserResponse signUserResponse = new Gson().fromJson(s, SignUserResponse.class);
-                    ((LoginSignCallbackInterface) callBackInterface).response(signUserResponse);
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
                 }
@@ -372,6 +385,13 @@ public class NetStringCallBack extends StringCallback {
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
                 }
+            }
+        } else if (callBackInterface != null && callBackInterface instanceof PhoneSignInterface) {
+            try {
+                SignUserResponse signUserResponse = new Gson().fromJson(s, SignUserResponse.class);
+                ((PhoneSignInterface) callBackInterface).response(signUserResponse);
+            } catch (JsonSyntaxException e) {
+                e.printStackTrace();
             }
 
         } else if (callBackInterface != null && callBackInterface instanceof UserInfoInterface) {
@@ -596,6 +616,12 @@ public class NetStringCallBack extends StringCallback {
                 && callBackInterface instanceof PayInterface) {
             if (command == Engine.COMMAND_CIRCLE_ORDER_POST_ALI) {
                 LocalLog.d(TAG, "支付宝支付");
+                try {
+                    SevenAliPayResponse sevenAliPayResponse = new Gson().fromJson(s, SevenAliPayResponse.class);
+                    ((PayInterface) callBackInterface).response(sevenAliPayResponse);
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
             } else if (command == Engine.COMMAND_CIRCLE_ORDER_POST_WX) {
                 LocalLog.d(TAG, "微信支付");
                 try {
@@ -704,6 +730,17 @@ public class NetStringCallBack extends StringCallback {
                     ((HomePageInterface) callBackInterface).response(sponsorRedPkgResponse);
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
+                    try {
+                        JSONObject jsonObj = new JSONObject(s);
+                        String message = jsonObj.getString("message");
+                        LocalLog.d(TAG, "S = " + s);
+                        ErrorCode errorCode = new ErrorCode();
+                        errorCode.setError(-1);
+                        errorCode.setMessage(message);
+                        ((HomePageInterface) callBackInterface).response(errorCode);
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         } else if (callBackInterface != null

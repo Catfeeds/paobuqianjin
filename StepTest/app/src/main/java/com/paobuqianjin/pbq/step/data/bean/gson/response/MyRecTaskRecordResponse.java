@@ -163,6 +163,7 @@ public class MyRecTaskRecordResponse {
             private String task_name;
             private int target_step;
             private String reward_amount;
+            private String avgmoney;
             private int task_days;
             private int is_receive;
             private int is_finished;
@@ -207,6 +208,14 @@ public class MyRecTaskRecordResponse {
 
             public void setTask_name(String task_name) {
                 this.task_name = task_name;
+            }
+
+            public String getAvgmoney() {
+                return avgmoney;
+            }
+
+            public void setAvgmoney(String avgmoney) {
+                this.avgmoney = avgmoney;
             }
 
             public int getTarget_step() {

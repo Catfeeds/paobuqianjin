@@ -79,6 +79,7 @@ public class MyReleaseTaskAdapter extends RecyclerView.Adapter<MyReleaseTaskAdap
         TextView releaseDays;
         @Bind(R.id.release_details)
         Button releaseDetails;
+        TextView sponsorNameTv;
         int taskId = -1;
 
         public MyReleaseTaskViewHolder(View view) {
@@ -92,7 +93,7 @@ public class MyReleaseTaskAdapter extends RecyclerView.Adapter<MyReleaseTaskAdap
             releaseDays = (TextView) view.findViewById(R.id.release_days);
             releaseDetails = (Button) view.findViewById(R.id.release_details);
             releaseDetails.setOnClickListener(onClickListener);
-
+            sponsorNameTv =(TextView)view.findViewById(R.id.release_sponse_name);
         }
 
         private View.OnClickListener onClickListener = new View.OnClickListener() {

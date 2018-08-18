@@ -41,22 +41,21 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.ChooseAddressWheel;
 import com.paobuqianjin.pbq.step.customview.ChooseProviceCity;
 import com.paobuqianjin.pbq.step.customview.ProUtils;
+import com.paobuqianjin.pbq.step.data.alioss.AliOss;
+import com.paobuqianjin.pbq.step.data.alioss.OssService;
 import com.paobuqianjin.pbq.step.data.bean.AddressDtailsEntity;
 import com.paobuqianjin.pbq.step.data.bean.AddressModel;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoSetResponse;
-import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
-import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.view.activity.QrCodeMakeActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
@@ -150,6 +149,8 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
     ImageView vipFlg;
     @Bind(R.id.line_change_sex)
     ImageView lineChangeSex;
+    @Bind(R.id.qrcode_rel)
+    RelativeLayout qrcodeRel;
     private String localAvatar;
     private String strChangeIco = null;
 
@@ -194,6 +195,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, rootView);
         return rootView;
     }
 
@@ -219,7 +221,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
         cachePath = getContext().getExternalCacheDir().getAbsolutePath();
         birthDayTV = (TextView) viewRoot.findViewById(R.id.birth_day);
         confirmSetting = (Button) viewRoot.findViewById(R.id.confirm_setting);
-
+        qrcodeRel = (RelativeLayout) viewRoot.findViewById(R.id.qrcode_rel);
         LocalLog.d(TAG, "cachePath = " + cachePath);
 
         Intent intent = getActivity().getIntent();
@@ -229,9 +231,8 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 String paramStr = new Gson().toJson(userInfo);
                 putUserInfoParam = new Gson().fromJson(paramStr, PutUserInfoParam.class);
 
-                /*Presenter.getInstance(getContext()).getPlaceErrorImage(headIco, userInfo.getAvatar(),R.drawable.default_head_ico,R.drawable.default_head_ico);*/
-                LoadBitmap.glideLoad(getActivity(), headIco, userInfo.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
-                dearNameSetting.setText(userInfo.getNickname());
+                Presenter.getInstance(getContext()).getPlaceErrorImage(headIco, userInfo.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+                dearNameSetting.setText(TextUtils.isEmpty(userInfo.getNickname()) ? "昵称" : userInfo.getNickname());
                 if (userInfo.getSex() == 1) {
                     maleText.setText("男");
                 } else if (userInfo.getSex() == 2) {
@@ -283,6 +284,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
         changeHigh.setOnClickListener(onClickListener);
         changeWeight.setOnClickListener(onClickListener);
         confirmSetting.setOnClickListener(onClickListener);
+        qrcodeRel.setOnClickListener(onClickListener);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -333,11 +335,21 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 case R.id.confirm_setting:
                     LocalLog.d(TAG, "确认修改");
                     if (localAvatar != null) {
+                        if (TextUtils.isEmpty(dearNameSetting.getText().toString())) {
+                            Toast.makeText(getContext(), "昵称不能为空", Toast.LENGTH_SHORT).show();
+                            dearNameSetting.setText("昵称");
+                            return;
+                        }
+                        if (!userInfo.getNickname().equals(dearNameSetting.getText().toString())) {
+                            putUserInfoParam.setNickname(dearNameSetting.getText().toString());
+                            userInfo.setNickname(dearNameSetting.getText().toString());
+                        }
                         LogoUpTask logoUpTask = new LogoUpTask();
                         logoUpTask.execute(localAvatar);
                     } else {
-                        if (dearNameSetting.getText() == null && "".equals(dearNameSetting.getText().toString())) {
+                        if (TextUtils.isEmpty(dearNameSetting.getText().toString())) {
                             Toast.makeText(getContext(), "昵称不能为空", Toast.LENGTH_SHORT).show();
+                            dearNameSetting.setText("昵称");
                             return;
                         }
                         if (!userInfo.getNickname().equals(dearNameSetting.getText().toString())) {
@@ -345,6 +357,17 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                             userInfo.setNickname(dearNameSetting.getText().toString());
                         }
                         Presenter.getInstance(getContext()).putUserInfo(userInfo.getId(), putUserInfoParam);
+                    }
+                    break;
+                case R.id.qrcode_rel:
+                    LocalLog.d(TAG, "生成二维码");
+                    if (userInfo != null) {
+                        Intent intent = new Intent();
+                        intent.putExtra("usericon", userInfo.getAvatar());
+                        intent.putExtra("username", userInfo.getNickname());
+                        intent.putExtra("userid", Presenter.getInstance(getContext()).getNo());
+                        intent.setClass(getContext(), QrCodeMakeActivity.class);
+                        startActivity(intent);
                     }
                     break;
                 default:
@@ -391,9 +414,8 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             }
             LocalLog.d(TAG, "content = " + content);
             if (resultList != null && resultList.size() == 1 && headIco != null) {
-/*                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), headIco, resultList.get(0).getWidth() / 4
-                        , resultList.get(0).getHeight() / 4);*/
-                LoadBitmap.glideLoad(getActivity(), headIco, resultList.get(0).getImagePath());
+                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), headIco, resultList.get(0).getWidth() / 4
+                        , resultList.get(0).getHeight() / 4);
                 localAvatar = resultList.get(0).getImagePath();
             } else {
                 LocalLog.d(TAG, "未知操作");
@@ -493,19 +515,15 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
         @Override
         protected String doInBackground(String... strings) {
             String url = null;
+            AliOss aliOss = new AliOss();
+            aliOss.initRegion(getContext().getApplicationContext());
+            OssService ossService = aliOss.initOSS(getContext().getApplicationContext());
             for (String path : strings) {
-                LocalLog.d(TAG, "path = " + path);
-                ResultHelper result = null;
-                PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
                 if (getContext() == null) {
                     LocalLog.d(TAG, "取消上传");
                     return null;
                 }
-                result = putObjectSample.start(path, getContext().getApplicationContext());
-                //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
-                if (result != null && result.cosXmlResult != null) {
-                    url = result.cosXmlResult.accessUrl;
-                }
+                url = ossService.asyncPutImageLocal(path);
                 LocalLog.d(TAG, "url = " + url);
 
             }
@@ -671,10 +689,11 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
             public void onClick(View view) {
                 LocalLog.d(TAG, "相册");
                 new ImagePicker()
-                        .pickType(ImagePickType.MULTI)//设置选取类型(拍照、单选、多选)
+                        .pickType(ImagePickType.SINGLE)//设置选取类型(拍照、单选、多选)
                         .maxNum(1)//设置最大选择数量(拍照和单选都是1，修改后也无效)
                         .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
                         .cachePath(cachePath)//自定义缓存路径
+                        .doCrop(1, 1, 0, 0)
                         .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
                         .start(UserInfoSettingFragment.this, REQUEST_CODE);
                 popupCircleTypeWindow.dismiss();
@@ -739,7 +758,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
                 LocalLog.d(TAG, "distance = " + distance);
                 if (distance > 0) {
                     LocalLog.d(TAG, "unEffect time");
-                    PaoToastUtils.showShortToast(getContext(),"请选择正确的生日");
+                    PaoToastUtils.showShortToast(getContext(), "请选择正确的生日");
                     popupSelectWindow.dismiss();
                     return;
                 }

@@ -53,13 +53,13 @@ public class InviteCodeResponse {
          * mycode : 30
          */
 
-        private int mycode;
+        private String mycode;
 
-        public int getMycode() {
+        public String getMycode() {
             return mycode;
         }
 
-        public void setMycode(int mycode) {
+        public void setMycode(String mycode) {
             this.mycode = mycode;
         }
 

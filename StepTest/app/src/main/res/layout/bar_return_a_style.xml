@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:layout_alignParentTop="true"
+    android:id="@+id/rl_bar"
     android:background="@color/color_232433">
 
     <RelativeLayout
@@ -39,6 +40,9 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:includeFontPadding="true"
+            android:maxLines="1"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
             android:textColor="@color/color_f8"
             android:textSize="18dp" />
 

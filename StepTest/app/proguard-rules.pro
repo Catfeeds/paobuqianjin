@@ -102,8 +102,6 @@
 	-keep class com.linkedin.** { *; }
 	-keepattributes Signature
 
-    -keep public class * extends com.bumptech.glide.module.AppGlideModule
-    -keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
 #地区3级联动选择器
 
 -keep class com.lljjcoder.**{
@@ -173,3 +171,25 @@
 -keep public class **.R$*{
    public static final int *;
 }
+
+# RongCloud SDK
+-keep class io.rong.** {*;}
+-keep class * implements io.rong.imlib.model.MessageContent {*;}
+-dontwarn io.rong.push.**
+-dontnote com.xiaomi.**
+-dontnote com.google.android.gms.gcm.**
+-dontnote io.rong.**
+-keep public class * extends android.content.BroadcastReceiver
+-keep class com.paobuqianjin.pbq.step.model.broadcast.RongYunMessageReceiver {*;}
+
+# Location
+-keep class com.amap.api.**{*;}
+-keep class com.amap.api.services.**{*;}
+#轮播
+-keep class com.youth.banner.** {
+    *;
+ }
+#阿里云oss
+-keep class com.alibaba.sdk.android.oss.** { *; }
+-dontwarn okio.**
+-dontwarn org.apache.commons.codec.binary.**

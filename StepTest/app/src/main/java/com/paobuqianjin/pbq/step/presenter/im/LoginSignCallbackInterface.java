@@ -39,8 +39,6 @@ public interface LoginSignCallbackInterface extends LoginCallBackInterface {
     */
     public void response(ThirdPartyLoginResponse thirdPartyLoginResponse);
 
-    public void response(SignUserResponse response);
-
     public void response(LoginRecordResponse loginRecordResponse);
 
     public void response(ErrorCode errorCode);

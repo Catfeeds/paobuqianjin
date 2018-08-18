@@ -17,6 +17,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.NearByInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.NearByAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefineLoadMoreView;
@@ -54,7 +55,6 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Presenter.getInstance(context).attachUiInterface(this);
     }
 
     @Override
@@ -62,12 +62,12 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
+        Presenter.getInstance(getContext()).attachUiInterface(this);
         return rootView;
     }
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         nearByRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.near_by_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         nearByRecycler.setLayoutManager(layoutManager);
@@ -83,8 +83,7 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
         loadData(nearByData);
         nearByRecycler.setAdapter(nearByAdapter);
         nearRefresh.setOnRefreshListener(mRefreshListener);
-        Presenter.getInstance(getContext()).getNearByPeople(Presenter.getInstance(getContext()).getLocation()[0],
-                Presenter.getInstance(getContext()).getLocation()[1], pageIndex, PAGE_SIZE_DEFAULT, this);
+
     }
 
     /**
@@ -96,17 +95,25 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
             nearByRecycler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
+                    if (!isAdded()) {
+                        return;
+                    }
                     LocalLog.d(TAG, "加载更多! pageIndex = " + pageIndex + "pageCount = " + pageCount);
                     if (pageCount == 0) {
                         LocalLog.d(TAG, "第一次刷新 暂时无分页");
                         nearByRecycler.loadMoreFinish(false, true);
+                        PaoToastUtils.showLongToast(getActivity(), "没有更多内容");
+                        nearByRecycler.loadMoreFinish(false, true);
+                        return;
                     } else {
                         if (pageIndex > pageCount) {
                             if (getContext() == null) {
                                 return;
                             }
-                            /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
+                            PaoToastUtils.showLongToast(getActivity(), "没有更多内容");
                             nearByRecycler.loadMoreFinish(false, true);
+                            nearByRecycler.setLoadMoreView(null);
+                            nearByRecycler.setLoadMoreListener(null);
                             return;
                         }
                     }
@@ -135,11 +142,27 @@ public class NearByFragment extends BaseFragment implements NearByInterface {
                     if (nearRefresh != null) {
                         nearRefresh.setRefreshing(false);
                         LocalLog.d(TAG, "加载数据");
+                        reload();
                     }
                 }
-            }, 1000); // 延时模拟请求服务器。
+            }, 2000); // 延时模拟请求服务器。
         }
     };
+
+    synchronized private void reload() {
+        nearByData.clear();
+        nearByAdapter.notifyDataSetChanged();
+        pageIndex = 1;
+        pageCount = 0;
+        Presenter.getInstance(getContext()).getNearByPeople(Presenter.getInstance(getContext()).getLocation()[0],
+                Presenter.getInstance(getContext()).getLocation()[1], pageIndex, PAGE_SIZE_DEFAULT, this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        reload();
+    }
 
     /**
      * 第一次加载数据。

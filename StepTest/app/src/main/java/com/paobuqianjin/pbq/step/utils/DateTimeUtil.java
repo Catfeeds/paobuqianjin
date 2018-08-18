@@ -47,6 +47,7 @@ public final class DateTimeUtil {
     public static final String DF_HH_MM = "HH:mm";
 
     public static final String DF_MM_DD_MM = "MM-dd";
+    public static final String DF_MM_DD_HH_mm = "MM-dd HH:mm";
 
     private final static long minute = 60 * 1000;// 1分钟
     private final static long hour = 60 * minute;// 1小时
@@ -108,7 +109,7 @@ public final class DateTimeUtil {
         Date date = new Date(dateL);
         return sdf.format(date);
     }
-
+    
     /**
      * 将日期以yyyy-MM-dd HH:mm:ss格式化
      *
@@ -354,6 +355,17 @@ public final class DateTimeUtil {
         return systemTime;
     }
 
+    @SuppressLint("SimpleDateFormat")
+    public static String[] getLocalTimeYMD() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(calendar.YEAR);
+        int month = (calendar.get(Calendar.MONTH) + 1);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        String[] YMD = new String[]{String.valueOf(year), String.valueOf(month), String.valueOf(day)};
+        return YMD;
+    }
+
     /**
      * 当前时间 如: 10:37
      */
@@ -565,6 +577,7 @@ public final class DateTimeUtil {
         }
         return interval;
     }
+
     /**
      * 获取两个日期的时间差 yyyy.MM.dd HH.mm.ss
      */

@@ -86,10 +86,10 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="8dp"
-            android:onClick="onScanPress"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3"
+            android:visibility="gone"
             app:srcCompat="@mipmap/ic_input_camera" />
 
     </android.support.constraint.ConstraintLayout>

@@ -10,6 +10,7 @@ import android.hardware.input.InputManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -251,6 +252,14 @@ public class Utils {
             context.startActivity(intent);
         } catch (Exception e) {//抛出异常就直接打开设置页面
             intent = new Intent(Settings.ACTION_SETTINGS);
+            context.startActivity(intent);
+        }
+    }
+
+    public static void sendSMS(Context context, String phoneNumber, String message) {
+        if (PhoneNumberUtils.isGlobalPhoneNumber(phoneNumber)) {
+            Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNumber));
+            intent.putExtra("sms_body", message);
             context.startActivity(intent);
         }
     }

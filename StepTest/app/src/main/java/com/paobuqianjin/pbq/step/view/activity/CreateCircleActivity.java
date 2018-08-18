@@ -41,27 +41,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
+import com.paobuqianjin.pbq.step.CircleTypeActivity;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
 import com.paobuqianjin.pbq.step.customview.LimitLengthFilter;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
+import com.paobuqianjin.pbq.step.data.alioss.AliOss;
+import com.paobuqianjin.pbq.step.data.alioss.OssService;
+import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTypeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
-import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.utils.Utils;
@@ -74,6 +80,10 @@ import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -198,6 +208,9 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     EditText passwordNumEditor;
     @Bind(R.id.password_pan)
     RelativeLayout passwordPan;
+    Banner banner;
+    @Bind(R.id.circle_tag_num)
+    TextView circleTagNum;
     /*    @Bind(R.id.flag_a0)
         TextView flagA0;
         @Bind(R.id.flag_a1)
@@ -216,7 +229,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     private boolean is_pwd = true;
     private String cachePath;
     private ArrayList<String> circleTypeDefaults = new ArrayList<>();
-    private final static int REQUEST_CODE_TAG = 0;
+    private final static int REQUEST_CODE_TAG = 1;
     private CreateCircleBodyParam createCircleBodyParam = new CreateCircleBodyParam();
     private HashMap<String, String> selectA = new HashMap<>();
     private HashMap<String, String> selectB = new HashMap<>();
@@ -232,6 +245,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     private final int REQUEST_CODE = 111;
     private String localAvatar;
     private LimitLengthFilter filter;
+    private ArrayList<AdObject> adList;
 
 /*
 
@@ -258,6 +272,11 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     protected void onResume() {
         super.onResume();
         detectKeyBoardHide();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 
     private void detectKeyBoardHide() {
@@ -304,7 +323,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         mSetting = new PermissionSetting(this);
 
 
-         filter = new LimitLengthFilter();
+        filter = new LimitLengthFilter();
         cirNameDesc.setFilters(new InputFilter[]{filter});
         circleDescOfYour.addTextChangedListener(new TextWatcher() {
             @Override
@@ -319,7 +338,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
             @Override
             public void afterTextChanged(Editable s) {
-                boundText.setText(getString(R.string.per_x_x_txt,s.length()+"","400"));
+                boundText.setText(getString(R.string.per_x_x_txt, s.length() + "", "400"));
             }
         });
 
@@ -341,7 +360,60 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 return false;
             }
         });
+        banner = (Banner) findViewById(R.id.banner);
+        loadBanner();
+    }
 
+
+    private void loadBanner() {
+        String bannerUrl = NetApi.urlAd + "?position=circle_create";
+        LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
+        Presenter.getInstance(this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
+                    adList = new ArrayList<>();
+                    if (adresponse.getData() != null && adresponse.getData().size() > 0) {
+                        int size = adresponse.getData().size();
+                        for (int i = 0; i < size; i++) {
+                            if (adresponse.getData().get(i).getImgs() != null
+                                    && adresponse.getData().get(i).getImgs().size() > 0) {
+                                int imgSize = adresponse.getData().get(i).getImgs().size();
+                                for (int j = 0; j < imgSize; j++) {
+                                    AdObject adObject = new AdObject();
+                                    adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
+                                    adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
+                                    adList.add(adObject);
+                                }
+                            }
+                        }
+                    }
+                    banner.setImageLoader(new BannerImageLoader())
+                            .setImages(adList)
+                            .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                            .setBannerAnimation(Transformer.Default)
+                            .isAutoPlay(true)
+                            .setDelayTime(2000)
+                            .setIndicatorGravity(BannerConfig.CENTER)
+                            .setOnBannerListener(new OnBannerListener() {
+                                @Override
+                                public void OnBannerClick(int position) {
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if(!TextUtils.isEmpty(targetUrl)) startActivity(new Intent(CreateCircleActivity.this, SingleWebViewActivity.class).putExtra("url",targetUrl));
+                                }
+                            })
+                            .start();
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                LocalLog.d(TAG, "获取失败!");
+            }
+        });
     }
 
     private TextWatcher textWatcher = new TextWatcher() {
@@ -399,6 +471,8 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 Presenter.getInstance(CreateCircleActivity.this).setToken(CreateCircleActivity.this, "");
                 CreateCircleActivity.this.finish();
                 System.exit(0);
+            } else {
+                PaoToastUtils.showLongToast(CreateCircleActivity.this, errorCode.getMessage());
             }
         }
 
@@ -654,6 +728,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             R.id.logo_circle_pan,
             R.id.stand_circle_pan, R.id.switch_circle_money_add_off, R.id.logo_circle_pic, R.id.password_circle_switch,
             R.id.create_circle_confim,
+            R.id.circle_tag_pan,
             /*R.id.circle_theme_text*/})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -665,6 +740,10 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                 LocalLog.d(TAG, "设定目标距离");
                 hideSoftInputView();
                 selectType(targetDefaults, circleStandNum);
+                break;
+            case R.id.circle_tag_pan:
+                LocalLog.d(TAG, "圈子类型选择");
+                startActivityForResult(new Intent(this, CircleTypeActivity.class), REQUEST_CODE_TAG);
                 break;
             case R.id.switch_circle_money_add_off:
                 LocalLog.d(TAG, "是否充值!" + is_recharge);
@@ -706,6 +785,14 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                         createCircleConfim = (Button) findViewById(R.id.create_circle_confim);
                     }
                     createCircleConfim.setEnabled(false);
+                    createCircleConfim.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (createCircleConfim != null) {
+                                createCircleConfim.setEnabled(true);
+                            }
+                        }
+                    }, 30 * 1000);
                     LogoUpTask logoUpTask = new LogoUpTask();
                     logoUpTask.execute(localAvatar);
                 }
@@ -783,10 +870,11 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             public void onClick(View view) {
                 LocalLog.d(TAG, "相册");
                 new ImagePicker()
-                        .pickType(ImagePickType.MULTI)//设置选取类型(拍照、单选、多选)
+                        .pickType(ImagePickType.SINGLE)//设置选取类型(拍照、单选、多选)
                         .maxNum(1)//设置最大选择数量(拍照和单选都是1，修改后也无效)
                         .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
                         .cachePath(cachePath)//自定义缓存路径
+                        .doCrop(1, 1, 0, 0)
                         .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
                         .start(CreateCircleActivity.this, REQUEST_CODE);
                 popupCircleTypeWindow.dismiss();
@@ -837,15 +925,15 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         String targetTaskStepNumStr = cirNameDesc.getText().toString();
         if (TextUtils.isEmpty(targetTaskStepNumStr.trim()) || filter.calculateLength(targetTaskStepNumStr) < 4
                 || filter.calculateLength(targetTaskStepNumStr) > 32) {
-                final NormalDialog normalDialog = new NormalDialog(this);
-                normalDialog.setMessage("请输入4-16位圈子名称");
-                normalDialog.setSingleBtn(true);
-                normalDialog.setYesOnclickListener("确定", new NormalDialog.onYesOnclickListener() {
-                    @Override
-                    public void onYesClick() {
-                        normalDialog.dismiss();
-                    }
-                });
+            final NormalDialog normalDialog = new NormalDialog(this);
+            normalDialog.setMessage("请输入4-16位圈子名称");
+            normalDialog.setSingleBtn(true);
+            normalDialog.setYesOnclickListener("确定", new NormalDialog.onYesOnclickListener() {
+                @Override
+                public void onYesClick() {
+                    normalDialog.dismiss();
+                }
+            });
             normalDialog.show();
             return false;
         }
@@ -868,11 +956,11 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             } else {
                 try {
                     if (Float.parseFloat(circleMoneyNumEditor.getText().toString().trim()) == 0) {
-                        PaoToastUtils.showShortToast(this,"金额不能为0");
+                        PaoToastUtils.showShortToast(this, "金额不能为0");
                         return false;
                     }
                 } catch (Exception e) {
-                    PaoToastUtils.showShortToast(this,"金额信息有误");
+                    PaoToastUtils.showShortToast(this, "金额信息有误");
                     return false;
                 }
             }
@@ -934,17 +1022,13 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         @Override
         protected String doInBackground(String... strings) {
             String url = null;
+            AliOss aliOss = new AliOss();
+            aliOss.initRegion(getApplicationContext());
+            OssService ossService = aliOss.initOSS(getApplicationContext());
             for (String path : strings) {
                 LocalLog.d(TAG, "path = " + path);
-                ResultHelper result = null;
-                PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                result = putObjectSample.start(path,getApplicationContext());
-                //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
-                if (result != null && result.cosXmlResult != null) {
-                    url = result.cosXmlResult.accessUrl;
-                }
+                url = ossService.asyncPutImageLocal(path);
                 LocalLog.d(TAG, "url = " + url);
-
             }
             return url;
         }
@@ -982,14 +1066,17 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
             }
             LocalLog.d(TAG, "content = " + content);
             if (resultList != null && resultList.size() == 1) {
-/*                Presenter.getInstance(this).getImage(resultList.get(0).getImagePath(), logoCirclePic, resultList.get(0).getWidth() / 4
-                        , resultList.get(0).getHeight() / 4);*/
-                LoadBitmap.glideLoad(this, logoCirclePic, resultList.get(0).getImagePath());
+                Presenter.getInstance(this).getImage(resultList.get(0).getImagePath(), logoCirclePic, resultList.get(0).getWidth() / 4
+                        , resultList.get(0).getHeight() / 4);
                 localAvatar = resultList.get(0).getImagePath();
             } else {
                 LocalLog.d(TAG, "未知操作");
             }
             return;
+        } else if (requestCode == REQUEST_CODE_TAG && resultCode == RESULT_OK && data != null) {
+            circleTagNum.setText(data.getStringExtra("typeName"));
+            String circleTypeId = data.getStringExtra("typeId");
+            createCircleBodyParam.setTagid(circleTypeId);
         }
 
     }

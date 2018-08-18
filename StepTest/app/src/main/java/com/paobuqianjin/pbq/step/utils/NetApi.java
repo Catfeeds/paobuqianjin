@@ -10,10 +10,19 @@ public class NetApi {
     获取精选圈子--地址：http://119.29.10.64/v1/Circle/?action=choice&userid=1
     获取我加入的圈子--地址：http://119.29.10.64/v1/Circle/?action=join&userid=1
     获取我创建的圈子--地址：http://119.29.10.64/v1/Circle/?action=create&userid=1*/
-    public final static String url = "https://api.runmoneyin.com/";
-/*    public final static String url = "http://api-test1.runmoneyin.com/";*/
-//    public final static String url = "http://api-test.runmoneyin.com/";
+/*    public final static String url = "https://api.runmoneyin.com/";*/
+    public final static String url = "http://api-test1.runmoneyin.com/";
+    //        public final static String url = "http://api-test.runmoneyin.com/";
     /*public final static String url = "http://119.29.10.64/";*/
+    public static String urlShareHead = "http://share.runmoneyin.com/";
+    public final static String url_online = "https://api.runmoneyin.com/";
+
+    static {
+        if (!url.equals(url_online)) {
+            urlShareHead = "http://share.runmoneyin.com/share-test/";
+        }
+    }
+
     public final static String urlCircle = url + "v1/Circle";
     public final static String urlCircleRank = url + "v1/Circle/getRank";
     //TODO 圈子类型接口
@@ -22,7 +31,7 @@ public class NetApi {
     public final static String urlTarget = url + "v1/CircleTarget";
     //TODO 获取所有圈子成员
     public final static String urlCircleMember = url + "v1/CircleMember";
-    public final static String urlMemberSearch = urlCircleMember+"?circleid=";
+    public final static String urlMemberSearch = urlCircleMember + "?circleid=";
     //TODO 圈子订单类型接口
     public final static String urlCircleOrderType = url + "v1/CircleOrderType";
     //TODO 圈子标签接口
@@ -101,6 +110,8 @@ public class NetApi {
     public final static String urlPayResultOrderNo = url + "v1/Pay/orderQuery";
     //TODO yspay订单查询
     public final static String urlYsPayResultOrderNo = url + "v1/Pay/quickPayQuery";
+    //TODO sevenPay订单查询
+    public final static String urlSevenPayResultOrderNo = url + "v1/Pay/sevenPayQuery";
     //TODO 发布任务接口
     public final static String urlTask = url + "v1/Task";
     //TODO 用户步数接口
@@ -129,7 +140,7 @@ public class NetApi {
     //TODO 用户在圈子中的排名 http://119.29.10.64/v1/Circle/getUserCircleRank?userid=30&circleid=100302
     public final static String urlUserCircleRank = url + "v1/Circle/getUserCircleRank?userid=";
     //TODO 获取附近广告商户
-    public final static String urlRedpacket = url + "v1/Redpacket";
+    public final static String urlRedpacket = url + "v1/RedpacketNew";
     //TODO 根据手机号码修改密码
     public final static String urlPassWord = url + "v1/user/modifyPasswordByMobile";
     //TODO 获取登录记录
@@ -160,15 +171,15 @@ public class NetApi {
     //TODO 位置信息
     public final static String urlLocation = url + "v1/UserLocation/setLocation";
     //TODO share
-    public final static String urlShare = "http://share.runmoneyin.com/in.html?";
+    public final static String urlShare = urlShareHead + "in.html?";
 
-    public final static String urlShareCircle ="http://share.runmoneyin.com/dd.html?";
+    public final static String urlShareCircle = urlShareHead + "dd.html?";
     //TODO 个人码
     public final static String urlShareIc = urlShare + "ic=";
     //TODO 圈子码
     public final static String urlShareCd = urlShareCircle + "cd=";
     //TODO 商户发红包
-    public final static String urlSendTaskRedBag = url + "v1/Redpacket";
+    public final static String urlSendTaskRedBag = url + "v1/RedpacketNew";
     //TODO VIP
     public final static String urlVip = url + "v1/UserVip";
     //TODO 用户领取商家红包
@@ -200,7 +211,7 @@ public class NetApi {
     //TODO 个人主页复合接口
     public final static String urlUserHome = url + "v1/Zcomposite/ouserData";
     //获取银行卡所属银行
-    public final static String URL_GET_CARD_BANK =  url + "v1/UserBankCard/getBankCardData";//http://apicloud.mob.com/appstore/bank/card/query?key=appkey&card=6228482898203884775
+    public final static String URL_GET_CARD_BANK = url + "v1/UserBankCard/getBankCardData";//http://apicloud.mob.com/appstore/bank/card/query?key=appkey&card=6228482898203884775
     //获取用户认证状态
     public final static String GET_PERSON_IDENTIFY_STATE = url + "v1/userauthentication/userAuthState";
     //绑定身份证信息
@@ -227,4 +238,101 @@ public class NetApi {
     public final static String urlValidateBank = url + "v1/PayPassword/validateUserBank";
     //TODO 实名强制修改密码
     public final static String urlPowerModify = url + "v1/PayPassword/powerModifyPw";
+    //TODO 红包发送
+    public final static String urlRedPkgTarget = url + "v1/RedpacketNew/getRedTag";
+    //TODO 商家红包发布记录
+    public final static String urlSponsorRecord = url + "v1/RedpacketRecord?";
+    //TODO 附近红包
+    public final static String urlNearBySponsorRed = url + "v1/RedpacketNew?";
+    //TODO 领红包每次只能领取一个
+    public final static String urlNearByPkgRev = url + "v1/RedpacketNew/receiveRed";
+    //TODO 红包发布的红包详情
+    public final static String urlRedSponsorDetail = url + "v1/RedpacketRecord/";
+    //TODO 红包记录详情
+    public final static String urlRedList = url + "v1/RedpacketRecord/letRedList";
+    //TODO 我的发布新
+    public final static String urlPersonRelease = url + "v1/Task/myTasks?";
+    //TODO 获取好步数
+    public final static String ulrNoStep = url + "v1/UserStep/getNoStep";
+    //TODO 圈子红包记录
+    public final static String urlCircleRedRecord = url + "v1/Circle/redList";
+
+    //获取群组信息,不传groupid取所有
+    public static String urlGetGroupInfo = url + "v1/ChatGroup";
+    //获取个人信息,不传userid取所有
+    public static String urlGetUserInfo = url + "v1/ChatUser";
+    //获取群组会话头部banner图片 v1/ChatImage?site=banner&groupid=1
+    public static String urlGetGroupBanner = url + "v1/ChatImages";
+    //获取融云的token
+    public static String urlGetChatToken = url + "v1/ChatUser/getToken";
+    //根据跑步钱进号手机号搜索好友
+    public final static String urlSearchFriend = url + "v1/UserFriends/userSearch";
+    //检测好友是否在App
+    public final static String urlCheckFriend = url + "v1/UserFollow/chcekPhone";
+    //21天新手红包
+    public final static String urlCheckTtyOne = url + "v1/RedpacketNew/redTwentyOne";
+    //商家金牌会员
+    public final static String urlGoldenVip = url + "v1/UserVipGold";
+    //获取我的消费红包
+    public final static String getMyVoucher = url + "v1/Voucher/myList";
+    //获取我发布的消费红包
+    public final static String getMySendVoucher = url + "v1/Voucher";
+    //获取单个消费红包的领取记录
+    public final static String getVoucherBeGetHis = url + "v1/Voucher/recordList";
+    //获取所有消费红包的领取记录
+    public final static String getAllVoucherBeGetHis = url + "v1/Voucher/allRecordList";
+    //获取消费红包列表
+    public final static String getVoucherList = url + "v1/Voucher/voucherList";
+    //下架消费红包
+    public final static String lowerVoucher = url + "v1/Voucher/lowerVoucher";
+    //下架消费红包
+    public final static String receiveVoucher = url + "v1/Voucher/receiveVoucher";
+    //使用消费红包
+    public final static String useVoucher = url + "v1/Voucher/useVoucher";
+    //广告位
+    public final static String urlAd = url + "v1/Ad";
+    //红包发布信息
+    public final static String urlRedNewTipList = url + "v1/RedpacketNew/busRedList?";
+    //获取聊天群组的信息
+    public final static String urlGetConversationCircleInfo = url + "v1/ChatImages/groupImages";
+    //添加账户
+    public final static String urlMultAccount = url + "v1/UserMulti";
+    //账户列表
+    public final static String urlAccountList = url + "v1/UserMulti?";
+    //多账号切换登录
+    public final static String urlMultLogin = url + "v1/UserMulti/login";
+    //删除授权登录
+    public final static String urlDeletMult = url + "v1/UserMulti/";
+    //用户收藏
+    public final static String urlCollectSponsor = url + "v1/UserCollection";
+    //用户收藏状态
+    public final static String urlCollectCheck = url + "v1/UserCollection/checkCollection";
+    //删除用户收藏
+    public final static String urlDeleteCollect = url + "v1/UserCollection/";
+    //获取创建圈子的标签
+    public final static String getCircleTags = url + "v1/Circle/getCircletags";
+    /*给商户点赞*/
+    public final static String urlVoteSponsor = url + "v1/UserEvaluate/voteEvaluate";
+    /*获取评论列表*/
+    public final static String urlContentList = url + "v1/UserEvaluate?action=";
+    /*添加用户评价*/
+    public final static String urlSaveContent = url + "v1/UserEvaluate/saveEvaluate";
+    //获取对应用户的聊天数据页
+    public final static String getFriendDetail = url + "v1/UserFriends/getOtherUser";
+    //设置用户备注名称
+    public final static String setRemarkName = url + "v1/ChatUser/setRemarkName";
+    //试用金牌会员
+    public final static String urlTryGvip = url + "v1/UserVipGold/tryGvip";
+    //会员到期提醒
+    public final static String urlGvipTimeOut = url + "v1/UserVipGold/remainingTime";
+    //POST save 添加遍地红包
+    public final static String urlRedpacketMap = url + "v1/RedpacketMap";
+    //GET index 获取遍地红包列表
+    public final static String urlGetRedpacketMap = url + "v1/RedpacketMap";
+    //receiveRedMap 领取红包（每次一个）
+    public final static String receiveAroundRed = url + "v1/RedpacketMap/receiveRedMap";
+    //红包详情
+    public final static String urlRedDetail = url + "v1/RedpacketMap/";
+    //红包历史记录
+    public final static String urlRedHis = url  + "v1/RedpacketMap/historyList";
 }

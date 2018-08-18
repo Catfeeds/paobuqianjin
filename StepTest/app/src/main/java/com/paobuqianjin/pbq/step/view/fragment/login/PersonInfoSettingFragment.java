@@ -40,6 +40,8 @@ import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.alioss.AliOss;
+import com.paobuqianjin.pbq.step.data.alioss.OssService;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PutUserInfoParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
@@ -50,9 +52,9 @@ import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
@@ -314,10 +316,11 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             public void onClick(View view) {
                 LocalLog.d(TAG, "相册");
                 new ImagePicker()
-                        .pickType(ImagePickType.MULTI)//设置选取类型(拍照、单选、多选)
+                        .pickType(ImagePickType.SINGLE)//设置选取类型(拍照、单选、多选)
                         .maxNum(1)//设置最大选择数量(拍照和单选都是1，修改后也无效)
                         .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
                         .cachePath(cachePath)//自定义缓存路径
+                        .doCrop(1, 1, 0, 0)
                         .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
                         .start(PersonInfoSettingFragment.this, REQUEST_CODE);
                 popupCircleTypeWindow.dismiss();
@@ -563,8 +566,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             } else {
                 settingHeight.setText(high + "厘米");
             }
-/*            Presenter.getInstance(getContext()).getPlaceErrorImage(userIcon, dataBean.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(getActivity(), userIcon, dataBean.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+            Presenter.getInstance(getContext()).getPlaceErrorImage(userIcon, dataBean.getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             userNameOldStr = dataBean.getNickname();
             useName.requestFocus();
             useName.setText(dataBean.getNickname());
@@ -693,7 +695,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             case R.id.btn_confirm:
                 LocalLog.d(TAG, "修改确认");
                 if (userid != -1) {
-                    if (useName.getText().toString() == null || "".equals(useName.getText().toString())) {
+                    if (TextUtils.isEmpty(useName.getText().toString())) {
                         Toast.makeText(getContext(), "请填写昵称", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -729,17 +731,15 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
         @Override
         protected String doInBackground(String... strings) {
             String url = null;
+            AliOss aliOss = new AliOss();
+            aliOss.initRegion(getContext().getApplicationContext());
+            OssService ossService = aliOss.initOSS(getContext().getApplicationContext());
             for (String path : strings) {
                 LocalLog.d(TAG, "path = " + path);
-                ResultHelper result = null;
-                PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
                 if (context != null) {
-                    result = putObjectSample.start(path, context.getApplicationContext());
+                    url = ossService.asyncPutImageLocal(path);
                 }
                 //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
-                if (result != null && result.cosXmlResult != null) {
-                    url = result.cosXmlResult.accessUrl;
-                }
                 LocalLog.d(TAG, "url = " + url);
 
             }
@@ -771,9 +771,8 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             }
             LocalLog.d(TAG, "content = " + content);
             if (resultList != null && resultList.size() == 1) {
-/*                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), userIcon, resultList.get(0).getWidth() / 4
-                        , resultList.get(0).getHeight() / 4);*/
-                LoadBitmap.glideLoad(getActivity(), userIcon, resultList.get(0).getImagePath());
+                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), userIcon, resultList.get(0).getWidth() / 4
+                        , resultList.get(0).getHeight() / 4);
                 localAvatar = resultList.get(0).getImagePath();
             } else {
                 LocalLog.d(TAG, "未知操作");

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_alignTop="@+id/bar_layout"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/bar_layout"
+        android:background="@drawable/share_memanger" />
+
+    <LinearLayout
+        android:id="@+id/bar_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:id="@+id/record_text"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="14dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/red_record" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="12dp"
+                android:text="领取记录"
+                android:textColor="@color/color_f8"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/line_0"
+            android:layout_width="92dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="14dp"
+            android:background="@color/color_8a8a8a" />
+
+        <LinearLayout
+            android:id="@+id/share_text"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="14dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/shar_circle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="12dp"
+                android:text="分享"
+                android:textColor="@color/color_f8"
+                android:textSize="14dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="92dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="14dp"
+            android:background="@color/color_8a8a8a" />
+
+        <LinearLayout
+            android:id="@+id/editor_text"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="14dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/edit_cirlce" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="12dp"
+                android:text="编辑"
+                android:textColor="@color/color_f8"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="92dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="14dp"
+            android:background="@color/color_8a8a8a" />
+
+        <LinearLayout
+            android:id="@+id/mananger_text"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="14dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cirlce_manager" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="12dp"
+                android:text="管理"
+                android:textColor="@color/color_f8"
+                android:textSize="14dp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="92dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="14dp"
+            android:background="@color/color_8a8a8a" />
+
+        <LinearLayout
+            android:id="@+id/cancle_text"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="14dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="17dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/circle_quit" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="12dp"
+                android:text="解散"
+                android:textColor="@color/color_f8"
+                android:textSize="14dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "E:\\svn\\StepTest\\IMKit\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-ur\\values-ur.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\pbq\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.0.0.aar\\fbf675f84847ffc1a32360b353784897\\res\\values-ur\\values-ur.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "102",
+                        "endOffsets": "153"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -100,6 +100,11 @@ public class CircleHonorIndexFragment extends BaseFragment implements DanCircleI
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 

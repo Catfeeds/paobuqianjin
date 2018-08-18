@@ -88,7 +88,9 @@ public class LoginResponse {
          * n_lat : 0.00000
          * n_updatetime : 0
          * user_token : 1:kjF1GwBURNi9OSMFTbHArEAuTtjuWjlM
+         * chat_token : 1:kjF1GwBURNi9OSMFTbHArEAuTtjuWjlM
          * cusvip: 0,
+         * appid:1:kjF1GwBURNi9OSMFTbHArEAuTtjuWjlM
          */
 
         private int id;
@@ -102,15 +104,16 @@ public class LoginResponse {
         }
 
         private int cusvip;
+
         public String getNo() {
             return no;
         }
-
         public void setNo(String no) {
             this.no = no;
         }
 
         private String no;
+
         private String wx_openid;
         private String qq_openid;
         private String mobile;
@@ -144,6 +147,26 @@ public class LoginResponse {
         private String n_lat;
         private int n_updatetime;
         private String user_token;
+        private String chat_token;
+        public int getState() {
+            return state;
+        }
+
+        public void setState(int state) {
+            this.state = state;
+        }
+
+        private int state;
+
+        public String getAppid() {
+            return appid;
+        }
+
+        public void setAppid(String appid) {
+            this.appid = appid;
+        }
+
+        private String appid;
 
         public int getVip() {
             return vip;
@@ -466,8 +489,17 @@ public class LoginResponse {
                     ", n_lat='" + n_lat + '\'' +
                     ", n_updatetime=" + n_updatetime +
                     ", user_token='" + user_token + '\'' +
+                    ", chat_token='" + chat_token + '\'' +
                     ", vip=" + vip +
                     '}';
+        }
+
+        public String getChat_token() {
+            return chat_token;
+        }
+
+        public void setChat_token(String chat_token) {
+            this.chat_token = chat_token;
         }
     }
 }

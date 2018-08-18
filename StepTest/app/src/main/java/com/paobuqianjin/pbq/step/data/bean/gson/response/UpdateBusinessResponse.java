@@ -12,6 +12,7 @@ public class UpdateBusinessResponse {
 
     private int error;
     private String message;
+    private DataBean data;
 
     public int getError() {
         return error;
@@ -27,5 +28,35 @@ public class UpdateBusinessResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public DataBean getData() {
+        return data;
+    }
+    public class DataBean {
+        /**
+         * businessid : 355
+         * name : 哈哈
+         */
+
+        private String businessid;
+        private String name;
+
+        public String getBusinessid() {
+            return businessid;
+        }
+
+        public void setBusinessid(String businessid) {
+            this.businessid = businessid;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
     }
 }

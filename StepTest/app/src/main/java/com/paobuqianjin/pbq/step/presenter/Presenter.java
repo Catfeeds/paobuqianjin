@@ -5,7 +5,9 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,7 +49,10 @@ import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.squareup.picasso.NetworkPolicy;
 
+import java.io.IOException;
 import java.util.Map;
+
+import okhttp3.Response;
 
 
 /**
@@ -61,7 +66,9 @@ public final class Presenter {
     private static Context mContext;
     private int defaultPage = 1;
     private int defaultPageSize = 10;
+    private final static String Style = "?x-oss-process=image/resize,m_mfit,";
     private UserInfoResponse.DataBean currentUser;
+    private Handler mainHandler;
 
     private Presenter() {
         engine = Engine.getEngine(mContext);
@@ -85,6 +92,13 @@ public final class Presenter {
 
     public void startService(String action, Class<? extends Service> clazz) {
         engine.startService(action, clazz);
+    }
+
+    private Handler getMainHandler() {
+        if (mainHandler == null) {
+            return (mainHandler = new Handler(mContext.getMainLooper()));
+        } else
+            return mainHandler;
     }
 
     public void stopService(Class<? extends Service> clazz) {
@@ -487,23 +501,70 @@ public final class Presenter {
     private void getTest() {
         LocalLog.d(TAG, "getTest() enter  批量测试所有接口API");
     }
-/*
-    public void getImage(ImageView view, String urlImg) {
+
+    public void getImage(final ImageView view, final String urlImg) {
         if ("".equals(urlImg)) {
             return;
         }
-        engine.getImage(view, urlImg);
+        if (view != null) {
+            getMainHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    engine.getImage(view, styleSizeImage(view, urlImg));
+                }
+            });
+        }
     }
 
-    public void getPlaceErrorImage(ImageView view, String urlImage, int placeholderImageId, int errorId) {
-        engine.getPlaceErrorImage(view, urlImage, placeholderImageId, errorId);
+    private String styleSizeImage(View view, final String urlImg) {
+        if (urlImg == null) {
+            return null;
+        }
+        int w = view.getMeasuredWidth();
+        int h = view.getMeasuredHeight();
+        if (w == 0 || h == 0 || urlImg.contains("http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com")) {
+            return urlImg;
+        } else {
+            String h_size = "h_" + String.valueOf(h);
+            String w_size = "w_" + String.valueOf(w);
+            String url = urlImg + Style + h_size + "," + w_size;
+            LocalLog.d(TAG, "style imge" + url);
+            return url;
+        }
     }
 
-    public void getImage(ImageView view, String urlImg, int targetWidth, int targetHeight) {
+    public void getAdImage(final ImageView imageView, final String keepUrl) {
+        engine.getAdImage(imageView, keepUrl);
+    }
+
+    public void downLoadAdImage(String urlImage, ImageView view, int placeholderImageId, int errorId) {
+        engine.downLoadAdImage(urlImage, view, placeholderImageId, errorId);
+    }
+
+    public void getPlaceErrorImage(final ImageView view, final String urlImage, final int placeholderImageId, final int errorId) {
+        if (view != null) {
+            getMainHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    engine.getPlaceErrorImage(view, styleSizeImage(view, urlImage), placeholderImageId, errorId);
+                }
+            });
+        }
+
+    }
+
+    public void getImage(final ImageView view, final String urlImg, final int targetWidth, final int targetHeight) {
         if ("".equals(urlImg)) {
             return;
         }
-        engine.getImage(view, urlImg, targetWidth, targetHeight);
+        if (view != null) {
+            getMainHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    engine.getImage(view, styleSizeImage(view, urlImg), targetWidth, targetHeight);
+                }
+            });
+        }
     }
 
     public void getImage(String fileUrl, final ImageView imageView, int targetWidth, int targetHeight) {
@@ -530,7 +591,7 @@ public final class Presenter {
             return;
         }
         engine.getOriginImage(fileUrl, imageView);
-    }*/
+    }
 
     //TODO 加入圈子
     public void joinCircle(JoinCircleParam joinCircleParam) {
@@ -835,20 +896,26 @@ public final class Presenter {
     }
 
     public void getIdentifyStatu(final Activity activity, final OnIdentifyLis onIdentifyLis) {
-        engine.getVerifyIdentify(activity,onIdentifyLis);
+        engine.getVerifyIdentify(activity, onIdentifyLis);
     }
+
     public void setCurrentUser(UserInfoResponse.DataBean currentUser) {
         this.currentUser = currentUser;
     }
 
-    public void postPaoBuSimple(String url, Map<String,String> params, PaoCallBack callBack) {
+    public void postPaoBuSimple(String url, Map<String, String> params, PaoCallBack callBack) {
         engine.post(url, params, callBack);
     }
-    public void deletePaoBuSimple(String url, Map<String,String> params, PaoCallBack callBack){
-        engine.delete(url,params,callBack);
+
+    public void deletePaoBuSimple(String url, Map<String, String> params, PaoCallBack callBack) {
+        engine.delete(url, params, callBack);
     }
 
-    public void getPaoBuSimple(String url, Map<String,String> params, PaoCallBack callBack) {
+    public void getPaoBuSimple(String url, Map<String, String> params, PaoCallBack callBack) {
         engine.get(url, params, callBack);
+    }
+
+    public String getPaoBuSimpleSync(String url, Map<String, String> params) throws IOException {
+        return engine.getSync(url, params);
     }
 }

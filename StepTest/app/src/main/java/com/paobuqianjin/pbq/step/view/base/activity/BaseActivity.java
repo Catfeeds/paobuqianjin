@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.paobuqianjin.pbq.step.model.services.local.StepService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.base.view.PaoBuProgressDialog;
 import com.umeng.message.PushAgent;
 
 import java.util.List;
@@ -36,6 +37,7 @@ import butterknife.ButterKnife;
 
 public class BaseActivity extends AppCompatActivity {
     private final static String TAG = BaseActivity.class.getSimpleName();
+    private PaoBuProgressDialog paoBuProgressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -193,4 +195,18 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
     }
+
+    public synchronized void showLoadingBar() {
+        if (paoBuProgressDialog == null) {
+            paoBuProgressDialog = new PaoBuProgressDialog(this);
+        }
+        paoBuProgressDialog.show();
+    }
+
+    public void hideLoadingBar() {
+        if (paoBuProgressDialog!=null && paoBuProgressDialog.isShowing()) {
+            paoBuProgressDialog.dismiss();
+        }
+    }
+
 }

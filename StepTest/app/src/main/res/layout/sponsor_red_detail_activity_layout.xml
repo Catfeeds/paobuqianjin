@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sponsor_red"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/bar_red"
+        layout="@layout/bar_return_a_style"></include>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/red_pkg_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar_red">
+
+        <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.youth.banner.Banner
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"></com.youth.banner.Banner>
+
+                <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+                    android:layout_below="@+id/banner"
+                    android:id="@+id/red_pkg_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:overScrollMode="never"></com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+
+                <ImageView
+                    android:id="@+id/no_red_data"
+                    android:layout_width="325dp"
+                    android:layout_height="205dp"
+                    android:layout_below="@+id/banner"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="25dp"
+                    android:src="@drawable/baby"
+                    android:visibility="gone" />
+            </RelativeLayout>
+        </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

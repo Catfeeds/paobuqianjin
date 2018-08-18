@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@+id/sponsor_info"
+        android:background="@color/color_d9d9d9" />
+
+    <LinearLayout
+        android:id="@+id/sponsor_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/sponsor_task_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxEms="8"
+            android:maxLength="16"
+            android:maxLines="1"
+            android:text=""
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/sponsor_target"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:includeFontPadding="false"
+            android:text=""
+            android:textSize="12dp" />
+
+        <TextView
+            android:id="@+id/sponsor_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:includeFontPadding="false"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/sponsor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxEms="16"
+            android:maxLength="32"
+            android:maxLines="1"
+            android:text=""
+            android:textSize="12dp" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/release_details"
+        android:layout_width="wrap_content"
+        android:layout_height="28dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="14dp"
+        android:background="@drawable/release_detail_bg"
+        android:gravity="center"
+        android:stateListAnimator="@null"
+        android:text="领取任务"
+        android:textColor="@color/color_6c71c4"
+        android:textSize="14dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@+id/sponsor_info"
+        android:layout_below="@+id/sponsor_info"
+        android:layout_marginTop="12dp"
+        android:background="@color/color_d9d9d9" />
+</RelativeLayout>

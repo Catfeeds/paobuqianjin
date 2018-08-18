@@ -93,6 +93,9 @@ public class UserInfoResponse {
          * userAllincome: 0
          * vip: 1,
          * cusvip: 0,
+         * gvip:0
+         * firstred:1
+         * friendCount: 2 互相关注
          */
 
         private int id;
@@ -127,7 +130,7 @@ public class UserInfoResponse {
         private int credit;
         private int status;
         private int is_perfect;
-        private int create_time;
+        private long create_time;
         private Object delete_time;
         private int logintimes;
         private int target_step;
@@ -137,6 +140,36 @@ public class UserInfoResponse {
         private int authentication_status;
         private int messagesCount;
         private float userAllincome;
+
+        public int getFriendCount() {
+            return friendCount;
+        }
+
+        public void setFriendCount(int friendCount) {
+            this.friendCount = friendCount;
+        }
+
+        private int friendCount;
+
+        public int getGvip() {
+            return gvip;
+        }
+
+        public void setGvip(int gvip) {
+            this.gvip = gvip;
+        }
+
+        private int gvip;
+
+        public int getFirstred() {
+            return firstred;
+        }
+
+        public void setFirstred(int firstred) {
+            this.firstred = firstred;
+        }
+
+        private int firstred;
 
         public int getCusvip() {
             return cusvip;
@@ -318,11 +351,11 @@ public class UserInfoResponse {
             this.is_perfect = is_perfect;
         }
 
-        public int getCreate_time() {
+        public long getCreate_time() {
             return create_time;
         }
 
-        public void setCreate_time(int create_time) {
+        public void setCreate_time(long create_time) {
             this.create_time = create_time;
         }
 

@@ -7,10 +7,11 @@ import java.util.List;
  */
 
 public class DanListResponse {
+
     /**
      * error : 0
      * message : success
-     * data : [{"id":1,"level":"第一段","target":20000,"number":40},{"id":2,"level":"第二段","target":70000,"number":6},{"id":3,"level":"第三段","target":120000,"number":3},{"id":4,"level":"第四段","target":220000,"number":2},{"id":5,"level":"第五段","target":420000,"number":1},{"id":6,"level":"第六段","target":720000,"number":2},{"id":7,"level":"第七段","target":1120000,"number":1},{"id":8,"level":"第八段","target":1620000,"number":1},{"id":9,"level":"第九段","target":2220000,"number":0}]
+     * data : [{"id":1,"level":"第一段","target":20000,"end":69999,"number":9},{"id":2,"level":"第二段","target":70000,"end":119999,"number":3},{"id":3,"level":"第三段","target":120000,"end":219999,"number":2},{"id":4,"level":"第四段","target":220000,"end":419999,"number":0},{"id":5,"level":"第五段","target":420000,"end":719999,"number":0},{"id":6,"level":"第六段","target":720000,"end":1119999,"number":0},{"id":7,"level":"第七段","target":1120000,"end":1619999,"number":0},{"id":8,"level":"第八段","target":1620000,"end":2219999,"number":0},{"id":9,"level":"第九段","target":2220000,"end":"4294967295","number":0}]
      */
 
     private int error;
@@ -41,38 +42,20 @@ public class DanListResponse {
         this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return "DanListResponse{" +
-                "error=" + error +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
-    }
-
     public static class DataBean {
         /**
          * id : 1
          * level : 第一段
          * target : 20000
-         * number : 40
+         * end : 69999
+         * number : 9
          */
 
         private int id;
         private String level;
-        private int target;
+        private long target;
+        private long end;
         private int number;
-
-        @Override
-        public String toString() {
-            return "DataBean{" +
-                    "id=" + id +
-                    ", level='" + level + '\'' +
-                    ", target=" + target +
-                    ", number=" + number +
-                    ", finished=" + finished +
-                    '}';
-        }
 
         public boolean isFinished() {
             return finished;
@@ -83,7 +66,6 @@ public class DanListResponse {
         }
 
         private boolean finished;
-
         public int getId() {
             return id;
         }
@@ -100,12 +82,20 @@ public class DanListResponse {
             this.level = level;
         }
 
-        public int getTarget() {
+        public long getTarget() {
             return target;
         }
 
-        public void setTarget(int target) {
+        public void setTarget(long target) {
             this.target = target;
+        }
+
+        public long getEnd() {
+            return end;
+        }
+
+        public void setEnd(long end) {
+            this.end = end;
         }
 
         public int getNumber() {
@@ -115,6 +105,5 @@ public class DanListResponse {
         public void setNumber(int number) {
             this.number = number;
         }
-
     }
 }

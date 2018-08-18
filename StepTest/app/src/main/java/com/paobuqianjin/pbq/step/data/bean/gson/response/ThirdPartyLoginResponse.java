@@ -78,7 +78,9 @@ public class ThirdPartyLoginResponse {
          * n_lat : 0.00000
          * n_updatetime : 0
          * user_token : 30:FS4LtmiN3BhZadHFOS7ve6VraLicFDqj
+         * chat_token : 30:FS4LtmiN3BhZadHFOS7ve6VraLicFDqj
          * cusvip: 0,
+         * appid:*********
          */
 
         private int id;
@@ -125,6 +127,25 @@ public class ThirdPartyLoginResponse {
         private String n_lat;
         private int n_updatetime;
         private String user_token;
+        public int getState() {
+            return state;
+        }
+
+        public String getAppid() {
+            return appid;
+        }
+
+        public void setAppid(String appid) {
+            this.appid = appid;
+        }
+
+        private String appid;
+        public void setState(int state) {
+            this.state = state;
+        }
+
+        private int state;
+        private String chat_token;
 
         public int getCusvip() {
             return cusvip;
@@ -456,9 +477,18 @@ public class ThirdPartyLoginResponse {
                     ", n_lat='" + n_lat + '\'' +
                     ", n_updatetime=" + n_updatetime +
                     ", user_token='" + user_token + '\'' +
+                    ", chat_token='" + chat_token + '\'' +
                     ", cusvip=" + cusvip +
                     ", vip=" + vip +
                     '}';
+        }
+
+        public String getChat_token() {
+            return chat_token;
+        }
+
+        public void setChat_token(String chat_token) {
+            this.chat_token = chat_token;
         }
     }
 }

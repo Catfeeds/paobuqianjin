@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.fragment.task;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -30,6 +31,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.presenter.im.ConfirmResult;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
@@ -68,8 +70,6 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
     private static final int SELECT_FRIENDS = 0;
     private static final int REQUEST_PAY_FRIEND_PKG = 1;
     ArrayList<UserFriendResponse.DataBeanX.DataBean> dataBeans = null;
-    @Bind(R.id.line1)
-    ImageView line1;
     @Bind(R.id.target_step_des)
     TextView targetStepDes;
     @Bind(R.id.go_to_target_step)
@@ -114,8 +114,6 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
     ImageView addIco;
     @Bind(R.id.attention)
     TextView attention;
-    @Bind(R.id.btn_confirm)
-    Button confirm;
     @Bind(R.id.tv_calculate)
     TextView tvCalculate;
     private TaskReleaseParam taskReleaseParam = new TaskReleaseParam();
@@ -128,6 +126,7 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
     private final int DEVALUE_STEP = 10000;//默认步数
     /* private String[] targetStepArr = null*//*{"3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"}*//*;*/
     private ArrayList<String> targetStepArr = new ArrayList<>();
+    ConfirmResult confirmResult;
 
     @Override
     protected int getLayoutResId() {
@@ -200,6 +199,22 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
         });
     }
 
+    public void confirm(ConfirmResult confirmResult) {
+        if (isAdded()) {
+            this.confirmResult = confirmResult;
+            if (checkReleaseParams()) {
+                taskReleaseParam
+                        .setTask_days(Integer.parseInt(targetTaskDayNum.getText().toString()))
+                        .setReward_amount(Float.parseFloat(targetTaskMoneyNum.getText().toString()))
+                        .setTarget_step(Integer.parseInt(targetTaskStepNum.getText().toString()))
+                        .setTo_userid(friends)
+                        .setUserid(Presenter.getInstance(getContext()).getId());
+                confirmResult.result(false);
+                Presenter.getInstance(getContext()).taskRelease(taskReleaseParam);
+            }
+        }
+    }
+
     private TaskReleaseInterface taskReleaseInterface = new TaskReleaseInterface() {
         @Override
         public void response(TaskReleaseResponse taskReleaseResponse) {
@@ -224,6 +239,9 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                 exitTokenUnfect();
             } else {
                 Toast.makeText(getContext(), taskReleaseResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                if (confirmResult != null) {
+                    confirmResult.result(true);
+                }
             }
 
         }
@@ -236,11 +254,16 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
             if (errorCode.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();
+            } else {
+                PaoToastUtils.showLongToast(getContext(), errorCode.getMessage());
+            }
+            if (confirmResult != null) {
+                confirmResult.result(true);
             }
         }
     };
 
-    @OnClick({R.id.target_task_span, R.id.target_task_step_num, R.id.add_task_friend, R.id.add_ico, R.id.btn_confirm})
+    @OnClick({R.id.target_task_span, R.id.target_task_step_num, R.id.add_task_friend, R.id.add_ico})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -277,22 +300,11 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                 intent.setAction(ACTION_TASK);
                 startActivityForResult(intent, SELECT_FRIENDS);
                 break;
-            case R.id.btn_confirm:
-                LocalLog.d(TAG, "发布任务");
-                if (checkReleaseParams()) {
-                    taskReleaseParam
-                            .setTask_days(Integer.parseInt(targetTaskDayNum.getText().toString()))
-                            .setReward_amount(Float.parseFloat(targetTaskMoneyNum.getText().toString()))
-                            .setTarget_step(Integer.parseInt(targetTaskStepNum.getText().toString()))
-                            .setTo_userid(friends)
-                            .setUserid(Presenter.getInstance(getContext()).getId());
-                    Presenter.getInstance(getContext()).taskRelease(taskReleaseParam);
-                }
-                break;
             default:
                 break;
         }
     }
+
 
     private boolean checkReleaseParams() {
 
@@ -357,6 +369,11 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                 if (resultCode == RESULT_OK) {
                     LocalLog.d(TAG, "支付成功!");
                     getActivity().finish();
+                } else {
+                    LocalLog.d(TAG, "取消支付");
+                    if (confirmResult != null) {
+                        confirmResult.result(true);
+                    }
                 }
                 break;
         }
@@ -386,18 +403,26 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
         int dayNum = 0;
         float taskTotalMoney = 0f;
         int friendsNum = 0;
-        if (targetTaskMoneyNum.getText() == null || targetTaskMoneyNum.getText().toString().equals("")) {
+        if (TextUtils.isEmpty(targetTaskMoneyNum.getText())) {
 //            Toast.makeText(getContext(), "请输入奖励金额", Toast.LENGTH_SHORT).show();
             taskTotalMoney = 0f;
         } else {
-            taskTotalMoney = Float.parseFloat(targetTaskMoneyNum.getText().toString());
+            try {
+                taskTotalMoney = Float.parseFloat(targetTaskMoneyNum.getText().toString());
+            } catch (NumberFormatException e) {
+                taskTotalMoney = 0f;
+            }
         }
 
-        if (targetTaskDayNum.getText() == null || targetTaskDayNum.getText().toString().equals("")) {
+        if (TextUtils.isEmpty(targetTaskDayNum.getText())) {
 //            Toast.makeText(getContext(), "请输入任务天数", Toast.LENGTH_SHORT).show();
             dayNum = 0;
         } else {
-            dayNum = Integer.parseInt(targetTaskDayNum.getText().toString());
+            try {
+                dayNum = Integer.parseInt(targetTaskDayNum.getText().toString());
+            } catch (NumberFormatException e) {
+                dayNum = 0;
+            }
         }
 
         if (TextUtils.isEmpty(friends) && dataBeans == null || dataBeans.size() == 0) {

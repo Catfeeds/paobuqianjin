@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.activity.LoginActivity;
 
 /**
@@ -111,17 +112,6 @@ public abstract class BaseFragment extends Fragment {
                 @Override
                 public void onYesClick() {
                     exitDialog.dismiss();
-                    exitDialog = null;
-                    Presenter.getInstance(getContext()).setId(-1);
-                    Presenter.getInstance(getContext()).steLogFlg(false);
-                    Presenter.getInstance(getContext()).setToken(getContext(), "");
-                    startActivity(LoginActivity.class, null, true, RE_LOGIN_ACTION);
-                }
-            });
-            exitDialog.setNoOnclickListener(getContext().getString(R.string.cancel_no), new NormalDialog.onNoOnclickListener() {
-                @Override
-                public void onNoClick() {
-                    exitDialog.dismiss();
                     Presenter.getInstance(getContext()).setId(-1);
                     Presenter.getInstance(getContext()).steLogFlg(false);
                     Presenter.getInstance(getContext()).setToken(getContext(), "");
@@ -129,6 +119,7 @@ public abstract class BaseFragment extends Fragment {
                     exitDialog = null;
                 }
             });
+            exitDialog.setSingleBtn(true);
             if (getActivity() == null) {
                 return;
             }

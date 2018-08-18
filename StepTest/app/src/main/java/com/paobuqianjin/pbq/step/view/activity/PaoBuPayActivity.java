@@ -21,6 +21,7 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.fragment.circle.CirclePayFragment;
+import com.paobuqianjin.pbq.step.view.fragment.pay.GoldenPayFragment;
 import com.paobuqianjin.pbq.step.view.fragment.pay.PayFailedFragment;
 import com.paobuqianjin.pbq.step.view.fragment.pay.PaySuccessFragment;
 import com.paobuqianjin.pbq.step.view.fragment.pay.PayVipFriendFragment;
@@ -34,6 +35,7 @@ import com.unionpay.UPPayAssistEx;
 
 public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.OnSharedPreferenceChangeListener, WxPayResultQueryInterface {
     private final static String TAG = PaoBuPayActivity.class.getSimpleName();
+    private final static String PAY_ACTION_EDIT = "android.intent.action.PAY_EDIT";
     private final static String PAY_ACTION = "android.intent.action.PAY";
     private final static String QRCODE_ACTION = "android.intent.action.QRCODE";
     private final static String PAY_RECHARGE = "com.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
@@ -41,11 +43,13 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
     private final static String ACTION_VIP_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_ACTION";
     private final static String ACTION_VIP_SPONSOR_SELF = "com.paobuqianjin.pbq.setp.VIP_SELF_SPONSOR_ACTION";
     private final static String ACTION_VIP_SPONSOR_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_SPONSOR_ACTION";
+    private final static String ACTION_GOLDEN_VIP = "com.paobuqianjin.pbq.step.VIP_GOLDEN_ACTION";
     private SharedPreferences sharedPreferences;
     private final static String PAY_RESULT_ACTION = "android.intent.action.paobuqianjin.PAY_RESULT";
     private CirclePayFragment circlePayFragment = new CirclePayFragment();
     private QrCodeFragment qrCodeFragment = new QrCodeFragment();
     private PayVipFriendFragment payVipFriendFragment = new PayVipFriendFragment();
+    private GoldenPayFragment goldenPayFragment = new GoldenPayFragment();
     private String currentAction;
 
     @Override
@@ -67,7 +71,8 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
             return;
         }
 
-        if ((PAY_ACTION.equals(intent.getAction()) || PAY_RECHARGE.equals(intent.getAction()))) {
+        if ((PAY_ACTION.equals(intent.getAction()) || PAY_RECHARGE.equals(intent.getAction()))
+                || PAY_ACTION_EDIT.equals(intent.getAction())) {
             LocalLog.d(TAG, "调启支付");
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.pay_container, circlePayFragment)
@@ -88,6 +93,12 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.pay_container, payVipFriendFragment)
                     .show(payVipFriendFragment)
+                    .commit();
+            currentAction = intent.getAction();
+        } else if (ACTION_GOLDEN_VIP.equals(intent.getAction())) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.pay_container, goldenPayFragment)
+                    .show(goldenPayFragment)
                     .commit();
             currentAction = intent.getAction();
         }
@@ -129,16 +140,29 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
 
     public void showRePayFragment(BaseFragment hideFragment) {
         LocalLog.d(TAG, "重新支付");
-        getSupportFragmentManager().beginTransaction()
-                .hide(hideFragment)
-                .add(R.id.pay_container, circlePayFragment)
-                .show(circlePayFragment)
-                .commit();
+        if (circlePayFragment.isAdded()) {
+            getSupportFragmentManager().beginTransaction()
+                    .hide(hideFragment)
+                    .show(circlePayFragment)
+                    .commit();
+            circlePayFragment.payRetry();
+        } else if (payVipFriendFragment.isAdded()) {
+            getSupportFragmentManager().beginTransaction()
+                    .hide(hideFragment)
+                    .show(payVipFriendFragment)
+                    .commit();
+            payVipFriendFragment.payRetry();
+        } else if (goldenPayFragment.isAdded()) {
+            getSupportFragmentManager().beginTransaction()
+                    .hide(hideFragment)
+                    .show(goldenPayFragment)
+                    .commit();
+        }
     }
 
     public void showQrCodeFragment(BaseFragment hideFragment) {
         LocalLog.d(TAG, "显示二维码分享界面");
-        if (PAY_RECHARGE.equals(currentAction)) {
+        if (PAY_RECHARGE.equals(currentAction) || PAY_ACTION_EDIT.equals(currentAction)) {
             onBackPressed();
             return;
         }
@@ -164,20 +188,65 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
             setResult(RESULT_OK);
         } else {
             LocalLog.d(TAG, "error  ");
+            PaoToastUtils.showLongToast(this, "支付未完成");
+            PayFailedFragment payFailedFragment = new PayFailedFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .hide(circlePayFragment)
+                    .add(R.id.pay_container, payFailedFragment)
+                    .show(payFailedFragment)
+                    .commit();
         }
     }
 
     public void showPaySuccessWallet(WalletPayOrderResponse walletPayOrderResponse) {
-        Toast.makeText(this, "支付成功", Toast.LENGTH_SHORT).show();
-        PaySuccessFragment paySuccessFragment = new PaySuccessFragment();
-        paySuccessFragment.setPayNum(Float.parseFloat(walletPayOrderResponse.getData().getTotal_fee()));
-        getSupportFragmentManager().beginTransaction()
-                .hide(circlePayFragment)
-                .hide(payVipFriendFragment)
-                .add(R.id.pay_container, paySuccessFragment)
-                .show(paySuccessFragment)
-                .commit();
-        setResult(RESULT_OK);
+        if (walletPayOrderResponse.getError() == 0) {
+            Toast.makeText(this, "支付成功", Toast.LENGTH_SHORT).show();
+            PaySuccessFragment paySuccessFragment = new PaySuccessFragment();
+            paySuccessFragment.setPayNum(Float.parseFloat(walletPayOrderResponse.getData().getTotal_fee()));
+            getSupportFragmentManager().beginTransaction()
+                    .hide(circlePayFragment)
+                    .hide(payVipFriendFragment)
+                    .hide(goldenPayFragment)
+                    .add(R.id.pay_container, paySuccessFragment)
+                    .show(paySuccessFragment)
+                    .commit();
+            setResult(RESULT_OK);
+        } else {
+            LocalLog.d(TAG, "error  ");
+            PaoToastUtils.showLongToast(this, "支付未完成");
+            PayFailedFragment payFailedFragment = new PayFailedFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .hide(circlePayFragment)
+                    .hide(payVipFriendFragment)
+                    .hide(goldenPayFragment)
+                    .add(R.id.pay_container, payFailedFragment)
+                    .show(payFailedFragment)
+                    .commit();
+        }
+    }
+
+    public void showPaySuccessSeven(String payResult) {
+        if (!TextUtils.isEmpty(payResult)) {
+            PaySuccessFragment paySuccessFragment = new PaySuccessFragment();
+            paySuccessFragment.setPayNum(Float.parseFloat(payResult));
+            getSupportFragmentManager().beginTransaction()
+                    .hide(circlePayFragment)
+                    .hide(payVipFriendFragment)
+                    .hide(goldenPayFragment)
+                    .add(R.id.pay_container, paySuccessFragment)
+                    .show(paySuccessFragment)
+                    .commit();
+            setResult(RESULT_OK);
+        } else {
+            PayFailedFragment payFailedFragment = new PayFailedFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .hide(circlePayFragment)
+                    .hide(payVipFriendFragment)
+                    .hide(goldenPayFragment)
+                    .add(R.id.pay_container, payFailedFragment)
+                    .show(payFailedFragment)
+                    .commit();
+        }
     }
 
     @Override
@@ -214,6 +283,7 @@ public class PaoBuPayActivity extends BaseActivity implements SharedPreferences.
                         getSupportFragmentManager().beginTransaction()
                                 .hide(circlePayFragment)
                                 .hide(payVipFriendFragment)
+                                .hide(goldenPayFragment)
                                 .add(R.id.pay_container, paySuccessFragment)
                                 .show(paySuccessFragment)
                                 .commit();

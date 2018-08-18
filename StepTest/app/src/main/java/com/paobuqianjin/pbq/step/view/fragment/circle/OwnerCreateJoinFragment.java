@@ -1,10 +1,12 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.INotificationSideChannel;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -21,10 +23,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.RongYunUserInfoManager;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.MainActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import java.lang.reflect.Field;
@@ -62,10 +69,13 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.cancel_icon)
     RelativeLayout cancelIcon;
     private String keyWord = "";
+    private final static int REQUEST_CREATE = 1111;
 
     private OwnerCreateFragment ownerCreateFragment = new OwnerCreateFragment();
     private OwnerJoinFragment ownerJoinFragment = new OwnerJoinFragment();
     private int selectPage = 0;
+    private String action = "";
+    private final static String GUIDE_ACTION = "com.paobuqianjin.pbq.GUIDE_ACTION";
 
     @Override
     protected int getLayoutResId() {
@@ -78,13 +88,40 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
     }
 
     @Override
+    public Object right() {
+        return "创建圈子";
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
     }
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
+        final Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            action = intent.getAction();
+        }
+        setToolBarListener(new BaseBarImageViewFragment.ToolBarListener() {
+            @Override
+            public void clickLeft() {
+                getActivity().onBackPressed();
+                if (GUIDE_ACTION.equals(action)) {
+                    Intent guideIntent = new Intent();
+                    guideIntent.setAction(GUIDE_ACTION);
+                    guideIntent.setClass(getActivity(), MainActivity.class);
+                    startActivity(guideIntent);
+                }
+            }
+
+            @Override
+            public void clickRight() {
+                Intent intent = new Intent();
+                intent.setClass(getContext(), CreateCircleActivity.class);
+                startActivityForResult(intent, REQUEST_CREATE);
+            }
+        });
         String[] title = {"我创建的", "我加入的"};
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(ownerCreateFragment);
@@ -129,6 +166,9 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
         createOrJoin.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                if (tab == null) {
+                    return;
+                }
                 LocalLog.d(TAG, "onTabSelected() enter" + tab.getPosition());
                 switch (tab.getPosition()) {
                     case 0:
@@ -184,7 +224,7 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
     };
 
     public void setIndicator(TabLayout tab, int leftDip, int rightDip) {
-        if(tab == null){
+        if (tab == null) {
             return;
         }
         Class<?> tabLayout = tab.getClass();
@@ -244,4 +284,12 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
         ButterKnife.unbind(this);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CREATE) {
+            LocalLog.d(TAG, "创建圈子");
+            ownerCreateFragment.refreshMyCreate();
+        }
+    }
 }

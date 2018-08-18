@@ -10,7 +10,7 @@ public class MyReleaseTaskDetailResponse {
     /**
      * error : 0
      * message : success
-     * data : {"task":{"id":9,"task_name":"8000步达标赛","target_step":8000,"reward_amount":"10.00","avgmoney":"10.00","task_days":10,"task_rule":"达标即可获得红包奖励，未达标者无奖励","task_desc":"①任务每天晚上12点重置，未达标者的红包退回到派发人账户;\\n②运动数据以跑步钱进的APP为准;"},"task_record":[{"activity_start_time":1517500800,"is_receive":0},{"activity_start_time":1517587200,"is_receive":0},{"activity_start_time":1517673600,"is_receive":0},{"activity_start_time":1517760000,"is_receive":0},{"activity_start_time":1517846400,"is_receive":0},{"activity_start_time":1517932800,"is_receive":0},{"activity_start_time":1518019200,"is_receive":0},{"activity_start_time":1518105600,"is_receive":0},{"activity_start_time":1518192000,"is_receive":0},{"activity_start_time":1518278400,"is_receive":0}]}
+     * data : {"task":{"id":1094,"task_no":"201806290929335819","task_name":"1步达标赛","target_step":1,"reward_amount":"1.00","avgmoney":"1.00","task_days":1,"task_rule":"达标即可获得红包奖励，未达标者无奖励","task_ios_desc":"\r\n            <p>\r\n                ①运动数据以跑步钱进的APP为准；\r\n            <\/p>\r\n            <p>\r\n                ②任务每天晚上12点重置，未领取的红包退回到派发人账户；\r\n            <\/p>\r\n            <p>\r\n                ③若任务领取人未领取任务及奖励，属用户自主行为，与跑步钱进无关；\r\n            <\/p>\r\n            <p>\r\n                ④此活动由跑步钱进举办，与苹果公司无关；\r\n            <\/p>\r\n        ","task_desc":"\r\n            <p>\r\n                ①运动数据以跑步钱进的APP为准；\r\n            <\/p>\r\n            <p>\r\n                ②任务每天晚上12点重置，未领取的红包退回到派发人账户；\r\n            <\/p>\r\n            <p>\r\n                ③若任务领取人未领取任务及奖励，属用户自主行为，与跑步钱进无关；\r\n            <\/p>\r\n            <p>\r\n                ④此活动由跑步钱进举办；\r\n            <\/p>\r\n        ","create_time":1530235773,"end_time":1530288000},"task_record":[{"userid":23420,"userno":23420,"nickname":"九洲涧","activity_start_time":1530201600,"is_receive":0,"amount":"1.00","date":"2018-06-29 00:00"}]}
      */
 
     private int error;
@@ -41,19 +41,10 @@ public class MyReleaseTaskDetailResponse {
         this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return "MyReleaseTaskDetailResponse{" +
-                "error=" + error +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
-    }
-
     public static class DataBean {
         /**
-         * task : {"id":9,"task_name":"8000步达标赛","target_step":8000,"reward_amount":"10.00","avgmoney":"10.00","task_days":10,"task_rule":"达标即可获得红包奖励，未达标者无奖励","task_desc":"①任务每天晚上12点重置，未达标者的红包退回到派发人账户;\\n②运动数据以跑步钱进的APP为准;"}
-         * task_record : [{"activity_start_time":1517500800,"is_receive":0},{"activity_start_time":1517587200,"is_receive":0},{"activity_start_time":1517673600,"is_receive":0},{"activity_start_time":1517760000,"is_receive":0},{"activity_start_time":1517846400,"is_receive":0},{"activity_start_time":1517932800,"is_receive":0},{"activity_start_time":1518019200,"is_receive":0},{"activity_start_time":1518105600,"is_receive":0},{"activity_start_time":1518192000,"is_receive":0},{"activity_start_time":1518278400,"is_receive":0}]
+         * task : {"id":1094,"task_no":"201806290929335819","task_name":"1步达标赛","target_step":1,"reward_amount":"1.00","avgmoney":"1.00","task_days":1,"task_rule":"达标即可获得红包奖励，未达标者无奖励","task_ios_desc":"\r\n            <p>\r\n                ①运动数据以跑步钱进的APP为准；\r\n            <\/p>\r\n            <p>\r\n                ②任务每天晚上12点重置，未领取的红包退回到派发人账户；\r\n            <\/p>\r\n            <p>\r\n                ③若任务领取人未领取任务及奖励，属用户自主行为，与跑步钱进无关；\r\n            <\/p>\r\n            <p>\r\n                ④此活动由跑步钱进举办，与苹果公司无关；\r\n            <\/p>\r\n        ","task_desc":"\r\n            <p>\r\n                ①运动数据以跑步钱进的APP为准；\r\n            <\/p>\r\n            <p>\r\n                ②任务每天晚上12点重置，未领取的红包退回到派发人账户；\r\n            <\/p>\r\n            <p>\r\n                ③若任务领取人未领取任务及奖励，属用户自主行为，与跑步钱进无关；\r\n            <\/p>\r\n            <p>\r\n                ④此活动由跑步钱进举办；\r\n            <\/p>\r\n        ","create_time":1530235773,"end_time":1530288000}
+         * task_record : [{"userid":23420,"userno":23420,"nickname":"九洲涧","activity_start_time":1530201600,"is_receive":0,"amount":"1.00","date":"2018-06-29 00:00"}]
          */
 
         private TaskBean task;
@@ -75,44 +66,60 @@ public class MyReleaseTaskDetailResponse {
             this.task_record = task_record;
         }
 
-        @Override
-        public String toString() {
-            return "DataBean{" +
-                    "task=" + task +
-                    ", task_record=" + task_record +
-                    '}';
-        }
-
         public static class TaskBean {
             /**
-             * id : 9
-             * task_name : 8000步达标赛
-             * target_step : 8000
-             * reward_amount : 10.00
-             * avgmoney :10.00
-             * task_days : 10
+             * id : 1094
+             * task_no : 201806290929335819
+             * task_name : 1步达标赛
+             * target_step : 1
+             * reward_amount : 1.00
+             * avgmoney : 1.00
+             * task_days : 1
              * task_rule : 达标即可获得红包奖励，未达标者无奖励
-             * task_desc : ①任务每天晚上12点重置，未达标者的红包退回到派发人账户;\n②运动数据以跑步钱进的APP为准;
+             * task_ios_desc :
+             <p>
+             ①运动数据以跑步钱进的APP为准；
+             </p>
+             <p>
+             ②任务每天晚上12点重置，未领取的红包退回到派发人账户；
+             </p>
+             <p>
+             ③若任务领取人未领取任务及奖励，属用户自主行为，与跑步钱进无关；
+             </p>
+             <p>
+             ④此活动由跑步钱进举办，与苹果公司无关；
+             </p>
+
+             * task_desc :
+             <p>
+             ①运动数据以跑步钱进的APP为准；
+             </p>
+             <p>
+             ②任务每天晚上12点重置，未领取的红包退回到派发人账户；
+             </p>
+             <p>
+             ③若任务领取人未领取任务及奖励，属用户自主行为，与跑步钱进无关；
+             </p>
+             <p>
+             ④此活动由跑步钱进举办；
+             </p>
+
+             * create_time : 1530235773
+             * end_time : 1530288000
              */
 
             private int id;
+            private String task_no;
             private String task_name;
             private int target_step;
             private float reward_amount;
-
-            public float getAvgmoney() {
-                return avgmoney;
-            }
-
-            public void setAvgmoney(float avgmoney) {
-                this.avgmoney = avgmoney;
-            }
-
-            private float avgmoney;
-            private float allmoney;
+            private String avgmoney;
             private int task_days;
             private String task_rule;
+            private String task_ios_desc;
             private String task_desc;
+            private int create_time;
+            private int end_time;
 
             public int getId() {
                 return id;
@@ -120,6 +127,14 @@ public class MyReleaseTaskDetailResponse {
 
             public void setId(int id) {
                 this.id = id;
+            }
+
+            public String getTask_no() {
+                return task_no;
+            }
+
+            public void setTask_no(String task_no) {
+                this.task_no = task_no;
             }
 
             public String getTask_name() {
@@ -146,6 +161,14 @@ public class MyReleaseTaskDetailResponse {
                 this.reward_amount = reward_amount;
             }
 
+            public String getAvgmoney() {
+                return avgmoney;
+            }
+
+            public void setAvgmoney(String avgmoney) {
+                this.avgmoney = avgmoney;
+            }
+
             public int getTask_days() {
                 return task_days;
             }
@@ -162,6 +185,14 @@ public class MyReleaseTaskDetailResponse {
                 this.task_rule = task_rule;
             }
 
+            public String getTask_ios_desc() {
+                return task_ios_desc;
+            }
+
+            public void setTask_ios_desc(String task_ios_desc) {
+                this.task_ios_desc = task_ios_desc;
+            }
+
             public String getTask_desc() {
                 return task_desc;
             }
@@ -170,44 +201,71 @@ public class MyReleaseTaskDetailResponse {
                 this.task_desc = task_desc;
             }
 
-            public float getAllmoney() {
-                return allmoney;
+            public int getCreate_time() {
+                return create_time;
             }
 
-            public void setAllmoney(float allmoney) {
-                this.allmoney = allmoney;
+            public void setCreate_time(int create_time) {
+                this.create_time = create_time;
             }
 
-            @Override
-            public String toString() {
-                return "TaskBean{" +
-                        "id=" + id +
-                        ", task_name='" + task_name + '\'' +
-                        ", target_step=" + target_step +
-                        ", reward_amount=" + reward_amount +
-                        ", avgmoney=" + avgmoney +
-                        ", allmoney=" + allmoney +
-                        ", task_days=" + task_days +
-                        ", task_rule='" + task_rule + '\'' +
-                        ", task_desc='" + task_desc + '\'' +
-                        '}';
+            public int getEnd_time() {
+                return end_time;
+            }
+
+            public void setEnd_time(int end_time) {
+                this.end_time = end_time;
             }
         }
 
         public static class TaskRecordBean {
             /**
-             * activity_start_time : 1517500800
+             * userid : 23420
+             * userno : 23420
+             * nickname : 九洲涧
+             * activity_start_time : 1530201600
              * is_receive : 0
+             * amount : 1.00
+             * date : 2018-06-29 00:00
              */
 
-            private long activity_start_time;
+            private int userid;
+            private String userno;
+            private String nickname;
+            private int activity_start_time;
             private int is_receive;
+            private String amount;
+            private String date;
 
-            public long getActivity_start_time() {
+            public int getUserid() {
+                return userid;
+            }
+
+            public void setUserid(int userid) {
+                this.userid = userid;
+            }
+
+            public String getUserno() {
+                return userno;
+            }
+
+            public void setUserno(String userno) {
+                this.userno = userno;
+            }
+
+            public String getNickname() {
+                return nickname;
+            }
+
+            public void setNickname(String nickname) {
+                this.nickname = nickname;
+            }
+
+            public int getActivity_start_time() {
                 return activity_start_time;
             }
 
-            public void setActivity_start_time(long activity_start_time) {
+            public void setActivity_start_time(int activity_start_time) {
                 this.activity_start_time = activity_start_time;
             }
 
@@ -219,12 +277,20 @@ public class MyReleaseTaskDetailResponse {
                 this.is_receive = is_receive;
             }
 
-            @Override
-            public String toString() {
-                return "TaskRecordBean{" +
-                        "activity_start_time=" + activity_start_time +
-                        ", is_receive=" + is_receive +
-                        '}';
+            public String getAmount() {
+                return amount;
+            }
+
+            public void setAmount(String amount) {
+                this.amount = amount;
+            }
+
+            public String getDate() {
+                return date;
+            }
+
+            public void setDate(String date) {
+                this.date = date;
             }
         }
     }

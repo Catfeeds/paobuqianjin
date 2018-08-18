@@ -95,6 +95,9 @@ public class MyBankCardActivity extends BaseBarActivity implements BaseBarActivi
             public void OnItemClick(View view, final int position) {
                 if (normalDialog == null) {
                     normalDialog = new NormalDialog(MyBankCardActivity.this);
+                    if (position >= listData.size()) {
+                        return;
+                    }
                     String card = listData.get(position).getBank_card();
                     String cardLastFour = "";
                     if (!TextUtils.isEmpty(card)) {
@@ -108,6 +111,9 @@ public class MyBankCardActivity extends BaseBarActivity implements BaseBarActivi
                         @Override
                         public void onYesClick() {
                             normalDialog.dismiss();
+                            if (position >= listData.size()) {
+                                return;
+                            }
                             Map<String, String> params = new HashMap<>();
                             params.put("cardno", listData.get(position).getBank_card());
                             Presenter.getInstance(getApplicationContext()).deletePaoBuSimple(NetApi.urlUserBankCard + "/" + listData.get(position).getCardid(),

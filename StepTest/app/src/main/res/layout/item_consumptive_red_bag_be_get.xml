@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="8dp"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="@android:color/black"
+        android:textSize="15sp"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:layout_alignTop="@+id/iv_icon" />
+
+    <TextView
+        android:id="@+id/tv_coupon_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        android:textColor="@color/text_color_02"
+        android:textSize="13sp"
+        android:layout_alignParentRight="true"
+        />
+
+    <TextView
+        android:id="@+id/tv_limite_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/tv_coupon_name"
+        android:text="TextView"
+        android:textColor="@color/text_color_02" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="@color/color_9e9e9e"
+        android:textSize="12sp"
+        android:layout_below="@id/tv_name"
+         />
+
+    <include
+        android:layout_below="@id/tv_limite_money"
+        layout="@layout/h_divide"
+        android:layout_height="1px"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent" />
+
+</RelativeLayout>

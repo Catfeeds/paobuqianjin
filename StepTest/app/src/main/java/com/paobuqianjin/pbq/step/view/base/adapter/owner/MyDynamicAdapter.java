@@ -9,9 +9,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,11 +40,11 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
+import com.paobuqianjin.pbq.step.view.emoji.MoonUtils;
 import com.paobuqianjin.pbq.step.view.fragment.owner.MyDynamicFragment;
 
 import java.util.ArrayList;
@@ -113,9 +115,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
             holder.Mview = new ArrayList<>();
             LocalLog.d(TAG, "upDataListItem() enter  data " + ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).toString());
             int[] emj = mContext.getResources().getIntArray(R.array.emjio_list);
-/*            Presenter.getInstance(mContext).getPlaceErrorImage(holder.dynamicUserIcon, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
-                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(mContext, holder.dynamicUserIcon, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+            Presenter.getInstance(mContext).getPlaceErrorImage(holder.dynamicUserIcon, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.dynamicUserName.setText(((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             long create_time = ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
@@ -171,10 +171,11 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 }
 
                 LocalLog.d(TAG, "firstContentText = " + firstContentText);
-                SpannableStringBuilder style = new SpannableStringBuilder(firstContentDes + firstContentText);
+                SpannableString style = new SpannableString(firstContentDes + firstContentText);
                 style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), 0, firstContentDes.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), firstContentDes.length(), (firstContentDes + firstContentText).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.firstContent.setText(style);
+                MoonUtils.identifyFaceExpression(mContext, holder.firstContent, style, ImageSpan.ALIGN_BOTTOM);
             } else {
                 LocalLog.d(TAG, "没有任何评论");
                 holder.contentNumbers.setText(String.valueOf(0));
@@ -197,9 +198,7 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                     holder.Mview.add(holder.imageView0);
                     ImageView imageView0 = (ImageView) holder.imageView0.findViewById(R.id.dynamic_pic);
 
-/*                    Presenter.getInstance(mContext).getPlaceErrorImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
-                            R.drawable.bitmap_null, R.drawable.bitmap_null);*/
-                    LoadBitmap.glideLoad(mContext, imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
+                    Presenter.getInstance(mContext).getPlaceErrorImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
                             R.drawable.bitmap_null, R.drawable.bitmap_null);
                     showBigImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                 }
@@ -218,14 +217,11 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 ImageView imageView0 = (ImageView) holder.imageView0.findViewById(R.id.dynamic_pic);
                 ImageView imageView1 = (ImageView) holder.imageView1.findViewById(R.id.dynamic_pic);
                 holder.dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
-/*                Presenter.getInstance(mContext).getPlaceErrorImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
+                Presenter.getInstance(mContext).getPlaceErrorImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
                         R.drawable.bitmap_null, R.drawable.bitmap_null);
                 Presenter.getInstance(mContext).getPlaceErrorImage(imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1),
-                        R.drawable.bitmap_null, R.drawable.bitmap_null);*/
-                LoadBitmap.glideLoad(mContext, imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
                         R.drawable.bitmap_null, R.drawable.bitmap_null);
-                LoadBitmap.glideLoad(mContext, imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1),
-                        R.drawable.bitmap_null, R.drawable.bitmap_null);
+
                 showBigImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                 showBigImage(imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
             } else if (imageSize == 3) {
@@ -250,18 +246,13 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 ImageView imageView1 = (ImageView) holder.imageView1.findViewById(R.id.dynamic_pic);
                 ImageView imageView2 = (ImageView) holder.imageView2.findViewById(R.id.dynamic_pic);
                 holder.dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
-/*                Presenter.getInstance(mContext).getPlaceErrorImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
+                Presenter.getInstance(mContext).getPlaceErrorImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
                         R.drawable.bitmap_null, R.drawable.bitmap_null);
                 Presenter.getInstance(mContext).getPlaceErrorImage(imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1),
                         R.drawable.bitmap_null, R.drawable.bitmap_null);
                 Presenter.getInstance(mContext).getPlaceErrorImage(imageView2, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2),
-                        R.drawable.bitmap_null, R.drawable.bitmap_null);*/
-                LoadBitmap.glideLoad(mContext, imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
                         R.drawable.bitmap_null, R.drawable.bitmap_null);
-                LoadBitmap.glideLoad(mContext, imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1),
-                        R.drawable.bitmap_null, R.drawable.bitmap_null);
-                LoadBitmap.glideLoad(mContext, imageView2, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2),
-                        R.drawable.bitmap_null, R.drawable.bitmap_null);
+
                 showBigImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                 showBigImage(imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
                 showBigImage(imageView2, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));
@@ -295,22 +286,15 @@ public class MyDynamicAdapter extends RecyclerView.Adapter<MyDynamicAdapter.MyDy
                 holder.Mview.add(holder.imageView3);
                 holder.dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
 
-/*                Presenter.getInstance(mContext).getPlaceErrorImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
+                Presenter.getInstance(mContext).getPlaceErrorImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
                         R.drawable.bitmap_null, R.drawable.bitmap_null);
                 Presenter.getInstance(mContext).getPlaceErrorImage(imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1),
                         R.drawable.bitmap_null, R.drawable.bitmap_null);
                 Presenter.getInstance(mContext).getPlaceErrorImage(imageView2, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2),
                         R.drawable.bitmap_null, R.drawable.bitmap_null);
                 Presenter.getInstance(mContext).getPlaceErrorImage(imageView3, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(3),
-                        R.drawable.bitmap_null, R.drawable.bitmap_null);*/
-                LoadBitmap.glideLoad(mContext,imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0),
                         R.drawable.bitmap_null, R.drawable.bitmap_null);
-                LoadBitmap.glideLoad(mContext,imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1),
-                        R.drawable.bitmap_null, R.drawable.bitmap_null);
-                LoadBitmap.glideLoad(mContext,imageView2, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2),
-                        R.drawable.bitmap_null, R.drawable.bitmap_null);
-                LoadBitmap.glideLoad(mContext,imageView3, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(3),
-                        R.drawable.bitmap_null, R.drawable.bitmap_null);
+
                 showBigImage(imageView0, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(0));
                 showBigImage(imageView1, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(1));
                 showBigImage(imageView2, ((DynamicPersonResponse.DataBeanX.DataBean) mData.get(position)).getImages().get(2));

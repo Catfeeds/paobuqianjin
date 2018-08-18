@@ -13,6 +13,8 @@ import android.view.View;
 
 import com.paobuqianjin.pbq.step.utils.Utils;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Created by pbq on 2018/1/19.
  */
@@ -150,19 +152,31 @@ public class WaveView extends View {
 
         // 引发view重绘，一般可以考虑延迟20-30ms重绘，空出时间片
 
-        handler.sendEmptyMessageDelayed(0, 1000/60);
+        handler.sendEmptyMessageDelayed(0, 1000 / 60);
     }
 
-    private Handler handler = new Handler() {
+    public void stopDraw() {
+        handler.removeCallbacks(null);
+    }
+
+    private WaveHandler handler = new WaveHandler(this);
+
+    private static class WaveHandler extends Handler {
+        WeakReference<WaveView> weakReference;
+
+        WaveHandler(WaveView waveView) {
+            weakReference = new WeakReference<WaveView>(waveView);
+        }
 
         @Override
         public void handleMessage(Message msg) {
             // TODO Auto-generated method stub
-            super.handleMessage(msg);
-            postInvalidate();
+            WaveView waveView = weakReference.get();
+            if (waveView != null) {
+                waveView.postInvalidate();
+            }
         }
-
-    };
+    }
 
     private void resetPositonY() {
       /*  // mXOneOffset代表当前第一条水波纹要移动的距离

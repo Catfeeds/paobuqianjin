@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/create_circle">
+    <item android:drawable="@drawable/sponsor_red">
         <shape android:shape="rectangle">
             <!-- 填充的颜色 -->
             <solid android:color="@color/white" />

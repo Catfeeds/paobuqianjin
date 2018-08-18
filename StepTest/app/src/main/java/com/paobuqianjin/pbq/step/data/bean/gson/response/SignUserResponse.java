@@ -55,10 +55,12 @@ public class SignUserResponse {
          * id : 68
          * no: 22247
          * user_token : 1:kjF1GwBURNi9OSMFTbHArEAuTtjuWjlM
+         * chat_token : aduvzE6cgajIureIV1SI/k3NBFPAOr0YgdO+PAQWvVINQl68PmDduJKwYH680tB/8cmcSewWQ4jaBWIfbgHv0g==
          */
         private int id;
         private String no;
         private String user_token;
+        private String chat_token;
 
         public int getId() {
             return id;
@@ -80,6 +82,10 @@ public class SignUserResponse {
             return user_token;
         }
 
+        public String getChat_token() {
+            return chat_token;
+        }
+
         public void setUser_token(String user_token) {
             this.user_token = user_token;
         }
@@ -90,6 +96,7 @@ public class SignUserResponse {
                     "id=" + id +
                     ", no=" + no +
                     ", user_token='" + user_token + '\'' +
+                    ", chat_token='" + chat_token + '\'' +
                     '}';
         }
     }

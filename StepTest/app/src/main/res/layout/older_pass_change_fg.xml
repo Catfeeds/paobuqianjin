@@ -46,7 +46,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
             android:background="@null"
-            android:hint="请输入6-16位新密码"
+            android:hint="请输入8-16位新密码"
             android:inputType="textPassword"
             android:maxLength="12"
             android:maxLines="1"

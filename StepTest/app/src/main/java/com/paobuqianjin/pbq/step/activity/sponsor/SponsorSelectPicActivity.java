@@ -29,6 +29,8 @@ import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
 import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.adapter.GridAddPicAdapter;
+import com.paobuqianjin.pbq.step.data.alioss.AliOss;
+import com.paobuqianjin.pbq.step.data.alioss.OssService;
 import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
 import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
@@ -283,16 +285,13 @@ public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBar
 
         @Override
         protected String doInBackground(ImageBean... strings) {
+            AliOss aliOss = new AliOss();
+            aliOss.initRegion(getApplicationContext());
+            OssService ossService = aliOss.initOSS(getApplicationContext());
             for (ImageBean path : strings) {
                 LocalLog.d(TAG, "path = " + path);
-                ResultHelper result = null;
-                PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                result = putObjectSample.start(path.getImagePath(),getApplicationContext());
-                //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
                 String url = null;
-                if (result != null && result.cosXmlResult != null) {
-                    url = result.cosXmlResult.accessUrl;
-                }
+                url = ossService.asyncPutImageLocal(path.getImagePath());
                 final SelectPicBean selectPicBean = new SelectPicBean();
                 selectPicBean.setFileUrl(path.getImagePath());
                 selectPicBean.setImageUrl(url);

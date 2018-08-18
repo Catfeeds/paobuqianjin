@@ -19,6 +19,9 @@ import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -143,6 +146,38 @@ public class IdentityAuth3Activity extends BaseBarActivity {
         timer.start();
     }
 
+    private void checkPass() {
+        LocalLog.d(TAG, "checkPass() enter");
+        Presenter.getInstance(IdentityAuth3Activity.this).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    JSONObject jsonObj = new JSONObject(s);
+                    jsonObj = jsonObj.getJSONObject("data");
+                    String status = jsonObj.getString("setpw");
+                    if (status.equals("1")) {
+                        LocalLog.d(TAG, "已经有密码");
+                    } else if (status.equals("0")) {
+                        Intent intent = new Intent();
+                        intent.setAction(ACTION_FIRST_CARD);
+                        intent.setClass(getApplicationContext(), PayPassWordActivity.class);
+                        startActivity(intent);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                setResult(RES_SUC);
+                finish();
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null) {
+                    PaoToastUtils.showLongToast(IdentityAuth3Activity.this, errorBean.getMessage());
+                }
+            }
+        });
+    }
 
     @OnClick({R.id.tv_get_vcode, R.id.btn_next})
     public void onClick(View view) {
@@ -168,15 +203,7 @@ public class IdentityAuth3Activity extends BaseBarActivity {
                             @Override
                             protected void onSuc(String s) {
                                 PaoToastUtils.showShortToast(IdentityAuth3Activity.this, isAddCard ? "添加银行卡成功" : "验证成功");
-                                if (!isAddCard) {
-                                    LocalLog.d(TAG, "设置密码");
-                                    Intent intent = new Intent();
-                                    intent.setAction(ACTION_FIRST_CARD);
-                                    intent.setClass(getApplicationContext(), PayPassWordActivity.class);
-                                    startActivity(intent);
-                                }
-                                setResult(RES_SUC);
-                                finish();
+                                checkPass();
                             }
 
                             @Override
@@ -215,6 +242,7 @@ public class IdentityAuth3Activity extends BaseBarActivity {
 
                                 @Override
                                 protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                                    etCode.setEnabled(true);
                                     if (errorBean != null) {
                                         if (errorBean.getError() != 100) {
                                             PaoToastUtils.showLongToast(getApplicationContext(), errorBean.getMessage());

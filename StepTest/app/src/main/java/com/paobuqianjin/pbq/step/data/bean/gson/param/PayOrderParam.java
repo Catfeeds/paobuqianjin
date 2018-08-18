@@ -44,6 +44,18 @@ taskid	任务ID	false	int
     private float total_fee;
     private int red_id;
 
+    public String getRed_map_id() {
+        return red_map_id;
+    }
+
+    public PayOrderParam setRed_map_id(String red_map_id) {
+        this.red_map_id = red_map_id;
+        params.put("red_map_id", red_map_id);
+        return this;
+    }
+
+    private String red_map_id;//遍地红包充值ID
+
     public String getDeviceType() {
         return deviceType;
     }
@@ -80,6 +92,18 @@ taskid	任务ID	false	int
     }
 
     private String cvip_no;
+
+    public String getGvip_no() {
+        return gvip_no;
+    }
+
+    public PayOrderParam setGvip_no(String gvip_no) {
+        this.gvip_no = gvip_no;
+        params.put("gvip_no", gvip_no);
+        return this;
+    }
+
+    private String gvip_no;
 
     public String getVip_no() {
         return vip_no;

@@ -122,5 +122,8 @@ public final class HonorFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        if (personCircleNearby != null) {
+            personCircleNearby.setupWithViewPager(null);
+        }
     }
 }

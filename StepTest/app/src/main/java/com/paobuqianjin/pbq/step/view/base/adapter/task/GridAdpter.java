@@ -1,6 +1,5 @@
 package com.paobuqianjin.pbq.step.view.base.adapter.task;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.GridView;
 import android.widget.ImageView;;import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 
 import java.util.List;
 
@@ -20,11 +18,11 @@ import java.util.List;
  */
 
 public class GridAdpter extends BaseAdapter {
-    private Activity context;
+    private Context context;
     private List<?> mData;
     private int mImageLayoutSize;
 
-    public GridAdpter(Activity context, List<?> data, int layoutSize) {
+    public GridAdpter(Context context, List<?> data, int layoutSize) {
         this.context = context;
         mData = data;
         this.mImageLayoutSize = layoutSize;
@@ -52,11 +50,13 @@ public class GridAdpter extends BaseAdapter {
             imageView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mImageLayoutSize));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             if (mData.get(position) instanceof SponsorDetailResponse.DataBean.EnvironmentImgsBean) {
-                /*Presenter.getInstance(context).getImage(imageView, ((SponsorDetailResponse.DataBean.EnvironmentImgsBean) mData.get(position)).getUrl());*/
-                LoadBitmap.glideLoad(context, imageView, ((SponsorDetailResponse.DataBean.EnvironmentImgsBean) mData.get(position)).getUrl());
+                Presenter.getInstance(context).getImage(imageView, ((SponsorDetailResponse.DataBean.EnvironmentImgsBean) mData.get(position)).getUrl());
             }
         } else {
             imageView = (ImageView) convertView;
+            if (mData.get(position) instanceof SponsorDetailResponse.DataBean.EnvironmentImgsBean) {
+                Presenter.getInstance(context).getImage(imageView, ((SponsorDetailResponse.DataBean.EnvironmentImgsBean) mData.get(position)).getUrl());
+            }
         }
         return imageView;
     }

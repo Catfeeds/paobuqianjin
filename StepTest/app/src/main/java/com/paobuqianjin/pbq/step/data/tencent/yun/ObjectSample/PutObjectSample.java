@@ -10,6 +10,8 @@ import android.util.Log;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultActivity;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
+import com.paobuqianjin.pbq.step.model.FlagPreference;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.tencent.cos.xml.exception.CosXmlClientException;
 import com.tencent.cos.xml.exception.CosXmlServiceException;
@@ -25,6 +27,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.text.ParseException;
 
 
 /**
@@ -49,6 +52,10 @@ public class PutObjectSample {
         if (temp.length > 1) {
             fileName = temp[temp.length - 1];
         }
+        if (fileName.length() >= 5) {
+            fileName = fileName.substring(fileName.length() - 5);
+        }
+        LocalLog.d(TAG, "fileName = " + fileName);
         return fileName;
     }
 
@@ -101,6 +108,13 @@ public class PutObjectSample {
         return path;
     }
 
+    public String getRomoteFileName(Context context) {
+        String index0 = String.valueOf(FlagPreference.getUid(context));
+        String index1 = DateTimeUtil.getCurrentDateString();
+        String index3 = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
+        return index0 + index1 + index3;
+    }
+
     /*压缩上传*/
     public ResultHelper start(String filePath, Context appContext) {
         LocalLog.d(TAG, "带压缩上传");
@@ -109,7 +123,7 @@ public class PutObjectSample {
         //String cosPath = qServiceCfg.getUploadCosPath();
         /*压缩图片并缓存，上传成功或者失败都删除缓存*/
 
-        String cosPath = "/" + getPicNameFromPath(filePath);
+        String cosPath = "/" + getRomoteFileName(appContext) + getPicNameFromPath(filePath);
         String cacheBitmapPath = "";
         try {
             cacheBitmapPath = saveImage(filePath, cosPath, appContext);

@@ -10,8 +10,8 @@
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/suggetion_bar"
-        >
+        android:layout_below="@id/suggetion_bar">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -41,18 +41,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
                     android:background="@null"
-                    android:padding="15dp"
                     android:gravity="top|left"
-                    android:textSize="14sp"
                     android:hint="您的建议与反馈是我们前进的动力，对于提建议的活跃用户，将有可能获得我们的红包奖励。"
-                    android:inputType="textMultiLine" />
+                    android:inputType="textMultiLine"
+                    android:maxLength="200"
+                    android:padding="15dp"
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/content_bound"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/content_edit"
                     android:layout_alignParentRight="true"
+                    android:layout_below="@+id/content_edit"
                     android:padding="8dp"
                     android:text="0/200" />
             </RelativeLayout>
@@ -75,9 +76,9 @@
                 android:background="@color/color_f8"
                 android:gravity="center|left"
                 android:hint="选填，便于我们与你联系"
+                android:inputType="phone"
                 android:paddingLeft="14dp"
                 android:textColorHint="@color/color_cbcacf"
-                android:inputType="phone"
                 android:textSize="14dp" />
 
             <Button
@@ -110,8 +111,8 @@
                     android:layout_alignParentTop="true"
                     android:text="如需要帮助或获取更多信息，请关注或联系："
                     android:textColor="@color/color_8a8a8a"
-                    android:visibility="invisible"
-                    android:textSize="12dp" />
+                    android:textSize="12dp"
+                    android:visibility="invisible" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -119,21 +120,22 @@
                     android:layout_below="@+id/help"
                     android:text="微信公众号 跑步钱进"
                     android:textColor="@color/color_8a8a8a"
-                    android:visibility="invisible"
-                    android:textSize="12dp" />
+                    android:textSize="12dp"
+                    android:visibility="invisible" />
 
 
             </RelativeLayout>
+
             <TextView
                 android:id="@+id/tv_tips_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/suggetion_btn"
                 android:layout_centerHorizontal="true"
-                android:text="爱心联盟 诚邀共建"
-                android:textColor="@color/color_161727"
                 android:layout_marginTop="30dp"
                 android:paddingBottom="8dp"
+                android:text="爱心联盟 诚邀共建"
+                android:textColor="@color/color_161727"
                 android:textSize="18dp" />
 
             <TextView
@@ -142,14 +144,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:text="@string/suggest_content"
                 android:layout_below="@+id/tv_tips_title"
-                android:textColor="@color/color_8a8a8a"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
                 android:paddingBottom="40dp"
-                android:textSize="12dp"
-                 />
+                android:text="@string/suggest_content"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12dp" />
         </RelativeLayout>
     </ScrollView>
 

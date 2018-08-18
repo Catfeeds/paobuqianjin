@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,30 +19,31 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.QueryFollowStateParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.QueryFollowStateResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserCenterResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
+import com.paobuqianjin.pbq.step.data.bean.table.ChatUserInfo;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.AddDeleteFollowInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
-import com.paobuqianjin.pbq.step.presenter.im.UserHomeInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.RongYunChatUtils;
+import com.paobuqianjin.pbq.step.utils.RongYunUserInfoManager;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.UserDynamicRecordAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.rong.imlib.model.Conversation;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -57,8 +59,6 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
     Button bntLike;
     @Bind(R.id.user_name)
     TextView userName;
-    @Bind(R.id.sex_icon)
-    ImageView sexIcon;
     @Bind(R.id.mu_biao)
     TextView muBiao;
     @Bind(R.id.user_simple_info)
@@ -85,17 +85,21 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
     TextView targerNum;
     LinearLayoutManager layoutManager;
     QueryFollowStateParam queryFollowStateParam = new QueryFollowStateParam();
-    @Bind(R.id.vip_flg)
-    ImageView vipFlg;
     @Bind(R.id.scrollView_center)
     BounceScrollView scrollViewCenter;
     RelativeLayout barNull;
+    @Bind(R.id.bnt_chat)
+    Button bntChat;
+    ImageView getVipFlg;
+    @Bind(R.id.user_icon_frm)
+    FrameLayout userIconFrm;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 50;
     private final static int REQUEST_DETAIL = 401;
     UserDynamicRecordAdapter adapter;
     private String userNo = "";
     private int userid = -1;
+    private UserCenterResponse.DataBeanX.UserDataBean userDataBean;
 
     @Override
     protected String title() {
@@ -132,7 +136,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                 LocalLog.d(TAG, "userid =  " + userid);
                 Presenter.getInstance(getContext()).getUserHome(String.valueOf(userid), "", pageIndex, PAGESIZE, userCenterCallBack);
             }
-            if (!TextUtils.isEmpty(userNo) && Integer.parseInt(userNo) != -1) {
+            if (!TextUtils.isEmpty(userNo)) {
                 LocalLog.d(TAG, "userno =  " + userNo);
                 Presenter.getInstance(getContext()).getUserHome("", userNo, pageIndex, PAGESIZE, userCenterCallBack);
             }
@@ -140,14 +144,12 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
         userHeadIco = (CircleImageView) viewRoot.findViewById(R.id.user_head_ico);
         bntLike = (Button) viewRoot.findViewById(R.id.bnt_like);
         userName = (TextView) viewRoot.findViewById(R.id.user_name);
-        sexIcon = (ImageView) viewRoot.findViewById(R.id.sex_icon);
         targerNum = (TextView) viewRoot.findViewById(R.id.targer_num);
         locationCity = (TextView) viewRoot.findViewById(R.id.location_city);
 
         layoutManager = new LinearLayoutManager(getContext());
         dynamicRecordRecycler = (RecyclerView) viewRoot.findViewById(R.id.dynamic_record_recycler);
         dynamicRecordRecycler.setLayoutManager(layoutManager);
-        vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
         scrollViewCenter = (BounceScrollView) viewRoot.findViewById(R.id.scrollView_center);
         barNull = (RelativeLayout) (viewRoot.findViewById(R.id.bar_return_null_bg));
         scrollViewCenter.setScrollListener(new BounceScrollView.ScrollListener() {
@@ -161,7 +163,8 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                 }
             }
         });
-
+        getVipFlg = (ImageView) viewRoot.findViewById(R.id.gvip);
+        userIconFrm = (FrameLayout) viewRoot.findViewById(R.id.user_icon_frm);
     }
 
     @Override
@@ -183,22 +186,16 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
 
             } else if (object instanceof UserCenterResponse) {
                 if (((UserCenterResponse) object).getError() == 0) {
-                    if (!isAdded() || sexIcon == null) {
+                    if (!isAdded()) {
                         return;
                     }
                     //用户信息
-                    if (((UserCenterResponse) object).getData().getUser_data().getSex() == 1) {
-                        sexIcon.setImageResource(R.drawable.man);
-                    } else if (((UserCenterResponse) object).getData().getUser_data().getSex() == 2) {
-                        sexIcon.setImageResource(R.drawable.woman_flag);
-                    }
+                    userDataBean = ((UserCenterResponse) object).getData().getUser_data();
                     userName.setText(((UserCenterResponse) object).getData().getUser_data().getNickname());
                     String stepFormat = getContext().getResources().getString(R.string.user_target);
                     String stepStr = String.format(stepFormat, ((UserCenterResponse) object).getData().getUser_data().getTarget_step());
                     targerNum.setText(stepStr);
-/*                    Presenter.getInstance(getContext()).getPlaceErrorImage(userHeadIco, ((UserCenterResponse) object).getData().getUser_data().getAvatar(),
-                            R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-                    LoadBitmap.glideLoad(getActivity(), userHeadIco, ((UserCenterResponse) object).getData().getUser_data().getAvatar(),
+                    Presenter.getInstance(getContext()).getPlaceErrorImage(userHeadIco, ((UserCenterResponse) object).getData().getUser_data().getAvatar(),
                             R.drawable.default_head_ico, R.drawable.default_head_ico);
                     if (((UserCenterResponse) object).getData().getUser_data().getCity().equals(((UserCenterResponse) object).getData().getUser_data().getProvince())) {
                         locationCity.setText(((UserCenterResponse) object).getData().getUser_data().getCity());
@@ -217,15 +214,24 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
 
                     }
                     if (((UserCenterResponse) object).getData().getUser_data().getVip() == 1
-                            || ((UserCenterResponse) object).getData().getUser_data().getCusvip() == 1) {
-                        if(((UserCenterResponse) object).getData().getUser_data().getCusvip() == 0){
-
-                        }else{
-                            vipFlg.setImageResource(R.drawable.vip_sponsor);
+                            || ((UserCenterResponse) object).getData().getUser_data().getCusvip() == 1
+                            || ((UserCenterResponse) object).getData().getUser_data().getGvip() == 1) {
+                        if (((UserCenterResponse) object).getData().getUser_data().getGvip() == 0) {
+                            if (((UserCenterResponse) object).getData().getUser_data().getCusvip() == 0) {
+                                getVipFlg.setImageResource(R.drawable.vip_flg);
+                            } else {
+                                getVipFlg.setImageResource(R.drawable.vip_sponsor);
+                            }
+                        } else {
+                            getVipFlg.setImageResource(R.drawable.golden_little);
                         }
-                        vipFlg.setVisibility(View.VISIBLE);
-                    }
+                        userIconFrm.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.golden_back));
+                        getVipFlg.setVisibility(View.VISIBLE);
 
+                    } else {
+                        getVipFlg.setVisibility(View.GONE);
+                        userIconFrm.setBackground(null);
+                    }
                     if (TextUtils.isEmpty(userNo) && userid != -1 && Presenter.getInstance(getContext()).getId() != userid) {
                         queryFollowStateParam.setFollowid(((UserCenterResponse) object).getData().getUser_data().getId());
                         if (((UserCenterResponse) object).getData().getIs_follow() == 0) {
@@ -234,6 +240,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                         } else if (((UserCenterResponse) object).getData().getIs_follow() == 1) {
                             LocalLog.d(TAG, "已关注");
                             bntLike.setText("已关注");
+//                            bntChat.setVisibility(View.VISIBLE);
                         }
                         bntLike.setVisibility(View.VISIBLE);
                         bntLike.setOnClickListener(new View.OnClickListener() {
@@ -258,6 +265,15 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                             }
                         });
                     }
+                    try {
+                        RongYunUserInfoManager.getInstance().refreshUserInfoDBAndCache(new ChatUserInfo(userDataBean.getId() + ""
+                                , userDataBean.getNickname()
+                                , userDataBean.getRemark_name()
+                                , userDataBean.getAvatar()));
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
                     //关注状态
                     if (!TextUtils.isEmpty(userNo) && !userNo.equals(Presenter.getInstance(getContext()).getNo())) {
                         queryFollowStateParam.setFollowid(((UserCenterResponse) object).getData().getUser_data().getId());
@@ -267,6 +283,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                         } else if (((UserCenterResponse) object).getData().getIs_follow() == 1) {
                             LocalLog.d(TAG, "已关注");
                             bntLike.setText("已关注");
+//                            bntChat.setVisibility(View.VISIBLE);
                         }
                         bntLike.setVisibility(View.VISIBLE);
                         bntLike.setOnClickListener(new View.OnClickListener() {
@@ -305,7 +322,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                                 }
                                 dynamicRecordRecycler.addItemDecoration(new UserDynamicRecordAdapter.SpaceItemDecoration(45));
                                 if (adapter == null) {
-                                    adapter = new UserDynamicRecordAdapter(getActivity(), map, UserCenterFragment.this);
+                                    adapter = new UserDynamicRecordAdapter(getContext(), map, UserCenterFragment.this);
                                     dynamicRecordRecycler.setAdapter(adapter);
                                 }
                             }
@@ -486,6 +503,7 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
                     bntLike.setText("关注");
                 } else {
                     bntLike.setText("已关注");
+//                    bntChat.setVisibility(View.VISIBLE);
                 }
             } else if (addDeleteFollowResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
@@ -544,4 +562,8 @@ public class UserCenterFragment extends BaseBarStyleTextViewFragment {
         }
     }
 
+    @OnClick(R.id.bnt_chat)
+    public void onClick() {
+        RongYunChatUtils.getInstance().chatTo(getActivity(), Conversation.ConversationType.PRIVATE, userDataBean.getId() + "", userDataBean.getNickname());
+    }
 }

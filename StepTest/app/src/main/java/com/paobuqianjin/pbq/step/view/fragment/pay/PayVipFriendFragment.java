@@ -1,25 +1,23 @@
 package com.paobuqianjin.pbq.step.view.fragment.pay;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +32,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.VipPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CvipNoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SevenAliPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.VipNoResponse;
@@ -41,6 +40,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.YsPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
+import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
@@ -54,7 +54,6 @@ import com.paobuqianjin.pbq.step.view.activity.ForgetPayWordActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentifedSetPassActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
-import com.paobuqianjin.pbq.step.view.activity.PayManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.SelectFriendActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
@@ -156,6 +155,16 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     RelativeLayout yunsPaySpan;
     @Bind(R.id.pay_vip_fg)
     RelativeLayout payVipFg;
+    @Bind(R.id.ali_pay_icon)
+    ImageView aliPayIcon;
+    @Bind(R.id.ali_pay_des)
+    TextView aliPayDes;
+    @Bind(R.id.ali_pay_select)
+    ImageView aliPaySelect;
+    @Bind(R.id.ali_ico_span)
+    RelativeLayout aliIcoSpan;
+    @Bind(R.id.ali_pay_span)
+    RelativeLayout aliPaySpan;
     private WalletPassDialog walletPassDialog;
     private final static String ACTION_VIP_SELF = "com.paobuqianjin.pbq.setp.VIP_SELF_ACTION";
     private final static String ACTION_VIP_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_ACTION";
@@ -166,8 +175,8 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     ArrayList<UserFriendResponse.DataBeanX.DataBean> dataBeans = null;
     private LinearLayoutManager layoutManager;
     private String friends;
-    private boolean[] selectPay = new boolean[3];
-    private ImageView[] selectIcon = new ImageView[3];
+    private boolean[] selectPay = new boolean[4];
+    private ImageView[] selectIcon = new ImageView[4];
     private IWXAPI msgApi;
     private PayStyles payStyles = PayStyles.WxPay;
     private float payFloat = 0;
@@ -182,9 +191,12 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     private final static String ACTION_VIP = "com.paobuqianjin.pbq.step.ACTION_VIP";
     private final static String ACTION_SPONSOR_VIP = "com.paobuqianjin.pbq.step.ACTION_SPONSOR_VIP";
     String action = "";
-    private NormalDialog normalDialog, walletLeakDialog, passWordSetDialog;
+    private NormalDialog normalDialog, walletLeakDialog, passWordSetDialog, identifyDialog;
     public UserInfoResponse.DataBean userInfo;
     private String serverMode = "00";
+    WebView webview;
+    private boolean isSenPayAli = false;
+    private float balanceWallet = 0.0f;
 
     public enum PayStyles {
         WxPay,//微信支付
@@ -229,6 +241,11 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+
+    public void payRetry() {
+        Presenter.getInstance(getContext()).attachUiInterface(this);
     }
 
     @Override
@@ -277,9 +294,11 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
         wechatPaySelect = (ImageView) viewRoot.findViewById(R.id.wechat_pay_select);
         walletPaySelect = (ImageView) viewRoot.findViewById(R.id.wallet_pay_select);
         yunsPaySelect = (ImageView) viewRoot.findViewById(R.id.yuns_pay_select);
+        aliPaySelect = (ImageView) viewRoot.findViewById(R.id.ali_pay_select);
         selectIcon[0] = wechatPaySelect;
         selectIcon[1] = walletPaySelect;
         selectIcon[2] = yunsPaySelect;
+        selectIcon[3] = aliPaySelect;
         payMoneyNum = (TextView) viewRoot.findViewById(R.id.pay_money_num);
         Intent intent = getActivity().getIntent();
         if (intent != null) {
@@ -288,7 +307,8 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 setVisibleFriendSelectGone();
                 payFloat = VIP_FLOAT;
                 userids = String.valueOf(Presenter.getInstance(getContext()).getId());
-                payMoneyNum.setText("￥" + String.valueOf(payFloat));
+                String moneyFormat = String.format(getString(R.string.month_income), payFloat);
+                payMoneyNum.setText(moneyFormat);
                 action = ACTION_VIP_SELF;
             } else if (ACTION_VIP_FRIEND.equals(intent.getAction())) {
                 LocalLog.d(TAG, "替充个人VIP");
@@ -301,7 +321,8 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 setVisibleFriendSelectGone();
                 payFloat = VIP_SPONSOR_FLOAT;
                 userids = String.valueOf(Presenter.getInstance(getContext()).getId());
-                payMoneyNum.setText("￥" + String.valueOf(payFloat));
+                String moneyFormat = String.format(getString(R.string.month_income), payFloat);
+                payMoneyNum.setText(moneyFormat);
                 action = ACTION_VIP_SPONSOR_SELF;
             } else {
 
@@ -313,7 +334,31 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
             selectPay[0] = true;
         }
         UpdateUnSelect(0);
-        userInfo = Presenter.getInstance(getContext()).getCurrentUser();
+        getWalletBalance();
+    }
+
+    private void getWalletBalance() {
+        Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlUser + FlagPreference.getUid(getContext()), null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    JSONObject jsonObj = new JSONObject(s);
+                    jsonObj = jsonObj.getJSONObject("data");
+                    String balance = jsonObj.getString("balance");
+                    bankDes.setText("钱包（余额" + balance + ")");
+                    balanceWallet = Float.parseFloat(balance);
+                } catch (Exception j) {
+                    j.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean == null) {
+                    PaoToastUtils.showLongToast(getContext(), getString(R.string.error_red));
+                }
+            }
+        });
     }
 
     private InnerCallBack innerCallBack = new InnerCallBack() {
@@ -337,10 +382,6 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
 
                     } else if (style == 1) {
                         LocalLog.d(TAG, "钱包支付");
-                        if (!canUseWallet(payFloat)) {
-                            LocalLog.d(TAG, "余额不足");
-                            return;
-                        }
                         PayOrderParam wxPayOrderParam = new PayOrderParam();
                         wxPayOrderParam
                                 .setPayment_type("wallet")
@@ -351,6 +392,9 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                     } else if (style == 2) {
                         LocalLog.d(TAG, "云闪付");
                         payYunSanRequest("vip", ((VipNoResponse) object).getData().getVip_no());
+                    } else if (style == 3) {
+                        LocalLog.d(TAG, "七分钱支付宝");
+                        sevenPayAli("vip", ((VipNoResponse) object).getData().getVip_no());
                     } else {
                         Toast.makeText(getContext(), "其他支付方式暂时未开通,请选择微信", Toast.LENGTH_SHORT).show();
                     }
@@ -370,10 +414,6 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
 
                     } else if (style == 1) {
                         LocalLog.d(TAG, "钱包支付");
-                        if (!canUseWallet(payFloat)) {
-                            LocalLog.d(TAG, "余额不足");
-                            return;
-                        }
                         PayOrderParam wxPayOrderParam = new PayOrderParam();
                         wxPayOrderParam
                                 .setPayment_type("wallet")
@@ -384,6 +424,9 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                     } else if (style == 2) {
                         LocalLog.d(TAG, "云闪付");
                         payYunSanRequest("cvip", ((CvipNoResponse) object).getData().getCvip_no());
+                    } else if (style == 3) {
+                        LocalLog.d(TAG, "七分钱支付宝");
+                        sevenPayAli("cvip", ((CvipNoResponse) object).getData().getCvip_no());
                     } else {
                         Toast.makeText(getContext(), "其他支付方式暂时未开通,请选择微信", Toast.LENGTH_SHORT).show();
                     }
@@ -392,15 +435,79 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
         }
     };
 
-    private void payYunSanRequest(String orderType, String cOvip) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            String[] permissions = {
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            };
-            requestPermission(orderType, cOvip, permissions);
+    @Override
+    public void onResume() {
+        super.onResume();
+        LocalLog.d(TAG, "onResume() action =" + action);
+        if (isSenPayAli) {
+            LocalLog.d(TAG, "支付完成，查询结果");
+            querySevenPayOrder();
+            isSenPayAli = false;
         }
+    }
+
+
+    private void querySevenPayOrder() {
+        Map<String, String> params = new HashMap<>();
+        String outTradeNo = Presenter.getInstance(getContext()).getOutTradeNo();
+        params.put("order_no", outTradeNo);
+        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlSevenPayResultOrderNo, params, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    JSONObject jsonObj = new JSONObject(s);
+                    jsonObj = jsonObj.getJSONObject("data");
+                    String payResult = jsonObj.getString("total_fee");
+                    LocalLog.d(TAG, "payResult = " + payResult);
+                    if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                        Presenter.getInstance(getContext()).setTradeStyle("vip");
+                    } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_SELF.equals(action)) {
+                        Presenter.getInstance(getContext()).setTradeStyle("cvip");
+                    } else {
+                        LocalLog.d(TAG, "Unknown op");
+                    }
+                    ((PaoBuPayActivity) getActivity()).showPaySuccessSeven(payResult);
+                } catch (JSONException j) {
+                    j.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                LocalLog.d(TAG, "查单失败！");
+                if (errorBean != null && !"交易不成功".equals(errorBean.getMessage())) {
+                    ((PaoBuPayActivity) getActivity()).showPaySuccessSeven(null);
+                }
+            }
+        });
+    }
+
+    private void sevenPayAli(String vipType, String vipTypeNo) {
+        PayOrderParam wxPayOrderParam = new PayOrderParam();
+        if ("vip".equals(vipType)) {
+            wxPayOrderParam
+                    .setPayment_type("sevenpay")
+                    .setOrder_type("vip")
+                    .setVip_no(vipTypeNo)
+                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(payFloat);
+            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+        } else if ("cvip".equals(vipType)) {
+            wxPayOrderParam
+                    .setPayment_type("sevenpay")
+                    .setOrder_type("cvip")
+                    .setCvip_no(vipTypeNo)
+                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(payFloat);
+            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+        }
+    }
+
+    private void payYunSanRequest(String orderType, String cOvip) {
+        String[] permissions = {
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+        requestPermission(orderType, cOvip, permissions);
     }
 
     private void requestPermission(final String orderType, final String cOvipNo, String... permissions) {
@@ -456,7 +563,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
 
     private boolean canUseWallet(float payFloat) {
         boolean walletAble = true;
-        if (userInfo != null && Float.parseFloat(userInfo.getBalance()) < payFloat) {
+        if (balanceWallet < payFloat) {
             LocalLog.d(TAG, "余额不足");
             if (walletLeakDialog == null) {
                 walletLeakDialog = new NormalDialog(getActivity());
@@ -563,7 +670,8 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                     BigDecimal bd = new BigDecimal((double) payFloat);
                     bd = bd.setScale(2, 4);
                     payFloat = bd.floatValue();
-                    payMoneyNum.setText("￥" + String.valueOf(payFloat));
+                    String moneyFormat = String.format(getString(R.string.month_income), payFloat);
+                    payMoneyNum.setText(moneyFormat);
                     this.friends = friends;
                     userids = friends;
                     LocalLog.d(TAG, friends);
@@ -572,7 +680,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
         }
     }
 
-    @OnClick({R.id.add_task_friend, R.id.choice_ico_span, R.id.bank_ico_span, R.id.bank_pay_span, R.id.yuns_ico_span, R.id.confirm_pay})
+    @OnClick({R.id.add_task_friend, R.id.choice_ico_span, R.id.bank_ico_span, R.id.bank_pay_span, R.id.yuns_ico_span, R.id.confirm_pay, R.id.ali_ico_span})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.add_task_friend:
@@ -641,6 +749,32 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 }
                 break;
             case R.id.confirm_pay:
+                LocalLog.d(TAG, "确认支付");
+                if (payFloat < 0) {
+                    PaoToastUtils.showLongToast(getActivity(), "金额不能为空");
+                    return;
+                }
+                if (getSelect() == -1 || getSelect() == 0) {
+                    PaoToastUtils.showLongToast(getActivity(), "请选择支付方式");
+                    return;
+                }
+                if (getSelect() == 1) {
+                    if (!canUseWallet(payFloat)) {
+                        LocalLog.d(TAG, "余额不足");
+                        return;
+                    }
+                }
+                confirmPay.setBackground(getDrawableResource(R.color.color_b8bbbd));
+                confirmPay.setEnabled(false);
+                confirmPay.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isAdded() && confirmPay != null) {
+                            confirmPay.setBackground(getDrawableResource(R.drawable.rect_no_corner));
+                            confirmPay.setEnabled(true);
+                        }
+                    }
+                }, 15000);
                 Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
                     @Override
                     public void onIdentifed() {
@@ -708,13 +842,22 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                             } else {
                                 LocalLog.d(TAG, "Unknown op");
                             }
+                        } else if (style == 3) {
+                            LocalLog.d(TAG, "七分钱支付");
+                            if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                                pay();
+                            } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
+                                paySponsorVip();
+                            } else {
+                                LocalLog.d(TAG, "Unknown op");
+                            }
                         }
                     }
 
                     @Override
                     public void onUnidentify() {
-                        Intent intent = new Intent(getActivity(), IdentityAuth1Activity.class);
-                        startActivityForResult(intent, 1);
+                        LocalLog.d(TAG, "onUnidentify()");
+                        identifyDialog();
                     }
 
                     @Override
@@ -724,7 +867,46 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 });
 
                 break;
+            case R.id.ali_ico_span:
+                if (selectPay[3]) {
+                    LocalLog.d(TAG, "取消支付宝支付");
+                    selectPay[3] = false;
+                    selectIcon[3].setImageDrawable(null);
+                } else {
+                    LocalLog.d(TAG, "选择微信,设置其他为未选中状态");
+                    UpdateUnSelect(3);
+                    selectIcon[3].setImageDrawable(getDrawableResource(R.drawable.selected_icon));
+                    selectPay[3] = true;
+                }
+                break;
         }
+    }
+
+    private void identifyDialog() {
+        if (identifyDialog == null) {
+            identifyDialog = new NormalDialog(getActivity());
+            identifyDialog.setMessage(getString(R.string.identify_tips));
+            identifyDialog.setYesOnclickListener("去认证", new NormalDialog.onYesOnclickListener() {
+                @Override
+                public void onYesClick() {
+                    identifyDialog.dismiss();
+                    Intent intent = new Intent(getActivity(), IdentityAuth1Activity.class);
+                    startActivityForResult(intent, 1);
+                }
+            });
+            identifyDialog.setNoOnclickListener("取消支付", new NormalDialog.onNoOnclickListener() {
+                @Override
+                public void onNoClick() {
+                    identifyDialog.dismiss();
+                    confirmPay.setBackground(getDrawableResource(R.drawable.rect_no_corner));
+                    confirmPay.setEnabled(true);
+                }
+            });
+        }
+
+        if (!identifyDialog.isShowing())
+            identifyDialog.show();
+
     }
 
     private void popPayConfirm() {
@@ -886,6 +1068,85 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
 
             }
         }
+    }
+
+
+    @Override
+    public void response(SevenAliPayResponse sevenAliPayResponse) {
+        if (sevenAliPayResponse.getError() == 0 && isAdded()) {
+            if (sevenAliPayResponse.getData().getPayUrl() != null) {
+                Presenter.getInstance(getContext()).setOutTradeNo(sevenAliPayResponse.getData().getMchOrderId());
+                if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                    Presenter.getInstance(getContext()).setTradeStyle("vip");
+                } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_SELF.equals(action)) {
+                    Presenter.getInstance(getContext()).setTradeStyle("cvip");
+                } else {
+                    LocalLog.d(TAG, "Unknown op");
+                }
+                if (webview == null) {
+                    webview = new WebView(getActivity());
+                    WebSettings webSettings = webview.getSettings();
+                    webSettings.setJavaScriptEnabled(true);
+                    // 设置可以访问文件
+                    webSettings.setAllowFileAccess(true);
+                    // 设置支持缩放
+                    webSettings.setBuiltInZoomControls(true);
+                    webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+                    // webSettings.setDatabaseEnabled(true);
+                    // 使用localStorage则必须打开
+                    webSettings.setDomStorageEnabled(true);
+                    webSettings.setGeolocationEnabled(true);
+                }
+                LocalLog.d(TAG, "PAYURL =" + sevenAliPayResponse.getData().getPayUrl());
+                if (checkAlipayInstalled(getContext())) {
+                    LocalLog.d(TAG, "有支付宝客户端");
+                    webview.setWebViewClient(new WebViewClient() {
+                        @Override
+                        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                            LocalLog.d(TAG, "url = " + url);
+                            if (url.contains("platformapi/startapp")) {
+                                try {
+                                    Intent intent;
+                                    intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                                    intent.addCategory("android.intent.category.BROWSABLE");
+                                    intent.setComponent(null);
+                                    startActivity(intent);
+                                    isSenPayAli = true;
+                                } catch (Exception e) {
+
+                                }
+                            } else if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
+                                    && (url.contains("platformapi") && url.contains("startapp"))) {
+                                try {
+                                    Intent intent;
+                                    intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                                    intent.addCategory("android.intent.category.BROWSABLE");
+                                    intent.setComponent(null);
+                                    startActivity(intent);
+                                    isSenPayAli = true;
+                                } catch (Exception e) {
+
+                                }
+                            } else {
+                                view.loadUrl(url);
+                                isSenPayAli = true;
+                            }
+                            return true;
+                        }
+                    });
+                } else {
+                    LocalLog.d(TAG, "无支付宝客户端");
+                }
+                webview.loadUrl(sevenAliPayResponse.getData().getPayUrl());
+            }
+        }
+    }
+
+    private static boolean checkAlipayInstalled(Context context) {
+        Uri uri = Uri.parse("alipays://platformapi/startApp");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+        return componentName != null;
     }
 
     @Override

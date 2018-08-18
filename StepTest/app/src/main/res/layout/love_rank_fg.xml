@@ -24,4 +24,13 @@
                 android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/owner_circle_bar"
+        android:gravity="center"
+        android:text="今天无领取记录" />
 </RelativeLayout>

@@ -11,6 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:gravity="left"
-        android:text="这是一条回复"
+        android:lineSpacingExtra="5dp"
+        android:singleLine="false"
+        android:text=""
+        android:textColor="@color/color_161727"
         android:textSize="14dp" />
 </LinearLayout>

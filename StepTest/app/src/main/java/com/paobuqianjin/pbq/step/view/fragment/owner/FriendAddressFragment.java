@@ -6,27 +6,30 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.StringRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.telephony.PhoneNumberUtils;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.PostAddressBookParam;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
+import com.paobuqianjin.pbq.step.data.bean.gson.param.AddressPerson;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendAddResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteMessageResponse;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.presenter.im.FriendAddressInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.LocalContactAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
@@ -37,7 +40,6 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,12 +47,12 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/1/18.
  */
-
-public class FriendAddressFragment extends BaseBarStyleTextViewFragment implements FriendAddressInterface {
+public class FriendAddressFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = FriendAddressFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -60,35 +62,25 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
-    @Bind(R.id.add_friend)
-    TextView addFriend;
-    @Bind(R.id.add_friend_layer)
-    RelativeLayout addFriendLayer;
-    @Bind(R.id.add_friend_line_a)
-    ImageView addFriendLineA;
-    @Bind(R.id.reg_app_recycler)
-    RecyclerView regAppRecycler;
-    @Bind(R.id.add_friend_line_b)
-    ImageView addFriendLineB;
+    @Bind(R.id.search_icon)
+    RelativeLayout searchIcon;
+    @Bind(R.id.search_circle_text)
+    EditText searchCircleText;
+    @Bind(R.id.cancel_icon)
+    RelativeLayout cancelIcon;
+    @Bind(R.id.cancel_text)
+    TextView cancelText;
     @Bind(R.id.un_reg_app_recycler)
     RecyclerView unRegAppRecycler;
     @Bind(R.id.friend_scroll)
     BounceScrollView friendScroll;
-
     private ContentResolver cr;
     private List<Map<String, String>> mp = new ArrayList<>();
-    private LinearLayoutManager layoutManager, regLayoutManager;
+    private LinearLayoutManager layoutManager;
     private Rationale mRationale;
     private PermissionSetting mSetting;
-    //单次最多上传500个联系人
-    private final static int UPLOAD_SIZE = 200;
-    private int currentIndex = 0;
-    private List<PostAddressBookParam.AddressPerson> list;
-    private LocalContactAdapter inContactAdapter;
-    private LocalContactAdapter ouContactAdapter;
-    private ArrayList<?> inContact = new ArrayList<>();
-    private ArrayList<?> ouContract = new ArrayList<>();
-    private boolean isLoading = false;
+    private List<AddressPerson> listShow;
+    private LocalContactAdapter allContactAdapter;
 
     @Override
     protected int getLayoutResId() {
@@ -103,7 +95,6 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Presenter.getInstance(getContext()).attachUiInterface(this);
     }
 
     @Override
@@ -116,40 +107,62 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
-
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getContext());
         layoutManager = new LinearLayoutManager(getContext());
-        regLayoutManager = new LinearLayoutManager(getContext());
         unRegAppRecycler = (RecyclerView) viewRoot.findViewById(R.id.un_reg_app_recycler);
         unRegAppRecycler.setLayoutManager(layoutManager);
-        regAppRecycler = (RecyclerView) viewRoot.findViewById(R.id.reg_app_recycler);
-        regAppRecycler.setLayoutManager(regLayoutManager);
-        regAppRecycler.setHasFixedSize(true);
-        regAppRecycler.setNestedScrollingEnabled(false);
         unRegAppRecycler.setHasFixedSize(true);
         unRegAppRecycler.setNestedScrollingEnabled(false);
         requestPermission(Permission.Group.CONTACTS);
-        friendScroll = (BounceScrollView) viewRoot.findViewById(R.id.friend_scroll);
-        friendScroll.setTopBottomListener(new BounceScrollView.TopBottomListener() {
+        searchCircleText = (EditText) viewRoot.findViewById(R.id.search_circle_text);
+        searchCircleText.setHint("搜索联系人电话、姓名");
+        searchCircleText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void topBottom(int topOrBottom) {
-                if (topOrBottom == 0) {
-
-                } else if (topOrBottom == 1) {
-                    if (currentIndex < list.size()) {
-                        if (!isLoading) {
-                            postAddressBook();
-                            LocalLog.d(TAG, "加载更多.......");
-                        }
-                    } else {
-                        list.clear();
-                        System.gc();
-                    }
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    Utils.hideInput(getActivity());
+                    String keyWord = searchCircleText.getText().toString().trim();
+                    if (!TextUtils.isEmpty(keyWord))
+                        searchKeyWord(keyWord);
                 }
+                return false;
             }
         });
+
+    }
+
+    private String phoneKeyWord(String keyWord) {
+        if (keyWord.length() <= 3) {
+            return keyWord;
+        }
+        StringBuilder sb = new StringBuilder(keyWord);
+        if (3 < sb.length() && sb.length() <= 7) {
+            return sb.insert(3, " ").toString();
+        }
+        if (7 < keyWord.length() && keyWord.length() <= 11) {
+            return sb.insert(7, " ").insert(3, " ").toString();
+        }
+        sb = new StringBuilder(keyWord.substring(0, 10));
+        return sb.insert(7, " ").insert(3, " ").toString();
+    }
+
+    private void searchKeyWord(String keyWord) {
+        List<Map<String, String>> searchMap = null;
+        if (PhoneNumberUtils.isGlobalPhoneNumber(keyWord)) {
+            String search = phoneKeyWord(keyWord);
+            LocalLog.d(TAG, "手机号码搜索" + search);
+            searchMap = searchContacts(ContactsContract.CommonDataKinds.Phone.NUMBER + " like " + "'%" + search + "%'", null, null);
+        } else {
+            LocalLog.d(TAG, "名字搜索");
+            searchMap = searchContacts(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " like " + "'%" + keyWord + "%'", null, null);
+        }
+
+        if (searchMap != null && searchMap.size() > 0) {
+            updateSearchBook(searchMap);
+        } else {
+            PaoToastUtils.showLongToast(getContext(), "没有相关联系人");
+        }
     }
 
     /*权限适配*/
@@ -160,7 +173,7 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
                 .onGranted(new Action() {
                     @Override
                     public void onAction(List<String> permissions) {
-                        List<Map<String, String>> maps = getContacts();
+                        List<Map<String, String>> maps = getContacts(null, null, null);
                         updateAddressBook(maps);
                     }
                 }).onDenied(new Action() {
@@ -174,13 +187,13 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
     }
 
     private void updateAddressBook(List<Map<String, String>> maps) {
-        list = new ArrayList<>();
-        if (maps != null) {
+        if (maps != null && maps.size() > 0) {
             int size = maps.size();
             LocalLog.d(TAG, "size = " + size);
+            listShow = new ArrayList<>();
             for (int i = 0; i < size; i++) {
                 Map<String, String> stringMap = maps.get(i);
-                PostAddressBookParam.AddressPerson addressPerson = new PostAddressBookParam.AddressPerson();
+                AddressPerson addressPerson = new AddressPerson();
                 for (String key : stringMap.keySet()) {
                     if (key.equals("name")) {
                         addressPerson.setName(stringMap.get(key));
@@ -189,52 +202,68 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
                     }
 
                 }
-                list.add(addressPerson);
+                listShow.add(addressPerson);
             }
-            postAddressBook();
-            if (mp != null) {
-                mp.clear();
+
+            allContactAdapter = new LocalContactAdapter(getActivity(), listShow);
+            unRegAppRecycler.setAdapter(allContactAdapter);
+            if (maps != null) {
+                maps.clear();
                 //
-                mp = null;
+                maps = null;
                 System.gc();
             }
         }
     }
 
-    private void postAddressBook() {
-        isLoading = true;
-        Type type = new TypeToken<List<PostAddressBookParam.AddressPerson>>() {
-        }.getType();
-        List<PostAddressBookParam.AddressPerson> upLoadList = null;
-        if (currentIndex + UPLOAD_SIZE > list.size()) {
-            upLoadList = list.subList(currentIndex, list.size() - 1);
-            currentIndex = list.size();
-        } else {
-            upLoadList = list.subList(currentIndex, currentIndex + UPLOAD_SIZE);
-            currentIndex += UPLOAD_SIZE;
-        }
-        if (upLoadList != null) {
-            String json = new Gson().toJson(upLoadList, type);
-            LocalLog.d(TAG, "json = " + json + ",size = " + upLoadList.toString());
-            Presenter.getInstance(getContext()).postAddressBook(json);
+    private void updateSearchBook(List<Map<String, String>> maps) {
+        if (maps != null && maps.size() > 0) {
+            int size = maps.size();
+            LocalLog.d(TAG, "size = " + size);
+            List<AddressPerson> listSearch = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                Map<String, String> stringMap = maps.get(i);
+                AddressPerson addressPerson = new AddressPerson();
+                for (String key : stringMap.keySet()) {
+                    if (key.equals("name")) {
+                        addressPerson.setName(stringMap.get(key));
+                    } else if (key.equals("phone")) {
+                        addressPerson.setPhone(stringMap.get(key));
+                    }
+
+                }
+                listSearch.add(addressPerson);
+            }
+            allContactAdapter = new LocalContactAdapter(getActivity(), listSearch);
+            unRegAppRecycler.setAdapter(allContactAdapter);
+            if (maps != null) {
+                maps.clear();
+                //
+                maps = null;
+                System.gc();
+            }
         }
     }
 
-    public List<Map<String, String>> getContacts() {
+
+    private List<Map<String, String>> searchContacts(String selection, String[] selectionArgs, String sortOrder) {
         Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
         String[] projection = {
                 ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
                 ContactsContract.CommonDataKinds.Phone.NUMBER,
         };
         cr = getContext().getContentResolver();
-        Cursor cs = cr.query(uri, projection, null, null, null);
-        if (cs == null) {
+        Cursor cus = cr.query(uri, projection, selection, selectionArgs, sortOrder);
+        if (cus == null) {
             return null;
         }
-        while (cs.moveToNext()) {
-
-            String name = cs.getString(0);
-            String number = cs.getString(1);
+        List<Map<String, String>> mpSearch = null;
+        while (cus.moveToNext()) {
+            if (mpSearch == null) {
+                mpSearch = new ArrayList<>();
+            }
+            String name = cus.getString(0);
+            String number = cus.getString(1);
 
 
             number = number.replace(" ", "");
@@ -245,10 +274,39 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
             Map<String, String> maps = new HashMap<>();
             maps.put("name", name);
             maps.put("phone", number);
+            mpSearch.add(maps);
+        }
+        cus.close();
+        return mpSearch;
+    }
+
+    public List<Map<String, String>> getContacts(String selection, String[] selectionArgs, String sortOrder) {
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        String[] projection = {
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.NUMBER,
+        };
+        cr = getContext().getContentResolver();
+        Cursor cus = cr.query(uri, projection, selection, selectionArgs, sortOrder);
+        if (cus == null) {
+            return null;
+        }
+        while (cus.moveToNext()) {
+
+            String name = cus.getString(0);
+            String number = cus.getString(1);
+
+            number = number.replace(" ", "");
+            if (!PhoneNumberUtils.isGlobalPhoneNumber(number)) {
+                LocalLog.d(TAG, "非手机号码不处理");
+                continue;
+            }
+            Map<String, String> maps = new HashMap<>();
+            maps.put("name", name);
+            maps.put("phone", number);
             mp.add(maps);
         }
-        cs.close();
-
+        cus.close();
         return mp;
     }
 
@@ -256,70 +314,19 @@ public class FriendAddressFragment extends BaseBarStyleTextViewFragment implemen
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
-    @Override
-    public void response(FriendAddResponse friendAddResponse) {
-        LocalLog.d(TAG, "FriendAddResponse() enter ");
-        if (!isAdded()) {
-            return;
-        }
-        if (friendAddResponse.getError() == 0) {
-            if (inContactAdapter == null) {
-                inContact.clear();
-                inContact.addAll((ArrayList) friendAddResponse.getData().getIn_system());
-                inContactAdapter = new LocalContactAdapter(getContext(), inContact);
-            } else {
-                inContact.addAll((ArrayList) friendAddResponse.getData().getIn_system());
-                inContactAdapter.notifyItemRangeInserted(inContact.size() - friendAddResponse.getData().getIn_system().size()
-                        , friendAddResponse.getData().getIn_system().size());
-            }
-            regAppRecycler.setAdapter(inContactAdapter);
-
-            if (ouContactAdapter == null) {
-                ouContract.clear();
-                ouContract.addAll((ArrayList) friendAddResponse.getData().getOut_system());
-                ouContactAdapter = new LocalContactAdapter(getContext(), ouContract);
-            } else {
-                ouContract.addAll((ArrayList) friendAddResponse.getData().getOut_system());
-                ouContactAdapter.notifyItemRangeInserted(ouContract.size() - friendAddResponse.getData().getOut_system().size()
-                        , friendAddResponse.getData().getOut_system().size());
-            }
-            unRegAppRecycler.setAdapter(ouContactAdapter);
-        } else if (friendAddResponse.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
-        } else {
-            Toast.makeText(getContext(), friendAddResponse.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-        isLoading = false;
-
-    }
-
-    @Override
-    public void response(InviteMessageResponse inviteMessageResponse) {
-        if (!isAdded()) {
-            return;
-        }
-        if (inviteMessageResponse.getError() == 0) {
-
-        } else if (inviteMessageResponse.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
-        } else {
-            Toast.makeText(getContext(), inviteMessageResponse.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void response(ErrorCode errorCode) {
-        if (!isAdded()) {
-            return;
-        }
-        if (errorCode.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
+    @OnClick({R.id.cancel_text})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.cancel_text:
+                searchCircleText.setHint("搜索联系人电话、姓名");
+                searchCircleText.setText(null);
+                if (listShow != null && listShow.size() > 0) {
+                    allContactAdapter = new LocalContactAdapter(getActivity(), listShow);
+                    unRegAppRecycler.setAdapter(allContactAdapter);
+                }
+                break;
         }
     }
 }

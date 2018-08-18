@@ -2,21 +2,28 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.FriendAddressActivity;
+import com.paobuqianjin.pbq.step.view.activity.SearchResultActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/1/18.
@@ -32,24 +39,20 @@ public class AddFriendFragment extends BaseBarStyleTextViewFragment {
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
+    @Bind(R.id.search_icon)
+    RelativeLayout searchIcon;
+    @Bind(R.id.search_circle_text)
+    EditText searchCircleText;
+    @Bind(R.id.cancel_icon)
+    RelativeLayout cancelIcon;
+    @Bind(R.id.cancel_text)
+    TextView cancelText;
     @Bind(R.id.address_mail)
     ImageView addressMail;
     @Bind(R.id.phone_address)
     TextView phoneAddress;
     @Bind(R.id.mail_address_layer)
     RelativeLayout mailAddressLayer;
-    @Bind(R.id.address_weichat)
-    ImageView addressWeichat;
-    @Bind(R.id.weichat_address)
-    TextView weichatAddress;
-    @Bind(R.id.address_weichat_layer)
-    RelativeLayout addressWeichatLayer;
-    @Bind(R.id.address_qq)
-    ImageView addressQq;
-    @Bind(R.id.qq_address)
-    TextView qqAddress;
-    @Bind(R.id.qq_address_layer)
-    RelativeLayout qqAddressLayer;
 
     @Override
     protected String title() {
@@ -71,12 +74,27 @@ public class AddFriendFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         mailAddressLayer = (RelativeLayout) viewRoot.findViewById(R.id.mail_address_layer);
-        addressWeichatLayer = (RelativeLayout) viewRoot.findViewById(R.id.address_weichat_layer);
-        qqAddressLayer = (RelativeLayout) viewRoot.findViewById(R.id.qq_address_layer);
         mailAddressLayer.setOnClickListener(onClickListener);
-
+        searchCircleText = (EditText) viewRoot.findViewById(R.id.search_circle_text);
+        searchCircleText.setHint("搜索手机号、跑步钱进号");
+        cancelText = (TextView) viewRoot.findViewById(R.id.cancel_text);
+        cancelText.setOnClickListener(onClickListener);
+        searchCircleText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    Utils.hideInput(getContext());
+                    String keyWord = searchCircleText.getText().toString().trim();
+                    if (!TextUtils.isEmpty(keyWord)) {
+                        Intent intent = new Intent(getContext(), SearchResultActivity.class);
+                        intent.putExtra("keyword", keyWord);
+                        startActivity(intent);
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -95,9 +113,11 @@ public class AddFriendFragment extends BaseBarStyleTextViewFragment {
                     friendAddressIntent.setClass(getContext(), FriendAddressActivity.class);
                     startActivity(friendAddressIntent);
                     break;
-                case R.id.address_weichat_layer:
+                case R.id.cancel_text:
+                    LocalLog.d(TAG, "取消搜索");
+                    searchCircleText.setText(null);
                     break;
-                case R.id.qq_address_layer:
+                default:
                     break;
             }
         }

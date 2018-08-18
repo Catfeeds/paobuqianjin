@@ -88,6 +88,8 @@ public class PassSetSecondFragment extends BaseBarStyleTextViewFragment {
             @Override
             public void onClick(View v) {
                 LocalLog.d(TAG, "设置密码!");
+                confirmButton.setBackground(getDrawableResource(R.drawable.rect_angle_diss_bt));
+                confirmButton.setEnabled(false);
                 if (pswNew.equals(pswOlder)) {
                     if (ACTION_FIRST_CARD.equals(action)) {
                         //第一次认证绑卡设置密码

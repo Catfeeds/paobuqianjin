@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.DisplayMetrics;
 
+import com.paobuqianjin.pbq.step.utils.LocalLog;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -36,6 +38,7 @@ public class LQREmotionKit {
     public static void init(Context context, String stickerPath) {
         getAndSaveParameter(context);
         STICKER_PATH = stickerPath;
+        LocalLog.d("LQREmotionKit", STICKER_PATH);
 
         //将asset/sticker目录下默认的贴图复制到STICKER_PATH下
         copyStickerToStickerPath(STICKER_NAME_IN_ASSETS);

@@ -11,6 +11,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.view.wheelpicker.WheelPicker;
 
 import java.util.Arrays;
@@ -37,6 +38,18 @@ public class ChooseTargetWheel implements View.OnClickListener {
     public ChooseTargetWheel(Activity context) {
         this.context = context;
         init();
+    }
+
+    public void setDistances(String[] strings) {
+        if (strings != null && strings.length > 0) {
+            distances = strings;
+            contents = new String[strings.length];
+            for (int j = 0; j < strings.length; j++) {
+                LocalLog.d("ChooseTargetWheel","strings[j] = "  + strings[j]);
+                contents[j] = String.valueOf(Integer.parseInt(strings[j]) / 1000) + "km";
+            }
+            targetWheel.setData(Arrays.asList(contents));
+        }
     }
 
     private void init() {

@@ -131,10 +131,11 @@ public class UserCenterResponse {
              * vip : 1
              * target_step : 5000
              * cusvip: 0
+             * gvip: 1,
              */
 
             private int id;
-            private int no;
+            private String no;
             private String wx_unionid;
             private String qq_unionid;
             private String wx_openid;
@@ -143,6 +144,7 @@ public class UserCenterResponse {
             private String mobile;
             private String avatar;
             private String nickname;
+            private String remark_name;
             private int levelid;
             private int sex;
             private int birthyear;
@@ -163,6 +165,16 @@ public class UserCenterResponse {
             private int vip;
             private int target_step;
 
+            public int getGvip() {
+                return gvip;
+            }
+
+            public void setGvip(int gvip) {
+                this.gvip = gvip;
+            }
+
+            private int gvip;
+
             public int getCusvip() {
                 return cusvip;
             }
@@ -181,11 +193,11 @@ public class UserCenterResponse {
                 this.id = id;
             }
 
-            public int getNo() {
+            public String getNo() {
                 return no;
             }
 
-            public void setNo(int no) {
+            public void setNo(String no) {
                 this.no = no;
             }
 
@@ -251,6 +263,10 @@ public class UserCenterResponse {
 
             public void setNickname(String nickname) {
                 this.nickname = nickname;
+            }
+
+            public String getRemark_name() {
+                return remark_name;
             }
 
             public int getLevelid() {

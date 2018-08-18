@@ -15,12 +15,9 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.card.payment.CardIOActivity;
-import io.card.payment.CreditCard;
 
 public class IdentityAuth1Activity extends BaseBarActivity {
     private final static String ACTION_AUTH1 = "com.paobuqianjin.pbq.setp.ACTION_AUTH1";
-    private static final int MY_SCAN_REQUEST_CODE = 100;
     private final String TAG = this.getClass().getSimpleName();
     @Bind(R.id.et_card_number)
     EditText etCardNumber;
@@ -57,60 +54,10 @@ public class IdentityAuth1Activity extends BaseBarActivity {
         startActivityForResult(intent, 200);
     }
 
-    public void onScanPress(View v) {
-        Intent scanIntent = new Intent(this, CardIOActivity.class);
-
-        // customize these values to suit your needs.
-        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_EXPIRY, false); // default: false
-        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CVV, false); // default: false
-        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, false); // default: false
-        scanIntent.putExtra(CardIOActivity.EXTRA_HIDE_CARDIO_LOGO, true);
-        scanIntent.putExtra(CardIOActivity.EXTRA_USE_CARDIO_LOGO, false);
-        scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_EXPIRY, false);
-        scanIntent.putExtra(CardIOActivity.EXTRA_USE_PAYPAL_ACTIONBAR_ICON, false);
-        scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_CARDHOLDER_NAME, false);
-        scanIntent.putExtra(CardIOActivity.EXTRA_LANGUAGE_OR_LOCALE, "zh-Hans");//使用中文
-        scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_CONFIRMATION, true);//不需要确认activity
-//        scanIntent.putExtra(CardIOActivity.EXTRA_SUPPRESS_MANUAL_ENTRY, true);//禁止键盘输入
-//        scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_INSTRUCTIONS, "请将银行卡至于此处\n系统将自动扫描识别");
-//        scanIntent.putExtra(CardIOActivity.EXTRA_SCAN_OVERLAY_LAYOUT_ID, false);
-
-        // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
-        startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == MY_SCAN_REQUEST_CODE) {
-            String resultDisplayStr;
-            if (data != null && data.hasExtra(CardIOActivity.EXTRA_SCAN_RESULT)) {
-                CreditCard scanResult = data.getParcelableExtra(CardIOActivity.EXTRA_SCAN_RESULT);
-                // Never log a raw card number. Avoid displaying it, but if necessary use getFormattedCardNumber()
-                resultDisplayStr = "Card Number: " + scanResult.getRedactedCardNumber() + "\n";
-                etCardNumber.setText(scanResult.getFormattedCardNumber());
-                LocalLog.d(TAG, resultDisplayStr);
-                // Do something with the raw number, e.g.:
-                // myService.setCardNumber( scanResult.cardNumber );
-
-                if (scanResult.isExpiryValid()) {
-                    resultDisplayStr += "Expiration Date: " + scanResult.expiryMonth + "/" + scanResult.expiryYear + "\n";
-                }
-
-                if (scanResult.cvv != null) {
-                    // Never log or display a CVV
-                    resultDisplayStr += "CVV has " + scanResult.cvv.length() + " digits.\n";
-                }
-
-                if (scanResult.postalCode != null) {
-                    resultDisplayStr += "Postal Code: " + scanResult.postalCode + "\n";
-                }
-            } else {
-                resultDisplayStr = "Scan was canceled.";
-            }
-            // do something with resultDisplayStr, maybe display it in a textView
-        } else if (resultCode == IdentityAuth3Activity.RES_SUC) {
+        if (resultCode == IdentityAuth3Activity.RES_SUC) {
             setResult(resultCode);
             finish();
         }

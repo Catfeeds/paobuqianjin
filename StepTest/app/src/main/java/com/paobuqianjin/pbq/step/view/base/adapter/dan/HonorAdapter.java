@@ -12,7 +12,6 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleStepRankResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendStepRankDayResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 
 import java.util.List;
 
@@ -79,9 +78,7 @@ public class HonorAdapter extends RecyclerView.Adapter<HonorAdapter.HonorAdapter
             } else if (position == 2) {
                 holder.rankIcon.setImageResource(R.drawable.honor_third);
             }
-/*            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar()
-                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(context, holder.headIconUser, ((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar()
+            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.stepNum.setText(String.valueOf(((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((FriendStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getNickname());
@@ -97,9 +94,7 @@ public class HonorAdapter extends RecyclerView.Adapter<HonorAdapter.HonorAdapter
             } else if (position == 2) {
                 holder.rankIcon.setImageResource(R.drawable.honor_third);
             }
-/*            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getAvatar()
-                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(context, holder.headIconUser, ((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getAvatar()
+            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.stepNum.setText(String.valueOf(((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getStep_number()));
             holder.userNameRank.setText(((CircleStepRankResponse.DataBeanX.DataBean.CircleBean) mData.get(position)).getNickname());

@@ -8,12 +8,18 @@
         android:id="@+id/bar_add_from_address"
         layout="@layout/bar_return_a_style"></include>
 
+    <include
+        android:id="@+id/search_friend"
+        layout="@layout/search_bar_text"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/bar_add_from_address"></include>
+
     <RelativeLayout
         android:id="@+id/mail_address_layer"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@+id/bar_add_from_address"
-        android:layout_marginTop="20dp"
+        android:layout_below="@+id/search_friend"
         android:background="@color/color_f8">
 
         <ImageView
@@ -41,78 +47,7 @@
             android:layout_alignLeft="@+id/phone_address"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="14dp"
-            android:background="@color/color_ebebed" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/address_weichat_layer"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@+id/mail_address_layer"
-        android:background="@color/color_f8"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/address_weichat"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:src="@drawable/wechatpay" />
-
-        <TextView
-            android:id="@+id/weichat_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:layout_toRightOf="@+id/address_weichat"
-            android:text="微信好友"
-            android:textColor="@color/color_161727"
-            android:textSize="17dp" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignLeft="@+id/weichat_address"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="14dp"
-            android:background="@color/color_ebebed" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/qq_address_layer"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@+id/address_weichat_layer"
-        android:background="@color/color_f8"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/address_qq"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:src="@drawable/address_qq" />
-
-        <TextView
-            android:id="@+id/qq_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:layout_toRightOf="@+id/address_qq"
-            android:text="微信好友"
-            android:textColor="@color/color_161727"
-            android:textSize="17dp" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignLeft="@+id/qq_address"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="14dp"
-            android:background="@color/color_ebebed" />
+            android:background="@color/color_ebebed"
+            android:visibility="gone" />
     </RelativeLayout>
 </RelativeLayout>

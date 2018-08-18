@@ -112,7 +112,11 @@ public class TodayStepService extends Service implements Handler.Callback {
         /*initNotification(CURRENT_SETP);*/
 
         if (null != mMicrolog4Android) {
-            mMicrolog4Android.configure(this);
+            try {
+                mMicrolog4Android.configure(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

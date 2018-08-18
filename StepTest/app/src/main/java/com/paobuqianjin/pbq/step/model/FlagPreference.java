@@ -2,9 +2,12 @@ package com.paobuqianjin.pbq.step.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
+import com.paobuqianjin.pbq.step.utils.Constants;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.RongYunChatUtils;
 
 /**
  * Created by pbq on 2017/12/6.
@@ -191,6 +194,9 @@ public final class FlagPreference {
 
         SharedPreferences.Editor editor = flagPreference.edit();
         editor.putString("user_token", user_token);
+        if (TextUtils.isEmpty(user_token)) {
+            RongYunChatUtils.getInstance().quit();
+        }
         editor.commit();
     }
 
@@ -270,6 +276,78 @@ public final class FlagPreference {
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = flagPreference.edit();
         editor.putInt("un_effect_step", unEffectStep);
+        editor.commit();
+    }
+
+    public static void setFitShowEd(Context context, boolean showEd) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putBoolean("showed", showEd);
+        editor.commit();
+    }
+
+    public static boolean getFitShowEd(Context context) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        boolean showed = flagPreference.getBoolean("showed", false);
+        return showed;
+    }
+
+    public static String getAdUrl(Context context) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        String adurl = flagPreference.getString("adurl", "");
+        return adurl;
+    }
+
+    public static void setAdUrl(Context context, String adUrl) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putString("adurl", adUrl);
+        editor.commit();
+    }
+
+    public static String getCurrentDate(Context context) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        String adurl = flagPreference.getString("date", "");
+        return adurl;
+    }
+
+    public static void setCurrentDate(Context context, String date) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putString("date", date + getUid(context));
+        editor.commit();
+    }
+
+    public static String getUUID(Context context) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        String uuID = flagPreference.getString("uuid", "");
+        return uuID;
+    }
+
+    public static void setUUID(Context context, String uuId) {
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putString("uuid", uuId);
+        editor.commit();
+    }
+
+    public static String getAppId(Context context) {
+        LocalLog.d(TAG,"getAppId() enter ");
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        String appid = flagPreference.getString("appid", "");
+        return appid;
+    }
+
+    public static void setAppId(Context context, String appid) {
+        LocalLog.d(TAG,"setAppId() enter " + appid);
+        SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = flagPreference.edit();
+        editor.putString("appid", appid);
         editor.commit();
     }
 }

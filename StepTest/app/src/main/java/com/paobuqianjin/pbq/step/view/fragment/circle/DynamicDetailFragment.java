@@ -47,10 +47,10 @@ import com.paobuqianjin.pbq.step.presenter.im.DynamicDetailInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ReflashInterface;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.FriendDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.LikeSupportActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
@@ -251,6 +251,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
 
 
         dynamicUserIcon = (CircleImageView) viewRoot.findViewById(R.id.dynamic_user_icon);
+        dynamicUserIcon.setOnClickListener(onClickListener);
         dynamicUserName = (TextView) viewRoot.findViewById(R.id.dynamic_user_name);
         dynamicContentText = (TextView) viewRoot.findViewById(R.id.dynamic_content_text);
         dynamicTime = (TextView) viewRoot.findViewById(R.id.dynamic_time);
@@ -436,9 +437,14 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                     putVoteParam.setDynamicid(dynamicid).setUserid(Presenter.getInstance(getContext()).getId());
                     Presenter.getInstance(getContext()).putVote(putVoteParam);
                     break;
+                case R.id.dynamic_user_icon:
+                    Intent intent = new Intent();
+                    intent.putExtra("userid", userid);
+                    intent.setClass(getActivity(), FriendDetailActivity.class);
+                    startActivity(intent);
+                    break;
                 case R.id.content_number_icon:
                 case R.id.dynamic_user_name:
-                case R.id.dynamic_user_icon:
                 case R.id.dynamic_content_text:
                     LocalLog.d(TAG, "弹出发表评论输入框");
                     PostDynamicContentParam postDynamicContentParam = new PostDynamicContentParam();
@@ -510,8 +516,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
             if (dynamicUserIcon == null) {
                 return;
             }
-            /*Presenter.getInstance(getContext()).getPlaceErrorImage(dynamicUserIcon, dynamicIdDetailResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(getActivity(), dynamicUserIcon, dynamicIdDetailResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+            Presenter.getInstance(getContext()).getPlaceErrorImage(dynamicUserIcon, dynamicIdDetailResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             dynamicUserName.setText(dynamicIdDetailResponse.getData().getNickname());
             long create_time = dynamicIdDetailResponse.getData().getCreate_time();
 
@@ -570,9 +575,7 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                     Mview.add(imageView0);
                     dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
                     ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
-/*                    Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0)
-                            , R.drawable.bitmap_null, R.drawable.bitmap_null);*/
-                    LoadBitmap.glideLoad(getActivity(), imageViewA, dynamicIdDetailResponse.getData().getImages().get(0)
+                    Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0)
                             , R.drawable.bitmap_null, R.drawable.bitmap_null);
                     showBigImage(imageViewA, dynamicIdDetailResponse.getData().getImages(), 0);
                 }
@@ -589,10 +592,8 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 ImageView imageViewA = (ImageView) imageView0.findViewById(R.id.dynamic_pic);
                 ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
                 dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
-/*                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
-                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);*/
-                LoadBitmap.glideLoad(getActivity(), imageViewA, dynamicIdDetailResponse.getData().getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
-                LoadBitmap.glideLoad(getActivity(), imageViewB, dynamicIdDetailResponse.getData().getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
                 showBigImage(imageViewA, dynamicIdDetailResponse.getData().getImages(), 0);
                 showBigImage(imageViewB, dynamicIdDetailResponse.getData().getImages(), 1);
 
@@ -612,12 +613,9 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 ImageView imageViewB = (ImageView) imageView1.findViewById(R.id.dynamic_pic);
                 ImageView imageViewC = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
                 dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
-/*                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
                 Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
-                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2), R.drawable.bitmap_null, R.drawable.bitmap_null);*/
-                LoadBitmap.glideLoad(getActivity(), imageViewA, dynamicIdDetailResponse.getData().getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
-                LoadBitmap.glideLoad(getActivity(), imageViewB, dynamicIdDetailResponse.getData().getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
-                LoadBitmap.glideLoad(getActivity(), imageViewC, dynamicIdDetailResponse.getData().getImages().get(2), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2), R.drawable.bitmap_null, R.drawable.bitmap_null);
                 showBigImage(imageViewA, dynamicIdDetailResponse.getData().getImages(), 0);
                 showBigImage(imageViewB, dynamicIdDetailResponse.getData().getImages(), 1);
                 showBigImage(imageViewC, dynamicIdDetailResponse.getData().getImages(), 2);
@@ -644,14 +642,10 @@ public class DynamicDetailFragment extends BaseBarStyleTextViewFragment implemen
                 ImageView imageViewC = (ImageView) imageView2.findViewById(R.id.dynamic_pic);
                 ImageView imageViewD = (ImageView) imageView3.findViewById(R.id.dynamic_pic);
                 dots.get(0).setBackgroundResource(R.drawable.image_viewpager_dot_selected);
-/*                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewA, dynamicIdDetailResponse.getData().getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
                 Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewB, dynamicIdDetailResponse.getData().getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
                 Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewC, dynamicIdDetailResponse.getData().getImages().get(2), R.drawable.bitmap_null, R.drawable.bitmap_null);
-                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewD, dynamicIdDetailResponse.getData().getImages().get(3), R.drawable.bitmap_null, R.drawable.bitmap_null);*/
-                LoadBitmap.glideLoad(getActivity(), imageViewA, dynamicIdDetailResponse.getData().getImages().get(0), R.drawable.bitmap_null, R.drawable.bitmap_null);
-                LoadBitmap.glideLoad(getActivity(), imageViewB, dynamicIdDetailResponse.getData().getImages().get(1), R.drawable.bitmap_null, R.drawable.bitmap_null);
-                LoadBitmap.glideLoad(getActivity(), imageViewC, dynamicIdDetailResponse.getData().getImages().get(2), R.drawable.bitmap_null, R.drawable.bitmap_null);
-                LoadBitmap.glideLoad(getActivity(), imageViewD, dynamicIdDetailResponse.getData().getImages().get(3), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(imageViewD, dynamicIdDetailResponse.getData().getImages().get(3), R.drawable.bitmap_null, R.drawable.bitmap_null);
                 showBigImage(imageViewA, dynamicIdDetailResponse.getData().getImages(), 0);
                 showBigImage(imageViewB, dynamicIdDetailResponse.getData().getImages(), 1);
                 showBigImage(imageViewC, dynamicIdDetailResponse.getData().getImages(), 2);

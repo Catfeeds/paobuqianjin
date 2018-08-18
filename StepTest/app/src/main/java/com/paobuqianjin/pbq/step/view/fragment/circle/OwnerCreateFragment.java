@@ -93,6 +93,19 @@ public class OwnerCreateFragment extends BaseFragment {
         Presenter.getInstance(getContext()).getMyCreateCirlce(pageIndex, PAGE_SIZE_DEFAULT, keyWord);
     }
 
+    public void refreshMyCreate() {
+        if (isAdded()) {
+            pageIndex = 1;
+            notFoundData.setVisibility(View.GONE);
+            createCircleSwipe.setVisibility(View.VISIBLE);
+            pageCount = 0;
+            myCreateAllData.clear();
+            adapter.notifyDataSetChanged();
+            isSearch = false;
+            Presenter.getInstance(getContext()).getMyCreateCirlce(pageIndex, PAGE_SIZE_DEFAULT, "");
+        }
+    }
+
     @Override
     protected int getLayoutResId() {
         return R.layout.owner_create_cirlce_fg;
@@ -124,7 +137,7 @@ public class OwnerCreateFragment extends BaseFragment {
         ownerCreateCircleLists.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         ownerCreateCircleLists.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
 
-        adapter = new OwnerCreateAdapter(getActivity(), this, null);
+        adapter = new OwnerCreateAdapter(getContext(), this, null);
         ownerCreateCircleLists.setAdapter(adapter);
 
         createCircleSwipe.setOnRefreshListener(mRefreshListener);

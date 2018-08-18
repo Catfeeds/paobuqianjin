@@ -46,6 +46,8 @@ import com.lwkandroid.imagepicker.data.ImageBean;
 import com.lwkandroid.imagepicker.data.ImagePickType;
 import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.alioss.AliOss;
+import com.paobuqianjin.pbq.step.data.alioss.OssService;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CreateCircleBodyParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
@@ -56,10 +58,10 @@ import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.EditCircleInterface;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
+import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
@@ -188,7 +190,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
     CircleDetailResponse.DataBean dataBean;
     @Bind(R.id.edit_circle)
     RelativeLayout editCircle;
-    private boolean is_recharge = false;
+    private int is_recharge = 0;
     private boolean is_pwd = false;
     private Rationale mRationale;
     private PermissionSetting mSetting;
@@ -204,6 +206,11 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
     private String cachePath;
     private final int REQUEST_CODE = 111;
     private String localAvatar;
+    private final static String CIRCLE_ID = "id";
+    private final static String CIRCLE_NAME = "name";
+    private final static String CIRCLE_RECHARGE = "pay";
+    private final static String PAY_FOR_STYLE = "pay_for_style";
+    private final static String PAY_ACTION_EDIT = "android.intent.action.PAY_EDIT";
 
     @Override
     protected int getLayoutResId() {
@@ -242,7 +249,6 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         Intent intent = getActivity().getIntent();
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getContext());
@@ -268,25 +274,21 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                 moneyMumPan = (RelativeLayout) viewRoot.findViewById(R.id.money_mum_pan);
                 switchCircleMoneyAddOff = (ImageView) viewRoot.findViewById(R.id.switch_circle_money_add_off);
                 logoCirclePic = (CircleImageView) viewRoot.findViewById(R.id.logo_circle_pic);
-                /*Presenter.getInstance(getContext()).getImage(logoCirclePic, dataBean.getLogo());*/
-                LoadBitmap.glideLoad(getActivity(), logoCirclePic, dataBean.getLogo());
+                Presenter.getInstance(getContext()).getImage(logoCirclePic, dataBean.getLogo());
+                circleMoneyNumEditor = (EditText) viewRoot.findViewById(R.id.circle_money_num_editor);
+                circleReadPackageEditor = (EditText) viewRoot.findViewById(R.id.circle_read_package_editor);
+                moneyPkgNumEditor = (EditText) viewRoot.findViewById(R.id.money_pkg_num_editor);
                 if (1 == dataBean.getIs_recharge()) {
                     switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a));
-                    switchCircleMoneyAddOff.setAlpha(0.5f);
-                    is_recharge = true;
+                    is_recharge = 1;
                     enableMoneyEdit();
+                    circleReadPackageEditor.setText(String.valueOf(dataBean.getRed_packet()));
+                    moneyPkgNumEditor.setText(String.valueOf(dataBean.getRed_packetInt()));
                 } else {
                     switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a_pass));
-                    switchCircleMoneyAddOff.setAlpha(0.5f);
-                    is_recharge = false;
+                    is_recharge = 0;
                     disableMoneyEdit();
                 }
-                circleMoneyNumEditor = (EditText) viewRoot.findViewById(R.id.circle_money_num_editor);
-                circleMoneyNumEditor.setText(String.valueOf(dataBean.getTotal_amount()));
-                circleReadPackageEditor = (EditText) viewRoot.findViewById(R.id.circle_read_package_editor);
-                circleReadPackageEditor.setText(String.valueOf(dataBean.getRed_packet_amount()));
-                moneyPkgNumEditor = (EditText) viewRoot.findViewById(R.id.money_pkg_num_editor);
-                moneyPkgNumEditor.setText(String.valueOf(dataBean.getRed_packetInt()));
                 passwordPan = (RelativeLayout) viewRoot.findViewById(R.id.password_pan);
                 passwordCircleSwitch = (ImageView) viewRoot.findViewById(R.id.password_circle_switch);
                 circleDescOfYour = (EditText) viewRoot.findViewById(R.id.circle_desc_of_your);
@@ -515,10 +517,11 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
             public void onClick(View view) {
                 LocalLog.d(TAG, "相册");
                 new ImagePicker()
-                        .pickType(ImagePickType.MULTI)//设置选取类型(拍照、单选、多选)
+                        .pickType(ImagePickType.SINGLE)//设置选取类型(拍照、单选、多选)
                         .maxNum(1)//设置最大选择数量(拍照和单选都是1，修改后也无效)
                         .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
                         .cachePath(cachePath)//自定义缓存路径
+                        .doCrop(1, 1, 0, 0)
                         .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
                         .start(EditCircleFragment.this, REQUEST_CODE);
                 popupCircleTypeWindow.dismiss();
@@ -561,7 +564,39 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
             LocalLog.d(TAG, "编辑成功，通知详情界面更新");
             Toast.makeText(getContext(), "编辑成功", Toast.LENGTH_SHORT).show();
             getActivity().setResult(Activity.RESULT_OK);
+            rechargeCheck();
             getActivity().finish();
+        }
+    }
+
+    private void rechargeCheck() {
+        LocalLog.d(TAG, "充值开关");
+        if (dataBean != null) {
+            if (dataBean.getIs_recharge() == 1) {
+                if (is_recharge == 1 && !TextUtils.isEmpty(circleMoneyNumEditor.getText().toString())) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(CIRCLE_ID, String.valueOf(dataBean.getId()));
+                    bundle.putString(CIRCLE_NAME, dataBean.getName());
+                    bundle.putString(PAY_FOR_STYLE, "circle");
+                    bundle.putString(CIRCLE_RECHARGE, circleMoneyNumEditor.getText().toString());
+                    startActivity(PaoBuPayActivity.class, bundle, true, PAY_ACTION_EDIT);
+                } else if (is_recharge == 0) {
+                    LocalLog.d(TAG, "关闭充值");
+                    return;
+                }
+            } else if (dataBean.getIs_recharge() == 0) {
+                if (is_recharge == 1 && !TextUtils.isEmpty(circleMoneyNumEditor.getText().toString())) {
+                    LocalLog.d(TAG, "打开充值");
+                    Bundle bundle = new Bundle();
+                    bundle.putString(CIRCLE_ID, String.valueOf(dataBean.getId()));
+                    bundle.putString(CIRCLE_NAME, dataBean.getName());
+                    bundle.putString(PAY_FOR_STYLE, "circle");
+                    bundle.putString(CIRCLE_RECHARGE, circleMoneyNumEditor.getText().toString());
+                    startActivity(PaoBuPayActivity.class, bundle, true, PAY_ACTION_EDIT);
+                } else if (is_recharge == 0) {
+                    return;
+                }
+            }
         }
     }
 
@@ -605,9 +640,8 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
             }
             LocalLog.d(TAG, "content = " + content);
             if (resultList != null && resultList.size() == 1) {
-/*                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), logoCirclePic, resultList.get(0).getWidth() / 4
-                        , resultList.get(0).getHeight() / 4);*/
-                LoadBitmap.glideLoad(getActivity(), logoCirclePic, resultList.get(0).getImagePath());
+                Presenter.getInstance(getContext()).getImage(resultList.get(0).getImagePath(), logoCirclePic, resultList.get(0).getWidth() / 4
+                        , resultList.get(0).getHeight() / 4);
                 localAvatar = resultList.get(0).getImagePath();
             } else {
                 LocalLog.d(TAG, "未知操作");
@@ -616,7 +650,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         }
     }
 
-    @OnClick({R.id.stand_circle_pan, R.id.logo_circle_pan, R.id.edit_circle_confim,R.id.password_circle_switch})
+    @OnClick({R.id.stand_circle_pan, R.id.logo_circle_pan, R.id.edit_circle_confim, R.id.password_circle_switch, R.id.switch_circle_money_add_off})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.stand_circle_pan:
@@ -653,6 +687,21 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
 
                 }
                 break;
+            case R.id.switch_circle_money_add_off:
+                if (is_recharge == 0) {
+                    LocalLog.d(TAG, "打开充值");
+                    switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a));
+                    enableMoneyEdit();
+                    is_recharge = 1;
+                    createCircleBodyParam.setIs_recharge(1);
+                } else if (is_recharge == 1) {
+                    LocalLog.d(TAG, "关闭充值");
+                    switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a_pass));
+                    disableMoneyEdit();
+                    is_recharge = 0;
+                    createCircleBodyParam.setIs_recharge(0);
+                }
+                break;
         }
     }
 
@@ -668,15 +717,13 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         @Override
         protected String doInBackground(String... strings) {
             String url = null;
+            AliOss aliOss = new AliOss();
+            aliOss.initRegion(getContext().getApplicationContext());
+            OssService ossService = aliOss.initOSS(getContext().getApplicationContext());
             for (String path : strings) {
                 LocalLog.d(TAG, "path = " + path);
-                ResultHelper result = null;
-                PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
-                result = putObjectSample.start(path,getContext().getApplicationContext());
-                //LocalLog.d(TAG, "result = " + result.cosXmlResult.printError());
-                url = result.cosXmlResult.accessUrl;
+                url = ossService.asyncPutImageLocal(path);
                 LocalLog.d(TAG, "url = " + url);
-
             }
             return url;
         }
@@ -709,9 +756,8 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         if (createCircleBodyParam.isIs_recharge() == 0) {
 
         } else if (createCircleBodyParam.isIs_recharge() == 1) {
-            if (moneyPkgNumEditor.getText().toString().equals("")
-                    || circleReadPackageEditor.getText().toString().equals("")
-                    || circleMoneyNumEditor.getText().toString().equals("")) {
+            if (TextUtils.isEmpty(moneyPkgNumEditor.getText().toString().trim())
+                    || TextUtils.isEmpty(circleReadPackageEditor.getText().toString())) {
                 Toast.makeText(getContext(), "请完善红包信息", Toast.LENGTH_SHORT).show();
                 return false;
             } else {
@@ -725,9 +771,20 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
             return false;
         }
         if (createCircleBodyParam.isIs_recharge() == 1) {
-            createCircleBodyParam.setRed_packet(Integer.parseInt(moneyPkgNumEditor.getText().toString()));
-            createCircleBodyParam.setRed_packet_amount(Float.parseFloat(circleReadPackageEditor.getText().toString()));
-            createCircleBodyParam.setTotal_amount(Float.parseFloat(circleMoneyNumEditor.getText().toString()));
+            try {
+                if (!TextUtils.isEmpty(moneyPkgNumEditor.getText().toString())) {
+                    createCircleBodyParam.setRed_packet(Integer.parseInt(moneyPkgNumEditor.getText().toString()));
+                }
+                if (!TextUtils.isEmpty(circleReadPackageEditor.getText().toString())) {
+                    createCircleBodyParam.setRed_packet_amount(Float.parseFloat(circleReadPackageEditor.getText().toString()));
+                }
+                if (!TextUtils.isEmpty(circleMoneyNumEditor.getText().toString())) {
+                    createCircleBodyParam.setTotal_amount(Float.parseFloat(circleMoneyNumEditor.getText().toString()));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
 
         if (createCircleBodyParam.isIs_pwd() == 1) {

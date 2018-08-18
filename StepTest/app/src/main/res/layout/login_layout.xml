@@ -6,6 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <FrameLayout
+        android:id="@+id/go_back_account"
+        android:layout_width="60dp"
+        android:layout_height="64dp"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="10dp"
+            android:layout_height="19dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="35dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/right_back" />
+    </FrameLayout>
+
     <TextView
         android:id="@+id/tv_account_login_"
         android:layout_width="wrap_content"
@@ -82,10 +97,20 @@
                 android:layout_toRightOf="@id/login_pwd_img"
                 android:background="@null"
                 android:drawablePadding="15dp"
-                android:hint="@string/login_phonePwd"
+                android:hint="请输入密码"
                 android:inputType="textPassword"
                 android:singleLine="true"
                 android:textSize="14dp" />
+
+            <ImageView
+                android:id="@+id/register_eyes"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:onClick="onTabLogSign"
+                android:src="@drawable/register_eyes" />
 
             <View
                 android:id="@+id/view2"

@@ -18,6 +18,8 @@ import android.widget.RelativeLayout;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.view.base.view.CustomEdit;
 
+import java.util.List;
+
 /**
  * CSDN_LQR
  * 表情布局
@@ -175,13 +177,13 @@ public class EmotionLayout extends LinearLayout implements View.OnClickListener 
         mTabViewArray.put(0, emojiTab);
 
         //添加所有的贴图tab
-      /*  List<StickerCategory> stickerCategories = StickerManager.getInstance().getStickerCategories();
+        List<StickerCategory> stickerCategories = StickerManager.getInstance().getStickerCategories();
         for (int i = 0; i < stickerCategories.size(); i++) {
             StickerCategory category = stickerCategories.get(i);
             EmotionTab tab = new EmotionTab(mContext, category.getCoverImgPath());
             mLlTabContainer.addView(tab);
             mTabViewArray.put(i + 1, tab);
-        }*/
+        }
 
         //最后添加一个表情设置Tab
         mSettingTab = new EmotionTab(mContext, R.drawable.ic_emotion_setting);

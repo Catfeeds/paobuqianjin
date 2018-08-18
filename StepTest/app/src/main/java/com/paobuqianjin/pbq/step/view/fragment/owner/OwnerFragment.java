@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,24 +22,29 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.DanActivity;
+import com.paobuqianjin.pbq.step.view.activity.GetMoreMoneyActivity;
+import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
 import com.paobuqianjin.pbq.step.view.activity.MessageActivity;
-import com.paobuqianjin.pbq.step.view.activity.MyBankCardActivity;
+import com.paobuqianjin.pbq.step.view.activity.MyConsumptiveRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyDynamicActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyFriendActivity;
-import com.paobuqianjin.pbq.step.view.activity.MyReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
+import com.paobuqianjin.pbq.step.view.activity.NearByActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
-import com.paobuqianjin.pbq.step.view.activity.PayManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeMakeActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.SettingActivity;
+import com.paobuqianjin.pbq.step.view.activity.ShopRedBagActivity;
+import com.paobuqianjin.pbq.step.view.activity.SponsorCollectActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
 import com.paobuqianjin.pbq.step.view.activity.SuggestionActivity;
+import com.paobuqianjin.pbq.step.view.activity.TaskActivity;
+import com.paobuqianjin.pbq.step.view.activity.TransferActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
+import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
 import com.paobuqianjin.pbq.step.view.activity.VipActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -51,149 +59,148 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public final class OwnerFragment extends BaseFragment {
     private final static String TAG = OwnerFragment.class.getSimpleName();
-    @Bind(R.id.bar_title)
-    TextView barTitle;
-    @Bind(R.id.bar_tv_right)
-    ImageView barTvRight;
+    String urlIcon = "";
+    @Bind(R.id.user_back)
+    ImageView userBack;
+    @Bind(R.id.own_title)
+    TextView ownTitle;
     @Bind(R.id.head_icon)
     CircleImageView headIcon;
-    @Bind(R.id.man_woman)
-    ImageView manWoman;
+    @Bind(R.id.sex)
+    ImageView sex;
     @Bind(R.id.user_icon)
     RelativeLayout userIcon;
     @Bind(R.id.user_name)
     TextView userName;
+    @Bind(R.id.golden_sponsor)
+    ImageView goldenSponsor;
     @Bind(R.id.user_id)
     TextView userId;
-    @Bind(R.id.dear_name)
-    RelativeLayout dearName;
-    @Bind(R.id.go_to_bar)
-    ImageView goToBar;
+    @Bind(R.id.qrcode)
+    ImageView qrcode;
+    @Bind(R.id.qrcode_rel)
+    LinearLayout qrcodeRel;
     @Bind(R.id.user_span)
-    RelativeLayout userSpan;
-    @Bind(R.id.line_1)
-    ImageView line1;
+    LinearLayout userSpan;
     @Bind(R.id.circle)
     TextView circle;
+    @Bind(R.id.circle_rel)
+    LinearLayout circleRel;
     @Bind(R.id.friend)
-    TextView friends;
-    @Bind(R.id.line_2)
-    ImageView line2;
+    TextView friend;
+    @Bind(R.id.friend_span)
+    LinearLayout friendSpan;
+    @Bind(R.id.like_num)
+    TextView likeNum;
+    @Bind(R.id.like_span)
+    LinearLayout likeSpan;
+    @Bind(R.id.near_by)
+    ImageView nearBy;
+    @Bind(R.id.near_by_span)
+    LinearLayout nearBySpan;
+    @Bind(R.id.wallet_money)
+    TextView walletMoney;
+    @Bind(R.id.crash_button)
+    Button crashButton;
+    @Bind(R.id.wallet_detail_button)
+    Button walletDetailButton;
+    @Bind(R.id.center_part)
+    LinearLayout centerPart;
     @Bind(R.id.wallet_icon)
     ImageView walletIcon;
     @Bind(R.id.wallet_desc)
     TextView walletDesc;
-    @Bind(R.id.go_to_wallet)
-    ImageView goToWallet;
     @Bind(R.id.wallet_span)
-    RelativeLayout walletSpan;
-    @Bind(R.id.step_dollar_icon)
-    ImageView stepDollarIcon;
-    @Bind(R.id.step_dollar_desc)
-    TextView stepDollarDesc;
-    @Bind(R.id.go_to_step_dollar)
-    ImageView goToStepDollar;
-    @Bind(R.id.step_dollar_span)
-    RelativeLayout stepDollarSpan;
-    @Bind(R.id.gift_icon)
-    ImageView giftIcon;
-    @Bind(R.id.gift_desc)
-    TextView giftDesc;
-    @Bind(R.id.go_to_gift)
-    ImageView goToGift;
-    @Bind(R.id.gitf_span)
-    RelativeLayout gitfSpan;
-    @Bind(R.id.line_3)
-    ImageView line3;
-    @Bind(R.id.dynamic_icon)
-    ImageView dynamicIcon;
-    @Bind(R.id.dynamic_desc)
-    TextView dynamicDesc;
-    @Bind(R.id.go_to_dymamic)
-    ImageView goToDymamic;
-    @Bind(R.id.dynamic_span)
-    RelativeLayout dynamicSpan;
-    @Bind(R.id.dan_icon)
-    ImageView danIcon;
-    @Bind(R.id.dan_desc)
-    TextView danDesc;
-    @Bind(R.id.go_to_dan)
-    ImageView goToDan;
-    @Bind(R.id.dan_span)
-    RelativeLayout danSpan;
-    @Bind(R.id.suggestion_icon)
-    ImageView suggestionIcon;
-    @Bind(R.id.suggestion_desc)
-    TextView suggestionDesc;
-    @Bind(R.id.go_to_suggestion)
-    ImageView goToSuggestion;
-    @Bind(R.id.suggestion_span)
-    RelativeLayout suggestionSpan;
-    @Bind(R.id.friend_rel)
-    RelativeLayout messageRel;
-    @Bind(R.id.circle_rel)
-    RelativeLayout friendRel;
-    @Bind(R.id.bar_return_drawable)
-    ImageView barReturnDrawable;
-    @Bind(R.id.man)
-    ImageView man;
-    @Bind(R.id.bank_icon)
-    ImageView bankIcon;
-    @Bind(R.id.bank_desc)
-    TextView bankDesc;
-    @Bind(R.id.go_to_bank)
-    ImageView goToBank;
-    @Bind(R.id.bank_span)
-    RelativeLayout bankSpan;
-    @Bind(R.id.task_release_icon)
-    ImageView taskReleaseIcon;
-    @Bind(R.id.task_release_desc)
-    TextView taskReleaseDesc;
-    @Bind(R.id.go_to_task)
-    ImageView goToTask;
-    @Bind(R.id.task_release_span)
-    RelativeLayout taskReleaseSpan;
-    String urlIcon = "";
-    @Bind(R.id.line_4)
-    ImageView line4;
-    @Bind(R.id.setting_icon)
-    ImageView settingIcon;
-    @Bind(R.id.setting_desc)
-    TextView settingDesc;
-    @Bind(R.id.go_to_setting)
-    ImageView goToSetting;
-    @Bind(R.id.setting_span)
-    RelativeLayout settingSpan;
-    @Bind(R.id.qrcode)
-    ImageView qrcode;
-    @Bind(R.id.qrcode_rel)
-    RelativeLayout qrcodeRel;
-    @Bind(R.id.friend_scan)
-    RelativeLayout friendScan;
+    LinearLayout walletSpan;
     @Bind(R.id.vip_icon)
     ImageView vipIcon;
     @Bind(R.id.vip_desc)
     TextView vipDesc;
-    @Bind(R.id.go_to_vip)
-    ImageView goToVip;
     @Bind(R.id.vip_span)
-    RelativeLayout vipSpan;
-    @Bind(R.id.vip_flg)
-    ImageView vipFlg;
-    @Bind(R.id.pay_mananger_icon)
-    ImageView payManangerIcon;
-    @Bind(R.id.pay_mananger_desc)
-    TextView payManangerDesc;
-    @Bind(R.id.go_to_pay_manager)
-    ImageView goToPayManager;
-    @Bind(R.id.pay_mananger_span)
-    RelativeLayout payManangerSpan;
-    @Bind(R.id.iv_three_stars)
-    ImageView ivThreeStars;
+    LinearLayout vipSpan;
+    @Bind(R.id.step_dollar_icon)
+    ImageView stepDollarIcon;
+    @Bind(R.id.step_dollar_desc)
+    TextView stepDollarDesc;
+    @Bind(R.id.step_dollar_span)
+    LinearLayout stepDollarSpan;
+    @Bind(R.id.iv_consumptive_red_bag)
+    ImageView ivConsumptiveRedBag;
+    @Bind(R.id.tv_consumptive_red_bag)
+    TextView tvConsumptiveRedBag;
+    @Bind(R.id.linear_consumptive_red_bag)
+    LinearLayout linearConsumptiveRedBag;
+    @Bind(R.id.wallet_dollor_span)
+    LinearLayout walletDollorSpan;
+    @Bind(R.id.gitf_span)
+    ImageView gitfSpan;
+    @Bind(R.id.task_recv_icon)
+    ImageView taskRecvIcon;
+    @Bind(R.id.task_recv_desc)
+    TextView taskRecvDesc;
+    @Bind(R.id.task_recv)
+    LinearLayout taskRecv;
+    @Bind(R.id.task_release_icon)
+    ImageView taskReleaseIcon;
+    @Bind(R.id.task_release_desc)
+    TextView taskReleaseDesc;
+    @Bind(R.id.task_release_span)
+    LinearLayout taskReleaseSpan;
+    @Bind(R.id.iv_shop_red_bag)
+    ImageView ivShopRedBag;
+    @Bind(R.id.tv_shop_red_bag)
+    TextView tvShopRedBag;
+    @Bind(R.id.linear_shop_red_bag)
+    LinearLayout linearShopRedBag;
+    @Bind(R.id.dan_icon)
+    ImageView danIcon;
+    @Bind(R.id.dan_desc)
+    TextView danDesc;
+    @Bind(R.id.dynamic_span)
+    LinearLayout dynamicSpan;
+    @Bind(R.id.dynamic_icon)
+    ImageView dynamicIcon;
+    @Bind(R.id.dynamic_desc)
+    TextView dynamicDesc;
+    @Bind(R.id.dan_span)
+    LinearLayout danSpan;
+    @Bind(R.id.task_dan)
+    LinearLayout taskDan;
+    @Bind(R.id.collect_icon)
+    ImageView collectIcon;
+    @Bind(R.id.collect_desc)
+    TextView collectDesc;
+    @Bind(R.id.collect_span)
+    LinearLayout collectSpan;
+    @Bind(R.id.money_icon)
+    ImageView moneyIcon;
+    @Bind(R.id.money_desc)
+    TextView moneyDesc;
+    @Bind(R.id.money_span)
+    LinearLayout moneySpan;
+    @Bind(R.id.suggestion_icon)
+    ImageView suggestionIcon;
+    @Bind(R.id.suggestion_desc)
+    TextView suggestionDesc;
+    @Bind(R.id.suggestion_span)
+    LinearLayout suggestionSpan;
+    @Bind(R.id.setting_icon)
+    ImageView settingIcon;
+    @Bind(R.id.setting_desc)
+    TextView settingDesc;
+    @Bind(R.id.setting_span)
+    LinearLayout settingSpan;
+    @Bind(R.id.collect_sponsor_span)
+    LinearLayout collectSponsorSpan;
     private String userAvatar;
+    TextView friends;
     private int vip = 0;
     private int cVip = 0;
+    private int gVip = 0;
     private UserInfoResponse userInfoResponse;
+    private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
+    private final static String ACTION_STRANGE_ACTION = "com.paobuqianjin.pbq.step.STRANGE_ACTION";
+    private final static String ACTION_FRIEND_ACTION = "com.paobuqianjn.step.FRIEND_ACTION";
 
     @Override
     public void onAttach(Context context) {
@@ -223,22 +230,21 @@ public final class OwnerFragment extends BaseFragment {
     @Override
     protected void initView(View viewRoot) {
         LocalLog.d(TAG, "initView() enter");
-        barReturnDrawable = (ImageView) viewRoot.findViewById(R.id.bar_return_drawable);
-        barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
-        barTitle.setText("我的");
         headIcon = (CircleImageView) viewRoot.findViewById(R.id.head_icon);
         userIcon = (RelativeLayout) viewRoot.findViewById(R.id.user_icon);
         userName = (TextView) viewRoot.findViewById(R.id.user_name);
         userId = (TextView) viewRoot.findViewById(R.id.user_id);
         circle = (TextView) viewRoot.findViewById(R.id.circle);
         friends = (TextView) viewRoot.findViewById(R.id.friend);
-        walletSpan = (RelativeLayout) viewRoot.findViewById(R.id.wallet_span);
-        stepDollarSpan = (RelativeLayout) viewRoot.findViewById(R.id.step_dollar_span);
-        gitfSpan = (RelativeLayout) viewRoot.findViewById(R.id.gitf_span);
-        dynamicSpan = (RelativeLayout) viewRoot.findViewById(R.id.dynamic_span);
-        danSpan = (RelativeLayout) viewRoot.findViewById(R.id.dan_span);
-        suggestionSpan = (RelativeLayout) viewRoot.findViewById(R.id.suggestion_span);
-        vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
+        likeNum = (TextView) viewRoot.findViewById(R.id.like_num);
+        walletSpan = (LinearLayout) viewRoot.findViewById(R.id.wallet_span);
+        stepDollarSpan = (LinearLayout) viewRoot.findViewById(R.id.step_dollar_span);
+        gitfSpan = (ImageView) viewRoot.findViewById(R.id.gitf_span);
+        dynamicSpan = (LinearLayout) viewRoot.findViewById(R.id.dynamic_span);
+        danSpan = (LinearLayout) viewRoot.findViewById(R.id.dan_span);
+        suggestionSpan = (LinearLayout) viewRoot.findViewById(R.id.suggestion_span);
+        goldenSponsor = (ImageView) viewRoot.findViewById(R.id.golden_sponsor);
+        walletMoney = (TextView) viewRoot.findViewById(R.id.wallet_money);
     }
 
     @Override
@@ -249,24 +255,20 @@ public final class OwnerFragment extends BaseFragment {
         Presenter.getInstance(getContext()).dispatchUiInterface(ownerUiInterface);
     }
 
-    @OnClick({R.id.bar_tv_right, R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.gitf_span, R.id.dynamic_span,
-            R.id.dan_span, R.id.suggestion_span, R.id.friend_rel, R.id.circle_rel,
-            R.id.bar_return_drawable, R.id.task_release_span, R.id.setting_span, R.id.qrcode_rel, R.id.vip_span, R.id.bank_span, R.id.pay_mananger_span})
+    @OnClick({R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.linear_consumptive_red_bag, R.id.linear_shop_red_bag, R.id.gitf_span, R.id.dynamic_span,
+            R.id.dan_span, R.id.suggestion_span, R.id.like_span, R.id.circle_rel, R.id.task_release_span, R.id.task_recv, R.id.setting_span, R.id.vip_span,
+            R.id.collect_span, R.id.money_span, R.id.near_by_span, R.id.crash_button, R.id.wallet_detail_button, R.id.friend_span})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
-            case R.id.bar_tv_right:
-                LocalLog.d(TAG, "扫码");
-                new IntentIntegrator(getActivity())
-                        .setOrientationLocked(false)
-                        .setCaptureActivity(QrCodeScanActivity.class)
-                        .initiateScan();
-                break;
             case R.id.user_span:
                 LocalLog.d(TAG, "设置头像");
-                intent.putExtra("userid", Presenter.getInstance(getContext()).getId());
-                intent.setClass(getContext(), UserCenterActivity.class);
-                startActivity(intent);
+                if (userInfoResponse != null) {
+                    Intent userInfoIntent = new Intent();
+                    userInfoIntent.putExtra("userinfo", userInfoResponse.getData());
+                    userInfoIntent.setClass(getContext(), UserInfoSettingActivity.class);
+                    startActivity(userInfoIntent);
+                }
                 break;
             case R.id.wallet_span:
                 LocalLog.d(TAG, "钱包");
@@ -281,6 +283,23 @@ public final class OwnerFragment extends BaseFragment {
                     startActivity(intent);
                 }
 
+                break;
+            case R.id.linear_consumptive_red_bag:
+                LocalLog.d(TAG, "消费红包");
+                if (this.userInfoResponse != null && this.userInfoResponse.getData() != null) {
+                    intent.putExtra("userinfo", this.userInfoResponse.getData());
+                    intent.setClass(getContext(), MyConsumptiveRedBagActivity.class);
+                    startActivity(intent);
+                }
+
+                break;
+            case R.id.linear_shop_red_bag:
+                LocalLog.d(TAG, "店铺红包");
+                if (this.userInfoResponse != null && this.userInfoResponse.getData() != null) {
+                    intent.putExtra("userinfo", this.userInfoResponse.getData());
+                    intent.setClass(getContext(), ShopRedBagActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.gitf_span:
                 LocalLog.d(TAG, "邀请有礼");
@@ -303,8 +322,15 @@ public final class OwnerFragment extends BaseFragment {
                 intent.setClass(getContext(), SuggestionActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.friend_rel:
+            case R.id.friend_span:
+                LocalLog.d(TAG, "好友");
+                intent.setAction(ACTION_FRIEND_ACTION);
+                intent.setClass(getContext(), MyFriendActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.like_span:
                 LocalLog.d(TAG, "关注");
+                intent.setAction(ACTION_STRANGE_ACTION);
                 intent.setClass(getContext(), MyFriendActivity.class);
                 startActivity(intent);
                 break;
@@ -313,14 +339,15 @@ public final class OwnerFragment extends BaseFragment {
                 intent.setClass(getContext(), OwnerCircleActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.bar_return_drawable:
-                LocalLog.d(TAG, "消息");
-                intent.setClass(getContext(), MessageActivity.class);
-                startActivity(intent);
-                break;
             case R.id.task_release_span:
                 LocalLog.d(TAG, "我的发布");
-                startActivity(MyReleaseActivity.class, null);
+                /*startActivity(MyReleaseActivity.class, null);*/
+                /*delete my release ,go to ReleaseRecordActivity*/
+                startActivity(ReleaseRecordActivity.class, null);
+                break;
+            case R.id.task_recv:
+                LocalLog.d(TAG, "我的任务");
+                startActivity(TaskActivity.class, null);
                 break;
             case R.id.setting_span:
                 if (this.userInfoResponse != null && this.userInfoResponse.getData() != null) {
@@ -331,26 +358,30 @@ public final class OwnerFragment extends BaseFragment {
 /*                intent.setClass(getContext(), UserInfoSettingActivity.class);
                 startActivity(intent);*/
                 break;
-            case R.id.qrcode_rel:
-                LocalLog.d(TAG, "生成二维码");
-                intent.putExtra("usericon", urlIcon);
-                intent.putExtra("username", userName.getText().toString());
-                intent.putExtra("userid", Presenter.getInstance(getContext()).getNo());
-                intent.setClass(getContext(), QrCodeMakeActivity.class);
-                startActivity(intent);
-                break;
             case R.id.vip_span:
                 intent.putExtra("vip", vip);
                 intent.setClass(getContext(), VipActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.bank_span:
-                intent.setClass(getContext(), MyBankCardActivity.class);
-                startActivity(intent);
+            case R.id.collect_span:
+                startActivity(SponsorCollectActivity.class, null);
                 break;
-            case R.id.pay_mananger_span:
-                intent.setClass(getContext(), PayManagerActivity.class);
-                startActivity(intent);
+            case R.id.money_span:
+                startActivity(GetMoreMoneyActivity.class, null);
+                break;
+            case R.id.crash_button:
+                if (!TextUtils.isEmpty(walletMoney.getText().toString().trim())) {
+                    intent.putExtra("total", Float.parseFloat(walletMoney.getText().toString().trim()));
+                    intent.setAction(CRASH_ACTION);
+                    intent.setClass(getContext(), TransferActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.wallet_detail_button:
+                startActivity(InoutcomDetailActivity.class, null);
+                break;
+            case R.id.near_by_span:
+                startActivity(NearByActivity.class, null);
                 break;
             default:
                 break;
@@ -377,32 +408,41 @@ public final class OwnerFragment extends BaseFragment {
                 Presenter.getInstance(getContext()).setAvatar(getContext(), userAvatar);
                 Presenter.getInstance(getContext()).setNo(userInfoResponse.getData().getNo());
                 Presenter.getInstance(getContext()).setNickName(getContext(), userInfoResponse.getData().getNickname());
-                /*Presenter.getInstance(getContext()).getPlaceErrorImage(headIcon, userInfoResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-                LoadBitmap.glideLoad(getActivity(), headIcon, userInfoResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+                Presenter.getInstance(getContext()).getPlaceErrorImage(headIcon, userInfoResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+                walletMoney.setText(userInfoResponse.getData().getBalance());
                 userName.setText(userInfoResponse.getData().getNickname());
                 userId.setText("跑步钱进号:" + userInfoResponse.getData().getNo());
                 circle.setText(String.valueOf(userInfoResponse.getData().getCircleCount()));
-                friends.setText(String.valueOf(userInfoResponse.getData().getFollowCount()));
+                friends.setText(String.valueOf(userInfoResponse.getData().getFriendCount()));
+                likeNum.setText(String.valueOf(userInfoResponse.getData().getFollowCount()));
                 urlIcon = userInfoResponse.getData().getAvatar();
                 vip = userInfoResponse.getData().getVip();
                 cVip = userInfoResponse.getData().getCusvip();
-                if (vip == 1 || cVip == 1) {
+                gVip = userInfoResponse.getData().getGvip();
+                if (vip == 1 || cVip == 1 || gVip == 1) {
+                    userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.golden_back));
+                    sex.setVisibility(View.VISIBLE);
                     LocalLog.d(TAG, "当前用户为VIP");
-                    if (cVip == 0) {
+                    if (gVip == 0) {
+                        if (cVip == 0) {
+                            goldenSponsor.setImageResource(R.drawable.vip_flg);
+                            sex.setImageResource(R.drawable.vip_flg);
+                        } else {
+                            goldenSponsor.setImageResource(R.drawable.vip_sponsor);
+                            sex.setImageResource(R.drawable.vip_sponsor);
+                        }
 
                     } else {
-                        vipFlg.setImageResource(R.drawable.vip_sponsor);
+                        sex.setImageResource(R.drawable.golden_little);
+                        goldenSponsor.setImageResource(R.drawable.golden_big);
                     }
-                    vipFlg.setVisibility(View.VISIBLE);
-                }
-                if (userInfoResponse.getData().getSex() == 1) {
-                    userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.man_head_back));
-                    manWoman.setVisibility(View.GONE);
-                    man.setVisibility(View.VISIBLE);
-                } else if (userInfoResponse.getData().getSex() == 2) {
-                    userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.women_back));
-                    manWoman.setVisibility(View.VISIBLE);
-                    man.setVisibility(View.GONE);
+                    goldenSponsor.setVisibility(View.VISIBLE);
+
+                } else {
+                    LocalLog.d(TAG, "非会员显示男女");
+                    goldenSponsor.setVisibility(View.INVISIBLE);
+                    sex.setVisibility(View.INVISIBLE);
+                    userIcon.setBackground(null);
                 }
             } else if (userInfoResponse.getError() == 1) {
                 exitTokenUnfect();
@@ -426,18 +466,5 @@ public final class OwnerFragment extends BaseFragment {
         }
 
     };
-/*    private View.OnClickListener clickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (view != null) {
-                switch (view.getId()) {
-                    case R.id.login_out:
-                        Presenter.getInstance(getContext()).steLogFlg(false);
-                        getActivity().finish();
-                        break;
-                }
-            }
 
-        }
-    };*/
 }

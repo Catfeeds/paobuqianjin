@@ -1,29 +1,27 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseRecordResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskMyReleaseResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseRecordInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.base.adapter.owner.MyReleaseTaskAdapter;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.ReleaseRecordAdapter;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
-import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefineLoadMoreView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
@@ -31,21 +29,14 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/1/25.
  */
 
-public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implements ReleaseRecordInterface {
+public class ReleaseRecordFragment extends BaseFragment implements ReleaseRecordInterface {
     private final static String TAG = ReleaseRecordFragment.class.getSimpleName();
-    @Bind(R.id.bar_return_drawable)
-    ImageView barReturnDrawable;
-    @Bind(R.id.button_return_bar)
-    RelativeLayout buttonReturnBar;
-    @Bind(R.id.bar_title)
-    TextView barTitle;
-    @Bind(R.id.bar_tv_right)
-    TextView barTvRight;
     @Bind(R.id.release_record)
     SwipeMenuRecyclerView releaseRecord;
     LinearLayoutManager layoutManager;
@@ -53,11 +44,16 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
     RelativeLayout emptyRecordSpan;
     @Bind(R.id.release_refresh)
     SwipeRefreshLayout releaseRefresh;
-    @Bind(R.id.empty_record)
-    ImageView emptyRecord;
     ReleaseRecordAdapter adapter;
+    @Bind(R.id.no_record)
+    ImageView noRecord;
+    @Bind(R.id.no_task)
+    TextView noTask;
+    @Bind(R.id.go_to_release)
+    TextView goToRelease;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGE_SIZE = 10;
+    private final static int RELEASE_PERSON_TASK = 1;
     private ArrayList<ReleaseRecordResponse.DataBeanX.DataBean> myReleaseData = new ArrayList<>();
 
     @Override
@@ -65,10 +61,6 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
         return R.layout.release_record_fg;
     }
 
-    @Override
-    protected String title() {
-        return "发布记录";
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -81,13 +73,11 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getReleaseRecord(pageIndex, PAGE_SIZE);
         return rootView;
     }
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         releaseRefresh = (SwipeRefreshLayout) viewRoot.findViewById(R.id.release_refresh);
         layoutManager = new LinearLayoutManager(getContext());
         releaseRecord = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.release_record);
@@ -97,11 +87,13 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
         releaseRecord.addFooterView(loadMoreView); // 添加为Footer。
         releaseRecord.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         releaseRecord.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
-        adapter = new ReleaseRecordAdapter(getContext(), null);
+        adapter = new ReleaseRecordAdapter(getActivity(), null);
         releaseRecord.setAdapter(adapter);
 
         releaseRefresh.setOnRefreshListener(mRefreshListener);
         loadData(myReleaseData);
+        emptyRecordSpan = (RelativeLayout) viewRoot.findViewById(R.id.empty_record_span);
+        Presenter.getInstance(getContext()).getReleaseRecord(pageIndex, PAGE_SIZE);
     }
 
     /**
@@ -121,8 +113,10 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
                             if (getContext() == null) {
                                 return;
                             }
-                            /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
+                            PaoToastUtils.showLongToast(getActivity(), "没有更多内容");
                             releaseRecord.loadMoreFinish(false, true);
+                            releaseRecord.setLoadMoreView(null); // 设置LoadMoreView更新监听。
+                            releaseRecord.setLoadMoreListener(null); // 加载更多的监听。
                             return;
                         }
                     }
@@ -220,6 +214,7 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
         if (releaseRecordResponse.getError() == 0) {
             if (releaseRefresh.getVisibility() == View.GONE) {
                 releaseRefresh.setVisibility(View.VISIBLE);
+                emptyRecordSpan.setVisibility(View.GONE);
             }
             pageCount = releaseRecordResponse.getData().getPagenation().getTotalPage();
             LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
@@ -233,10 +228,34 @@ public class ReleaseRecordFragment extends BaseBarStyleTextViewFragment implemen
                     }
                 }, 10);
             }
-            pageIndex++;
         } else if (releaseRecordResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
+        } else {
+            if (pageIndex == 1 && releaseRecordResponse.getError() == 1) {
+                LocalLog.d(TAG, "无记录");
+                emptyRecordSpan.setVisibility(View.VISIBLE);
+                releaseRefresh.setVisibility(View.GONE);
+            }
+            if (releaseRecord == null) {
+                return;
+            }
+            releaseRecord.loadMoreFinish(false, true);
+        }
+        pageIndex++;
+    }
+
+    @OnClick(R.id.go_to_release)
+    public void onClick() {
+        startActivityForResult(new Intent(getContext(), TaskReleaseActivity.class), RELEASE_PERSON_TASK);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RELEASE_PERSON_TASK) {
+            pageIndex = 1;
+            Presenter.getInstance(getContext()).getReleaseRecord(pageIndex, PAGE_SIZE);
         }
     }
 }

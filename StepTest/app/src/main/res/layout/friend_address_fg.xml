@@ -7,59 +7,27 @@
         android:id="@+id/bar_friend_address"
         layout="@layout/bar_return_a_style"></include>
 
+    <include
+        android:id="@+id/search_local"
+        layout="@layout/search_bar_text"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/bar_friend_address"></include>
+
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:id="@+id/friend_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bar_friend_address">
+        android:layout_below="@+id/search_local">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
-                android:id="@+id/add_friend_layer"
-                android:layout_width="wrap_content"
-                android:layout_height="55dp">
-
-                <TextView
-                    android:id="@+id/add_friend"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="添加好友"
-                    android:textColor="@color/color_161727"
-                    android:textSize="16dp" />
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/add_friend_line_a"
-                android:layout_width="match_parent"
-                android:layout_height="15dp"
-                android:layout_below="@+id/add_friend_layer"
-                android:background="@color/color_f3f3f5"></ImageView>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/reg_app_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/add_friend_line_a">
-
-            </android.support.v7.widget.RecyclerView>
-
-            <ImageView
-                android:id="@+id/add_friend_line_b"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_below="@+id/reg_app_recycler"
-                android:background="@color/color_f3f3f5" />
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/un_reg_app_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/add_friend_line_b">
+                android:layout_height="wrap_content">
 
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>

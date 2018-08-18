@@ -265,6 +265,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/button_2"
                 android:layout_below="@+id/task_desc"
+                android:lineSpacingExtra="5dp"
                 android:textColor="@color/color_161727"
                 android:textSize="12dp" />
 

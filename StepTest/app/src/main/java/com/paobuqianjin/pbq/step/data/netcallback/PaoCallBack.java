@@ -27,8 +27,8 @@ public abstract class PaoCallBack extends StringCallback {
             LocalLog.d(TAG, "没有网络");
             PaoToastUtils.showShortToastNoMore(PaoBuApplication.getApplication(),"网络连接异常，请检查手机网络是否已开启");
         }
-
         e.printStackTrace();
+
 
         if(o == null){
             return;
@@ -47,6 +47,15 @@ public abstract class PaoCallBack extends StringCallback {
     @Override
     public void onResponse(String s, int i) {
         LocalLog.d(TAG, myUrl + "----> \n" + s);
+        /*if (s != null) {
+            if (s.contains("提交内容不符合相关规范")) {
+                ErrorCode errorCode = new ErrorCode();
+                errorCode.setError(-1);
+                errorCode.setMessage("提交内容不符合相关规范");
+                onFal(null, "提交内容不符合相关规范", errorCode);
+                return;
+            }
+        }*/
         try {
             ErrorCode code = new Gson().fromJson(s, ErrorCode.class);
             if (code.getError() == 0) {

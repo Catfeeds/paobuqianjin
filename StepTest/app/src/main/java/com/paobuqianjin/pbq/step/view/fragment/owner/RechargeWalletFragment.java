@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SevenAliPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.YsPayOrderResponse;
@@ -173,6 +174,11 @@ public class RechargeWalletFragment extends BaseBarStyleTextViewFragment impleme
 
     @Override
     public void response(YsPayOrderResponse ysPayOrderResponse) {
+
+    }
+
+    @Override
+    public void response(SevenAliPayResponse sevenAliPayResponse) {
 
     }
 }

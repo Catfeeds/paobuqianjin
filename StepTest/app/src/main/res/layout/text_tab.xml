@@ -5,11 +5,11 @@
 
     <TextView
         android:id="@+id/tab_text"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@+id/icon"
+        android:gravity="center"
         android:textColor="@color/color_161727"
-        android:textSize="15dp"
-        android:textStyle="bold" />
+        android:textSize="15dp" />
 </RelativeLayout>

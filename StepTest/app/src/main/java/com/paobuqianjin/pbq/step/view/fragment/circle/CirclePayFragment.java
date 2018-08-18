@@ -2,26 +2,24 @@ package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,11 +31,13 @@ import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.customview.WalletPassDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PayOrderParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SevenAliPayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WalletPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WxPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.YsPayOrderResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
+import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
@@ -50,8 +50,6 @@ import com.paobuqianjin.pbq.step.view.activity.ForgetPayWordActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentifedSetPassActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
-import com.paobuqianjin.pbq.step.view.activity.PayManagerActivity;
-import com.paobuqianjin.pbq.step.view.activity.TransferCardActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
@@ -59,10 +57,9 @@ import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-import com.unionpay.UPQuerySEPayInfoCallback;
+import com.unionpay.UPPayAssistEx;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
-import com.unionpay.UPPayAssistEx;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -129,6 +126,18 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     RelativeLayout yunsPaySpan;
     @Bind(R.id.circle_pay_fg)
     RelativeLayout circlePayFg;
+    @Bind(R.id.ali_pay_icon)
+    ImageView aliPayIcon;
+    @Bind(R.id.ali_pay_des)
+    TextView aliPayDes;
+    @Bind(R.id.ali_pay_select)
+    ImageView aliPaySelect;
+    @Bind(R.id.ali_ico_span)
+    RelativeLayout aliIcoSpan;
+    @Bind(R.id.ali_pay_span)
+    RelativeLayout aliPaySpan;
+    @Bind(R.id.rl_money)
+    RelativeLayout rlMoney;
     private WalletPassDialog walletPassDialog;
     private final static String CIRCLE_ID = "id";
     private final static String CIRCLE_NAME = "name";
@@ -152,14 +161,15 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     private ProgressDialog dialog;
     private PayReq req;
     private PayStyles payStyles = PayStyles.WxPay;
-    private boolean[] selectPay = new boolean[3];
-    private ImageView[] selectIcon = new ImageView[3];
+    private boolean[] selectPay = new boolean[4];
+    private ImageView[] selectIcon = new ImageView[4];
     private IWXAPI msgApi;
+    private final static String PAY_ACTION_EDIT = "android.intent.action.PAY_EDIT";
     private final static String PAY_RESULT_ACTION = "android.intent.action.paobuqianjin.PAY_RESULT";
     private final static String PAY_ACTION = "android.intent.action.PAY";
     private final static String PAY_RECHARGE = "com.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
     private final static String PAY_FOR_STYLE = "pay_for_style";
-    private NormalDialog normalDialog, walletLeakDialog, passWordSetDialog;
+    private NormalDialog normalDialog, walletLeakDialog, passWordSetDialog, identifyDialog;
     public UserInfoResponse.DataBean userInfo;
 
     public enum PayStyles {
@@ -181,6 +191,9 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     }
 
     private String serverMode = "00";
+    WebView webview;
+    private boolean isSenPayAli = false;
+    private float balanceWallet = 0.0f;
 
     @Override
     protected String title() {
@@ -209,8 +222,13 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         return rootView;
     }
 
+    public void payRetry() {
+        Presenter.getInstance(getContext()).attachUiInterface(this);
+    }
+
     @Override
     protected void initView(View viewRoot) {
+        bankDes = (TextView) viewRoot.findViewById(R.id.bank_des);
         setToolBarListener(new BaseBarImageViewFragment.ToolBarListener() {
             @Override
             public void clickLeft() {
@@ -230,6 +248,9 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                                 break;
                             case "redpacket":
                                 normalDialog.setMessage("是否取消商家红包的发布");
+                                break;
+                            case "red_map":
+                                normalDialog.setMessage("是否取消遍地红包的发布");
                                 break;
                             default:
                                 break;
@@ -272,6 +293,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         wechatPaySelect = (ImageView) viewRoot.findViewById(R.id.wechat_pay_select);
         walletPaySelect = (ImageView) viewRoot.findViewById(R.id.wallet_pay_select);
         yunsPaySelect = (ImageView) viewRoot.findViewById(R.id.yuns_pay_select);
+        aliPaySelect = (ImageView) viewRoot.findViewById(R.id.ali_pay_select);
         moneyNum = (TextView) viewRoot.findViewById(R.id.money_num);
         rechargeEdit = (EditText) viewRoot.findViewById(R.id.recharge_edit);
         rechargeEdit.addTextChangedListener(textWatcher);
@@ -280,13 +302,19 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             moneyNum.setVisibility(View.GONE);
             rechargeEdit.setVisibility(View.VISIBLE);
         } else if (PAY_ACTION.equals(intent.getAction())) {
-            moneyNum.setText(pay);
+            String format = String.format(getString(R.string.pay_money), Float.parseFloat(pay));
+            moneyNum.setText(format);
             LocalLog.d(TAG, PAY_ACTION + "ENTER");
+        } else if (PAY_ACTION_EDIT.equals(intent.getAction())) {
+            String format = String.format(getString(R.string.pay_money), Float.parseFloat(pay));
+            moneyNum.setText(format);
+            LocalLog.d(TAG, PAY_ACTION_EDIT + "ENTER");
         }
 
         selectIcon[0] = wechatPaySelect;
         selectIcon[1] = walletPaySelect;
         selectIcon[2] = yunsPaySelect;
+        selectIcon[3] = aliPaySelect;
         if (payStyles.ordinal() == PayStyles.WxPay.ordinal()) {
             LocalLog.d(TAG, "默认微信支付");
             walletPaySelect.setImageDrawable(null);
@@ -301,8 +329,33 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
 
         userInfo = Presenter.getInstance(getContext()).getCurrentUser();
         UpdateUnSelect(0);
+        getWalletBalance();
+        confirmPay = (Button) viewRoot.findViewById(R.id.confirm_pay);
     }
 
+    private void getWalletBalance() {
+        Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlUser + FlagPreference.getUid(getContext()), null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    JSONObject jsonObj = new JSONObject(s);
+                    jsonObj = jsonObj.getJSONObject("data");
+                    String balance = jsonObj.getString("balance");
+                    bankDes.setText("钱包（余额" + balance + ")");
+                    balanceWallet = Float.parseFloat(balance);
+                } catch (Exception j) {
+                    j.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean == null) {
+                    PaoToastUtils.showLongToast(getContext(), getString(R.string.error_red));
+                }
+            }
+        });
+    }
 
     private TextWatcher textWatcher = new TextWatcher() {
         @Override
@@ -331,6 +384,9 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        if (webview != null) {
+            webview = null;
+        }
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
@@ -360,7 +416,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         return -1;
     }
 
-    @OnClick({R.id.choice_ico_span, R.id.bank_ico_span, R.id.confirm_pay, R.id.yuns_ico_span})
+    @OnClick({R.id.choice_ico_span, R.id.bank_ico_span, R.id.confirm_pay, R.id.yuns_ico_span, R.id.ali_ico_span})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.choice_ico_span:
@@ -390,6 +446,47 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                 break;
             case R.id.confirm_pay:
                 LocalLog.d(TAG, "确认支付");
+                if (TextUtils.isEmpty(rechargeEdit.getText().toString()) && TextUtils.isEmpty(moneyNum.getText())) {
+                    PaoToastUtils.showLongToast(getActivity(), "金额不能为空");
+                    return;
+                }
+                if (getSelect() == -1 || getSelect() == 0) {
+                    PaoToastUtils.showLongToast(getActivity(), "请选择支付方式");
+                    return;
+                }
+                if (getSelect() == 1) {
+                    float money = 0.0f;
+                    if (rechargeEdit.getVisibility() == View.VISIBLE) {
+                        try {
+                            money = Float.parseFloat(rechargeEdit.getText().toString());
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                            Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        if (money <= 0) {
+                            Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    } else {
+                        money = Float.parseFloat(pay);
+                    }
+                    if (!canUseWallet(money)) {
+                        LocalLog.d(TAG, "余额不足");
+                        return;
+                    }
+                }
+                confirmPay.setBackground(getDrawableResource(R.color.color_b8bbbd));
+                confirmPay.setEnabled(false);
+                confirmPay.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isAdded() && confirmPay != null) {
+                            confirmPay.setBackground(getDrawableResource(R.drawable.rect_no_corner));
+                            confirmPay.setEnabled(true);
+                        }
+                    }
+                }, 15000);
                 Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
                     @Override
                     public void onIdentifed() {
@@ -450,6 +547,15 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                                             .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
                                     Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
                                 }
+                            } else if ("red_map".equals(payAction)) {
+                                LocalLog.d(TAG, "遍地红包订单 id " + id);
+                                if (!TextUtils.isEmpty(id)) {
+                                    wxPayOrderParam.setRed_map_id(id)
+                                            .setPayment_type("wx")
+                                            .setOrder_type(payAction)
+                                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                                    Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                                }
                             }
 
                         } else if (style == 1) {
@@ -501,6 +607,9 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                         } else if (style == 2) {
                             LocalLog.d(TAG, "使用云闪付");
                             payYunSanRequest();
+                        } else if (style == 3) {
+                            LocalLog.d(TAG, "七分钱支付宝");
+                            sevenPayAli();
                         } else {
                             Toast.makeText(getContext(), "请选择一种支付方式", Toast.LENGTH_SHORT).show();
                         }
@@ -508,8 +617,8 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
 
                     @Override
                     public void onUnidentify() {
-                        Intent intent = new Intent(getActivity(), IdentityAuth1Activity.class);
-                        startActivityForResult(intent, 1);
+                        LocalLog.d(TAG, "onUnidentify()");
+                        identifyDialog();
                     }
 
                     @Override
@@ -531,21 +640,124 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                     selectIcon[2].setImageDrawable(getDrawableResource(R.drawable.selected_icon));
                     selectPay[2] = true;
                 }
-
+                break;
+            case R.id.ali_ico_span:
+                if (selectPay[3]) {
+                    LocalLog.d(TAG, "取消支付宝支付");
+                    selectPay[3] = false;
+                    selectIcon[3].setImageDrawable(null);
+                } else {
+                    LocalLog.d(TAG, "选择微信,设置其他为未选中状态");
+                    UpdateUnSelect(3);
+                    selectIcon[3].setImageDrawable(getDrawableResource(R.drawable.selected_icon));
+                    selectPay[3] = true;
+                }
                 break;
         }
 
     }
 
+    private void identifyDialog() {
+        if (identifyDialog == null) {
+            identifyDialog = new NormalDialog(getActivity());
+            identifyDialog.setMessage(getString(R.string.identify_tips));
+            identifyDialog.setYesOnclickListener("去认证", new NormalDialog.onYesOnclickListener() {
+                @Override
+                public void onYesClick() {
+                    identifyDialog.dismiss();
+                    Intent intent = new Intent(getActivity(), IdentityAuth1Activity.class);
+                    startActivityForResult(intent, 1);
+                }
+            });
+            identifyDialog.setNoOnclickListener("取消支付", new NormalDialog.onNoOnclickListener() {
+                @Override
+                public void onNoClick() {
+                    identifyDialog.dismiss();
+                }
+            });
+        }
+
+        if (!identifyDialog.isShowing())
+            identifyDialog.show();
+
+    }
+
+    private void sevenPayAli() {
+        LocalLog.d(TAG, "云闪支付");
+        float money = 0.00f;
+        if (rechargeEdit.getVisibility() == View.VISIBLE) {
+            try {
+                money = Float.parseFloat(rechargeEdit.getText().toString());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (money <= 0) {
+                Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } else {
+            money = Float.parseFloat(pay);
+        }
+
+        PayOrderParam wxPayOrderParam = new PayOrderParam();
+        if ("circle".equals(payAction)) {
+            LocalLog.d(TAG, "圈子支付");
+            if (!"".equals(id)) {
+                wxPayOrderParam.setCircleid(Integer.parseInt(id))
+                        .setPayment_type("sevenpay")
+                        .setOrder_type(payAction)
+                        .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+            }
+        } else if ("user".equals(payAction)) {
+            LocalLog.d(TAG, "用户订单");
+            wxPayOrderParam
+                    .setPayment_type("sevenpay")
+                    .setOrder_type(payAction)
+                    .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+            Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+        } else if ("task".equals(payAction)) {
+            LocalLog.d(TAG, "任务订单");
+            if (!"".equals(taskno)) {
+                wxPayOrderParam
+                        .setPayment_type("sevenpay")
+                        .setOrder_type(payAction)
+                        .setDeviceType("1")
+                        .setTaskno(taskno)
+                        .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+            }
+        } else if ("redpacket".equals(payAction)) {
+            LocalLog.d(TAG, "红包订单");
+            if (!"".equals(id)) {
+                wxPayOrderParam.setRed_id(Integer.parseInt(id))
+                        .setPayment_type("sevenpay")
+                        .setDeviceType("1")
+                        .setOrder_type(payAction)
+                        .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+            }
+        } else if ("red_map".equals(payAction)) {
+            if (!TextUtils.isEmpty(id)) {
+                wxPayOrderParam.setRed_map_id(id)
+                        .setPayment_type("sevenpay")
+                        .setDeviceType("1")
+                        .setOrder_type(payAction)
+                        .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+            }
+        }
+    }
+
     private void payYunSanRequest() {
-        if (Build.VERSION.SDK_INT >= 23) {
             String[] permissions = {
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.READ_PHONE_STATE,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
             };
             requestPermission(permissions);
-        }
     }
 
 
@@ -613,6 +825,17 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                         .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
                 Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
             }
+        } else if ("red_map".equals(payAction)) {
+            LocalLog.d(TAG, "红包订单");
+            if (!TextUtils.isEmpty(id)) {
+                wxPayOrderParam.setRed_map_id(id)
+                        .setPayment_type("yspay")
+                        .setDeviceType("1")
+                        .setTerminalId(terminalId)
+                        .setOrder_type(payAction)
+                        .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+            }
         }
     }
 
@@ -645,7 +868,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
 
     private boolean canUseWallet(float payFloat) {
         boolean walletAble = true;
-        if (userInfo != null && Float.parseFloat(userInfo.getBalance()) < payFloat) {
+        if (balanceWallet < payFloat) {
             LocalLog.d(TAG, "余额不足");
             if (walletLeakDialog == null) {
                 walletLeakDialog = new NormalDialog(getActivity());
@@ -678,10 +901,6 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
         if (rechargeEdit.getVisibility() == View.VISIBLE) {
             try {
                 money = Float.parseFloat(rechargeEdit.getText().toString());
-                if (!canUseWallet(money)) {
-                    LocalLog.d(TAG, "余额不足");
-                    return;
-                }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
@@ -731,6 +950,15 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
             LocalLog.d(TAG, "红包订单");
             if (!"".equals(id)) {
                 wxPayOrderParam.setRed_id(Integer.parseInt(id))
+                        .setPayment_type("wallet")
+                        .setOrder_type(payAction)
+                        .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+            }
+        } else if ("red_map".equals(payAction)) {
+            LocalLog.d(TAG, "遍地红包订单");
+            if (!TextUtils.isEmpty(id)) {
+                wxPayOrderParam.setRed_map_id(id)
                         .setPayment_type("wallet")
                         .setOrder_type(payAction)
                         .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
@@ -868,6 +1096,117 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                 exitTokenUnfect();
             } else {
                 PaoToastUtils.showShortToast(getContext(), ysPayOrderResponse.getMessage());
+            }
+        }
+    }
+
+    private void querySevenPayOrder() {
+        Map<String, String> params = new HashMap<>();
+        String outTradeNo = Presenter.getInstance(getContext()).getOutTradeNo();
+        params.put("order_no", outTradeNo);
+        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlSevenPayResultOrderNo, params, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    JSONObject jsonObj = new JSONObject(s);
+                    jsonObj = jsonObj.getJSONObject("data");
+                    String payResult = jsonObj.getString("total_fee");
+                    LocalLog.d(TAG, "payResult = " + payResult);
+                    ((PaoBuPayActivity) getActivity()).showPaySuccessSeven(payResult);
+                } catch (JSONException j) {
+                    j.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                LocalLog.d(TAG, "查单失败！");
+                if (errorBean != null && !"交易不成功".equals(errorBean.getMessage())) {
+                    ((PaoBuPayActivity) getActivity()).showPaySuccessSeven(null);
+                }
+            }
+        });
+    }
+
+    private static boolean checkAlipayInstalled(Context context) {
+        Uri uri = Uri.parse("alipays://platformapi/startApp");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+        return componentName != null;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LocalLog.d(TAG, "onResume() payAction =" + payAction);
+        if (isSenPayAli) {
+            LocalLog.d(TAG, "支付完成，查询结果");
+            querySevenPayOrder();
+            isSenPayAli = false;
+        }
+    }
+
+    @Override
+    public void response(SevenAliPayResponse sevenAliPayResponse) {
+        if (sevenAliPayResponse.getError() == 0 && isAdded()) {
+            if (sevenAliPayResponse.getData().getPayUrl() != null) {
+                Presenter.getInstance(getContext()).setOutTradeNo(sevenAliPayResponse.getData().getMchOrderId());
+                Presenter.getInstance(getContext()).setTradeStyle(payAction);
+                if (webview == null) {
+                    webview = new WebView(getActivity());
+                    WebSettings webSettings = webview.getSettings();
+                    webSettings.setJavaScriptEnabled(true);
+                    // 设置可以访问文件
+                    webSettings.setAllowFileAccess(true);
+                    // 设置支持缩放
+                    webSettings.setBuiltInZoomControls(true);
+                    webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+                    // webSettings.setDatabaseEnabled(true);
+                    // 使用localStorage则必须打开
+                    webSettings.setDomStorageEnabled(true);
+                    webSettings.setGeolocationEnabled(true);
+                }
+                LocalLog.d(TAG, "PAYURL =" + sevenAliPayResponse.getData().getPayUrl());
+                if (checkAlipayInstalled(getContext())) {
+                    webview.setWebViewClient(new WebViewClient() {
+                        @Override
+                        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                            LocalLog.d(TAG, "url = " + url);
+                            if (url.contains("platformapi/startapp")) {
+                                try {
+                                    Intent intent;
+                                    intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                                    intent.addCategory("android.intent.category.BROWSABLE");
+                                    intent.setComponent(null);
+                                    startActivity(intent);
+                                    isSenPayAli = true;
+                                } catch (Exception e) {
+
+                                }
+                            } else if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.M)
+                                    && (url.contains("platformapi") && url.contains("startapp"))) {
+                                try {
+                                    Intent intent;
+                                    intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                                    intent.addCategory("android.intent.category.BROWSABLE");
+                                    intent.setComponent(null);
+                                    startActivity(intent);
+                                    isSenPayAli = true;
+                                } catch (Exception e) {
+
+                                }
+                            } else {
+                                view.loadUrl(url);
+                                isSenPayAli = true;
+                            }
+                            return true;
+                        }
+                    });
+                } else {
+                    LocalLog.d(TAG, "无支付宝客户端");
+                }
+                webview.loadUrl(sevenAliPayResponse.getData().getPayUrl());
             }
         }
     }

@@ -17,8 +17,8 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.FriendDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 
 import java.util.List;
@@ -59,9 +59,7 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
     private void upDateListItem(NearByViewHolder holder, int position) {
         LocalLog.d(TAG, "upDateListItem() enter");
         if (mData.get(position) instanceof NearByResponse.DataBeanX.DataBean) {
-/*            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((NearByResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
-                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(context,holder.userNearIcon, ((NearByResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((NearByResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.dearName.setText(((NearByResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             String stepFormat = context.getResources().getString(R.string.near_by_step);
@@ -85,13 +83,13 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
                     holder.btFollow.setText("已关注");
                 }
             }
-            if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getSex() == 1) {
+            /*if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getSex() == 1) {
                 holder.sexIcon.setImageResource(R.drawable.man);
                 holder.sexIcon.setVisibility(View.VISIBLE);
             } else if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getSex() == 2) {
                 holder.sexIcon.setImageResource(R.drawable.woman_flag);
                 holder.sexIcon.setVisibility(View.VISIBLE);
-            }
+            }*/
 /*            if (((NearByResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
             }*/
@@ -171,7 +169,7 @@ public class NearByAdapter extends RecyclerView.Adapter<NearByAdapter.NearByView
                     Intent intent = new Intent();
                     //TODO ACTION_SCAN_USERID
                     intent.putExtra("userid", userid);
-                    intent.setClass(context, UserCenterActivity.class);
+                    intent.setClass(context, FriendDetailActivity.class);
                     context.startActivity(intent);
                 }
             });

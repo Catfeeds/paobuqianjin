@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_800000">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/red_back_reg"></ImageView>
+
+    <RelativeLayout
+        android:id="@+id/start_red_kg"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+
+        <ImageView
+            android:id="@+id/reg_red_unopne"
+            android:layout_width="match_parent"
+            android:layout_height="360dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/reg_red_unopne" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="55dp"
+            android:text="连续登录21天有更多惊喜"
+            android:textColor="@color/color_f88"
+            android:textSize="12dp" />
+
+        <ImageView
+            android:id="@+id/cancel_open"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/reg_red_unopne"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/close_reg_pkg" />
+
+        <RelativeLayout
+            android:id="@+id/rec_reg_pkg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <TextView
+                android:id="@+id/reg_pkg_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="7dp"
+                android:text="新人专享大红包"
+                android:textColor="@color/color_f8"
+                android:textSize="15dp" />
+
+            <ImageView
+                android:id="@+id/open_first"
+                android:layout_width="81dp"
+                android:layout_height="81dp"
+                android:layout_below="@+id/reg_pkg_des"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="18dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/op_button" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rec_reg_pkg"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="155dp"
+            android:gravity="center"
+            android:text="@string/day_reg_red_des"
+            android:textColor="#A8FFFFFF"
+            android:textSize="12dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/red_result"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/reg_red_opned"
+            android:layout_width="match_parent"
+            android:layout_height="365dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/reg_red_opned" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/reg_red_opned"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/day_reward"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="#EC6244"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/step_dollar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="25dp"
+                android:textColor="#EC6648"
+                android:textSize="25dp" />
+
+            <TextView
+                android:id="@+id/day_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:textColor="#B8EC6244"
+                android:textSize="15dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:lineSpacingExtra="5dp"
+                android:textColor="@color/color_f8"
+                android:textSize="18dp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/reg_red_opned"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:gravity="center"
+            android:text="@string/day_reg_red_des"
+            android:textColor="#A8FFFFFF"
+            android:textSize="12dp" />
+
+        <ImageView
+            android:id="@+id/opened_cancel"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/reg_red_opned"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="36dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/close_reg_pkg" />
+    </RelativeLayout>
+</RelativeLayout>

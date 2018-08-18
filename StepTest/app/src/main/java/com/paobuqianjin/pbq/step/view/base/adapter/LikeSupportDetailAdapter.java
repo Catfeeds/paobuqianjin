@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.FriendDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 
 import java.util.List;
@@ -53,8 +53,7 @@ public class LikeSupportDetailAdapter extends RecyclerView.Adapter<LikeSupportDe
 
     private void updateListItem(LikeSupportViewHolder holder, int position) {
         if (mData.get(position) instanceof DynamicLikeListResponse.DataBeanX.DataBean) {
-            /*Presenter.getInstance(context).getPlaceErrorImage(holder.circleLogoSearch, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(context, holder.circleLogoSearch, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+            Presenter.getInstance(context).getPlaceErrorImage(holder.circleLogoSearch, ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.searchCircleDesListName.setText(((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.userid = ((DynamicLikeListResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
             /*查询我与该用户的关注状态*/
@@ -115,7 +114,7 @@ public class LikeSupportDetailAdapter extends RecyclerView.Adapter<LikeSupportDe
                         Intent intent = new Intent();
                         //TODO ACTION_SCAN_USERID
                         intent.putExtra("userid", userid);
-                        intent.setClass(context, UserCenterActivity.class);
+                        intent.setClass(context, FriendDetailActivity.class);
                         context.startActivity(intent);
                         break;
                     case R.id.love_number:

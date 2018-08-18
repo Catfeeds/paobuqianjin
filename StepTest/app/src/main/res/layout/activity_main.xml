@@ -19,6 +19,7 @@
         android:orientation="horizontal">
 
         <RelativeLayout
+            android:paddingTop="8dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -29,12 +30,12 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:drawablePadding="0dp"
+                android:drawablePadding="-7dp"
                 android:drawableTop="@drawable/home_s"
                 android:gravity="center"
                 android:onClick="onTabSelect"
                 android:paddingBottom="0dip"
-                android:paddingTop="7dip"
+                android:paddingTop="-7dp"
                 android:scaleType="matrix"
                 android:text="@string/home_page"
                 android:textColor="@color/color_6c71c4"
@@ -43,6 +44,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:paddingTop="8dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -53,20 +55,30 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:drawablePadding="0dp"
+                android:drawablePadding="-7dp"
                 android:drawableTop="@drawable/task_n"
                 android:gravity="center"
                 android:onClick="onTabSelect"
                 android:paddingBottom="0dip"
-                android:paddingTop="7dip"
+                android:paddingTop="-7dp"
                 android:scaleType="matrix"
-                android:text="任务"
+                android:text="会话"
                 android:textColor="@color/color_8a8a8a"
                 android:textSize="12dp" />
 
+            <com.paobuqianjin.pbq.step.view.base.view.DragPointView
+                android:id="@+id/tv_unread"
+                android:layout_width="19dp"
+                android:layout_height="19dp"
+                android:layout_marginRight="14dp"
+                android:layout_alignParentRight="true"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:visibility="invisible" />
         </RelativeLayout>
 
         <RelativeLayout
+            android:paddingTop="8dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -75,12 +87,14 @@
                 android:id="@+id/btn_friend_circle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawablePadding="0dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:drawablePadding="-7dp"
                 android:drawableTop="@drawable/circle_n"
                 android:gravity="center"
                 android:onClick="onTabSelect"
                 android:paddingBottom="0dip"
-                android:paddingTop="7dip"
+                android:paddingTop="2dp"
                 android:scaleType="matrix"
                 android:text="@string/friend_circle"
                 android:textColor="@color/color_8a8a8a"
@@ -90,6 +104,8 @@
 
 
         <RelativeLayout
+            android:paddingTop="8dp"
+            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -100,12 +116,12 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
-                android:drawablePadding="0dp"
+                android:drawablePadding="-7dp"
                 android:drawableTop="@drawable/list_n"
                 android:gravity="center"
                 android:onClick="onTabSelect"
                 android:paddingBottom="0dip"
-                android:paddingTop="7dip"
+                android:paddingTop="2dp"
                 android:scaleType="matrix"
                 android:text="@string/try_ones"
                 android:textColor="@color/color_8a8a8a"
@@ -114,6 +130,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:paddingTop="8dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
@@ -122,12 +139,12 @@
                 android:id="@+id/btn_owner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawablePadding="0dp"
+                android:drawablePadding="-7dp"
                 android:drawableTop="@drawable/me_n"
                 android:gravity="center"
                 android:onClick="onTabSelect"
                 android:paddingBottom="0dip"
-                android:paddingTop="7dip"
+                android:paddingTop="2dp"
                 android:scaleType="matrix"
                 android:text="@string/owner_center"
                 android:textColor="@color/color_8a8a8a"

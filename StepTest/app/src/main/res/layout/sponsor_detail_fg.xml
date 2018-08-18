@@ -8,8 +8,10 @@
         layout="@layout/bar_return_a_style" />
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:id="@+id/sponsor_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/v_empty"
         android:layout_below="@+id/sponsor_detail">
 
         <RelativeLayout
@@ -77,6 +79,9 @@
                 android:layout_height="45dp"
                 android:layout_below="@+id/sponsor_face_span"
                 android:gravity="center_vertical"
+                android:maxEms="16"
+                android:maxLength="32"
+                android:maxLines="1"
                 android:paddingLeft="14dp"
                 android:text=""
                 android:textColor="@color/color_161727"
@@ -265,6 +270,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/sponsor_sample"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:layout_below="@+id/goto_sponsor"
@@ -302,6 +308,150 @@
                     android:src="@drawable/bitmap_null"
                     android:visibility="gone" />
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/sponsor_pic_line"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/sponsor_sample"
+                android:layout_marginTop="20dp"
+                android:background="@color/color_d9d9d9" />
+
+            <LinearLayout
+                android:id="@+id/sponsor_opreation"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_below="@+id/sponsor_pic_line"
+                android:layout_marginLeft="11dp"
+                android:layout_marginRight="11dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/sponsor_op"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/collect_sponsor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/kepp_sponsor_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:id="@+id/kepp_sponsor_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:includeFontPadding="false"
+                        android:text="收藏"
+                        android:textColor="@color/color_161727"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/like_sponsor_span"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/like_sponsor_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/un_like" />
+
+                    <TextView
+                        android:id="@+id/like_sponsor_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:includeFontPadding="false"
+                        android:text="0"
+                        android:textColor="@color/color_161727"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/sponsor_content_span"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/sponsor_content"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/content_sponsor" />
+
+                    <TextView
+                        android:id="@+id/sponsor_content_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:includeFontPadding="false"
+                        android:text="0"
+                        android:textColor="@color/color_161727"
+                        android:textSize="15dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/new_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sponsor_opreation"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="33dp"
+                android:text="最新评论"
+                android:textColor="@color/color_161727"
+                android:textSize="14dp" />
+
+            <ImageView
+                android:id="@+id/line_content"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/new_content"
+                android:layout_marginTop="15dp"
+                android:background="@color/color_d9d9d9" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/content_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line_content">
+
+            </android.support.v7.widget.RecyclerView>
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+    <View
+        android:id="@+id/v_empty"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible" />
+
+    <include
+        android:id="@+id/linear_edit"
+        layout="@layout/response_edit_span"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

@@ -22,6 +22,7 @@ public class DefineLoadMoreView extends LinearLayout implements SwipeMenuRecycle
     private TextView mTvMessage;
 
     private SwipeMenuRecyclerView.LoadMoreListener mLoadMoreListener;
+    private View customEmptyView;
 
     public DefineLoadMoreView(Context context) {
         super(context);
@@ -75,10 +76,13 @@ public class DefineLoadMoreView extends LinearLayout implements SwipeMenuRecycle
             } else {
                 mLoadingView.setVisibility(GONE);
                 mTvMessage.setVisibility(VISIBLE);
-                mTvMessage.setText("没有更多数据啦");
+                mTvMessage.setText("暂时没有更多内容");
             }
         } else {
             setVisibility(INVISIBLE);
+        }
+        if (customEmptyView != null) {
+            customEmptyView.setVisibility(GONE);
         }
     }
 
@@ -105,6 +109,10 @@ public class DefineLoadMoreView extends LinearLayout implements SwipeMenuRecycle
     public void onLoadError(int errorCode, String errorMessage) {
         setVisibility(VISIBLE);
         mLoadingView.setVisibility(GONE);
+        if (customEmptyView != null) {
+            customEmptyView.setVisibility(VISIBLE);
+            return;
+        }
         mTvMessage.setVisibility(VISIBLE);
 
         // 这里要不直接设置错误信息，要不根据errorCode动态设置错误数据。
@@ -117,5 +125,9 @@ public class DefineLoadMoreView extends LinearLayout implements SwipeMenuRecycle
     @Override
     public void onClick(View v) {
         if (mLoadMoreListener != null) mLoadMoreListener.onLoadMore();
+    }
+
+    public void setCustomEmptyView(View customEmptyView) {
+        this.customEmptyView = customEmptyView;
     }
 }

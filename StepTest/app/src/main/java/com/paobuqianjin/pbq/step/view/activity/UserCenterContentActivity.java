@@ -8,6 +8,7 @@ import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.bundle.MessageContentBundleData;
 import com.paobuqianjin.pbq.step.data.bean.bundle.MessageLikeBundleData;
+import com.paobuqianjin.pbq.step.data.bean.bundle.MessageSystemBundleData;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.fragment.owner.ContentEmptyFragment;
 import com.paobuqianjin.pbq.step.view.fragment.owner.SystemMsgFragment;
@@ -52,6 +53,8 @@ public class UserCenterContentActivity extends BaseActivity {
                         .show(userContentFragment)
                         .commit();
             } else if (SYS_MESSAGE_ACTION.equals(intent.getAction())) {
+                MessageSystemBundleData messageSystemBundleData = (MessageSystemBundleData) intent.getParcelableExtra(getPackageName());
+                systemMsgFragment.setData(messageSystemBundleData);
                 getSupportFragmentManager().beginTransaction()
                         .add(R.id.user_content_container, systemMsgFragment)
                         .show(systemMsgFragment)

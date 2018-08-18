@@ -47,6 +47,8 @@ import com.paobuqianjin.pbq.step.activity.sponsor.SponsorInfoActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorTMapActivity;
 import com.paobuqianjin.pbq.step.adapter.DynamicAddPicAdapter;
 import com.paobuqianjin.pbq.step.adapter.GridAddPicAdapter;
+import com.paobuqianjin.pbq.step.data.alioss.AliOss;
+import com.paobuqianjin.pbq.step.data.alioss.OssService;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostDynamicParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseDynamicResponse;
@@ -58,8 +60,8 @@ import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
@@ -489,26 +491,22 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     }
 
     private void showA(String imagePath) {
-        /*Presenter.getInstance(getContext()).getImage(imagePath, picA);*/
-        LoadBitmap.glideLoad(getActivity(), picA, imagePath);
+        Presenter.getInstance(getContext()).getImage(imagePath, picA);
         picB.setVisibility(View.VISIBLE);
     }
 
     private void showB(String imagePath) {
-        /*Presenter.getInstance(getContext()).getImage(imagePath, picB);*/
-        LoadBitmap.glideLoad(getActivity(), picB, imagePath);
+        Presenter.getInstance(getContext()).getImage(imagePath, picB);
         picC.setVisibility(View.VISIBLE);
     }
 
     private void showC(String imagePath) {
-        /*Presenter.getInstance(getContext()).getImage(imagePath, picC);*/
-        LoadBitmap.glideLoad(getActivity(), picC, imagePath);
+        Presenter.getInstance(getContext()).getImage(imagePath, picC);
         picD.setVisibility(View.VISIBLE);
     }
 
     private void showD(String imagePath) {
-        /*Presenter.getInstance(getContext()).getImage(imagePath, picD);*/
-        LoadBitmap.glideLoad(getActivity(), picD, imagePath);
+        Presenter.getInstance(getContext()).getImage(imagePath, picD);
     }
 
     public class LogoUpTask extends AsyncTask<List<String>, Integer, List<String>> {
@@ -522,17 +520,17 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         @Override
         protected List<String> doInBackground(List<String>[] lists) {
             LocalLog.d(TAG, "length  =" + lists.length);
+            AliOss aliOss = new AliOss();
+            aliOss.initRegion(getContext().getApplicationContext());
+            OssService ossService = aliOss.initOSS(getContext().getApplicationContext());
             List<String> url = new ArrayList<>();
             for (int i = 0; i < lists.length; i++) {
                 for (int j = 0; j < lists[i].size(); j++) {
                     LocalLog.d(TAG, "path = " + lists[i].get(j));
-                    ResultHelper result = null;
-                    PutObjectSample putObjectSample = new PutObjectSample(qServiceCfg);
                     if (getContext() != null) {
-                        result = putObjectSample.start(lists[i].get(j), getContext().getApplicationContext());
-                        if (result != null && result.cosXmlResult != null) {
-                            url.add(result.cosXmlResult.accessUrl);
-                        }
+                        String resultStr = ossService.asyncPutImageLocal(lists[i].get(j));
+                        LocalLog.d(TAG, "resultStr = " + resultStr);
+                        url.add(resultStr);
                     }
                 }
             }
@@ -574,6 +572,11 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
             Presenter.getInstance(getContext()).postDynamic(postDynamicParam);
             SocializeUtils.safeCloseDialog(dialog);
         }
+    }
+
+
+    private void uploadAliYun(Context context) {
+
     }
 
     private String getPath(Uri uri) {
@@ -698,6 +701,8 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
+        } else {
+            PaoToastUtils.showLongToast(getContext(), errorCode.getMessage());
         }
     }
 }

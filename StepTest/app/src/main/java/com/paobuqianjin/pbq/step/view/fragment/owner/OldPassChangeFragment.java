@@ -108,8 +108,8 @@ public class OldPassChangeFragment extends BaseBarStyleTextViewFragment implemen
                 String src = sourcePass.getText().toString().trim();
                 String obj = newPass.getText().toString().trim();
                 String pwdStr = passNew.getText().toString().trim();
-                if (src.length() >= 6 && obj.length() >= 6 &&
-                        pwdStr.length() >= 6 && pwdStr.length() <= 16) {
+                if (src.length() >= 6 && obj.length() >= 8 &&
+                        pwdStr.length() >= 8 && pwdStr.length() <= 16) {
                     confirmNewPass.setEnabled(true);
                     confirmNewPass.setBackground(getDrawableResource(R.drawable.rect_angle_background));
                 } else {

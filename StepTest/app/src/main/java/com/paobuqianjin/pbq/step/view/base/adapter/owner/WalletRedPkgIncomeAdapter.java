@@ -1,19 +1,24 @@
 package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepDollarDetailResponse;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.SponsorDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.SponsorRedDetailActivity;
 
 import java.util.List;
 
@@ -68,6 +73,25 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
             } else {
                 holder.incomeFrom.setText(String.valueOf(((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
             }
+            String businessid = ((IncomeResponse.DataBeanX.DataBean) mData.get(position)).getBusinessid();
+            if (!TextUtils.isEmpty(businessid)) {
+                try {
+                    final int busId = Integer.parseInt(businessid);
+                    if (busId > 0) {
+                        holder.incomeListItem.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent();
+                                intent.putExtra(mContext.getPackageName() + "businessid", busId);
+                                intent.setClass(mContext, SponsorDetailActivity.class);
+                                mContext.startActivity(intent);
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         } else if (mData.get(position) instanceof AllIncomeResponse.DataBeanX.DataBean) {
             long createTime = ((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
             LocalLog.d(TAG, "createTime = " + createTime);
@@ -79,6 +103,25 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
                 holder.incomeFrom.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getCirclename()));
             } else {
                 holder.incomeFrom.setText(String.valueOf(((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getName()));
+            }
+            String businessid = ((AllIncomeResponse.DataBeanX.DataBean) mData.get(position)).getBusinessid();
+            if (!TextUtils.isEmpty(businessid)) {
+                try {
+                    final int busId = Integer.parseInt(businessid);
+                    if (busId > 0) {
+                        holder.incomeListItem.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent();
+                                intent.putExtra(mContext.getPackageName() + "businessid", busId);
+                                intent.setClass(mContext, SponsorDetailActivity.class);
+                                mContext.startActivity(intent);
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -122,6 +165,7 @@ public class WalletRedPkgIncomeAdapter extends RecyclerView.Adapter<WalletRedPkg
             date = (TextView) view.findViewById(R.id.date);
             incomeFrom = (TextView) view.findViewById(R.id.income_from);
             addIncome = (TextView) view.findViewById(R.id.add_income);
+            incomeListItem = (RelativeLayout) view.findViewById(R.id.income_list_item);
         }
     }
 }

@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -132,6 +133,7 @@ import com.paobuqianjin.pbq.step.presenter.im.OlderPassInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PayInterface;
+import com.paobuqianjin.pbq.step.presenter.im.PhoneSignInterface;
 import com.paobuqianjin.pbq.step.presenter.im.PostInviteCodeInterface;
 import com.paobuqianjin.pbq.step.presenter.im.ProtocolInterface;
 import com.paobuqianjin.pbq.step.presenter.im.QueryRedPkgInterface;
@@ -160,7 +162,6 @@ import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.Constants;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.MD5;
 import com.paobuqianjin.pbq.step.utils.NetApi;
@@ -175,8 +176,11 @@ import com.today.step.lib.ISportStepInterface;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -186,6 +190,7 @@ import java.util.regex.Pattern;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 import okio.BufferedSink;
 
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlFindPassWord;
@@ -194,6 +199,7 @@ import static com.paobuqianjin.pbq.step.utils.NetApi.urlNearByPeople;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlProtocol;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlRegisterPhone;
 import static com.paobuqianjin.pbq.step.utils.NetApi.urlThirdLogin;
+import static com.paobuqianjin.pbq.step.utils.NetApi.urlYsPayResultOrderNo;
 
 /**
  * Created by pbq on 2017/11/29.
@@ -268,6 +274,7 @@ public final class Engine {
     private BindThirdAccoutInterface bindThirdAccoutInterface;
     private BaiduMapInterface baiduMapInterface;
     private TaskSponsorInterface taskSponsorInterface;
+    private PhoneSignInterface phoneSignInterface;
     private final static String STEP_ACTION = "com.paobuqianjian.intent.ACTION_STEP";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
     private ISportStepInterface iSportStepInterface;
@@ -373,7 +380,6 @@ public final class Engine {
     public final static int COMMAND_BIND_THIRD = 95;
     public final static int COMMAND_BIND_THIRD_STATE = 97;
     public final static int COMMAND_IVITE_MSG = 96;
-    private Transformation transformation;
     private double la = 0;
     private double lb = 0;
     private final static String START_STEP_ACTION = "com.paobuqianjin.step.START_STEP_ACTION";
@@ -389,45 +395,93 @@ public final class Engine {
     private NetworkPolicy networkPolicy = NetworkPolicy.NO_STORE;
 
     private Engine() {
-/*        if (picasso == null) {
+        if (picasso == null) {
             picasso = new Picasso.Builder(mContext)
                     .downloader(new OkHttp3Downloader(OkHttpUtils.getInstance().getOkHttpClient()))
                     .build();
             LocalLog.d(TAG, " 设置Picasso ");
             Picasso.setSingletonInstance(picasso);
-        }*/
+        }
     }
 
-    private static Transformation getTransformation(final ImageView view) {
-        return new Transformation() {
-            @Override
-            public Bitmap transform(Bitmap source) {
-                int targetWidth = view.getWidth();
-                LocalLog.d(TAG,"targetWidth  =" + targetWidth);
-                //返回原图
-                if (source.getWidth() == 0 || source.getWidth() < targetWidth) {
-                    return source;
-                }
 
-                //如果图片大小大于等于设置的宽度，则按照设置的宽度比例来缩放
-                double aspectRatio = (double) source.getHeight() / (double) source.getWidth();
-                int targetHeight = (int) (targetWidth * aspectRatio);
-                if (targetHeight == 0 || targetWidth == 0) {
-                    return source;
+    private static class PiccsoTransformation implements Transformation {
+        WeakReference<ImageView> weakReference;
+        private boolean isSave = false;
+        String urlImage = "";
+
+        PiccsoTransformation(final ImageView view, final String url, final boolean save) {
+            weakReference = new WeakReference<ImageView>(view);
+            isSave = save;
+            urlImage = url;
+        }
+        PiccsoTransformation(final ImageView view) {
+            weakReference = new WeakReference<ImageView>(view);
+        }
+
+        @Override
+        public Bitmap transform(Bitmap source) {
+            if (source == null) {
+                return null;
+            }
+            if (isSave && !TextUtils.isEmpty(urlImage)) {
+                int index = urlImage.lastIndexOf(".");
+                String fileStyle = urlImage.substring(index, urlImage.length());
+                LocalLog.d(TAG, "fileStyle =" + fileStyle);
+                File cachePath = null;
+                if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                        || !Environment.isExternalStorageRemovable()) {
+                    cachePath = mContext.getExternalCacheDir();
+                    LocalLog.d(TAG, "getExternalCachdir() = " + cachePath);
+                } else {
+                    cachePath = mContext.getCacheDir();
+                    LocalLog.d(TAG, "getCacheDir() = " + cachePath);
                 }
-                Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false);
-                if (result != source) {
-                    // Same bitmap is returned if sizes are the same
-                    source.recycle();
+                String adImgeName = cachePath + "ad" + fileStyle;
+                try {
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    source.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    FileOutputStream fos = new FileOutputStream(adImgeName);
+                    fos.write(baos.toByteArray());
+                    fos.flush();
+                    fos.close();
+                    FlagPreference.setAdUrl(mContext, urlImage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+
                 }
-                return result;
+            }
+            ImageView view = weakReference.get();
+            if (view == null) {
+                LocalLog.d(TAG, "view is null ");
+                return source;
+            }
+            int targetWidth = view.getWidth();
+            LocalLog.d(TAG, "targetWidth  =" + targetWidth);
+            //返回原图
+            if (source.getWidth() == 0 || source.getWidth() < targetWidth || targetWidth == 0) {
+                return source;
             }
 
-            @Override
-            public String key() {
-                return "transformation" + " desiredWidth";
+            //如果图片大小大于等于设置的宽度，则按照设置的宽度比例来缩放
+            double aspectRatio = (double) source.getHeight() / (double) source.getWidth();
+            int targetHeight = (int) (targetWidth * aspectRatio);
+            if (targetHeight == 0 || targetWidth == 0) {
+                return source;
             }
-        };
+            Bitmap result = Bitmap.createScaledBitmap(source, targetWidth, targetHeight, false);
+            if (result != source) {
+                // Same bitmap is returned if sizes are the same
+                source.recycle();
+            }
+            return result;
+        }
+
+        @Override
+        public String key() {
+            return "transformation" + " desiredWidth";
+        }
     }
 
     public static synchronized Engine getEngine(Context context) {
@@ -806,7 +860,6 @@ public final class Engine {
             return;
         }
         LocalLog.d(TAG, userInfo[0] + " ," + userInfo[2] + "," + userInfo[1]);
-
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
@@ -815,7 +868,7 @@ public final class Engine {
                 .addParams("password", MD5.md5Slat(userInfo[2]))
                 .addParams("code", userInfo[1])
                 .build()
-                .execute(new NetStringCallBack(loginCallBackInterface, COMMAND_REG_BY_PHONE));
+                .execute(new NetStringCallBack(phoneSignInterface, COMMAND_REG_BY_PHONE));
     }
 
     //TODO 获取附近的人http://119.29.10.64/v1/user/getNearbyPeople?userid=1&longitude=86.26000&latitude=35.17000
@@ -1049,10 +1102,10 @@ public final class Engine {
         LocalLog.d(TAG, "userLoginByPhoneOrNo() enter ");
 
         String md5PassWord = MD5.md5Slat(userInfo[1]);
-        LocalLog.d(TAG, "md5PassWord = " + md5PassWord);
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
+                .addHeader("pushtoken", userInfo[2])
                 .url(NetApi.urlUserLogin)
                 .addParams("mobile", userInfo[0])
                 .addParams("password", md5PassWord)
@@ -1139,7 +1192,7 @@ public final class Engine {
             userHomeParam.setUserid(Integer.parseInt(userid));
         } else {
             if (!TextUtils.isEmpty(userno)) {
-                userHomeParam.setUserno(Integer.parseInt(userno));
+                userHomeParam.setUserno(userno);
             } else {
                 LocalLog.e(TAG, "非法用户");
                 return;
@@ -2079,8 +2132,7 @@ public final class Engine {
                                 myName.setText(circleDetailResponse.getData().getName());
                             }
                             if (imageView != null) {
-                                /*Presenter.getInstance(mContext).getImage(imageView, circleDetailResponse.getData().getLogo());*/
-                                LoadBitmap.glideLoad(mContext, imageView, circleDetailResponse.getData().getLogo());
+                                Presenter.getInstance(mContext).getImage(imageView, circleDetailResponse.getData().getLogo());
                             }
                             if (stepNum != null) {
                                 stepNum.setText(String.valueOf(circleDetailResponse.getData().getTarget()));
@@ -2197,6 +2249,10 @@ public final class Engine {
     /*TODO 请求方式：POST
     地址：http://119.29.10.64/v1/UserStep/updateStep*/
     public void postUserStep(int step_num) {
+        //改变步数
+//        int Min = 18000;
+//        int Max = 25000;
+//        step_num = Min + (int)(Math.random() * ((Max - Min) + 1));
         PostUserStepParam postUserStepParam = new PostUserStepParam();
         postUserStepParam.setUserid(String.valueOf(getId(mContext))).setStep_number(String.valueOf(step_num));
         String url = NetApi.urlUserStep + "/updateStep";
@@ -2214,7 +2270,7 @@ public final class Engine {
         String[] location = FlagPreference.getLocation(mContext);
         if (location != null && location.length >= 2) {
             if (TextUtils.isEmpty(location[0]) || TextUtils.isEmpty(location[1])) {
-                LocalLog.d(TAG, "开启位置获取红包!");
+                PaoToastUtils.showLongToast(mContext, "开启位置获取红包!");
                 return;
             }
         }
@@ -2954,57 +3010,108 @@ public final class Engine {
                 .execute(new NetStringCallBack(friendHonorDetailInterface, COMMAND_FRIEND_HONOR_WEEK));
     }
 
-/*    public void getImage(String fileUrl, final ImageView imageView) {
+    public void getImage(String fileUrl, final ImageView imageView) {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).into(imageView);
-    }*/
+    }
 
-    /*public void getOriginImage(String fileUrl, final ImageView imageView) {
+    public void getOriginImage(String fileUrl, final ImageView imageView) {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).into(imageView);
-    }*/
+    }
 
-    /*public void getImage(String fileUrl, final ImageView imageView, int targetWidth, int targetHeight) {
+    public void getAdImage(ImageView imageView, String keepUrl) {
+        LocalLog.d(TAG, "getAdImage() enter");
+        File cachePath = null;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = mContext.getExternalCacheDir();
+            LocalLog.d(TAG, "getExternalCachdir() = " + cachePath);
+        } else {
+            cachePath = mContext.getCacheDir();
+            LocalLog.d(TAG, "getCacheDir() = " + cachePath);
+        }
+        int index = keepUrl.lastIndexOf(".");
+        if (index < keepUrl.length()) {
+            String fileStyle = keepUrl.substring(index, keepUrl.length());
+            LocalLog.d(TAG, "fileStyle =" + fileStyle);
+            String adImgeName = cachePath + "ad" + fileStyle;
+            File adImage = new File(adImgeName);
+            if (adImage.exists()) {
+                LocalLog.d(TAG, "使用本地图片");
+                picasso.load(adImage).config(Bitmap.Config.RGB_565).placeholder(R.drawable.bitmap_null)
+                        .placeholder(R.drawable.bitmap_null).into(imageView);
+            } else {
+                LocalLog.d(TAG, "###重新下载广告图片");
+                picasso.load(keepUrl).config(Bitmap.Config.RGB_565).transform(new PiccsoTransformation(imageView, keepUrl, true))
+                        .fit().centerCrop().into(imageView);
+            }
+        } else {
+            LocalLog.d(TAG, "路径不合法！");
+        }
+
+    }
+
+    public void downLoadAdImage(String urlImage, ImageView view, int placeholderImageId, int errorId) {
+        LocalLog.d(TAG, "downLoadAdImage() enter");
+        picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(new PiccsoTransformation(view, urlImage, true))
+                .fit().centerCrop().into(view);
+    }
+
+    public void getImage(String fileUrl, final ImageView imageView, int targetWidth, int targetHeight) {
         LocalLog.d(TAG, "getImage() local");
         Picasso picasso = Picasso.with(mContext);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(targetWidth, targetHeight).into(imageView);
-    }*/
+        if (imageView != null)
+            picasso.load(new File(fileUrl)).config(Bitmap.Config.RGB_565).resize(targetWidth, targetHeight).into(imageView);
+    }
 
-    /*//网络图片获取接口
+    //网络图片获取接口
     public void getImage(ImageView imageView, String urlImage) {
         LocalLog.d(TAG, "getImage() enter");
         Picasso picasso = Picasso.with(mContext);
         //picasso.setIndicatorsEnabled(true);
         //picasso.setLoggingEnabled(true);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
-        if (networkPolicy == NetworkPolicy.OFFLINE) {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(imageView)).networkPolicy(networkPolicy).into(imageView);
-        } else {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(imageView)).into(imageView);
-        }
-    }*/
+        picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(new PiccsoTransformation(imageView)).into(imageView);
 
-    /*public void getPlaceErrorImage(ImageView view, String urlImage, int placeholderImageId, int errorId) {
+        //Picasso.with(mContext).load(urlImage).into(imageView);
+/*        OkHttpUtils
+                .get()
+                .url(urlImage)
+                .build()
+                .connTimeOut(20000)
+                .readTimeOut(20000)
+                .writeTimeOut(20000)
+                .execute(new BitmapCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int i, Object o) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(Bitmap bitmap, int i) {
+                        if(imageView != null){
+                        imageView.setImageBitmap(bitmap);}
+                    }
+                });*/
+    }
+
+    public void getPlaceErrorImage(ImageView view, String urlImage, int placeholderImageId, int errorId) {
         if (TextUtils.isEmpty(urlImage)) {
-            picasso.load(placeholderImageId).config(Bitmap.Config.RGB_565).transform(getTransformation(view)).into(view);
+            picasso.load(placeholderImageId).config(Bitmap.Config.RGB_565).transform(new PiccsoTransformation(view)).into(view);
             return;
         }
-        if (networkPolicy == NetworkPolicy.OFFLINE) {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(view))
-                    .placeholder(ContextCompat.getDrawable(mContext, placeholderImageId)).networkPolicy(networkPolicy)
-                    .error(ContextCompat.getDrawable(mContext, errorId)).fit().centerCrop().into(view);
-        } else {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(view))
-                    .placeholder(ContextCompat.getDrawable(mContext, placeholderImageId))
-                    .error(ContextCompat.getDrawable(mContext, errorId)).fit().centerCrop().into(view);
-        }
-    }*/
-/*
+
+        picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(new PiccsoTransformation(view))
+                .placeholder(ContextCompat.getDrawable(mContext, placeholderImageId))
+                .error(ContextCompat.getDrawable(mContext, errorId)).fit().centerCrop().into(view);
+    }
+
     //网络图片获取接口
     public void getImage(ImageView imageView, String urlImage, int targetWidth, int targetHeight) {
         LocalLog.d(TAG, "getImage() enter");
@@ -3013,11 +3120,11 @@ public final class Engine {
         //picasso.setLoggingEnabled(true);
         LocalLog.d(TAG, "networkPolicy = " + networkPolicy.name() + " -> " + networkPolicy.toString());
         if (networkPolicy == NetworkPolicy.OFFLINE) {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(imageView)).networkPolicy(networkPolicy).into(imageView);
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(new PiccsoTransformation(imageView)).networkPolicy(networkPolicy).into(imageView);
         } else {
-            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(getTransformation(imageView)).resize(targetWidth, targetHeight).into(imageView);
+            picasso.load(urlImage).config(Bitmap.Config.RGB_565).transform(new PiccsoTransformation(imageView)).resize(targetWidth, targetHeight).into(imageView);
         }
-    }*/
+    }
 
     //TODO sponsor vip
     public void postVipSponsorNo(VipPostParam vipPostParam, final InnerCallBack innerCallBack) {
@@ -3111,7 +3218,7 @@ public final class Engine {
                         .build()
                         .execute(new NetStringCallBack(payInterface, COMMAND_CIRCLE_ORDER_POST_WX));
                 break;
-            case "ali":
+            case "sevenpay":
                 LocalLog.d(TAG, "支付宝");
                 OkHttpUtils
                         .post()
@@ -3376,7 +3483,7 @@ public final class Engine {
     }
 
     public void getReleaseRecord(int page, int pagesize) {
-        String url = NetApi.urlTask + "?action=record&" + "userid=" + String.valueOf(getId(mContext)) + "&page=" + String.valueOf(page) + "&pagesize="
+        String url = NetApi.urlPersonRelease + "page=" + String.valueOf(page) + "&pagesize="
                 + String.valueOf(pagesize);
         LocalLog.d(TAG, "getReleaseRecord() enter url = " + url);
         OkHttpUtils
@@ -3610,6 +3717,7 @@ public final class Engine {
                                 if (textView != null) {
 
                                 }
+                                PaoToastUtils.showLongToast(mContext, errorCode.getMessage());
                             } catch (JsonSyntaxException j) {
                                 j.printStackTrace();
                             }
@@ -3625,6 +3733,8 @@ public final class Engine {
                                 if (postBindResponse.getError() == 0) {
                                     PaoToastUtils.showShortToast(mContext, "解绑成功");
                                     textView.setText("尚未绑定");
+                                } else if (postBindResponse.getError() != -100) {
+                                    PaoToastUtils.showLongToast(mContext, postBindResponse.getMessage());
                                 }
                             } catch (JsonSyntaxException j) {
                                 j.printStackTrace();
@@ -3681,6 +3791,7 @@ public final class Engine {
         OkHttpUtils
                 .post()
                 .url(NetApi.urlLocation)
+                .addHeader("headtoken", getToken(mContext))
                 .addParams("userid", String.valueOf(getId(mContext)))
                 .addParams("latitude", String.valueOf(la))
                 .addParams("longitude", String.valueOf(lb))
@@ -3880,6 +3991,8 @@ public final class Engine {
             baiduMapInterface = (BaiduMapInterface) uiCallBackInterface;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskSponsorInterface) {
             taskSponsorInterface = (TaskSponsorInterface) uiCallBackInterface;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof PhoneSignInterface) {
+            phoneSignInterface = (PhoneSignInterface) uiCallBackInterface;
         }
     }
 
@@ -3968,7 +4081,7 @@ public final class Engine {
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof QueryRedPkgInterface) {
             queryRedPkgInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof FriendHonorInterface) {
-            friendHonorInterface = (FriendHonorInterface) uiCallBackInterface;
+            friendHonorInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DanCircleInterface) {
             danCircleInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof DanCircleInterface) {
@@ -4003,6 +4116,8 @@ public final class Engine {
             baiduMapInterface = null;
         } else if (uiCallBackInterface != null && uiCallBackInterface instanceof TaskSponsorInterface) {
             taskSponsorInterface = null;
+        } else if (uiCallBackInterface != null && uiCallBackInterface instanceof PhoneSignInterface) {
+            phoneSignInterface = null;
         }
     }
 
@@ -4050,5 +4165,22 @@ public final class Engine {
                 .params(params)
                 .build()
                 .execute(callBack);
+    }
+
+    public String getSync(String url, Map<String, String> params) throws IOException {
+        if (params == null) params = new HashMap<>();
+        LocalLog.d(TAG, "提交数据：" + new Gson().toJson(params));
+
+        Response result = OkHttpUtils
+                .get()
+                .addHeader("headtoken", getToken(mContext))
+                .addHeader("limit_version_name", Constants.LIMITE_VERSION)
+                .url(url)
+                .params(params)
+                .build()
+                .execute();
+        String reusltStr = result.body().string();
+        LocalLog.d(TAG, url + "返回数据：" + reusltStr);
+        return reusltStr;
     }
 }

@@ -61,7 +61,7 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Presenter.getInstance(context).attachUiInterface(this);
+        Presenter.getInstance(getContext()).attachUiInterface(this);
     }
 
     @Override
@@ -107,10 +107,15 @@ public class PersonHonorFragment extends BaseFragment implements FriendHonorInte
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
     @Override

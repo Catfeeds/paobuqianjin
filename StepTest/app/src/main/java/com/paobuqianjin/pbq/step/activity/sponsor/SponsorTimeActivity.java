@@ -107,7 +107,7 @@ public class SponsorTimeActivity extends BaseCancelConfirmBarActivity implements
             return;
         }
       /*  if (viewStartTime.getCurrentItemPosition() >= viewEndTime.getCurrentItemPosition()) {
-            ToastUtils.showShortToast(this, "结束时间不能小于开始时间");
+            PaoToastUtils.showShortToast(this, "结束时间不能小于开始时间");
             return;
         }*/
         intent.putExtra("startTime", viewStartTime.getCurrentTime());

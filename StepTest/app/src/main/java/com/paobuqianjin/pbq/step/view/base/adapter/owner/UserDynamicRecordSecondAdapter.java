@@ -1,6 +1,5 @@
 package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,7 +22,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicPersonResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserCenterResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 
@@ -37,13 +35,13 @@ import butterknife.Bind;
 
 public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDynamicRecordSecondAdapter.UserDynamicRecordSecondViewHolder> {
     private final static String TAG = UserDynamicRecordSecondAdapter.class.getSimpleName();
-    Activity context;
+    Context context;
     List<?> mData;
     private final static int REQUEST_DETAIL = 401;
     private Fragment fragment;
     private int topPosition = -1;
 
-    public UserDynamicRecordSecondAdapter(Activity context, List<?> data, Fragment fragment, int topPosition) {
+    public UserDynamicRecordSecondAdapter(Context context, List<?> data, Fragment fragment, int topPosition) {
         this.context = context;
         mData = data;
         this.fragment = fragment;
@@ -147,8 +145,7 @@ public class UserDynamicRecordSecondAdapter extends RecyclerView.Adapter<UserDyn
             if (imageSize >= 1) {
                 if (!((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getImages().get(0).equals("")) {
                     holder.image.setVisibility(View.VISIBLE);
-                   /* Presenter.getInstance(context).getImage(holder.image, ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getImages().get(0));*/
-                    LoadBitmap.glideLoad(context,holder.image, ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getImages().get(0));
+                    Presenter.getInstance(context).getImage(holder.image, ((UserCenterResponse.DataBeanX.DynamicDataBean.DataBean) mData.get(position)).getImages().get(0));
                 }
             }
 

@@ -46,6 +46,7 @@
         app:gpvTextSize="17dp" />
 
     <Button
+        android:stateListAnimator="@null"
         android:id="@+id/confirm_button"
         android:layout_width="match_parent"
         android:layout_height="45dp"

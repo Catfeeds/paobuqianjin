@@ -25,8 +25,8 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.TaskDetailRecInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
@@ -188,9 +188,8 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
                 buttonAction.setEnabled(true);
             }
             targetStep.setText(taskRecDetailResponse.getData().getTask_name());
-            targetMoney.setText("奖励金额: " + String.valueOf(taskRecDetailResponse.getData().getReward_amount()));
-            /*Presenter.getInstance(getContext()).getPlaceErrorImage(releaseUseIco, taskRecDetailResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(getActivity(), releaseUseIco, taskRecDetailResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+            targetMoney.setText("奖励金额: " + String.valueOf(taskRecDetailResponse.getData().getAvgmoney()));
+            Presenter.getInstance(getContext()).getPlaceErrorImage(releaseUseIco, taskRecDetailResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             dearName.setText(taskRecDetailResponse.getData().getNickname());
             dearId.setText("跑步钱进号:" + taskRecDetailResponse.getData().getUserno());
             stepDesRun.setText(String.valueOf(taskRecDetailResponse.getData().getUser_step()) + "/" + String.valueOf(taskRecDetailResponse.getData().getTarget_step()));
@@ -239,6 +238,7 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
                 }
             } else if (object instanceof RecPayResponse) {
                 LocalLog.d(TAG, "领取奖励成功");
+                PaoToastUtils.showLongToast(getContext(), "领取成功");
                 if (((RecPayResponse) object).getError() == 0) {
                     buttonAction.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_b8bbbd));
                     buttonAction.setEnabled(false);

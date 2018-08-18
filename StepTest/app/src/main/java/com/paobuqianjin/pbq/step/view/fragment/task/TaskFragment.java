@@ -28,12 +28,9 @@ import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.MainActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
-import com.paobuqianjin.pbq.step.view.fragment.home.HomePageFragment;
-import com.paobuqianjin.pbq.step.view.fragment.owner.MyFriendFragment;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -43,7 +40,7 @@ import butterknife.OnClick;
  * Created by pbq on 2018/1/24.
  */
 
-public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
+public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMyRecInterface {
     private final static String TAG = TaskFragment.class.getSimpleName();
     @Bind(R.id.bar_title)
     TextView barTitle;
@@ -66,6 +63,10 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
     EmptyTaskFragment emptyTaskFragment;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
+    @Bind(R.id.bar_return_drawable)
+    ImageView barReturnDrawable;
+    @Bind(R.id.button_return_bar)
+    RelativeLayout buttonReturnBar;
     private int mCurrentIndex = 0;
     private int mIndex = 0;
     private Fragment[] mFragments;
@@ -77,7 +78,6 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
     private final static String REC_GIFT_ACTION = "com.paobuqianjin.pbq.step.REC_GIFT_ACTION";
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 50;
-    MainActivity.MoneyUpdateInterface moneyUpdateInterface;
     private boolean isReloading = false;
 
     @Override
@@ -87,13 +87,14 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
     }
 
     @Override
+    protected String title() {
+        return "";
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         Presenter.getInstance(getContext()).attachUiInterface(this);
-    }
-
-    public void setMoneyUpdate(MainActivity.MoneyUpdateInterface moneyUpdateInterface) {
-        this.moneyUpdateInterface = moneyUpdateInterface;
     }
 
     @Override
@@ -121,7 +122,6 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         allTaskFragment = new AllTaskFragment();
         finishedTaskFragment = new FinishedTaskFragment();
         unFinishTaskFragment = new UnFinishTaskFragment();
@@ -173,7 +173,7 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
         finishTaskList = null;
     }
 
-    @OnClick({R.id.task_all, R.id.task_un_finish, R.id.task_finished, R.id.bar_tv_right})
+    @OnClick({R.id.task_all, R.id.task_un_finish, R.id.task_finished, R.id.bar_tv_right, R.id.bar_return_drawable})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.task_all:
@@ -194,6 +194,9 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
             case R.id.bar_tv_right:
                 LocalLog.d(TAG, "发布");
                 startActivity(TaskReleaseActivity.class, null);
+                break;
+            case R.id.bar_return_drawable:
+                getActivity().onBackPressed();
                 break;
             default:
                 break;
@@ -300,9 +303,6 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
 
                 } else if (REC_GIFT_ACTION.equals(intent.getAction())) {
                     LocalLog.d(TAG, "领取奖励成功");
-                    if (moneyUpdateInterface != null) {
-                        moneyUpdateInterface.update();
-                    }
                     loadTaskData();
                 }
             }
@@ -323,7 +323,7 @@ public class TaskFragment extends BaseFragment implements TaskMyRecInterface {
 
     @Override
     public void response(MyRecTaskRecordResponse myRecvTaskRecordResponse) {
-        LocalLog.d(TAG, "MyRecTaskRecordResponse() enter" + myRecvTaskRecordResponse.toString());
+        //LocalLog.d(TAG, "MyRecTaskRecordResponse() enter" + myRecvTaskRecordResponse.toString());
         if (!isAdded()) {
             return;
         }

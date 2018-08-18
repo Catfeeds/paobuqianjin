@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/bar_return_a_style"></include>
+
+    <LinearLayout
+        android:id="@+id/step_zero_span"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/step_zero"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="14dp"
+            android:layout_weight="1"
+            android:text="跑步钱进APP的步数不走时？"
+            android:textColor="@color/color_161727"
+            android:textSize="17dp" />
+
+        <ImageView
+            android:layout_width="7dp"
+            android:layout_height="17dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/go_to" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="14dp"
+        android:background="@color/color_d9d9d9" />
+
+    <LinearLayout
+        android:id="@+id/invite_friend_span"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/invite_friend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="14dp"
+            android:layout_weight="1"
+            android:text="怎么让好友变成是自己邀请的好友？"
+            android:textColor="@color/color_161727"
+            android:textSize="17dp" />
+
+        <ImageView
+            android:layout_width="7dp"
+            android:layout_height="17dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/go_to" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="14dp"
+        android:background="@color/color_d9d9d9" />
+
+    <LinearLayout
+        android:id="@+id/recharge_question_span"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/recharge_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="14dp"
+            android:layout_weight="1"
+            android:text="充值或者购买时，一直打不开充值界面"
+            android:textColor="@color/color_161727"
+            android:textSize="17dp" />
+
+        <ImageView
+            android:layout_width="7dp"
+            android:layout_height="17dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/go_to" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="14dp"
+        android:background="@color/color_d9d9d9" />
+
+    <LinearLayout
+        android:id="@+id/qq_wx_question_span"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/qq_wx_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="14dp"
+            android:layout_weight="1"
+            android:text="QQ号与微信解绑问题"
+            android:textColor="@color/color_161727"
+            android:textSize="17dp" />
+
+        <ImageView
+            android:layout_width="7dp"
+            android:layout_height="17dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/go_to" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="14dp"
+        android:background="@color/color_d9d9d9" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/more_question"
+        android:textColor="@color/color_161727"
+        android:textSize="14dp" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/runman" />
+</LinearLayout>

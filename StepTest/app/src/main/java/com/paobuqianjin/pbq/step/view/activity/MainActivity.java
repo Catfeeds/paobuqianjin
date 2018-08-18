@@ -1,39 +1,54 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.model.services.local.StepService;
+import com.paobuqianjin.pbq.step.adapter.ConversationListAdapterEx;
+import com.paobuqianjin.pbq.step.customview.SponsorDialog;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.Constants;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.SharedPreferencesUtil;
+import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
+import com.paobuqianjin.pbq.step.view.base.view.DragPointView;
+import com.paobuqianjin.pbq.step.view.fragment.chat.MyConversationListFragment;
 import com.paobuqianjin.pbq.step.view.fragment.circle.FriendCircleFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.HomePageFragment;
 import com.paobuqianjin.pbq.step.view.fragment.honor.HonorFragment;
 import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerFragment;
-import com.paobuqianjin.pbq.step.view.fragment.task.TaskFragment;
-import com.today.step.lib.ISportStepInterface;
-import com.today.step.lib.TodayStepService;
+
+import org.json.JSONObject;
+
+import java.text.Format;
+import java.util.List;
+
+import io.rong.imkit.RongContext;
+import io.rong.imkit.RongIM;
+import io.rong.imkit.manager.IUnReadMessageObserver;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements IUnReadMessageObserver, DragPointView.OnDragListencer {
     private final static String TAG = MainActivity.class.getSimpleName();
     //Fragment页面索引
     private HomePageFragment mHomePageFragment;
-    private HonorFragment mHonorFragment;
+    //private HonorFragment mHonorFragment;
     private FriendCircleFragment mFriendCircleFragment;
-    public TaskFragment taskFragment;
     private OwnerFragment mOwnerFragment;
     private Fragment[] mFragments;
     private int mIndex = 0;
@@ -43,13 +58,20 @@ public class MainActivity extends BaseActivity {
     private TextView mBtn_task;
     private TextView mBtn_honor;
     private TextView mBtn_owner;
+    private long firstBackClickTime = 0;
+    private DragPointView mUnreadNumView;
     private int mCurrentIndex = 0;
-    private int[][] icon = new int[][]{{R.drawable.home_n, R.drawable.home_s}, {R.drawable.circle_n, R.drawable.circle_s},
-            {R.drawable.task_n, R.drawable.task_s},
-            {R.drawable.list_n, R.drawable.list_s}, {R.drawable.me_n, R.drawable.me_s}};
+    private int[][] icon = new int[][]{{R.drawable.home_n, R.drawable.home_s}
+            , {R.drawable.task_n, R.drawable.task_s}
+            , {R.drawable.circle_n, R.drawable.circle_s}
+            , {R.drawable.me_n, R.drawable.me_s}};
     private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.SCAN_ACTION";
     private final static String RE_LOGIN_ACTION = "com.paobuqianjin.pbq.step.RE_LOGIN";
+    private final static String GUIDE_ACTION = "com.paobuqianjin.pbq.GUIDE_ACTION";
     public static final int REQUEST_CODE = 0x0000c0de; // Only use bottom 16 bits
+    private MyConversationListFragment mConversationListFragment;
+    private Conversation.ConversationType[] mConversationsTypes;
+    private SponsorDialog sponsorDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +83,13 @@ public class MainActivity extends BaseActivity {
             LocalLog.d(TAG, "启动登入注册界面！");
             startActivity(LoginActivity.class, null, false);
             finish();
+        } else {
+            LocalLog.d(TAG, "已经登录！");
         }
     }
 
     @Override
     protected void initView() {
-        super.initView();
         initTab();
     }
 
@@ -77,15 +100,18 @@ public class MainActivity extends BaseActivity {
         mBtn_task = (TextView) findViewById(R.id.btn_task);
         mBtn_honor = (TextView) findViewById(R.id.btn_honor);
         mBtn_owner = (TextView) findViewById(R.id.btn_owner);
-        mTabSelect = new TextView[5];
+        mUnreadNumView = findViewById(R.id.tv_unread);
+        mTabSelect = new TextView[4];
         mTabSelect[0] = mBtn_home;
-        mTabSelect[1] = mBtn_friend;
-        mTabSelect[2] = mBtn_task;
-        mTabSelect[3] = mBtn_honor;
-        mTabSelect[4] = mBtn_owner;
+        mTabSelect[1] = mBtn_task;
+        mTabSelect[2] = mBtn_friend;
+  /*      mTabSelect[3] = mBtn_honor;*/
+        mTabSelect[3] = mBtn_owner;
         mTabSelect[0].setSelected(true);
         initTextViewIcon();
         initFragment();
+        mUnreadNumView.setDragListencer(this);
+        RongIM.getInstance().addUnReadMessageCountChangedObserver(this, mConversationsTypes);
     }
 
     //更改图片大小
@@ -93,7 +119,7 @@ public class MainActivity extends BaseActivity {
         Drawable home = getResources().getDrawable(R.drawable.home_s);
         Drawable circle = getResources().getDrawable(R.drawable.circle_n);
         Drawable task = getResources().getDrawable(R.drawable.task_n);
-        Drawable honor = getResources().getDrawable(R.drawable.list_n);
+      /*  Drawable honor = getResources().getDrawable(R.drawable.list_n);*/
         Drawable me = getResources().getDrawable(R.drawable.me_n);
 
         home.setBounds(0, 0, 54, 54);
@@ -102,46 +128,34 @@ public class MainActivity extends BaseActivity {
         mBtn_friend.setCompoundDrawables(null, circle, null, null);
         task.setBounds(0, 0, 54, 54);
         mBtn_task.setCompoundDrawables(null, task, null, null);
-        honor.setBounds(0, 0, 54, 54);
-        mBtn_honor.setCompoundDrawables(null, honor, null, null);
+/*        honor.setBounds(0, 0, 54, 54);
+        mBtn_honor.setCompoundDrawables(null, honor, null, null);*/
         me.setBounds(0, 0, 54, 54);
         mBtn_owner.setCompoundDrawables(null, me, null, null);
 
     }
 
     private void initFragment() {
+
         mHomePageFragment = new HomePageFragment();
         mFriendCircleFragment = new FriendCircleFragment();
-        taskFragment = new TaskFragment();
-        taskFragment.setMoneyUpdate(moneyUpdateInterface);
-        mHonorFragment = new HonorFragment();
+//        mConversationListFragment = new MyConversationListFragment();
+        initConversationList();
+        //mHonorFragment = new HonorFragment();
         mOwnerFragment = new OwnerFragment();
-        mFragments = new Fragment[]{mHomePageFragment, mFriendCircleFragment, taskFragment, mHonorFragment, mOwnerFragment};
+        mFragments = new Fragment[]{mHomePageFragment, mConversationListFragment, mFriendCircleFragment, mOwnerFragment};
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, mHomePageFragment).
-                add(R.id.fragment_container, mFriendCircleFragment)
-                .add(R.id.fragment_container, taskFragment)
-                .add(R.id.fragment_container, mHonorFragment)
+                .add(R.id.fragment_container, mHomePageFragment)
+                .add(R.id.fragment_container, mConversationListFragment)
+                .add(R.id.fragment_container, mFriendCircleFragment)
+                //.add(R.id.fragment_container, mHonorFragment)
                 .add(R.id.fragment_container, mOwnerFragment)
                 .hide(mFriendCircleFragment)
-                .hide(taskFragment)
-                .hide(mHonorFragment)
+                .hide(mConversationListFragment)
+                //.hide(mHonorFragment)
                 .hide(mOwnerFragment)
                 .show(mHomePageFragment).commit();
     }
-
-    public interface MoneyUpdateInterface {
-        public void update();
-    }
-
-    public MoneyUpdateInterface moneyUpdateInterface = new MoneyUpdateInterface() {
-        @Override
-        public void update() {
-            if (mHomePageFragment.isAdded()) {
-                mHomePageFragment.updateIncome();
-            }
-        }
-    };
 
     @Override
     protected void onResume() {
@@ -162,16 +176,16 @@ public class MainActivity extends BaseActivity {
                     mIndex = 0;
                     break;
                 case R.id.btn_friend_circle:
-                    mIndex = 1;
-                    break;
-                case R.id.btn_task:
                     mIndex = 2;
                     break;
-                case R.id.btn_honor:
-                    mIndex = 3;
+                case R.id.btn_task:
+                    mIndex = 1;
                     break;
+/*                case R.id.btn_honor:
+                    mIndex = 3;
+                    break;*/
                 case R.id.btn_owner:
-                    mIndex = 4;
+                    mIndex = 3;
                     break;
                 default:
                     break;
@@ -215,6 +229,92 @@ public class MainActivity extends BaseActivity {
             trx.show(mFragments[fragmentIndex]).commitAllowingStateLoss();
         }
         mCurrentIndex = fragmentIndex;
+        controlTransparentGuide(fragmentIndex);
+        controllCircleChangeGuide(fragmentIndex);
+        if (fragmentIndex == 3) {
+            vipCheckTimeOut();
+        }
+    }
+
+    private void controlTransparentGuide(int fragmentIndex) {
+        String versionName = Utils.getVerName(this);
+        //LocalLog.d(TAG, "fragmentIndex=" + fragmentIndex + "   versionName:" + versionName);
+        if ((fragmentIndex == 1 || fragmentIndex == 3) && versionName.equals("4.0")) {
+            boolean isFirstTime = (boolean) SharedPreferencesUtil.get(Constants.SP_TRANSPARENT_GUIDE + versionName + fragmentIndex, true);
+            //LocalLog.d(TAG, "isFirstTime=" + isFirstTime);
+            if (isFirstTime) {
+                SharedPreferencesUtil.put(Constants.SP_TRANSPARENT_GUIDE + versionName + fragmentIndex, false);
+                Intent intent = new Intent(this, TransparentGuideActivity.class);
+                intent.putExtra("index", fragmentIndex);
+                startActivity(intent);
+            }
+        }
+
+    }
+
+    private void vipCheckTimeOut() {
+        Presenter.getInstance(this).getPaoBuSimple(NetApi.urlGvipTimeOut, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    JSONObject jsonObj = new JSONObject(s);
+                    jsonObj = jsonObj.getJSONObject("data");
+                    int rday = jsonObj.getInt("rday");
+                    Integer integer = (Integer) SharedPreferencesUtil.get("rday", 0);
+                    LocalLog.d(TAG, "vip had days =" + rday + ",rday = " + integer.intValue());
+                    if (integer.intValue() == rday) {
+                        return;
+                    } else {
+                        SharedPreferencesUtil.put("rday", rday);
+                    }
+                    if (sponsorDialog == null && rday <= 3 && rday > 0) {
+                        sponsorDialog = new SponsorDialog(MainActivity.this);
+                        sponsorDialog.setTitle("会员到期提醒");
+                        String format = getString(R.string.time_out);
+                        String sFinalMember = String.format(format, String.valueOf(rday));
+                        sponsorDialog.setMessage(sFinalMember);
+                        sponsorDialog.setNoOnclickListener("取消", new SponsorDialog.onNoOnclickListener() {
+                            @Override
+                            public void onNoClick() {
+                                sponsorDialog.dismiss();
+
+                            }
+                        });
+
+                        sponsorDialog.setYesOnclickListener("去开通", new SponsorDialog.onYesOnclickListener() {
+                            @Override
+                            public void onYesClick() {
+                                sponsorDialog.dismiss();
+                                Intent intent = new Intent();
+                                intent.setClass(MainActivity.this, GoldenSponsoractivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+
+                    if (!sponsorDialog.isShowing())
+                        sponsorDialog.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
+    }
+
+    private void controllCircleChangeGuide(int fragmentIndex) {
+        String versionName = Utils.getVerName(this);
+        if (fragmentIndex == 2 && versionName.equals("4.2")) {
+            boolean isFirstTime = (boolean) SharedPreferencesUtil.get(Constants.CIRCLE_GUIDE, true);
+            if (isFirstTime) {
+                Intent intent = new Intent(this, CircleGuideActivity.class);
+                startActivity(intent);
+            }
+        }
     }
 
     private boolean loginCheck() {
@@ -224,20 +324,33 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        RongIM.getInstance().removeUnReadMessageCountChangedObserver(this);
+        clean();
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        LocalLog.d(TAG, "onNewIntent() enter");
         if (intent.getAction() != null) {
             if (intent.getAction().equals("login_other_phone")) {
                 Intent intentLogin = new Intent(this, LoginActivity.class);
                 intentLogin.setAction(RE_LOGIN_ACTION);
                 startActivity(intentLogin);
                 finish();
+            } else if (GUIDE_ACTION.equals(intent.getAction())) {
+                LocalLog.d(TAG, intent.getAction());
+                mIndex = 3;
+                onTabIndex(3);
             }
         }
 
+    }
+
+    private void clean() {
+        for (Fragment fragment : mFragments) {
+            fragment = null;
+        }
     }
 
     @Override
@@ -259,7 +372,7 @@ public class MainActivity extends BaseActivity {
                         Intent intent = new Intent();
                         //TODO ACTION_SCAN_USERID
                         intent.putExtra("userno", userNo);
-                        intent.setClass(this, UserCenterActivity.class);
+                        intent.setClass(this, FriendDetailActivity.class);
                         startActivity(intent);
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
@@ -285,5 +398,80 @@ public class MainActivity extends BaseActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private Fragment initConversationList() {
+        if (mConversationListFragment == null) {
+            MyConversationListFragment listFragment = new MyConversationListFragment();
+            listFragment.setAdapter(new ConversationListAdapterEx(RongContext.getInstance()));
+            Uri uri;
+            uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
+                    .appendPath("conversationlist")
+                    .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
+                    .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")//群组
+                    .appendQueryParameter(Conversation.ConversationType.PUBLIC_SERVICE.getName(), "false")//公共服务号
+                    .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), "false")//订阅号
+                    .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")//系统
+                    .build();
+            mConversationsTypes = new Conversation.ConversationType[]{Conversation.ConversationType.PRIVATE,
+                    Conversation.ConversationType.GROUP,
+                    Conversation.ConversationType.PUBLIC_SERVICE,
+                    Conversation.ConversationType.APP_PUBLIC_SERVICE,
+                    Conversation.ConversationType.SYSTEM
+            };
+            listFragment.setUri(uri);
+            mConversationListFragment = listFragment;
+            return listFragment;
+        } else {
+            return mConversationListFragment;
+        }
+    }
+
+    @Override
+    public void onCountChanged(int count) {
+        if (count == 0) {
+            mUnreadNumView.setVisibility(View.GONE);
+        } else if (count > 0 && count < 100) {
+            mUnreadNumView.setVisibility(View.VISIBLE);
+            mUnreadNumView.setText(String.valueOf(count));
+        } else {
+            mUnreadNumView.setVisibility(View.VISIBLE);
+            mUnreadNumView.setText(R.string.no_read_message);
+        }
+    }
+
+    @Override
+    public void onDragOut() {
+        mUnreadNumView.setVisibility(View.GONE);
+        RongIM.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
+            @Override
+            public void onSuccess(List<Conversation> conversations) {
+                if (conversations != null && conversations.size() > 0) {
+                    for (Conversation c : conversations) {
+                        RongIM.getInstance().clearMessagesUnreadStatus(c.getConversationType(), c.getTargetId(), null);
+                    }
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode e) {
+
+            }
+        }, mConversationsTypes);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            PaoToastUtils.showShortToast(MainActivity.this, "再按一次退出程序");
+            long currentTimeMillis = System.currentTimeMillis();
+            if (firstBackClickTime != 0 && currentTimeMillis - firstBackClickTime < 2000) {
+                System.exit(0);
+                return true;
+            }
+            firstBackClickTime = System.currentTimeMillis();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

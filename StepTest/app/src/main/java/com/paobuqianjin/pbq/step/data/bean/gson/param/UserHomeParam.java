@@ -18,7 +18,7 @@ public class UserHomeParam {
 
     private int adminid;
     private int userid;
-    private int userno;
+    private String userno;
     private int page;
     private int pagesize;
     private Map<String, String> params;
@@ -49,13 +49,13 @@ public class UserHomeParam {
         return this;
     }
 
-    public int getUserno() {
+    public String getUserno() {
         return userno;
     }
 
-    public UserHomeParam setUserno(int userno) {
+    public UserHomeParam setUserno(String userno) {
         this.userno = userno;
-        params.put("userno", String.valueOf(userno));
+        params.put("userno", userno);
         return this;
     }
 

@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyReleaseTaskDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RedRecRecordResponse;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
@@ -27,7 +29,7 @@ public class MyTaskDetailStateAdapter extends RecyclerView.Adapter<MyTaskDetailS
     List<?> mData;
     Context context;
 
-    public MyTaskDetailStateAdapter(Context context, List<MyReleaseTaskDetailResponse.DataBean.TaskRecordBean> data) {
+    public MyTaskDetailStateAdapter(Context context, List<?> data) {
         this.context = context;
         mData = data;
     }
@@ -61,10 +63,32 @@ public class MyTaskDetailStateAdapter extends RecyclerView.Adapter<MyTaskDetailS
             if (((MyReleaseTaskDetailResponse.DataBean.TaskRecordBean) mData.get(position)).getIs_receive() == 2) {
                 holder.states.setText("已领取");
                 holder.states.setTextColor(ContextCompat.getColor(context, R.color.color_e4393c));
-            } else {
+            } else if (((MyReleaseTaskDetailResponse.DataBean.TaskRecordBean) mData.get(position)).getIs_receive() == 1) {
+                holder.states.setText("进行中");
+                holder.states.setTextColor(ContextCompat.getColor(context, R.color.color_161727));
+            } else if (((MyReleaseTaskDetailResponse.DataBean.TaskRecordBean) mData.get(position)).getIs_receive() == 0) {
                 holder.states.setText("未领取");
                 holder.states.setTextColor(ContextCompat.getColor(context, R.color.color_161727));
             }
+        } else if (mData.get(position) instanceof RedRecRecordResponse.DataBeanX.DataBean) {
+            long time = ((RedRecRecordResponse.DataBeanX.DataBean) mData.get(position)).getIs_time();
+            String date = DateTimeUtil.formatDateTime(time * 1000, DateTimeUtil.DF_YYYY_MM_DD);
+            String dates[] = date.split("-");
+            String dateStr = "";
+            if (dates.length == 3) {
+                dateStr = dates[0] + " 年 " + dates[1] + " 月 " + dates[2] + " 日";
+            }
+            holder.timeStmap.setText(dateStr);
+
+            String nameStr = ((RedRecRecordResponse.DataBeanX.DataBean) mData.get(position)).getUsname();
+            if (nameStr != null && nameStr.length() > 0) {
+                nameStr = nameStr.charAt(0)+ "***";
+            } else {
+                nameStr = "****";
+            }
+            holder.nameT.setText(nameStr);
+            holder.states.setTextColor(ContextCompat.getColor(context, R.color.color_e4393c));
+            holder.states.setText(((RedRecRecordResponse.DataBeanX.DataBean) mData.get(position)).getMoney() + "元");
         }
     }
 
@@ -75,10 +99,9 @@ public class MyTaskDetailStateAdapter extends RecyclerView.Adapter<MyTaskDetailS
 
     public class MyTaskDetailViewHolder extends RecyclerView.ViewHolder {
 
-        @Bind(R.id.time_stmap)
         TextView timeStmap;
-        @Bind(R.id.states)
         TextView states;
+        TextView nameT;
 
         public MyTaskDetailViewHolder(View view) {
             super(view);
@@ -89,6 +112,7 @@ public class MyTaskDetailStateAdapter extends RecyclerView.Adapter<MyTaskDetailS
         private void initView(View viewRoot) {
             timeStmap = (TextView) viewRoot.findViewById(R.id.time_stmap);
             states = (TextView) viewRoot.findViewById(R.id.states);
+            nameT = (TextView) viewRoot.findViewById(R.id.name_rec);
         }
     }
 }

@@ -26,7 +26,7 @@ public class TransferResultActivity extends BaseBarActivity implements BaseBarAc
 
     @Override
     protected String title() {
-        return getIntent().getBooleanExtra("is_success", false)?getString(R.string.apply_suc):getString(R.string.apply_fal);
+        return getIntent().getBooleanExtra("is_success", false) ? getString(R.string.apply_suc) : getString(R.string.apply_fal);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TransferResultActivity extends BaseBarActivity implements BaseBarAc
         if (isSuccess) {
             tvDesc.setText(R.string.transfer_do_by_3_day);
             tvDesc.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tvDesc.setVisibility(View.GONE);
         }
     }
@@ -65,8 +65,7 @@ public class TransferResultActivity extends BaseBarActivity implements BaseBarAc
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(this, MyWalletActivity.class);
-        intent.putExtra("is_refresh", true);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }

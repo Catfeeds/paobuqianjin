@@ -45,6 +45,47 @@ public class MoonUtils {
             et.setText(mSpannableString);
         }
     }
+    /**
+     * EditText用来转换表情文字的方法，如果没有使用EmoticonPickerView的attachEditText方法，则需要开发人员手动调用方法来又识别EditText中的表情
+     */
+    public static void replaceEmoticons(Context context, Editable editable, int start, int count) {
+        if (count <= 0 || editable.length() < start + count)
+            return;
+
+        CharSequence s = editable.subSequence(start, start + count);
+        Matcher matcher = EmojiManager.getPattern().matcher(s);
+        while (matcher.find()) {
+            int from = start + matcher.start();
+            int to = start + matcher.end();
+            String emot = editable.subSequence(from, to).toString();
+            Drawable d = getEmotDrawable(context, emot, SMALL_SCALE);
+            if (d != null) {
+                ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BOTTOM);
+                editable.setSpan(span, from, to, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+    }
+
+    private static SpannableString replaceEmoticons(Context context, SpannableString spanValue, float scale, int align) {
+        String value = spanValue.toString();
+        LocalLog.d(TAG, "value = " + value);
+        if (TextUtils.isEmpty(value)) {
+            value = "";
+        }
+
+        Matcher matcher = EmojiManager.getPattern().matcher(value);
+        while (matcher.find()) {
+            int start = matcher.start();
+            int end = matcher.end();
+            String emot = value.substring(start, end);
+            Drawable d = getEmotDrawable(context, emot, scale);
+            if (d != null) {
+                ImageSpan span = new ImageSpan(d, align);
+                spanValue.setSpan(span, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+        }
+        return spanValue;
+    }
 
     private static SpannableString replaceEmoticons(Context context, String value, float scale, int align) {
         if (TextUtils.isEmpty(value)) {
@@ -124,6 +165,15 @@ public class MoonUtils {
         identifyFaceExpression(context, textView, value, align, DEF_SCALE);
     }
 
+    public static void identifyFaceExpression(Context context, View textView, SpannableString spanValue, int align) {
+        identifyFaceExpression(context, textView, spanValue, align, DEF_SCALE);
+    }
+
+    public static void identifyFaceExpression(Context context, View textView, SpannableString spanValue, float scale, int align) {
+        SpannableString mSpannableString = replaceEmoticons(context, spanValue, scale, align);
+        viewSetText(textView, mSpannableString);
+    }
+
     /**
      * 识别表情和标签（如：只需显示a标签对应的文本）
      */
@@ -139,6 +189,12 @@ public class MoonUtils {
     public static void identifyFaceExpression(Context context,
                                               View textView, String value, int align, float scale) {
         SpannableString mSpannableString = replaceEmoticons(context, value, scale, align);
+        viewSetText(textView, mSpannableString);
+    }
+
+    public static void identifyFaceExpression(Context context,
+                                              View textView, SpannableString spanValue, int align, float scale) {
+        SpannableString mSpannableString = replaceEmoticons(context, spanValue, scale, align);
         viewSetText(textView, mSpannableString);
     }
 

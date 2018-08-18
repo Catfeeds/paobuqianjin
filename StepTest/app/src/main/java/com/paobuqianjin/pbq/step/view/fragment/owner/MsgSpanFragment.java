@@ -130,7 +130,7 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
                 if (messageLikeResponse == null || messageLikeResponse.getData() == null) {
                     messageContentBundleData = null;
                 } else {
-                    if(messageContentResponse == null) return;
+                    if (messageContentResponse == null) return;
                     messageContentBundleData = new MessageContentBundleData((ArrayList<MessageContentResponse.DataBeanX.DataBean>) messageContentResponse.getData().getData());
                 }
 
@@ -160,7 +160,6 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
                     messageSystemBundleData = null;
                 } else {
                     messageSystemBundleData = new MessageSystemBundleData((ArrayList<MessageSystemResponse.DataBeanX.DataBean>) messageSystemResponse.getData().getData());
-                    ;
                 }
 
                 intent.putExtra(getActivity().getPackageName(), messageSystemBundleData);
@@ -185,6 +184,14 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
         }
         if (messageLikeResponse.getError() == 0) {
             this.messageLikeResponse = messageLikeResponse;
+            if (likeDesMsg == null) {
+                return;
+            }
+            if (messageLikeResponse.getData() != null && messageLikeResponse.getData().getPagenation() != null) {
+                likeDesMsg.setText(String.valueOf(messageLikeResponse.getData().getPagenation().getTotalCount()) + "个赞");
+            }else{
+                likeDesMsg.setText("0个赞");
+            }
         } else if (messageLikeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
@@ -198,10 +205,14 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
         }
         if (messageSystemResponse.getError() == 0) {
             this.messageSystemResponse = messageSystemResponse;
-            if (likeDesMsg == null) {
+            if (systemMsgDesMsg == null) {
                 return;
             }
-            likeDesMsg.setText(String.valueOf(messageSystemResponse.getData().getPagenation().getTotalCount()) + "个赞");
+            if (messageSystemResponse.getData() != null && messageSystemResponse.getData().getPagenation() != null) {
+                systemMsgDesMsg.setText(String.valueOf(messageSystemResponse.getData().getPagenation().getTotalCount()) + "条消息");
+            } else {
+                systemMsgDesMsg.setText("0条消息");
+            }
         } else if (messageSystemResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
@@ -218,7 +229,11 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
             if (contentDesMsg == null) {
                 return;
             }
-            contentDesMsg.setText(String.valueOf(messageContentResponse.getData().getPagenation().getTotalCount()) + "条消息");
+            if ((messageContentResponse.getData() != null && messageContentResponse.getData().getPagenation() != null)) {
+                contentDesMsg.setText(String.valueOf(messageContentResponse.getData().getPagenation().getTotalCount()) + "条消息");
+            }else{
+                contentDesMsg.setText("0条消息");
+            }
         } else if (messageContentResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();

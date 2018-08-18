@@ -44,6 +44,7 @@ public class CreateCircleBodyParam {
     private String city;
     private float longitude;
     private float latitude;
+    private String tagid;
 
     public float getTotal_amount() {
         return total_amount;
@@ -228,6 +229,7 @@ public class CreateCircleBodyParam {
                 ", password='" + password + '\'' +
                 ", description='" + description + '\'' +
                 ", city='" + city + '\'' +
+                ", tagid='" + tagid + '\'' +
                 ", longitude=" + longitude +
                 ", latitude=" + latitude + '}';
     }
@@ -260,5 +262,15 @@ public class CreateCircleBodyParam {
             temp = temp + key + ":" + params.get(key) + "\n";
         }
         return temp;
+    }
+
+    public CreateCircleBodyParam setTagid(String typeId) {
+        this.tagid = typeId;
+        params.put("tagid", String.valueOf(userid));
+        return this;
+    }
+
+    public String getTagid() {
+        return tagid;
     }
 }

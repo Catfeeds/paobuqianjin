@@ -20,29 +20,36 @@
                 android:layout_alignParentTop="true"
                 android:background="@drawable/user_page"></RelativeLayout>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/user_head_ico"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+            <FrameLayout
                 android:layout_marginLeft="14dp"
                 android:layout_marginTop="90dp"
-                android:src="@drawable/default_head_ico" />
+                android:id="@+id/user_icon_frm"
+                android:layout_width="82dp"
+                android:layout_height="82dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_gravity="center"
+                    android:id="@+id/user_head_ico"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/default_head_ico" />
+            </FrameLayout>
+
 
             <ImageView
-                android:id="@+id/vip_flg"
-                android:layout_width="54dp"
+                android:id="@+id/gvip"
+                android:layout_width="26dp"
                 android:layout_height="26dp"
-                android:layout_alignBottom="@+id/user_head_ico"
-                android:layout_alignRight="@+id/user_head_ico"
-                android:scaleType="centerInside"
-                android:src="@drawable/vip_flg"
+                android:layout_alignBottom="@+id/user_icon_frm"
+                android:layout_alignRight="@+id/user_icon_frm"
+                android:src="@drawable/golden_little"
                 android:visibility="gone" />
 
             <Button
                 android:id="@+id/bnt_like"
                 android:layout_width="80dp"
                 android:layout_height="30dp"
-                android:layout_alignBottom="@+id/user_head_ico"
+                android:layout_alignBottom="@+id/user_icon_frm"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="14dp"
                 android:background="@drawable/shape"
@@ -55,8 +62,8 @@
                 android:id="@+id/user_simple_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/user_head_ico"
-                android:layout_below="@+id/user_head_ico"
+                android:layout_alignStart="@+id/user_icon_frm"
+                android:layout_below="@+id/user_icon_frm"
                 android:layout_marginTop="30dp">
 
                 <TextView
@@ -71,13 +78,6 @@
                     android:textColor="@color/color_161727"
                     android:textSize="24dp" />
 
-                <ImageView
-                    android:id="@+id/sex_icon"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="12dp"
-                    android:layout_toRightOf="@+id/user_name" />
 
                 <TextView
                     android:id="@+id/mu_biao"
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
-                    android:layout_toRightOf="@+id/sex_icon"
+                    android:layout_toRightOf="@+id/user_name"
                     android:text="目标"
                     android:textColor="@color/color_161727"
                     android:textSize="14dp" />
@@ -106,12 +106,26 @@
                 android:id="@+id/location_city"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/user_head_ico"
+                android:layout_alignStart="@+id/user_icon_frm"
                 android:layout_below="@+id/user_simple_info"
                 android:layout_marginTop="25dp"
                 android:text=""
                 android:textColor="@color/color_8a8a8a"
                 android:textSize="14dp" />
+
+            <Button
+                android:id="@+id/bnt_chat"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/location_city"
+                android:layout_marginEnd="14dp"
+                android:background="@drawable/shape"
+                android:gravity="center"
+                android:stateListAnimator="@null"
+                android:text="对话"
+                android:textColor="@color/color_f8"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/line_center"
@@ -125,7 +139,7 @@
                 android:id="@+id/dynamic_record"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/user_head_ico"
+                android:layout_alignStart="@+id/user_icon_frm"
                 android:layout_below="@+id/line_center"
                 android:layout_marginTop="25dp"
                 android:text="动态日记"

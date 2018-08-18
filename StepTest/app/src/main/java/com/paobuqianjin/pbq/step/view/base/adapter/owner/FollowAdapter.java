@@ -2,7 +2,6 @@ package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.content.ContextCompat;
@@ -19,25 +18,26 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.LoginOutParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowUserResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserIdFollowResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
-import com.paobuqianjin.pbq.step.utils.LoadBitmap;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.RongYunChatUtils;
+import com.paobuqianjin.pbq.step.view.activity.FriendDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.rong.imlib.model.Conversation;
 
 /**
  * Created by pbq on 2018/3/1.
@@ -88,9 +88,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             LocalLog.d(TAG, "关注我的");
             holder.dearName.setText(((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.userid = ((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
-/*            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
-                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(context, holder.userNearIcon, ((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((FollowUserResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
             holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
@@ -103,9 +101,7 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             LocalLog.d(TAG, "我关注的");
             holder.dearName.setText(((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.userid = ((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
-/*            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
-                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(context, holder.userNearIcon, ((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((UserIdFollowResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.btFollow.setText("已关注");
             holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_not_fllow_nearby));
@@ -115,14 +111,12 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
                 holder.vipFlg.setVisibility(View.VISIBLE);
             }*/
         } else if (mData.get(position) instanceof UserFollowOtOResponse.DataBeanX.DataBean) {
-            LocalLog.d(TAG, "互相关注");
+            LocalLog.d(TAG, "对话");
             holder.dearName.setText(((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             holder.userid = ((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getUserid();
-/*            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
-                    , R.drawable.default_head_ico, R.drawable.default_head_ico);*/
-            LoadBitmap.glideLoad(context, holder.userNearIcon, ((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
+            Presenter.getInstance(context).getPlaceErrorImage(holder.userNearIcon, ((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
-            holder.btFollow.setText("互相关注");
+            holder.btFollow.setText("对话");
             holder.btFollow.setBackground(ContextCompat.getDrawable(context, R.drawable.has_fllow_nearby));
             holder.btFollow.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));
             holder.stytle = 2;
@@ -149,6 +143,8 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
         Button btFollow;
         @Bind(R.id.vip_flg)
         ImageView vipFlg;
+        @Bind(R.id.relative_item_root)
+        RelativeLayout relativeItemRoot;
         int userid = -1;
         int stytle = -1;
 
@@ -170,8 +166,8 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
                                 mData.remove(getAdapterPosition());
                                 notifyItemRemoved(getAdapterPosition());
                                 break;
-                            case "互相关注":
-                                Intent intent = new Intent(FOLLOW_OTO_ACTION);
+                            case "对话":
+                                /*Intent intent = new Intent(FOLLOW_OTO_ACTION);
                                 FollowUserResponse.DataBeanX.DataBean dataBean = new FollowUserResponse.DataBeanX.DataBean();
                                 dataBean.setUserid(((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getUserid());
                                 dataBean.setId(((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getUserid());
@@ -181,7 +177,12 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
                                 intent.putExtra("friendinfo", dataBean);
                                 mData.remove(getAdapterPosition());
                                 notifyItemRemoved(getAdapterPosition());
-                                localBroadcastManager.sendBroadcast(intent);
+                                localBroadcastManager.sendBroadcast(intent);*/
+
+                                RongYunChatUtils.getInstance().chatTo(context
+                                        , Conversation.ConversationType.PRIVATE
+                                        ,((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getUserid()+""
+                                        ,((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getNickname());
                                 break;
                         }
                     } else {
@@ -205,9 +206,13 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
                                 mData.remove(getAdapterPosition());
                                 notifyItemRemoved(getAdapterPosition());
                                 break;
-                            case "互相关注":
-                                mData.remove(getAdapterPosition());
-                                notifyItemRemoved(getAdapterPosition());
+                            case "对话":
+                               /* mData.remove(getAdapterPosition());
+                                notifyItemRemoved(getAdapterPosition());*/
+                                RongYunChatUtils.getInstance().chatTo(context
+                                        , Conversation.ConversationType.PRIVATE
+                                        ,((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getUserid()+""
+                                        ,((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getNickname());
                                 break;
                         }
                     }
@@ -219,16 +224,21 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.user_near_icon:
+                    case R.id.relative_item_root:
                         LocalLog.d(TAG, "头像被点击");
                         Intent intent = new Intent();
                         intent.putExtra("userid", userid);
-                        intent.setClass(context, UserCenterActivity.class);
+                        intent.setClass(context, FriendDetailActivity.class);
                         context.startActivity(intent);
                         break;
                     case R.id.bt_follow:
                         LocalLog.d(TAG, "style = " + stytle + ",content " + btFollow.getText());
-                        if (btFollow.getText().toString().equals("互相关注")) {
-                            popCancelPointConfirm("取消关注");
+                        if (btFollow.getText().toString().equals("对话")) {
+                            /*popCancelPointConfirm("取消关注");*/
+                            RongYunChatUtils.getInstance().chatTo(context
+                                    , Conversation.ConversationType.PRIVATE
+                                    ,((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getUserid()+""
+                                    ,((UserFollowOtOResponse.DataBeanX.DataBean) mData.get(getAdapterPosition())).getNickname());
                         } else {
                             Presenter.getInstance(context).postAddUserFollow(innerCallBack, userid);
                         }
@@ -285,10 +295,12 @@ public class FollowAdapter extends RecyclerView.Adapter<FollowAdapter.FollowView
 
         private void initView(View viewRoot) {
             userNearIcon = (CircleImageView) viewRoot.findViewById(R.id.user_near_icon);
+            relativeItemRoot = viewRoot.findViewById(R.id.relative_item_root);
             dearName = (TextView) viewRoot.findViewById(R.id.dear_name);
             btFollow = (Button) viewRoot.findViewById(R.id.bt_follow);
             btFollow.setOnClickListener(onClickListener);
             userNearIcon.setOnClickListener(onClickListener);
+            relativeItemRoot.setOnClickListener(onClickListener);
             vipFlg = (ImageView) viewRoot.findViewById(R.id.vip_flg);
         }
     }

@@ -5,7 +5,7 @@
 
     <include
         android:id="@+id/bar_wallet_detail"
-        layout="@layout/bar_return_a_style"></include>
+        layout="@layout/bar_return_b_style"></include>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/wallet_refresh"
@@ -36,7 +36,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="14dp"
                     android:includeFontPadding="false"
-                    android:text="当前收益(元)"
+                    android:text="今日收益(元)"
                     android:textColor="@color/color_ccfffffff"
                     android:textSize="12dp" />
 
@@ -60,7 +60,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="27dp"
                     android:includeFontPadding="false"
-                    android:text="总金额0.00元"
+                    android:text="钱包余额0.00元"
                     android:textColor="@color/color_f8"
                     android:textSize="15dp" />
 
@@ -84,7 +84,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
-                            android:text="当前收益(元)"
+                            android:text="今日收益(元)"
                             android:textColor="@color/color_f8"
                             android:textSize="12dp"
                             android:textStyle="bold" />
@@ -248,7 +248,8 @@
             android:stateListAnimator="@null"
             android:text="提现"
             android:textColor="@color/color_f8"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:visibility="gone" />
     </LinearLayout>
 
 </RelativeLayout>

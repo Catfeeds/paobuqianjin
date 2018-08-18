@@ -28,161 +28,273 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/release_bg" />
 
-                <RelativeLayout
+                <LinearLayout
+                    android:id="@+id/title_span"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true">
+                    android:layout_marginTop="19dp"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/target_step"
+                        android:id="@+id/task_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center"
                         android:textColor="@color/color_f8"
-                        android:textSize="24dp" />
+                        android:textSize="14dp" />
 
                     <TextView
                         android:id="@+id/target_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/target_step"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="18dp"
+                        android:layout_marginTop="7dp"
                         android:textColor="@color/color_f8"
-                        android:textSize="15dp" />
-                </RelativeLayout>
-            </RelativeLayout>
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/release_sample_des"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/release_live_bg"
-                android:layout_marginLeft="14dp"
-                android:layout_marginTop="15dp"
-                android:text="任务简介"
-                android:textColor="@color/color_161727"
-                android:textSize="14dp" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/title_span"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/release_target_days"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/release_sample_des"
-                android:layout_below="@+id/release_sample_des"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/color_8a8a8a"
-                android:textSize="12dp" />
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/friend_ico"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:background="@drawable/default_head_ico"
+                        android:scaleType="centerCrop" />
 
-            <TextView
-                android:id="@+id/release_target"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/release_target_days"
-                android:layout_below="@+id/release_target_days"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/color_8a8a8a"
-                android:textSize="12dp" />
+                    <ImageView
+                        android:id="@+id/line_center"
+                        android:layout_width="1dp"
+                        android:layout_height="22.5dp"
+                        android:layout_below="@+id/title_span"
+                        android:layout_gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="15.5dp"
+                        android:background="@color/color_f8" />
 
-            <TextView
-                android:id="@+id/release_total_money"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/release_target"
-                android:layout_below="@+id/release_target"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/color_8a8a8a"
-                android:textSize="12dp" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/friend_ico"
+                        android:layout_alignTop="@+id/friend_ico"
+                        android:layout_marginLeft="15.5dp"
+                        android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/release_live_rules"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/release_target_days"
-                android:layout_below="@+id/release_total_money"
-                android:layout_marginTop="10dp"
-                android:text=""
-                android:textColor="@color/color_8a8a8a"
-                android:textSize="12dp" />
-
-            <TextView
-                android:id="@+id/release_live_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/release_target_days"
-                android:layout_below="@+id/release_live_rules"
-                android:layout_marginTop="10dp"
-                android:text="任务说明:"
-                android:textColor="@color/color_8a8a8a"
-                android:textSize="12dp" />
-
-            <TextView
-                android:id="@+id/num_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/release_target_days"
-                android:layout_below="@+id/release_live_desc"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="10dp"
-                android:lineSpacingExtra="5dp"
-                android:textColor="@color/color_8a8a8a"
-                android:textSize="12dp" />
-
-            <!--            <TextView
-                            android:id="@+id/num_2"
+                        <TextView
+                            android:id="@+id/friend_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignLeft="@+id/release_sample_des"
-                            android:layout_below="@+id/num_1"
-                            android:layout_centerVertical="true"
-                            android:layout_marginTop="10dp"
-                            android:text="A"
-                            android:textColor="@color/color_8a8a8a"
-                            android:textSize="12dp" />-->
+                            android:textColor="@color/color_f8"
+                            android:textSize="14dp" />
+
+                        <TextView
+                            android:id="@+id/pao_bu_no"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/color_f8"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/button_1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/release_live_bg"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/circular"
+                android:gravity="center"
+                android:text="01"
+                android:textColor="@color/color_161727"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/current_step"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/button_1"
+                android:layout_alignTop="@+id/button_1"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@+id/button_1"
+                android:gravity="center"
+                android:text="好友达标步数"
+                android:textColor="@color/color_161727"
+                android:textSize="16dp" />
+
+            <ImageView
+                android:id="@+id/man_run_ico"
+                android:layout_width="13dp"
+                android:layout_height="20dp"
+                android:layout_alignEnd="@+id/button_1"
+                android:layout_alignStart="@+id/button_1"
+                android:layout_below="@+id/button_1"
+                android:layout_marginTop="25dp"
+                android:src="@drawable/motion" />
+
+            <TextView
+                android:id="@+id/step_des_run"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/man_run_ico"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/man_run_ico"
+                android:layout_marginRight="14dp"
+                android:text="" />
+
+            <ProgressBar
+                android:id="@+id/process_run"
+                style="@style/RunProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_alignLeft="@+id/button_1"
+                android:layout_below="@+id/man_run_ico"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="12dp"
+                android:progress="10"
+                android:progressDrawable="@drawable/bg_progress_horizontal" />
+
+            <Button
+
+                android:id="@+id/button_2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/process_run"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/circular"
+                android:gravity="center"
+                android:text="02"
+                android:textColor="@color/color_161727"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/task_tells"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/button_2"
+                android:layout_alignTop="@+id/button_2"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@+id/button_2"
+                android:gravity="center"
+                android:text="任务简介"
+                android:textColor="@color/color_161727"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/task_all_days"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/task_tells"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/color_161727"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/target_step_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/task_all_days"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color_161727"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/gift_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/target_step_des"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color_161727"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/strat_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/gift_money"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color_161727"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/end_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/strat_time"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color_161727"
+                android:textSize="12dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/end_time"
+                android:background="@color/color_8a8a8a" />
+
+            <TextView
+                android:id="@+id/task_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/end_time"
+                android:layout_marginTop="8dp"
+                android:text="任务说明:"
+                android:textColor="@color/color_161727"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/task_ruls_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/task_desc"
+                android:lineSpacingExtra="5dp"
+                android:textColor="@color/color_161727"
+                android:textSize="12dp" />
+
             <ImageView
                 android:id="@+id/line1"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_below="@+id/num_1"
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/task_ruls_detail"
                 android:layout_marginTop="15dp"
                 android:background="@color/color_f9f9f9" />
 
-            <RelativeLayout
-                android:id="@+id/task_days_span"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/task_record"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_alignLeft="@+id/release_sample_des"
-                android:layout_below="@+id/line1">
-
-                <TextView
-                    android:id="@+id/task_days"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="任务日期"
-                    android:textColor="@color/color_161727"
-                    android:textSize="14dp" />
-
-                <TextView
-                    android:id="@+id/task_state"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/num_2"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="15dp"
-                    android:text="领取状态"
-                    android:textColor="@color/color_161727"
-                    android:textSize="14dp"
-                    tools:ignore="UnknownId" />
-            </RelativeLayout>
-
+                android:layout_alignLeft="@+id/button_2"
+                android:layout_below="@+id/line1"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="领取记录"
+                android:textColor="@color/color_161727"
+                android:textSize="14dp" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/task_detail_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/task_days_span">
+                android:layout_below="@+id/task_record">
 
             </android.support.v7.widget.RecyclerView>
 

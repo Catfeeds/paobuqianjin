@@ -64,7 +64,7 @@ public class PayFailedFragment extends BaseBarStyleTextViewFragment {
         @Override
         public void clickRight() {
             LocalLog.d(TAG, "确定");
-            ((PaoBuPayActivity) getActivity()).showQrCodeFragment(PayFailedFragment.this);
+            getActivity().onBackPressed();
         }
     };
 

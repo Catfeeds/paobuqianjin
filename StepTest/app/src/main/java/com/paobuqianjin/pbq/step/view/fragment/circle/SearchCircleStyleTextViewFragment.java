@@ -89,6 +89,12 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
     private int mCurrentAllPageIndex = 2;
     private ArrayList<Integer> circleIdArray = new ArrayList<>();
     private final static int PAGE_SIZE = 10;//PAGESIZE 必须和上一层一致，否则页数对不上
+    private final static int REQUEST_DETAIL = 278;
+    private final static String QUIT_ACTION = "com.paobuqianjin.pbq.step.QUIT";
+    private final static String DELETE_ACTION = "com.paobuqianjin.pbq.step.DELETE_CIRCLE";
+    private final static String DELETE_MEMBER = "com.paobuqianjin.pbq.step.DELETE_MEMBER";
+    private final static String CIRCLE_EDIT = "com.paobuqianjin.pbq.step.EDIT_CIRCLE";
+    private final static String ADD_CIRCLE = "com.paobuqianjin.pbq.step.ADD_CIRCLE";
 
     public void setChoiceCircleData(ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> choiceCircleData) {
         this.choiceCircleData = choiceCircleData;
@@ -155,6 +161,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         Presenter.getInstance(getContext()).attachUiInterface(this);
         searchIcon = (RelativeLayout) viewRoot.findViewById(R.id.search_icon);
         searchCircleText = (EditText) viewRoot.findViewById(R.id.search_circle_text);
+        searchCircleText.setHint("请输入圈子名称/ID");
         searchCircleText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -168,11 +175,12 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         searchCircleText.addTextChangedListener(textWatcher);
         cancelIcon = (RelativeLayout) viewRoot.findViewById(R.id.cancel_icon);
         cancelIcon.setOnClickListener(onClickListener);
+        boolean isInitData = getActivity().getIntent().getBooleanExtra("isInitData", true);
         if (choiceCircleData == null) {
             LocalLog.d(TAG, "choiceCircleData null");
             pageIndex = 1;
             choiceCircleData = new ArrayList<>();
-            Presenter.getInstance(getContext()).getMoreCircle(pageIndex, PAGE_SIZE, keyWord);
+            if(isInitData) Presenter.getInstance(getContext()).getMoreCircle(pageIndex, PAGE_SIZE, keyWord);
         }
         loadData(choiceCircleData);
         /*searchIcon.setOnClickListener(new View.OnClickListener() {
@@ -217,6 +225,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
                 cancelIcon.setOnClickListener(onClickListener);
             } else {
                 LocalLog.d(TAG, "隐藏搜索界面");
+                isSearch = false;
                 cancelIcon.setVisibility(View.GONE);
                 if (notFoundData != null && notFoundData.getVisibility() == View.VISIBLE) {
                     swipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -473,8 +482,17 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
             recyclerView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    loadData(choiceCircleData);
-                    LocalLog.d(TAG, "加载数据");
+                    LocalLog.d(TAG, "刷新数据");
+                    if (isSearch) {
+                        searchKeyWord(keyWord);
+                    } else {
+                        pageIndex = 1;
+                        pageCount = 0;
+                        mCurrentAllPageIndex = 1;
+                        choiceCircleData.clear();
+                        adapter.notifyDataSetChanged();
+                        Presenter.getInstance(getContext()).getMoreCircle(pageIndex, PAGE_SIZE, "");
+                    }
                 }
             }, 1000); // 延时模拟请求服务器。
         }
@@ -482,7 +500,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
 
     @Override
     protected String title() {
-        return "精选圈子";
+        return getActivity().getIntent().getBooleanExtra("isInitData",true) ? "精选圈子" : getString(R.string.search_circle);
     }
 
     @Override
@@ -495,6 +513,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         if (!isAdded()) {
             return;
         }
+        swipeRefreshLayout.setRefreshing(false);
         if (choiceCircleResponse.getError() == 0) {
             if (notFoundData != null && notFoundData.getVisibility() == View.VISIBLE) {
                 swipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -509,7 +528,24 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
             } else {
                 pageCount = choiceCircleResponse.getData().getPagenation().getTotalPage();
                 LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
-                searchMore((ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData());
+                if (choiceCircleResponse.getData().getData() == null || choiceCircleResponse.getData().getData().size() == 0) {
+                    if (pageIndex == 1) {
+                        recyclerView.loadMoreFinish(false, true);
+                        swipeRefreshLayout.setVisibility(View.GONE);
+                        notFoundData.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    if (pageIndex == 1) {
+                        recyclerView.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (recyclerView != null)
+                                    recyclerView.scrollToPosition(0);
+                            }
+                        }, 100);
+                    }
+                    searchMore((ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData());
+                }
                 pageIndex++;
             }
 
@@ -547,6 +583,59 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
             }
             getActivity().setResult(Activity.RESULT_OK, intent);
             getActivity().finish();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (REQUEST_DETAIL == requestCode) {
+            if (data != null) {
+                try {
+                    int position = data.getIntExtra(mContext.getPackageName() + "position", -1);
+                    LocalLog.d(TAG, "更新position = " + position);
+                    if (position >= 0) {
+                        if (QUIT_ACTION.equals(data.getAction())) {
+                            LocalLog.d(TAG, "退出圈子");
+                            if (isSearch) {
+                                int totalNum = searchData.get(position).getMember_number();
+                                searchData.get(position).setMember_number(totalNum - 1);
+                                searchData.get(position).setIs_join(0);
+                                adapter.notifyItemChanged(position);
+                            } else {
+                                int totalNum = choiceCircleData.get(position).getMember_number();
+                                choiceCircleData.get(position).setMember_number(totalNum - 1);
+                                choiceCircleData.get(position).setIs_join(0);
+                                adapter.notifyItemChanged(position);
+                            }
+                        } else if (ADD_CIRCLE.equals(data.getAction())) {
+                            LocalLog.d(TAG, "加入圈子");
+                            if (isSearch) {
+                                int totalNum = searchData.get(position).getMember_number();
+                                searchData.get(position).setMember_number(totalNum + 1);
+                                searchData.get(position).setIs_join(1);
+                                adapter.notifyItemChanged(position);
+                            } else {
+                                int totalNum = searchData.get(position).getMember_number();
+                                choiceCircleData.get(position).setMember_number(totalNum + 1);
+                                choiceCircleData.get(position).setIs_join(1);
+                                adapter.notifyItemChanged(position);
+                            }
+                        } else if (DELETE_ACTION.equals(data.getAction())) {
+                            LocalLog.d(TAG, "解散圈子");
+                            if (isSearch) {
+                                searchData.remove(position);
+                                adapter.notifyItemRemoved(position);
+                            } else {
+                                searchData.remove(position);
+                                adapter.notifyItemRemoved(position);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color_f2f2f2"
+    tools:context="com.paobuqianjin.pbq.step.view.activity.ChangeCircleBannerActivity">
+
+    <include
+        android:id="@+id/bar"
+        layout="@layout/bar_return_a_style"
+        ></include>
+
+    <LinearLayout
+        android:id="@+id/linear_change_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        android:background="@color/white"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/backgroup_image"
+            android:textColor="@color/black0"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_arrow_right26"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_banner"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_margin="12dp"
+        android:scaleType="centerCrop"
+        android:background="@color/white"
+        />
+</LinearLayout>

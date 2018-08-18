@@ -8,8 +8,13 @@ public class Constants {
     public static final String APP_ID = "wx1ed4ccc9a2226a73";
 
     public static final String SP_IS_FIRST_ENTER = "SP_IS_FIRST_ENTER";
+    public static final String SP_RONGYUN_CHAT_TOKEN = "SP_RONGYUN_CHAT_TOKEN";
 
     public static final String LIMITE_VERSION = "5";
 
+
+    public static final String SP_TRANSPARENT_GUIDE = "SP_TRANSPARENT_GUIDE";
+    public static final String CIRCLE_GUIDE = "CIRCLE_GUIDE";
+    public static final int PAGE_SIZE = 20;
 
 }

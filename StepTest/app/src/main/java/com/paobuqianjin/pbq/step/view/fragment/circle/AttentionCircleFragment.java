@@ -26,6 +26,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.DynamicIndexUiInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.AttentionCircleAdapter;
@@ -87,7 +88,7 @@ public class AttentionCircleFragment extends BaseFragment {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         dynamicRecyclerView.setLayoutManager(layoutManager);
         dynamicRecyclerView.setSwipeItemClickListener(mItemClickListener);
-        adapter = new AttentionCircleAdapter(getActivity(), null, getRootFragment());
+        adapter = new AttentionCircleAdapter(getContext(), null, getRootFragment());
 
         // 自定义的核心就是DefineLoadMoreView类。
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());
@@ -263,8 +264,10 @@ public class AttentionCircleFragment extends BaseFragment {
                         LocalLog.d(TAG, "第一次刷新");
                     } else {
                         if (pageIndex > pageCount) {
-                            /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
+                            PaoToastUtils.showLongToast(getContext(), "没有更多");
                             dynamicRecyclerView.loadMoreFinish(false, true);
+                            dynamicRecyclerView.setLoadMoreView(null); // 设置LoadMoreView更新监听。
+                            dynamicRecyclerView.setLoadMoreListener(null); // 加载更多的监听。
                             return;
                         }
                     }

@@ -35,6 +35,27 @@
 
     <uses-permission android:name="org.simalliance.openmobileapi.SMARTCARD" />
 
+    <!-- ⼩米 配置开始 < -->
+    <!--
+        <permission
+        android:name="com.paobuqianjin.pbq.step.permission.MIPUSH_RECEIVE"
+        android:protectionLevel="signature" />
+    -->
+    <uses-permission android:name="com.paobuqianjin.pbq.step.permission.MIPUSH_RECEIVE" />
+    <!-- ⼩米 配置结束 < -->
+    <!-- MeiZu 配置开始 < -->
+    <!-- 兼容 flyme5.0 以下版本，魅族内部集成 pushSDK 必填，不然无法收到 消息 -->
+    <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE" />
+
+    <permission
+        android:name="com.paobuqianjin.pbq.step.push.permission.MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.paobuqianjin.pbq.step.push.permission.MESSAGE" />
+    <!-- 兼容 flyme3.0 配置权限 -->
+    <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />
+
+    <!-- MeiZu 配置结束 < -->
     <!--  -->
     <application
         android:name=".view.base.PaoBuApplication"
@@ -44,7 +65,7 @@
         android:roundIcon="@mipmap/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
-        tools:replace="android:theme">
+        tools:replace="android:icon,android:label,android:theme">
         <meta-data
             android:name="android.max_aspect"
             android:value="ratio_float" />
@@ -66,16 +87,16 @@
             android:name="design_height"
             android:value="1334" />
 
-        <!--umeng-->
+        <!-- umeng -->
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5a5718adf43e482eb000012a" />
-        <!-- Channel ID用来标识App的推广渠道，作为推送消息时给用户分组的一个维度。-->
+        <!-- Channel ID用来标识App的推广渠道，作为推送消息时给用户分组的一个维度。 -->
 
         <activity
             android:name=".view.activity.SplashActivity"
-            android:launchMode="singleTask"
             android:exported="true"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme">
             <intent-filter>
@@ -98,6 +119,9 @@
             </intent-filter>
             -->
             <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.GUIDE_ACTION" />
+            </intent-filter>
+            <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.LOGIN_SUCCESS_ACTION" />
             </intent-filter>
             <intent-filter>
@@ -110,6 +134,7 @@
             android:theme="@style/ImageTranslucentTheme"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.action.ADD_ACCOUNT" />
                 <action android:name="com.paobuqianjin.pbq.step.RE_LOGIN" />
             </intent-filter>
         </activity>
@@ -145,6 +170,7 @@
             android:name=".view.activity.OwnerCircleActivity"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.GUIDE_ACTION" />
                 <action android:name="com.paobuqianjin.pbq.ACTION.GOTO_MYCIRCLE" />
             </intent-filter>
         </activity>
@@ -152,6 +178,7 @@
             android:name=".view.activity.LoveRankActivity"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.RED_RECORD_ACTION" />
                 <action android:name="com.paobuqian.pbq.step.STEP_ACTION" />
                 <action android:name="com.paobuqian.pbq.step.LOVE_ACTION" />
             </intent-filter>
@@ -188,6 +215,7 @@
             android:name=".view.activity.PaoBuPayActivity"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
+                <action android:name="android.intent.action.PAY_EDIT" />
                 <action android:name="android.intent.action.PAY" />
                 <action android:name="android.intent.action.QRCODE" />
                 <action android:name="com.paobuqian.pbq.step.PAY_RECHARGE.ACTION" />
@@ -195,6 +223,7 @@
                 <action android:name="com.paobuqianjin.pbq.step.VIP_FRIEND_ACTION" />
                 <action android:name="com.paobuqianjin.pbq.setp.VIP_SELF_SPONSOR_ACTION" />
                 <action android:name="com.paobuqianjin.pbq.step.VIP_FRIEND_SPONSOR_ACTION" />
+                <action android:name="com.paobuqianjin.pbq.step.VIP_GOLDEN_ACTION" />
             </intent-filter>
         </activity>
         <activity
@@ -242,9 +271,12 @@
         <activity
             android:name=".view.activity.MyReleaseActivity"
             android:theme="@style/ImageTranslucentTheme" />
-        <activity
-            android:name=".view.activity.MyReleaseDetailActivity"
-            android:theme="@style/ImageTranslucentTheme" />
+        <activity android:name=".view.activity.MyReleaseDetailActivity">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.PERSON_ACTION" />
+                <action android:name="com.paobuqianjin.pbq.step.SPONSOR_ACTION" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.fragment.owner.ReleaseRecordActivity"
             android:theme="@style/ImageTranslucentTheme" />
@@ -265,7 +297,8 @@
         <!-- 商家详情 -->
         <activity
             android:name=".view.activity.SponsorDetailActivity"
-            android:theme="@style/ImageTranslucentTheme" />
+            android:theme="@style/ImageTranslucentTheme"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".view.activity.DearNameModifyActivity"
             android:theme="@style/ImageTranslucentTheme" />
@@ -317,7 +350,12 @@
         <activity
             android:name=".view.activity.MyFriendActivity"
             android:launchMode="singleTask"
-            android:theme="@style/ImageTranslucentTheme" />
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.paobuqianjn.step.FRIEND_ACTION" />
+                <action android:name="com.paobuqianjin.pbq.step.STRANGE_ACTION" />
+            </intent-filter>
+        </activity>
         <!-- 通讯录好友 -->
         <activity
             android:name=".view.activity.FriendAddressActivity"
@@ -328,6 +366,7 @@
             android:name=".view.activity.AddFriendAddressActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
+        <activity android:name=".view.activity.SearchResultActivity" />
         <!-- 编辑圈子 -->
         <activity
             android:name=".view.activity.EditCircleActivity"
@@ -361,6 +400,16 @@
             android:name=".view.activity.SuggestionActivity"
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme" />
+        <!-- 常见问题 -->
+        <activity android:name=".activity.question.QuestionActivity" />
+        <activity android:name=".activity.question.QuestionDetailActivity">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.STEP_HELP" />
+                <action android:name="com.paobuqianjin.pbq.step.FRIEND_HELP" />
+                <action android:name="com.paobuqianjin.pbq.step.RECHARGE_HELP" />
+                <action android:name="com.paobuqianjin.pbq.step.ACCOUNT_HELP" />
+            </intent-filter>
+        </activity>
         <!-- 关于我们 -->
         <activity
             android:name=".view.activity.AboutActivity"
@@ -461,15 +510,6 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver
-            android:name=".model.broadcast.StepLocationReciver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.paobuqianjian.intent.ACTION_STEP" />
-                <action android:name="com.paobuqianjin.intent.ACTION_LOCATION" />
-            </intent-filter>
-        </receiver>
 
         <activity android:name=".view.activity.RegisterActivity" />
         <activity android:name=".view.activity.ForgotPasswordActivity" />
@@ -526,7 +566,7 @@
         <activity android:name=".view.activity.BindCardActivity" />
         <activity android:name=".view.activity.InputCardInfoActivity" />
         <activity android:name=".view.activity.MyBankCardActivity" />
-        <!--密码管理-->
+        <!-- 密码管理 -->
         <activity android:name=".view.activity.PayManagerActivity" />
         <activity android:name=".view.activity.ForgetPayWordActivity" />
         <activity android:name=".view.activity.PayPassWordActivity">
@@ -536,8 +576,11 @@
                 <action android:name="com.paobuqianjin.pbq.step.ACTION_RESET_BANK" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.IdentifedSetPassActivity"/>
-
+        <activity android:name=".view.activity.IdentifedSetPassActivity" />
+        <activity
+            android:name=".view.activity.SponsorRedDetailActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".view.activity.GoldenSponsoractivity" />
         <!-- 合利宝 -->
         <uses-library
             android:name="org.simalliance.openmobileapi"
@@ -555,25 +598,262 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".view.activity.TransferResultActivity"></activity>
-        <activity android:name=".view.activity.MipushTestActivity"
-            android:launchMode="singleTask"
-            android:exported="true"></activity>
-        <!--魅族push应用定义消息receiver声明 -->
-        <receiver android:name=".MeizuTestReceiver">
+        <activity android:name=".view.activity.TransferResultActivity" />
+        <!-- 魅族push应用定义消息receiver声明 -->
+        <receiver android:name=".model.broadcast.MeizuTestReceiver">
             <intent-filter>
+
                 <!-- 接收push消息 -->
                 <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
                 <!-- 接收register消息 -->
                 <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
-                <!-- 接收unregister消息-->
+                <!-- 接收unregister消息 -->
                 <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK" />
                 <!-- 兼容低版本Flyme3推送服务配置 -->
                 <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
                 <action android:name="com.meizu.c2dm.intent.RECEIVE" />
-                <category android:name="com.paobuqianjin.pbq.step"></category>
+
+                <category android:name="com.paobuqianjin.pbq.step" />
             </intent-filter>
         </receiver>
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="516fd23486208ba3345d931ed492957a" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.paobuqianjin.pbq.step.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/rc_file_path" />
+        </provider>
+
+        <receiver
+            android:name=".model.broadcast.RongYunMessageReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
+                <action android:name="io.rong.push.intent.THIRD_PARTY_PUSH_STATE" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="io.rong.imlib.ipc.RongService"
+            android:process=":ipc" />
+        <service android:name="io.rong.imlib.ReConnectService" />
+
+        <receiver android:name="io.rong.imlib.ConnectChangeReceiver" />
+        <receiver
+            android:name="io.rong.imlib.HeartbeatReceiver"
+            android:process=":ipc" />
+
+        <activity
+            android:name="io.rong.imkit.widget.provider.TakingPicturesActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait" />
+
+        <receiver
+            android:name="io.rong.push.platform.MiMessageReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.ERROR" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 小米 配置开始 < -->
+        <service
+            android:name="com.xiaomi.push.service.XMPushService"
+            android:enabled="true" />
+        <service
+            android:name="com.xiaomi.mipush.sdk.PushMessageHandler"
+            android:enabled="true"
+            android:exported="true" />
+        <service
+            android:name="com.xiaomi.mipush.sdk.MessageHandleService"
+            android:enabled="true" />
+        <!-- 注：此service必须在2.2.5版本以后（包括2.2.5版本）加入 -->
+
+        <service
+            android:name="com.xiaomi.push.service.XMJobService"
+            android:enabled="true"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <!-- 注：此service必须在3.0.1版本以后（包括3.0.1版本）加入 -->
+
+        <receiver
+            android:name="com.xiaomi.push.service.receivers.NetworkStatusReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.xiaomi.push.service.receivers.PingReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.xiaomi.push.PING_TIMER" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="io.rong.push.platform.MiMessageReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.RECEIVE_MESSAGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.MESSAGE_ARRIVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.xiaomi.mipush.ERROR" />
+            </intent-filter>
+        </receiver>
+        <!-- 小米 配置结束 < -->
+
+
+        <!-- HMS 配置开始 -->
+        <meta-data
+            android:name="com.huawei.hms.client.appid"
+            android:value="100304365" />
+
+        <!-- BridgeActivity定义了HMS-SDK中一些跳转所需要的透明页面 -->
+        <activity
+            android:name="com.huawei.hms.activity.BridgeActivity"
+            android:configChanges="orientation|locale|screenSize|layoutDirection|fontScale"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent">
+            <meta-data
+                android:name="hwc-theme"
+                android:value="androidhwext:style/Theme.Emui.Translucent" />
+        </activity>
+
+        <!-- 解决华为移动服务升级问题的透明界面（必须声明） -->
+        <activity
+            android:name="com.huawei.android.hms.agent.common.HMSAgentActivity"
+            android:configChanges="orientation|locale|screenSize|layoutDirection|fontScale"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent">
+            <meta-data
+                android:name="hwc-theme"
+                android:value="androidhwext:style/Theme.Emui.Translucent" />
+        </activity>
+
+        <provider
+            android:name="com.huawei.hms.update.provider.UpdateProvider"
+            android:authorities="com.paobuqianjin.pbq.step.hms.update.provider"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+        <!-- 第三方相关 :接收Push消息（注册、Push消息、Push连接状态）广播 -->
+        <receiver android:name="io.rong.push.platform.HMSReceiver">
+            <intent-filter>
+
+                <!-- 必须,用于接收token -->
+                <action android:name="com.huawei.android.push.intent.REGISTRATION" />
+                <!-- 必须，用于接收消息 -->
+                <action android:name="com.huawei.android.push.intent.RECEIVE" />
+                <!-- 可选，用于点击通知栏或通知栏上的按钮后触发onEvent回调 -->
+                <action android:name="com.huawei.android.push.intent.CLICK" />
+                <!-- 可选，查看push通道是否连接，不查看则不需要 -->
+                <action android:name="com.huawei.intent.action.PUSH_STATE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="com.huawei.hms.support.api.push.PushEventReceiver">
+            <intent-filter>
+
+                <!-- 接收通道发来的通知栏消息，兼容老版本Push -->
+                <action android:name="com.huawei.intent.action.PUSH" />
+            </intent-filter>
+        </receiver>
+        <!-- HMS 配置结束 -->
+
+
+        <!-- MeiZu 配置开始 < -->
+        <receiver android:name="io.rong.push.platform.MeiZuReceiver">
+            <intent-filter>
+
+                <!-- 接收 push 消息 -->
+                <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
+                <!-- 接收 register 消息 -->
+                <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
+                <!-- 接收 unregister 消息 -->
+                <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK" />
+                <!-- 兼容低版本 Flyme3 推送服务配置 -->
+                <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
+                <action android:name="com.meizu.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.paobuqianjin.pbq.step" />
+            </intent-filter>
+        </receiver>
+        <!-- MeiZu 配置结束 < -->
+
+
+        <!-- 会话界面 -->
+        <activity
+            android:name=".view.activity.ConversationActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data
+                    android:host="com.paobuqianjin.pbq.step"
+                    android:pathPrefix="/conversation/"
+                    android:scheme="rong" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.activity.ChangeCircleBannerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.TaskActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.TransparentGuideActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".view.activity.ConsumptiveRedBagActivity" />
+        <activity android:name=".view.activity.AddConsumptiveRedBagActivity" />
+        <activity android:name=".view.activity.ShopRedBagActivity" />
+        <activity android:name=".view.activity.GetConsumptiveRedBagHisActivity" />
+        <activity android:name=".view.activity.MyConsumptiveRedBagActivity" />
+        <activity android:name=".view.activity.GetConsumptiveRBResultActivity" />
+        <activity android:name=".CircleTypeActivity" />
+        <activity android:name=".view.activity.GetMoreMoneyActivity" />
+        <activity android:name=".view.activity.ChangeAccountActivity" />
+        <activity android:name=".view.activity.MultAccManangerActivity" />
+        <activity android:name=".view.activity.NearByActivity" />
+        <activity android:name=".view.activity.SponsorCollectActivity" />
+        <activity android:name=".view.activity.FriendDetailActivity" />
+        <activity
+            android:name=".view.activity.CircleGuideActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".view.activity.SetRemarkNameActivity" />
+        <activity android:name=".view.activity.ConsumptiveRedBag2Activity" />
+        <activity android:name=".view.activity.AddAroundRedBagActivity" />
+        <activity android:name=".view.activity.SingleWebViewActivity"></activity>
+        <activity android:name=".view.activity.RedHsRecordActivity" />
+        <activity
+            android:name=".view.activity.RoundRedDetailActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
     </application>
 
 </manifest>

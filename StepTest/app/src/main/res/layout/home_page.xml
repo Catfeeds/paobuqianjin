@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/home_page"
-    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/bg_home"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_above="@+id/wave_view"
+        android:layout_marginBottom="-95dp"
         android:scaleType="centerCrop"
         android:src="@drawable/home_pageimg" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/home_title"
         android:layout_above="@+id/wave_view"
-        android:gravity="center"
-        >
+        android:layout_below="@+id/home_title"
+        android:gravity="center">
+
         <FrameLayout
             android:id="@+id/process_step"
             android:layout_width="200dp"
@@ -142,6 +142,7 @@
             </RelativeLayout>
 
         </FrameLayout>
+
         <RelativeLayout
             android:id="@+id/income_out_look"
             android:layout_width="match_parent"
@@ -213,8 +214,6 @@
             </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
-
-
 
 
     <TextView
@@ -301,29 +300,31 @@
         android:id="@+id/bottom_background"
         android:layout_width="match_parent"
         android:layout_height="190dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/color_f8"
         android:orientation="vertical"
         android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true">
+        android:paddingRight="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            >
+            android:gravity="center_vertical">
+
             <FrameLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                >
+                android:layout_weight="1">
+
                 <ImageView
                     android:id="@+id/out_red_pkg_image"
                     android:layout_width="170dp"
                     android:layout_height="85dp"
                     android:layout_gravity="center"
                     android:background="@drawable/heme_page_selector" />
+
                 <TextView
                     android:id="@+id/out_red_package"
                     android:layout_width="wrap_content"
@@ -335,18 +336,18 @@
                     android:textColor="@color/color_f8"
                     android:textSize="14dp" />
             </FrameLayout>
+
             <FrameLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                >
+                android:layout_weight="1">
 
                 <ImageView
                     android:id="@+id/create_circle_image"
                     android:layout_width="170dp"
                     android:layout_height="85dp"
-                    android:background="@drawable/create_cicle_selector"
                     android:layout_gravity="center_horizontal"
+                    android:background="@drawable/create_cicle_selector"
                     android:scaleType="centerCrop" />
 
                 <TextView
@@ -367,16 +368,16 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            >
+            android:gravity="center_vertical">
+
             <FrameLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                >
+                android:layout_weight="1">
+
                 <ImageView
-                    android:id="@+id/income_red_pkg_image"
+                    android:id="@+id/recv_sponsor_rpg"
                     android:layout_width="170dp"
                     android:layout_height="85dp"
                     android:layout_gravity="center_horizontal"
@@ -387,37 +388,38 @@
                     android:id="@+id/income_red_package"
                     android:layout_width="wrap_content"
                     android:layout_height="85dp"
+                    android:layout_alignParentBottom="true"
                     android:layout_gravity="bottom|center_horizontal"
                     android:gravity="bottom"
                     android:paddingBottom="8dp"
-                    android:layout_alignParentBottom="true"
-                    android:text="创建圈子"
+                    android:text="领消费红包"
                     android:textColor="@color/color_f8"
                     android:textSize="14dp" />
 
             </FrameLayout>
+
             <FrameLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                >
+                android:layout_weight="1">
+
                 <ImageView
                     android:id="@+id/add_friend_image"
                     android:layout_width="170dp"
                     android:layout_height="85dp"
-                    android:background="@drawable/invite_friend_selector"
                     android:layout_gravity="center_horizontal"
+                    android:background="@drawable/invite_friend_selector"
                     android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/invite_friend"
                     android:layout_width="wrap_content"
                     android:layout_height="85dp"
-                    android:text="邀请好友"
-                    android:paddingBottom="8dp"
-                    android:gravity="bottom"
                     android:layout_gravity="center_horizontal"
+                    android:gravity="bottom"
+                    android:paddingBottom="8dp"
+                    android:text="商家金牌会员"
                     android:textColor="@color/color_f8"
                     android:textSize="14dp" />
             </FrameLayout>

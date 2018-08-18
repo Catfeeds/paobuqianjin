@@ -16,6 +16,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,13 +25,17 @@ import com.lwkandroid.imagepicker.data.ImageDataModel;
 import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
 import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.BigImageView;
+import com.paobuqianjin.pbq.step.customview.ImageViewPager;
 import com.paobuqianjin.pbq.step.data.bean.bundle.GoodImageData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.GridAdpter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -58,6 +63,7 @@ public class SponsorGoodFragment extends BaseBarStyleTextViewFragment implements
     private View popBirthSelectView;
     private PopupWindow popupSelectWindow;
     private TranslateAnimation animationCircleType;
+    private ArrayList<String> goodImages;
 
     @Override
 
@@ -86,9 +92,9 @@ public class SponsorGoodFragment extends BaseBarStyleTextViewFragment implements
         sponsorView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (goodsImgsBeans != null) {
-                    LocalLog.d(TAG, "url " + goodsImgsBeans.get(position).getUrl());
-                    popImageView(goodsImgsBeans.get(position).getUrl());
+                if (goodImages != null && goodImages.size() > 0) {
+                    /*popImageView(goodsImgsBeans.get(position).getUrl());*/
+                    popBigImageInterface.popImageView(goodImages , position);
                 }
             }
         });
@@ -99,42 +105,104 @@ public class SponsorGoodFragment extends BaseBarStyleTextViewFragment implements
 
             if (goodImageData != null) {
                 goodsImgsBeans = goodImageData.getGoodsImgsBeans();
-                sponsorView.setAdapter(new GridAdpter(getActivity(), goodsImgsBeans, mColumnWidth));
+                sponsorView.setAdapter(new GridAdpter(getContext(), goodsImgsBeans, mColumnWidth));
+                if (goodsImgsBeans != null) {
+                    goodImages = new ArrayList<String>();
+                    for (int i = 0; i < goodsImgsBeans.size(); i++) {
+                        goodImages.add(goodsImgsBeans.get(i).getUrl());
+                    }
+                }
             }
         }
     }
 
-    public void popImageView(String url) {
-        LocalLog.d(TAG, "查看大图");
-        int mScreenWidth = ImagePickerComUtils.getScreenWidth(getContext());
-        int mScreenHeight = ImagePickerComUtils.getScreenHeight(getContext());
-        popBirthSelectView = View.inflate(getContext(), R.layout.image_big_view, null);
-        PhotoView photoView = (PhotoView) popBirthSelectView.findViewById(R.id.photo_view);
-        ImageDataModel.getInstance().getDisplayer().display(getContext(), url, photoView, mScreenWidth, mScreenHeight);
-        popupSelectWindow = new PopupWindow(popBirthSelectView,
-                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                LocalLog.d(TAG, "popImageVie dismiss() ");
-                popupSelectWindow = null;
-            }
-        });
+    public interface PopBigImageInterface {
+        public void popImageView(String url);
 
-        popupSelectWindow.setFocusable(true);
-        popupSelectWindow.setOutsideTouchable(true);
-        popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
-
-        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
-                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
-                1, Animation.RELATIVE_TO_PARENT, 0);
-        animationCircleType.setInterpolator(new AccelerateInterpolator());
-        animationCircleType.setDuration(200);
-
-
-        popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.sponsor_goods_pic_fg), Gravity.CENTER, 0, 0);
-        popBirthSelectView.startAnimation(animationCircleType);
+        public void popImageView(List<String> images, int index);
     }
+
+
+    private PopBigImageInterface popBigImageInterface = new PopBigImageInterface() {
+        @Override
+        public void popImageView(String url) {
+            int mScreenWidth = ImagePickerComUtils.getScreenWidth(getContext());
+            int mScreenHeight = ImagePickerComUtils.getScreenHeight(getContext());
+            LocalLog.d(TAG, "查看大图");
+            popBirthSelectView = View.inflate(getContext(), R.layout.image_big_view, null);
+            PhotoView photoView = (PhotoView) popBirthSelectView.findViewById(R.id.photo_view);
+            ImageDataModel.getInstance().getDisplayer().display(getContext(), url, photoView, mScreenWidth, mScreenHeight);
+            popupSelectWindow = new PopupWindow(popBirthSelectView,
+                    WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    LocalLog.d(TAG, "popImageVie dismiss() ");
+                    popupSelectWindow = null;
+                }
+            });
+
+            popupSelectWindow.setFocusable(true);
+            popupSelectWindow.setOutsideTouchable(true);
+            popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
+
+            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleType.setInterpolator(new AccelerateInterpolator());
+            animationCircleType.setDuration(200);
+
+
+            popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.dynamic_id_detail), Gravity.CENTER, 0, 0);
+            popBirthSelectView.startAnimation(animationCircleType);
+        }
+
+        public void popImageView(List<String> images, int index) {
+            int mScreenWidth = ImagePickerComUtils.getScreenWidth(getContext());
+            int mScreenHeight = ImagePickerComUtils.getScreenHeight(getContext());
+            if (images == null) {
+                return;
+            }
+            LocalLog.d(TAG, "查看大图 index = " + index);
+            popBirthSelectView = View.inflate(getContext(), R.layout.big_image_view_pager, null);
+            ImageViewPager bigImageViewPager = (ImageViewPager) popBirthSelectView.findViewById(R.id.big_image_viewpager);
+            List<View> bigImageViews = new ArrayList<>();
+            for (String url : images) {
+                BigImageView bigImageView = new BigImageView(getContext());
+                bigImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                bigImageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                ImageDataModel.getInstance().getDisplayer().display(getContext(), url, bigImageView, mScreenWidth, mScreenHeight);
+                bigImageViews.add(bigImageView);
+            }
+            ImageViewPagerAdapter pagerAdapter = new ImageViewPagerAdapter(getContext(), bigImageViews);
+            bigImageViewPager.setAdapter(pagerAdapter);
+            bigImageViewPager.setCurrentItem(index, false);
+            popupSelectWindow = new PopupWindow(popBirthSelectView,
+                    WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    LocalLog.d(TAG, "popImageVie dismiss() ");
+                    popupSelectWindow = null;
+                }
+            });
+
+            popupSelectWindow.setFocusable(true);
+            popupSelectWindow.setOutsideTouchable(true);
+            popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
+
+            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleType.setInterpolator(new AccelerateInterpolator());
+            animationCircleType.setDuration(200);
+
+
+            popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.sponsor_goods_pic_fg), Gravity.CENTER, 0, 0);
+            popBirthSelectView.startAnimation(animationCircleType);
+        }
+    };
+
 
     //计算列数和每列宽度
     private void calColumn() {

@@ -70,7 +70,6 @@ public class RechargeDetailFragment extends BaseFragment implements RechargeDeta
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         outDetailRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.out_detail_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         outDetailRecycler.setLayoutManager(layoutManager);
@@ -252,7 +251,9 @@ public class RechargeDetailFragment extends BaseFragment implements RechargeDeta
      * 第一次加载数据。
      */
     private void loadData(ArrayList<RechargeDetailResponse.DataBeanX.DataBean> dataBeans) {
-
+        if (!isAdded()) {
+            return;
+        }
         adapter.notifyDataSetChanged(dataBeans);
 
         outComeRefresh.setRefreshing(false);

@@ -4,14 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -19,8 +16,6 @@ import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.text.style.TextAppearanceSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,33 +29,41 @@ import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.RedPkgRecParam;
+import com.paobuqianjin.pbq.step.customview.RedPkgAnimation;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.TwentyOneResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
+import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
-import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
+import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
+import com.paobuqianjin.pbq.step.view.activity.SponsorRedDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserFitActivity;
-import com.paobuqianjin.pbq.step.view.activity.VipActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorRedPakAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
@@ -74,6 +77,8 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
 
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -82,7 +87,6 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by pbq on 2017/12/1.
@@ -132,7 +136,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     TextView outRedPackage;
     @Bind(R.id.create_circle_image)
     ImageView createCircleImage;
-    @Bind(R.id.income_red_pkg_image)
+    @Bind(R.id.recv_sponsor_rpg)
     ImageView incomeRedPkgImage;
     @Bind(R.id.income_red_package)
     TextView incomeRedPackage;
@@ -266,7 +270,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ButterKnife.bind(this, super.onCreateView(inflater, container, savedInstanceState));
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        ButterKnife.bind(this, view);
         //rectRoundBitmap();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(STEP_ACTION);
@@ -276,11 +281,151 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         requestPermission(Permission.Group.LOCATION);
         Presenter.getInstance(getContext()).getHomePageIncome("today", pageIndex, 1);
         Presenter.getInstance(getContext()).getHomePageIncome("all", pageIndex, 1);
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
     }
 
 
+    private void checkTwentyOne() {
+        LocalLog.d(TAG, "checkTwentyOne() enter");
+        Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlUser + FlagPreference.getUid(getContext()), null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                if (!isAdded()) {
+                    return;
+                }
+                try {
+                    JSONObject jsonObj = new JSONObject(s);
+                    jsonObj = jsonObj.getJSONObject("data");
+                    int firstred = jsonObj.getInt("firstred");
+                    if (firstred == 1) {
+                        if (!((DateTimeUtil.getCurrentTime() + String.valueOf(Presenter.getInstance(getContext()).getId())).equals(FlagPreference.getCurrentDate(getContext())))) {
+                            showFirstRedPkg();
+                        }
+                    } else {
 
+                    }
+                } catch (Exception j) {
+                    j.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean == null) {
+                    PaoToastUtils.showLongToast(getContext(), getString(R.string.error_red));
+                }
+            }
+        });
+    }
+
+    private void showFirstRedPkg() {
+        if (!isAdded()) {
+            return;
+        }
+        if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
+            LocalLog.d(TAG, "红包在显示");
+            return;
+        }
+        popRedPkgView = View.inflate(getContext(), R.layout.register_reword, null);
+        openRedPkgView = (ImageView) popRedPkgView.findViewById(R.id.open_first);
+        popupRedPkgWindow = new PopupWindow(popRedPkgView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupRedPkgWindow = null;
+            }
+        });
+
+        final RelativeLayout unOpenRkg = (RelativeLayout) popRedPkgView.findViewById(R.id.start_red_kg);
+        popupRedPkgWindow.setFocusable(true);
+        popupRedPkgWindow.setOutsideTouchable(true);
+        popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        popRedPkgView.findViewById(R.id.opened_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupRedPkgWindow.dismiss();
+            }
+        });
+        popRedPkgView.findViewById(R.id.cancel_open).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupRedPkgWindow.dismiss();
+                FlagPreference.setCurrentDate(getContext(), DateTimeUtil.getCurrentTime());
+            }
+        });
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+        openRedPkgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                LocalLog.d(TAG, "领取新手红包");
+                final Rotate3dAnimation animation = new Rotate3dAnimation(0, 359, view.getWidth() / 2f, view.getHeight() / 2f, 30, true);
+                animation.setDuration(500);
+                animation.setRepeatCount(Animation.INFINITE);
+                animation.setFillAfter(true);
+                view.setAnimation(animation);
+                view.startAnimation(animation);
+
+                openRedPkgView.setEnabled(false);
+                openRedPkgView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (openRedPkgView != null && openRedPkgView.getVisibility() == View.VISIBLE
+                                && popupRedPkgWindow != null
+                                && popupRedPkgWindow.isShowing()) {
+                            openRedPkgView.clearAnimation();
+                        }
+                    }
+                }, 2 * 60 * 1000);
+                Presenter.getInstance(getActivity()).postPaoBuSimple(NetApi.urlCheckTtyOne, null, new PaoCallBack() {
+                    @Override
+                    protected void onSuc(String s) {
+                        openRedPkgView.clearAnimation();
+                        try {
+                            TwentyOneResponse twentyOneResponse = new Gson().fromJson(s, TwentyOneResponse.class);
+                            String dayStr = String.format(getString(R.string.day_congratulate),
+                                    twentyOneResponse.getData().getDay());
+                            RelativeLayout resultShow = (RelativeLayout) popRedPkgView.findViewById(R.id.red_result);
+                            TextView dayTv = (TextView) popRedPkgView.findViewById(R.id.day_reward);
+                            dayTv.setText(dayStr);
+                            String dayStepDollar = String.format(getString(R.string.day_step_dollar), twentyOneResponse.getData().getCredit());
+                            TextView dayStepTv = (TextView) popRedPkgView.findViewById(R.id.step_dollar);
+                            dayStepTv.setText(dayStepDollar);
+                            TextView moneyTv = (TextView) popRedPkgView.findViewById(R.id.day_money);
+                            if (Float.parseFloat(twentyOneResponse.getData().getMoney()) > 0.0f) {
+                                moneyTv.setText("+" + twentyOneResponse.getData().getMoney() + "元");
+                            }
+                            String deStr = twentyOneResponse.getData().getRemark();
+                            if (!TextUtils.isEmpty(deStr)) {
+                                deStr = deStr.replace(",", "\n");
+                                TextView oneTv = (TextView) popRedPkgView.findViewById(R.id.text_one);
+                                oneTv.setText(deStr);
+                            }
+                            RedPkgAnimation pkgAnimation = new RedPkgAnimation();
+                            pkgAnimation.setHideAnimation(unOpenRkg, 200);
+                            pkgAnimation.setShowAnimation(resultShow, 200);
+                        } catch (JsonSyntaxException j) {
+                            LocalLog.d(TAG, "数据错误!");
+                        }
+                    }
+
+                    @Override
+                    protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                        LocalLog.d(TAG, "领取失败!");
+                        openRedPkgView.clearAnimation();
+                    }
+                });
+
+            }
+        });
+        popupRedPkgWindow.showAtLocation(getActivity().findViewById(R.id.home_page), Gravity.CENTER, 0, 0);
+
+        popRedPkgView.startAnimation(animationCircleType);
+    }
 
     /*权限适配*/
 
@@ -344,7 +489,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         weatherIcon = (ImageView) viewRoot.findViewById(R.id.weather_icon);
         outRedPkgImage = (ImageView) viewRoot.findViewById(R.id.out_red_pkg_image);
         outRedPkgImage.setOnClickListener(onClickListener);
-        incomeRedPkgImage = (ImageView) viewRoot.findViewById(R.id.income_red_pkg_image);
+        incomeRedPkgImage = (ImageView) viewRoot.findViewById(R.id.recv_sponsor_rpg);
         incomeRedPkgImage.setOnClickListener(onClickListener);
         createCircleImage = (ImageView) viewRoot.findViewById(R.id.create_circle_image);
         createCircleImage.setOnClickListener(onClickListener);
@@ -361,6 +506,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         targetSteps = (TextView) viewRoot.findViewById(R.id.target_steps);
         targetStep = Presenter.getInstance(getContext()).getTarget(getContext());
         targetSteps.setText(String.valueOf(targetStep));
+        checkTwentyOne();
     }
 
     @Override
@@ -381,149 +527,14 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         ButterKnife.unbind(this);
         getContext().unregisterReceiver(stepLocationReciver);
         sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
+        if (waveView != null) {
+            waveView.stopDraw();
+        }
+        waveView = null;
         if (isBind) {
             Presenter.getInstance(getContext()).unbindStepService();
             isBind = false;
         }
-    }
-
-    public void popRedPkg(final SponsorRedPkgResponse sponsorRedPkgResponse) {
-        LocalLog.d(TAG, "popRedPkg() enter");
-        if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
-            LocalLog.d(TAG, "红包在显示");
-            return;
-        }
-        if (!isAdded()) {
-            return;
-        }
-        String canRevPkg = "";
-        popRedPkgView = View.inflate(getContext(), R.layout.red_pkg_pop_window, null);
-        totalRedPkg = (TextView) popRedPkgView.findViewById(R.id.total_red_pkg);
-        redRevTv = (TextView) popRedPkgView.findViewById(R.id.concla_id);
-        redPkgRecycler = (RecyclerView) popRedPkgView.findViewById(R.id.red_pkg_recycler);
-        openRedPkgView = (ImageView) popRedPkgView.findViewById(R.id.open_red_pkg);
-        errorTextView = (TextView) popRedPkgView.findViewById(R.id.error_text);
-        desPkgTextView = (TextView) popRedPkgView.findViewById(R.id.des_pkg);
-        if (sponsorRedPkgResponse.getData().getUserstatus() == 0) {
-            totalRedPkg.setVisibility(View.GONE);
-            openRedPkgView.setVisibility(View.VISIBLE);
-            errorTextView.setVisibility(View.GONE);
-            desPkgTextView.setVisibility(View.GONE);
-            redRevTv.setVisibility(View.INVISIBLE);
-        } else {
-            totalRedPkg.setVisibility(View.VISIBLE);
-            openRedPkgView.setVisibility(View.INVISIBLE);
-            errorTextView.setVisibility(View.GONE);
-            desPkgTextView.setVisibility(View.VISIBLE);
-            totalRedPkg.setText(String.valueOf(sponsorRedPkgResponse.getData().getLedredmoney()));
-            redRevTv.setText(getString(R.string.red_finish));
-            redRevTv.setVisibility(View.VISIBLE);
-        }
-        RelativeLayout relativeLayout = (RelativeLayout) popRedPkgView.findViewById(R.id.cancel_red_span);
-        TextView tv_go2be_vip = (TextView) popRedPkgView.findViewById(R.id.tv_go2be_vip);
-        tv_go2be_vip.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG); //下划线
-        tv_go2be_vip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                if (Presenter.getInstance(getActivity()).getCurrentUser() != null)
-                    intent.putExtra("vip", Presenter.getInstance(getActivity()).getCurrentUser().getVip());
-                intent.setClass(getContext(), VipActivity.class);
-                startActivity(intent);
-            }
-        });
-        relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (popupRedPkgWindow != null) {
-                    popupRedPkgWindow.dismiss();
-                }
-            }
-        });
-        popupRedPkgWindow = new PopupWindow(popRedPkgView,
-                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                popupRedPkgWindow = null;
-            }
-        });
-        popupRedPkgWindow.setFocusable(true);
-        popupRedPkgWindow.setOutsideTouchable(true);
-        popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        redPkgRecycler.setLayoutManager(layoutManager);
-        ArrayList<?> sponsorData = new ArrayList<>();
-        if (sponsorRedPkgResponse.getData().getLedredpacket() != null && sponsorRedPkgResponse.getData().getUserstatus() != 0) {
-            if (sponsorRedPkgResponse.getData().getLedredpacket().size() > 0) {
-                sponsorData.addAll((ArrayList) sponsorRedPkgResponse.getData().getLedredpacket());
-            }
-        }
-        if (sponsorRedPkgResponse.getData().getCanredpacket() != null && sponsorRedPkgResponse.getData().getCanredpacket().size() > 0
-                && sponsorRedPkgResponse.getData().getUserstatus() == 0) {
-            /*if (sponsorRedPkgResponse.getData().getCanredpacket().size() > 0) {
-                sponsorData.addAll((ArrayList) sponsorRedPkgResponse.getData().getCanredpacket());
-            }*/
-            int size = sponsorRedPkgResponse.getData().getCanredpacket().size();
-            for (int i = 0; i < size; i++) {
-                if (i == size - 1) {
-                    canRevPkg += sponsorRedPkgResponse.getData().getCanredpacket().get(i).getRed_id();
-                } else {
-                    canRevPkg += sponsorRedPkgResponse.getData().getCanredpacket().get(i).getRed_id() + ",";
-                }
-            }
-            sponsorData.addAll((ArrayList) sponsorRedPkgResponse.getData().getCanredpacket());
-        }
-
-        sponsorRedPakAdapter = new SponsorRedPakAdapter(getContext(), sponsorData);
-        redPkgRecycler.setAdapter(sponsorRedPakAdapter);
-        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
-                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
-                1, Animation.RELATIVE_TO_PARENT, 0);
-        animationCircleType.setInterpolator(new AccelerateInterpolator());
-        animationCircleType.setDuration(200);
-        final String redids = canRevPkg;
-        openRedPkgView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LocalLog.d(TAG, "领取商户红包");
-                final Rotate3dAnimation animation = new Rotate3dAnimation(0, 359, view.getWidth() / 2f, view.getHeight() / 2f, 30, true);
-                animation.setDuration(500);
-                animation.setRepeatCount(Animation.INFINITE);
-                animation.setFillAfter(true);
-                view.setAnimation(animation);
-                view.startAnimation(animation);
-                LocalLog.d(TAG, "可领红包的 " + redids);
-                if (TextUtils.isEmpty(redids) && sponsorRedPkgResponse.getData().getUserstatus() == 0) {
-                    view.clearAnimation();
-                    openRedPkgView.setVisibility(View.INVISIBLE);
-                    errorTextView.setText(getString(R.string.error_red));
-                    errorTextView.setVisibility(View.VISIBLE);
-                    desPkgTextView.setVisibility(View.VISIBLE);
-                    return;
-                }
-                openRedPkgView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!isAdded()) {
-                            return;
-                        }
-                        if (openRedPkgView != null && openRedPkgView.getVisibility() == View.VISIBLE) {
-                            openRedPkgView.clearAnimation();
-                            openRedPkgView.setVisibility(View.INVISIBLE);
-                            errorTextView.setText(getString(R.string.error_red));
-                            errorTextView.setVisibility(View.VISIBLE);
-                            desPkgTextView.setVisibility(View.VISIBLE);
-                        }
-                    }
-                }, 2 * 60 * 1000);
-                RedPkgRecParam redPkgRecParam = new RedPkgRecParam().setRedids(redids);
-                Presenter.getInstance(getContext()).postRedPkgRec(redPkgRecParam, innerRecRedCallBack);
-            }
-        });
-        popupRedPkgWindow.showAtLocation(getActivity().findViewById(R.id.home_page), Gravity.CENTER, 0, 0);
-
-        popRedPkgView.startAnimation(animationCircleType);
     }
 
     private void showUseInfSettingDialog(final UserInfoResponse.DataBean userInfo) {
@@ -567,6 +578,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     private final InnerCallBack innerRecRedCallBack = new InnerCallBack() {
         @Override
         public void innerCallBack(Object object) {
+            if (!isAdded()) {
+                return;
+            }
             openRedPkgView.clearAnimation();
             if (object instanceof ErrorCode) {
                 LocalLog.d(TAG, "领取红包出错" + ((ErrorCode) object).getMessage());
@@ -608,18 +622,18 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         popupRedPkgWindow = new PopupWindow(popTargetView,
                 WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         TextView textView = (TextView) popTargetView.findViewById(R.id.quit_title);
-        SpannableString text = new SpannableString(titleContent+"\n"+"\n"+"为了准确地统计到用户的步数，建议用户将该应用设置为自启动或添加到白名单。");
+        SpannableString text = new SpannableString(titleContent + "\n" + "\n" + "为了准确地统计到用户的步数，建议用户将该应用设置为自启动或添加到白名单。");
         ClickableSpan clickSpan = new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                LocalLog.d(TAG,"设置白名单");
+                LocalLog.d(TAG, "设置白名单");
                 Utils.jumpStartInterface(getActivity());
             }
         };
 //        text.setSpan(new TextAppearanceSpan(getContext(),R.style.MyTextPurple6c_Title12),titleContent.length()+2,text.length(),SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        text.setSpan(clickSpan,titleContent.length()+2+22,text.length(),SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-        text.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.color_6c71c4)), titleContent.length()+2+22,text.length(),
+        text.setSpan(clickSpan, titleContent.length() + 2 + 22, text.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+        text.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.color_6c71c4)), titleContent.length() + 2 + 22, text.length(),
                 Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         textView.setText(text);
         textView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -716,9 +730,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             drawProcess(targetStep, lastStep);
             showStep = stepToday;
         } else {
-            if (lastStep >= stepToday) {
-                toayStep.setText(String.valueOf(lastStep));
-            } else {
+            toayStep.setText(String.valueOf(stepToday));
+            if (lastStep < stepToday) {
                 float addAngle = (stepToday - lastStep) * 360.0f / targetStep;
                 lastStep = stepToday;
                 toayStep.setText(String.valueOf(lastStep));
@@ -726,7 +739,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     stepProcessDrawable.add(addAngle);
                 }
             }
-
         }
         LocalLog.d(TAG, "stepToday = " + stepToday);
         Message messageNet = Message.obtain();
@@ -805,22 +817,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     if (userInfo.getIs_perfect() == 0) {
                         showUseInfSettingDialog(userInfo);
                     } else {
-                        if (dialog == null) {
-                            dialog = new NormalDialog(getActivity());
-                            dialog.setMessage(getString(R.string.no_buess_pkg));
-                            dialog.setYesOnclickListener("好的", new NormalDialog.onYesOnclickListener() {
-                                @Override
-                                public void onYesClick() {
-                                    dialog.dismiss();
-                                }
-                            });
-                            dialog.setSingleBtn(true);
-                            dialog.show();
-                        } else {
-                            if (!dialog.isShowing()) {
-                                dialog.show();
-                            }
-                        }
+                        showNoRedPkg();
 //                        popTargetView(getString(R.string.no_buess_pkg));
                     }
                 } else {
@@ -830,42 +827,40 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
             } else {
                 LocalLog.d(TAG, "有可领或者已经领过的红包！");
-                popRedPkg(sponsorRedPkgResponse);
+                //popRedPkg(sponsorRedPkgResponse);
             }
 
         } else if (sponsorRedPkgResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         } else {
-            if (sponsorRedPkgResponse.getMessage().equals("Not Found Data")) {
-                UserInfoResponse.DataBean userInfo = Presenter.getInstance(getContext()).getCurrentUser();
-                LocalLog.d(TAG, "userInfo = " + userInfo.toString());
-                if (userInfo != null) {
-                    if (userInfo.getIs_perfect() == 0) {
-                        showUseInfSettingDialog(userInfo);
-                    } else {
-                        if (dialog == null) {
-                            dialog = new NormalDialog(getActivity());
-                            dialog.setMessage(getString(R.string.no_buess_pkg));
-                            dialog.setSingleBtn(true);
-                            dialog.setYesOnclickListener("好的", new NormalDialog.onYesOnclickListener() {
-                                @Override
-                                public void onYesClick() {
-                                    dialog.dismiss();
-                                }
-                            });
-                            dialog.show();
-                        } else {
-                            if (!dialog.isShowing()) {
-                                dialog.show();
-                            }
-                        }
-//                        popTargetView(getString(R.string.no_buess_pkg));
-                    }
+            UserInfoResponse.DataBean userInfo = Presenter.getInstance(getContext()).getCurrentUser();
+            if (userInfo != null) {
+                if (userInfo.getIs_perfect() == 0) {
+                    showUseInfSettingDialog(userInfo);
+                } else {
+                    showNoRedPkg();
                 }
-            } else {
-                Toast.makeText(getContext(), sponsorRedPkgResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+        outRedPkgImage.setEnabled(true);
+    }
 
+    private void showNoRedPkg() {
+        if (dialog == null) {
+            dialog = new NormalDialog(getActivity());
+            dialog.setMessage(getString(R.string.no_buess_pkg));
+            dialog.setSingleBtn(true);
+            dialog.setYesOnclickListener("好的", new NormalDialog.onYesOnclickListener() {
+                @Override
+                public void onYesClick() {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
+        } else {
+            if (!dialog.isShowing()) {
+                dialog.show();
             }
         }
     }
@@ -889,20 +884,28 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             switch (view.getId()) {
                 case R.id.out_red_pkg_image:
                     LocalLog.d(TAG, "领红包");
-                    Presenter.getInstance(getContext()).getSponsorRedPkg();
+                    /*Presenter.getInstance(getContext()).getSponsorRedPkg();
+                    outRedPkgImage.setEnabled(false);
+                    outRedPkgImage.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (outRedPkgImage != null)
+                                outRedPkgImage.setEnabled(true);
+                        }
+                    }, 15 * 1000);*/
+                    startActivity(SponsorRedDetailActivity.class, null);
                     break;
                 case R.id.create_circle_image:
                     LocalLog.d(TAG, "发红包");
                     startActivity(TaskReleaseActivity.class, null);
                     break;
-                case R.id.income_red_pkg_image:
-                    LocalLog.d(TAG, "创建圈子");
-                    startActivity(CreateCircleActivity.class, null);
+                case R.id.recv_sponsor_rpg:
+                    LocalLog.d(TAG, "商家消费红包");
+                    startActivity(ConsumptiveRedBagActivity.class, null);
                     break;
-
                 case R.id.add_friend_image:
-                    LocalLog.d(TAG, "邀请好友");
-                    startActivity(InviteActivity.class, null);
+                    LocalLog.d(TAG, "商家金牌会员");
+                    startActivity(GoldenSponsoractivity.class, null);
                     break;
                 case R.id.scan_img:
                     requestPermissionScan(Permission.Group.CAMERA);
@@ -982,7 +985,14 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
         } else {
-
+            if (!TextUtils.isEmpty(errorCode.getMessage()) && errorCode.getMessage().contains("红包")) {
+                showNoRedPkg();
+            } else {
+                if (errorCode.getMessage().contains("城市")) {
+                    return;
+                }
+                PaoToastUtils.showLongToast(getContext(), errorCode.getMessage());
+            }
         }
     }
 

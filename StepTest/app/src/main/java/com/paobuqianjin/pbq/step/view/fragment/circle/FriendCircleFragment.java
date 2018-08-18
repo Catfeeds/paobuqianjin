@@ -134,7 +134,6 @@ public final class FriendCircleFragment extends BaseFragment {
 
     @Override
     protected void initView(View rootView) {
-        super.initView(rootView);
         mCircleTabLayout = (TabLayout) rootView.findViewById(R.id.circle_item_tab);
         mCirclePager = (ViewPager) rootView.findViewById(R.id.circle_item_page);
         LocalLog.d(TAG, "initView() enter");

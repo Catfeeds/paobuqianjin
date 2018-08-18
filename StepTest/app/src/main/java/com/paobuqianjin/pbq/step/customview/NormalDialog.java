@@ -3,7 +3,9 @@ package com.paobuqianjin.pbq.step.customview;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.SpannableString;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -34,6 +36,7 @@ public class NormalDialog extends Dialog {
     private boolean isSignle;
     private int gravity = -1;
     private int paddingLeft;
+    private boolean isBackpressDismiss = true;//是否点击返回消失
 
     public NormalDialog(Context context) {
         super(context, R.style.MyDialog);
@@ -80,6 +83,11 @@ public class NormalDialog extends Dialog {
         initData();
         //初始化界面控件的事件
         initEvent();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
+        return isBackpressDismiss ? super.onKeyDown(keyCode, event) : false;
     }
 
     /**
@@ -190,6 +198,10 @@ public class NormalDialog extends Dialog {
 
     public void setSingleBtn(boolean isSignle) {
         this.isSignle = isSignle;
+    }
+
+    public void setBackpressDismiss(boolean backpressDismiss) {
+        isBackpressDismiss = backpressDismiss;
     }
 
     /**

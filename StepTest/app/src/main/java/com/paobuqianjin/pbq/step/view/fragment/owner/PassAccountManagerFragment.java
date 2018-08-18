@@ -506,11 +506,11 @@ public class PassAccountManagerFragment extends BaseBarStyleTextViewFragment imp
                     }
                     break;
             }
-        } else if (postBindResponse.getError() == 1) {
-            PaoToastUtils.showShortToast(getContext(), postBindResponse.getMessage());
         } else if (postBindResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
+        } else {
+            PaoToastUtils.showShortToast(getContext(), postBindResponse.getMessage());
         }
         SocializeUtils.safeCloseDialog(dialog);
     }

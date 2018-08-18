@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/head_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="14dp" />
+
+    <TextView
+        android:id="@+id/text_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/head_icon"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/head_icon"
+        android:textSize="14dp" />
+
+    <TextView
+        android:id="@+id/time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/text_content"
+        android:layout_below="@+id/text_content"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/color_8a8a8a"
+        android:textSize="12dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignLeft="@+id/head_icon"
+        android:layout_below="@+id/time_text"
+        android:layout_marginTop="15dp"
+        android:background="@color/color_d9d9d9" />
+</RelativeLayout>

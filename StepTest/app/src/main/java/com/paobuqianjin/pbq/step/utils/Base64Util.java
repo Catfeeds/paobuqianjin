@@ -25,7 +25,7 @@ public class Base64Util {
             if (!TextUtils.isEmpty(base64Id)) {
                 try {
                     result = new String(Base64.decode(base64Id.getBytes(), Base64.DEFAULT));
-                } catch (IllegalStateException e) {
+                } catch (IllegalArgumentException e) {
                     result = base64Id;
                     LocalLog.d(TAG, "bad base-64");
                 }

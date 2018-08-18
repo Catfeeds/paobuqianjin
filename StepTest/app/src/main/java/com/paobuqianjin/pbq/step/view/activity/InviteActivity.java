@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.fragment.owner.InviteFragment;
+import com.paobuqianjin.pbq.step.view.fragment.owner.MyInviteFragment;
 import com.umeng.socialize.UMShareAPI;
 
 /**
@@ -15,7 +16,7 @@ import com.umeng.socialize.UMShareAPI;
 
 public class InviteActivity extends BaseActivity {
     private final static String TAG = InviteActivity.class.getSimpleName();
-    private InviteFragment inviteFragment = new InviteFragment();
+    private MyInviteFragment inviteFragment = new MyInviteFragment();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
