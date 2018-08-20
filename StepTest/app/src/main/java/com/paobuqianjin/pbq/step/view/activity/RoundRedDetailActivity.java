@@ -34,6 +34,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/8/17.
@@ -124,6 +125,8 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     @Bind(R.id.current_pic)
     TextView currentPic;
     ArrayList<RoundDetailStyleResponse.DataBean.BusinessImgBean> goodsImgsBeans = new ArrayList<>();
+    @Bind(R.id.go_to)
+    ImageView goTo;
 
     @Override
     protected String title() {
@@ -146,6 +149,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         headRecycler.setLayoutManager(linearLayoutManager);
+        headRecycler.addItemDecoration(new LikeUserAdapter.SpaceItemDecoration(30));
         sponsorDescribe = (TextView) findViewById(R.id.sponsor_describe);
         likeSponsorIcon = (ImageView) findViewById(R.id.like_sponsor_icon);
         likeSponsorDesc = (TextView) findViewById(R.id.like_sponsor_desc);
@@ -279,4 +283,18 @@ public class RoundRedDetailActivity extends BaseBarActivity {
 
         }
     };
+
+    @OnClick({R.id.go_to, R.id.sponsor_more})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.go_to:
+                Intent intent = new Intent();
+                intent.setClass(this, RoundRedRelActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.sponsor_more:
+                //产看商家图片
+                break;
+        }
+    }
 }

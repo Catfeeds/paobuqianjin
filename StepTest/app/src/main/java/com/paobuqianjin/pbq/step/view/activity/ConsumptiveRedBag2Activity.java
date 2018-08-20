@@ -272,6 +272,10 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     }
 
     public void popRoundRedPkg(final int position) {
+        if (position >= listAroundRedBagBean.size()) {
+            PaoToastUtils.showLongToast(this, getString(R.string.error_red));
+            return;
+        }
         if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
             LocalLog.d(TAG, "红包在显示");
             return;
@@ -330,6 +334,9 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     }
 
     private void pullDownAroundRedBag(final int position) {
+        if (position >= listAroundRedBagBean.size()) {
+            return;
+        }
         Map<String, String> params = new HashMap<>();
         final String redId = listAroundRedBagBean.get(position).getRed_id();
         params.put("redid", redId);

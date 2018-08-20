@@ -854,6 +854,10 @@
         <activity
             android:name=".view.activity.RoundRedDetailActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name=".view.activity.RedInfoActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity android:name=".view.activity.RoundRedRelActivity" />
     </application>
 
 </manifest>

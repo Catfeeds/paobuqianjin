@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RoundDetailStyleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RoundHisResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 
@@ -26,7 +27,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class LikeUserAdapter extends RecyclerView.Adapter<LikeUserAdapter.LikeUserViewHolder> {
     private final static String TAG = LikeUserAdapter.class.getSimpleName();
     private Context context;
-    private final static int defaultValue = 7;
+    private final static int defaultValue = 5;
     List<?> mData;
 
     //TODO DATA
@@ -59,8 +60,11 @@ public class LikeUserAdapter extends RecyclerView.Adapter<LikeUserAdapter.LikeUs
             /*if (((UserFriendResponse.DataBeanX.DataBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
             }*/
-        }else if(mData.get(position) instanceof  RoundDetailStyleResponse.DataBean.ReceiverListBean){
+        } else if (mData.get(position) instanceof RoundDetailStyleResponse.DataBean.ReceiverListBean) {
             Presenter.getInstance(context).getPlaceErrorImage(holder.shareIcon, ((RoundDetailStyleResponse.DataBean.ReceiverListBean) mData.get(position)).getAvatar(),
+                    R.drawable.default_head_ico, R.drawable.default_head_ico);
+        } else if (mData.get(position) instanceof RoundHisResponse.DataBean.ReceiverListBean) {
+            Presenter.getInstance(context).getPlaceErrorImage(holder.shareIcon, ((RoundHisResponse.DataBean.ReceiverListBean) mData.get(position)).getAvatar(),
                     R.drawable.default_head_ico, R.drawable.default_head_ico);
         }
     }

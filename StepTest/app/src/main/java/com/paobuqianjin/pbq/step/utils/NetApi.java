@@ -334,5 +334,9 @@ public class NetApi {
     //红包详情
     public final static String urlRedDetail = url + "v1/RedpacketMap/";
     //红包历史记录
-    public final static String urlRedHis = url  + "v1/RedpacketMap/historyList";
+    public final static String urlRedHis = url + "v1/RedpacketMap/historyList";
+    //历史记录查看红包详情
+    public final static String urlRedHisDetail = url + "v1/RedpacketMap/historyDetails";
+    //遍地红包领取记录
+    public final static String urlRedInfo = url + "v1/RedpacketMap/redReceiveInfo";
 }

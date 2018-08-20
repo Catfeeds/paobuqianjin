@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RoundHisResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorCommentResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
@@ -73,6 +74,45 @@ public class SponsorContentAdapter extends RecyclerView.Adapter<SponsorContentAd
             }
 
             long create_time = ((SponsorCommentResponse.DataBeanX.DataBean.CommentarrayBean) mData.get(position)).getCreate_time();
+            String time_day_str = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
+            holder.timeTv.setText(time_day_str);
+            if (!TextUtils.isEmpty(toName)) {
+                String reply = "评论";
+                String text = sourceName + reply + toName + ":" + content;
+                SpannableString style = new SpannableString(text);
+                style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), 0, sourceName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), sourceName.length(), (sourceName + reply).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), (sourceName + reply).length(), (sourceName + reply + toName).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), (sourceName + reply + toName).length(), (sourceName + reply + toName + ":" + content).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                MoonUtils.identifyFaceExpression(context, holder.textContent, style, ImageSpan.ALIGN_BOTTOM);
+            } else {
+                String reply = "\n";
+                String text = sourceName + reply + content;
+                SpannableString style = new SpannableString(text);
+                style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), 0, sourceName.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), sourceName.length(), (sourceName + reply).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), (sourceName + reply).length(), (sourceName + reply).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff161727")), (sourceName + reply).length(), (sourceName + reply + content).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                MoonUtils.identifyFaceExpression(context, holder.textContent, style, ImageSpan.ALIGN_BOTTOM);
+            }
+        }else if(mData.get(position) instanceof RoundHisResponse.DataBean.CommentListBean){
+            holder.iconUserid = ((RoundHisResponse.DataBean.CommentListBean) mData.get(position)).getUserid();
+            String sourceName, sourceVachar, toName, content;
+            int[] emj = context.getResources().getIntArray(R.array.emjio_list);
+            sourceVachar = ((RoundHisResponse.DataBean.CommentListBean) mData.get(position)).getAvatar();
+            if (!TextUtils.isEmpty(sourceVachar)) {
+                Presenter.getInstance(context).getPlaceErrorImage(holder.headIcon, sourceVachar, R.drawable.default_head_ico, R.drawable.default_head_ico);
+            }
+            sourceName = ((RoundHisResponse.DataBean.CommentListBean) mData.get(position)).getNickname();
+            toName = ((RoundHisResponse.DataBean.CommentListBean) mData.get(position)).getFather_nickname();
+            content = ((RoundHisResponse.DataBean.CommentListBean) mData.get(position)).getContent();
+            if (content != null) {
+                for (int i = 0; i < emj.length; i++) {
+                    content = content.replace("[0x" + numToHex8(emj[i]) + "]", Utils.getEmojiStringByUnicode(emj[i]));
+                }
+            }
+
+            long create_time = ((RoundHisResponse.DataBean.CommentListBean) mData.get(position)).getCreate_time();
             String time_day_str = DateTimeUtil.formatFriendly(new Date(create_time * 1000));
             holder.timeTv.setText(time_day_str);
             if (!TextUtils.isEmpty(toName)) {

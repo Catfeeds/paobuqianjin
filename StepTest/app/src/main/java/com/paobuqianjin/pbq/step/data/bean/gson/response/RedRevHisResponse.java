@@ -6,7 +6,7 @@ import java.util.List;
  * Created by pbq on 2018/8/18.
  */
 
-public class RedHisResponse {
+public class RedRevHisResponse {
     /**
      * error : 0
      * message : 获取历史记录成功

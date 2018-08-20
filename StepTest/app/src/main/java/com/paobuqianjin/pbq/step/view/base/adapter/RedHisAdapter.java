@@ -9,15 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.RedHisResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RedRevHisResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RedSendHisResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
-import com.umeng.commonsdk.debug.D;
 
 import java.util.List;
-import java.util.logging.Handler;
 
-import butterknife.Bind;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -36,17 +34,29 @@ public class RedHisAdapter extends RecyclerView.Adapter<RedHisAdapter.RedHisView
 
     @Override
     public void onBindViewHolder(RedHisViewHolder holder, int position) {
-        if (mData.get(position) instanceof RedHisResponse.DataBeanX.RedpacketListBean.DataBean) {
-            Presenter.getInstance(mContext).getPlaceErrorImage(holder.headIcon, ((RedHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getAvatar()
+        if (mData.get(position) instanceof RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean) {
+            Presenter.getInstance(mContext).getPlaceErrorImage(holder.headIcon, ((RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
-            holder.userName.setText(((RedHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getUser_nickname());
-            Presenter.getInstance(mContext).getPlaceErrorImage(holder.redImg0, ((RedHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getMap_img()
+            holder.userName.setText(((RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getUser_nickname());
+            Presenter.getInstance(mContext).getPlaceErrorImage(holder.redImg0, ((RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getMap_img()
                     , R.drawable.bitmap_null, R.drawable.bitmap_null);
-            holder.redDes.setText(((RedHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getMap_content());
-            holder.likeNum.setText(((RedHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getZan_count());
-            holder.commentNum.setText(((RedHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getComment_count());
-            long recTime = ((RedHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getReceive_time();
-            String timeStr = DateTimeUtil.formatDateTime(recTime, DateTimeUtil.DF_MM_DD_HH_mm);
+            holder.redDes.setText(((RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getMap_content());
+            holder.likeNum.setText(((RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getZan_count());
+            holder.commentNum.setText(((RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getComment_count());
+            long recTime = ((RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getReceive_time();
+            String timeStr = DateTimeUtil.formatDateTime(recTime * 1000, DateTimeUtil.DF_MM_DD_HH_mm);
+            holder.textTime.setText(timeStr);
+        } else if (mData.get(position) instanceof RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) {
+            Presenter.getInstance(mContext).getPlaceErrorImage(holder.headIcon, ((RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getAvatar()
+                    , R.drawable.default_head_ico, R.drawable.default_head_ico);
+            holder.userName.setText(((RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getUser_nickname());
+            Presenter.getInstance(mContext).getPlaceErrorImage(holder.redImg0, ((RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getMap_img()
+                    , R.drawable.bitmap_null, R.drawable.bitmap_null);
+            holder.redDes.setText(((RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getMap_content());
+            holder.likeNum.setText(((RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getZan_count());
+            holder.commentNum.setText(((RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getComment_count());
+            long recTime = ((RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getCreate_time();
+            String timeStr = DateTimeUtil.formatDateTime(recTime * 1000, DateTimeUtil.DF_MM_DD_HH_mm);
             holder.textTime.setText(timeStr);
         }
     }

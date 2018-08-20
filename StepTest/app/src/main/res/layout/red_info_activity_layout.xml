@@ -21,6 +21,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
+                    android:layout_marginTop="-5dp"
                     android:src="@drawable/bg_red_record" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -57,6 +58,7 @@
             </RelativeLayout>
 
             <TextView
+                android:id="@+id/des_red"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_marginTop="20dp"

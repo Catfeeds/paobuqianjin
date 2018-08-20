@@ -1,8 +1,8 @@
 package com.paobuqianjin.pbq.step.view.fragment.record;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,24 +11,23 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.RedHisResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RedRevHisResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.view.activity.RedInfoActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.RedHisAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefineLoadMoreView;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
-import com.paobuqianjin.pbq.step.view.fragment.owner.CrashDetailFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -46,10 +45,11 @@ public class RevRecordFragment extends BaseFragment {
     SwipeMenuRecyclerView redRecordRecycler;
     TextView notFoundData;
     private int pageIndex = 1, pageCount = 0;
-    private final static int PAGE_SIZE_DEFAULT = 3;
-    ArrayList<RedHisResponse.DataBeanX.RedpacketListBean.DataBean> arrayList = new ArrayList<>();
+    private final static int PAGE_SIZE_DEFAULT = 10;
+    ArrayList<RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean> arrayList = new ArrayList<>();
     LinearLayoutManager layoutManager;
     RedHisAdapter redHisAdapter;
+    private final static int REV_DETAIL = 1;
 
     @Override
     protected int getLayoutResId() {
@@ -73,7 +73,7 @@ public class RevRecordFragment extends BaseFragment {
         hisPartDesB = (TextView) viewRoot.findViewById(R.id.his_part_des_b);
         hisPartDesC = (TextView) viewRoot.findViewById(R.id.his_part_des_c);
         hisPartDesA.setText(getString(R.string.red_his_reca));
-        hisPartDesB.setText(getString(R.string.red_his_disb));
+        hisPartDesB.setText(getString(R.string.red_his_recb));
         hisPartDesC.setText(getString(R.string.red_his_recc));
         notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
         redRecordRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.red_record_recycler);
@@ -85,13 +85,18 @@ public class RevRecordFragment extends BaseFragment {
         redRecordRecycler.addFooterView(loadMoreView); // 添加为Footer。
         redRecordRecycler.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         redRecordRecycler.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
-
+        redRecordRecycler.setHasFixedSize(true);
+        redRecordRecycler.setNestedScrollingEnabled(false);
         redRecordRecycler.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), redRecordRecycler, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
                 if (position < arrayList.size()) {
                     //TODO 红包详情
-
+                    LocalLog.d(TAG, "红包详情  redid = " + arrayList.get(position).getRed_id());
+                    Intent intent = new Intent();
+                    intent.putExtra(getContext().getPackageName() + "red_id", arrayList.get(position).getRed_id());
+                    intent.setClass(getContext(), RedInfoActivity.class);
+                    startActivityForResult(intent, REV_DETAIL);
                 }
             }
 
@@ -113,26 +118,26 @@ public class RevRecordFragment extends BaseFragment {
             protected void onSuc(String s) {
                 if (isAdded()) {
                     try {
-                        RedHisResponse redHisResponse = new Gson().fromJson(s, RedHisResponse.class);
-                        pageCount = redHisResponse.getData().getRedpacket_list().getPagenation().getTotalPage();
-                        hisPartA.setText(redHisResponse.getData().getCount_info().getReceive_total());
-                        hisPartB.setText(redHisResponse.getData().getCount_info().getReceive_count());
-                        hisPartC.setText(redHisResponse.getData().getCount_info().getMax_money());
-                        if (pageIndex == 1 && redHisResponse.getData() != null) {
+                        RedRevHisResponse redRevHisResponse = new Gson().fromJson(s, RedRevHisResponse.class);
+                        pageCount = redRevHisResponse.getData().getRedpacket_list().getPagenation().getTotalPage();
+                        hisPartA.setText(redRevHisResponse.getData().getCount_info().getReceive_total());
+                        hisPartB.setText(redRevHisResponse.getData().getCount_info().getReceive_count());
+                        hisPartC.setText(redRevHisResponse.getData().getCount_info().getMax_money());
+                        if (pageIndex == 1 && redRevHisResponse.getData() != null) {
                             arrayList.clear();
-                            if (redHisResponse.getData().getRedpacket_list() != null && redHisResponse.getData().getRedpacket_list().getData() != null) {
-                                if (redHisResponse.getData().getRedpacket_list().getData().size() > 0) {
-                                    arrayList.addAll(redHisResponse.getData().getRedpacket_list().getData());
+                            if (redRevHisResponse.getData().getRedpacket_list() != null && redRevHisResponse.getData().getRedpacket_list().getData() != null) {
+                                if (redRevHisResponse.getData().getRedpacket_list().getData().size() > 0) {
+                                    arrayList.addAll(redRevHisResponse.getData().getRedpacket_list().getData());
                                     redHisAdapter.notifyDataSetChanged();
                                 }
                             }
                         } else {
-                            LocalLog.d(TAG,"加载更多");
-                            if (redHisResponse.getData() != null) {
-                                if (redHisResponse.getData().getRedpacket_list() != null && redHisResponse.getData().getRedpacket_list().getData() != null) {
-                                    if (redHisResponse.getData().getRedpacket_list().getData().size() > 0) {
-                                        arrayList.addAll(redHisResponse.getData().getRedpacket_list().getData());
-                                        redHisAdapter.notifyItemMoved(arrayList.size() - redHisResponse.getData().getRedpacket_list().getData().size(), redHisResponse.getData().getRedpacket_list().getData().size());
+                            LocalLog.d(TAG, "加载更多");
+                            if (redRevHisResponse.getData() != null) {
+                                if (redRevHisResponse.getData().getRedpacket_list() != null && redRevHisResponse.getData().getRedpacket_list().getData() != null) {
+                                    if (redRevHisResponse.getData().getRedpacket_list().getData().size() > 0) {
+                                        arrayList.addAll(redRevHisResponse.getData().getRedpacket_list().getData());
+                                        redHisAdapter.notifyItemMoved(arrayList.size() - redRevHisResponse.getData().getRedpacket_list().getData().size(), redRevHisResponse.getData().getRedpacket_list().getData().size());
                                     }
                                 }
                             }

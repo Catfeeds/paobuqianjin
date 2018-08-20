@@ -75,22 +75,42 @@
 
                 <TextView
                     android:id="@+id/recv_person"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:paddingLeft="14dp"
                     android:text="已领取"
                     android:textColor="@color/color_d9d9d9"
                     android:textSize="12dp" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/head_recycler"
+                <LinearLayout
+                    android:layout_gravity="bottom"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:nestedScrollingEnabled="false"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                </android.support.v7.widget.RecyclerView>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/head_recycler"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_weight="7"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                    <ImageView
+
+                        android:id="@+id/go_to"
+                        android:layout_width="7dp"
+                        android:layout_height="14dp"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_weight="1"
+                        android:paddingRight="14dp"
+                        android:src="@drawable/go_to" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <LinearLayout

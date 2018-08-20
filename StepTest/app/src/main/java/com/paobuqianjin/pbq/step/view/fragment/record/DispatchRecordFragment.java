@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.record;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -10,12 +11,14 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.RedHisResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RedRevHisResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.RedSendHisResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.view.activity.RedInfoActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.RedHisAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefineLoadMoreView;
@@ -25,9 +28,6 @@ import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by pbq on 2018/8/15.
@@ -45,10 +45,13 @@ public class DispatchRecordFragment extends BaseFragment {
     TextView notFoundData;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGE_SIZE_DEFAULT = 3;
-    ArrayList<RedHisResponse.DataBeanX.RedpacketListBean.DataBean> arrayList = new ArrayList<>();
+    ArrayList<RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean> arrayList = new ArrayList<>();
     LinearLayoutManager layoutManager;
     RedHisAdapter redHisAdapter;
+    private final static int RED_INFO = 2;
+
     @Override
+
     protected int getLayoutResId() {
         return R.layout.red_record_hs_fg;
     }
@@ -72,15 +75,6 @@ public class DispatchRecordFragment extends BaseFragment {
         hisPartDesB.setText(getString(R.string.red_his_disb));
         hisPartDesC.setText(getString(R.string.red_his_disc));
 
-        hisPartA = (TextView) viewRoot.findViewById(R.id.his_part_a);
-        hisPartB = (TextView) viewRoot.findViewById(R.id.his_part_b);
-        hisPartC = (TextView) viewRoot.findViewById(R.id.his_part_c);
-        hisPartDesA = (TextView) viewRoot.findViewById(R.id.his_part_des_a);
-        hisPartDesB = (TextView) viewRoot.findViewById(R.id.his_part_des_b);
-        hisPartDesC = (TextView) viewRoot.findViewById(R.id.his_part_des_c);
-        hisPartDesA.setText(getString(R.string.red_his_reca));
-        hisPartDesB.setText(getString(R.string.red_his_disb));
-        hisPartDesC.setText(getString(R.string.red_his_recc));
         notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
         redRecordRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.red_record_recycler);
         layoutManager = new LinearLayoutManager(getContext());
@@ -91,13 +85,17 @@ public class DispatchRecordFragment extends BaseFragment {
         redRecordRecycler.addFooterView(loadMoreView); // 添加为Footer。
         redRecordRecycler.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         redRecordRecycler.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
-
+        redRecordRecycler.setHasFixedSize(true);
+        redRecordRecycler.setNestedScrollingEnabled(false);
         redRecordRecycler.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), redRecordRecycler, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, int position) {
                 if (position < arrayList.size()) {
                     //TODO 红包详情
-
+                    String red_id = arrayList.get(position).getRed_id();
+                    Intent intent = new Intent();
+                    intent.setClass(getContext(), RedInfoActivity.class);
+                    startActivityForResult(intent, RED_INFO);
                 }
             }
 
@@ -110,7 +108,6 @@ public class DispatchRecordFragment extends BaseFragment {
     }
 
 
-
     private void getRecHistory() {
         Map<String, String> param = new HashMap<>();
         param.put("action", "send");
@@ -121,26 +118,26 @@ public class DispatchRecordFragment extends BaseFragment {
             protected void onSuc(String s) {
                 if (isAdded()) {
                     try {
-                        RedHisResponse redHisResponse = new Gson().fromJson(s, RedHisResponse.class);
-                        pageCount = redHisResponse.getData().getRedpacket_list().getPagenation().getTotalPage();
-                        hisPartA.setText(redHisResponse.getData().getCount_info().getReceive_total());
-                        hisPartB.setText(redHisResponse.getData().getCount_info().getReceive_count());
-                        hisPartC.setText(redHisResponse.getData().getCount_info().getMax_money());
-                        if (pageIndex == 1 && redHisResponse.getData() != null) {
+                        RedSendHisResponse redSendHisResponse = new Gson().fromJson(s, RedSendHisResponse.class);
+                        pageCount = redSendHisResponse.getData().getRedpacket_list().getPagenation().getTotalPage();
+                        hisPartA.setText(redSendHisResponse.getData().getCount_info().getSend_total());
+                        hisPartB.setText(redSendHisResponse.getData().getCount_info().getSend_count());
+                        hisPartC.setText(redSendHisResponse.getData().getCount_info().getRecice_total());
+                        if (pageIndex == 1 && redSendHisResponse.getData() != null) {
                             arrayList.clear();
-                            if (redHisResponse.getData().getRedpacket_list() != null && redHisResponse.getData().getRedpacket_list().getData() != null) {
-                                if (redHisResponse.getData().getRedpacket_list().getData().size() > 0) {
-                                    arrayList.addAll(redHisResponse.getData().getRedpacket_list().getData());
+                            if (redSendHisResponse.getData().getRedpacket_list() != null && redSendHisResponse.getData().getRedpacket_list().getData() != null) {
+                                if (redSendHisResponse.getData().getRedpacket_list().getData().size() > 0) {
+                                    arrayList.addAll(redSendHisResponse.getData().getRedpacket_list().getData());
                                     redHisAdapter.notifyDataSetChanged();
                                 }
                             }
                         } else {
-                            LocalLog.d(TAG,"加载更多");
-                            if (redHisResponse.getData() != null) {
-                                if (redHisResponse.getData().getRedpacket_list() != null && redHisResponse.getData().getRedpacket_list().getData() != null) {
-                                    if (redHisResponse.getData().getRedpacket_list().getData().size() > 0) {
-                                        arrayList.addAll(redHisResponse.getData().getRedpacket_list().getData());
-                                        redHisAdapter.notifyItemMoved(arrayList.size() - redHisResponse.getData().getRedpacket_list().getData().size(), redHisResponse.getData().getRedpacket_list().getData().size());
+                            LocalLog.d(TAG, "加载更多");
+                            if (redSendHisResponse.getData() != null) {
+                                if (redSendHisResponse.getData().getRedpacket_list() != null && redSendHisResponse.getData().getRedpacket_list().getData() != null) {
+                                    if (redSendHisResponse.getData().getRedpacket_list().getData().size() > 0) {
+                                        arrayList.addAll(redSendHisResponse.getData().getRedpacket_list().getData());
+                                        redHisAdapter.notifyItemMoved(arrayList.size() - redSendHisResponse.getData().getRedpacket_list().getData().size(), redSendHisResponse.getData().getRedpacket_list().getData().size());
                                     }
                                 }
                             }
@@ -196,6 +193,7 @@ public class DispatchRecordFragment extends BaseFragment {
             }, 1000);
         }
     };
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
