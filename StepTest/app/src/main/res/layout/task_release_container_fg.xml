@@ -3,41 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusableInTouchMode="true"
-    android:focusable="true">
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
-    <RelativeLayout
+    <include
         android:id="@+id/bar"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="@color/color_232433">
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/release_choice_tab"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_alignParentBottom="true"
-            app:tabIndicatorColor="@color/color_feb913"
-            app:tabIndicatorHeight="2dp"
-            app:tabSelectedTextColor="@color/color_feb913"
-            app:tabTextAppearance="@style/MyTabLayoutTextAppearanceStyle_17"
-            app:tabTextColor="@color/color_f8" />
-
-        <RelativeLayout
-            android:id="@+id/buttone_left_bar"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_alignParentBottom="true">
-
-            <ImageView
-                android:id="@+id/bar_return_drawable"
-                android:layout_width="10dp"
-                android:layout_height="19dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="14dp"
-                android:src="@drawable/bar_bg_selector" />
-        </RelativeLayout>
-    </RelativeLayout>
+        layout="@layout/bar_return_a_style" />
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
@@ -56,10 +27,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="140dp"></com.youth.banner.Banner>
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/release_choice_pager"
+            <LinearLayout
+                android:id="@+id/release_choice_container"
                 android:layout_width="match_parent"
-                android:layout_height="500dp"></android.support.v4.view.ViewPager>
+                android:layout_height="500dp"
+                android:orientation="vertical"></LinearLayout>
         </LinearLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 

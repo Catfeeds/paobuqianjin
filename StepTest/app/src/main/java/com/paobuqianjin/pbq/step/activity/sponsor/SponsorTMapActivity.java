@@ -405,7 +405,8 @@ public class SponsorTMapActivity extends BaseBarActivity implements TencentLocat
             Object o = adapter.getData().get(i);
             adapter.setSelect(i);
             if (o != null) {
-                address = ((SelectPoisitonListBean) o).getName();
+                address = ((SelectPoisitonListBean) o).getAddress();
+                LocalLog.d(TAG,"address = " +address);
                 setPosition(((SelectPoisitonListBean) o).getLat(), ((SelectPoisitonListBean) o).getLon(), true, false);
             }
         }

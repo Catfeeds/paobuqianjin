@@ -5,6 +5,15 @@ package com.paobuqianjin.pbq.step.data.bean;
  */
 
 public class AdObject {
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    private String title;
     private String target_url;
     private String img_url;
 
@@ -22,5 +31,14 @@ public class AdObject {
 
     public void setImg_url(String img_url) {
         this.img_url = img_url;
+    }
+
+    @Override
+    public String toString() {
+        return "AdObject{" +
+                "title='" + title + '\'' +
+                ", target_url='" + target_url + '\'' +
+                ", img_url='" + img_url + '\'' +
+                '}';
     }
 }

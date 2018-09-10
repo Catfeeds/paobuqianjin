@@ -1,9 +1,10 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,6 +16,7 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -30,19 +32,36 @@ import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearBySponsorResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.PagenationBean;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ShopSendedRedBagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoTipsCallBack;
 import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.Constants;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
+import com.paobuqianjin.pbq.step.view.base.adapter.owner.ConsumptiveRedBagListAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.ReleaseRecordAdapter;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.Rotate3dAnimation;
+import com.tencent.map.geolocation.TencentLocation;
+import com.tencent.map.geolocation.TencentLocationListener;
+import com.tencent.map.geolocation.TencentLocationManager;
+import com.tencent.map.geolocation.TencentLocationRequest;
+import com.tencent.map.geolocation.TencentPoi;
+import com.tencent.mapsdk.raster.model.BitmapDescriptorFactory;
+import com.tencent.mapsdk.raster.model.LatLng;
+import com.tencent.mapsdk.raster.model.Marker;
+import com.tencent.mapsdk.raster.model.MarkerOptions;
+import com.tencent.tencentmap.mapsdk.map.MapView;
+import com.tencent.tencentmap.mapsdk.map.TencentMap;
+import com.tencent.tencentmap.mapsdk.map.UiSettings;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
@@ -68,8 +87,9 @@ import butterknife.ButterKnife;
  * Created by pbq on 2018/6/26.
  */
 
-public class SponsorRedDetailActivity extends BaseBarActivity {
+public class SponsorRedDetailActivity extends BaseBarActivity implements TencentMap.OnMapClickListener, TencentMap.OnMarkerClickListener, TencentLocationListener, BaseBarActivity.ToolBarListener {
     private final static String TAG = SponsorRedDetailActivity.class.getSimpleName();
+    private final static String NEAR_ACTION = "com.paobuqianjin.pbq.NEAR_PKG.ACTION";
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -88,6 +108,8 @@ public class SponsorRedDetailActivity extends BaseBarActivity {
     ImageView noRedData;
     @Bind(R.id.sponsor_red)
     RelativeLayout sponsorRed;
+    @Bind(R.id.mapview)
+    MapView mapview;
     private List<?> data;
     ImageView openRedPkgView;
     private View popRedPkgView;
@@ -107,7 +129,19 @@ public class SponsorRedDetailActivity extends BaseBarActivity {
     Banner banner;
     private Rationale mRationale;
     private PermissionSetting mSetting;
-    private ArrayList<AdObject> adList ;
+    private ArrayList<AdObject> adList;
+
+
+    private int currentPage = 1;
+    private double[] location;
+    private TencentLocationManager locationManager;
+    private boolean isFirstLocation = true;
+    private double[] nowLocation = {0, 0};
+    private String req;//定位类型
+    private String currentAddrName;
+    List<Marker> listMark = new ArrayList<>();
+    private PopupWindow popOpWindowRedButtonHori;
+    private final static String SPOSNOR_ACTION = "com.paobuqianjin.person.SPONSOR_ACTION";
 
     @Override
     protected String title() {
@@ -115,10 +149,67 @@ public class SponsorRedDetailActivity extends BaseBarActivity {
     }
 
     @Override
+    public Object right() {
+        return "历史记录";
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sponsor_red_detail_activity_layout);
         ButterKnife.bind(this);
+        initMapView(savedInstanceState);
+        setToolBarListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        mapview.onResume();
+        super.onResume();
+        mapview.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    popRedPkgButton();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onPause() {
+        mapview.onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        mapview.onStop();
+        super.onStop();
+    }
+
+    @Override
+    public void clickLeft() {
+        onBackPressed();
+    }
+
+    @Override
+    public void clickRight() {
+        Intent hisIntent = new Intent(this, RedHsRecordActivity.class);
+        hisIntent.setAction(NEAR_ACTION);
+        startActivity(hisIntent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        mapview.onDestroy();
+        if (popOpWindowRedButtonHori != null) {
+            popOpWindowRedButtonHori.dismiss();
+            popOpWindowRedButtonHori = null;
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -138,7 +229,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity {
         noRedData = (ImageView) findViewById(R.id.no_red_data);
         requestPermission(Permission.Group.LOCATION);
         banner = (Banner) findViewById(R.id.banner);
-        loadBanner();
+        //loadBanner();
     }
 
         /*权限适配*/
@@ -151,6 +242,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity {
                     @Override
                     public void onAction(List<String> permissions) {
                         loadData();
+                        startLocation();
                     }
                 }).onDenied(new Action() {
             @Override
@@ -174,6 +266,46 @@ public class SponsorRedDetailActivity extends BaseBarActivity {
         }
     }
 
+    public void popRedPkgButton() {
+        LocalLog.d(TAG, "popRedPkgButton() 弹出红包");
+        if (popOpWindowRedButtonHori != null && popOpWindowRedButtonHori.isShowing()) {
+            return;
+        }
+        if (popOpWindowRedButtonHori == null) {
+            View popCircleOpBarHori = View.inflate(SponsorRedDetailActivity.this, R.layout.near_by_red_pop_window, null);
+            popOpWindowRedButtonHori = new PopupWindow(popCircleOpBarHori,
+                    WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            final Button button = (Button) popCircleOpBarHori.findViewById(R.id.red_pkg_button);
+            button.setBackgroundResource(R.drawable.near_pkg);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.setAction(SPOSNOR_ACTION);
+                    intent.setClass(SponsorRedDetailActivity.this, TaskReleaseActivity.class);
+                    startActivity(intent);
+                }
+            });
+            popOpWindowRedButtonHori.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    LocalLog.d(TAG, "popRedPkgButton dismiss() ");
+                }
+            });
+
+            popOpWindowRedButtonHori.setBackgroundDrawable(new BitmapDrawable());
+            TranslateAnimation animationCircleTypeHori = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleTypeHori.setInterpolator(new AccelerateInterpolator());
+            animationCircleTypeHori.setDuration(200);
+
+
+            popOpWindowRedButtonHori.showAtLocation(findViewById(R.id.sponsor_red), Gravity.BOTTOM | Gravity.RIGHT, 0, 22);
+            popCircleOpBarHori.startAnimation(animationCircleTypeHori);
+        }
+    }
+
     private void loadBanner() {
         String bannerUrl = NetApi.urlAd + "?position=redpack_list";
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
@@ -182,7 +314,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity {
             protected void onSuc(String s) {
                 try {
                     Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
-                     adList = new ArrayList<>();
+                    adList = new ArrayList<>();
                     if (adresponse.getData() != null && adresponse.getData().size() > 0) {
                         int size = adresponse.getData().size();
                         for (int i = 0; i < size; i++) {
@@ -209,7 +341,8 @@ public class SponsorRedDetailActivity extends BaseBarActivity {
                                 @Override
                                 public void OnBannerClick(int position) {
                                     String targetUrl = adList.get(position).getTarget_url();
-                                    if(!TextUtils.isEmpty(targetUrl)) startActivity(new Intent(SponsorRedDetailActivity.this, SingleWebViewActivity.class).putExtra("url",targetUrl));
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(SponsorRedDetailActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
                                 }
                             })
                             .start();
@@ -450,9 +583,10 @@ public class SponsorRedDetailActivity extends BaseBarActivity {
                             result = getString(R.string.error_red);
                         }
 
-                        if (nearedpacketBean.getBusinessid() != -1) {
+                        if (nearedpacketBean.getBusinessid() != 0 && nearedpacketBean.getRed_id() != 0) {
                             Intent intent = new Intent();
                             intent.putExtra(getPackageName() + "businessid", nearedpacketBean.getBusinessid());
+                            intent.putExtra(getPackageName() + "red_id", nearedpacketBean.getRed_id());
                             intent.putExtra(getPackageName() + "red_result", result);
                             intent.setClass(SponsorRedDetailActivity.this, SponsorDetailActivity.class);
                             startActivity(intent);
@@ -478,6 +612,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity {
                         if (nearedpacketBean.getBusinessid() != -1) {
                             Intent intent = new Intent();
                             intent.putExtra(getPackageName() + "businessid", nearedpacketBean.getBusinessid());
+                            intent.putExtra(getPackageName() + "red_id", nearedpacketBean.getRed_id());
                             intent.putExtra(getPackageName() + "red_result", result);
                             intent.setClass(SponsorRedDetailActivity.this, SponsorDetailActivity.class);
                             startActivity(intent);
@@ -587,8 +722,203 @@ public class SponsorRedDetailActivity extends BaseBarActivity {
         }
     };
 
+    private void initMapView(Bundle savedInstanceState) {
+        mapview.onCreate(savedInstanceState);
+        //获取TencentMap实例
+        TencentMap tencentMap = mapview.getMap();
+//设置卫星底图
+//        tencentMap.setSatelliteEnabled(true);
+//设置实时路况开启
+//        tencentMap.setTrafficEnabled(true);
+//设置地图中心点
+        tencentMap.setCenter(new LatLng(Presenter.getInstance(this).getLocation()[1], Presenter.getInstance(this).getLocation()[0]));
+//设置缩放级别
+        tencentMap.setZoom(11);
+//        tencentMap.zoomToSpan(Presenter.getInstance(this).getLocation()[1], Presenter.getInstance(this).getLocation()[0]);
+        //获取UiSettings实例
+        UiSettings uiSettings = mapview.getUiSettings();
+//设置logo到屏幕底部中心
+        //uiSettings.setLogoPosition(UiSettings.LOGO_POSITION_CENTER_BOTTOM);
+//设置比例尺到屏幕右下角
+        uiSettings.setScaleViewPosition(UiSettings.SCALEVIEW_POSITION_RIGHT_BOTTOM);
+//启用缩放手势(更多的手势控制请参考开发手册)
+        uiSettings.setZoomGesturesEnabled(true);
+
+//        addRedBagView();
+        tencentMap.setOnMapClickListener(this);
+        tencentMap.setOnMarkerClickListener(this);
+        if (Build.VERSION.SDK_INT >= 23) {
+
+        } else {
+            startLocation();
+        }
+        setDefaultLocation();
+    }
+
+    private void startLocation() {
+        TencentLocationRequest request = TencentLocationRequest.create();
+        request.setRequestLevel(TencentLocationRequest.REQUEST_LEVEL_POI);
+        request.setAllowGPS(true);
+        req = request.toString();
+        locationManager = TencentLocationManager.getInstance(this);
+        int error = locationManager.requestLocationUpdates(request, this);
+        LocalLog.d(TAG, "错误---------" + error);
+    }
+
+    private void logMsg(TencentLocation location) {
+        StringBuilder sb = new StringBuilder(256);
+        sb.append("time : ");
+        sb.append(location.getTime());
+        sb.append("\n定位参数 : ");// 定位类型
+        sb.append(req);
+        sb.append("\nlatitude : ");// 纬度
+        sb.append(location.getLatitude());
+        sb.append("\nlontitude : ");// 经度
+        sb.append(location.getLongitude());
+        sb.append("\n精度 : ");
+        sb.append(location.getAccuracy());
+        sb.append("\n来源 : ");// 国家码
+        sb.append(location.getProvider());
+        sb.append("\n名称 : ");//
+        sb.append(location.getName());
+        sb.append("\nCountry : ");// 国家名称
+        sb.append(location.getCity());
+        sb.append("\nprovince:");//省份
+        sb.append(location.getProvince());
+        sb.append("\ncitycode : ");// 城市编码
+        sb.append(location.getCityCode());
+        sb.append("\ncity : ");// 城市
+        sb.append(location.getCity());
+        sb.append("\nDistrict : ");// 区
+        sb.append(location.getDistrict());
+        sb.append("\nStreet : ");// 街道
+        sb.append(location.getStreet());
+        sb.append("\naddr : ");// 地址信息
+        sb.append(location.getAddress());
+        sb.append("\nUserIndoorState: ");// *****返回用户室内外判断结果*****
+        sb.append(location.getIndoorLocationType());
+        sb.append("\nDirection(not all devices have value): ");
+        sb.append(location.getDirection());// 方向
+        sb.append("\nPoi: ");// POI信息
+        if (location.getPoiList() != null && !location.getPoiList().isEmpty()) {
+            for (int i = 0; i < location.getPoiList().size(); i++) {
+                TencentPoi poi = location.getPoiList().get(i);
+                sb.append(poi.getName()).append(";");
+            }
+        }
+        if (TencentLocation.GPS_PROVIDER.equals(location.getProvider())) {// GPS定位结果
+            sb.append("\nspeed : ");
+            sb.append(location.getSpeed());// 速度 单位：km/h
+            sb.append("\nheight : ");
+            sb.append(location.getAltitude());// 海拔高度 单位：米
+            sb.append("\ngps status : ");
+            sb.append(location.getGPSRssi());// *****gps质量判断*****
+            sb.append("\ndescribe : ");
+            sb.append("gps定位成功");
+        } else if (TencentLocation.NETWORK_PROVIDER.equals(location.getProvider())) {// 网络定位结果
+            // 运营商信息
+            sb.append("\ndescribe : ");
+            sb.append("网络定位成功");
+        }
+        LocalLog.d(TAG, sb.toString());
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onLocationChanged(TencentLocation location, int error, String reason) {
+        if (error == TencentLocation.ERROR_OK && isFirstLocation) {
+            isFirstLocation = false;
+            stopLocation();
+            logMsg(location);
+            String city = location.getCity();
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            this.nowLocation[0] = latitude;
+            this.nowLocation[1] = longitude;
+            if (location.getPoiList() != null && location.getPoiList().size() > 0) {
+                this.currentAddrName = location.getPoiList().get(0).getName();
+            }
+            TencentMap tencentMap = mapview.getMap();
+//            tencentMap.setOnMapCameraChangeListener(onMapCameraChangeListener);
+//            setPosition(latitude, longitude, true, true);
+            tencentMap.zoomToSpan(new LatLng(nowLocation[0] - 0.01, nowLocation[1] + 0.008), new LatLng(nowLocation[0] + 0.01, nowLocation[1] - 0.008));
+            tencentMap.setCenter(new LatLng(nowLocation[0], nowLocation[1]));
+            addMark();
+            addMyLocation();
+        } else {
+//            PaoToastUtils.showShortToast(this, reason);
+        }
+    }
+
+
+    @Override
+    public void onStatusUpdate(String s, int i, String s1) {
+
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        startActivity(new Intent(this, ConsumptiveRedBag2Activity.class).putExtra("isNoConsumptive", true));
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        startActivity(new Intent(this, ConsumptiveRedBag2Activity.class).putExtra("isNoConsumptive", true));
+        return true;
+    }
+
+    private void stopLocation() {
+        locationManager.removeUpdates(this);
+    }
+
+    private void addMyLocation() {
+        Marker marker = mapview.getMap().addMarker(new MarkerOptions()
+                .position(new LatLng(nowLocation[0], nowLocation[1]))
+                .anchor(0.5f, 0.5f)
+                .icon(BitmapDescriptorFactory
+                        .defaultMarker())
+                .draggable(false));
+        if (!TextUtils.isEmpty(currentAddrName)) {
+            marker.setTitle("我在 " + currentAddrName + " 附近>");
+            marker.showInfoWindow();// 设置默认显示一个infoWindow
+        }
+    }
+
+    private void addMark() {
+        for (int i = 0; i < listMark.size(); i++) {
+            listMark.get(i).remove();
+        }
+        listMark.clear();
+        for (int i = 0; i < 5; i++) {
+            double offSetY = getRandomOffSet(0.01);
+            double offSetX = getRandomOffSet(0.008);
+            Marker marker1 = mapview.getMap().addMarker(new MarkerOptions()
+                    .position(new LatLng(nowLocation[0] + offSetY, nowLocation[1] + offSetX))
+                    .anchor(0.5f, 0.5f)
+                    .snippet(i + "")
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_around_red_bag))
+                    .draggable(false));
+            listMark.add(marker1);
+        }
+    }
+
+    private double getRandomOffSet(double right) {
+        return Math.random() * right * (Math.random() > 0.5 ? 1 : -1);
+    }
+
+    private void setDefaultLocation() {
+        LocalLog.d(TAG, "default location");
+        String city = "深圳市";
+        double latitude = 22.548826;
+        double longitude = 113.930819;
+        this.nowLocation[0] = latitude;
+        this.nowLocation[1] = longitude;
+        mapview.getMap().setCenter(new LatLng(nowLocation[0], nowLocation[1]));
+        addMyLocation();
+        addMark();
     }
 }

@@ -49,6 +49,7 @@ public class RoundRedInfoResponse {
          * receive_num : 3
          * income_money : 2.49
          * receive_total_money : 9.43
+         * redpacket_num:3000
          * receive_list : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":3},"data":[{"red_id":109,"from_uid":35835,"money":"3.63000","receive_uid":35882,"receive_time":1534764369,"nickname":"rm_13148896029","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/20/35882201808201416921087.jpg"},{"red_id":109,"from_uid":35835,"money":"2.49000","receive_uid":35822,"receive_time":1534749927,"nickname":"rm_13424156029","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg"},{"red_id":109,"from_uid":35835,"money":"3.31000","receive_uid":35821,"receive_time":1534754500,"nickname":"哥哥你是怎么回事！你说你","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/15/35821201808151933186689.jpg"}]}
          */
 
@@ -58,6 +59,16 @@ public class RoundRedInfoResponse {
         private int receive_num;
         private String income_money;
         private String receive_total_money;
+
+        public String getRedpacket_num() {
+            return redpacket_num;
+        }
+
+        public void setRedpacket_num(String redpacket_num) {
+            this.redpacket_num = redpacket_num;
+        }
+
+        private String redpacket_num;
         private ReceiveListBean receive_list;
 
         public String getAvatar() {
@@ -202,7 +213,7 @@ public class RoundRedInfoResponse {
                 private int from_uid;
                 private String money;
                 private int receive_uid;
-                private int receive_time;
+                private long receive_time;
                 private String nickname;
                 private String avatar;
 
@@ -238,11 +249,11 @@ public class RoundRedInfoResponse {
                     this.receive_uid = receive_uid;
                 }
 
-                public int getReceive_time() {
+                public long getReceive_time() {
                     return receive_time;
                 }
 
-                public void setReceive_time(int receive_time) {
+                public void setReceive_time(long receive_time) {
                     this.receive_time = receive_time;
                 }
 

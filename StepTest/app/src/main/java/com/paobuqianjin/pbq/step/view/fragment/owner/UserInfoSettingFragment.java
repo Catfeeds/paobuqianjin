@@ -55,6 +55,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeMakeActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -218,7 +219,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
 
 
         qServiceCfg = QServiceCfg.instance(getContext());
-        cachePath = getContext().getExternalCacheDir().getAbsolutePath();
+        cachePath = Utils.getDiskCacheDir(getContext()).getAbsolutePath();
         birthDayTV = (TextView) viewRoot.findViewById(R.id.birth_day);
         confirmSetting = (Button) viewRoot.findViewById(R.id.confirm_setting);
         qrcodeRel = (RelativeLayout) viewRoot.findViewById(R.id.qrcode_rel);
@@ -648,7 +649,7 @@ public class UserInfoSettingFragment extends BaseBarStyleTextViewFragment implem
     }
 
     private void saveImage(Bitmap bitmap, String sourcePath) throws FileNotFoundException {
-        String path = getContext().getExternalCacheDir() + "/head_logo.png";
+        String path = Utils.getDiskCacheDir(getContext()) + "/head_logo.png";
         LocalLog.d(TAG, "path = " + path);
         FileOutputStream fos = new FileOutputStream(path);
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);

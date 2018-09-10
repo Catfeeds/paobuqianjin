@@ -252,7 +252,12 @@
         <!-- 任务发布 -->
         <activity
             android:name=".view.activity.TaskReleaseActivity"
-            android:theme="@style/ImageTranslucentTheme" />
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.person.PKG_ACTION"></action>
+                <action android:name="com.paobuqianjin.person.SPONSOR_ACTION"></action>
+            </intent-filter>
+        </activity>
         <!-- 选择任务发布对象 -->
         <activity
             android:name=".view.activity.SelectFriendActivity"
@@ -532,7 +537,9 @@
             android:label="@string/title_activity_sponsor_date"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.sponsor.SponsorManagerActivity" />
-        <activity android:name=".activity.sponsor.SponsorInfoActivity" />
+        <activity
+            android:name=".activity.sponsor.SponsorInfoActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity android:name=".activity.sponsor.SponsorRedLocationActivity" />
         <activity android:name=".activity.sponsor.TargetPeopleActivity" />
         <activity android:name=".activity.sponsor.SponsorSelectPicActivity" />
@@ -848,16 +855,29 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".view.activity.SetRemarkNameActivity" />
         <activity android:name=".view.activity.ConsumptiveRedBag2Activity" />
-        <activity android:name=".view.activity.AddAroundRedBagActivity" />
+        <activity
+            android:name=".view.activity.AddAroundRedBagActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".view.activity.SingleWebViewActivity"></activity>
-        <activity android:name=".view.activity.RedHsRecordActivity" />
+        <activity android:name=".view.activity.RedHsRecordActivity">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.ROUND_PKG.ACTION" />
+                <action android:name="com.paobuqianjin.pbq.NEAR_PKG.ACTION" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".view.activity.RoundRedDetailActivity"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".view.activity.RedInfoActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.ROUND_RED"></action>
+                <action android:name="com.paobuqianjin.pbq.NEAR_READ"></action>
+            </intent-filter>
+        </activity>
         <activity android:name=".view.activity.RoundRedRelActivity" />
+        <activity android:name=".view.activity.CrashDetailActivity"></activity>
     </application>
 
 </manifest>

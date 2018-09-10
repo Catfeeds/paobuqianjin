@@ -2,19 +2,32 @@ package com.paobuqianjin.pbq.step.view.activity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
+import com.paobuqianjin.pbq.step.data.bean.AdObject;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PagenationBean;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ShopSendedRedBagResponse;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoTipsCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.Constants;
@@ -42,6 +55,10 @@ import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +68,7 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeMenuRecyclerView.LoadMoreListener, SwipeRefreshLayout.OnRefreshListener, TencentLocationListener, TencentMap.OnMapClickListener,TencentMap.OnMarkerClickListener {
+public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeMenuRecyclerView.LoadMoreListener, SwipeRefreshLayout.OnRefreshListener, TencentLocationListener, TencentMap.OnMapClickListener, TencentMap.OnMarkerClickListener, BaseBarActivity.ToolBarListener {
 
     private static final String TAG = ConsumptiveRedBagActivity.class.getSimpleName();
     @Bind(R.id.rv_coupon)
@@ -73,10 +90,28 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
     private String req;//定位类型
     private String currentAddrName;
     List<Marker> listMark = new ArrayList<>();
+    private PopupWindow popOpWindowRedButtonHori;
+    Banner banner;
+    private ArrayList<AdObject> adList;
 
     @Override
     protected String title() {
         return getString(R.string.get_consumptive_red_bag);
+    }
+
+    @Override
+    public Object right() {
+        return "";
+    }
+
+    @Override
+    public void clickRight() {
+
+    }
+
+    @Override
+    public void clickLeft() {
+        onBackPressed();
     }
 
     @Override
@@ -103,8 +138,9 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
             public void onItemClick(View itemView, final int position) {
                 String bId = listData.get(position).getBusinessid();
                 if (!TextUtils.isEmpty(bId)) {
+                    LocalLog.d(TAG, "businessid =" + bId);
                     Intent intent = new Intent();
-                    intent.putExtra("businessid", Integer.parseInt(bId));
+                    intent.putExtra(getPackageName() + "businessid", Integer.parseInt(bId));
                     intent.setClass(ConsumptiveRedBagActivity.this, SponsorDetailActivity.class);
                     startActivity(intent);
                 }
@@ -121,6 +157,85 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
         });
         refreshLayout.setOnRefreshListener(this);
         rvCoupon.setAdapter(adapter);
+        setToolBarListener(this);
+        banner = (Banner) findViewById(R.id.banner);
+        loadBanner();
+        banner.post(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    popRedPkgButton();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+    private void loadBanner() {
+        String bannerUrl = NetApi.urlAd + "?position=task_list";
+        LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
+        Presenter.getInstance(this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
+                    adList = new ArrayList<>();
+                    if (adresponse.getData() != null && adresponse.getData().size() > 0) {
+                        int size = adresponse.getData().size();
+                        for (int i = 0; i < size; i++) {
+                            if (adresponse.getData().get(i).getImgs() != null
+                                    && adresponse.getData().get(i).getImgs().size() > 0) {
+                                int imgSize = adresponse.getData().get(i).getImgs().size();
+                                for (int j = 0; j < imgSize; j++) {
+                                    AdObject adObject = new AdObject();
+                                    adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
+                                    adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
+                                    adList.add(adObject);
+                                }
+                            }
+                        }
+                    }
+                    banner.setImageLoader(new BannerImageLoader())
+                            .setImages(adList)
+                            .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                            .setBannerAnimation(Transformer.Default)
+                            .isAutoPlay(true)
+                            .setDelayTime(2000)
+                            .setIndicatorGravity(BannerConfig.CENTER)
+                            .setOnBannerListener(new OnBannerListener() {
+                                @Override
+                                public void OnBannerClick(int position) {
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(ConsumptiveRedBagActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                }
+                            })
+                            .start();
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                LocalLog.d(TAG, "获取失败!");
+            }
+        });
+    }
+
+    private void requestLocation() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] permissions = {
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            };
+            requestPermission(permissions);
+        } else {
+            startLocation();
+        }
     }
 
     private void initMapView(Bundle savedInstanceState) {
@@ -148,15 +263,44 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
 //        addRedBagView();
         tencentMap.setOnMapClickListener(this);
         tencentMap.setOnMarkerClickListener(this);
-        if (Build.VERSION.SDK_INT >= 23) {
-            String[] permissions = {
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            };
-            requestPermission(permissions);
-        } else {
-            startLocation();
+        requestLocation();
+    }
+
+    public void popRedPkgButton() {
+        LocalLog.d(TAG, "popRedPkgButton() 弹出红包");
+        if (popOpWindowRedButtonHori != null && popOpWindowRedButtonHori.isShowing()) {
+            return;
+        }
+        if (popOpWindowRedButtonHori == null) {
+            View popCircleOpBarHori = View.inflate(ConsumptiveRedBagActivity.this, R.layout.near_by_red_pop_window, null);
+            popOpWindowRedButtonHori = new PopupWindow(popCircleOpBarHori,
+                    WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            final Button button = (Button) popCircleOpBarHori.findViewById(R.id.red_pkg_button);
+            button.setBackgroundResource(R.drawable.sponsor_pkg);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(ConsumptiveRedBagActivity.this, AddConsumptiveRedBagActivity.class);
+                    startActivity(intent);
+                }
+            });
+            popOpWindowRedButtonHori.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    LocalLog.d(TAG, "popRedPkgButton dismiss() ");
+                }
+            });
+
+            popOpWindowRedButtonHori.setBackgroundDrawable(new BitmapDrawable());
+            TranslateAnimation animationCircleTypeHori = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleTypeHori.setInterpolator(new AccelerateInterpolator());
+            animationCircleTypeHori.setDuration(200);
+
+
+            popOpWindowRedButtonHori.showAtLocation(getView(R.id.consum_red_bag), Gravity.BOTTOM | Gravity.RIGHT, 0, 22);
+            popCircleOpBarHori.startAnimation(animationCircleTypeHori);
         }
     }
 
@@ -181,28 +325,39 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
     }
 
     private void addMark() {
-        if(listMark.size()>0) return;
-        for (int i = 0; i < listData.size(); i++) {
-            if (i > 4) break;
-            ShopSendedRedBagResponse.ShopSendedRedBagBean redBagBean = listData.get(i);
+        for (int i = 0; i < listMark.size(); i++) {
+            listMark.get(i).remove();
+        }
+        listMark.clear();
+        for (int i = 0; i < 5; i++) {
+            double offSetY = getRandomOffSet(0.01);
+            double offSetX = getRandomOffSet(0.008);
             Marker marker1 = mapview.getMap().addMarker(new MarkerOptions()
-                    .position(new LatLng(redBagBean.getLatitude(), redBagBean.getLongitude()))
+                    .position(new LatLng(nowLocation[0] + offSetY, nowLocation[1] + offSetX))
                     .anchor(0.5f, 0.5f)
                     .snippet(i + "")
-                    .icon(BitmapDescriptorFactory.fromResource(redBagBean.getStatus() == 0 ? R.mipmap.ic_get_consumptive_rb1 : R.mipmap.ic_get_consumptive_rb0))
+                    .icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_get_consumptive_rb0))
                     .draggable(false));
             listMark.add(marker1);
         }
     }
+
     private void addMyLocation() {
         Marker marker = mapview.getMap().addMarker(new MarkerOptions()
                 .position(new LatLng(nowLocation[0], nowLocation[1]))
-                .title("我在 " + currentAddrName + " 附近>")
+
                 .anchor(0.5f, 0.5f)
                 .icon(BitmapDescriptorFactory
                         .defaultMarker())
                 .draggable(false));
-        marker.showInfoWindow();// 设置默认显示一个infoWindow
+        if (!TextUtils.isEmpty(currentAddrName)) {
+            marker.setTitle("我在 " + currentAddrName + " 附近>");
+            marker.showInfoWindow();// 设置默认显示一个infoWindow
+        }
+    }
+
+    private double getRandomOffSet(double right) {
+        return Math.random() * right * (Math.random() > 0.5 ? 1 : -1);
     }
 
     @Override
@@ -227,6 +382,10 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
     protected void onDestroy() {
         mapview.onDestroy();
         super.onDestroy();
+        if (popOpWindowRedButtonHori != null) {
+            popOpWindowRedButtonHori.dismiss();
+            popOpWindowRedButtonHori = null;
+        }
     }
 
     private void pullDownConsumptiveRedBag(final int position) {
@@ -249,6 +408,7 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
         Map<String, String> params = new HashMap<>();
         params.put("page", currentPage + "");
         params.put("pagesize", Constants.PAGE_SIZE + "");
+        params.put("shadow", "1");
         params.put("latitude", location[0] + "");
         params.put("longitude", location[1] + "");
 
@@ -265,7 +425,7 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
                     listData.addAll(redBagResponse.getData().getData());
                     adapter.notifyDataSetChanged();
                     rvCoupon.loadMoreFinish(false, true);
-                    addMark();
+                    //addMark();
                 } else {
                     rvCoupon.loadMoreFinish(false, false);
                 }
@@ -409,17 +569,23 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
         intent.putExtra("idStr", bean.getVoucherid());
         intent.putExtra("status", bean.getStatus());
         intent.putExtra("nowLocation", nowLocation);
-        startActivity(intent);
+        startActivityForResult(intent, 1);
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
-        startActivity(new Intent(this,ConsumptiveRedBag2Activity.class));
+        startActivity(new Intent(this, ConsumptiveRedBag2Activity.class));
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        startActivity(new Intent(this,ConsumptiveRedBag2Activity.class));
+        startActivity(new Intent(this, ConsumptiveRedBag2Activity.class));
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        getPageData(1);
     }
 }

@@ -1,379 +1,483 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/target_task_span"
+    <include
+        android:id="@+id/bar"
+        layout="@layout/bar_return_a_style" />
+
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/color_f8">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/bar">
 
-        <TextView
-            android:id="@+id/target_step_des"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:text="任务名称"
-            android:textColor="@color/color_161727"
-            android:textSize="15sp" />
-
-        <EditText
-            android:id="@+id/target_task_step_num"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/target_step_des"
-            android:background="@color/color_f8"
-            android:gravity="right"
-            android:hint="输入任务名称"
-            android:maxEms="16"
-            android:maxLength="32"
-            android:paddingLeft="40dp"
-            android:paddingRight="39dp"
-            android:singleLine="true"
-            android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+            android:background="@color/color_f6f6f6">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignLeft="@+id/target_step_des"
-            android:layout_alignParentBottom="true"
-            android:background="@color/color_ebebed" />
-    </RelativeLayout>
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"></com.youth.banner.Banner>
 
-    <RelativeLayout
-        android:id="@+id/money_task_span"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/target_task_span"
-        android:background="@color/color_f8">
+            <EditText
+                android:id="@+id/et_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/banner"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_f8"
+                android:backgroundTint="@color/white"
+                android:gravity="left"
+                android:hint="请输入您的推广信息，限定300个字以内..."
+                android:maxLength="300"
+                android:minHeight="100dp"
+                android:padding="8dp"
+                android:paddingTop="5dp"
+                android:textColorHint="@color/color_8a8a8a"
+                android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/target_money_des"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:text="红包总额"
-            android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+            <!--<GridView-->
+            <io.rong.imkit.model.RongGridView
+                android:id="@+id/grid_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_information"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/color_f8"
+                android:backgroundTint="@color/white"
+                android:gravity="center"
+                android:numColumns="3"
+                android:padding="16dp"
+                android:scrollbars="none"
+                android:verticalSpacing="8dp"
+                tools:listitem="@layout/item_add_pic_grid2" />
 
-        <TextView
-            android:id="@+id/task_pay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
-            android:text="元"
-            android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+            <ImageView
+                android:id="@+id/line_sp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignLeft="@+id/target_task_span"
+                android:layout_below="@+id/grid_view"
+                android:background="@color/color_ebebed" />
 
-        <EditText
-            android:id="@+id/target_task_money_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/target_money_des"
-            android:background="@null"
-            android:gravity="right"
-            android:hint="请输入红包金额"
-            android:inputType="numberDecimal"
-            android:maxLength="6"
-            android:maxLines="1"
-            android:paddingRight="39dp"
-            android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+            <RelativeLayout
+                android:id="@+id/target_task_span"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/line_sp"
+                android:background="@color/color_f8">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignLeft="@+id/target_money_des"
-            android:layout_alignParentBottom="true"
-            android:background="@color/color_ebebed" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/target_step_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="任务名称"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
 
-    <RelativeLayout
-        android:id="@+id/day_task_span"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/money_task_span"
-        android:background="@color/color_f8">
+                <EditText
+                    android:id="@+id/target_task_step_num"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/target_step_des"
+                    android:background="@color/color_f8"
+                    android:gravity="right"
+                    android:hint="输入任务名称"
+                    android:maxEms="16"
+                    android:maxLength="32"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="39dp"
+                    android:singleLine="true"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/target_day_des"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:text="任务天数"
-            android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/target_step_des"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_ebebed" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/task_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
-            android:text="天"
-            android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+            <RelativeLayout
+                android:id="@+id/money_task_span"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/target_task_span"
+                android:background="@color/color_f8">
 
-        <EditText
-            android:id="@+id/target_task_day_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/target_day_des"
-            android:background="@null"
-            android:gravity="right"
-            android:hint="输入任务天数"
-            android:inputType="number"
-            android:maxLength="3"
-            android:maxLines="1"
-            android:paddingRight="39dp"
-            android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/target_money_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="红包总额"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignLeft="@+id/target_day_des"
-            android:layout_alignParentBottom="true"
-            android:background="@color/color_ebebed" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/task_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:text="元"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
 
-    <RelativeLayout
-        android:id="@+id/day_pack_num_span"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/day_task_span"
-        android:background="@color/color_f8">
+                <EditText
+                    android:id="@+id/target_task_money_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/target_money_des"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="请输入红包金额"
+                    android:inputType="numberDecimal"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:paddingRight="39dp"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/pack_day_des"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:text="每日红包个数"
-            android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/target_money_des"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_ebebed" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/pack_num_day_des"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
-            android:text="个"
-            android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+            <RelativeLayout
+                android:id="@+id/day_task_span"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/money_task_span"
+                android:background="@color/color_f8">
 
-        <EditText
-            android:id="@+id/pack_day_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/pack_day_des"
-            android:background="@null"
-            android:gravity="right"
-            android:hint="输入每日红包个数"
-            android:inputType="number"
-            android:maxLength="3"
-            android:maxLines="1"
-            android:paddingRight="39dp"
-            android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/target_day_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="任务天数"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignLeft="@+id/pack_day_des"
-            android:layout_alignParentBottom="true"
-            android:background="@color/color_ebebed" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/task_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:text="天"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
 
-    <RelativeLayout
-        android:id="@+id/day_step_target_span"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/day_pack_num_span"
-        android:layout_marginTop="10dp"
-        android:background="@color/color_f8"
-        android:clickable="true">
+                <EditText
+                    android:id="@+id/target_task_day_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/target_day_des"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="输入任务天数"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:maxLines="1"
+                    android:paddingRight="39dp"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/target_step_day_des"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:text="目标步数"
-            android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/target_day_des"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_ebebed" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/target_step_num_des"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
-            android:text="步"
-            android:textColor="@color/color_161727"
-            android:textSize="15sp"
-            android:visibility="invisible" />
+            <RelativeLayout
+                android:id="@+id/day_pack_num_span"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/day_task_span"
+                android:background="@color/color_f8">
 
-        <ImageView
-            android:layout_width="7dp"
-            android:layout_height="14dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="19dp"
-            android:src="@drawable/go_to"
-            android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/pack_day_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="每日红包个数"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/target_step_day_num"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
-            android:layout_toRightOf="@id/target_step_day_des"
-            android:background="@null"
-            android:focusable="false"
-            android:gravity="right"
-            android:inputType="number"
-            android:maxLength="6"
-            android:maxLines="1"
-            android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/pack_num_day_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:text="个"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_alignLeft="@+id/target_step_day_des"
-            android:layout_alignParentBottom="true"
-            android:background="@color/color_ebebed" />
-    </RelativeLayout>
+                <EditText
+                    android:id="@+id/pack_day_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/pack_day_des"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="输入每日红包个数"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:maxLines="1"
+                    android:paddingRight="39dp"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
 
-    <RelativeLayout
-        android:id="@+id/people_target_span"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/day_step_target_span"
-        android:background="@color/color_f8">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/pack_day_des"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_ebebed" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/target_people_day_des"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:text="目标人群"
-            android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+            <RelativeLayout
+                android:id="@+id/day_step_target_span"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/day_pack_num_span"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_f8"
+                android:clickable="true">
 
-        <TextView
-            android:id="@+id/target_people_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
-            android:gravity="right"
-            android:hint="立即筛选(必填)"
-            android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/target_step_day_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="目标步数"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
 
-        <ImageView
-            android:layout_width="7dp"
-            android:layout_height="14dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="19dp"
-            android:src="@drawable/go_to" />
+                <TextView
+                    android:id="@+id/target_step_num_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:text="步"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp"
+                    android:visibility="invisible" />
 
-    </RelativeLayout>
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="19dp"
+                    android:src="@drawable/go_to"
+                    android:textSize="15dp" />
 
-    <RelativeLayout
-        android:id="@+id/sponor_msg_span"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/people_target_span"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/color_f8">
+                <EditText
+                    android:id="@+id/target_step_day_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="39dp"
+                    android:layout_toRightOf="@id/target_step_day_des"
+                    android:background="@null"
+                    android:focusable="false"
+                    android:gravity="right"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/sponor_msg_des"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="14dp"
-            android:text="商铺信息"
-            android:textColor="@color/color_161727"
-            android:textSize="15sp" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/target_step_day_des"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_ebebed" />
+            </RelativeLayout>
 
-        <TextView
-            android:id="@+id/sponor_msg_des_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="39dp"
-            android:gravity="right"
-            android:hint="立即完善"
-            android:textColor="@color/color_161727"
-            android:textSize="14sp" />
+            <RelativeLayout
+                android:id="@+id/people_target_span"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/day_step_target_span"
+                android:background="@color/color_f8">
 
-        <ImageView
-            android:layout_width="7dp"
-            android:layout_height="14dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="19dp"
-            android:src="@drawable/go_to" />
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/target_people_day_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="目标人群"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
 
-    <com.paobuqianjin.pbq.step.customview.LooperTextView
-        android:id="@+id/top_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sponor_msg_span"      
-        android:padding="10dp" />
+                <TextView
+                    android:id="@+id/target_people_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="39dp"
+                    android:gravity="right"
+                    android:hint="立即筛选(必填)"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
 
-    <TextView
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="19dp"
+                    android:src="@drawable/go_to" />
 
-        android:id="@+id/tv_tip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/top_text"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-        android:text="温馨提示："
-        android:visibility="gone" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignLeft="@+id/target_people_day_des"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_ebebed" />
+            </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tv_tip1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_tip"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
-        android:text="商家每次发红包金额不低于10元，单个红包金额不低于0.3元；"
-        android:visibility="gone" />
+            <RelativeLayout
+                android:id="@+id/sponsor_link"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/people_target_span"
+                android:background="@color/color_f8">
+
+                <TextView
+                    android:id="@+id/sponsor_link_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="外部链接"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/sponsor_link_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="选填 请粘贴链接"
+                    android:paddingRight="39dp"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/sponor_msg_span"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/sponsor_link"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_f8">
+
+                <TextView
+                    android:id="@+id/sponor_msg_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="商铺信息"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/sponor_msg_des_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="39dp"
+                    android:gravity="right"
+                    android:hint="立即完善"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="19dp"
+                    android:src="@drawable/go_to" />
+            </RelativeLayout>
+
+            <com.paobuqianjin.pbq.step.customview.LooperTextView
+                android:id="@+id/top_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sponor_msg_span"
+                android:layout_marginBottom="80dp"
+                android:padding="10dp" />
+
+            <TextView
+
+                android:id="@+id/tv_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_text"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:text="温馨提示："
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_tip1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_tip"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:text="商家每次发红包金额不低于10元，单个红包金额不低于0.3元；"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+
 </RelativeLayout>

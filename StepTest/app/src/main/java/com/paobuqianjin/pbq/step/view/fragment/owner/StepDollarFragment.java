@@ -43,7 +43,7 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = StepDollarFragment.class.getSimpleName();
     StepDollarDetailFragment stepDollarDetailFragment;
     StepDollorCrashFragment stepDollorCrashFragment;
-    String[] titles = {"步币明细", "兑换记录"};
+    String[] titles = {"积分明细", "兑换记录"};
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -75,7 +75,7 @@ public class StepDollarFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected String title() {
-        return "我的步币";
+        return "我的积分";
     }
 
     @Override

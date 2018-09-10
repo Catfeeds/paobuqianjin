@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginTop="14dp"
     android:layout_width="match_parent"
     android:layout_height="180dp"
     android:layout_marginLeft="14dp"
-    android:layout_marginRight="14dp">
+    android:layout_marginRight="14dp"
+    android:layout_marginTop="14dp">
 
     <ImageView
         android:id="@+id/live_imag"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:scaleType="centerCrop"
         android:src="@drawable/bitmap_null" />
 
     <TextView
@@ -21,19 +22,19 @@
         android:layout_marginTop="14dp"
         android:background="@color/color_8a8a8a"
         android:text="赛事"
-        android:visibility="visible"
         android:textColor="@color/color_f8"
-        android:textSize="14dp" />
+        android:textSize="14dp"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/live_states"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/live_desc"
+        android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/live_desc"
         android:layout_marginRight="14dp"
         android:background="@color/color_6c71c4"
-        android:layout_alignParentRight="true"
         android:text="进行中"
         android:textColor="@color/color_f8"
         android:textSize="14dp" />
@@ -44,24 +45,24 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp">
 
-<!--        <TextView
-            android:id="@+id/live_long_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="23dp"
-            android:text="2018年计步运动比赛"
-            android:textColor="@color/color_feb913"
-            android:textSize="14dp" />-->
+        <!--        <TextView
+                    android:id="@+id/live_long_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="23dp"
+                    android:text="2018年计步运动比赛"
+                    android:textColor="@color/color_feb913"
+                    android:textSize="14dp" />-->
 
-<!--        <TextView
-            android:id="@+id/join_mum"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/live_long_desc"
-            android:layout_below="@+id/live_long_desc"
-            android:layout_marginTop="10dp"
-            android:text="参与人数:68人"
-            android:textColor="@color/color_f8" />-->
+        <!--        <TextView
+                    android:id="@+id/join_mum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/live_long_desc"
+                    android:layout_below="@+id/live_long_desc"
+                    android:layout_marginTop="10dp"
+                    android:text="参与人数:68人"
+                    android:textColor="@color/color_f8" />-->
     </RelativeLayout>
 
 </RelativeLayout>

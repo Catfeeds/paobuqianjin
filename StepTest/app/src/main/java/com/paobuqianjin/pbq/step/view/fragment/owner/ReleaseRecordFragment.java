@@ -55,6 +55,7 @@ public class ReleaseRecordFragment extends BaseFragment implements ReleaseRecord
     private final static int PAGE_SIZE = 10;
     private final static int RELEASE_PERSON_TASK = 1;
     private ArrayList<ReleaseRecordResponse.DataBeanX.DataBean> myReleaseData = new ArrayList<>();
+    private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
 
     @Override
     protected int getLayoutResId() {
@@ -247,7 +248,8 @@ public class ReleaseRecordFragment extends BaseFragment implements ReleaseRecord
 
     @OnClick(R.id.go_to_release)
     public void onClick() {
-        startActivityForResult(new Intent(getContext(), TaskReleaseActivity.class), RELEASE_PERSON_TASK);
+
+        startActivityForResult(new Intent(getContext(), TaskReleaseActivity.class).setAction(PKG_ACTION), RELEASE_PERSON_TASK);
     }
 
     @Override

@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
-import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskContainFragment;
+import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskPersonFragment;
 import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
 
 /**
@@ -16,7 +16,10 @@ import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
 
 public class TaskReleaseActivity extends BaseActivity {
     private final static String TAG = TaskReleaseActivity.class.getSimpleName();
-    private ReleaseTaskContainFragment releaseTaskContainFragment = new ReleaseTaskContainFragment();
+    private ReleaseTaskSponsorFragment releaseTaskSponsorFragment;
+    private ReleaseTaskPersonFragment releaseTaskPersonFragment;
+    private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
+    private final static String SPOSNOR_ACTION = "com.paobuqianjin.person.SPONSOR_ACTION";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,9 +30,26 @@ public class TaskReleaseActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.task_release_container, releaseTaskContainFragment)
-                .show(releaseTaskContainFragment)
-                .commit();
+        Intent intent = getIntent();
+        if (intent == null) {
+            return;
+        }
+        if (PKG_ACTION.equals(intent.getAction())) {
+            releaseTaskPersonFragment = new ReleaseTaskPersonFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.task_release_container, releaseTaskPersonFragment)
+                    .show(releaseTaskPersonFragment)
+                    .commit();
+        } else if (SPOSNOR_ACTION.equals(intent.getAction())) {
+            releaseTaskSponsorFragment = new ReleaseTaskSponsorFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.task_release_container, releaseTaskSponsorFragment)
+                    .show(releaseTaskSponsorFragment)
+                    .commit();
+        } else {
+            LocalLog.d(TAG, "illeag action");
+            return;
+        }
+
     }
 }

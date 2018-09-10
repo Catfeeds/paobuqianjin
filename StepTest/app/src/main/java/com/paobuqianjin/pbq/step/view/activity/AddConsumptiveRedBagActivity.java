@@ -43,7 +43,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddConsumptiveRedBagActivity extends BaseBarActivity {
+public class AddConsumptiveRedBagActivity extends BaseBarActivity implements BaseBarActivity.ToolBarListener {
 
 
     private static final String TAG = AddConsumptiveRedBagActivity.class.getSimpleName();
@@ -89,6 +89,43 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity {
     }
 
     @Override
+    public Object right() {
+        return "确定";
+    }
+
+    @Override
+    public void clickRight() {
+        if (!isVip) {
+            goldenFreeApply();
+            return;
+        }
+        if (fillter()) {
+            Map<String, String> params = new HashMap<>();
+            params.put("busid", businessId + "");
+            params.put("vname", etRedBagName.getText().toString());
+            params.put("amount", etNum.getText().toString());
+            params.put("condition", etLimiteMoney.getText().toString());
+            params.put("money", etMoney.getText().toString());
+            params.put("day", etDayNum.getText().toString());
+            params.put("step", tvStep.getText().toString());
+            //params.put("distance", tvStep.getText().toString());
+            Presenter.getInstance(this).postPaoBuSimple(NetApi.getMySendVoucher, params, new PaoTipsCallBack() {
+                @Override
+                protected void onSuc(String s) {
+                    ToastUtils.showShortToast(AddConsumptiveRedBagActivity.this, "添加成功");
+                    setResult(4);
+                    finish();
+                }
+            });
+        }
+    }
+
+    @Override
+    public void clickLeft() {
+        onBackPressed();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_consumptive_red_bag);
@@ -98,6 +135,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity {
         etRedBagName.setFilters(new InputFilter[]{limitLengthFilter});
         tvStep.setText(DEVALUE_STEP + "");
         initData();
+        setToolBarListener(this);
     }
 
     private void initData() {
@@ -208,7 +246,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity {
             sponsorApplyDialog.show();
     }
 
-    @OnClick({R.id.stand_circle_pan, R.id.sponor_msg_span, R.id.btn_confirm, R.id.linear_open_vip})
+    @OnClick({R.id.stand_circle_pan, R.id.sponor_msg_span, R.id.linear_open_vip})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.stand_circle_pan:
@@ -242,31 +280,6 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity {
                     intent.setAction("com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION");
                     intent.setClass(this, SponsorInfoActivity.class);
                     startActivityForResult(intent, REQUEST_ADD);
-                }
-                break;
-            case R.id.btn_confirm:
-                if (!isVip) {
-                    goldenFreeApply();
-                    return;
-                }
-                if (fillter()) {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("busid", businessId + "");
-                    params.put("vname", etRedBagName.getText().toString());
-                    params.put("amount", etNum.getText().toString());
-                    params.put("condition", etLimiteMoney.getText().toString());
-                    params.put("money", etMoney.getText().toString());
-                    params.put("day", etDayNum.getText().toString());
-                    params.put("step", tvStep.getText().toString());
-                    //params.put("distance", tvStep.getText().toString());
-                    Presenter.getInstance(this).postPaoBuSimple(NetApi.getMySendVoucher, params, new PaoTipsCallBack() {
-                        @Override
-                        protected void onSuc(String s) {
-                            ToastUtils.showShortToast(AddConsumptiveRedBagActivity.this, "添加成功");
-                            setResult(4);
-                            finish();
-                        }
-                    });
                 }
                 break;
             case R.id.linear_open_vip:

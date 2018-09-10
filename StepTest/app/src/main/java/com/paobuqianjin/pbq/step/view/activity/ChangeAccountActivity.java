@@ -1,13 +1,12 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,12 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MultAccountResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ThirdPartyLoginResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.model.FlagPreference;
@@ -33,19 +30,28 @@ import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.RongYunChatUtils;
 import com.paobuqianjin.pbq.step.utils.RongYunUserInfoManager;
 import com.paobuqianjin.pbq.step.utils.SharedPreferencesUtil;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.PaoBuApplication;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.MultAccountAdapter;
+import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
+import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
 /**
@@ -76,6 +82,7 @@ public class ChangeAccountActivity extends BaseBarActivity implements BaseBarAct
     private ArrayList<Object> accountArray = new ArrayList<>();
     private final static String BIND_PHONE = "com.paobuqianjin.step.BIND_PHONE";
     private LoginResponse loginResponse;
+    private boolean isInGroup = false;
 
     @Override
 
@@ -123,6 +130,7 @@ public class ChangeAccountActivity extends BaseBarActivity implements BaseBarAct
                         if (id != Presenter.getInstance(ChangeAccountActivity.this).getId()
                                 && !no.equals(Presenter.getInstance(ChangeAccountActivity.this).getNo())) {
                             LocalLog.d(TAG, "切换账号");
+                            //TODO 新接口切换账号
                             changeLogin((MultAccountResponse.DataBean) accountArray.get(position));
                         }
                     }
@@ -134,7 +142,8 @@ public class ChangeAccountActivity extends BaseBarActivity implements BaseBarAct
 
             }
         }));
-        initLocalEv();
+        //TODO 检查当前账号是否在某个组
+        getDeviceInfo();
         setToolBarListener(new ToolBarListener() {
             @Override
             public void clickLeft() {
@@ -150,47 +159,136 @@ public class ChangeAccountActivity extends BaseBarActivity implements BaseBarAct
         });
     }
 
+    /*@desc
+    *@function status 1 查询
+    *@param
+    *@return 
+    */
+    private void makeOrQueryGroup(final int status) {
+        Map<String, String> param = new HashMap<>();
+        param.put("uuid", Installation.readInstallationId(this));
+        param.put("status", String.valueOf(status));
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.urlCreateGroup, param, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                if (status == 0) {
+                    //创建或者获取组APPID
+                    try {
+                        JSONObject jsonObj = new JSONObject(s);
+                        jsonObj = jsonObj.getJSONObject("data");
+                        String appId = jsonObj.getString("appid");
+                        if (!TextUtils.isEmpty(appId)) {
+                            FlagPreference.setAppId(ChangeAccountActivity.this, appId);
+                            getAccountList(appId);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (status == 1) {
+                    try {
+                        JSONObject jsonObj = new JSONObject(s);
+                        jsonObj = jsonObj.getJSONObject("data");
+                        int iSInGroup = jsonObj.getInt("status");
+                        if (iSInGroup == 1) {
+                            LocalLog.d(TAG, "当前账号在组");
+                            isInGroup = true;
+                            //获取AppId
+                            makeOrQueryGroup(0);
+                        } else if (iSInGroup == 0) {
+                            LocalLog.d(TAG, "当前账号不在组");
+                            isInGroup = false;
+                            getUserInfo();
+                        }
+                    } catch (Exception e) {
+
+                    }
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
+    }
+
+
+    private void getDeviceInfo() {
+        String[] permissions = {
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+        requestPermission(permissions);
+    }
+
+    private void requestPermission(String... permissions) {
+        DefaultRationale mRationale = new DefaultRationale();
+        final PermissionSetting mSetting = new PermissionSetting(this);
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        String terminalId = null;
+                        terminalId = Installation.readInstallationId(ChangeAccountActivity.this);
+                        if (TextUtils.isEmpty(terminalId)) {
+                            terminalId = Utils.getIMEI(ChangeAccountActivity.this);
+                            Installation.writeInstallationId(ChangeAccountActivity.this, terminalId);
+                        }
+                        LocalLog.d(TAG, "terminalId = " + terminalId);
+                        if (!TextUtils.isEmpty(terminalId)) {
+                            makeOrQueryGroup(1);
+                        } else {
+                            PaoToastUtils.showShortToast(ChangeAccountActivity.this, "授权失败");
+                        }
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                if (AndPermission.hasAlwaysDeniedPermission(ChangeAccountActivity.this, permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
+    }
 
     private synchronized void changeLogin(MultAccountResponse.DataBean dataBean) {
-        String uuid = Installation.id(this);
-        if (!TextUtils.isEmpty(uuid)) {
-            if (!TextUtils.isEmpty(dataBean.getAppid()) && dataBean.getAppid().equals(FlagPreference.getAppId(this))) {
-                if (!TextUtils.isEmpty(dataBean.getMtoken())
-                        && dataBean.getUser_id() != -1) {
-                    Map<String, String> param = new HashMap<>();
-                    param.put("uuid", uuid);
-                    param.put("appid", dataBean.getAppid());
-                    param.put("user_id", String.valueOf(dataBean.getUser_id()));
-                    param.put("mtoken", dataBean.getMtoken());
+        if (!TextUtils.isEmpty(dataBean.getAppid()) && dataBean.getAppid().equals(FlagPreference.getAppId(this))) {
+            if (dataBean.getUser_id() != -1) {
+                Map<String, String> param = new HashMap<>();
+                param.put("appid", dataBean.getAppid());
+                param.put("otherid", String.valueOf(dataBean.getUser_id()));
 
-                    Presenter.getInstance(this).postPaoBuSimple(NetApi.urlMultLogin, param, new PaoCallBack() {
-                        @Override
-                        protected void onSuc(String s) {
-                            try {
-                                LoginResponse loginResponse = new Gson().fromJson(s, LoginResponse.class);
-                                ChangeAccountActivity.this.loginResponse = loginResponse;
-                                finishLogin2Main(true, loginResponse.getData().getId(), loginResponse.getData().getNo(),
-                                        loginResponse.getData().getUser_token(), loginResponse.getData().getChat_token(),
-                                        loginResponse.getData().getMobile(), null, loginResponse.getData().getState(),
-                                        loginResponse.getData().getStatus());
-                                PaoToastUtils.showLongToast(ChangeAccountActivity.this,"切换账号成功");
-                            } catch (Exception e) {
-
-                            }
-                        }
-
-                        @Override
-                        protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                Presenter.getInstance(this).postPaoBuSimple(NetApi.urlGroupAccChange, param, new PaoCallBack() {
+                    @Override
+                    protected void onSuc(String s) {
+                        try {
+                            LoginResponse loginResponse = new Gson().fromJson(s, LoginResponse.class);
+                            ChangeAccountActivity.this.loginResponse = loginResponse;
+                            finishLogin2Main(true, loginResponse.getData().getId(), loginResponse.getData().getNo(),
+                                    loginResponse.getData().getUser_token(), loginResponse.getData().getChat_token(),
+                                    loginResponse.getData().getMobile(), null, loginResponse.getData().getState(),
+                                    loginResponse.getData().getStatus());
+                            PaoToastUtils.showLongToast(ChangeAccountActivity.this, "切换账号成功");
+                        } catch (Exception e) {
 
                         }
-                    });
-                }
+                    }
+
+                    @Override
+                    protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                    }
+                });
             }
         }
     }
 
     private void finishLogin2Main(final boolean isLogin, final int id, final String no, final String token,
                                   final String chat_token, final String mobile, final String action, int states, int status) {
+        RongIM.getInstance().logout();
         Presenter.getInstance(ChangeAccountActivity.this).setId(id);
         if (!TextUtils.isEmpty(no)) Presenter.getInstance(ChangeAccountActivity.this).setNo(no);
         if (!TextUtils.isEmpty(token))
@@ -228,51 +326,47 @@ public class ChangeAccountActivity extends BaseBarActivity implements BaseBarAct
         } else {
             setResult(Activity.RESULT_OK);
             Presenter.getInstance(ChangeAccountActivity.this).steLogFlg(true);
-            String uuuId = Installation.id(this);
-            LocalLog.d(TAG, "uuuId = " + uuuId);
-            if (!TextUtils.isEmpty(uuuId))
-                getAccountList(uuuId);
+            String appId = FlagPreference.getAppId(this);
+            LocalLog.d(TAG, "uuuId = " + appId);
+            if (!TextUtils.isEmpty(appId))
+                getAccountList(appId);
         }
 
     }
 
-    private void getAccountList(String uuId) {
-        String appId = FlagPreference.getAppId(this);
-        LocalLog.d(TAG, "APPID = " + appId);
-        if (!TextUtils.isEmpty(appId)) {
-            String url = NetApi.urlAccountList + "appid=" + appId + "&uuid=" + uuId;
-            LocalLog.d(TAG, "URL = " + url);
-            Presenter.getInstance(this).getPaoBuSimple(url, null, new PaoCallBack() {
-                @Override
-                protected void onSuc(String s) {
-                    try {
-                        MultAccountResponse multAccountResponse = new Gson().fromJson(s, MultAccountResponse.class);
-                        if (multAccountResponse.getData() != null && multAccountResponse.getData().size() > 0) {
-                            accountArray.clear();
-                            accountArray.addAll((ArrayList) multAccountResponse.getData());
-                            MultAccountAdapter multAccountAdapter = new MultAccountAdapter(ChangeAccountActivity.this, accountArray);
-                            accountRecycler.setAdapter(multAccountAdapter);
-                            accountRecycler.requestLayout();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+    private void getAccountList(String appId) {
+        String url = NetApi.urlGroupList + appId;
+        LocalLog.d(TAG, "URL = " + url);
+        Presenter.getInstance(this).getPaoBuSimple(url, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    MultAccountResponse multAccountResponse = new Gson().fromJson(s, MultAccountResponse.class);
+                    if (multAccountResponse.getData() != null && multAccountResponse.getData().size() > 0) {
+                        accountArray.clear();
+                        accountArray.addAll((ArrayList) multAccountResponse.getData());
+                        MultAccountAdapter multAccountAdapter = new MultAccountAdapter(ChangeAccountActivity.this, accountArray);
+                        accountRecycler.setAdapter(multAccountAdapter);
+                        accountRecycler.requestLayout();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+            }
 
-                @Override
-                protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
 
-                }
-            });
-        }
+            }
+        });
     }
 
     //进行过添加账户的操作之后才能获取列表
     private void initLocalEv() {
         LocalLog.d(TAG, "initLocalEv() .....");
-        String uuuId = Installation.id(this);
-        if (!TextUtils.isEmpty(uuuId)) {
-            getAccountList(uuuId);
+        String appId = FlagPreference.getAppId(this);
+        if (!TextUtils.isEmpty(appId)) {
+            getAccountList(appId);
         } else {
             Intent intent = getIntent();
             if (intent != null) {
@@ -311,6 +405,7 @@ public class ChangeAccountActivity extends BaseBarActivity implements BaseBarAct
         });
     }
 
+
     @OnClick(R.id.add_account)
     public void onClick() {
         if (accountArray.size() < 5) {
@@ -318,8 +413,8 @@ public class ChangeAccountActivity extends BaseBarActivity implements BaseBarAct
             intent.setClass(this, LoginActivity.class);
             intent.setAction(ADD_ACCOUNT_ACTION);
             startActivityForResult(intent, ADD_ACCOUNT);
-        }else{
-            PaoToastUtils.showLongToast(this,"添加账号数量已达上限");
+        } else {
+            PaoToastUtils.showLongToast(this, "添加账号数量已达上限");
         }
     }
 
@@ -331,10 +426,10 @@ public class ChangeAccountActivity extends BaseBarActivity implements BaseBarAct
         if (resultCode == Activity.RESULT_OK) {
             //刷新账号列表
             if (requestCode == ADD_ACCOUNT) {
-                String uuId = Installation.id(this);
-                if (!TextUtils.isEmpty(uuId)) {
-                    LocalLog.d(TAG, "UUID = " + uuId);
-                    getAccountList(uuId);
+                String appId = FlagPreference.getAppId(this);
+                if (!TextUtils.isEmpty(appId)) {
+                    LocalLog.d(TAG, "appid = " + appId);
+                    getAccountList(appId);
                 }
             } else if (requestCode == MANAGER_ACCOUNT) {
                 initLocalEv();

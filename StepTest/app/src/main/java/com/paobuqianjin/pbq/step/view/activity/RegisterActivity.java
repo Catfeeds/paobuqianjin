@@ -232,6 +232,8 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
             intent.putExtra("r_chat_token",signUserResponse.getData().getChat_token());
             setResult(Activity.RESULT_OK,intent);
             finish();
+        } else {
+            PaoToastUtils.showLongToast(this, signUserResponse.getMessage());
         }
     }
 

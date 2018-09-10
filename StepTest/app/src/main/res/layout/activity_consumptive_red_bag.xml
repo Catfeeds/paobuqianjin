@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/consum_red_bag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBagActivity">
@@ -10,17 +11,23 @@
 
     <com.tencent.tencentmap.mapsdk.map.MapView
         android:id="@+id/mapview"
-        android:layout_below="@+id/rl_bar"
         android:layout_width="fill_parent"
         android:layout_height="200dp"
-        />
+        android:layout_below="@+id/rl_bar" />
+
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_below="@+id/rl_bar"
+        android:paddingBottom="8dp"
+        android:visibility="gone"></com.youth.banner.Banner>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/mapview"
-        >
+        android:layout_below="@+id/mapview">
 
         <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
             android:id="@+id/rv_coupon"
@@ -34,29 +41,28 @@
         android:id="@+id/linear_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:visibility="gone"
         android:layout_below="@+id/mapview"
         android:layout_centerInParent="true"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_empty_consumptive_red_bag"/>
+            android:src="@mipmap/ic_empty_consumptive_red_bag" />
 
         <TextView
             android:id="@+id/tv_empty"
+            style="@style/TextViewPurpleLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/go_get_consumptive_red_bag"
-            android:minWidth="120dp"
             android:layout_marginTop="42dp"
+            android:minWidth="120dp"
+            android:text="@string/go_get_consumptive_red_bag"
             android:textSize="15sp"
-            android:visibility="gone"
-            style="@style/TextViewPurpleLine"
-            />
+            android:visibility="gone" />
     </LinearLayout>
 
 

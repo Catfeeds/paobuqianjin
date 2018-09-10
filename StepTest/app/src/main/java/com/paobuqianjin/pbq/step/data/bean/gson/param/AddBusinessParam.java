@@ -24,6 +24,18 @@ public class AddBusinessParam {
     private String s_do_time;
     private String e_do_time;
     private int defaultBusiness;
+
+    public String getScope() {
+        return scope;
+    }
+
+    public AddBusinessParam setScope(String scope) {
+        this.scope = scope;
+        params.put("scope", scope);
+        return this;
+    }
+
+    private String scope;
     private Map<String, String> params;
 
     public AddBusinessParam() {

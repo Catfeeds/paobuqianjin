@@ -25,8 +25,8 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="20dp"
-                android:text=""
                 android:clickable="true"
+                android:text=""
                 android:textColor="@color/color_161727"
                 android:textSize="14dp" />
 
@@ -42,17 +42,44 @@
                     android:layout_height="1dp"
                     android:background="@color/color_d9d9d9" />
 
-                <TextView
-                    android:id="@+id/read_des"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:text="好的"
-                    android:padding="14dp"
-                    android:textColor="@color/color_6c71c4"
-                    android:textSize="18dp"
-                     />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/read_des_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="14dp"
+                        android:text="好的"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="18dp"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:background="@color/color_d9d9d9" />
+
+                    <TextView
+                        android:id="@+id/read_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:padding="14dp"
+                        android:text="好的"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="18dp" />
+
+                </LinearLayout>
+
             </RelativeLayout>
 
         </RelativeLayout>

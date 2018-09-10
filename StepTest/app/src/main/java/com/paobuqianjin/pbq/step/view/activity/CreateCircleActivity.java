@@ -309,7 +309,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(this);
         requestLocationPermission(Permission.Group.LOCATION);
-        cachePath = getExternalCacheDir().getAbsolutePath();
+        cachePath = Utils.getDiskCacheDir(this).getAbsolutePath();
         cirNameDesc.setSelection(cirNameDesc.getText().toString().length());
         circlePhoneNumEditor.setSelection(circlePhoneNumEditor.getText().toString().length());
         circleMoneyNumEditor.setSelection(circleMoneyNumEditor.getText().toString().length());
@@ -1183,7 +1183,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     }
 
     private void saveImage(Bitmap bitmap, String sourcePath) throws FileNotFoundException {
-        String path = this.getExternalCacheDir() + "/head_logo.png";
+        String path = Utils.getDiskCacheDir(this) + "/head_logo.png";
         LocalLog.d(TAG, "path = " + path);
         FileOutputStream fos = new FileOutputStream(path);
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);

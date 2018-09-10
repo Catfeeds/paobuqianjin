@@ -60,6 +60,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.EditCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SelectSettingAdapter;
@@ -254,7 +255,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         mSetting = new PermissionSetting(getContext());
         Presenter.getInstance(getContext()).getCircleTargetEdit();
         qServiceCfg = QServiceCfg.instance(getContext());
-        cachePath = getContext().getExternalCacheDir().getAbsolutePath();
+        cachePath = Utils.getDiskCacheDir(getActivity()).getAbsolutePath();
         if (intent != null) {
             dataBean = (CircleDetailResponse.DataBean) intent.getSerializableExtra("circle_detail");
             if (dataBean != null) {
@@ -905,7 +906,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
     }
 
     private void saveImage(Bitmap bitmap, String sourcePath) throws FileNotFoundException {
-        String path = getContext().getExternalCacheDir() + "/head_logo.png";
+        String path = Utils.getDiskCacheDir(getActivity()) + "/head_logo.png";
         LocalLog.d(TAG, "path = " + path);
         FileOutputStream fos = new FileOutputStream(path);
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);

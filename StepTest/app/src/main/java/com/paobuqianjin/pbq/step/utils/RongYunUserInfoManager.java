@@ -223,12 +223,22 @@ public class RongYunUserInfoManager {
         });
     }
 
+    /**
+     * 更新用户信息
+     * @param userInfo
+     * @throws SQLException
+     */
     public void refreshUserInfoDBAndCache(ChatUserInfo userInfo) throws SQLException {
         if(userInfo == null) return;
         userInfoDao.updateOrinsert(userInfo);
         RongIM.getInstance().refreshUserInfoCache(new UserInfo(userInfo.getId(), userInfo.getDisplayName(), userInfo.getAvatarUri()));
     }
 
+    /**
+     * 更新群组信息
+     * @param groupInfo
+     * @throws SQLException
+     */
     public void refreshGroupInfoDBAndCache(ChatGroupInfo groupInfo) throws SQLException {
         if(groupInfo == null) return;
         groupInfoDao.updateGroup(groupInfo);

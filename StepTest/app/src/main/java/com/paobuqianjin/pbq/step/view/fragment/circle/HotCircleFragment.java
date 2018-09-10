@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -11,12 +12,19 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +59,8 @@ import com.paobuqianjin.pbq.step.view.activity.LiveListActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
+import com.paobuqianjin.pbq.step.view.activity.SponsorRedDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleChooseGoodAdapter;
 import com.paobuqianjin.pbq.step.view.emoji.LQREmotionKit;
@@ -109,6 +119,9 @@ public class HotCircleFragment extends BaseFragment {
     private final static String QUIT_ACTION = "com.paobuqianjin.pbq.step.QUIT";
     private EditText searchEdit;
     private ArrayList<AdObject> adList;
+    private PopupWindow popOpWindowRedButtonHori;
+    private int homeIndex = 2;
+    private boolean isFirst = true;
 
     @Override
 
@@ -150,6 +163,10 @@ public class HotCircleFragment extends BaseFragment {
         super.onResume();
         LocalLog.d(TAG, "onResume");
         loadingData();
+        if(isFirst){
+            isFirst = false;
+            popCirCreate(2);
+        }
     }
 
     @Override
@@ -158,6 +175,62 @@ public class HotCircleFragment extends BaseFragment {
         if (localBroadcastManager != null) {
             localBroadcastManager.unregisterReceiver(localReceiver);
         }
+    }
+
+    public void popCirCreate(int homeIndex) {
+        this.homeIndex = homeIndex;
+        if (isAdded() && !isHidden() && homeIndex == 2) {
+            popRedPkgButton();
+        }
+    }
+
+    public void pullCirCreate(int homeIndex) {
+        LocalLog.d(TAG, "pullCirCreate() 红包隐藏!");
+        this.homeIndex = homeIndex;
+        if (popOpWindowRedButtonHori != null && popOpWindowRedButtonHori.isShowing()) {
+            popOpWindowRedButtonHori.dismiss();
+        }
+    }
+
+    public void popRedPkgButton() {
+        LocalLog.d(TAG, "popRedPkgButton() 弹出红包");
+        if (!isAdded()) {
+            return;
+        }
+        if (popOpWindowRedButtonHori != null && popOpWindowRedButtonHori.isShowing()) {
+            return;
+        }
+
+        View popCircleOpBarHori = View.inflate(getContext(), R.layout.near_by_red_pop_window, null);
+        popOpWindowRedButtonHori = new PopupWindow(popCircleOpBarHori,
+                WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        final Button button = (Button) popCircleOpBarHori.findViewById(R.id.red_pkg_button);
+        button.setBackgroundResource(R.drawable.create_icon);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(getContext(), OwnerCircleActivity.class);
+                startActivity(intent);
+            }
+        });
+        popOpWindowRedButtonHori.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popRedPkgButton dismiss() ");
+            }
+        });
+
+        popOpWindowRedButtonHori.setBackgroundDrawable(new BitmapDrawable());
+        TranslateAnimation animationCircleTypeHori = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleTypeHori.setInterpolator(new AccelerateInterpolator());
+        animationCircleTypeHori.setDuration(200);
+
+
+        popOpWindowRedButtonHori.showAtLocation(getView().findViewById(R.id.hot_circle), Gravity.BOTTOM | Gravity.RIGHT, 0, 150);
+        popCircleOpBarHori.startAnimation(animationCircleTypeHori);
     }
 
     @Override
@@ -290,6 +363,12 @@ public class HotCircleFragment extends BaseFragment {
             }
         }
     };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalLog.d(TAG, "onPause() enter");
+    }
 
     private class LocalReceiver extends BroadcastReceiver {
         @Override
@@ -634,7 +713,8 @@ public class HotCircleFragment extends BaseFragment {
                                 @Override
                                 public void OnBannerClick(int position) {
                                     String targetUrl = adList.get(position).getTarget_url();
-                                    if(!TextUtils.isEmpty(targetUrl)) startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url",targetUrl));
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", targetUrl));
                                 }
                             })
                             .start();

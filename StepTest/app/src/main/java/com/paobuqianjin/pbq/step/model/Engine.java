@@ -2701,7 +2701,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //TODO 获取用户步币详细信息，请求方式：get，地址：http://119.29.10.64/v1/usercredit?userid=1
+    //TODO 获取用户积分详细信息，请求方式：get，地址：http://119.29.10.64/v1/usercredit?userid=1
     public void getUserCredit(int page, int pagesize) {
         String url = NetApi.urlCredit + "?userid=" + String.valueOf(getId(mContext)) + "&page=" + String.valueOf(page)
                 + "&pagesize=" + String.valueOf(pagesize);
@@ -3043,8 +3043,7 @@ public final class Engine {
             File adImage = new File(adImgeName);
             if (adImage.exists()) {
                 LocalLog.d(TAG, "使用本地图片");
-                picasso.load(adImage).config(Bitmap.Config.RGB_565).placeholder(R.drawable.bitmap_null)
-                        .placeholder(R.drawable.bitmap_null).into(imageView);
+                picasso.load(adImage).config(Bitmap.Config.RGB_565).into(imageView);
             } else {
                 LocalLog.d(TAG, "###重新下载广告图片");
                 picasso.load(keepUrl).config(Bitmap.Config.RGB_565).transform(new PiccsoTransformation(imageView, keepUrl, true))

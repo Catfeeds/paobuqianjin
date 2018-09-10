@@ -42,6 +42,30 @@ public class RoundHisResponse {
     }
 
     public static class DataBean {
+        public String getDo_day() {
+            return do_day;
+        }
+
+        public void setDo_day(String do_day) {
+            this.do_day = do_day;
+        }
+
+        public String getS_do_time() {
+            return s_do_time;
+        }
+
+        public void setS_do_time(String s_do_time) {
+            this.s_do_time = s_do_time;
+        }
+
+        public String getE_do_time() {
+            return e_do_time;
+        }
+
+        public void setE_do_time(String e_do_time) {
+            this.e_do_time = e_do_time;
+        }
+
         /**
          * red_id : 75
          * userid : 35822
@@ -68,8 +92,16 @@ public class RoundHisResponse {
          * comment_count : 0
          * comment_list : []
          * zan_count: 2,
+         * "do_day":"周一,周二,周四",
+         * "s_do_time":"00:00",
+         * "e_do_time":"04:30"
+         * scope:
+         * longitude : 113.111111
+         * latitude : 22.555556
          */
-
+        private String do_day;
+        private String s_do_time;
+        private String e_do_time;
         private int red_id;
         private int userid;
         private int businessid;
@@ -89,7 +121,33 @@ public class RoundHisResponse {
         private int is_me;
         private String income_money;
         private int is_zan;
+        public String getLatitude() {
+            return latitude;
+        }
 
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(String longitude) {
+            this.longitude = longitude;
+        }
+
+        private String latitude;
+        private String longitude;
+        public String getScope() {
+            return scope;
+        }
+
+        public void setScope(String scope) {
+            this.scope = scope;
+        }
+
+        private String scope;
         public int getZan_count() {
             return zan_count;
         }

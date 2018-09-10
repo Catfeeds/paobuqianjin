@@ -30,7 +30,25 @@ public class TaskSponsorParam {
     private String remark;
     private String trading_area;
 
+    public String getTarget_url() {
+        return target_url;
+    }
 
+    public void setTarget_url(String target_url) {
+        this.target_url = target_url;
+    }
+
+    private String target_url;
+
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
+    }
+
+    private String images;
 
     public TaskSponsorParam() {
         if (params == null) {
@@ -59,7 +77,7 @@ public class TaskSponsorParam {
 
     public void setUserid(String userid) {
         this.userid = userid;
-        params.put("userid",userid);
+        params.put("userid", userid);
     }
 
     public float getLongitude() {
@@ -68,7 +86,7 @@ public class TaskSponsorParam {
 
     public void setLongitude(float longitude) {
         this.longitude = longitude;
-        params.put("longitude",longitude+"");
+        params.put("longitude", longitude + "");
     }
 
     public float getLatitude() {
@@ -77,7 +95,7 @@ public class TaskSponsorParam {
 
     public void setLatitude(float latitude) {
         this.latitude = latitude;
-        params.put("latitude",latitude+"");
+        params.put("latitude", latitude + "");
     }
 
     public int getNumber() {
@@ -86,7 +104,7 @@ public class TaskSponsorParam {
 
     public void setNumber(int number) {
         this.number = number;
-        params.put("number",number+"");
+        params.put("number", number + "");
     }
 
     public String getMoney() {
@@ -96,7 +114,7 @@ public class TaskSponsorParam {
     public void setMoney(String money) {
         this.money = money;
 
-        params.put("money",money+"");
+        params.put("money", money + "");
     }
 
     public String getDay() {
@@ -105,7 +123,7 @@ public class TaskSponsorParam {
 
     public void setDay(String day) {
         this.day = day;
-        params.put("day",day+"");
+        params.put("day", day + "");
     }
 
     public String getRed_name() {
@@ -114,7 +132,7 @@ public class TaskSponsorParam {
 
     public void setRed_name(String red_name) {
         this.red_name = red_name;
-        params.put("red_name",red_name+"");
+        params.put("red_name", red_name + "");
     }
 
     public String getRed_content() {
@@ -123,7 +141,7 @@ public class TaskSponsorParam {
 
     public void setRed_content(String red_content) {
         this.red_content = red_content;
-        params.put("red_content",red_content+"");
+        params.put("red_content", red_content + "");
     }
 
     public String getSex() {
@@ -132,7 +150,7 @@ public class TaskSponsorParam {
 
     public void setSex(String sex) {
         this.sex = sex;
-        params.put("sex",sex+"");
+        params.put("sex", sex + "");
     }
 
     public String getBusinessid() {
@@ -141,7 +159,7 @@ public class TaskSponsorParam {
 
     public void setBusinessid(String businessid) {
         this.businessid = businessid;
-        params.put("businessid",businessid+"");
+        params.put("businessid", businessid + "");
     }
 
     public String getDistance() {
@@ -150,7 +168,7 @@ public class TaskSponsorParam {
 
     public void setDistance(String distance) {
         this.distance = distance;
-        params.put("distance",distance+"");
+        params.put("distance", distance + "");
     }
 
     public String getStep() {
@@ -159,7 +177,7 @@ public class TaskSponsorParam {
 
     public void setStep(String step) {
         this.step = step;
-        params.put("step",step+"");
+        params.put("step", step + "");
     }
 
     public String getAge_min() {
@@ -168,7 +186,7 @@ public class TaskSponsorParam {
 
     public void setAge_min(String age_min) {
         this.age_min = age_min;
-        params.put("age_min",age_min+"");
+        params.put("age_min", age_min + "");
     }
 
     public String getAge_max() {
@@ -177,7 +195,7 @@ public class TaskSponsorParam {
 
     public void setAge_max(String age_max) {
         this.age_max = age_max;
-        params.put("age_max",age_max+"");
+        params.put("age_max", age_max + "");
     }
 
     public String getEducation() {
@@ -186,7 +204,7 @@ public class TaskSponsorParam {
 
     public void setEducation(String education) {
         this.education = education;
-        params.put("education",education+"");
+        params.put("education", education + "");
     }
 
     public String getS_time() {
@@ -195,7 +213,7 @@ public class TaskSponsorParam {
 
     public void setS_time(String s_time) {
         this.s_time = s_time;
-        params.put("s_time",s_time+"");
+        params.put("s_time", s_time + "");
     }
 
     public String getE_time() {
@@ -204,7 +222,7 @@ public class TaskSponsorParam {
 
     public void setE_time(String e_time) {
         this.e_time = e_time;
-        params.put("e_time",e_time+"");
+        params.put("e_time", e_time + "");
     }
 
     public String getCity() {
@@ -213,7 +231,7 @@ public class TaskSponsorParam {
 
     public void setCity(String city) {
         this.city = city;
-        params.put("city",city+"");
+        params.put("city", city + "");
     }
 
     public String getCity_code() {
@@ -222,7 +240,7 @@ public class TaskSponsorParam {
 
     public void setCity_code(String city_code) {
         this.city_code = city_code;
-        params.put("city_code",city_code+"");
+        params.put("city_code", city_code + "");
     }
 
     public String getRemark() {
@@ -231,7 +249,7 @@ public class TaskSponsorParam {
 
     public void setRemark(String remark) {
         this.remark = remark;
-        params.put("remark",remark+"");
+        params.put("remark", remark + "");
     }
 
     public String getTrading_area() {
@@ -240,7 +258,7 @@ public class TaskSponsorParam {
 
     public void setTrading_area(String trading_area) {
         this.trading_area = trading_area;
-        params.put("trading_area",trading_area+"");
+        params.put("trading_area", trading_area + "");
     }
 
     public void setParams(Map<String, String> params) {

@@ -1,10 +1,12 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
+import com.paobuqianjin.pbq.step.view.fragment.sponsor.RedDetailFragment;
 import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorDetailFragment;
 
 /**
@@ -18,7 +20,6 @@ import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorDetailFragment;
 */
 public class SponsorDetailActivity extends BaseActivity {
     private final static String TAG = SponsorDetailActivity.class.getSimpleName();
-    private SponsorDetailFragment sponsorDetailFragment = new SponsorDetailFragment();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,10 +29,22 @@ public class SponsorDetailActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        super.initView();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.sponsor_container, sponsorDetailFragment)
-                .show(sponsorDetailFragment)
-                .commit();
+        Intent intent = getIntent();
+        if (intent != null) {
+            int red_id = intent.getIntExtra(getPackageName() + "red_id", -1);
+            if (red_id == -1) {
+                SponsorDetailFragment sponsorDetailFragment = new SponsorDetailFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.sponsor_container, sponsorDetailFragment)
+                        .show(sponsorDetailFragment)
+                        .commit();
+            } else {
+                RedDetailFragment redDetailFragment = new RedDetailFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.sponsor_container, redDetailFragment)
+                        .show(redDetailFragment)
+                        .commit();
+            }
+        }
     }
 }

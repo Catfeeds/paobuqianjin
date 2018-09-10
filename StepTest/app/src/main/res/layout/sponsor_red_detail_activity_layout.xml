@@ -25,10 +25,17 @@
                 <com.youth.banner.Banner
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="140dp"></com.youth.banner.Banner>
+                <com.tencent.tencentmap.mapsdk.map.MapView
+                    android:id="@+id/mapview"
+                    android:layout_below="@+id/rl_bar"
+                    android:layout_width="fill_parent"
+                    android:layout_height="200dp"
+                    />
 
                 <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-                    android:layout_below="@+id/banner"
+                    android:layout_below="@+id/mapview"
                     android:id="@+id/red_pkg_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -39,7 +46,7 @@
                     android:id="@+id/no_red_data"
                     android:layout_width="325dp"
                     android:layout_height="205dp"
-                    android:layout_below="@+id/banner"
+                    android:layout_below="@+id/mapview"
                     android:layout_gravity="center"
                     android:layout_marginTop="25dp"
                     android:src="@drawable/baby"

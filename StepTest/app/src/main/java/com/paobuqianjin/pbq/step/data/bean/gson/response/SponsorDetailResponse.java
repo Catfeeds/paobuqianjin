@@ -61,6 +61,7 @@ public class SponsorDetailResponse {
          * total_money : 0.00
          * create_time : 1524470406
          * do_day : 周一,周二,周六
+         * scope:
          * s_do_time : 18:44
          * e_do_time : 18:44
          * logo_imgs : []
@@ -82,6 +83,16 @@ public class SponsorDetailResponse {
         private String do_day;
         private String s_do_time;
         private String e_do_time;
+
+        public String getScope() {
+            return scope;
+        }
+
+        public void setScope(String scope) {
+            this.scope = scope;
+        }
+
+        private String scope;
         private List<Logo_ImgsBean> logo_imgs;
         private List<GoodsImgsBean> goods_imgs;
         private List<EnvironmentImgsBean> environment_imgs;

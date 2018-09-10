@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.utils.CacheCleanManager;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.RongYunUserInfoManager;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.AboutActivity;
 import com.paobuqianjin.pbq.step.view.activity.AccoutManagerActivity;
 import com.paobuqianjin.pbq.step.view.activity.ChangeAccountActivity;
@@ -162,7 +163,7 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
             }
         }
         cacheSize = (TextView) viewRoot.findViewById(R.id.cache_size);
-        File file = new File(getContext().getExternalCacheDir().getPath());
+        File file = new File(Utils.getDiskCacheDir(getContext()).getPath());
         try {
             cacheSize.setText(CacheCleanManager.getCacheSize(file));
         } catch (Exception e) {
@@ -202,7 +203,7 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
             case R.id.change_male:
                 LocalLog.d(TAG, "清除缓存");
                 CacheCleanManager.cleanInternalCache(getContext());
-                File file = new File(getContext().getExternalCacheDir().getPath());
+                File file = new File(Utils.getDiskCacheDir(getContext()).getPath());
                 try {
                     cacheSize.setText(CacheCleanManager.getCacheSize(file));
                 } catch (Exception e) {

@@ -160,7 +160,11 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
     @Override
     protected void onResume() {
         super.onResume();
-
+        if (mIndex != 2) {
+            if (mFriendCircleFragment.isAdded()) {
+                mFriendCircleFragment.pullCreateDiss(mIndex);
+            }
+        }
     }
 
     @Override
@@ -234,6 +238,16 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
         if (fragmentIndex == 3) {
             vipCheckTimeOut();
         }
+
+        if (fragmentIndex == 2) {
+            if (mFriendCircleFragment.isAdded()) {
+                mFriendCircleFragment.popCreateShow(fragmentIndex);
+            }
+        } else {
+            if (mFriendCircleFragment.isAdded()) {
+                mFriendCircleFragment.pullCreateDiss(fragmentIndex);
+            }
+        }
     }
 
     private void controlTransparentGuide(int fragmentIndex) {
@@ -292,7 +306,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
                         });
                     }
 
-                    if (!sponsorDialog.isShowing())
+                    if (sponsorDialog != null && !sponsorDialog.isShowing())
                         sponsorDialog.show();
                 } catch (Exception e) {
                     e.printStackTrace();

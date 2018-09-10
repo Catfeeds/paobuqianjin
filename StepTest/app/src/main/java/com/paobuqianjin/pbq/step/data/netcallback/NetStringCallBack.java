@@ -317,7 +317,7 @@ public class NetStringCallBack extends StringCallback {
                     ((UserInfoLoginSetInterface) callBackInterface).response(errorCode);
                 } else {
                     LocalLog.e(TAG, " dispatch not match");
-                    if (callBackInterface != null) {
+                    if (callBackInterface != null && command != Engine.COMMAND_WEATHER) {
                         callBackInterface.response(errorCode);
                     }
                 }
@@ -853,7 +853,7 @@ public class NetStringCallBack extends StringCallback {
         } else if (callBackInterface != null
                 && callBackInterface instanceof StepDollarDetailInterface) {
             if (command == Engine.COMMAND_GET_USER_STEP_DOLLAR_DETAIL) {
-                LocalLog.d(TAG, "步币明细");
+                LocalLog.d(TAG, "积分明细");
                 try {
                     StepDollarDetailResponse dollarDetailResponse = new Gson().fromJson(s, StepDollarDetailResponse.class);
                     ((StepDollarDetailInterface) callBackInterface).response(dollarDetailResponse);

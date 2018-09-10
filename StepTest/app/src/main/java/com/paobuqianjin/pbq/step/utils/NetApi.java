@@ -10,8 +10,8 @@ public class NetApi {
     获取精选圈子--地址：http://119.29.10.64/v1/Circle/?action=choice&userid=1
     获取我加入的圈子--地址：http://119.29.10.64/v1/Circle/?action=join&userid=1
     获取我创建的圈子--地址：http://119.29.10.64/v1/Circle/?action=create&userid=1*/
-/*    public final static String url = "https://api.runmoneyin.com/";*/
-    public final static String url = "http://api-test1.runmoneyin.com/";
+    public final static String url = "https://api.runmoneyin.com/";
+    /*    public final static String url = "http://api-test1.runmoneyin.com/";*/
     //        public final static String url = "http://api-test.runmoneyin.com/";
     /*public final static String url = "http://119.29.10.64/";*/
     public static String urlShareHead = "http://share.runmoneyin.com/";
@@ -75,8 +75,8 @@ public class NetApi {
     //TODO 用户收益类型相关接口，地址：http://api.runmoneyin.com/v1/incometype/?id=1
     public final static String urlIncomeType = url + "v1/incometype/?id=";
 
-    //TODO 获取用户步币详细信息
-    //TODO 获取用户步币详细信息，请求方式：get，地址：http://api.runmoneyin.com/v1/usercredit/?id=5
+    //TODO 获取用户积分详细信息
+    //TODO 获取用户积分详细信息，请求方式：get，地址：http://api.runmoneyin.com/v1/usercredit/?id=5
     public final static String urlCredit = url + "v1/usercredit";
 
     //TODO 添加用户提现记录，请求方式：post，地址：http://api.runmoneyin.com/v1/withdraw，参数：type提现类型、amount提现金额、userid用户id
@@ -127,6 +127,8 @@ public class NetApi {
     public final static String urlSignCodeCheck = url + "v1/UserBankCard/checkCode";
     //TODO 提现接口
     public final static String urlCrashTo = url + "v1/withdraw";
+    //TODO 提现详情
+    public final static String urlCrashDetail = url + "v1/withdraw/withdrawDetails";
     //TODO 充值记录
     public final static String urlRechargeRecord = urlCrashTo + "/rechargeList";
     //TODO 天气查询接口
@@ -339,4 +341,22 @@ public class NetApi {
     public final static String urlRedHisDetail = url + "v1/RedpacketMap/historyDetails";
     //遍地红包领取记录
     public final static String urlRedInfo = url + "v1/RedpacketMap/redReceiveInfo";
+    //创建/获取用户组
+    public final static String urlCreateGroup = url + "v1/UserMultiNew";
+    //用户组列表
+    public final static String urlGroupList = url + "v1/UserMultiNew?appid=";
+    //账号切换新
+    public final static String urlGroupAccChange = url + "v1/UserMultiNew/switchUser";
+    //添加账号
+    public final static String urlAddAccount = url + "v1/UserMultiNew/addUser";
+    //删除账号
+    public final static String urlDeleteAcc = url + "v1/UserMultiNew/1";
+    //专享红包[任务]个数
+    public final static String urlTaskNum = url + "v1/TaskRecord/taskCount";
+    //附近红包[商家红包详情]
+    public final static String urlNearRedPkg = url + "v1/RedpacketNew/redpcketDetails";
+    //附近红包历史记录
+    public final static String urlNearByRedHis = url + "v1/RedpacketNew/historyList";
+    //info
+    public final static String urlNearInof = url + "v1/RedpacketNew/redReceiveInfo";
 }

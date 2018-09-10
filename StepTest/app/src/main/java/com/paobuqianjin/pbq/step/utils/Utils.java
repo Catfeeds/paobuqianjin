@@ -9,17 +9,20 @@ import android.content.pm.PackageManager;
 import android.hardware.input.InputManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.Settings;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -27,6 +30,7 @@ import java.util.ArrayList;
  */
 
 public class Utils {
+    private final static String TAG = Utils.class.getSimpleName();
     public final static int PAGE_SIZE_DEFAULT = 20;
 
     public static Context getApplicationContext(Context context) {
@@ -261,6 +265,177 @@ public class Utils {
             Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + phoneNumber));
             intent.putExtra("sms_body", message);
             context.startActivity(intent);
+        }
+    }
+
+    public static void callPhone(Context context, String phoneNumber) throws SecurityException {
+        if (PhoneNumberUtils.isGlobalPhoneNumber(phoneNumber)) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            Uri data = Uri.parse("tel:" + phoneNumber);
+            intent.setData(data);
+            context.startActivity(intent);
+        }
+    }
+
+    //num >10000
+    public static String zeroTow(int num) {
+        String result = "";
+        int high = num / 10000;
+        int low = num / 1000;
+        if (low > 0) {
+            result = String.valueOf(high) + "." + String.valueOf(low) + "w+";
+        } else {
+            result = high + "w+";
+        }
+        return result;
+    }
+
+    public static File getDiskCacheDir(Context context) {
+        File cachePath = null;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            cachePath = context.getExternalCacheDir();
+            LocalLog.d("Utils", "getExternalCachdir() = " + cachePath);
+        } else {
+            cachePath = context.getCacheDir();
+            LocalLog.d("Utils", "getCacheDir() = " + cachePath);
+        }
+        if (cachePath == null) {
+            cachePath = context.getFilesDir();
+            LocalLog.e("Utils", "保存到文件目录" + cachePath);
+        }
+
+        if (cachePath == null) {
+            cachePath = context.getExternalFilesDir(null);
+            LocalLog.d("Utils", "getExternalFilesDir()" + cachePath);
+        }
+        if (cachePath == null) {
+            cachePath = Environment.getExternalStorageDirectory();
+        }
+        Log.e("Utils", "cachePath =" + cachePath);
+        return cachePath;
+    }
+
+    //check maps on phone
+    public static boolean isHaveBaiduMap() {
+        try {
+            if (!new File("/data/data/" + "com.baidu.BaiduMap").exists()) {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public static boolean isHaveGaodeMap() {
+        try {
+            if (!new File("/data/data/" + "com.autonavi.minimap").exists()) {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean isHaveTencentMap() {
+        try {
+            if (!new File("/data/data/" + "com.tencent.map").exists()) {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    //地图坐标转换，高德和腾讯坐标一致，百度和高德需要转换
+    //百度转换高德
+    public double[] bdToGaoDe(double bd_lat, double bd_lon) {
+        double[] gd_lat_lon = new double[2];
+        double PI = 3.14159265358979324 * 3000.0 / 180.0;
+        double x = bd_lon - 0.0065, y = bd_lat - 0.006;
+        double z = Math.sqrt(x * x + y * y) - 0.00002 * Math.sin(y * PI);
+        double theta = Math.atan2(y, x) - 0.000003 * Math.cos(x * PI);
+        gd_lat_lon[0] = z * Math.cos(theta);
+        gd_lat_lon[1] = z * Math.sin(theta);
+        return gd_lat_lon;
+    }
+
+    //高德转百度
+    private static double[] gaoDeToBaidu(double gd_lon, double gd_lat) {
+        double[] bd_lat_lon = new double[2];
+        double PI = 3.14159265358979324 * 3000.0 / 180.0;
+        double x = gd_lon, y = gd_lat;
+        double z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * PI);
+        double theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * PI);
+        bd_lat_lon[0] = z * Math.cos(theta) + 0.0065;
+        bd_lat_lon[1] = z * Math.sin(theta) + 0.006;
+        return bd_lat_lon;
+    }
+
+    /**
+     * 打开腾讯地图
+     * params 参考http://lbs.qq.com/uri_v1/guide-route.html
+     *
+     * @param context
+     * @param dqAddress
+     * @param gotoAddress
+     * @param gotoLatitude
+     * @param gotoLongitude 驾车：type=drive，policy有以下取值
+     *                      0：较快捷
+     *                      1：无高速
+     *                      2：距离
+     *                      policy的取值缺省为0
+     *                      &from=" + dqAddress + "&fromcoord=" + dqLatitude + "," + dqLongitude + "
+     */
+    public static void openTencentMap(Context context, String dqAddress, String gotoAddress, String gotoLatitude, String gotoLongitude) {
+        try {
+            String url1 = "qqmap://map/routeplan?type=walk&fromcoord=CurrentLocation&to=" + gotoAddress + "&tocoord=" + gotoLatitude + "," + gotoLongitude + "&referer=H7PBZ-HE73V-YJYPZ-UNZA3-P6N53-KKF4I";
+            Intent intent = new Intent("android.intent.action.VIEW", android.net.Uri.parse(url1));
+            context.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * openGaoDeMap void 调用高德地图apk
+     * http://lbs.amap.com/api/uri-api/guide/travel/route
+     */
+    public static void openGaoDeMap(Context context, String dqAddress, String gotoAddress, String gotoLatitude, String gotoLongitude) {
+        try {
+
+            //double[] gotoLang=AMAPUtils.getInstance().bdToGaoDe(Double.parseDouble(gotoLatitude),Double.parseDouble(gotoLongitude));
+            //gotoLatitude=String.valueOf(gotoLang[0]);gotoLongitude=String.valueOf(gotoLang[1]);
+            String url = "androidamap://navi?sourceApplication=com.paobuqianjin.pbq.step&poiname=" + gotoAddress + "&lat=" + gotoLatitude + "&lon=" + gotoLongitude + "&dev=1&style=2";
+            LocalLog.d(TAG, "url = " + url);
+            Intent intent = new Intent("android.intent.action.VIEW", android.net.Uri.parse(url));
+            intent.setPackage("com.autonavi.minimap");
+            context.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /***
+     * 百度地图[传参过来的值可以判断为百度]
+     * http://lbsyun.baidu.com/index.php?title=uri/api/android
+     */
+    public static void openBaiduMap(Context context, String dqAddress, String gotoAddress, String currentLatitude, String currentLongitude, String gotoLatitude, String gotoLongitude) {
+        try {
+            double[] location = {Double.parseDouble(gotoLatitude), Double.parseDouble(gotoLongitude)};
+            location = gaoDeToBaidu(location[0],location[1]);
+            Intent intent = new Intent();
+            String urls = "baidumap://map/walknavi?origin=" + currentLatitude + "," + currentLongitude + "&destination="
+                    + String.valueOf(location[0]) + "," + String.valueOf(location[1]) + "&src=andr.baidu.openAPIdemo";
+            LocalLog.d(TAG, "urls = " + urls);
+            intent.setData(Uri.parse(urls));
+            context.startActivity(intent); // 启动调用
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

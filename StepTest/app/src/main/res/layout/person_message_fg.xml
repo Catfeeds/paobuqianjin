@@ -87,7 +87,7 @@
             android:background="@null"
             android:gravity="right"
             android:hint="必填"
-            android:maxEms="16"
+            android:maxEms="8"
             android:minEms="2"
             android:maxLength="32"
             android:maxLines="1"

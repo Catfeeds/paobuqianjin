@@ -34,8 +34,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.LooperTextView;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.customview.RedPkgAnimation;
+import com.paobuqianjin.pbq.step.data.bean.AdObject;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
@@ -58,10 +61,11 @@ import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBagActivity;
-import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
+import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorRedDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.TaskActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserFitActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorRedPakAdapter;
@@ -172,6 +176,10 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     @Bind(R.id.step_desc_span)
     RelativeLayout stepDescSpan;
     ImageView openRedPkgView;
+    @Bind(R.id.person_task_pkg)
+    RelativeLayout personTaskPkg;
+    @Bind(R.id.task_num)
+    TextView taskNum;
     private View popRedPkgView;
     private View popTargetView;
     private PopupWindow popupRedPkgWindow;
@@ -211,6 +219,11 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     StepProcessDrawable stepProcessDrawable;
     NormalDialog dialog;
     private SharedPreferences sharedPreferences;
+    private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
+    private final static String SPOSNOR_ACTION = "com.paobuqianjin.person.SPONSOR_ACTION";
+    private RelativeLayout homeAdLinear;
+    private LooperTextView homaAd;
+    private ArrayList<AdObject> adList;
 
     static {
         weatherMap.put("0", R.drawable.weather_0);
@@ -314,6 +327,27 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 if (errorBean == null) {
                     PaoToastUtils.showLongToast(getContext(), getString(R.string.error_red));
                 }
+            }
+        });
+    }
+
+    private void getTaskNum() {
+        Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlTaskNum, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    JSONObject jsonObj = new JSONObject(s);
+                    jsonObj = jsonObj.getJSONObject("data");
+                    String totalCount = jsonObj.getString("totalCount");
+                    taskNum.setText(totalCount);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                taskNum.setVisibility(View.GONE);
             }
         });
     }
@@ -506,7 +540,72 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         targetSteps = (TextView) viewRoot.findViewById(R.id.target_steps);
         targetStep = Presenter.getInstance(getContext()).getTarget(getContext());
         targetSteps.setText(String.valueOf(targetStep));
+        personTaskPkg = (RelativeLayout) viewRoot.findViewById(R.id.person_task_pkg);
+        personTaskPkg.setOnClickListener(onClickListener);
+        taskNum = (TextView) viewRoot.findViewById(R.id.task_num);
         checkTwentyOne();
+        Presenter.getInstance(getContext()).getWeather(-1d, -1d);
+        loadBanner();
+    }
+
+    private void loadBanner() {
+        String bannerUrl = NetApi.urlAd + "?position=homepage";
+        LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
+        Presenter.getInstance(getContext()).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
+                    adList = new ArrayList<>();
+                    if (adresponse.getData() != null && adresponse.getData().size() > 0) {
+                        int size = adresponse.getData().size();
+                        for (int i = 0; i < size; i++) {
+                            AdObject adObject = new AdObject();
+                            adObject.setTitle(adresponse.getData().get(i).getTitle());
+                            adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
+                            LocalLog.d(TAG, adObject.toString());
+                            adList.add(adObject);
+                        }
+                    }
+                    if (adList.size() > 0) {
+                        if (homeAdLinear == null) {
+                            homeAdLinear = (RelativeLayout) getActivity().findViewById(R.id.home_ad);
+                            homaAd = (LooperTextView) getActivity().findViewById(R.id.home_ad_text);
+                        }
+                        homeAdLinear.setVisibility(View.VISIBLE);
+                        List<String> listAd = new ArrayList<>();
+                        for (AdObject o : adList) {
+                            listAd.add(o.getTitle());
+                        }
+                        homaAd.setTipList(listAd);
+                        homaAd.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (homaAd != null) {
+                                    int index = homaAd.getCurrentIndex();
+                                    LocalLog.d(TAG, "index = " + index);
+                                    if (index < adList.size()) {
+                                        String targetUrl = adList.get(index).getTarget_url();
+                                        if (!TextUtils.isEmpty(targetUrl))
+                                            startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                    }
+                                }
+                            }
+                        });
+                    }
+                } catch (
+                        JsonSyntaxException e)
+
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                LocalLog.d(TAG, "获取失败!");
+            }
+        });
     }
 
     @Override
@@ -514,6 +613,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         super.onResume();
         Presenter.getInstance(getContext()).refreshStep();
         updateIncome();
+        getTaskNum();
     }
 
     @Override
@@ -783,8 +883,13 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         }
         if (weatherResponse.getError() == 0) {
             if (weatherResponse.getData() != null) {
-                wendu.setText(weatherResponse.getData().getTemp() + "°");
-                weatherIcon.setImageResource(weatherMap.get(weatherResponse.getData().getImg()));
+                if (!TextUtils.isEmpty(weatherResponse.getData().getTemp())
+                        && !TextUtils.isEmpty(weatherResponse.getData().getImg())
+                        && weatherResponse.getData().getIs_weather() == 1) {
+                    wendu.setText(weatherResponse.getData().getTemp() + "°");
+                    weatherIcon.setImageResource(weatherMap.get(weatherResponse.getData().getImg()));
+                }
+
             }
         } else if (weatherResponse.getError() == -100) {
             exitTokenUnfect();
@@ -882,6 +987,9 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
+                case R.id.linearLayout:
+                    startActivity(TaskActivity.class, null);
+                    break;
                 case R.id.out_red_pkg_image:
                     LocalLog.d(TAG, "领红包");
                     /*Presenter.getInstance(getContext()).getSponsorRedPkg();
@@ -895,9 +1003,15 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     }, 15 * 1000);*/
                     startActivity(SponsorRedDetailActivity.class, null);
                     break;
+                case R.id.person_task_pkg:
+                    startActivity(TaskActivity.class, null);
+                    break;
                 case R.id.create_circle_image:
                     LocalLog.d(TAG, "发红包");
-                    startActivity(TaskReleaseActivity.class, null);
+                    Intent intent = new Intent();
+                    intent.setAction(SPOSNOR_ACTION);
+                    intent.setClass(getActivity(), TaskReleaseActivity.class);
+                    startActivity(intent);
                     break;
                 case R.id.recv_sponsor_rpg:
                     LocalLog.d(TAG, "商家消费红包");
@@ -974,6 +1088,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 }
             }
         }
+
     }
 
     @Override

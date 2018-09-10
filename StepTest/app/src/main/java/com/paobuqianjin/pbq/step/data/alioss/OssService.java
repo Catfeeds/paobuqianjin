@@ -42,6 +42,7 @@ import com.alibaba.sdk.android.oss.model.TriggerCallbackResult;
 import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -188,7 +189,7 @@ public class OssService {
     }
 
     private File getDiskCacheDir(Context context) {
-        File cachePath = null;
+        /*File cachePath = null;
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
                 || !Environment.isExternalStorageRemovable()) {
             cachePath = context.getExternalCacheDir();
@@ -197,7 +198,8 @@ public class OssService {
             cachePath = context.getCacheDir();
             LocalLog.d(TAG, "getCacheDir() = " + cachePath);
         }
-        return cachePath;
+        return cachePath;*/
+        return Utils.getDiskCacheDir(context);
     }
 
     private String saveImage(String sourcePath, Context context) throws FileNotFoundException {

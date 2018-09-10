@@ -24,13 +24,13 @@
                 android:id="@+id/et_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@null"
+                android:backgroundTint="@color/white"
+                android:gravity="left"
+                android:hint="请输入您的推广信息，限定300个字以内..."
+                android:maxLength="300"
                 android:minHeight="100dp"
                 android:padding="8dp"
-                android:background="@null"
-                android:gravity="left"
-                android:hint="请输入您的推广信息，限定200个字以内..."
-                android:maxLength="2000"
-                android:backgroundTint="@color/white"
                 android:paddingTop="5dp"
                 android:textColorHint="@color/color_8a8a8a"
                 android:textSize="15dp" />
@@ -42,20 +42,21 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/et_information"
                 android:layout_gravity="center_horizontal"
-                android:verticalSpacing="8dp"
-                android:gravity="center"
-                android:padding="16dp"
                 android:backgroundTint="@color/white"
-                tools:listitem="@layout/item_add_pic_grid2"
+                android:gravity="center"
                 android:numColumns="3"
-                android:scrollbars="none" />
+                android:padding="16dp"
+                android:scrollbars="none"
+                android:verticalSpacing="8dp"
+                tools:listitem="@layout/item_add_pic_grid2" />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:background="@color/color_f8">
+                android:background="@color/color_f8"
+                android:gravity="center_vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -64,23 +65,24 @@
                     android:text="@string/red_bag_num"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
+
                 <EditText
                     android:id="@+id/et_red_bag_num"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/pack_day_des"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:gravity="right"
                     android:hint="输入红包个数"
                     android:inputType="number"
-                    android:maxLength="3"
                     android:maxLines="1"
                     android:paddingRight="39dp"
                     android:textColor="@color/color_161727"
                     android:textSize="14sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -95,8 +97,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:background="@color/color_f8">
+                android:background="@color/color_f8"
+                android:gravity="center_vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -105,23 +108,24 @@
                     android:text="@string/total_red_bag_money"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
+
                 <EditText
                     android:id="@+id/et_red_bag_total_money"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/pack_day_des"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:gravity="right"
                     android:hint="输入红包总金额"
                     android:inputType="number"
-                    android:maxLength="3"
                     android:maxLines="1"
                     android:paddingRight="39dp"
                     android:textColor="@color/color_161727"
                     android:textSize="14sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -132,11 +136,13 @@
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:background="@color/color_f8">
+                android:background="@color/color_f8"
+                android:gravity="center_vertical">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -145,14 +151,15 @@
                     android:text="@string/out_link"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
+
                 <EditText
                     android:id="@+id/tv_link"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/pack_day_des"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:gravity="right"
                     android:hint="选填 请粘贴链接"
@@ -161,6 +168,7 @@
                     android:paddingRight="39dp"
                     android:textColor="@color/color_161727"
                     android:textSize="14sp" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -169,18 +177,18 @@
                     android:layout_marginRight="14dp"
                     android:text="元"
                     android:textColor="@color/color_161727"
-                    android:visibility="gone"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:visibility="gone" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/linear_shop"
-                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/color_f8">
+                android:background="@color/color_f8"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -194,11 +202,11 @@
                 <TextView
                     android:id="@+id/sponor_msg_des_detail"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="39dp"
+                    android:layout_weight="1"
                     android:gravity="right"
                     android:hint="完善信息"
                     android:textColor="@color/color_161727"
@@ -215,6 +223,7 @@
 
         </LinearLayout>
     </ScrollView>
+
     <Button
         android:id="@+id/btn_confirm"
         android:layout_width="match_parent"

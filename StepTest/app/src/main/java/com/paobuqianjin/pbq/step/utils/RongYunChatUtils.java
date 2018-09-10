@@ -100,6 +100,10 @@ public class RongYunChatUtils implements RongIMClient.OnReceiveMessageListener, 
         }
     }
 
+    /**
+     * 获取新的token并且连接服务器
+     * @param callback
+     */
     public void getChatTokenAndConnect(final RongIMClient.ConnectCallback callback) {
         Presenter.getInstance(PaoBuApplication.getApplication()).getPaoBuSimple(NetApi.urlGetChatToken, null, new PaoCallBack() {
             @Override
@@ -121,7 +125,6 @@ public class RongYunChatUtils implements RongIMClient.OnReceiveMessageListener, 
 
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-
             }
         });
     }

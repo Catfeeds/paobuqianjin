@@ -36,6 +36,7 @@ import com.paobuqianjin.pbq.step.data.tencent.yun.ObjectSample.PutObjectSample;
 import com.paobuqianjin.pbq.step.data.tencent.yun.activity.ResultHelper;
 import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.umeng.socialize.utils.SocializeUtils;
 
@@ -62,7 +63,6 @@ public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBar
     private static final String TAG = SponsorSelectPicActivity.class.getSimpleName();
     private final int REQUEST_CODE = 111;
     private TranslateAnimation animationCircleType;
-    private QServiceCfg qServiceCfg;
     private Intent intent;
     private ProgressDialog dialog;
 
@@ -94,8 +94,7 @@ public class SponsorSelectPicActivity extends BaseBarActivity implements BaseBar
         dialog = new ProgressDialog(this);
         dialog.setMessage("上传中");
         dialog.setCancelable(false);
-        qServiceCfg = QServiceCfg.instance(this);
-        cachePath = getExternalCacheDir().getAbsolutePath();
+        cachePath = Utils.getDiskCacheDir(this).getAbsolutePath();
         initAdapter();
     }
 

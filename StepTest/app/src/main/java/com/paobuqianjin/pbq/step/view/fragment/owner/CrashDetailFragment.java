@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -20,8 +21,10 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CrashRecordInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.CrashDetailActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.IncomeAdater;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 import com.yanzhenjie.loading.LoadingView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
@@ -83,7 +86,23 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
 
         adapter = new IncomeAdater(getContext(), null);
         incomeRecycler.setAdapter(adapter);
+        incomeRecycler.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), incomeRecycler, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, int position) {
+                if (position < myCrashAllData.size()) {
+                    //TODO crash detail
+                    Intent intent = new Intent();
+                    intent.putExtra("withdrawid", String.valueOf(myCrashAllData.get(position).getId()));
+                    intent.setClass(getActivity(), CrashDetailActivity.class);
+                    startActivity(intent);
+                }
+            }
 
+            @Override
+            public void OnItemLongClick(View view, int position) {
+
+            }
+        }));
         inComeRefresh.setOnRefreshListener(mRefreshListener);
         loadData(myCrashAllData);
         Presenter.getInstance(getContext()).getCrashRecord(pageIndex, PAGE_SIZE_DEFAULT);

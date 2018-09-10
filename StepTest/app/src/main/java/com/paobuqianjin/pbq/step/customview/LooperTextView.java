@@ -32,7 +32,7 @@ public class LooperTextView extends FrameLayout {
      */
     private static final int ANIM_DURATION = 1 * 1000;
     private static final String DEFAULT_TEXT_COLOR = "#ff161727";
-    private static final int DEFAULT_TEXT_SIZE = 16;
+    private static final int DEFAULT_TEXT_SIZE = 12;
     /*    private Drawable head_boy,head_girl;*/
     private TextView tv_tip_out, tv_tip_in;
     private static final String TIP_PREFIX = "";
@@ -164,6 +164,10 @@ public class LooperTextView extends FrameLayout {
     private String getNextTip() {
         if (isListEmpty(tipList)) return null;
         return tipList.get(curTipIndex++ % tipList.size());
+    }
+
+    public int getCurrentIndex() {
+        return curTipIndex % tipList.size();
     }
 
     public static boolean isListEmpty(List list) {

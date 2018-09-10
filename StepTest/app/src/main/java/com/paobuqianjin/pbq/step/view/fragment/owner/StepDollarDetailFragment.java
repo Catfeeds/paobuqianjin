@@ -95,7 +95,7 @@ public class StepDollarDetailFragment extends BaseFragment implements StepDollar
                     return;
                 }
                 crashRecord.setVisibility(View.VISIBLE);
-                crashRecord.setText("暂无步币明细");
+                crashRecord.setText("暂无积分明细");
                 stepDollarIncomeRecycler.setVisibility(View.GONE);
             }
         } else if (stepDollarDetailResponse.getError() == -1) {

@@ -30,7 +30,7 @@ public class Installation {
         return id;
     }
 
-    private static String readInstallationId(Context context) {
+    public static String readInstallationId(Context context) {
         return FlagPreference.getUUID(context);
     }
 

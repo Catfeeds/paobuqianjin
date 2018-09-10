@@ -62,6 +62,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ReleaseDynamicInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
@@ -251,7 +252,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
         qServiceCfg = QServiceCfg.instance(getContext());
         dialog = new ProgressDialog(getContext());
         Presenter.getInstance(getContext()).startService(null, LocalBaiduService.class);
-        cachePath = getContext().getExternalCacheDir().getAbsolutePath();
+        cachePath = Utils.getDiskCacheDir(getContext()).getAbsolutePath();
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(getContext());
         initAdapter();
@@ -681,7 +682,7 @@ public class DynamicCreateFragment extends BaseBarStyleTextViewFragment implemen
     }
 
     private void saveImage(Bitmap bitmap) throws FileNotFoundException {
-        String path = getActivity().getExternalCacheDir() + "/head_logo.png";
+        String path = Utils.getDiskCacheDir(getContext()) + "/head_logo.png";
         LocalLog.d(TAG, "path = " + path);
         FileOutputStream fos = new FileOutputStream(path);
         //bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);

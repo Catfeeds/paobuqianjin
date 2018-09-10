@@ -81,7 +81,7 @@ public class GridAddPic2Adapter extends BaseAdapter {
         holder = new ViewHolder(convertView);
         if (position == mData.size()) {
             holder.image.setVisibility(View.VISIBLE);
-            holder.image.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.ic_min_add_one));
+            holder.image.setImageBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.mipmap.add_pic));
             holder.delete.setVisibility(View.GONE);
             if (position == mMaxSize) {
                 holder.image.setVisibility(View.GONE);

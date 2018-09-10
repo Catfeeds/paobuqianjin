@@ -10,12 +10,9 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.ChooseAddressWheel;
-import com.paobuqianjin.pbq.step.customview.ProUtils;
 import com.paobuqianjin.pbq.step.data.bean.AddressDtailsEntity;
-import com.paobuqianjin.pbq.step.data.bean.AddressModel;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AddBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -28,7 +25,6 @@ import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
-import com.paobuqianjin.pbq.step.view.fragment.sponsor.SponsorInfoCollectFragment;
 import com.tencent.lbssearch.TencentSearch;
 import com.tencent.lbssearch.httpresponse.BaseObject;
 import com.tencent.lbssearch.httpresponse.HttpResponseListener;
@@ -52,6 +48,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     public final static String ACTION_INNER_PIC = "com.paobuqianjin.pbq.step.INNER_ACTION";
     public final static String ACTION_OUT_PIC = "com.paobuqianjin.pbq.step.OUT_ACTION";
     private final static String ACTION_WORK_TIME_ACTION = "com.paobuqianjin.pbq.setp.WORK_TIME_ACTION";
+    private final static int REQ_POSITION = 101;
     @Bind(R.id.edit_sponsor_name)
     EditText editSponsorName;
     @Bind(R.id.sponsor_name_pan)
@@ -66,8 +63,6 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     TextView editSponsorDay;
     @Bind(R.id.edit_sponsor_hour)
     TextView editSponsorHour;
-
-
     @Bind(R.id.sponsor_time_pan)
     RelativeLayout sponsorTimePan;
     @Bind(R.id.edit_sponsor_location_pan)
@@ -88,6 +83,8 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     RelativeLayout sponsorInnerPicsPan;
     @Bind(R.id.btn_confirm)
     Button confirm;
+    @Bind(R.id.sponsors)
+    EditText sponsors;
 
     private String sponsor_time;
     private String start_time;
@@ -102,7 +99,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
     private String imagesIn;
     private Intent intent;
     private AddBusinessParam oldParam = null;
- 	private boolean isChangeImagesIn;//是否改变了店内环境
+    private boolean isChangeImagesIn;//是否改变了店内环境
     private boolean isChangeImagesOut;//是否改变了门店logo
     //详细地址
     private String longitude = "0.0000";
@@ -138,7 +135,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                             if (dataBean != null) {
                                 editSponsorName.setText(dataBean.getName());
                                 editSponsorPhone.setText(dataBean.getTel());
-                                String workTimeStr = dataBean.getDo_day();
+                                /*String workTimeStr = dataBean.getDo_day();
                                 if (!TextUtils.isEmpty(workTimeStr)) {
                                     editSponsorTime.setVisibility(View.GONE);
                                     editSponsorDay.setVisibility(View.VISIBLE);
@@ -149,6 +146,9 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                                     start_time = dataBean.getS_do_time();
                                     end_time = dataBean.getE_do_time();
 
+                                }*/
+                                if (!TextUtils.isEmpty(dataBean.getScope())) {
+                                    sponsors.setText(dataBean.getScope());
                                 }
                                 if (!TextUtils.isEmpty(dataBean.getAddra()))
                                     editSponsorLocationPan.setText(dataBean.getAddra());
@@ -220,7 +220,13 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                 startActivityForResult(intentOut, REQ_PIC_IN);
                 break;
             case R.id.edit_sponsor_location_pan:
-                if (chooseAddressWheel == null) {
+                LocalLog.d(TAG, "位置选择");
+                Intent intentLocation = new Intent();
+                intentLocation.putExtra("lat", latitude);
+                intentLocation.putExtra("lng", longitude);
+                intentLocation.setClass(this, SponsorTMapActivity.class);
+                startActivityForResult(intentLocation, REQ_POSITION);
+/*                if (chooseAddressWheel == null) {
                     initWheel();
                     String address = ProUtils.readAssert(this, "address.txt");
                     AddressModel model = new Gson().fromJson(address, AddressModel.class);
@@ -233,7 +239,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                     }
                 }
                 setData();
-                chooseAddressWheel.show(editSponsorLocationPan);
+                chooseAddressWheel.show(editSponsorLocationPan);*/
                 break;
             case R.id.btn_confirm: {
                 commit(latitude, longitude);
@@ -316,7 +322,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
         if (!TextUtils.isEmpty(editSponsorPhone.getText().toString().trim())) {
             param.setTel(editSponsorPhone.getText().toString());
         }
-        if (!editSponsorTime.isShown()) {
+ /*       if (!editSponsorTime.isShown()) {
             String[] workTimeStrList = sponsor_time.split(",");
             String date = "";
             for (String time : workTimeStrList) {
@@ -355,7 +361,7 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                 }
             }
             param.setDo_day(date).setS_do_time(start_time).setE_do_time(end_time);
-        }
+        }*/
         if (!"_省_市_区".equals(editSponsorLocationPan.getText().toString())) {
             param.setAddra(editSponsorLocationPan.getText().toString())
                     .setAddress(editSponsorLocationDetailPan.getText().toString());
@@ -382,6 +388,13 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
             param.setEnvironment_images(imagesIn);
             LocalLog.d(TAG, "in----" + imagesIn);
         }
+
+        if (!TextUtils.isEmpty(sponsors.getText().toString().trim())) {
+            param.setScope(sponsors.getText().toString().trim());
+        } else {
+            param.setScope("");
+        }
+
         if (businessId != -1) {
             param.setBusinessId(businessId);
             Presenter.getInstance(this).updateBusiness(param, this);
@@ -438,6 +451,17 @@ public class SponsorInfoActivity extends BaseBarActivity implements ChooseAddres
                 editSponsorInnerPics.setText("已上传" + size + "张");
             }
             return;
+        }
+        if (requestCode == REQ_POSITION && data != null) {
+            city = data.getStringExtra("city");
+            latitude = String.valueOf(data.getDoubleExtra("latitude", 0));
+            longitude = String.valueOf(data.getDoubleExtra("longitude", 0));
+            if (TextUtils.isEmpty(data.getStringExtra("address"))) {
+                editSponsorLocationPan.setText(city);
+            } else {
+                city = data.getStringExtra("address");
+                editSponsorLocationPan.setText(city);
+            }
         }
         switch (resultCode) {
             case RES_TIME: {

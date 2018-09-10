@@ -5,78 +5,76 @@
     android:background="@color/color_f8"
     android:orientation="vertical">
 
-    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="280dp">
 
-            <RelativeLayout
+            <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="280dp">
+                android:layout_height="140dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg_red_record" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="140dp"
-                    android:layout_marginTop="-5dp"
-                    android:src="@drawable/bg_red_record" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/user_head"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/default_head_ico" />
-
-                <TextView
-                    android:id="@+id/pkg_money"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/user_head"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="15dp"
-                    android:text="0.6元"
-                    android:textColor="@color/color_161727"
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/op_des"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/pkg_money"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="10dp"
-                    android:text="已存入钱包"
-                    android:textColor="@color/color_8a8a8a"
-                    android:textSize="16dp" />
-            </RelativeLayout>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/user_head"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/default_head_ico" />
 
             <TextView
-                android:id="@+id/des_red"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/color_d9d9d9"
-                android:gravity="center_vertical"
-                android:paddingLeft="14dp"
-                android:text="已领取4个，共0.24/0.80"
+                android:id="@+id/pkg_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/user_head"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="15dp"
+                android:text=""
+                android:textColor="@color/color_161727"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/op_des"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/pkg_money"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:text="已存入钱包"
                 android:textColor="@color/color_8a8a8a"
-                android:textSize="12dp" />
+                android:textSize="16dp" />
+        </RelativeLayout>
 
-            <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-                android:id="@+id/rec_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/des_red"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:background="#F7F7F7"
+            android:gravity="center_vertical"
+            android:paddingLeft="14dp"
+            android:text=""
+            android:textColor="@color/color_8a8a8a"
+            android:textSize="12dp" />
 
-            </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
-        </LinearLayout>
-    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:id="@+id/rec_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <include layout="@layout/bar_return_null_bg_style"></include>
+        </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/bar_return"
+        layout="@layout/bar_return_null_bg_style"></include>
 </FrameLayout>

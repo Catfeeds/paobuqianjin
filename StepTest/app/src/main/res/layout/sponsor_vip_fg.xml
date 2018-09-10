@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/vip_head_des"
             android:layout_below="@+id/vip_head_des"
-            android:text="开通商家会员，在你的个人资料，个人主页显示会员专属标志"
+            android:text="开通商家金牌会员，在你的个人资料，个人主页显示会员专属标志"
             android:textColor="@color/color_8a8a8a"
             android:textSize="14dp" />
     </RelativeLayout>
@@ -127,7 +127,8 @@
             android:stateListAnimator="@null"
             android:text="赠送好友"
             android:textColor="@color/color_161727"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/vip_self"

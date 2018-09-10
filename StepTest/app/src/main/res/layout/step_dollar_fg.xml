@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:includeFontPadding="false"
-                    android:text="步币"
+                    android:text="积分"
                     android:textColor="@color/color_f8"
                     android:textSize="14dp" />
 
@@ -67,7 +67,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/crash_step_dol_bg"
-                    android:text="兑换步币"
+                    android:text="兑换积分"
                     android:textColor="@color/color_161727"
                     android:textSize="14sp" />
 

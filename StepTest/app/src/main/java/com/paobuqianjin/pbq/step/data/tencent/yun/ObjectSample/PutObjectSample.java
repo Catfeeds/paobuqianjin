@@ -13,6 +13,7 @@ import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.tencent.cos.xml.exception.CosXmlClientException;
 import com.tencent.cos.xml.exception.CosXmlServiceException;
 import com.tencent.cos.xml.model.CosXmlRequest;
@@ -64,7 +65,7 @@ public class PutObjectSample {
         if (context == null) {
             return null;
         }
-        String path = context.getExternalCacheDir() + cosPath;
+        String path = Utils.getDiskCacheDir(context) + cosPath;
         LocalLog.d(TAG, "path = " + path);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BitmapFactory.Options options = new BitmapFactory.Options();

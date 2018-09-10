@@ -278,7 +278,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
             weightList.add(String.valueOf(weight));
             weight += 0.5;
         }
-        cachePath = getContext().getExternalCacheDir().getAbsolutePath();
+        cachePath = Utils.getDiskCacheDir(getContext()).getAbsolutePath();
     }
 
 
@@ -884,7 +884,7 @@ public class PersonInfoSettingFragment extends BaseFragment implements UserInfoL
     }
 
     private void saveImage(Bitmap bitmap, String sourcePath) throws FileNotFoundException {
-        String path = getContext().getExternalCacheDir() + "/head_logo.png";
+        String path = Utils.getDiskCacheDir(getContext()) + "/head_logo.png";
         LocalLog.d(TAG, "path = " + path);
         FileOutputStream fos = new FileOutputStream(path);
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);

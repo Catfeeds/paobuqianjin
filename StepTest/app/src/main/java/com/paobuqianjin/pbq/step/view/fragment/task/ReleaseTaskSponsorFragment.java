@@ -1,49 +1,83 @@
 package com.paobuqianjin.pbq.step.view.fragment.task;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.lwkandroid.imagepicker.ImagePicker;
+import com.lwkandroid.imagepicker.data.ImageBean;
+import com.lwkandroid.imagepicker.data.ImageDataModel;
+import com.lwkandroid.imagepicker.data.ImagePickType;
+import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
+import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
+import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorInfoActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.TargetPeopleActivity;
+import com.paobuqianjin.pbq.step.adapter.GridAddPic2Adapter;
 import com.paobuqianjin.pbq.step.customview.ChooseOneItemWheelPopWindow;
 import com.paobuqianjin.pbq.step.customview.LimitLengthFilter;
 import com.paobuqianjin.pbq.step.customview.LooperTextView;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
+import com.paobuqianjin.pbq.step.data.alioss.AliOss;
+import com.paobuqianjin.pbq.step.data.alioss.OssService;
+import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.GetUserBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorLabelResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskSponsorRespone;
+import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.presenter.im.ConfirmResult;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.TaskSponsorInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.umeng.socialize.utils.SocializeUtils;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +85,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.rong.imkit.model.RongGridView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -59,7 +94,7 @@ import static android.app.Activity.RESULT_OK;
  * 2018/4/19.
  */
 
-public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSponsorInterface, InnerCallBack {
+public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment implements TaskSponsorInterface, InnerCallBack {
     private final static String TAG = ReleaseTaskSponsorFragment.class.getSimpleName();
     private final static int REQUEST_TARGET_PEOPLE = 0;
     public final static int REQUEST_SPONSOR_MSG = 1;
@@ -129,9 +164,14 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     private final static String CIRCLE_RECHARGE = "pay";
     private final static String PAY_FOR_STYLE = "pay_for_style";
     private final static String PAY_ACTION = "android.intent.action.PAY";
-    Button btnConfirm;
     @Bind(R.id.top_text)
     LooperTextView topText;
+    @Bind(R.id.et_information)
+    EditText etInformation;
+    @Bind(R.id.grid_view)
+    RongGridView gridView;
+    @Bind(R.id.sponsor_link_edit)
+    EditText sponsorLinkEdit;
     private boolean isFirstLocal = true;
     private StepLocationReciver stepLocationReciver = new StepLocationReciver();
     private TaskSponsorParam taskSponsorParam;
@@ -153,7 +193,21 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     private final int DEVALUE_STEP = 10000;//默认步数
     /* private String[] targetStepArr = {"3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"};*/
     private ArrayList<String> targetStepArr = new ArrayList<>();
-    ConfirmResult confirmResult;
+    Banner banner;
+    private ProgressDialog pdialog;
+    private String cachePath;
+    private GridAddPic2Adapter adapter;
+    public static final int MAX_SIZE = 9;
+    private View popupCircleTypeView;
+    private PopupWindow popupCircleTypeWindow;
+    private TranslateAnimation animationCircleType;
+    private final int REQUEST_CODE = 111;
+    ArrayList<ImageBean> resultList = new ArrayList<>();
+
+    @Override
+    protected String title() {
+        return "添加红包";
+    }
 
     @Override
     protected int getLayoutResId() {
@@ -172,6 +226,59 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
         return rootView;
     }
 
+    private void loadBanner() {
+        final String bannerUrl = NetApi.urlAd + "?position=task_list";
+        LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
+        Presenter.getInstance(getActivity()).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
+                    final ArrayList<AdObject> adList = new ArrayList<>();
+                    if (adresponse.getData() != null && adresponse.getData().size() > 0) {
+                        int size = adresponse.getData().size();
+                        for (int i = 0; i < size; i++) {
+                            if (adresponse.getData().get(i).getImgs() != null
+                                    && adresponse.getData().get(i).getImgs().size() > 0) {
+                                int imgSize = adresponse.getData().get(i).getImgs().size();
+                                for (int j = 0; j < imgSize; j++) {
+                                    AdObject adObject = new AdObject();
+                                    adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
+                                    adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
+                                    adList.add(adObject);
+                                }
+                            }
+                        }
+                    }
+                    banner.setImageLoader(new BannerImageLoader())
+                            .setImages(adList)
+                            .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                            .setBannerAnimation(Transformer.Default)
+                            .isAutoPlay(true)
+                            .setDelayTime(2000)
+                            .setIndicatorGravity(BannerConfig.CENTER)
+                            .setOnBannerListener(new OnBannerListener() {
+                                @Override
+                                public void OnBannerClick(int position) {
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                }
+                            })
+                            .start();
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                LocalLog.d(TAG, "获取失败!");
+            }
+        });
+    }
+
+
     private void getDefaultBusiness() {
         LocalLog.d(TAG, "获取默认的店铺!");
         GetUserBusinessParam param = new GetUserBusinessParam();
@@ -184,6 +291,7 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     protected void initView(View viewRoot) {
         targetStepDayNum = (EditText) viewRoot.findViewById(R.id.target_step_day_num);
         targetStepDayNum.setText(DEVALUE_STEP + "");
+        sponsorLinkEdit = (EditText) viewRoot.findViewById(R.id.sponsor_link_edit);
         Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlTarget, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
@@ -208,6 +316,153 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
 
         topText = (LooperTextView) viewRoot.findViewById(R.id.top_text);
         getTopText();
+        banner = (Banner) viewRoot.findViewById(R.id.banner);
+        loadBanner();
+        setToolBarListener(new BaseBarImageViewFragment.ToolBarListener() {
+            @Override
+            public void clickLeft() {
+                getActivity().onBackPressed();
+            }
+
+            @Override
+            public void clickRight() {
+                confirm();
+            }
+        });
+
+        pdialog = new ProgressDialog(getActivity());
+        pdialog.setMessage("上传中");
+        pdialog.setCancelable(false);
+        cachePath = Utils.getDiskCacheDir(getActivity()).getAbsolutePath();
+        etInformation = (EditText) viewRoot.findViewById(R.id.et_information);
+        gridView = (RongGridView) viewRoot.findViewById(R.id.grid_view);
+        initAdapter();
+    }
+
+
+    public void popImageView(String url) {
+        LocalLog.d(TAG, "查看大图");
+        int mScreenWidth = ImagePickerComUtils.getScreenWidth(getActivity());
+        int mScreenHeight = ImagePickerComUtils.getScreenHeight(getActivity());
+        View popBirthSelectView = View.inflate(getActivity(), R.layout.image_big_view, null);
+        PhotoView photoView = (PhotoView) popBirthSelectView.findViewById(R.id.photo_view);
+        ImageDataModel.getInstance().getDisplayer().display(getActivity(), url, photoView, mScreenWidth, mScreenHeight);
+        PopupWindow popupSelectWindow = new PopupWindow(popBirthSelectView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+      /*  popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popImageVie dismiss() ");
+                popupSelectWindow = null;
+            }
+        });*/
+
+        popupSelectWindow.setFocusable(true);
+        popupSelectWindow.setOutsideTouchable(true);
+        popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupSelectWindow.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+        popBirthSelectView.startAnimation(animationCircleType);
+    }
+
+    private void initAdapter() {
+        gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
+        adapter = new GridAddPic2Adapter(getActivity(), MAX_SIZE);
+        gridView.setAdapter(adapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == adapter.getData().size()) {
+                    //点击+
+                    selectPicture();
+                } else {
+                    //点击图片查看大图
+                    popImageView(adapter.getData().get(position).getImageUrl());
+                }
+            }
+        });
+    }
+
+    @Override
+    public Object right() {
+        return "确定";
+    }
+
+
+    /*隐藏软键盘
+*@function hideSoftInputView
+*@param
+*@return
+*/
+    public void hideSoftInputView() {
+        InputMethodManager manager = ((InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE));
+        if (getActivity().getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
+            if (getActivity().getCurrentFocus() != null)
+                manager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+    private void selectPicture() {
+        hideSoftInputView();
+        popupCircleTypeView = View.inflate(getActivity(), R.layout.select_camera_pic, null);
+        popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupCircleTypeWindow onDismiss() enter");
+                popupCircleTypeWindow = null;
+            }
+        });
+        popupCircleTypeWindow.setFocusable(true);
+        popupCircleTypeWindow.setOutsideTouchable(true);
+        popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
+        ((RelativeLayout) popupCircleTypeView.findViewById(R.id.select_camera)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "相机");
+                new ImagePicker()
+                        .pickType(ImagePickType.ONLY_CAMERA)//设置选取类型(拍照、单选、多选)
+                        .maxNum(1)//设置最大选择数量(拍照和单选都是1，修改后也无效)
+                        .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
+                        .cachePath(cachePath)//自定义缓存路径
+                        .doCrop(1, 1, 0, 0)//裁剪功能需要调用这个方法，多选模式下无效
+                        .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
+                        .start(ReleaseTaskSponsorFragment.this, REQUEST_CODE);
+                popupCircleTypeWindow.dismiss();
+            }
+        });
+        ((RelativeLayout) popupCircleTypeView.findViewById(R.id.xiangche_camera)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "相册");
+                ImagePicker picker = new ImagePicker()
+                        .pickType(ImagePickType.MULTI)//设置选取类型(拍照、单选、多选)
+                        .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
+                        .cachePath(cachePath)//自定义缓存路径
+                        .displayer(new GlideImagePickerDisplayer());//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
+                //设置最大选择数量(拍照和单选都是1，修改后也无效)
+                picker.maxNum(MAX_SIZE - adapter.getData().size());
+                picker.start(ReleaseTaskSponsorFragment.this, REQUEST_CODE);
+                popupCircleTypeWindow.dismiss();
+            }
+        });
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
+                , 0, Animation.RELATIVE_TO_PARENT, 0,
+                Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupCircleTypeWindow.showAtLocation(getActivity().getWindow().getDecorView(), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
+                , 0, 0);
+        popupCircleTypeView.startAnimation(animationCircleType);
     }
 
     private void getTopText() {
@@ -254,9 +509,8 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
         });
     }
 
-    public void confirm(ConfirmResult confirmResult) {
+    private void confirm() {
         if (isAdded()) {
-            this.confirmResult = confirmResult;
             LocalLog.d(TAG, "确定");
             //任务名称
             String targetTaskStepNumStr = targetTaskStepNum.getText().toString().trim();
@@ -304,6 +558,20 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                 Toast.makeText(getActivity(), "任务天数不能为0", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            String images = "";
+            for (SelectPicBean bean : adapter.getData()) {
+                if (!TextUtils.isEmpty(images)) {
+                    images += ",";
+                }
+                images += bean.getImageUrl();
+            }
+            if (taskSponsorParam == null) {
+                taskSponsorParam = new TaskSponsorParam();
+            }
+            if (!TextUtils.isEmpty(images))
+                taskSponsorParam.setImages(images);
+
             if (TextUtils.isEmpty(packDayNumStr.trim())) {
                 Toast.makeText(getActivity(), "请输入每日红包个数", Toast.LENGTH_SHORT).show();
                 return;
@@ -311,9 +579,6 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
             if (TextUtils.isEmpty(targetStepDayNumStr.trim())) {
                 Toast.makeText(getActivity(), "请输入目标步数", Toast.LENGTH_SHORT).show();
                 return;
-            }
-            if (taskSponsorParam == null) {
-                taskSponsorParam = new TaskSponsorParam();
             }
             taskSponsorParam.setUserid(Presenter.getInstance(getActivity()).getId() + "");
             taskSponsorParam.setNumber(Integer.valueOf(packDayNumStr));
@@ -341,7 +606,10 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
                 taskSponsorParam.setCity_code(cityCode);
             if (!TextUtils.isEmpty(address))
                 taskSponsorParam.setTrading_area(address);
-            confirmResult.result(false);
+            if (!TextUtils.isEmpty(etInformation.getText().toString().trim()))
+                taskSponsorParam.setRed_content(etInformation.getText().toString().trim());
+            if (!TextUtils.isEmpty(sponsorLinkEdit.getText().toString().trim()))
+                taskSponsorParam.setTarget_url(sponsorLinkEdit.getText().toString().trim());
             Presenter.getInstance(getContext()).postTaskSponsorRelease(taskSponsorParam);
         }
     }
@@ -434,9 +702,6 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
             return;
         }
         PaoToastUtils.showShortToast(getActivity(), errorCode.getMessage());
-        if (confirmResult != null) {
-            confirmResult.result(true);
-        }
     }
 
     @Override
@@ -458,9 +723,6 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
             startActivityForResult(intent, REQUEST_PAY_SPONSOR_PKG);
         } else {
             PaoToastUtils.showShortToast(getContext(), taskSponsorRespone.getMessage());
-            if (confirmResult != null) {
-                confirmResult.result(true);
-            }
         }
 
     }
@@ -481,22 +743,25 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_TARGET_PEOPLE && resultCode != 0) {
-            sexStr = data.getStringExtra("sexStr");
-            ageMinStr = data.getStringExtra("minAgeStr");
-            ageMaxStr = data.getStringExtra("maxAgeStr");
-            longitudeStr = data.getDoubleExtra("longitudeStr", 0);
-            latitudeStr = data.getDoubleExtra("latitudeStr", 0);
-            distanceStr = data.getStringExtra("targetSelectStr");
-            city = data.getStringExtra("city");
-            cityCode = data.getStringExtra("cityCode");
-            address = data.getStringExtra("address");
+        LocalLog.d(TAG, "onActivityResult() enter");
+        if (requestCode == REQUEST_TARGET_PEOPLE) {
+            if (resultCode != 0) {
+                sexStr = data.getStringExtra("sexStr");
+                ageMinStr = data.getStringExtra("minAgeStr");
+                ageMaxStr = data.getStringExtra("maxAgeStr");
+                longitudeStr = data.getDoubleExtra("longitudeStr", 0);
+                latitudeStr = data.getDoubleExtra("latitudeStr", 0);
+                distanceStr = data.getStringExtra("targetSelectStr");
+                city = data.getStringExtra("city");
+                cityCode = data.getStringExtra("cityCode");
+                address = data.getStringExtra("address");
 
-            LocalLog.d(TAG, sexStr + " " + ageMinStr + "\n" + ageMaxStr + "\n" +
-                    cityCode + "\n" + address + "\n" + city + "\n"
-                    + longitudeStr + "\n" + latitudeStr + "\n" + distanceStr + "\n"
-            );
-            targetPeopleDetail.setText("已筛选");
+                LocalLog.d(TAG, sexStr + " " + ageMinStr + "\n" + ageMaxStr + "\n" +
+                        cityCode + "\n" + address + "\n" + city + "\n"
+                        + longitudeStr + "\n" + latitudeStr + "\n" + distanceStr + "\n"
+                );
+                targetPeopleDetail.setText("已筛选");
+            }
         } else if (requestCode == REQUEST_SPONSOR_MSG) {
             LocalLog.d(TAG, "resultCode == " + resultCode);
             if (resultCode == ReleaseTaskSponsorFragment.RESULT_SPONSOR_MSG) {
@@ -515,22 +780,82 @@ public class ReleaseTaskSponsorFragment extends BaseFragment implements TaskSpon
             } else {
                 getDefaultBusiness();
             }
-        } else if (requestCode == REQUEST_SPONSOR_INFO && resultCode > 0) {
-            int businessId = data.getIntExtra("businessId", -1);
-            if (businessId != -1) {
-                hasBusiness = true;
-                this.businessId = businessId;
-                sponorMsgDesDetail.setText(data.getStringExtra("name"));
+        } else if (requestCode == REQUEST_SPONSOR_INFO) {
+            if (requestCode > 0) {
+                int businessId = data.getIntExtra("businessId", -1);
+                if (businessId != -1) {
+                    hasBusiness = true;
+                    this.businessId = businessId;
+                    sponorMsgDesDetail.setText(data.getStringExtra("name"));
+                }
             }
         } else if (requestCode == REQUEST_PAY_SPONSOR_PKG) {
             if (resultCode == RESULT_OK) {
                 LocalLog.d(TAG, "支付完成");
                 getActivity().finish();
             } else {
-                if (confirmResult != null) {
-                    confirmResult.result(true);
-                }
+
             }
+        } else if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            SocializeUtils.safeShowDialog(pdialog);
+            resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);
+            String content = "";
+            for (ImageBean imageBean : resultList) {
+                content = content + imageBean.toString() + "\n";
+            }
+            LocalLog.d(TAG, "content = " + content);
+            if (resultList != null && resultList.size() > 0) {
+                ImageBean[] beans = new ImageBean[resultList.size()];
+                beans = resultList.toArray(beans);
+                ImageUpTask imageUpTask = new ImageUpTask();
+                imageUpTask.execute(beans);
+            } else {
+                LocalLog.d(TAG, "未知操作");
+            }
+            return;
+        }
+
+    }
+
+    public class ImageUpTask extends AsyncTask<ImageBean, Integer, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            SocializeUtils.safeShowDialog(dialog);
+        }
+
+        @Override
+        protected String doInBackground(ImageBean... strings) {
+            AliOss aliOss = new AliOss();
+            aliOss.initRegion(getContext().getApplicationContext());
+            OssService ossService = aliOss.initOSS(getContext().getApplicationContext());
+            for (ImageBean path : strings) {
+                LocalLog.d(TAG, "path = " + path);
+                String url = null;
+                url = ossService.asyncPutImageLocal(path.getImagePath());
+                final SelectPicBean selectPicBean = new SelectPicBean();
+                selectPicBean.setFileUrl(path.getImagePath());
+                selectPicBean.setImageUrl(url);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.setData(selectPicBean);
+                    }
+                });
+                LocalLog.d(TAG, "url = " + url);
+            }
+            SocializeUtils.safeCloseDialog(pdialog);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            LocalLog.d(TAG, "onPostExecute() enter" + s);
+            super.onPostExecute(s);
+            //SocializeUtils.safeCloseDialog(dialog);
+//            putUserInfoParam.setAvatar(s);
+//            Presenter.getInstance(getContext()).putUserInfo(userInfo.getId(), putUserInfoParam);
         }
     }
 

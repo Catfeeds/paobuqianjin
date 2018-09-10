@@ -14,6 +14,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 
@@ -30,7 +31,8 @@ import static android.app.Activity.RESULT_OK;
 public class SponsorVipFragment extends BaseFragment {
     private final static String TAG = SponsorVipFragment.class.getSimpleName();
     private final static String ACTION_VIP_SPONSOR_SELF = "com.paobuqianjin.pbq.setp.VIP_SELF_SPONSOR_ACTION";
-    private final static String ACTION_VIP_SPONSOR_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_SPONSOR_ACTION";
+    /*private final static String ACTION_VIP_SPONSOR_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_SPONSOR_ACTION";*/
+    private final static String ACTION_GOLDEN_VIP = "com.paobuqianjin.pbq.step.VIP_GOLDEN_ACTION";
     private final static int PAY_VIP_SPONSOR_SELF_RESULT = 501;
     private final static int PAY_VIP_SPONSOR_FRIEND_RESULT = 502;
     @Bind(R.id.vip_head_ico)
@@ -79,7 +81,7 @@ public class SponsorVipFragment extends BaseFragment {
             LocalLog.d(TAG, "未能获取UserInfo！");
 
         } else {
-            if (currentUser.getCusvip() == 1) {
+            if (currentUser.getGvip() == 1) {
                 vipSelf.setText("已购买");
             }
         }
@@ -91,25 +93,19 @@ public class SponsorVipFragment extends BaseFragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.vip_friend, R.id.vip_self})
+    @OnClick({R.id.vip_self})
     public void onClick(View view) {
-        Intent payIntent = new Intent();
         switch (view.getId()) {
-            case R.id.vip_friend:
-                LocalLog.d(TAG, "pay for friend sponsor vip");
-                payIntent.setAction(ACTION_VIP_SPONSOR_FRIEND);
-                payIntent.setClass(getContext(), PaoBuPayActivity.class);
-                startActivityForResult(payIntent, PAY_VIP_SPONSOR_FRIEND_RESULT);
-                break;
             case R.id.vip_self:
                 LocalLog.d(TAG, "pay for  self  sponsor vip");
-                if (currentUser.getCusvip() == 1) {
+                if (currentUser.getGvip() == 1) {
                     LocalLog.d(TAG, "已经是商家VIP");
                     return;
                 }
-                payIntent.setAction(ACTION_VIP_SPONSOR_SELF);
-                payIntent.setClass(getContext(), PaoBuPayActivity.class);
-                startActivityForResult(payIntent, PAY_VIP_SPONSOR_SELF_RESULT);
+                Intent intent = new Intent();
+                intent.setAction(ACTION_GOLDEN_VIP);
+                intent.setClass(getContext(), PaoBuPayActivity.class);
+                startActivityForResult(intent, PAY_VIP_SPONSOR_SELF_RESULT);
                 break;
         }
     }
@@ -119,7 +115,7 @@ public class SponsorVipFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == PAY_VIP_SPONSOR_SELF_RESULT) {
-                LocalLog.d(TAG, "购买个人VIP成功！");
+                LocalLog.d(TAG, "购买商家金牌会员成功！");
                 vipSelf.setText("已购买");
                 vipSelf.setEnabled(false);
             }

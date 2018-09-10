@@ -2,27 +2,49 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.lwkandroid.imagepicker.data.ImageDataModel;
+import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
+import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.BigImageView;
+import com.paobuqianjin.pbq.step.customview.ImageViewPager;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
+import com.paobuqianjin.pbq.step.utils.BitmapUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.activity.DanActivity;
 import com.paobuqianjin.pbq.step.view.activity.GetMoreMoneyActivity;
 import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
@@ -46,7 +68,13 @@ import com.paobuqianjin.pbq.step.view.activity.TransferActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
 import com.paobuqianjin.pbq.step.view.activity.VipActivity;
+import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.paobuqianjin.pbq.step.view.fragment.circle.DynamicDetailFragment;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -201,6 +229,12 @@ public final class OwnerFragment extends BaseFragment {
     private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
     private final static String ACTION_STRANGE_ACTION = "com.paobuqianjin.pbq.step.STRANGE_ACTION";
     private final static String ACTION_FRIEND_ACTION = "com.paobuqianjn.step.FRIEND_ACTION";
+    private View popBirthSelectView;
+    private PopupWindow popupSelectWindow;
+    private TranslateAnimation animationCircleType;
+    private int mScreenWidth;
+    private int mScreenHeight;
+    private RelativeLayout qrLinear;
 
     @Override
     public void onAttach(Context context) {
@@ -245,6 +279,9 @@ public final class OwnerFragment extends BaseFragment {
         suggestionSpan = (LinearLayout) viewRoot.findViewById(R.id.suggestion_span);
         goldenSponsor = (ImageView) viewRoot.findViewById(R.id.golden_sponsor);
         walletMoney = (TextView) viewRoot.findViewById(R.id.wallet_money);
+        mScreenWidth = ImagePickerComUtils.getScreenWidth(getContext());
+        mScreenHeight = ImagePickerComUtils.getScreenHeight(getContext());
+        qrLinear = (RelativeLayout) viewRoot.findViewById(R.id.qr_linear);
     }
 
     @Override
@@ -276,7 +313,7 @@ public final class OwnerFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.step_dollar_span:
-                LocalLog.d(TAG, "步币");
+                LocalLog.d(TAG, "积分");
                 if (this.userInfoResponse != null && this.userInfoResponse.getData() != null) {
                     intent.putExtra("userinfo", this.userInfoResponse.getData());
                     intent.setClass(getContext(), StepDollarActivity.class);
@@ -389,6 +426,174 @@ public final class OwnerFragment extends BaseFragment {
     }
 
 
+    private void qrImage() {
+        LocalLog.d(TAG, "qrImage() enter");
+        String userid = Presenter.getInstance(getContext()).getNo();
+        final String codeInfo = NetApi.urlShareIc + userid;
+        encodeBitmap(codeInfo, qrcode.getWidth(), qrcode.getHeight());
+        qrLinear.setVisibility(View.VISIBLE);
+
+    }
+
+
+    public interface PopBigImageInterface {
+        public void popImageView(Bitmap bitmap);
+
+        public void popImageView(List<String> images, int index);
+    }
+
+    private PopBigImageInterface popBigImageInterface = new PopBigImageInterface() {
+        @Override
+        public void popImageView(Bitmap bitmap) {
+            LocalLog.d(TAG, "查看大图");
+            if (popupSelectWindow != null && !popupSelectWindow.isShowing()) {
+                return;
+            }
+
+            popBirthSelectView = View.inflate(getContext(), R.layout.image_big_view, null);
+            PhotoView photoView = (PhotoView) popBirthSelectView.findViewById(R.id.photo_view);
+            photoView.setImageBitmap(bitmap);
+            popupSelectWindow = new PopupWindow(popBirthSelectView,
+                    WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    LocalLog.d(TAG, "popImageVie dismiss() ");
+                    popupSelectWindow = null;
+                }
+            });
+
+            popupSelectWindow.setFocusable(true);
+            popupSelectWindow.setOutsideTouchable(true);
+            popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
+
+            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleType.setInterpolator(new AccelerateInterpolator());
+            animationCircleType.setDuration(200);
+
+
+            popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.owner_page), Gravity.CENTER, 0, 0);
+            popBirthSelectView.startAnimation(animationCircleType);
+        }
+
+        public void popImageView(List<String> images, int index) {
+            if (images == null) {
+                return;
+            }
+            LocalLog.d(TAG, "查看大图 index = " + index);
+            if (popupSelectWindow != null && !popupSelectWindow.isShowing()) {
+                return;
+            }
+            popBirthSelectView = View.inflate(getContext(), R.layout.big_image_view_pager, null);
+            ImageViewPager bigImageViewPager = (ImageViewPager) popBirthSelectView.findViewById(R.id.big_image_viewpager);
+            List<View> bigImageViews = new ArrayList<>();
+            for (String url : images) {
+                BigImageView bigImageView = new BigImageView(getContext());
+                bigImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                bigImageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                ImageDataModel.getInstance().getDisplayer().display(getContext(), url, bigImageView, mScreenWidth, mScreenHeight);
+                bigImageViews.add(bigImageView);
+            }
+            ImageViewPagerAdapter pagerAdapter = new ImageViewPagerAdapter(getContext(), bigImageViews);
+            bigImageViewPager.setAdapter(pagerAdapter);
+            bigImageViewPager.setCurrentItem(index, false);
+            popupSelectWindow = new PopupWindow(popBirthSelectView,
+                    WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    LocalLog.d(TAG, "popImageVie dismiss() ");
+                    popupSelectWindow = null;
+                }
+            });
+
+            popupSelectWindow.setFocusable(true);
+            popupSelectWindow.setOutsideTouchable(true);
+            popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
+
+            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleType.setInterpolator(new AccelerateInterpolator());
+            animationCircleType.setDuration(200);
+
+
+            popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.owner_page), Gravity.CENTER, 0, 0);
+            popBirthSelectView.startAnimation(animationCircleType);
+        }
+    };
+
+
+    private void encodeBitmap(String url, int mgWidth, int imgWidth) {
+        BitMatrix result = null;
+
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+       /* try {
+            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 175, 175);
+            int w = result.getWidth();
+            int h = result.getHeight();
+            int[] pixels = new int[w * h];
+            for (int y = 0; y < h; y++) {
+                int offset = y * w;
+                for (int x = 0; x < w; x++) {
+                    pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+                }
+            }
+            bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+            bitmap.setPixels(pixels, 0, w, 0, 0, w, h);
+        } catch (WriterException e) {
+            LocalLog.e(TAG, e.getMessage());
+        }*/
+
+        try {
+            Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
+            // 指定纠错等级,纠错级别（L 7%、M 15%、Q 25%、H 30%）
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+            // 内容所使用字符集编码
+            hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+            hints.put(EncodeHintType.MARGIN, 0);
+
+            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 116, 116, hints);
+//            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 175, 175);
+            // 使用 ZXing Android Embedded 要写的代码
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            final Bitmap bitmap = barcodeEncoder.createBitmap(result);
+            qrcode.setImageBitmap(bitmap);
+            if (bitmap != null) {
+                qrcode.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (userInfoResponse != null) {
+                            Intent intent = new Intent();
+                            intent.putExtra("usericon", userInfoResponse.getData().getAvatar());
+                            intent.putExtra("username", userInfoResponse.getData().getNickname());
+                            intent.putExtra("userid", Presenter.getInstance(getContext()).getNo());
+                            intent.setClass(getContext(), QrCodeMakeActivity.class);
+                            startActivity(intent);
+                        }
+                        /*LocalLog.d(TAG, "查看二维码大图!");
+                        Bitmap logo = null;
+                        if (((ImageView) headIcon).getDrawable() != null) {
+                            logo = ((BitmapDrawable) ((ImageView) headIcon).getDrawable()).getBitmap();
+                        }
+                        if (logo == null) {
+                            popBigImageInterface.popImageView(bitmap);
+                        } else {
+                            popBigImageInterface.popImageView(BitmapUtil.addLogo(bitmap, logo));
+                        }*/
+                    }
+                });
+            }
+        } catch (WriterException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException iae) {
+            return;
+        }
+        return;
+    }
+
     private OwnerUiInterface ownerUiInterface = new OwnerUiInterface() {
         @Override
         public void response(UserInfoResponse userInfoResponse) {
@@ -419,6 +624,8 @@ public final class OwnerFragment extends BaseFragment {
                 vip = userInfoResponse.getData().getVip();
                 cVip = userInfoResponse.getData().getCusvip();
                 gVip = userInfoResponse.getData().getGvip();
+
+                qrImage();
                 if (vip == 1 || cVip == 1 || gVip == 1) {
                     userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.golden_back));
                     sex.setVisibility(View.VISIBLE);

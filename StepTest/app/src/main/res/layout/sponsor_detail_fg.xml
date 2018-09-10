@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sponsor_detail_fg"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -19,9 +20,56 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
+                android:id="@+id/head_part"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bg_red_record" />
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/user_head"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/default_head_ico" />
+
+                <TextView
+                    android:id="@+id/pkg_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_head"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="15dp"
+                    android:text=""
+                    android:textColor="@color/color_161727"
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/op_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pkg_money"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="10dp"
+                    android:text="已存入钱包"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="16dp"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/sponsor_face_span"
                 android:layout_width="match_parent"
-                android:layout_height="160dp">
+                android:layout_height="160dp"
+                android:layout_below="@+id/head_part">
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/sponsor_images"
@@ -73,11 +121,152 @@
 
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/list_reds"
+                android:layout_width="match_parent"
+                android:layout_height="98dp"
+                android:layout_below="@+id/sponsor_face_span"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_f8"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/recv_person"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingLeft="14dp"
+                    android:text="已领取"
+                    android:textColor="@color/color_646464"
+                    android:textSize="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="14dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/head_recycler"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="6"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"></android.support.v7.widget.RecyclerView>
+
+                    <LinearLayout
+                        android:id="@+id/go_to_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="4"
+                        android:gravity="right">
+
+                        <ImageView
+                            android:layout_width="7dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="14dp"
+                            android:src="@drawable/go_to" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/list_reds"
+                android:background="@color/color_ecf0f3" />
+
+            <TextView
+                android:id="@+id/red_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/line"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="10dp"
+                android:maxLength="300"
+                android:text="推广信息"
+                android:textColor="@color/color_161727"
+                android:textSize="14dp"
+                android:visibility="gone" />
+
+
+            <FrameLayout
+                android:id="@+id/red_images_span"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_below="@+id/red_info"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="15dp"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/red_images"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+                    <RelativeLayout
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginRight="10dp">
+
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/sponsor_pics" />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true">
+
+                            <ImageView
+                                android:id="@+id/pic_red_sample"
+                                android:layout_width="16dp"
+                                android:layout_height="14dp"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/sponsor_pic_num" />
+
+                            <TextView
+                                android:id="@+id/current_red_pic"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/pic_red_sample"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="5dp"
+                                android:includeFontPadding="false"
+                                android:text=""
+                                android:textColor="@color/color_f8"
+                                android:textSize="12dp" />
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </RelativeLayout>
+
+            </FrameLayout>
+
             <TextView
                 android:id="@+id/sponsor_name"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_below="@+id/sponsor_face_span"
+                android:layout_below="@+id/red_images_span"
                 android:gravity="center_vertical"
                 android:maxEms="16"
                 android:maxLength="32"
@@ -87,18 +276,11 @@
                 android:textColor="@color/color_161727"
                 android:textSize="16dp" />
 
-            <ImageView
-                android:id="@+id/line"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_below="@+id/sponsor_name"
-                android:background="@color/color_ecf0f3" />
-
             <RelativeLayout
                 android:id="@+id/sponsor_tel_span"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_below="@+id/line">
+                android:layout_below="@+id/sponsor_name">
 
                 <ImageView
                     android:id="@+id/sponsor_tel_icon"
@@ -128,8 +310,12 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:layout_toRightOf="@+id/sponsor_tel_num"
+                    android:enabled="true"
+                    android:focusable="true"
+                    android:longClickable="true"
                     android:text=""
                     android:textColor="@color/color_8a8a8a"
+                    android:textIsSelectable="true"
                     android:textSize="14dp" />
 
                 <ImageView
@@ -143,7 +329,7 @@
             <RelativeLayout
                 android:id="@+id/sponsor_time_span"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="80dp"
                 android:layout_below="@+id/sponsor_tel_span">
 
                 <ImageView
@@ -153,7 +339,7 @@
                     android:layout_marginLeft="14dp"
                     android:layout_marginTop="15dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/sponsor_open" />
+                    android:src="@drawable/sponsor_location" />
 
                 <TextView
                     android:id="@+id/sponsor_time_num"
@@ -162,7 +348,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_toEndOf="@+id/sponsor_time_icon"
-                    android:text="营业时间:"
+                    android:text="商家地址:"
                     android:textColor="@color/color_161727"
                     android:textSize="14dp" />
 
@@ -173,6 +359,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_toRightOf="@+id/sponsor_time_num"
+                    android:ellipsize="end"
                     android:maxLines="3"
                     android:text=""
                     android:textColor="@color/color_8a8a8a"
@@ -199,7 +386,7 @@
                     android:layout_marginLeft="14dp"
                     android:layout_marginTop="16dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/sponsor_location" />
+                    android:src="@drawable/bus_desc" />
 
                 <TextView
                     android:id="@+id/sponsor_location_num"
@@ -208,7 +395,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="16dp"
                     android:layout_toEndOf="@+id/sponsor_location_icon"
-                    android:text="商家地址:"
+                    android:text="经营范围:"
                     android:textColor="@color/color_161727"
                     android:textSize="14dp" />
 
@@ -221,9 +408,13 @@
                     android:layout_marginTop="16dp"
                     android:layout_toRightOf="@+id/sponsor_location_num"
                     android:ellipsize="end"
+                    android:enabled="true"
+                    android:focusable="true"
+                    android:longClickable="true"
                     android:maxLines="3"
                     android:text=""
                     android:textColor="@color/color_8a8a8a"
+                    android:textIsSelectable="true"
                     android:textSize="14dp" />
             </RelativeLayout>
 

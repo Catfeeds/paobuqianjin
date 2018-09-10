@@ -1,26 +1,45 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.lwkandroid.imagepicker.data.ImageDataModel;
+import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
+import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.BigImageView;
+import com.paobuqianjin.pbq.step.customview.ImageViewPager;
+import com.paobuqianjin.pbq.step.data.bean.bundle.GoodImageData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RoundHisResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorCommentResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
@@ -32,6 +51,7 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorContentAdapter;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.paobuqianjin.pbq.step.view.base.view.CustomEdit;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 import com.paobuqianjin.pbq.step.view.emoji.EmotionKeyboard;
@@ -79,22 +99,18 @@ public class RedInfoActivity extends BaseBarActivity {
     TextView sponsorName;
     @Bind(R.id.tel_text)
     TextView telText;
-    @Bind(R.id.address_text)
-    TextView addressText;
-    @Bind(R.id.sponsor_text)
-    TextView sponsorText;
+    @Bind(R.id.sponsors_text)
+    TextView sponsors;
     @Bind(R.id.sponsor_pic)
     TextView sponsorPic;
     @Bind(R.id.sponsor_more)
-    TextView sponsorMore;
+    TextView sponsor_more;
     @Bind(R.id.image_a)
     ImageView imageA;
     @Bind(R.id.image_b)
     ImageView imageB;
     @Bind(R.id.image_c)
     ImageView imageC;
-    @Bind(R.id.sponsor_pic_linear)
-    LinearLayout sponsorPicLinear;
     @Bind(R.id.like_sponsor_icon)
     ImageView likeSponsorIcon;
     @Bind(R.id.like_sponsor_desc)
@@ -124,7 +140,6 @@ public class RedInfoActivity extends BaseBarActivity {
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
     String red_id = "";
-    ArrayList<RoundHisResponse.DataBean.BusinessImgBean> goodsImgsBeans = new ArrayList<>();
     String result_str = "";
     ArrayList<RoundHisResponse.DataBean.ReceiverListBean> arrayRecList = new ArrayList<>();
     List<View> Mview = new ArrayList<>();
@@ -144,12 +159,30 @@ public class RedInfoActivity extends BaseBarActivity {
     SponsorContentAdapter sponsorContentAdapter;
     LinearLayoutManager layoutManager;
     boolean is_vote = false;
+    @Bind(R.id.address_text)
+    TextView addressText;
+    @Bind(R.id.list_reds)
+    LinearLayout listReds;
     private int localVoteNum = 0;
     private int localCommentNum = 0;
     CustomEdit commentEditText;
     private EmotionKeyboard mEmotionKeyboard;
     LinearLayout editStill;
-    ImageView goMore;
+    LinearLayout goMore;
+    private final static String SHOW_SPONSOR_PICS_ACTION = "com.paobuqianjin.pbq.step.SHOW_PIC_ACTION";
+    ArrayList<SponsorDetailResponse.DataBean.EnvironmentImgsBean> goodsImgsBeans = new ArrayList<>();
+    BounceScrollView scroll;
+    RelativeLayout barNull;
+    private int currentImage = 0;
+    private TranslateAnimation animationCircleType;
+    private View popBirthSelectView;
+    private PopupWindow popupSelectWindow;
+    private int mScreenWidth;
+    private int mScreenHeight;
+    List<String> urlImage = new ArrayList<>();
+    private View selectMapView;
+    private PopupWindow selectMapWindow;
+    List<String> mapList = new ArrayList<>();
 
     @Override
     protected String title() {
@@ -163,8 +196,94 @@ public class RedInfoActivity extends BaseBarActivity {
         ButterKnife.bind(this);
     }
 
+    public interface PopBigImageInterface {
+        public void popImageView(String url);
+
+        public void popImageView(List<String> images, int index);
+    }
+
+    private PopBigImageInterface popBigImageInterface = new PopBigImageInterface() {
+        @Override
+        public void popImageView(String url) {
+            LocalLog.d(TAG, "查看大图");
+            popBirthSelectView = View.inflate(RedInfoActivity.this, R.layout.image_big_view, null);
+            PhotoView photoView = (PhotoView) popBirthSelectView.findViewById(R.id.photo_view);
+            ImageDataModel.getInstance().getDisplayer().display(RedInfoActivity.this, url, photoView, mScreenWidth, mScreenHeight);
+            popupSelectWindow = new PopupWindow(popBirthSelectView,
+                    WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    LocalLog.d(TAG, "popImageVie dismiss() ");
+                    popupSelectWindow = null;
+                }
+            });
+
+            popupSelectWindow.setFocusable(true);
+            popupSelectWindow.setOutsideTouchable(true);
+            popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
+
+            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleType.setInterpolator(new AccelerateInterpolator());
+            animationCircleType.setDuration(200);
+
+
+            popupSelectWindow.showAtLocation(findViewById(R.id.red_info_layout), Gravity.CENTER, 0, 0);
+            popBirthSelectView.startAnimation(animationCircleType);
+        }
+
+        public void popImageView(List<String> images, int index) {
+            if (images == null) {
+                return;
+            }
+            LocalLog.d(TAG, "查看大图 index = " + index);
+            popBirthSelectView = View.inflate(RedInfoActivity.this, R.layout.big_image_view_pager, null);
+            ImageViewPager bigImageViewPager = (ImageViewPager) popBirthSelectView.findViewById(R.id.big_image_viewpager);
+            List<View> bigImageViews = new ArrayList<>();
+            for (String url : images) {
+                BigImageView bigImageView = new BigImageView(RedInfoActivity.this);
+                bigImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                bigImageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                ImageDataModel.getInstance().getDisplayer().display(RedInfoActivity.this, url, bigImageView, mScreenWidth, mScreenHeight);
+                bigImageViews.add(bigImageView);
+            }
+            ImageViewPagerAdapter pagerAdapter = new ImageViewPagerAdapter(RedInfoActivity.this, bigImageViews);
+            bigImageViewPager.setAdapter(pagerAdapter);
+            bigImageViewPager.setCurrentItem(index, false);
+            popupSelectWindow = new PopupWindow(popBirthSelectView,
+                    WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+            popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    LocalLog.d(TAG, "popImageVie dismiss() ");
+                    popupSelectWindow = null;
+                }
+            });
+
+            popupSelectWindow.setFocusable(true);
+            popupSelectWindow.setOutsideTouchable(true);
+            popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
+
+            animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                    0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                    1, Animation.RELATIVE_TO_PARENT, 0);
+            animationCircleType.setInterpolator(new AccelerateInterpolator());
+            animationCircleType.setDuration(200);
+
+
+            popupSelectWindow.showAtLocation(findViewById(R.id.red_info_layout), Gravity.CENTER, 0, 0);
+            popBirthSelectView.startAnimation(animationCircleType);
+        }
+    };
+
     @Override
     protected void initView() {
+        mScreenWidth = ImagePickerComUtils.getScreenWidth(this);
+        mScreenHeight = ImagePickerComUtils.getScreenHeight(this);
+        scroll = (BounceScrollView) findViewById(R.id.scroll_info);
+        barNull = (RelativeLayout) findViewById(R.id.red_detail);
         userHead = (CircleImageView) findViewById(R.id.user_head);
         pkgMoney = (TextView) findViewById(R.id.pkg_money);
         opDes = (TextView) findViewById(R.id.op_des);
@@ -178,6 +297,13 @@ public class RedInfoActivity extends BaseBarActivity {
         likeSponsorDesc = (TextView) findViewById(R.id.like_sponsor_desc);
         sponsorContentNum = (TextView) findViewById(R.id.sponsor_content_num);
         likeSponsorSpan = (LinearLayout) findViewById(R.id.like_sponsor_span);
+        sponsorName = (TextView) findViewById(R.id.sponsor_name);
+        telText = (TextView) findViewById(R.id.tel_text);
+        sponsors = (TextView) findViewById(R.id.sponsors_text);
+        addressText = (TextView) findViewById(R.id.address_text);
+        imageA = (ImageView) findViewById(R.id.image_a);
+        imageB = (ImageView) findViewById(R.id.image_b);
+        imageC = (ImageView) findViewById(R.id.image_c);
         Intent intent = getIntent();
         if (intent != null) {
             red_id = intent.getStringExtra(getPackageName() + "red_id");
@@ -194,7 +320,7 @@ public class RedInfoActivity extends BaseBarActivity {
         sponsorContentAdapter = new SponsorContentAdapter(this, arrayList);
         contentRecycler.setAdapter(sponsorContentAdapter);
         editStill = (LinearLayout) findViewById(R.id.linear_edit);
-        goMore = (ImageView) findViewById(R.id.go_to);
+        goMore = (LinearLayout) findViewById(R.id.go_to);
         initEditView(null, -1, null);
         contentRecycler.addOnItemTouchListener(new RecyclerItemClickListener(RedInfoActivity.this, contentRecycler, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -209,7 +335,109 @@ public class RedInfoActivity extends BaseBarActivity {
                 }
             }
         }));
+
+        scroll.setScrollListener(new BounceScrollView.ScrollListener() {
+            @Override
+            public void scrollOritention(int l, int t, int oldl, int oldt) {
+                LocalLog.d(TAG, "l =  " + l + ",t = " + t + ",oldl= " + oldl + "," + oldt);
+                if (Utils.px2dip(RedInfoActivity.this, (float) t) > 64) {
+                    barNull.setBackgroundColor(ContextCompat.getColor(RedInfoActivity.this, R.color.color_232433));
+                } else {
+                    barNull.setBackground(null);
+                }
+            }
+        });
+
+        if (Utils.isHaveBaiduMap()) {
+            mapList.add("百度");
+        }
+
+        if (Utils.isHaveGaodeMap()) {
+            mapList.add("高德");
+        }
+
+        if (Utils.isHaveTencentMap()) {
+            mapList.add("腾讯");
+        }
     }
+
+    private void selectMap(List<String> strings, final String dqAddress, final String gotoAddress,
+                           final String gotoLatitude, final String gotoLongitude) {
+        selectMapView = View.inflate(this, R.layout.map_source_pop_select, null);
+        selectMapWindow = new PopupWindow(selectMapView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        selectMapWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "selectMapWindow onDismiss() enter");
+                selectMapWindow = null;
+            }
+        });
+
+        if (strings.contains("腾讯")) {
+            TextView tencent = (TextView) selectMapView.findViewById(R.id.tencent_maps);
+            tencent.setVisibility(View.VISIBLE);
+            tencent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectMapWindow.dismiss();
+                    Utils.openTencentMap(RedInfoActivity.this, null, gotoAddress, gotoLatitude, gotoLongitude);
+                }
+            });
+        }
+
+        if (strings.contains("百度")) {
+            TextView baidu = (TextView) selectMapView.findViewById(R.id.baidu_map);
+            baidu.setVisibility(View.VISIBLE);
+            baidu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectMapWindow.dismiss();
+                    Utils.openBaiduMap(RedInfoActivity.this, dqAddress, gotoAddress, String.valueOf(Presenter.getInstance(RedInfoActivity.this).getLocation()[0]),
+                            String.valueOf(Presenter.getInstance(RedInfoActivity.this).getLocation()[1]), gotoLatitude, gotoLongitude);
+                }
+            });
+        }
+        if (strings.contains("高德")) {
+            TextView gaode = (TextView) selectMapView.findViewById(R.id.gaode_map);
+            gaode.setVisibility(View.VISIBLE);
+            gaode.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectMapWindow.dismiss();
+                    Utils.openGaoDeMap(RedInfoActivity.this, dqAddress, gotoAddress, gotoLatitude, gotoLongitude);
+                }
+            });
+        }
+        selectMapWindow.setFocusable(true);
+        selectMapWindow.setOutsideTouchable(true);
+        selectMapWindow.setBackgroundDrawable(new BitmapDrawable());
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
+                , 0, Animation.RELATIVE_TO_PARENT, 0,
+                Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        selectMapWindow.showAtLocation(findViewById(R.id.red_info_layout), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
+                , 0, 0);
+        selectMapView.startAnimation(animationCircleType);
+    }
+
+
+    private void redRelInfo(final String redId) {
+        Intent intent = new Intent();
+        intent.setClass(RedInfoActivity.this, RoundRedRelActivity.class);
+        intent.putExtra(getPackageName() + "red_id", redId);
+        startActivity(intent);
+    }
+
+    private void onRedInfo() {
+        if (!TextUtils.isEmpty(red_id))
+            redRelInfo(red_id);
+    }
+
+    ;
 
     private void requestPostRedDetail(final String redId) {
         Map<String, String> param = new HashMap<>();
@@ -221,14 +449,12 @@ public class RedInfoActivity extends BaseBarActivity {
                     final RoundHisResponse roundHisResponse = new Gson().fromJson(s, RoundHisResponse.class);
                     Presenter.getInstance(RedInfoActivity.this).getPlaceErrorImage(userHead, roundHisResponse.getData().getAvatar()
                             , R.drawable.default_head_ico, R.drawable.default_head_ico);
-                    if (roundHisResponse.getData().getIs_me() == 1) {
-                        LocalLog.d(TAG, "当前为发红包详情");
-                        pkgMoney.setText("自己发的红包无法领取");
-                    } else if (roundHisResponse.getData().getIs_me() == 0) {
-                        LocalLog.d(TAG, "当前为领红包详情");
-                        pkgMoney.setText(roundHisResponse.getData().getIncome_money());
-                        opDes.setVisibility(View.VISIBLE);
-                    }
+                    LocalLog.d(TAG, "当前为领红包详情");
+                    String income = roundHisResponse.getData().getIncome_money() + "元";
+                    SpannableString spannableString = new SpannableString(income);
+                    spannableString.setSpan(new AbsoluteSizeSpan(14, true), roundHisResponse.getData().getIncome_money().length(), income.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    pkgMoney.setText(spannableString);
+                    opDes.setVisibility(View.VISIBLE);
                     if (roundHisResponse.getData().getIs_zan() == 1) {
                         is_vote = true;
 
@@ -249,73 +475,148 @@ public class RedInfoActivity extends BaseBarActivity {
                             LocalLog.d(TAG, "#########");
                             LikeUserAdapter likeUserAdapter = new LikeUserAdapter(RedInfoActivity.this, arrayRecList);
                             headRecycler.setAdapter(likeUserAdapter);
-                            goMore.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent intent = new Intent();
-                                    intent.setClass(RedInfoActivity.this, RoundRedRelActivity.class);
-                                    intent.putExtra(getPackageName() + "red_id", redId);
-                                    startActivity(intent);
-                                }
-                            });
                         }
                         sponsorDescribe.setText(roundHisResponse.getData().getContent());
-
+                        final String tarUrl = roundHisResponse.getData().getTarget_url();
                         //红包活动图片
                         if (roundHisResponse.getData().getRed_img() != null) {
                             int imgSize = roundHisResponse.getData().getRed_img().size();
                             for (int j = 0; j < imgSize; j++) {
+                                urlImage.add(roundHisResponse.getData().getRed_img().get(j).getUrl());
                                 View view = LayoutInflater.from(RedInfoActivity.this)
                                         .inflate(R.layout.red_iamge_view, null);
                                 ImageView imageView = (ImageView) view.findViewById(R.id.red_content_img);
                                 Presenter.getInstance(RedInfoActivity.this).getPlaceErrorImage(imageView, roundHisResponse.getData().getRed_img()
                                         .get(j).getUrl(), R.drawable.null_bitmap, R.drawable.null_bitmap);
+                                imageView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if (!TextUtils.isEmpty(tarUrl)) {
+                                            startActivity(new Intent(RedInfoActivity.this, SingleWebViewActivity.class).putExtra("url", tarUrl));
+                                        } else {
+                                            LocalLog.d(TAG, "查看大图 currentImage = " + currentImage);
+                                            if (popBigImageInterface != null && urlImage.size() >= 1) {
+                                                popBigImageInterface.popImageView(urlImage, currentImage);
+                                            }
+                                        }
+                                    }
+                                });
                                 Mview.add(view);
                             }
                         }
-                        final String tarUrl = roundHisResponse.getData().getTarget_url();
                         if (Mview.size() > 0) {
                             currentPic.setText(String.valueOf(1) + "/" + Mview.size());
                             sponsorImages.setAdapter(new ImageViewPagerAdapter(RedInfoActivity.this, Mview));
                             sponsorImages.addOnPageChangeListener(onPageChangeListener);
-                            sponsorImages.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (!TextUtils.isEmpty(tarUrl)) {
-                                        startActivity(new Intent(RedInfoActivity.this, SingleWebViewActivity.class).putExtra("url", tarUrl));
-                                    }
-                                }
-                            });
                         }
 
                         //环境照
                         if (roundHisResponse.getData().getBusiness_img() != null) {
-                            size = roundHisResponse.getData().getBusiness_img().size();
+                            final int sizeImag = roundHisResponse.getData().getBusiness_img().size();
                             LocalLog.d(TAG, "size = " + size);
-                            goodsImgsBeans.addAll(roundHisResponse.getData().getBusiness_img());
-                            if (size == 1) {
-                                imageA.setVisibility(View.VISIBLE);
+                            if (sizeImag <= 0) {
+                                return;
+                            }
+                            for (int i = 0; i < sizeImag; i++) {
+                                SponsorDetailResponse.DataBean.EnvironmentImgsBean data = new SponsorDetailResponse.DataBean.EnvironmentImgsBean();
+                                data.setUrl(roundHisResponse.getData().getBusiness_img().get(i).getUrl());
+                                goodsImgsBeans.add(data);
+                            }
+
+                            sponsor_more.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (sizeImag > 0) {
+                                        Intent intent = new Intent();
+                                        intent.setAction(SHOW_SPONSOR_PICS_ACTION);
+                                        if (goodsImgsBeans.size() < 0) {
+                                            return;
+                                        }
+                                        GoodImageData goodImageData = new GoodImageData(goodsImgsBeans);
+                                        intent.putExtra(getPackageName() + "goods", goodImageData);
+                                        intent.setClass(RedInfoActivity.this, SponsorGoodsPicLookActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
+                            if (sizeImag == 1) {
                                 Presenter.getInstance(RedInfoActivity.this).getPlaceErrorImage(imageA, roundHisResponse.getData().getBusiness_img().get(0).getUrl(),
                                         R.drawable.null_bitmap, R.drawable.null_bitmap);
-                            } else if (size == 2) {
+                                imageA.setVisibility(View.VISIBLE);
+                            } else if (sizeImag == 2) {
+
+                                Presenter.getInstance(RedInfoActivity.this).getPlaceErrorImage(imageA, roundHisResponse.getData().getBusiness_img().get(0).getUrl(),
+                                        R.drawable.null_bitmap, R.drawable.null_bitmap);
+                                Presenter.getInstance(RedInfoActivity.this).getPlaceErrorImage(imageB, roundHisResponse.getData().getBusiness_img().get(1).getUrl(),
+                                        R.drawable.null_bitmap, R.drawable.null_bitmap);
                                 imageA.setVisibility(View.VISIBLE);
                                 imageB.setVisibility(View.VISIBLE);
-                                Presenter.getInstance(RedInfoActivity.this).getImage(imageA, roundHisResponse.getData().getBusiness_img().get(0).getUrl(),
+                            } else if (sizeImag >= 3) {
+                                Presenter.getInstance(RedInfoActivity.this).getPlaceErrorImage(imageA, roundHisResponse.getData().getBusiness_img().get(0).getUrl(),
                                         R.drawable.null_bitmap, R.drawable.null_bitmap);
-                                Presenter.getInstance(RedInfoActivity.this).getImage(imageB, roundHisResponse.getData().getBusiness_img().get(1).getUrl(),
+                                Presenter.getInstance(RedInfoActivity.this).getPlaceErrorImage(imageB, roundHisResponse.getData().getBusiness_img().get(1).getUrl(),
                                         R.drawable.null_bitmap, R.drawable.null_bitmap);
-                            } else if (size >= 3) {
+                                Presenter.getInstance(RedInfoActivity.this).getPlaceErrorImage(imageC, roundHisResponse.getData().getBusiness_img().get(2).getUrl(),
+                                        R.drawable.null_bitmap, R.drawable.null_bitmap);
                                 imageA.setVisibility(View.VISIBLE);
                                 imageC.setVisibility(View.VISIBLE);
                                 imageB.setVisibility(View.VISIBLE);
-                                Presenter.getInstance(RedInfoActivity.this).getImage(imageA, roundHisResponse.getData().getBusiness_img().get(0).getUrl(),
-                                        R.drawable.null_bitmap, R.drawable.null_bitmap);
-                                Presenter.getInstance(RedInfoActivity.this).getImage(imageB, roundHisResponse.getData().getBusiness_img().get(1).getUrl(),
-                                        R.drawable.null_bitmap, R.drawable.null_bitmap);
-                                Presenter.getInstance(RedInfoActivity.this).getImage(imageC, roundHisResponse.getData().getBusiness_img().get(2).getUrl(),
-                                        R.drawable.null_bitmap, R.drawable.null_bitmap);
                             }
                         }
+                        //商户信息
+                        sponsorName.setText(roundHisResponse.getData().getName());
+                        telText.setText("商家电话:" + roundHisResponse.getData().getTel());
+                        telText.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent1 = new Intent(Intent.ACTION_DIAL);
+                                intent1.setData(Uri.parse("tel:" + roundHisResponse.getData().getTel()));
+                                startActivity(intent1);
+                            }
+                        });
+                        /*String workTimeStr = roundHisResponse.getData().getDo_day();
+                        String displayTime = "";
+                        if (workTimeStr != null) {
+                            String[] workTimeStrList = workTimeStr.split(",");
+                            if (workTimeStrList != null) {
+                                if (workTimeStrList.length >= 7) {
+                                    displayTime = "周一至周日 " + roundHisResponse.getData().getS_do_time() + "-" + roundHisResponse.getData().getE_do_time();
+                                } else if (workTimeStrList.length > 0) {
+                                    displayTime = workTimeStr + " " + roundHisResponse.getData().getS_do_time() + "-" + roundHisResponse.getData().getE_do_time();
+                                }
+                            }
+                        } else {
+                            displayTime = "周一至周日 " + "-" + roundHisResponse.getData().getE_do_time();
+                        }*/
+                        String scope = "经营范围:";
+                        if (!TextUtils.isEmpty(roundHisResponse.getData().getScope())) {
+                            scope = scope + roundHisResponse.getData().getScope();
+
+                        }
+                        sponsors.setText(scope);
+                        String locationDetail = "";
+                        if (!TextUtils.isEmpty(roundHisResponse.getData().getAddra())) {
+                            locationDetail = roundHisResponse.getData().getAddra();
+                        }
+                        if (!TextUtils.isEmpty(roundHisResponse.getData().getAddress())) {
+                            if (!TextUtils.isEmpty(locationDetail)) {
+                                locationDetail += roundHisResponse.getData().getAddress();
+                            } else {
+                                locationDetail = roundHisResponse.getData().getAddress();
+                            }
+                        }
+                        locationDetail = locationDetail.replace("/", "");
+                        addressText.setText("商铺地址:" + locationDetail);
+                        addressText.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (!TextUtils.isEmpty(roundHisResponse.getData().getAddra())) {
+                                    if (mapList.size() > 0) {
+                                        selectMap(mapList, null, roundHisResponse.getData().getAddra(), roundHisResponse.getData().getLatitude(), roundHisResponse.getData().getLongitude());
+                                    }
+                                }
+                            }
+                        });
 
                         //点赞和评论
                         if (roundHisResponse.getData().getIs_zan() == 0) {
@@ -323,9 +624,9 @@ public class RedInfoActivity extends BaseBarActivity {
                         } else {
                             likeSponsorIcon.setImageResource(R.drawable.like_sponsor);
                         }
-
+                        localVoteNum = roundHisResponse.getData().getZan_count();
                         if (localVoteNum > 0) {
-                            likeSponsorDesc.setText("");
+                            likeSponsorDesc.setText(String.valueOf(localVoteNum));
                         } else {
                             likeSponsorDesc.setText("0");
                         }
@@ -566,13 +867,17 @@ public class RedInfoActivity extends BaseBarActivity {
 
             }
         });
-
-
     }
 
-    @OnClick({R.id.like_sponsor_span, R.id.sponsor_content_span})
+    @OnClick({R.id.list_reds, R.id.head_recycler, R.id.like_sponsor_span, R.id.sponsor_content_span})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.list_reds:
+            case R.id.head_recycler:
+            case R.id.go_to:
+                LocalLog.d(TAG, "详情");
+                onRedInfo();
+                break;
             case R.id.like_sponsor_span:
                 LocalLog.d(TAG, "点赞或者取消点赞");
                 likeSponsorSpan.setEnabled(false);

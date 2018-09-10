@@ -54,6 +54,10 @@ public final class FriendCircleFragment extends BaseFragment {
     private View popCircleOpBar;
     private PopupWindow popupOpWindow;
     private TranslateAnimation animationCircleType;
+    private int selectPage = 0;
+    private HotCircleFragment hotCircleFragment;
+    private AttentionCircleFragment attentionCircleFragment;
+    private int homeIndex = 0;
 
     @Override
     public void onAttach(Context context) {
@@ -66,7 +70,15 @@ public final class FriendCircleFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        if (selectPage == 0) {
+            if (hotCircleFragment != null) {
+                hotCircleFragment.popCirCreate(homeIndex);
+            }
+        } else {
+            if (hotCircleFragment != null) {
+                hotCircleFragment.pullCirCreate(homeIndex);
+            }
+        }
     }
 
     @Override
@@ -87,6 +99,8 @@ public final class FriendCircleFragment extends BaseFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        hotCircleFragment = null;
+        attentionCircleFragment = null;
     }
 
     @Nullable
@@ -132,13 +146,35 @@ public final class FriendCircleFragment extends BaseFragment {
     }
 
 
+    public void popCreateShow(int homeIndex) {
+        this.homeIndex = homeIndex;
+        if (hotCircleFragment.isAdded()) {
+            if (hotCircleFragment != null) {
+                if (selectPage == 0) {
+                    hotCircleFragment.popCirCreate(homeIndex);
+                } else {
+                    hotCircleFragment.pullCirCreate(homeIndex);
+                }
+            }
+        }
+    }
+
+    public void pullCreateDiss(int homeIndex) {
+        this.homeIndex = homeIndex;
+        if (hotCircleFragment.isAdded()) {
+            if (hotCircleFragment != null) {
+                hotCircleFragment.pullCirCreate(homeIndex);
+            }
+        }
+    }
+
     @Override
     protected void initView(View rootView) {
         mCircleTabLayout = (TabLayout) rootView.findViewById(R.id.circle_item_tab);
         mCirclePager = (ViewPager) rootView.findViewById(R.id.circle_item_page);
         LocalLog.d(TAG, "initView() enter");
-        HotCircleFragment hotCircleFragment = new HotCircleFragment();
-        AttentionCircleFragment attentionCircleFragment = new AttentionCircleFragment();
+        hotCircleFragment = new HotCircleFragment();
+        attentionCircleFragment = new AttentionCircleFragment();
 
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(hotCircleFragment);
@@ -170,6 +206,10 @@ public final class FriendCircleFragment extends BaseFragment {
                         if (iScanView.getVisibility() == View.GONE) {
                             iScanView.setVisibility(View.VISIBLE);
                         }*/
+                        selectPage = 0;
+                        if (hotCircleFragment != null) {
+                            hotCircleFragment.popCirCreate(2);
+                        }
                         break;
                     case 1:
                         /*if (iCamemaView.getVisibility() == View.GONE) {
@@ -178,6 +218,10 @@ public final class FriendCircleFragment extends BaseFragment {
                         if (iScanView.getVisibility() == View.VISIBLE) {
                             iScanView.setVisibility(View.GONE);
                         }*/
+                        selectPage = 1;
+                        if (hotCircleFragment != null) {
+                            hotCircleFragment.pullCirCreate(2);
+                        }
                         break;
                 }
             }

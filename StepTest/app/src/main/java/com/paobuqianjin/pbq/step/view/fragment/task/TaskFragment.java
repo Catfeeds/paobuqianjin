@@ -76,6 +76,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
     private ArrayList<MyRecTaskRecordResponse.DataBeanX.DataBean> allTaskList, doingTaskList, finishTaskList;
     private final static String REC_TASK_ACTION = "com.paobuqianjin.pbq.step.REC_TASK_ACTION";
     private final static String REC_GIFT_ACTION = "com.paobuqianjin.pbq.step.REC_GIFT_ACTION";
+    private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 50;
     private boolean isReloading = false;
@@ -193,7 +194,10 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
                 break;
             case R.id.bar_tv_right:
                 LocalLog.d(TAG, "发布");
-                startActivity(TaskReleaseActivity.class, null);
+                Intent intent = new Intent();
+                intent.setAction(PKG_ACTION);
+                intent.setClass(getContext(), TaskReleaseActivity.class);
+                startActivity(intent);
                 break;
             case R.id.bar_return_drawable:
                 getActivity().onBackPressed();

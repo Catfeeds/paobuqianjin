@@ -114,7 +114,6 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
     private final static int REQUEST_BIND_PHONE = 221;
     private ThirdPartyLoginResponse thirdPartyLoginResponseBean;
     private String action = null;
-    private String UUID = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -199,17 +198,62 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         LocalLog.d(TAG, "onTabLogin() enter");
         if (view != null) {
             switch (view.getId()) {
-
                 case R.id.forgot_pwd:
                     //TODO
                     LocalLog.d(TAG, "onTabLogin() 忘记密码");
                     startActivity(LoginForgetPassActivity.class, null, false);
                     break;
-
                 default:
                     break;
             }
         }
+    }
+
+    private void getAppId(String[] userInfo) {
+        String appId = FlagPreference.getAppId(this);
+        if (!TextUtils.isEmpty(appId)) {
+            addPhoneNo(userInfo);
+        } else {
+            makeOrQueryGroup(0, userInfo);
+        }
+    }
+
+
+    /*@desc
+  *@function status 1 查询
+  *@param
+  *@return
+  */
+    private void makeOrQueryGroup(final int status, final String[] userInfo) {
+        Map<String, String> param = new HashMap<>();
+        param.put("uuid", Installation.readInstallationId(this));
+        param.put("status", String.valueOf(status));
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.urlCreateGroup, param, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                if (status == 0) {
+                    //创建
+                    try {
+                        JSONObject jsonObj = new JSONObject(s);
+                        jsonObj = jsonObj.getJSONObject("data");
+                        String appId = jsonObj.getString("appid");
+                        if (!TextUtils.isEmpty(appId)) {
+                            FlagPreference.setAppId(LoginActivity.this, appId);
+                            addPhoneNo(userInfo);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    LocalLog.e(TAG, " param error");
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
     }
 
     private void addPhoneNo(String[] userInfo) {
@@ -220,30 +264,26 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             param.put("action", "mobile");
             param.put("mobile", userInfo[0]);
             param.put("password", md5PassWord);
-            String uuId = Installation.id(this);
-            if (TextUtils.isEmpty(uuId)) {
-                makeUUid(this);
-                uuId = Installation.makeUUid(this);
+            String uuId = Installation.readInstallationId(this);
+            if (!TextUtils.isEmpty(uuId)) {
+                param.put("uuid", uuId);
+            } else {
+                PaoToastUtils.showLongToast(this, "获取设备号失败");
+                return;
             }
-            param.put("uuid", uuId);
-            final String keepUuid = uuId;
             String appid = FlagPreference.getAppId(this);
             if (!TextUtils.isEmpty(appid)) {
                 param.put("appid", appid);
+            } else {
+
             }
             LocalLog.d(TAG, "uuId =" + uuId + "appid =" + appid);
-            UUID = keepUuid;
-            Presenter.getInstance(this).postPaoBuSimple(NetApi.urlMultAccount, param, new PaoCallBack() {
+            Presenter.getInstance(this).postPaoBuSimple(NetApi.urlAddAccount, param, new PaoCallBack() {
                 @Override
                 protected void onSuc(String s) {
                     LocalLog.d(TAG, "s =" + s);
                     try {
-                        JSONObject jsonObj = new JSONObject(s);
-                        jsonObj = jsonObj.getJSONObject("data");
-                        String appid = jsonObj.getString("appid");
-                        FlagPreference.setAppId(LoginActivity.this, appid);
                         setResult(Activity.RESULT_OK);
-                        Installation.writeInstallationId(LoginActivity.this, keepUuid);
                         finish();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -273,7 +313,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                     }
                     hideSoftInputView();
                     if (ADD_ACCOUNT_ACTION.equals(action)) {
-                        addPhoneNo(collectLoginUserInfo());
+                        getAppId(collectLoginUserInfo());
                         return;
                     }
                     Presenter.getInstance(this).userLoginByPhoneNumber(collectLoginUserInfo());
@@ -657,7 +697,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             }
 
             if (ADD_ACCOUNT_ACTION.equals(action)) {
-                addAccountThird(thirdPartyLoginParam);
+                getAppIdThird(thirdPartyLoginParam);
                 return;
             }
             Presenter.getInstance(LoginActivity.this).postThirdPartyLogin(thirdPartyLoginParam);
@@ -676,6 +716,47 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
             progressDialog.dismiss();
         }
     };
+
+    private void getAppIdThird(ThirdPartyLoginParam thirdPartyLoginParam) {
+        String appId = FlagPreference.getAppId(this);
+        if (!TextUtils.isEmpty(appId)) {
+            addAccountThird(thirdPartyLoginParam);
+        } else {
+            makeOrQueryGroup(0, thirdPartyLoginParam);
+        }
+    }
+
+    private void makeOrQueryGroup(final int status, final ThirdPartyLoginParam thirdPartyLoginParam) {
+        Map<String, String> param = new HashMap<>();
+        param.put("uuid", Installation.readInstallationId(this));
+        param.put("status", String.valueOf(status));
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.urlCreateGroup, param, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                if (status == 0) {
+                    //创建
+                    try {
+                        JSONObject jsonObj = new JSONObject(s);
+                        jsonObj = jsonObj.getJSONObject("data");
+                        String appId = jsonObj.getString("appid");
+                        if (!TextUtils.isEmpty(appId)) {
+                            FlagPreference.setAppId(LoginActivity.this, appId);
+                            addAccountThird(thirdPartyLoginParam);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    LocalLog.e(TAG, " param error");
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
+    }
 
     @OnClick({R.id.login_weixin, R.id.login_qq, R.id.go_back_account})
     public void onClickTab(View view) {
@@ -727,11 +808,6 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                     thirdPartyLoginResponseBean = null;
                     finishLogin2Main(true, id, no, token, chat_token, mobile, LOGIN_SUCCESS_ACTION);
                 } else if (ADD_ACCOUNT_ACTION.equals(action)) {
-                    LocalLog.d(TAG, "");
-                    if (!TextUtils.isEmpty(thirdPartyLoginResponseBean.getData().getAppid()) && !TextUtils.isEmpty(UUID)) {
-                        FlagPreference.setAppId(LoginActivity.this, thirdPartyLoginResponseBean.getData().getAppid());
-                        Installation.writeInstallationId(LoginActivity.this, UUID);
-                    }
                     setResult(Activity.RESULT_OK);
                     finish();
                 }

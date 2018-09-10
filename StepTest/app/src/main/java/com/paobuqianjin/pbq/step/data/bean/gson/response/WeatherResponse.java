@@ -5,10 +5,11 @@ package com.paobuqianjin.pbq.step.data.bean.gson.response;
  */
 
 public class WeatherResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"weather":"阴","img":"2","temp":"19"}
+     * data : {"is_weather":0,"weather":"","img":"","temp":"","city":"","citycode":"","main_tips":"跑步钱进"}
      */
 
     private int error;
@@ -39,25 +40,32 @@ public class WeatherResponse {
         this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return "WeatherResponse{" +
-                "error=" + error +
-                ", message='" + message + '\'' +
-                ", data=" + data +
-                '}';
-    }
-
     public static class DataBean {
         /**
-         * weather : 阴
-         * img : 2
-         * temp : 19
+         * is_weather : 0
+         * weather :
+         * img :
+         * temp :
+         * city :
+         * citycode :
+         * main_tips : 跑步钱进
          */
 
+        private int is_weather;
         private String weather;
         private String img;
         private String temp;
+        private String city;
+        private String citycode;
+        private String main_tips;
+
+        public int getIs_weather() {
+            return is_weather;
+        }
+
+        public void setIs_weather(int is_weather) {
+            this.is_weather = is_weather;
+        }
 
         public String getWeather() {
             return weather;
@@ -83,13 +91,28 @@ public class WeatherResponse {
             this.temp = temp;
         }
 
-        @Override
-        public String toString() {
-            return "DataBean{" +
-                    "weather='" + weather + '\'' +
-                    ", img='" + img + '\'' +
-                    ", temp='" + temp + '\'' +
-                    '}';
+        public String getCity() {
+            return city;
+        }
+
+        public void setCity(String city) {
+            this.city = city;
+        }
+
+        public String getCitycode() {
+            return citycode;
+        }
+
+        public void setCitycode(String citycode) {
+            this.citycode = citycode;
+        }
+
+        public String getMain_tips() {
+            return main_tips;
+        }
+
+        public void setMain_tips(String main_tips) {
+            this.main_tips = main_tips;
         }
     }
 }

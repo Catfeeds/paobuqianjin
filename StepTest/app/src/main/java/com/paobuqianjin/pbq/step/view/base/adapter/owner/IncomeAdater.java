@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -60,14 +61,25 @@ public class IncomeAdater extends RecyclerView.Adapter<IncomeAdater.IncomeDetail
             String date = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_YYYY_MM_DD_HH_MM);
             String dateStr = date.replace("-", "/");
             holder.incomeDetailTime.setText(dateStr);
-            if (((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getStatus() == 0) {
-                LocalLog.d(TAG, "审核状态");
-            } else if (((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getStatus() == 1) {
-
+            if (((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getWithdraw_status() == 0) {
+                holder.button.setText("申请中");
+                holder.button.setVisibility(View.VISIBLE);
+                holder.button.setBackgroundResource(R.drawable.carsh_status);
+            } else if (((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getWithdraw_status() == 1) {
+                holder.button.setVisibility(View.VISIBLE);
+                holder.button.setText("成功");
+                holder.button.setBackgroundResource(R.drawable.carsh_status);
+            } else if (((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getWithdraw_status() == 2) {
+                holder.button.setText("申请失败");
+                holder.button.setVisibility(View.VISIBLE);
+                holder.button.setBackgroundResource(R.drawable.crash_failed_status);
+            } else if (((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getWithdraw_status() == 3) {
+                holder.button.setText("失败");
+                holder.button.setVisibility(View.VISIBLE);
+                holder.button.setBackgroundResource(R.drawable.crash_failed_status);
             }
-            holder.data.setText(((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getActual_amount());
+            holder.data.setText(((CrashListDetailResponse.DataBeanX.DataBean) mData.get(position)).getAmount());
         } else if (mData.get(position) instanceof RechargeDetailResponse.DataBeanX.DataBean) {
-
             holder.incomeDetailDes.setText(((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getPay_name());
             long create_time = ((RechargeDetailResponse.DataBeanX.DataBean) mData.get(position)).getCreate_time();
             String date = DateTimeUtil.formatDateTime(create_time * 1000, DateTimeUtil.DF_YYYY_MM_DD_HH_MM);
@@ -91,6 +103,7 @@ public class IncomeAdater extends RecyclerView.Adapter<IncomeAdater.IncomeDetail
         TextView data;
         @Bind(R.id.span_time)
         RelativeLayout spanTime;
+        Button button;
 
         public IncomeDetailViewHolder(View view) {
             super(view);
@@ -101,6 +114,7 @@ public class IncomeAdater extends RecyclerView.Adapter<IncomeAdater.IncomeDetail
             incomeDetailDes = (TextView) view.findViewById(R.id.income_detail_des);
             incomeDetailTime = (TextView) view.findViewById(R.id.income_detail_time);
             data = (TextView) view.findViewById(R.id.data);
+            button = (Button) view.findViewById(R.id.reply_details);
         }
 
     }

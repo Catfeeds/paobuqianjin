@@ -55,6 +55,7 @@
                 android:id="@+id/iv_live_a"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/bitmap_null" />
 
             <TextView
@@ -63,6 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
                 android:text=""
                 android:textColor="@color/color_f8"
                 android:textSize="12dp"
@@ -84,6 +86,7 @@
                 android:id="@+id/iv_live_b"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/bitmap_null" />
 
             <TextView

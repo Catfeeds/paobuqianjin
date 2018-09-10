@@ -14,6 +14,7 @@
         android:src="@drawable/default_head_ico" />
 
     <LinearLayout
+        android:id="@+id/content_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="14dp"
@@ -66,10 +67,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
+                        android:layout_marginRight="14dp"
                         android:layout_marginTop="14dp"
                         android:ellipsize="end"
                         android:maxLines="3"
-                        android:text="老白金"
+                        android:text=""
                         android:textColor="@color/color_161727"
                         android:textSize="14dp" />
                 </LinearLayout>

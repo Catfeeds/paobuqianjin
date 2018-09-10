@@ -13,11 +13,13 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RedRevHisResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RedSendHisResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SendNearPkgResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.RedInfoActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.RedHisAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -35,6 +37,8 @@ import java.util.Map;
 
 public class DispatchRecordFragment extends BaseFragment {
     private final static String TAG = DispatchRecordFragment.class.getSimpleName();
+    private final static String ROUND_ACTION = "com.paobuqianjin.pbq.ROUND_PKG.ACTION";
+    private final static String NEAR_ACTION = "com.paobuqianjin.pbq.NEAR_PKG.ACTION";
     TextView hisPartA;
     TextView hisPartDesA;
     TextView hisPartB;
@@ -44,11 +48,12 @@ public class DispatchRecordFragment extends BaseFragment {
     SwipeMenuRecyclerView redRecordRecycler;
     TextView notFoundData;
     private int pageIndex = 1, pageCount = 0;
-    private final static int PAGE_SIZE_DEFAULT = 3;
+    private final static int PAGE_SIZE_DEFAULT = 10;
     ArrayList<RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean> arrayList = new ArrayList<>();
+    ArrayList<SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean> barrayList = new ArrayList<>();
     LinearLayoutManager layoutManager;
     RedHisAdapter redHisAdapter;
-    private final static int RED_INFO = 2;
+    private String currentAction = null;
 
     @Override
 
@@ -76,37 +81,108 @@ public class DispatchRecordFragment extends BaseFragment {
         hisPartDesC.setText(getString(R.string.red_his_disc));
 
         notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
+        notFoundData.setText("没有红包发布记录");
         redRecordRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.red_record_recycler);
         layoutManager = new LinearLayoutManager(getContext());
         redRecordRecycler.setLayoutManager(layoutManager);
-        redHisAdapter = new RedHisAdapter(getContext(), arrayList);
-        redRecordRecycler.setAdapter(redHisAdapter);
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());
         redRecordRecycler.addFooterView(loadMoreView); // 添加为Footer。
         redRecordRecycler.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         redRecordRecycler.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
         redRecordRecycler.setHasFixedSize(true);
         redRecordRecycler.setNestedScrollingEnabled(false);
-        redRecordRecycler.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), redRecordRecycler, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void OnItemClick(View view, int position) {
-                if (position < arrayList.size()) {
-                    //TODO 红包详情
-                    String red_id = arrayList.get(position).getRed_id();
-                    Intent intent = new Intent();
-                    intent.setClass(getContext(), RedInfoActivity.class);
-                    startActivityForResult(intent, RED_INFO);
-                }
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            if (ROUND_ACTION.equals(intent.getAction())) {
+                currentAction = ROUND_ACTION;
+                redHisAdapter = new RedHisAdapter(getContext(), arrayList);
+                redRecordRecycler.setAdapter(redHisAdapter);
+                getRecHistory();
+            } else if (NEAR_ACTION.equals(intent.getAction())) {
+                //附近红包
+                currentAction = NEAR_ACTION;
+                redHisAdapter = new RedHisAdapter(getContext(), barrayList);
+                redRecordRecycler.setAdapter(redHisAdapter);
+                getNearByPkgHistory();
             }
-
-            @Override
-            public void OnItemLongClick(View view, int position) {
-
-            }
-        }));
-        getRecHistory();
+        }
     }
 
+    private void getNearByPkgHistory() {
+        Map<String, String> param = new HashMap<>();
+        param.put("action", "send");
+        param.put("page", String.valueOf(pageIndex));
+        param.put("pagesize", String.valueOf(PAGE_SIZE_DEFAULT));
+        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlNearByRedHis, param, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                if (isAdded()) {
+                    try {
+                        SendNearPkgResponse redSendHisResponse = new Gson().fromJson(s, SendNearPkgResponse.class);
+                        pageCount = redSendHisResponse.getData().getRedpacket_list().getPagenation().getTotalPage();
+                        if (pageCount == 0) {
+                            notFoundData.setVisibility(View.VISIBLE);
+                        } else {
+                            notFoundData.setVisibility(View.GONE);
+                        }
+                        hisPartA.setText(redSendHisResponse.getData().getCount_info().getSend_total());
+                        try {
+                            int count_send = Integer.parseInt(redSendHisResponse.getData().getCount_info().getSend_count());
+                            if (count_send > 10000) {
+                                hisPartB.setText(Utils.zeroTow(count_send));
+                            } else {
+                                hisPartB.setText(redSendHisResponse.getData().getCount_info().getSend_count());
+                            }
+                            int count_rec = Integer.parseInt(redSendHisResponse.getData().getCount_info().getRecice_total());
+                            if (count_rec > 10000) {
+                                hisPartC.setText(Utils.zeroTow(count_rec));
+                            } else {
+                                hisPartC.setText(redSendHisResponse.getData().getCount_info().getRecice_total());
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        if (pageIndex == 1 && redSendHisResponse.getData() != null) {
+                            arrayList.clear();
+                            if (redSendHisResponse.getData().getRedpacket_list() != null && redSendHisResponse.getData().getRedpacket_list().getData() != null) {
+                                if (redSendHisResponse.getData().getRedpacket_list().getData().size() > 0) {
+                                    barrayList.addAll(redSendHisResponse.getData().getRedpacket_list().getData());
+                                    redHisAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        } else {
+                            LocalLog.d(TAG, "加载更多");
+                            if (redSendHisResponse.getData() != null) {
+                                if (redSendHisResponse.getData().getRedpacket_list() != null && redSendHisResponse.getData().getRedpacket_list().getData() != null) {
+                                    if (redSendHisResponse.getData().getRedpacket_list().getData().size() > 0) {
+                                        barrayList.addAll(redSendHisResponse.getData().getRedpacket_list().getData());
+                                        redHisAdapter.notifyItemRangeInserted(barrayList.size() - redSendHisResponse.getData().getRedpacket_list().getData().size(),
+                                                redSendHisResponse.getData().getRedpacket_list().getData().size());
+                                    }
+                                }
+                            }
+
+                        }
+                        redRecordRecycler.loadMoreFinish(false, true);
+                    } catch (Exception e) {
+
+                    }
+                }
+                pageIndex++;
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (isAdded()) {
+                    if (e != null) {
+
+                    } else {
+
+                    }
+                }
+            }
+        });
+    }
 
     private void getRecHistory() {
         Map<String, String> param = new HashMap<>();
@@ -120,9 +196,28 @@ public class DispatchRecordFragment extends BaseFragment {
                     try {
                         RedSendHisResponse redSendHisResponse = new Gson().fromJson(s, RedSendHisResponse.class);
                         pageCount = redSendHisResponse.getData().getRedpacket_list().getPagenation().getTotalPage();
+                        if (pageCount == 0) {
+                            notFoundData.setVisibility(View.VISIBLE);
+                        } else {
+                            notFoundData.setVisibility(View.GONE);
+                        }
                         hisPartA.setText(redSendHisResponse.getData().getCount_info().getSend_total());
-                        hisPartB.setText(redSendHisResponse.getData().getCount_info().getSend_count());
-                        hisPartC.setText(redSendHisResponse.getData().getCount_info().getRecice_total());
+                        try {
+                            int count_send = Integer.parseInt(redSendHisResponse.getData().getCount_info().getSend_count());
+                            if (count_send > 10000) {
+                                hisPartB.setText(Utils.zeroTow(count_send));
+                            } else {
+                                hisPartB.setText(redSendHisResponse.getData().getCount_info().getSend_count());
+                            }
+                            int count_rec = Integer.parseInt(redSendHisResponse.getData().getCount_info().getRecice_total());
+                            if (count_rec > 10000) {
+                                hisPartC.setText(Utils.zeroTow(count_rec));
+                            } else {
+                                hisPartC.setText(redSendHisResponse.getData().getCount_info().getRecice_total());
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         if (pageIndex == 1 && redSendHisResponse.getData() != null) {
                             arrayList.clear();
                             if (redSendHisResponse.getData().getRedpacket_list() != null && redSendHisResponse.getData().getRedpacket_list().getData() != null) {
@@ -137,12 +232,13 @@ public class DispatchRecordFragment extends BaseFragment {
                                 if (redSendHisResponse.getData().getRedpacket_list() != null && redSendHisResponse.getData().getRedpacket_list().getData() != null) {
                                     if (redSendHisResponse.getData().getRedpacket_list().getData().size() > 0) {
                                         arrayList.addAll(redSendHisResponse.getData().getRedpacket_list().getData());
-                                        redHisAdapter.notifyItemMoved(arrayList.size() - redSendHisResponse.getData().getRedpacket_list().getData().size(), redSendHisResponse.getData().getRedpacket_list().getData().size());
+                                        redHisAdapter.notifyItemRangeInserted(arrayList.size() - redSendHisResponse.getData().getRedpacket_list().getData().size(), redSendHisResponse.getData().getRedpacket_list().getData().size());
                                     }
                                 }
                             }
 
                         }
+                        redRecordRecycler.loadMoreFinish(false, true);
                     } catch (Exception e) {
 
                     }
@@ -173,6 +269,9 @@ public class DispatchRecordFragment extends BaseFragment {
                 @Override
                 public void run() {
                     LocalLog.d(TAG, "加载更多! pageIndex = " + pageIndex + "pageCount = " + pageCount);
+                    if (!isAdded()) {
+                        return;
+                    }
                     if (pageCount == 0) {
                         LocalLog.d(TAG, "第一次刷新");
                     } else {
@@ -187,7 +286,11 @@ public class DispatchRecordFragment extends BaseFragment {
                     if (getContext() == null) {
                         return;
                     }
-                    getRecHistory();
+                    if (ROUND_ACTION.equals(currentAction)) {
+                        getRecHistory();
+                    } else if (NEAR_ACTION.equals(currentAction)) {
+                        getNearByPkgHistory();
+                    }
 
                 }
             }, 1000);

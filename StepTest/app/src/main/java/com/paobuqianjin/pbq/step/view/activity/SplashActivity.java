@@ -50,20 +50,21 @@ import java.util.TimerTask;
  */
 public class SplashActivity extends UmengNotifyClickActivity {
 
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
+    private static final int AUTO_HIDE_DELAY_MILLIS = 1000;
 
     /**
      * Some older devices needs a small delay between UI widget updates
      * and a change of the status and navigation bar.
      */
     private static final int UI_ANIMATION_DELAY = 300;
+    private static final int CLICK_AD = 2001;
     private static final String TAG = "SplashActivity";
     private final Handler mHideHandler = new Handler();
     private View mContentView;
     private ViewPager vp_first_income;
     private ImageView adImageView;
     private Button cancelAd;
-    private int currentTimes = 3;
+    private int currentTimes = 5;
     Timer timer = new Timer();
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -82,6 +83,7 @@ public class SplashActivity extends UmengNotifyClickActivity {
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
     };
+    private boolean clickAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +126,7 @@ public class SplashActivity extends UmengNotifyClickActivity {
                                             currentTimes--;
                                             String format = String.format(getString(R.string.cancel_ad), currentTimes);
                                             cancelAd.setText(format);
-                                            if (currentTimes == 0) {
+                                            if (currentTimes == 0 && !clickAd) {
                                                 timer.cancel();
                                                 enterMainActivityOrLogin();
                                             }
@@ -245,7 +247,7 @@ public class SplashActivity extends UmengNotifyClickActivity {
                     String currentAdUrl = FlagPreference.getAdUrl(SplashActivity.this);
                     final String targetUrl = adList.get(0).getTarget_url();
                     if (adList.size() > 0) {
-                        if (!TextUtils.isEmpty(adList.get(0).getImg_url()) && !adList.get(0).equals(currentAdUrl)) {
+                        if (!TextUtils.isEmpty(adList.get(0).getImg_url()) && !adList.get(0).getImg_url().equals(currentAdUrl)) {
                             LocalLog.d(TAG, "更换广告图元");
                             Presenter.getInstance(SplashActivity.this).downLoadAdImage(adList.get(0).getImg_url(), adImageView, R.drawable.bitmap_null, R.drawable.bitmap_null);
                         } else {
@@ -253,7 +255,9 @@ public class SplashActivity extends UmengNotifyClickActivity {
                             adImageView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    if(!TextUtils.isEmpty(targetUrl)) startActivity(new Intent(SplashActivity.this, SingleWebViewActivity.class).putExtra("url",targetUrl));
+                                    clickAd = true;
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivityForResult(new Intent(SplashActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl), CLICK_AD);
                                 }
                             });
                         }
@@ -269,12 +273,24 @@ public class SplashActivity extends UmengNotifyClickActivity {
                 cancelAd.setVisibility(View.GONE);
                 timer.cancel();
                 enterMainActivityOrLogin();
+                clickAd = false;
                 /*String currentAdUrl = FlagPreference.getAdUrl(SplashActivity.this);
                 if (!TextUtils.isEmpty(currentAdUrl)) {
                     Presenter.getInstance(SplashActivity.this).getAdImage(adImageView, currentAdUrl);
                 }*/
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CLICK_AD) {
+            LocalLog.d(TAG, "看过广告");
+            cancelAd.setVisibility(View.GONE);
+            timer.cancel();
+            enterMainActivityOrLogin();
+        }
     }
 
     private void enterMainActivityOrLogin() {

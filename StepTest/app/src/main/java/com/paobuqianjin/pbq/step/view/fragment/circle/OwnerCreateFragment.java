@@ -199,7 +199,9 @@ public class OwnerCreateFragment extends BaseFragment {
      * 第一次加载数据。
      */
     private void loadData(ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> dataBeans) {
-
+        if (!isAdded()) {
+            return;
+        }
         adapter.notifyDataSetChanged(dataBeans);
         if (createCircleSwipe == null) {
             return;
@@ -218,6 +220,9 @@ public class OwnerCreateFragment extends BaseFragment {
 
     private void searchMore(ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> newData) {
         /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        if (!isAdded()) {
+            return;
+        }
         searchData.addAll(newData);
         // notifyItemRangeInserted()或者notifyDataSetChanged().
         adapter.notifyItemRangeInserted(searchData.size() - newData.size(), newData.size());
@@ -233,6 +238,9 @@ public class OwnerCreateFragment extends BaseFragment {
 
     private void loadMore(ArrayList<MyCreateCircleResponse.DataBeanX.DataBean> newData) {
         /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
+        if (!isAdded()) {
+            return;
+        }
         myCreateAllData.addAll(newData);
         // notifyItemRangeInserted()或者notifyDataSetChanged().
         adapter.notifyItemRangeInserted(myCreateAllData.size() - newData.size(), newData.size());

@@ -9,7 +9,7 @@ import java.util.List;
 @className :StepDollarDetailResponse
 *@date 2018/2/26
 *@author
-*@description 步币明细数据
+*@description 积分明细数据
 */
 public class StepDollarDetailResponse {
 

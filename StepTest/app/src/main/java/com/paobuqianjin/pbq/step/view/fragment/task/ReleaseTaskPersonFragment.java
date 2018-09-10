@@ -22,9 +22,12 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
 import com.paobuqianjin.pbq.step.customview.ChooseOneItemWheelPopWindow;
+import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.bundle.FriendBundleData;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskReleaseParam;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
@@ -38,8 +41,15 @@ import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.SelectFriendActivity;
+import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,7 +70,7 @@ import static android.app.Activity.RESULT_OK;
 *@author
 *@description 发布任务界面
 */
-public class ReleaseTaskPersonFragment extends BaseFragment {
+public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = ReleaseTaskPersonFragment.class.getSimpleName();
 
     private final static String PAY_FOR_STYLE = "pay_for_style";
@@ -126,11 +136,68 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
     private final int DEVALUE_STEP = 10000;//默认步数
     /* private String[] targetStepArr = null*//*{"3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"}*//*;*/
     private ArrayList<String> targetStepArr = new ArrayList<>();
-    ConfirmResult confirmResult;
+    Banner banner;
 
     @Override
     protected int getLayoutResId() {
         return R.layout.task_release_fg;
+    }
+
+    @Override
+    protected String title() {
+        return "任务红包";
+    }
+
+    private void loadBanner() {
+        final String bannerUrl = NetApi.urlAd + "?position=task_list";
+        LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
+        Presenter.getInstance(getActivity()).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
+                    final ArrayList<AdObject> adList = new ArrayList<>();
+                    if (adresponse.getData() != null && adresponse.getData().size() > 0) {
+                        int size = adresponse.getData().size();
+                        for (int i = 0; i < size; i++) {
+                            if (adresponse.getData().get(i).getImgs() != null
+                                    && adresponse.getData().get(i).getImgs().size() > 0) {
+                                int imgSize = adresponse.getData().get(i).getImgs().size();
+                                for (int j = 0; j < imgSize; j++) {
+                                    AdObject adObject = new AdObject();
+                                    adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
+                                    adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
+                                    adList.add(adObject);
+                                }
+                            }
+                        }
+                    }
+                    banner.setImageLoader(new BannerImageLoader())
+                            .setImages(adList)
+                            .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                            .setBannerAnimation(Transformer.Default)
+                            .isAutoPlay(true)
+                            .setDelayTime(2000)
+                            .setIndicatorGravity(BannerConfig.CENTER)
+                            .setOnBannerListener(new OnBannerListener() {
+                                @Override
+                                public void OnBannerClick(int position) {
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                }
+                            })
+                            .start();
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                LocalLog.d(TAG, "获取失败!");
+            }
+        });
     }
 
     @Override
@@ -156,6 +223,7 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
 
     @Override
     protected void initView(View viewRoot) {
+        banner = (Banner) viewRoot.findViewById(R.id.banner);
         targetTaskStepNum = (EditText) viewRoot.findViewById(R.id.target_task_step_num);
         targetTaskMoneyNum = (EditText) viewRoot.findViewById(R.id.target_task_money_num);
         targetTaskDayNum = (EditText) viewRoot.findViewById(R.id.target_task_day_num);
@@ -197,11 +265,27 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
 
             }
         });
+        setToolBarListener(new BaseBarImageViewFragment.ToolBarListener() {
+            @Override
+            public void clickLeft() {
+                getActivity().onBackPressed();
+            }
+
+            @Override
+            public void clickRight() {
+                confirm();
+            }
+        });
+        loadBanner();
     }
 
-    public void confirm(ConfirmResult confirmResult) {
+    @Override
+    public Object right() {
+        return "确定";
+    }
+
+    private void confirm() {
         if (isAdded()) {
-            this.confirmResult = confirmResult;
             if (checkReleaseParams()) {
                 taskReleaseParam
                         .setTask_days(Integer.parseInt(targetTaskDayNum.getText().toString()))
@@ -209,7 +293,6 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                         .setTarget_step(Integer.parseInt(targetTaskStepNum.getText().toString()))
                         .setTo_userid(friends)
                         .setUserid(Presenter.getInstance(getContext()).getId());
-                confirmResult.result(false);
                 Presenter.getInstance(getContext()).taskRelease(taskReleaseParam);
             }
         }
@@ -239,9 +322,6 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                 exitTokenUnfect();
             } else {
                 Toast.makeText(getContext(), taskReleaseResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                if (confirmResult != null) {
-                    confirmResult.result(true);
-                }
             }
 
         }
@@ -256,9 +336,6 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                 exitTokenUnfect();
             } else {
                 PaoToastUtils.showLongToast(getContext(), errorCode.getMessage());
-            }
-            if (confirmResult != null) {
-                confirmResult.result(true);
             }
         }
     };
@@ -371,9 +448,6 @@ public class ReleaseTaskPersonFragment extends BaseFragment {
                     getActivity().finish();
                 } else {
                     LocalLog.d(TAG, "取消支付");
-                    if (confirmResult != null) {
-                        confirmResult.result(true);
-                    }
                 }
                 break;
         }

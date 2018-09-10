@@ -42,6 +42,30 @@ public class RoundDetailStyleResponse {
     }
 
     public static class DataBean {
+        public String getDo_day() {
+            return do_day;
+        }
+
+        public void setDo_day(String do_day) {
+            this.do_day = do_day;
+        }
+
+        public String getS_do_time() {
+            return s_do_time;
+        }
+
+        public void setS_do_time(String s_do_time) {
+            this.s_do_time = s_do_time;
+        }
+
+        public String getE_do_time() {
+            return e_do_time;
+        }
+
+        public void setE_do_time(String e_do_time) {
+            this.e_do_time = e_do_time;
+        }
+
         /**
          * red_id : 58
          * userid : 35822
@@ -64,9 +88,17 @@ public class RoundDetailStyleResponse {
          * income_money : 9.00000
          * comment_count : 10
          * comment_list : [{"eid":260,"userid":35882,"grade":0,"fatherid":0,"score":"0.0","content":"收藏了","businessid":1636,"create_time":1534486883,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png","nickname":"rm_13148896029","father_avatar":null,"father_nickname":null,"user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":259,"userid":35882,"grade":0,"fatherid":0,"score":"0.0","content":"","businessid":1636,"create_time":1534486864,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png","nickname":"rm_13148896029","father_avatar":null,"father_nickname":null,"user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":85,"userid":35822,"grade":0,"fatherid":0,"score":"0.0","content":"干活哈哈","businessid":1636,"create_time":1534218100,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","nickname":"rm_13424156029","father_avatar":null,"father_nickname":null,"user_is_vip":1,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":84,"userid":35822,"grade":0,"fatherid":0,"score":"0.0","content":"发广告","businessid":1636,"create_time":1534218092,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","nickname":"rm_13424156029","father_avatar":null,"father_nickname":null,"user_is_vip":1,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":83,"userid":35822,"grade":0,"fatherid":0,"score":"0.0","content":"就看看","businessid":1636,"create_time":1534217636,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","nickname":"rm_13424156029","father_avatar":null,"father_nickname":null,"user_is_vip":1,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":76,"userid":35845,"grade":1,"fatherid":71,"score":"0.0","content":"0000","businessid":1636,"create_time":1534162547,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","father_nickname":"rm_13424156029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":1,"father_is_cusvip":0,"father_is_gvip":0},{"eid":75,"userid":35845,"grade":1,"fatherid":74,"score":"0.0","content":"狗狗喝够了","businessid":1636,"create_time":1534162474,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","father_nickname":"rm_13148896029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":0,"father_is_cusvip":0,"father_is_gvip":0},{"eid":74,"userid":35845,"grade":0,"fatherid":0,"score":"0.0","content":"第二","businessid":1636,"create_time":1534162413,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":null,"father_nickname":null,"user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":73,"userid":35845,"grade":1,"fatherid":71,"score":"0.0","content":"XXX","businessid":1636,"create_time":1534162206,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","father_nickname":"rm_13424156029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":1,"father_is_cusvip":0,"father_is_gvip":0},{"eid":72,"userid":35845,"grade":1,"fatherid":68,"score":"0.0","content":"ooo","businessid":1636,"create_time":1534162195,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","father_nickname":"rm_13424156029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":1,"father_is_cusvip":0,"father_is_gvip":0}]
-         *is_zan: 0,
+         * is_zan: 0,
+         * "do_day":"周一,周二,周四",
+         * "s_do_time":"00:00",
+         * "e_do_time":"04:30"
+         * scope:
+         * longitude : 113.111111
+         * latitude : 22.555556
          */
-
+        private String do_day;
+        private String s_do_time;
+        private String e_do_time;
         private int red_id;
         private int userid;
         private int businessid;
@@ -88,6 +120,45 @@ public class RoundDetailStyleResponse {
         private List<BusinessImgBean> business_img;
         private List<ReceiverListBean> receiver_list;
         private List<CommentListBean> comment_list;
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(String longitude) {
+            this.longitude = longitude;
+        }
+
+        private String latitude;
+        private String longitude;
+
+        public String getScope() {
+            return scope;
+        }
+
+        public void setScope(String scope) {
+            this.scope = scope;
+        }
+
+        private String scope;
+
+        public int getZan_count() {
+            return zan_count;
+        }
+
+        public void setZan_count(int zan_count) {
+            this.zan_count = zan_count;
+        }
+
+        private int zan_count;
 
         public int getIs_zan() {
             return is_zan;
@@ -364,17 +435,17 @@ public class RoundDetailStyleResponse {
             private String score;
             private String content;
             private int businessid;
-            private int create_time;
+            private long create_time;
             private String avatar;
             private String nickname;
-            private Object father_avatar;
-            private Object father_nickname;
+            private String father_avatar;
+            private String father_nickname;
             private int user_is_vip;
             private int user_is_cusvip;
             private int user_is_gvip;
-            private Object father_is_vip;
-            private Object father_is_cusvip;
-            private Object father_is_gvip;
+            private int father_is_vip;
+            private int father_is_cusvip;
+            private int father_is_gvip;
 
             public int getEid() {
                 return eid;
@@ -432,11 +503,11 @@ public class RoundDetailStyleResponse {
                 this.businessid = businessid;
             }
 
-            public int getCreate_time() {
+            public long getCreate_time() {
                 return create_time;
             }
 
-            public void setCreate_time(int create_time) {
+            public void setCreate_time(long create_time) {
                 this.create_time = create_time;
             }
 
@@ -456,19 +527,19 @@ public class RoundDetailStyleResponse {
                 this.nickname = nickname;
             }
 
-            public Object getFather_avatar() {
+            public String getFather_avatar() {
                 return father_avatar;
             }
 
-            public void setFather_avatar(Object father_avatar) {
+            public void setFather_avatar(String father_avatar) {
                 this.father_avatar = father_avatar;
             }
 
-            public Object getFather_nickname() {
+            public String getFather_nickname() {
                 return father_nickname;
             }
 
-            public void setFather_nickname(Object father_nickname) {
+            public void setFather_nickname(String father_nickname) {
                 this.father_nickname = father_nickname;
             }
 
@@ -500,15 +571,15 @@ public class RoundDetailStyleResponse {
                 return father_is_vip;
             }
 
-            public void setFather_is_vip(Object father_is_vip) {
+            public void setFather_is_vip(int father_is_vip) {
                 this.father_is_vip = father_is_vip;
             }
 
-            public Object getFather_is_cusvip() {
+            public int getFather_is_cusvip() {
                 return father_is_cusvip;
             }
 
-            public void setFather_is_cusvip(Object father_is_cusvip) {
+            public void setFather_is_cusvip(int father_is_cusvip) {
                 this.father_is_cusvip = father_is_cusvip;
             }
 
@@ -516,7 +587,7 @@ public class RoundDetailStyleResponse {
                 return father_is_gvip;
             }
 
-            public void setFather_is_gvip(Object father_is_gvip) {
+            public void setFather_is_gvip(int father_is_gvip) {
                 this.father_is_gvip = father_is_gvip;
             }
         }

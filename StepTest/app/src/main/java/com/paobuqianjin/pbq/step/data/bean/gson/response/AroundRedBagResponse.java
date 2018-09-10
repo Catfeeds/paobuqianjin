@@ -9,14 +9,15 @@ public class AroundRedBagResponse {
     private DataBean data;
 
     public class AroundRedBagBean {
-       /* "red_id":41,
-                "userid":35881,
-                "businessid":1637,
-                "content":"叶孤城",
-                "number":2,
-                "money":"31",
-                "receive_num":0,
-                "target_url":""*/
+        /* "red_id":41,
+                 "userid":35881,
+                 "businessid":1637,
+                 "content":"叶孤城",
+                 "number":2,
+                 "money":"31",
+                 "receive_num":0,
+                 "target_url":""
+                 "status":1*/
         private String red_id;
         private String userid;
         private String businessid;
@@ -24,6 +25,16 @@ public class AroundRedBagResponse {
         private String money;
         private String receive_num;
         private String target_url;
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        private int status;
 
         public String getBusinessid() {
             return businessid;
@@ -53,12 +64,26 @@ public class AroundRedBagResponse {
             return target_url;
         }
     }
+
     public class DataBean {
+        /*"is_receive":0
+        * */
         int remain_time;
+
+        public int getIs_receive() {
+            return is_receive;
+        }
+
+        public void setIs_receive(int is_receive) {
+            this.is_receive = is_receive;
+        }
+
+        int is_receive;
         List<AroundRedBagBean> redpacket_list;
 
         /**
          * 秒
+         *
          * @return
          */
         public int getRemain_time() {

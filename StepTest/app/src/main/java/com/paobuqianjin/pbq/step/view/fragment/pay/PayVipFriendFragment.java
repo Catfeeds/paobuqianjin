@@ -754,7 +754,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                     PaoToastUtils.showLongToast(getActivity(), "金额不能为空");
                     return;
                 }
-                if (getSelect() == -1 || getSelect() == 0) {
+                if (getSelect() == -1) {
                     PaoToastUtils.showLongToast(getActivity(), "请选择支付方式");
                     return;
                 }
@@ -775,97 +775,28 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                         }
                     }
                 }, 15000);
-                Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
-                    @Override
-                    public void onIdentifed() {
-                        int style = getSelect();
-                        if (style == 1) {
-                            //TODO 判断是否设置过密码
-                            Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
-                                @Override
-                                protected void onSuc(String s) {
-                                    if (!isAdded()) return;
-                                    try {
-                                        JSONObject jsonObj = new JSONObject(s);
-                                        jsonObj = jsonObj.getJSONObject("data");
-                                        String status = jsonObj.getString("setpw");
-                                        if (status.equals("1")) {
-                                            popPayConfirm();
-                                        } else if (status.equals("0")) {
-                                            if (passWordSetDialog == null) {
-                                                passWordSetDialog = new NormalDialog(getActivity());
-                                            }
-                                            passWordSetDialog.setMessage("您还未设置支付密码，去上设置支付密码?");
-                                            passWordSetDialog.setYesOnclickListener("去设置", new NormalDialog.onYesOnclickListener() {
-                                                @Override
-                                                public void onYesClick() {
-                                                    startActivity(IdentifedSetPassActivity.class, null);
-                                                    if (passWordSetDialog != null)
-                                                        passWordSetDialog.dismiss();
-                                                }
-                                            });
-                                            passWordSetDialog.setNoOnclickListener("不设置", new NormalDialog.onNoOnclickListener() {
-                                                @Override
-                                                public void onNoClick() {
-                                                    if (passWordSetDialog != null)
-                                                        passWordSetDialog.dismiss();
-                                                }
-                                            });
-                                            if (!passWordSetDialog.isShowing())
-                                                passWordSetDialog.show();
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                                @Override
-                                protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-
-                                }
-                            });
-
-                        } else if (style == 0) {
-                            if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
-                                pay();
-                            } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
-                                paySponsorVip();
-                            } else {
-                                LocalLog.d(TAG, "Unknown op");
-                            }
-                        } else if (style == 2) {
-                            LocalLog.d(TAG, "使用云闪付!");
-                            if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
-                                pay();
-                            } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
-                                paySponsorVip();
-                            } else {
-                                LocalLog.d(TAG, "Unknown op");
-                            }
-                        } else if (style == 3) {
-                            LocalLog.d(TAG, "七分钱支付");
-                            if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
-                                pay();
-                            } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
-                                paySponsorVip();
-                            } else {
-                                LocalLog.d(TAG, "Unknown op");
-                            }
+                int style = getSelect();
+                if (style == 1) {
+                    Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
+                        @Override
+                        public void onIdentifed() {
+                            realPay();
                         }
-                    }
 
-                    @Override
-                    public void onUnidentify() {
-                        LocalLog.d(TAG, "onUnidentify()");
-                        identifyDialog();
-                    }
+                        @Override
+                        public void onUnidentify() {
+                            LocalLog.d(TAG, "onUnidentify()");
+                            identifyDialog();
+                        }
 
-                    @Override
-                    public void onGetIdentifyStatusError() {
+                        @Override
+                        public void onGetIdentifyStatusError() {
 
-                    }
-                });
-
+                        }
+                    });
+                } else {
+                    realPay();
+                }
                 break;
             case R.id.ali_ico_span:
                 if (selectPay[3]) {
@@ -879,6 +810,83 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                     selectPay[3] = true;
                 }
                 break;
+        }
+    }
+
+    private void realPay() {
+        int style = getSelect();
+        if (style == 1) {
+            //TODO 判断是否设置过密码
+            Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
+                @Override
+                protected void onSuc(String s) {
+                    if (!isAdded()) return;
+                    try {
+                        JSONObject jsonObj = new JSONObject(s);
+                        jsonObj = jsonObj.getJSONObject("data");
+                        String status = jsonObj.getString("setpw");
+                        if (status.equals("1")) {
+                            popPayConfirm();
+                        } else if (status.equals("0")) {
+                            if (passWordSetDialog == null) {
+                                passWordSetDialog = new NormalDialog(getActivity());
+                            }
+                            passWordSetDialog.setMessage("您还未设置支付密码，去上设置支付密码?");
+                            passWordSetDialog.setYesOnclickListener("去设置", new NormalDialog.onYesOnclickListener() {
+                                @Override
+                                public void onYesClick() {
+                                    startActivity(IdentifedSetPassActivity.class, null);
+                                    if (passWordSetDialog != null)
+                                        passWordSetDialog.dismiss();
+                                }
+                            });
+                            passWordSetDialog.setNoOnclickListener("不设置", new NormalDialog.onNoOnclickListener() {
+                                @Override
+                                public void onNoClick() {
+                                    if (passWordSetDialog != null)
+                                        passWordSetDialog.dismiss();
+                                }
+                            });
+                            if (!passWordSetDialog.isShowing())
+                                passWordSetDialog.show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                }
+            });
+
+        } else if (style == 0) {
+            if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                pay();
+            } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
+                paySponsorVip();
+            } else {
+                LocalLog.d(TAG, "Unknown op");
+            }
+        } else if (style == 2) {
+            LocalLog.d(TAG, "使用云闪付!");
+            if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                pay();
+            } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
+                paySponsorVip();
+            } else {
+                LocalLog.d(TAG, "Unknown op");
+            }
+        } else if (style == 3) {
+            LocalLog.d(TAG, "七分钱支付");
+            if (ACTION_VIP_SELF.equals(action) || ACTION_VIP_FRIEND.equals(action)) {
+                pay();
+            } else if (ACTION_VIP_SPONSOR_SELF.equals(action) || ACTION_VIP_SPONSOR_FRIEND.equals(action)) {
+                paySponsorVip();
+            } else {
+                LocalLog.d(TAG, "Unknown op");
+            }
         }
     }
 

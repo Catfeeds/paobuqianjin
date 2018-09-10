@@ -296,136 +296,202 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="10dp" />
 
-    <LinearLayout
-        android:id="@+id/bottom_background"
+    <RelativeLayout
+        android:id="@+id/home_ad"
         android:layout_width="match_parent"
-        android:layout_height="190dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/us_part"
+        android:layout_alignTop="@+id/wave_view"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/new_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/rect_angle"
+            android:text="最新"
+            android:textColor="@color/color_e4393c"
+            android:textSize="12dp" />
+
+        <com.paobuqianjin.pbq.step.customview.LooperTextView
+            android:id="@+id/home_ad_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/new_s" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/us_part"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@color/color_f8"
-        android:orientation="vertical"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp">
+        android:layout_centerHorizontal="true">
 
         <LinearLayout
+            android:id="@+id/bottom_background"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical">
+            android:layout_height="180dp"
+            android:background="@color/color_f8"
+            android:orientation="vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp">
 
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
 
-                <ImageView
-                    android:id="@+id/out_red_pkg_image"
-                    android:layout_width="170dp"
-                    android:layout_height="85dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/heme_page_selector" />
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/out_red_package"
-                    android:layout_width="wrap_content"
-                    android:layout_height="85dp"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:gravity="bottom"
-                    android:paddingBottom="8dp"
-                    android:text="领红包"
-                    android:textColor="@color/color_f8"
-                    android:textSize="14dp" />
-            </FrameLayout>
+                    <ImageView
+                        android:id="@+id/out_red_pkg_image"
+                        android:layout_width="170dp"
+                        android:layout_height="85dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/heme_page_selector" />
 
-            <FrameLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
+                    <TextView
+                        android:id="@+id/out_red_package"
+                        android:layout_width="wrap_content"
+                        android:layout_height="85dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:gravity="bottom"
+                        android:paddingBottom="8dp"
+                        android:text="现金红包"
+                        android:textColor="@color/color_f8"
+                        android:textSize="14dp" />
+                </FrameLayout>
 
-                <ImageView
-                    android:id="@+id/create_circle_image"
-                    android:layout_width="170dp"
-                    android:layout_height="85dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/create_cicle_selector"
-                    android:scaleType="centerCrop" />
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/create_circle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="85dp"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:gravity="bottom"
-                    android:paddingBottom="8dp"
-                    android:text="发红包"
-                    android:textColor="@color/color_f8"
-                    android:textSize="14dp" />
-            </FrameLayout>
+                    <ImageView
+                        android:id="@+id/create_circle_image"
+                        android:layout_width="170dp"
+                        android:layout_height="85dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/create_cicle_selector"
+                        android:scaleType="centerCrop" />
+
+                    <TextView
+                        android:id="@+id/create_circle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="85dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:gravity="bottom"
+                        android:paddingBottom="8dp"
+                        android:text="发红包"
+                        android:textColor="@color/color_f8"
+                        android:textSize="14dp" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/recv_sponsor_rpg"
+                        android:layout_width="170dp"
+                        android:layout_height="85dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/recive_red_package_selector"
+                        android:scaleType="centerCrop" />
+
+                    <TextView
+                        android:id="@+id/income_red_package"
+                        android:layout_width="wrap_content"
+                        android:layout_height="85dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:gravity="bottom"
+                        android:paddingBottom="8dp"
+                        android:text="领消费红包"
+                        android:textColor="@color/color_f8"
+                        android:textSize="14dp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/add_friend_image"
+                        android:layout_width="170dp"
+                        android:layout_height="85dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/invite_friend_selector"
+                        android:scaleType="centerCrop" />
+
+                    <TextView
+                        android:id="@+id/invite_friend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="85dp"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="bottom"
+                        android:paddingBottom="8dp"
+                        android:text="商家金牌会员"
+                        android:textColor="@color/color_f8"
+                        android:textSize="14dp" />
+                </FrameLayout>
+            </LinearLayout>
         </LinearLayout>
 
+        <RelativeLayout
+            android:id="@+id/person_task_pkg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical">
+            <ImageView
+                android:id="@+id/zhuan_pkg"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/red_pkg_task" />
 
-            <FrameLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/task_num"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1">
+                android:layout_centerInParent="true"
+                android:textColor="@color/color_f8"
+                android:textSize="12dp" />
 
-                <ImageView
-                    android:id="@+id/recv_sponsor_rpg"
-                    android:layout_width="170dp"
-                    android:layout_height="85dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/recive_red_package_selector"
-                    android:scaleType="centerCrop" />
-
-                <TextView
-                    android:id="@+id/income_red_package"
-                    android:layout_width="wrap_content"
-                    android:layout_height="85dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:gravity="bottom"
-                    android:paddingBottom="8dp"
-                    android:text="领消费红包"
-                    android:textColor="@color/color_f8"
-                    android:textSize="14dp" />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="0dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1">
-
-                <ImageView
-                    android:id="@+id/add_friend_image"
-                    android:layout_width="170dp"
-                    android:layout_height="85dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/invite_friend_selector"
-                    android:scaleType="centerCrop" />
-
-                <TextView
-                    android:id="@+id/invite_friend"
-                    android:layout_width="wrap_content"
-                    android:layout_height="85dp"
-                    android:layout_gravity="center_horizontal"
-                    android:gravity="bottom"
-                    android:paddingBottom="8dp"
-                    android:text="商家金牌会员"
-                    android:textColor="@color/color_f8"
-                    android:textSize="14dp" />
-            </FrameLayout>
-        </LinearLayout>
-
-    </LinearLayout>
+                android:layout_alignBottom="@+id/zhuan_pkg"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="30dp"
+                android:text="专享红包"
+                android:textColor="@color/color_f8"
+                android:textSize="14dp" />
+        </RelativeLayout>
+    </RelativeLayout>
 
 
 </RelativeLayout>

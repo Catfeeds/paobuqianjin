@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/bar_return_a_style"></include>
+
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_d6d6d6">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/top_pop"
+                android:layout_width="match_parent"
+                android:layout_height="210dp"
+                android:background="@color/color_6c71c4"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="55dp"
+                    android:layout_height="58dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="28dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/crash_icon" />
+
+                <TextView
+                    android:id="@+id/crash_to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:text="零钱提现-到招商银行卡(3096)"
+                    android:textColor="@color/color_f8"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/crash_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="11dp"
+                    android:text=""
+                    android:textColor="@color/color_f8"
+                    android:textSize="26dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="11dp"
+                    android:text=""
+                    android:textColor="@color/color_f8"
+                    android:textSize="12dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/top_pop"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginTop="14dp"
+                    android:background="@color/color_f8"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:text="当前状态"
+                                android:textColor="#666666"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="26dp"
+                                android:text="提现金额"
+                                android:textColor="#666666"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="26dp"
+                                android:text="手续费"
+                                android:textColor="#666666"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="26dp"
+                                android:text="申请时间"
+                                android:textColor="#666666"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="26dp"
+                                android:text="到账时间"
+                                android:textColor="#666666"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="26dp"
+                                android:text="提现银行"
+                                android:textColor="#666666"
+                                android:textSize="14dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/crash_status_str"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/color_161727"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:id="@+id/crash_total"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="26dp"
+                                android:text=""
+                                android:textColor="@color/color_161727"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:id="@+id/crash_diss"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="26dp"
+                                android:text=""
+                                android:textColor="@color/color_161727"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:id="@+id/time_crash"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="26dp"
+                                android:text=""
+                                android:textColor="@color/color_161727"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:id="@+id/time_arrv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="26dp"
+                                android:text=""
+                                android:textColor="@color/color_161727"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:id="@+id/bank_to"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="26dp"
+                                android:text=""
+                                android:textColor="@color/color_161727"
+                                android:textSize="14dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginRight="14dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/d_line" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="34dp"
+                            android:layout_marginTop="20dp"
+                            android:text="有问题请联系公司客服，关注后会在三个工作日内联系"
+                            android:textColor="#666666"
+                            android:textSize="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="34dp"
+                            android:layout_marginRight="34dp"
+                            android:layout_marginTop="11dp"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_gravity="center_vertical"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/customer_service" />
+
+                            <TextView
+                                android:id="@+id/text_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="13dp"
+                                android:layout_weight="1"
+                                android:text="跑步钱进客服"
+                                android:textColor="@color/color_161727"
+                                android:textSize="14dp" />
+
+                            <Button
+                                android:id="@+id/attion"
+                                android:layout_width="60dp"
+                                android:layout_height="28dp"
+                                android:layout_gravity="center_vertical|right"
+                                android:background="@drawable/release_detail_bg"
+                                android:enabled="false"
+                                android:gravity="center"
+                                android:text=""
+                                android:textColor="@color/color_161727"
+                                android:textSize="14dp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="45dp"
+                            android:layout_marginLeft="34dp"
+                            android:layout_marginTop="14dp"
+                            android:enabled="true"
+                            android:focusable="true"
+                            android:longClickable="true"
+                            android:text="有问题请联系公司客服电话：0755-86540067"
+                            android:textColor="@color/color_161727"
+                            android:textIsSelectable="true"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+</LinearLayout>

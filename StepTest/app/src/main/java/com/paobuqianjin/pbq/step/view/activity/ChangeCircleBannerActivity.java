@@ -81,7 +81,7 @@ public class ChangeCircleBannerActivity extends BaseBarActivity {
         super.initView();
         ivBanner = findViewById(R.id.iv_banner);
         barTvRight = findViewById(R.id.bar_tv_right);
-        cachePath = getExternalCacheDir().getAbsolutePath();
+        cachePath = Utils.getDiskCacheDir(this).getAbsolutePath();
         qServiceCfg = QServiceCfg.instance(this);
 
         urlImage = getIntent().getStringExtra("intentImgUrl");

@@ -46,6 +46,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
 import com.umeng.socialize.utils.SocializeUtils;
@@ -90,7 +91,6 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     private static final String TAG = AddAroundRedBagActivity.class.getSimpleName();
     private final int REQUEST_CODE = 111;
     private TranslateAnimation animationCircleType;
-    private QServiceCfg qServiceCfg;
     private Intent intent;
     private ProgressDialog dialog;
     private boolean hasBusiness;
@@ -116,8 +116,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         dialog = new ProgressDialog(this);
         dialog.setMessage("上传中");
         dialog.setCancelable(false);
-        qServiceCfg = QServiceCfg.instance(this);
-        cachePath = getExternalCacheDir().getAbsolutePath();
+        cachePath = Utils.getDiskCacheDir(this).getAbsolutePath();
         initAdapter();
         getDefaultBusiness();
     }
@@ -185,6 +184,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     }
 
     private void selectPicture() {
+        hideSoftInputView();
         popupCircleTypeView = View.inflate(this, R.layout.select_camera_pic, null);
         popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
                 WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
@@ -351,7 +351,6 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                             try {
                                 JSONObject jsonObject = new JSONObject(s);
                                 String red_map_id = jsonObject.getJSONObject("data").getString("red_map_id");
-                                // TODO: hqp 2018/8/15
                                 Bundle bundle = new Bundle();
                                 bundle.putString(CIRCLE_ID, red_map_id);
                                 bundle.putString(PAY_FOR_STYLE, "red_map");
@@ -376,10 +375,10 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
             PaoToastUtils.showShortToast(this, "请输入推广信息");
             return false;
         }
-        if (resultList.size() < 1) {
+        /*if (resultList.size() < 1) {
             PaoToastUtils.showShortToast(this, "请选择图片");
             return false;
-        }
+        }*/
 
         if (TextUtils.isEmpty(etRedBagNum.getText().toString().trim())) {
             PaoToastUtils.showShortToast(this, "请输入红包个数");
@@ -387,7 +386,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         }
 
         if (TextUtils.isEmpty(etRedBagTotalMoney.getText().toString().trim())) {
-            PaoToastUtils.showShortToast(this, "请输入红包总个数");
+            PaoToastUtils.showShortToast(this, "请输入红包总金额");
             return false;
         }
         if (businessId < 1) {

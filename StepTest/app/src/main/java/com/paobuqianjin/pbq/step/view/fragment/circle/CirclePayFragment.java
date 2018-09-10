@@ -450,7 +450,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                     PaoToastUtils.showLongToast(getActivity(), "金额不能为空");
                     return;
                 }
-                if (getSelect() == -1 || getSelect() == 0) {
+                if (getSelect() == -1 ) {
                     PaoToastUtils.showLongToast(getActivity(), "请选择支付方式");
                     return;
                 }
@@ -487,147 +487,28 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                         }
                     }
                 }, 15000);
-                Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
-                    @Override
-                    public void onIdentifed() {
-                        int style = getSelect();
-                        if (style == 0) {
-                            float money = 0.0f;
-                            if (rechargeEdit.getVisibility() == View.VISIBLE) {
-                                try {
-                                    money = Float.parseFloat(rechargeEdit.getText().toString());
-                                } catch (NumberFormatException e) {
-                                    e.printStackTrace();
-                                    Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                                if (money <= 0) {
-                                    Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                            } else {
-                                money = Float.parseFloat(pay);
-                            }
-/*                    dialog = ProgressDialog.show(getContext(), "微信支付",
-                            "正在提交订单");*/
-
-                            PayOrderParam wxPayOrderParam = new PayOrderParam();
-                            if ("circle".equals(payAction)) {
-                                LocalLog.d(TAG, "圈子支付");
-                                if (!"".equals(id)) {
-                                    wxPayOrderParam.setCircleid(Integer.parseInt(id))
-                                            .setPayment_type("wx")
-                                            .setOrder_type(payAction)
-                                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
-                                    Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
-                                }
-                            } else if ("user".equals(payAction)) {
-                                LocalLog.d(TAG, "用户订单");
-                                wxPayOrderParam
-                                        .setPayment_type("wx")
-                                        .setOrder_type(payAction)
-                                        .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
-                                Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
-                            } else if ("task".equals(payAction)) {
-                                LocalLog.d(TAG, "任务订单");
-                                if (!"".equals(taskno)) {
-                                    wxPayOrderParam
-                                            .setPayment_type("wx")
-                                            .setOrder_type(payAction)
-                                            .setTaskno(taskno)
-                                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
-                                    Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
-                                }
-                            } else if ("redpacket".equals(payAction)) {
-                                LocalLog.d(TAG, "红包订单");
-                                if (!"".equals(id)) {
-                                    wxPayOrderParam.setRed_id(Integer.parseInt(id))
-                                            .setPayment_type("wx")
-                                            .setOrder_type(payAction)
-                                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
-                                    Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
-                                }
-                            } else if ("red_map".equals(payAction)) {
-                                LocalLog.d(TAG, "遍地红包订单 id " + id);
-                                if (!TextUtils.isEmpty(id)) {
-                                    wxPayOrderParam.setRed_map_id(id)
-                                            .setPayment_type("wx")
-                                            .setOrder_type(payAction)
-                                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
-                                    Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
-                                }
-                            }
-
-                        } else if (style == 1) {
-                            //TODO 判断是否设置过密码
-                            Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
-                                @Override
-                                protected void onSuc(String s) {
-                                    if (!isAdded()) return;
-                                    try {
-                                        JSONObject jsonObj = new JSONObject(s);
-                                        jsonObj = jsonObj.getJSONObject("data");
-                                        String status = jsonObj.getString("setpw");
-                                        if (status.equals("1")) {
-                                            popPayConfirm();
-                                        } else if (status.equals("0")) {
-                                            if (passWordSetDialog == null) {
-                                                passWordSetDialog = new NormalDialog(getActivity());
-                                            }
-                                            passWordSetDialog.setMessage("您还未设置支付密码，去上设置支付密码?");
-                                            passWordSetDialog.setYesOnclickListener("去设置", new NormalDialog.onYesOnclickListener() {
-                                                @Override
-                                                public void onYesClick() {
-                                                    startActivity(IdentifedSetPassActivity.class, null);
-                                                    if (passWordSetDialog != null)
-                                                        passWordSetDialog.dismiss();
-                                                }
-                                            });
-                                            passWordSetDialog.setNoOnclickListener("不设置", new NormalDialog.onNoOnclickListener() {
-                                                @Override
-                                                public void onNoClick() {
-                                                    if (passWordSetDialog != null)
-                                                        passWordSetDialog.dismiss();
-                                                }
-                                            });
-                                            if (!passWordSetDialog.isShowing())
-                                                passWordSetDialog.show();
-                                        }
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                                @Override
-                                protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-
-                                }
-                            });
-
-                        } else if (style == 2) {
-                            LocalLog.d(TAG, "使用云闪付");
-                            payYunSanRequest();
-                        } else if (style == 3) {
-                            LocalLog.d(TAG, "七分钱支付宝");
-                            sevenPayAli();
-                        } else {
-                            Toast.makeText(getContext(), "请选择一种支付方式", Toast.LENGTH_SHORT).show();
+                int style = getSelect();
+                if (style == 1) {
+                    Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
+                        @Override
+                        public void onIdentifed() {
+                            realPay();
                         }
-                    }
 
-                    @Override
-                    public void onUnidentify() {
-                        LocalLog.d(TAG, "onUnidentify()");
-                        identifyDialog();
-                    }
+                        @Override
+                        public void onUnidentify() {
+                            LocalLog.d(TAG, "onUnidentify()");
+                            identifyDialog();
+                        }
 
-                    @Override
-                    public void onGetIdentifyStatusError() {
+                        @Override
+                        public void onGetIdentifyStatusError() {
 
-                    }
-                });
-
-
+                        }
+                    });
+                } else {
+                    realPay();
+                }
                 break;
             case R.id.yuns_ico_span:
                 if (selectPay[2]) {
@@ -653,6 +534,135 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                     selectPay[3] = true;
                 }
                 break;
+        }
+
+    }
+
+
+    //不检查实名或者已经实名过了之后的支付
+    private void realPay() {
+        int style = getSelect();
+        if (style == 0) {
+            float money = 0.0f;
+            if (rechargeEdit.getVisibility() == View.VISIBLE) {
+                try {
+                    money = Float.parseFloat(rechargeEdit.getText().toString());
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (money <= 0) {
+                    Toast.makeText(getContext(), "请输入正确的支付金额", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } else {
+                money = Float.parseFloat(pay);
+            }
+/*                    dialog = ProgressDialog.show(getContext(), "微信支付",
+                            "正在提交订单");*/
+
+            PayOrderParam wxPayOrderParam = new PayOrderParam();
+            if ("circle".equals(payAction)) {
+                LocalLog.d(TAG, "圈子支付");
+                if (!"".equals(id)) {
+                    wxPayOrderParam.setCircleid(Integer.parseInt(id))
+                            .setPayment_type("wx")
+                            .setOrder_type(payAction)
+                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                    Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                }
+            } else if ("user".equals(payAction)) {
+                LocalLog.d(TAG, "用户订单");
+                wxPayOrderParam
+                        .setPayment_type("wx")
+                        .setOrder_type(payAction)
+                        .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+            } else if ("task".equals(payAction)) {
+                LocalLog.d(TAG, "任务订单");
+                if (!"".equals(taskno)) {
+                    wxPayOrderParam
+                            .setPayment_type("wx")
+                            .setOrder_type(payAction)
+                            .setTaskno(taskno)
+                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                    Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                }
+            } else if ("redpacket".equals(payAction)) {
+                LocalLog.d(TAG, "红包订单");
+                if (!"".equals(id)) {
+                    wxPayOrderParam.setRed_id(Integer.parseInt(id))
+                            .setPayment_type("wx")
+                            .setOrder_type(payAction)
+                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                    Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                }
+            } else if ("red_map".equals(payAction)) {
+                LocalLog.d(TAG, "遍地红包订单 id " + id);
+                if (!TextUtils.isEmpty(id)) {
+                    wxPayOrderParam.setRed_map_id(id)
+                            .setPayment_type("wx")
+                            .setOrder_type(payAction)
+                            .setUserid(Presenter.getInstance(getContext()).getId()).setTotal_fee(money);
+                    Presenter.getInstance(getContext()).postCircleOrder(wxPayOrderParam);
+                }
+            }
+
+        } else if (style == 1) {
+            //TODO 判断是否设置过密码
+            Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
+                @Override
+                protected void onSuc(String s) {
+                    if (!isAdded()) return;
+                    try {
+                        JSONObject jsonObj = new JSONObject(s);
+                        jsonObj = jsonObj.getJSONObject("data");
+                        String status = jsonObj.getString("setpw");
+                        if (status.equals("1")) {
+                            popPayConfirm();
+                        } else if (status.equals("0")) {
+                            if (passWordSetDialog == null) {
+                                passWordSetDialog = new NormalDialog(getActivity());
+                            }
+                            passWordSetDialog.setMessage("您还未设置支付密码，去上设置支付密码?");
+                            passWordSetDialog.setYesOnclickListener("去设置", new NormalDialog.onYesOnclickListener() {
+                                @Override
+                                public void onYesClick() {
+                                    startActivity(IdentifedSetPassActivity.class, null);
+                                    if (passWordSetDialog != null)
+                                        passWordSetDialog.dismiss();
+                                }
+                            });
+                            passWordSetDialog.setNoOnclickListener("不设置", new NormalDialog.onNoOnclickListener() {
+                                @Override
+                                public void onNoClick() {
+                                    if (passWordSetDialog != null)
+                                        passWordSetDialog.dismiss();
+                                }
+                            });
+                            if (!passWordSetDialog.isShowing())
+                                passWordSetDialog.show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                }
+            });
+
+        } else if (style == 2) {
+            LocalLog.d(TAG, "使用云闪付");
+            payYunSanRequest();
+        } else if (style == 3) {
+            LocalLog.d(TAG, "七分钱支付宝");
+            sevenPayAli();
+        } else {
+            Toast.makeText(getContext(), "请选择一种支付方式", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -752,12 +762,12 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
     }
 
     private void payYunSanRequest() {
-            String[] permissions = {
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                    Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            };
-            requestPermission(permissions);
+        String[] permissions = {
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+        requestPermission(permissions);
     }
 
 

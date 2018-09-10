@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/owner_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/color_d9d9d9">
@@ -70,6 +71,7 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
                         android:orientation="vertical">
 
                         <LinearLayout
@@ -84,6 +86,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:ellipsize="end"
                                 android:maxEms="8"
+                                android:maxLength="8"
                                 android:singleLine="true"
                                 android:text=""
                                 android:textColor="@color/color_f8"
@@ -118,18 +121,29 @@
                         android:layout_marginRight="24dp"
                         android:layout_weight="1"
                         android:gravity="right"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:paddingLeft="5dp">
 
-                        <ImageView
-                            android:id="@+id/qrcode"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp"
-                            android:layout_centerHorizontal="true"
-                            android:src="@drawable/qr_onwer" />
+                        <RelativeLayout
+                            android:id="@+id/qr_linear"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:background="@color/color_f8"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/qrcode"
+                                android:layout_width="58dp"
+                                android:layout_height="58dp"
+                                android:layout_centerInParent="true"
+                                android:scaleType="centerCrop" />
+                        </RelativeLayout>
+
 
                         <ImageView
                             android:layout_width="7dp"
                             android:layout_height="12dp"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginLeft="5dp"
                             android:scaleType="centerInside"
                             android:src="@drawable/go_withte" />
@@ -436,7 +450,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="10dp"
                         android:includeFontPadding="false"
-                        android:text="步币"
+                        android:text="积分"
                         android:textColor="@color/color_161727"
                         android:textSize="15dp" />
                 </LinearLayout>

@@ -77,7 +77,7 @@ public class MyConsumptiveRedBagActivity extends BaseBarActivity implements Swip
                 String bId = listData.get(position).getBusinessid();
                 if (!TextUtils.isEmpty(bId)) {
                     Intent intent = new Intent();
-                    intent.putExtra("businessid", Integer.parseInt(bId));
+                    intent.putExtra(getPackageName()+"businessid", Integer.parseInt(bId));
                     intent.setClass(MyConsumptiveRedBagActivity.this, SponsorDetailActivity.class);
                     startActivity(intent);
                 }

@@ -36,6 +36,7 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.utils.SocializeUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -181,13 +182,16 @@ public class MultAccManangerActivity extends BaseBarActivity {
     }
 
     private void realDelete(int id) {
-        String url = NetApi.urlDeletMult + String.valueOf(id);
-        Presenter.getInstance(this).deletePaoBuSimple(url, null, new PaoCallBack() {
+        String url = NetApi.urlDeleteAcc;
+        Map<String, String> param = new HashMap<>();
+        param.put("ids", String.valueOf(id));
+        final String appId = FlagPreference.getAppId(this);
+        param.put("appid", appId);
+        Presenter.getInstance(this).deletePaoBuSimple(url, param, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
-                String uuuId = Installation.id(MultAccManangerActivity.this);
-                if (!TextUtils.isEmpty(uuuId)) {
-                    getAccountList(uuuId);
+                if (!TextUtils.isEmpty(appId)) {
+                    getAccountList(appId);
                 }
                 setResult(Activity.RESULT_OK);
             }
@@ -285,9 +289,9 @@ public class MultAccManangerActivity extends BaseBarActivity {
     //进行过添加账户的操作之后才能获取列表
     private void initLocalEv() {
         LocalLog.d(TAG, "initLocalEv() .....");
-        String uuuId = Installation.id(this);
-        if (!TextUtils.isEmpty(uuuId)) {
-            getAccountList(uuuId);
+        String appId = FlagPreference.getAppId(this);
+        if (!TextUtils.isEmpty(appId)) {
+            getAccountList(appId);
         } else {
             Intent intent = getIntent();
             if (intent != null) {
@@ -298,11 +302,10 @@ public class MultAccManangerActivity extends BaseBarActivity {
         }
     }
 
-    private void getAccountList(String uuId) {
-        String appId = FlagPreference.getAppId(this);
+    private void getAccountList(String appId) {
         LocalLog.d(TAG, "APPID = " + appId);
         if (!TextUtils.isEmpty(appId)) {
-            String url = NetApi.urlAccountList + "appid=" + appId + "&uuid=" + uuId;
+            String url = NetApi.urlGroupList + appId;
             LocalLog.d(TAG, "URL = " + url);
             Presenter.getInstance(this).getPaoBuSimple(url, null, new PaoCallBack() {
                 @Override

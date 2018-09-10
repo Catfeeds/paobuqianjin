@@ -13,6 +13,21 @@
         android:textColor="@color/color_161727"
         android:textSize="14dp" />
 
+    <Button
+        android:id="@+id/reply_details"
+        android:layout_width="60dp"
+        android:layout_height="28dp"
+        android:layout_alignBottom="@+id/income_detail_des"
+        android:layout_alignTop="@+id/income_detail_des"
+        android:layout_marginLeft="20dp"
+        android:layout_toEndOf="@+id/income_detail_des"
+        android:background="@drawable/carsh_status"
+        android:stateListAnimator="@null"
+        android:text=""
+        android:textColor="@color/color_f8"
+        android:textSize="14dp"
+        android:visibility="gone" />
+
     <RelativeLayout
         android:id="@+id/span_time"
         android:layout_width="match_parent"
