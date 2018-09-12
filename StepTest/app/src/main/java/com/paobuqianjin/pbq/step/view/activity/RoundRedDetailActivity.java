@@ -50,13 +50,13 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorContentAdapter;
+import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.paobuqianjin.pbq.step.view.base.view.CustomEdit;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 import com.paobuqianjin.pbq.step.view.emoji.EmotionKeyboard;
 import com.paobuqianjin.pbq.step.view.emoji.EmotionLayout;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionExtClickListener;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionSelectedListener;
-import com.paobuqianjin.pbq.step.view.fragment.circle.DynamicDetailFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -165,6 +165,10 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     TextView addressText;
     @Bind(R.id.list_reds)
     LinearLayout listReds;
+    @Bind(R.id.att_money)
+    LinearLayout attMoney;
+    @Bind(R.id.scroll_view)
+    BounceScrollView scrollView;
     private int localVoteNum = 0;
     private int localCommentNum = 0;
     CustomEdit commentEditText;
@@ -182,6 +186,8 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     private View selectMapView;
     private PopupWindow selectMapWindow;
     List<String> mapList = new ArrayList<>();
+    private int scrollY = 40;
+    private int scrollYT = 1040;
 
     @Override
     protected String title() {
@@ -197,6 +203,8 @@ public class RoundRedDetailActivity extends BaseBarActivity {
 
     @Override
     protected void initView() {
+        attMoney = (LinearLayout) findViewById(R.id.att_money);
+        scrollView = (BounceScrollView) findViewById(R.id.scroll_view);
         mScreenWidth = ImagePickerComUtils.getScreenWidth(this);
         mScreenHeight = ImagePickerComUtils.getScreenHeight(this);
         redSuccess = (TextView) findViewById(R.id.red_success);

@@ -5,7 +5,7 @@
 
     <Button
         android:id="@+id/red_pkg_button"
-        android:layout_width="106dp"
-        android:layout_height="106dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:textSize="15dp" />
 </RelativeLayout>

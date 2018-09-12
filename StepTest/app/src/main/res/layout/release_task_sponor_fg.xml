@@ -23,11 +23,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="140dp"></com.youth.banner.Banner>
 
+            <RelativeLayout
+                android:id="@+id/attion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/banner">
+
+                <TextView
+                    android:id="@+id/attion_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="30dp"
+                    android:enabled="false"
+                    android:text="@string/golden_vip_attion"
+                    android:textColor="@color/color_e4393c"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:src="@drawable/go_to" />
+            </RelativeLayout>
+
             <EditText
                 android:id="@+id/et_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/banner"
+                android:layout_below="@+id/attion"
                 android:layout_marginTop="10dp"
                 android:background="@color/color_f8"
                 android:backgroundTint="@color/white"
@@ -36,7 +63,6 @@
                 android:maxLength="300"
                 android:minHeight="100dp"
                 android:padding="8dp"
-                android:paddingTop="5dp"
                 android:textColorHint="@color/color_8a8a8a"
                 android:textSize="15dp" />
 

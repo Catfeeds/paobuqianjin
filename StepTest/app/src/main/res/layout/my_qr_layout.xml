@@ -55,9 +55,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/share_pan"
-        android:layout_below="@+id/qrcode_img"
-        android:layout_marginTop="80dp"
-        android:orientation="vertical">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="86dp"
+        android:orientation="vertical"
+        android:paddingBottom="8dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:text="陆续就能得奖励30元"
             android:textColor="#FFDB7A"
@@ -81,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <ImageView

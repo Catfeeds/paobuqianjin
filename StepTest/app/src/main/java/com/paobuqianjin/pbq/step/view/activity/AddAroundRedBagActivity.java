@@ -35,13 +35,11 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorInfoActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
 import com.paobuqianjin.pbq.step.adapter.GridAddPic2Adapter;
-import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.alioss.AliOss;
 import com.paobuqianjin.pbq.step.data.alioss.OssService;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoTipsCallBack;
-import com.paobuqianjin.pbq.step.data.tencent.yun.common.QServiceCfg;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
@@ -51,13 +49,10 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
 import com.umeng.socialize.utils.SocializeUtils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +79,8 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     EditText tvLink;
     @Bind(R.id.et_information)
     EditText etInformation;
+    @Bind(R.id.attion)
+    RelativeLayout attion;
     private GridAddPic2Adapter adapter;
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
@@ -310,9 +307,12 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         finish();
     }
 
-    @OnClick({R.id.linear_shop, R.id.btn_confirm})
+    @OnClick({R.id.linear_shop, R.id.btn_confirm, R.id.attion})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.attion:
+                startActivity(GoldenSponsoractivity.class, null);
+                break;
             case R.id.linear_shop:
                 Intent intent = new Intent();
                 if (hasBusiness) {
@@ -341,7 +341,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                     Map<String, String> params = new HashMap<>();
                     params.put("number", etRedBagNum.getText().toString());
                     params.put("money", etRedBagTotalMoney.getText().toString());
-                    params.put("businessid", businessId+"");
+                    params.put("businessid", businessId + "");
                     params.put("content", etInformation.getText().toString());
                     params.put("images", images);
                     params.put("target_url", tvLink.getText().toString());

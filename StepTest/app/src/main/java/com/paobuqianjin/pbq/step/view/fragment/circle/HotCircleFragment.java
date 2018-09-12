@@ -163,7 +163,7 @@ public class HotCircleFragment extends BaseFragment {
         super.onResume();
         LocalLog.d(TAG, "onResume");
         loadingData();
-        if(isFirst){
+        if (isFirst) {
             isFirst = false;
             popCirCreate(2);
         }
@@ -180,7 +180,11 @@ public class HotCircleFragment extends BaseFragment {
     public void popCirCreate(int homeIndex) {
         this.homeIndex = homeIndex;
         if (isAdded() && !isHidden() && homeIndex == 2) {
-            popRedPkgButton();
+            try {
+                popRedPkgButton();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -229,7 +233,7 @@ public class HotCircleFragment extends BaseFragment {
         animationCircleTypeHori.setDuration(200);
 
 
-        popOpWindowRedButtonHori.showAtLocation(getView().findViewById(R.id.hot_circle), Gravity.BOTTOM | Gravity.RIGHT, 0, 150);
+        popOpWindowRedButtonHori.showAtLocation(getView().findViewById(R.id.hot_circle), Gravity.BOTTOM | Gravity.RIGHT, 0, 400);
         popCircleOpBarHori.startAnimation(animationCircleTypeHori);
     }
 

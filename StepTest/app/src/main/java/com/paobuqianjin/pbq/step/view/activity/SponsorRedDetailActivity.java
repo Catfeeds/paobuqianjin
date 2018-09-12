@@ -301,7 +301,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
             animationCircleTypeHori.setDuration(200);
 
 
-            popOpWindowRedButtonHori.showAtLocation(findViewById(R.id.sponsor_red), Gravity.BOTTOM | Gravity.RIGHT, 0, 22);
+            popOpWindowRedButtonHori.showAtLocation(findViewById(R.id.sponsor_red), Gravity.BOTTOM | Gravity.RIGHT, 0, 400);
             popCircleOpBarHori.startAnimation(animationCircleTypeHori);
         }
     }

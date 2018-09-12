@@ -69,6 +69,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
@@ -172,6 +173,8 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     RongGridView gridView;
     @Bind(R.id.sponsor_link_edit)
     EditText sponsorLinkEdit;
+    @Bind(R.id.attion)
+    RelativeLayout attion;
     private boolean isFirstLocal = true;
     private StepLocationReciver stepLocationReciver = new StepLocationReciver();
     private TaskSponsorParam taskSponsorParam;
@@ -637,10 +640,13 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
-    @OnClick({R.id.day_step_target_span, R.id.target_step_day_num, R.id.people_target_span, R.id.sponor_msg_span})
+    @OnClick({R.id.day_step_target_span, R.id.target_step_day_num, R.id.people_target_span, R.id.sponor_msg_span, R.id.attion})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
+            case R.id.attion:
+                startActivity(GoldenSponsoractivity.class, null);
+                break;
             case R.id.day_step_target_span:
             case R.id.target_step_day_num:
                 LocalLog.d(TAG, "商家设置任务目标步数");

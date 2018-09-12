@@ -20,6 +20,34 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:id="@+id/attion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/banner"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/attion_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="30dp"
+                    android:enabled="false"
+                    android:text="@string/golden_vip_attion"
+                    android:textColor="@color/color_e4393c"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:src="@drawable/go_to" />
+            </RelativeLayout>
+
             <EditText
                 android:id="@+id/et_information"
                 android:layout_width="match_parent"

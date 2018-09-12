@@ -4,18 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
+    android:orientation="vertical"
     tools:context="com.paobuqianjin.pbq.step.view.activity.AddConsumptiveRedBagActivity">
 
     <include
         android:id="@+id/frame_top_bar"
         layout="@layout/bar_return_a_style" />
+
     <ScrollView
-        android:layout_below="@+id/frame_top_bar"
-        android:layout_above="@+id/linear_bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linear_bottom"
+        android:layout_below="@+id/frame_top_bar">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,17 +28,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_below="@+id/people_target_span"
-                android:gravity="center_vertical"
-                android:background="@color/color_efefef">
+                android:layout_marginTop="5dp"
+                android:background="@color/color_efefef"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="14dp"
-                    android:text="@string/tips_open_vip"
-                    android:textColor="@color/color_717171"
+                    android:layout_weight="1"
+                    android:text="@string/golden_vip_attion"
+                    android:textColor="@color/color_e4393c"
                     android:textSize="12sp" />
 
 
@@ -53,12 +56,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="49dp"
                     android:gravity="center_vertical"
-                    android:paddingLeft="14dp"
-                    >
+                    android:paddingLeft="14dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -91,13 +94,14 @@
                     <requestFocus />
 
                 </LinearLayout>
+
                 <include layout="@layout/h_divide" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="49dp"
                     android:gravity="center_vertical"
-                    android:paddingLeft="14dp"
-                    >
+                    android:paddingLeft="14dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -126,22 +130,24 @@
                         android:paddingRight="14dp"
                         android:textCursorDrawable="@null"
                         android:textSize="14dp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_161727"
-                        android:textSize="14dp"
                         android:layout_marginRight="14dp"
-                        android:text="元"/>
+                        android:text="元"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
 
                 </LinearLayout>
+
                 <include layout="@layout/h_divide" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="49dp"
                     android:gravity="center_vertical"
-                    android:paddingLeft="14dp"
-                    >
+                    android:paddingLeft="14dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -155,10 +161,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="满"
-                        android:textColor="@color/color_161727"
                         android:layout_weight="1"
                         android:gravity="right"
+                        android:text="满"
+                        android:textColor="@color/color_161727"
                         android:textSize="14dp" />
 
                     <EditText
@@ -183,18 +189,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="元可用"
                         android:layout_marginRight="14dp"
+                        android:text="元可用"
                         android:textColor="@color/color_161727"
                         android:textSize="14dp" />
                 </LinearLayout>
+
                 <include layout="@layout/h_divide" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="49dp"
                     android:gravity="center_vertical"
-                    android:paddingLeft="14dp"
-                    >
+                    android:paddingLeft="14dp">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -216,27 +224,29 @@
                         android:cursorVisible="true"
                         android:gravity="right|center_vertical"
                         android:hint="有效期不超过30天"
-                        android:lines="1"
                         android:inputType="number"
+                        android:lines="1"
                         android:maxLength="3"
                         android:maxLines="1"
                         android:textCursorDrawable="@null"
                         android:textSize="14dp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_161727"
-                        android:textSize="14dp"
                         android:layout_marginRight="14dp"
-                        android:text="天"/>
+                        android:text="天"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
                 </LinearLayout>
+
                 <include layout="@layout/h_divide" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="49dp"
                     android:gravity="center_vertical"
-                    android:paddingLeft="14dp"
-                    >
+                    android:paddingLeft="14dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -259,28 +269,29 @@
                         android:cursorVisible="true"
                         android:gravity="right|center_vertical"
                         android:hint="请输入消费红包数量"
-                        android:lines="1"
                         android:inputType="number"
+                        android:lines="1"
                         android:maxLength="6"
                         android:maxLines="1"
                         android:textCursorDrawable="@null"
                         android:textSize="14dp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/color_161727"
-                        android:textSize="14dp"
                         android:layout_marginRight="14dp"
-                        android:text="张"/>
+                        android:text="张"
+                        android:textColor="@color/color_161727"
+                        android:textSize="14dp" />
 
                 </LinearLayout>
+
                 <include layout="@layout/h_divide" />
 
                 <RelativeLayout
                     android:id="@+id/stand_circle_pan"
                     android:layout_width="match_parent"
-                    android:layout_height="49dp"
-                    >
+                    android:layout_height="49dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -312,10 +323,12 @@
                         android:textSize="12dp" />
                 </RelativeLayout>
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
                 android:background="@color/color_efefef"></View>
+
             <RelativeLayout
                 android:id="@+id/sponor_msg_span"
                 android:layout_width="match_parent"
@@ -354,15 +367,16 @@
             </RelativeLayout>
 
 
-
         </LinearLayout>
     </ScrollView>
+
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/linear_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
+
         <Button
             android:id="@+id/btn_confirm"
             android:layout_width="match_parent"

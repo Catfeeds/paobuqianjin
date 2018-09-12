@@ -284,4 +284,5 @@
     <string name="repositioning">重新定位</string>
     <string name="sponosor_des">请填写店铺经营范围(或推广信息)300个字以内</string>
     <string name="vip_goto">"亲，小主。想领更多更大的红包，请办理个人会员。现在办理终身3元，以后办理每年300元!"</string>
+    <string name="golden_vip_attion">温馨提示：现在可免费试用，以后只有金牌商家会员才能发布广告红包。现在办理终身365元，以后办理每年3650元！现在开通!</string>
 </resources>

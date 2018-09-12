@@ -1,11 +1,13 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -73,6 +75,7 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
 
     private String[] userInfo;
     private boolean isBool;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +83,7 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
         setContentView(R.layout.sign_edit_layout);
         ButterKnife.bind(this);
         Presenter.getInstance(this).attachUiInterface(this);
+        progressDialog = new ProgressDialog(this);
         newAccount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -141,6 +145,11 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
         style.setSpan(new ForegroundColorSpan(Color.parseColor("#ff6c71c4")), readText.length()
                 , (readText + protocol).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         read_xieyi.setText(style);
+    }
+
+    private void showProgressDialog(String msg) {
+        progressDialog.setMessage(msg);
+        if (!progressDialog.isShowing()) progressDialog.show();
     }
 
     private void checkConfirmEnable() {
@@ -207,6 +216,18 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
                 break;
 
             case R.id.new_btn_register:
+                showProgressDialog("请稍等");
+                newBtnRegister.setEnabled(false);
+                newBtnRegister.setBackground(ContextCompat.getDrawable(this, R.drawable.rect_angle_diss_bt));
+                newBtnRegister.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (newBtnRegister != null) {
+                            newBtnRegister.setEnabled(true);
+                            newBtnRegister.setBackground(ContextCompat.getDrawable(RegisterActivity.this, R.drawable.change_color_btn));
+                        }
+                    }
+                }, 15000);
                 if (!isBool) {
                     Toast.makeText(RegisterActivity.this, "请阅读《跑步钱进服务协议》", Toast.LENGTH_SHORT).show();
                 } else {
@@ -218,6 +239,13 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
 
     @Override
     public void response(SignUserResponse signUserResponse) {
+        newBtnRegister.setEnabled(true);
+        if (progressDialog != null) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+                newBtnRegister.setBackground(ContextCompat.getDrawable(RegisterActivity.this, R.drawable.change_color_btn));
+            }
+        }
         if (signUserResponse.getError() == 0) {
             LocalLog.d(TAG, "注册成功! 去登陆页");
             PaoToastUtils.showLongToast(this, "注册成功!");
@@ -226,11 +254,11 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
             Presenter.getInstance(this).setNo(signUserResponse.getData().getNo());
             Presenter.getInstance(this).setToken(this, signUserResponse.getData().getUser_token());
             Intent intent = new Intent();
-            intent.putExtra("r_id",signUserResponse.getData().getId());
-            intent.putExtra("r_no",signUserResponse.getData().getNo());
-            intent.putExtra("r_user_token",signUserResponse.getData().getUser_token());
-            intent.putExtra("r_chat_token",signUserResponse.getData().getChat_token());
-            setResult(Activity.RESULT_OK,intent);
+            intent.putExtra("r_id", signUserResponse.getData().getId());
+            intent.putExtra("r_no", signUserResponse.getData().getNo());
+            intent.putExtra("r_user_token", signUserResponse.getData().getUser_token());
+            intent.putExtra("r_chat_token", signUserResponse.getData().getChat_token());
+            setResult(Activity.RESULT_OK, intent);
             finish();
         } else {
             PaoToastUtils.showLongToast(this, signUserResponse.getMessage());
@@ -246,6 +274,11 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
     protected void onDestroy() {
         super.onDestroy();
         Presenter.getInstance(this).dispatchUiInterface(this);
+        if (progressDialog != null) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        }
     }
 
     /**

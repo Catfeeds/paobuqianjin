@@ -299,7 +299,7 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
             animationCircleTypeHori.setDuration(200);
 
 
-            popOpWindowRedButtonHori.showAtLocation(getView(R.id.consum_red_bag), Gravity.BOTTOM | Gravity.RIGHT, 0, 22);
+            popOpWindowRedButtonHori.showAtLocation(getView(R.id.consum_red_bag), Gravity.BOTTOM | Gravity.RIGHT, 0, 400);
             popCircleOpBarHori.startAnimation(animationCircleTypeHori);
         }
     }
