@@ -8,10 +8,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +71,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.paobuqianjin.pbq.step.view.emoji.EmotionViewPagerAdapter.numToHex8;
 
@@ -214,6 +210,8 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     ImageView lineContent;
     @Bind(R.id.v_empty)
     View vEmpty;
+    @Bind(R.id.pic_index)
+    RelativeLayout picIndex;
     private int bussinessId = -1;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 10;
@@ -240,6 +238,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     private String info;
     private String red_id;
     RelativeLayout barNull;
+
 
     @Override
     protected String title() {
@@ -278,6 +277,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
         listReds = (LinearLayout) viewRoot.findViewById(R.id.list_reds);
         sponsorScroll = (BounceScrollView) viewRoot.findViewById(R.id.sponsor_scroll);
         barNull = (RelativeLayout) viewRoot.findViewById(R.id.sponsor_detail);
+        picIndex = (RelativeLayout) viewRoot.findViewById(R.id.pic_index);
         gotoSponsor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -472,6 +472,8 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                         if (!TextUtils.isEmpty(dataBean.getRed_content())) {
                             redInfo.setText(dataBean.getRed_content());
                             redInfo.setVisibility(View.VISIBLE);
+                        } else {
+                            redInfo.setVisibility(View.GONE);
                         }
 
 
@@ -528,7 +530,11 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                             sponsorImages.setAdapter(new ImageViewPagerAdapter(getContext(), Mview));
                         }
                         if (mRedView.size() > 0) {
-                            currentPic.setText(String.valueOf(1) + "/" + mRedView.size());
+                            if (mRedView.size() == 1) {
+                                picIndex.setVisibility(View.GONE);
+                            } else {
+                                currentPic.setText(String.valueOf(1) + "/" + mRedView.size());
+                            }
                             redImages.setAdapter(new ImageViewPagerAdapter(getContext(), mRedView));
                             redImages.addOnPageChangeListener(onPageChangeListener);
                         }

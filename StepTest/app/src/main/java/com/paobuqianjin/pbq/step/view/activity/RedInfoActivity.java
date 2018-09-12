@@ -5,7 +5,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -67,7 +66,6 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.paobuqianjin.pbq.step.view.emoji.EmotionViewPagerAdapter.numToHex8;
 
@@ -77,12 +75,6 @@ import static com.paobuqianjin.pbq.step.view.emoji.EmotionViewPagerAdapter.numTo
 
 public class RedInfoActivity extends BaseBarActivity {
     private final static String TAG = RedInfoActivity.class.getSimpleName();
-    @Bind(R.id.user_head)
-    CircleImageView userHead;
-    @Bind(R.id.pkg_money)
-    TextView pkgMoney;
-    @Bind(R.id.op_des)
-    TextView opDes;
     @Bind(R.id.recv_person)
     TextView recvPerson;
     @Bind(R.id.head_recycler)
@@ -163,6 +155,22 @@ public class RedInfoActivity extends BaseBarActivity {
     TextView addressText;
     @Bind(R.id.list_reds)
     LinearLayout listReds;
+    @Bind(R.id.sponsor_pic_linear)
+    LinearLayout sponsorPicLinear;
+    @Bind(R.id.go_to)
+    LinearLayout goTo;
+    @Bind(R.id.red_success)
+    TextView redSuccess;
+    @Bind(R.id.red_result)
+    TextView redResult;
+    @Bind(R.id.into_wallet)
+    TextView intoWallet;
+    @Bind(R.id.scroll_info)
+    BounceScrollView scrollInfo;
+    @Bind(R.id.red_info_layout)
+    RelativeLayout redInfoLayout;
+    @Bind(R.id.pic_index)
+    RelativeLayout picIndex;
     private int localVoteNum = 0;
     private int localCommentNum = 0;
     CustomEdit commentEditText;
@@ -171,8 +179,6 @@ public class RedInfoActivity extends BaseBarActivity {
     LinearLayout goMore;
     private final static String SHOW_SPONSOR_PICS_ACTION = "com.paobuqianjin.pbq.step.SHOW_PIC_ACTION";
     ArrayList<SponsorDetailResponse.DataBean.EnvironmentImgsBean> goodsImgsBeans = new ArrayList<>();
-    BounceScrollView scroll;
-    RelativeLayout barNull;
     private int currentImage = 0;
     private TranslateAnimation animationCircleType;
     private View popBirthSelectView;
@@ -282,11 +288,6 @@ public class RedInfoActivity extends BaseBarActivity {
     protected void initView() {
         mScreenWidth = ImagePickerComUtils.getScreenWidth(this);
         mScreenHeight = ImagePickerComUtils.getScreenHeight(this);
-        scroll = (BounceScrollView) findViewById(R.id.scroll_info);
-        barNull = (RelativeLayout) findViewById(R.id.red_detail);
-        userHead = (CircleImageView) findViewById(R.id.user_head);
-        pkgMoney = (TextView) findViewById(R.id.pkg_money);
-        opDes = (TextView) findViewById(R.id.op_des);
         headRecycler = (RecyclerView) findViewById(R.id.head_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -335,18 +336,6 @@ public class RedInfoActivity extends BaseBarActivity {
                 }
             }
         }));
-
-        scroll.setScrollListener(new BounceScrollView.ScrollListener() {
-            @Override
-            public void scrollOritention(int l, int t, int oldl, int oldt) {
-                LocalLog.d(TAG, "l =  " + l + ",t = " + t + ",oldl= " + oldl + "," + oldt);
-                if (Utils.px2dip(RedInfoActivity.this, (float) t) > 64) {
-                    barNull.setBackgroundColor(ContextCompat.getColor(RedInfoActivity.this, R.color.color_232433));
-                } else {
-                    barNull.setBackground(null);
-                }
-            }
-        });
 
         if (Utils.isHaveBaiduMap()) {
             mapList.add("百度");
@@ -447,14 +436,22 @@ public class RedInfoActivity extends BaseBarActivity {
             protected void onSuc(String s) {
                 try {
                     final RoundHisResponse roundHisResponse = new Gson().fromJson(s, RoundHisResponse.class);
-                    Presenter.getInstance(RedInfoActivity.this).getPlaceErrorImage(userHead, roundHisResponse.getData().getAvatar()
-                            , R.drawable.default_head_ico, R.drawable.default_head_ico);
                     LocalLog.d(TAG, "当前为领红包详情");
-                    String income = roundHisResponse.getData().getIncome_money() + "元";
-                    SpannableString spannableString = new SpannableString(income);
-                    spannableString.setSpan(new AbsoluteSizeSpan(14, true), roundHisResponse.getData().getIncome_money().length(), income.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                    pkgMoney.setText(spannableString);
-                    opDes.setVisibility(View.VISIBLE);
+
+                    if (TextUtils.isEmpty(result_str) && Double.parseDouble(roundHisResponse.getData().getIncome_money()) > 0.0d) {
+                        String showResult = "￥" + roundHisResponse.getData().getIncome_money() + "元";
+                        redSuccess.setText("你已经领取过");
+                        redSuccess.setVisibility(View.VISIBLE);
+                        SpannableString spannableString = new SpannableString(showResult);
+                        spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("￥" + roundHisResponse.getData().getIncome_money()).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                        redResult.setText(spannableString);
+                        intoWallet.setVisibility(View.VISIBLE);
+                    } else {
+                        if (Double.parseDouble(roundHisResponse.getData().getIncome_money()) <= 0.0d) {
+                            redSuccess.setText("还未领取过该红包");
+                            redSuccess.setVisibility(View.VISIBLE);
+                        }
+                    }
                     if (roundHisResponse.getData().getIs_zan() == 1) {
                         is_vote = true;
 
@@ -505,6 +502,11 @@ public class RedInfoActivity extends BaseBarActivity {
                             }
                         }
                         if (Mview.size() > 0) {
+                            if (Mview.size() == 1) {
+                                picIndex.setVisibility(View.GONE);
+                            } else {
+
+                            }
                             currentPic.setText(String.valueOf(1) + "/" + Mview.size());
                             sponsorImages.setAdapter(new ImageViewPagerAdapter(RedInfoActivity.this, Mview));
                             sponsorImages.addOnPageChangeListener(onPageChangeListener);

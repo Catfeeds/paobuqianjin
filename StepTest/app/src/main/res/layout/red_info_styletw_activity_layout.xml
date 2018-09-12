@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/red_info_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_f8">
+    android:background="#E33D2F">
 
+    <include
+        android:id="@+id/red_detail"
+        layout="@layout/bar_return_a_style" />
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:id="@+id/scroll_info"
+        android:scrollbars="none"
+        android:background="@drawable/red_detail_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp">
+        android:layout_below="@+id/red_detail"
+        android:layout_marginBottom="48dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,7 +28,8 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="280dp">
+                android:layout_height="280dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -62,69 +72,9 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/list_reds"
-                android:layout_width="match_parent"
-                android:layout_height="98dp"
-                android:layout_marginLeft="14dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/color_f8"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/recv_person"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="已领取"
-                    android:textColor="@color/color_646464"
-                    android:textSize="12dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/head_recycler"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="6"
-                        android:nestedScrollingEnabled="false"
-                        android:orientation="horizontal">
-
-                    </android.support.v7.widget.RecyclerView>
-
-                    <LinearLayout
-                        android:id="@+id/go_to"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="4"
-                        android:gravity="right">
-
-                        <ImageView
-                            android:layout_width="7dp"
-                            android:layout_height="14dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginRight="14dp"
-                            android:src="@drawable/go_to" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/color_d9d9d9" />
-
-            <LinearLayout
+                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/color_f8"
                 android:orientation="vertical">
 
                 <TextView
@@ -153,6 +103,7 @@
                             android:layout_height="match_parent"></android.support.v4.view.ViewPager>
 
                         <RelativeLayout
+                            android:id="@+id/pic_index"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_alignParentBottom="true"
@@ -219,16 +170,16 @@
                         android:src="@drawable/sponsor_tel" />
 
                     <TextView
-                        android:enabled="true"
-                        android:longClickable="true"
-                        android:textIsSelectable="true"
-                        android:focusable="true"
                         android:id="@+id/tel_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="9dp"
+                        android:enabled="true"
+                        android:focusable="true"
+                        android:longClickable="true"
                         android:textColor="#646464"
+                        android:textIsSelectable="true"
                         android:textSize="14dp" />
                 </LinearLayout>
 
@@ -253,10 +204,6 @@
                         android:src="@drawable/sponsor_location" />
 
                     <TextView
-                        android:enabled="true"
-                        android:longClickable="true"
-                        android:textIsSelectable="true"
-                        android:focusable="true"
                         android:id="@+id/address_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -264,9 +211,13 @@
                         android:layout_marginLeft="9dp"
                         android:layout_marginRight="14dp"
                         android:ellipsize="end"
+                        android:enabled="true"
+                        android:focusable="true"
+                        android:longClickable="true"
                         android:maxLines="4"
                         android:text=""
                         android:textColor="#646464"
+                        android:textIsSelectable="true"
                         android:textSize="14dp" />
                 </LinearLayout>
 
@@ -291,10 +242,6 @@
                         android:src="@drawable/bus_desc" />
 
                     <TextView
-                        android:enabled="true"
-                        android:longClickable="true"
-                        android:textIsSelectable="true"
-                        android:focusable="true"
                         android:id="@+id/sponsors_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -302,9 +249,13 @@
                         android:layout_marginLeft="9dp"
                         android:layout_marginRight="14dp"
                         android:ellipsize="end"
+                        android:enabled="true"
+                        android:focusable="true"
+                        android:longClickable="true"
                         android:maxLines="4"
                         android:text=""
                         android:textColor="#646464"
+                        android:textIsSelectable="true"
                         android:textSize="14dp" />
                 </LinearLayout>
 
@@ -384,6 +335,116 @@
                             android:src="@drawable/red_pkg"
                             android:visibility="invisible" />
                     </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:background="#FFE8E6" />
+
+                    <LinearLayout
+                        android:id="@+id/list_reds"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="98dp"
+                        android:background="@color/color_f8"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/recv_person"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="已领取"
+                            android:textColor="@color/color_646464"
+                            android:textSize="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/head_recycler"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="6"
+                                android:nestedScrollingEnabled="false"
+                                android:orientation="horizontal">
+
+                            </android.support.v7.widget.RecyclerView>
+
+                            <LinearLayout
+                                android:id="@+id/go_to"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="4"
+                                android:gravity="right">
+
+                                <ImageView
+                                    android:layout_width="7dp"
+                                    android:layout_height="14dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginRight="14dp"
+                                    android:src="@drawable/go_to" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="188dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="14dp"
+                            android:layout_marginRight="14dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/red_result" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/red_success"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/get_red"
+                                android:textColor="#F13A4A"
+                                android:textSize="16dp"
+                                android:textStyle="bold"
+                                android:visibility="invisible" />
+
+                            <TextView
+                                android:id="@+id/red_result"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="#F13A4A"
+                                android:textSize="32dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/into_wallet"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/put_in_wallet"
+                                android:textColor="@color/color_161727"
+                                android:textSize="12dp"
+                                android:visibility="invisible" />
+                        </LinearLayout>
+                    </FrameLayout>
 
                     <LinearLayout
                         android:id="@+id/sponsor_opreation"
@@ -483,11 +544,31 @@
 
         </LinearLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+    <LinearLayout
+        android:id="@+id/att_money"
+        android:layout_width="310dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/ad_attion"
+        android:orientation="horizontal">
 
-    <include
-        android:id="@+id/red_detail"
-        layout="@layout/bar_return_null_bg_style" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:paddingLeft="14dp"
+            android:text="吾皇，请批阅批示一下广告再去看红包!"
+            android:textColor="@color/color_f8"
+            android:textSize="15dp" />
 
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/go_red" />
+    </LinearLayout>
     <View
         android:id="@+id/v_empty"
         android:layout_width="match_parent"
@@ -503,4 +584,4 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom" />
-</FrameLayout>
+</RelativeLayout>

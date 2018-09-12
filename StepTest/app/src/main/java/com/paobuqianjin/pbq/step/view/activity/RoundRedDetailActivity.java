@@ -306,7 +306,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                                 break;
                             }
                         }
-                        if (TextUtils.isEmpty(result_str)) {
+                        if (TextUtils.isEmpty(result_str) && Double.parseDouble(roundDetailStyleResponse.getData().getIncome_money()) > 0.0d) {
                             String showResult = "￥" + roundDetailStyleResponse.getData().getIncome_money() + "元";
                             redSuccess.setText("你已经领取过");
                             redSuccess.setVisibility(View.VISIBLE);
@@ -314,6 +314,11 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                             spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("￥" + roundDetailStyleResponse.getData().getIncome_money()).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                             redResult.setText(spannableString);
                             intoWallet.setVisibility(View.VISIBLE);
+                        } else {
+                            if (Double.parseDouble(roundDetailStyleResponse.getData().getIncome_money()) <= 0.0d) {
+                                redSuccess.setText("还未领取过该红包");
+                                redSuccess.setVisibility(View.VISIBLE);
+                            }
                         }
                         if (arrayRecList.size() > 0) {
                             LikeUserAdapter likeUserAdapter = new LikeUserAdapter(RoundRedDetailActivity.this, arrayRecList);
