@@ -44,8 +44,10 @@ public class TaskSponsorParam {
         return images;
     }
 
-    public void setImages(String images) {
+    public TaskSponsorParam setImages(String images) {
         this.images = images;
+        params.put("images", images);
+        return this;
     }
 
     private String images;
@@ -54,6 +56,14 @@ public class TaskSponsorParam {
         if (params == null) {
             params = new HashMap<>();
         }
+    }
+
+    public String paramString() {
+        String temp = "";
+        for (String key : params.keySet()) {
+            temp = temp + key + ":" + params.get(key) + "\n";
+        }
+        return temp;
     }
 
     public TaskSponsorParam(String userid, int number, String money, String day, String red_name) {

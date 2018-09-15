@@ -20,12 +20,19 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:paddingBottom="5dp"></com.youth.banner.Banner>
+
             <RelativeLayout
                 android:id="@+id/attion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/banner"
-                android:layout_marginTop="5dp">
+                android:background="@color/color_f6f6f6"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/attion_text"
@@ -35,7 +42,8 @@
                     android:layout_marginLeft="14dp"
                     android:layout_marginRight="30dp"
                     android:enabled="false"
-                    android:text="@string/golden_vip_attion"
+                    android:paddingTop="5dp"
+                    android:text="@string/golden_vip_around"
                     android:textColor="@color/color_e4393c"
                     android:textSize="14dp" />
 

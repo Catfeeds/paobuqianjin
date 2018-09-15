@@ -60,6 +60,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBag2Activity;
 import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
@@ -561,6 +562,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         int size = adresponse.getData().size();
                         for (int i = 0; i < size; i++) {
                             AdObject adObject = new AdObject();
+                            adObject.setRid(Integer.parseInt(adresponse.getData().get(i).getRid()));
                             adObject.setTitle(adresponse.getData().get(i).getTitle());
                             adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
                             LocalLog.d(TAG, adObject.toString());
@@ -1001,7 +1003,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                                 outRedPkgImage.setEnabled(true);
                         }
                     }, 15 * 1000);*/
-                    startActivity(SponsorRedDetailActivity.class, null);
+                    startActivity(new Intent(getActivity(), ConsumptiveRedBag2Activity.class).putExtra("isNoConsumptive", true));
                     break;
                 case R.id.person_task_pkg:
                     startActivity(TaskActivity.class, null);
@@ -1009,8 +1011,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 case R.id.create_circle_image:
                     LocalLog.d(TAG, "发红包");
                     Intent intent = new Intent();
-                    intent.setAction(SPOSNOR_ACTION);
-                    intent.setClass(getActivity(), TaskReleaseActivity.class);
+                    intent.setClass(getActivity(), SponsorRedDetailActivity.class);
                     startActivity(intent);
                     break;
                 case R.id.recv_sponsor_rpg:

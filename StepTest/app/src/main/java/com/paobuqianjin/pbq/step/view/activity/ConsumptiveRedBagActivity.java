@@ -1,6 +1,9 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -143,9 +146,13 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
                     intent.putExtra(getPackageName() + "businessid", Integer.parseInt(bId));
                     intent.setClass(ConsumptiveRedBagActivity.this, SponsorDetailActivity.class);
                     startActivity(intent);
+                } else {
+                    startActivity(new Intent().setClass(ConsumptiveRedBagActivity.this, AddConsumptiveRedBagActivity.class));
                 }
             }
         });
+        rvCoupon.setHasFixedSize(true);
+        rvCoupon.setNestedScrollingEnabled(false);
         adapter.setMyCustomClickLis(new SwipeItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
@@ -174,14 +181,14 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
 
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=task_list";
+        String bannerUrl = NetApi.urlAd + "?position=red_voucher";
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
-        Presenter.getInstance(this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
+        Presenter.getInstance(ConsumptiveRedBagActivity.this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 try {
                     Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
-                    adList = new ArrayList<>();
+                    final ArrayList<AdObject> adList = new ArrayList<>();
                     if (adresponse.getData() != null && adresponse.getData().size() > 0) {
                         int size = adresponse.getData().size();
                         for (int i = 0; i < size; i++) {
@@ -190,6 +197,7 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
                                 int imgSize = adresponse.getData().get(i).getImgs().size();
                                 for (int j = 0; j < imgSize; j++) {
                                     AdObject adObject = new AdObject();
+                                    adObject.setRid(Integer.parseInt(adresponse.getData().get(i).getRid()));
                                     adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
                                     adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
                                     adList.add(adObject);
@@ -207,9 +215,19 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
                             .setOnBannerListener(new OnBannerListener() {
                                 @Override
                                 public void OnBannerClick(int position) {
-                                    String targetUrl = adList.get(position).getTarget_url();
-                                    if (!TextUtils.isEmpty(targetUrl))
-                                        startActivity(new Intent(ConsumptiveRedBagActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                    if (adList.get(position).getRid() == 0) {
+                                        LocalLog.d(TAG, "复制微信号");
+                                        ClipboardManager cmb = (ClipboardManager) ConsumptiveRedBagActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                        ClipData textClipData = ClipData.newPlainText("Label", getString(R.string.wx_code));
+                                        cmb.setPrimaryClip(textClipData);
+                                        LocalLog.d(TAG, "  msg = " + cmb.getText());
+                                        PaoToastUtils.showLongToast(ConsumptiveRedBagActivity.this, "微信号复制成功");
+                                    } else {
+                                        String targetUrl = adList.get(position).getTarget_url();
+                                        if (!TextUtils.isEmpty(targetUrl))
+                                            startActivity(new Intent(ConsumptiveRedBagActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                    }
+
                                 }
                             })
                             .start();
@@ -423,10 +441,13 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
                 ShopSendedRedBagResponse redBagResponse = new Gson().fromJson(s, ShopSendedRedBagResponse.class);
                 if (redBagResponse.getData().getData().size() > 0) {
                     listData.addAll(redBagResponse.getData().getData());
+                    addEmpty();
                     adapter.notifyDataSetChanged();
                     rvCoupon.loadMoreFinish(false, true);
                     //addMark();
                 } else {
+                    addEmpty();
+                    adapter.notifyDataSetChanged();
                     rvCoupon.loadMoreFinish(false, false);
                 }
 
@@ -439,13 +460,28 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                 super.onFal(e, errorStr, errorBean);
                 hideLoadingBar();
-                if (errorBean != null && errorStr.contains("Not Found Data")) {
+               /* if (errorBean != null && errorStr.contains("Not Found Data")) {
                     rvCoupon.loadMoreError(0, "暂无数据");
-                }
+                }*/
+                listData.clear();
+                addEmpty();
+                adapter.notifyDataSetChanged();
+                rvCoupon.loadMoreFinish(false, true);
                 refreshLayout.setRefreshing(false);
 
             }
         });
+    }
+
+    private void addEmpty() {
+        LocalLog.d(TAG, "addEmpty() enter");
+        int size = listData.size();
+        if (size < 5) {
+            for (int i = size; i < 5; i++) {
+                ShopSendedRedBagResponse.ShopSendedRedBagBean emptyBean = new ShopSendedRedBagResponse.ShopSendedRedBagBean();
+                listData.add(emptyBean);
+            }
+        }
     }
 
     private void startLocation() {

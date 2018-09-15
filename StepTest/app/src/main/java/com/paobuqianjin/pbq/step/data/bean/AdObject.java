@@ -17,6 +17,16 @@ public class AdObject {
     private String target_url;
     private String img_url;
 
+    public int getRid() {
+        return rid;
+    }
+
+    public void setRid(int rid) {
+        this.rid = rid;
+    }
+
+    private int rid;
+
     public String getTarget_url() {
         return target_url;
     }

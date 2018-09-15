@@ -2,26 +2,35 @@ package com.paobuqianjin.pbq.step.view.base.adapter.owner;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.baidu.location.a.v;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearBySponsorResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ReleaseRecordResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorPkgRecordResponse;
+import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.MyReleaseDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorRedDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 
 import java.util.List;
+import java.util.logging.Handler;
 
 /**
  * Created by pbq on 2018/2/28.
@@ -30,9 +39,11 @@ import java.util.List;
 public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final static String PERSON_TASK_ACTION = "com.paobuqianjin.pbq.step.PERSON_ACTION";
     private final static String SPONSOR_TASK_ACTION = "com.paobuqianjin.pbq.step.SPONSOR_ACTION";
+    private final static String SPOSNOR_ACTION = "com.paobuqianjin.person.SPONSOR_ACTION";
     private final static String TAG = ReleaseRecordAdapter.class.getSimpleName();
     private final static int DEFAULT_VIEW_TYPE = 0;
     private final static int RED_PKG_VIEW_TYPE = 1;
+    private final static int RED_AD_VIEW_TYPE = 2;
     Activity context;
     List<?> mData;
     private int step = -1;
@@ -65,6 +76,14 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (mData != null) {
             if (mData.get(position) instanceof NearBySponsorResponse.DataBean.NearedpacketBean
                     || mData.get(position) instanceof NearBySponsorResponse.DataBean.Ledredpacket) {
+                if (mData.get(position) instanceof NearBySponsorResponse.DataBean.NearedpacketBean
+                        && ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getRed_id() == 0) {
+                    return RED_AD_VIEW_TYPE;
+                }
+                if (mData.get(position) instanceof NearBySponsorResponse.DataBean.Ledredpacket
+                        && ((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(position)).getRed_id() == 0) {
+                    return RED_AD_VIEW_TYPE;
+                }
                 return RED_PKG_VIEW_TYPE;
             } else {
                 return DEFAULT_VIEW_TYPE;
@@ -118,66 +137,82 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.View
             ((ReleaseRecordViewHolder) holder).releaseDetails.setText(red_status);
             ((ReleaseRecordViewHolder) holder).moneyTv.setText("￥" + ((SponsorPkgRecordResponse.DataBeanX.DataBean) mData.get(position)).getMoney() + "元");
         } else if (mData.get(position) instanceof NearBySponsorResponse.DataBean.NearedpacketBean) {
-            ((SponsorRedViewHolder) holder).sponsorName.setVisibility(View.VISIBLE);
-            ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
-            ((SponsorRedViewHolder) holder).releaseName.setText(((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getRed_name());
-            ((SponsorRedViewHolder) holder).releaseFriend.setText("目标步数:" + ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getStep());
-            String daysFormat = context.getString(R.string.task_days);
-            String daysStr = String.format(daysFormat, ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getDay());
-            ((SponsorRedViewHolder) holder).releaseDays.setText(daysStr);
-            ((SponsorRedViewHolder) holder).sponsorName.setText("会员名称:" + ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getName());
-            int status = ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getStatus();
-            String localStatus = "";
-            if (status == 0) {
-                ((SponsorRedViewHolder) holder).canRec.setVisibility(View.VISIBLE);
-                ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.GONE);
+            if (((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getRed_id() == 0) {
+
+            } else {
+                if (!TextUtils.isEmpty(((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getLogo())) {
+                    Presenter.getInstance(context).getPlaceErrorImage(((SponsorRedViewHolder) holder).logoSponsor,
+                            ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getLogo(), R.mipmap.red_logo, R.mipmap.red_logo);
+                }
+                ((SponsorRedViewHolder) holder).sponsorName.setVisibility(View.VISIBLE);
                 ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
-                localStatus = "领取红包";
-                ((SponsorRedViewHolder) holder).canRec.setText(localStatus);
-                ((SponsorRedViewHolder) holder).canRec.setVisibility(View.VISIBLE);
-                ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.GONE);
-                ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
-            } else if (status == 1) {
-                if (((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getStastr() != null &&
-                        ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getStastr().contains("步数")) {
-                    localStatus = "进行中";
+                ((SponsorRedViewHolder) holder).releaseName.setText(((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getRed_name());
+                ((SponsorRedViewHolder) holder).releaseFriend.setText("目标步数:" + ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getStep());
+                String daysFormat = context.getString(R.string.task_days);
+                String daysStr = String.format(daysFormat, ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getDay());
+                ((SponsorRedViewHolder) holder).releaseDays.setText(daysStr);
+                ((SponsorRedViewHolder) holder).sponsorName.setText("会员名称:" + ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getName());
+                int status = ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getStatus();
+                String localStatus = "";
+                if (status == 0) {
                     ((SponsorRedViewHolder) holder).canRec.setVisibility(View.VISIBLE);
                     ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.GONE);
+                    ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
+                    localStatus = "领取红包";
                     ((SponsorRedViewHolder) holder).canRec.setText(localStatus);
-                    if (step != -1) {
-                        String stepProcess = String.valueOf(step) + "/" + ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getStep();
-                        ((SponsorRedViewHolder) holder).process.setText(stepProcess);
-                        ((SponsorRedViewHolder) holder).process.setVisibility(View.VISIBLE);
+                    ((SponsorRedViewHolder) holder).canRec.setVisibility(View.VISIBLE);
+                    ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.GONE);
+                    ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
+                } else if (status == 1) {
+                    if (((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getStastr() != null &&
+                            ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getStastr().contains("步数")) {
+                        localStatus = "进行中";
+                        ((SponsorRedViewHolder) holder).canRec.setVisibility(View.VISIBLE);
+                        ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.GONE);
+                        ((SponsorRedViewHolder) holder).canRec.setText(localStatus);
+                        if (step != -1) {
+                            String stepProcess = String.valueOf(step) + "/" + ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getStep();
+                            ((SponsorRedViewHolder) holder).process.setText(stepProcess);
+                            ((SponsorRedViewHolder) holder).process.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        localStatus = "已领完";
+                        ((SponsorRedViewHolder) holder).canRec.setVisibility(View.GONE);
+                        ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.VISIBLE);
+                        ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
+                        ((SponsorRedViewHolder) holder).canNoRec.setImageResource(R.drawable.rec_finish);
                     }
-                } else {
+                } else if (status == 2) {
                     localStatus = "已领完";
                     ((SponsorRedViewHolder) holder).canRec.setVisibility(View.GONE);
                     ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.VISIBLE);
                     ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
                     ((SponsorRedViewHolder) holder).canNoRec.setImageResource(R.drawable.rec_finish);
+                } else {
+
                 }
-            } else if (status == 2) {
-                localStatus = "已领完";
+                ((SponsorRedViewHolder) holder).statusStr = localStatus;
+            }
+        } else if (mData.get(position) instanceof NearBySponsorResponse.DataBean.Ledredpacket) {
+            if (((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(position)).getRed_id() == 0) {
+
+            } else {
+                if (!TextUtils.isEmpty(((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(position)).getLogo())) {
+                    Presenter.getInstance(context).getPlaceErrorImage(((SponsorRedViewHolder) holder).logoSponsor,
+                            ((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(position)).getLogo(), R.mipmap.red_logo, R.mipmap.red_logo);
+                }
                 ((SponsorRedViewHolder) holder).canRec.setVisibility(View.GONE);
                 ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.VISIBLE);
                 ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
-                ((SponsorRedViewHolder) holder).canNoRec.setImageResource(R.drawable.rec_finish);
-            } else {
-
+                ((SponsorRedViewHolder) holder).sponsorName.setVisibility(View.VISIBLE);
+                ((SponsorRedViewHolder) holder).releaseName.setText(((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(position)).getRed_name());
+                ((SponsorRedViewHolder) holder).releaseFriend.setText("目标步数:" + ((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(position)).getStep());
+                String daysFormat = context.getString(R.string.task_days);
+                String daysStr = String.format(daysFormat, ((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(position)).getDay());
+                ((SponsorRedViewHolder) holder).releaseDays.setText(daysStr);
+                ((SponsorRedViewHolder) holder).sponsorName.setText("会员名称:" + ((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(position)).getName());
+                ((SponsorRedViewHolder) holder).canNoRec.setImageResource(R.drawable.have_rec);
             }
-            ((SponsorRedViewHolder) holder).statusStr = localStatus;
-        } else if (mData.get(position) instanceof NearBySponsorResponse.DataBean.Ledredpacket) {
-            ((SponsorRedViewHolder) holder).canRec.setVisibility(View.GONE);
-            ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.VISIBLE);
-            ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
-            ((SponsorRedViewHolder) holder).sponsorName.setVisibility(View.VISIBLE);
-            ((SponsorRedViewHolder) holder).releaseName.setText(((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(position)).getRed_name());
-            ((SponsorRedViewHolder) holder).releaseFriend.setText("目标步数:" + ((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(position)).getStep());
-            String daysFormat = context.getString(R.string.task_days);
-            String daysStr = String.format(daysFormat, ((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(position)).getDay());
-            ((SponsorRedViewHolder) holder).releaseDays.setText(daysStr);
-            ((SponsorRedViewHolder) holder).sponsorName.setText("会员名称:" + ((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(position)).getName());
-            ((SponsorRedViewHolder) holder).canNoRec.setImageResource(R.drawable.have_rec);
         }
     }
 
@@ -187,9 +222,51 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (viewType == DEFAULT_VIEW_TYPE) {
             holder = new ReleaseRecordViewHolder(LayoutInflater.from(context).inflate(R.layout.my_release_list, parent, false));
         } else if (viewType == RED_PKG_VIEW_TYPE) {
-            holder = new SponsorRedViewHolder(LayoutInflater.from(context).inflate(R.layout.red_pkg_item, parent, false));
+            holder = new SponsorRedViewHolder(LayoutInflater.from(context).inflate(R.layout.red_item_ad, parent, false));
+        } else if (viewType == RED_AD_VIEW_TYPE) {
+            holder = new SponsorAdViewHolder(LayoutInflater.from(context).inflate(R.layout.red_item_ad_index, parent, false));
         }
         return holder;
+    }
+
+
+    public class SponsorAdViewHolder extends RecyclerView.ViewHolder {
+        Button can;
+        TextView content;
+        LinearLayout linearLayout;
+
+        public SponsorAdViewHolder(View view) {
+            super(view);
+            initView(view);
+        }
+
+        private void initView(View view) {
+            can = (Button) view.findViewById(R.id.can_rec);
+            content = (TextView) view.findViewById(R.id.content);
+            linearLayout = (LinearLayout) view.findViewById(R.id.item);
+            linearLayout.setOnClickListener(onClickListener);
+
+            SpannableString spannableString = new SpannableString("附近红包的功能是商家向1-50km内的客户推送红包，增加你的客流量，扩展你的产品知名度。点击发红包 >");
+            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context, R.color.color_ffbe24)),
+                    "附近红包的功能是商家向1-50km内的客户推送红包，增加你的客流量，扩展你的产品知名度。".length(),
+                    "附近红包的功能是商家向1-50km内的客户推送红包，增加你的客流量，扩展你的产品知名度。点击发红包 >".length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            content.setText(spannableString);
+        }
+
+        private View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.item:
+                        LocalLog.d(TAG, "发红包");
+                        Intent intent = new Intent();
+                        intent.setAction(SPOSNOR_ACTION);
+                        intent.setClass(context, TaskReleaseActivity.class);
+                        context.startActivity(intent);
+                        break;
+                }
+            }
+        };
     }
 
     public class SponsorRedViewHolder extends RecyclerView.ViewHolder {
@@ -201,6 +278,7 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.View
         TextView process;
         ImageView canNoRec;
         String statusStr = "";
+        ImageView logoSponsor;
 
         public SponsorRedViewHolder(View view) {
             super(view);
@@ -208,6 +286,7 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
         private void initView(View view) {
+            logoSponsor = (ImageView) view.findViewById(R.id.logo_sponsor);
             canNoRec = (ImageView) view.findViewById(R.id.can_not_rec);
             releaseName = (TextView) view.findViewById(R.id.release_name);
             releaseFriend = (TextView) view.findViewById(R.id.release_friend);

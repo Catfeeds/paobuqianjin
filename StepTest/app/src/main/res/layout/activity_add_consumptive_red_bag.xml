@@ -23,10 +23,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:paddingBottom="5dp"></com.youth.banner.Banner>
+
             <LinearLayout
                 android:id="@+id/linear_open_vip"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/people_target_span"
                 android:layout_marginTop="5dp"
                 android:background="@color/color_efefef"
@@ -123,7 +129,7 @@
                         android:cursorVisible="true"
                         android:gravity="right|center_vertical"
                         android:hint="请输入消费红包金额"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:lines="1"
                         android:maxLength="6"
                         android:maxLines="1"

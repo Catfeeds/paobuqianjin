@@ -211,7 +211,7 @@
     <string name="goldern_gift_fiv">具体案例</string>
     <string name="golden_gift_six">湖南省云上茶业有限公司东莞总代理，加盟成为跑步钱进合作网点，使用商家红包广告模式以极小的投入为公司品牌及产品获得数万次曝光，订单量大幅度提高。</string>
     <string name="consumptive_red_bag">消费红包</string>
-    <string name="get_consumptive_red_bag">领消费红包</string>
+    <string name="get_consumptive_red_bag">消费红包</string>
     <string name="no_data">暂无数据</string>
     <string name="add_consumptive_red_bag">添加消费红包</string>
     <string name="shop_red_bag">店铺红包</string>
@@ -282,7 +282,13 @@
     <string name="red_his_disb">发布总个数</string>
     <string name="history_record">历史记录</string>
     <string name="repositioning">重新定位</string>
+    <string name="my_sponsor">我的商铺</string>
     <string name="sponosor_des">请填写店铺经营范围(或推广信息)300个字以内</string>
     <string name="vip_goto">"亲，小主。想领更多更大的红包，请办理个人会员。现在办理终身3元，以后办理每年300元!"</string>
-    <string name="golden_vip_attion">温馨提示：现在可免费试用，以后只有金牌商家会员才能发布广告红包。现在办理终身365元，以后办理每年3650元！现在开通!</string>
+    <string name="golden_vip_attion">温馨提示：只有金牌商家会员才能发布消费红包。现在办理365元每年，以后办理3650元每年！现在开通!</string>
+    <string name="golden_vip_near">温馨提示：现在可免费试用，以后只有金牌商家会员才能发布附近红包。现在办理365元每年，以后办理每年3650元每年！现在开通!</string>
+    <string name="golden_vip_around">温馨提示：现在可免费试用，以后只有金牌商家会员才能发布遍地红包。现在办理365元每年，以后办理每年3650元每年！现在开通!</string>
+    <string name="near_ad_to">"附近红包的功能是商家向1-50km内的客户推送红包，增加你的客流量，扩展你的产品知名度。点击发红包 >"</string>
+    <string name="pick_ad_to">"消费红包的功能是商家向50km内的客户推送消费劵，增加你的客流量，扩展你的产品知名度。点击发红包 >"</string>
+    <string name="wx_code">runmanQin</string>
 </resources>

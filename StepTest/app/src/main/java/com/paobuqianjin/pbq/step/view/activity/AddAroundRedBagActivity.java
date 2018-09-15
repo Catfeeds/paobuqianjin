@@ -2,6 +2,9 @@ package com.paobuqianjin.pbq.step.view.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -32,14 +35,21 @@ import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
 import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
 import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorInfoActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
 import com.paobuqianjin.pbq.step.adapter.GridAddPic2Adapter;
 import com.paobuqianjin.pbq.step.data.alioss.AliOss;
 import com.paobuqianjin.pbq.step.data.alioss.OssService;
+import com.paobuqianjin.pbq.step.data.bean.AdObject;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoTipsCallBack;
+import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
@@ -48,6 +58,10 @@ import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
 import com.umeng.socialize.utils.SocializeUtils;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,6 +95,8 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     EditText etInformation;
     @Bind(R.id.attion)
     RelativeLayout attion;
+    @Bind(R.id.banner)
+    Banner banner;
     private GridAddPic2Adapter adapter;
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
@@ -98,7 +114,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     private final static String PAY_ACTION = "android.intent.action.PAY";
     private final static int MAP_RED_PAY = 200;
     private final static String CIRCLE_RECHARGE = "pay";
-
+    private boolean isVip;
     @Override
     protected String title() {
         return getString(R.string.add_around_red_bag);
@@ -116,8 +132,70 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         cachePath = Utils.getDiskCacheDir(this).getAbsolutePath();
         initAdapter();
         getDefaultBusiness();
+        loadBanner();
     }
+    private void loadBanner() {
+        String bannerUrl = NetApi.urlAd + "?position=redmap_create";
+        LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
+        Presenter.getInstance(AddAroundRedBagActivity.this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
+                    final ArrayList<AdObject> adList = new ArrayList<>();
+                    if (adresponse.getData() != null && adresponse.getData().size() > 0) {
+                        int size = adresponse.getData().size();
+                        for (int i = 0; i < size; i++) {
+                            if (adresponse.getData().get(i).getImgs() != null
+                                    && adresponse.getData().get(i).getImgs().size() > 0) {
+                                int imgSize = adresponse.getData().get(i).getImgs().size();
+                                for (int j = 0; j < imgSize; j++) {
+                                    AdObject adObject = new AdObject();
+                                    adObject.setRid(Integer.parseInt(adresponse.getData().get(i).getRid()));
+                                    adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
+                                    adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
+                                    adList.add(adObject);
+                                }
+                            }
+                        }
+                    }
+                    banner.setImageLoader(new BannerImageLoader())
+                            .setImages(adList)
+                            .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                            .setBannerAnimation(Transformer.Default)
+                            .isAutoPlay(true)
+                            .setDelayTime(2000)
+                            .setIndicatorGravity(BannerConfig.CENTER)
+                            .setOnBannerListener(new OnBannerListener() {
+                                @Override
+                                public void OnBannerClick(int position) {
+                                    if (adList.get(position).getRid() == 0) {
+                                        LocalLog.d(TAG, "复制微信号");
+                                        ClipboardManager cmb = (ClipboardManager) AddAroundRedBagActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                        ClipData textClipData = ClipData.newPlainText("Label", getString(R.string.wx_code));
+                                        cmb.setPrimaryClip(textClipData);
+                                        LocalLog.d(TAG, "  msg = " + cmb.getText());
+                                        PaoToastUtils.showLongToast(AddAroundRedBagActivity.this, "微信号复制成功");
+                                    } else {
+                                        String targetUrl = adList.get(position).getTarget_url();
+                                        if (!TextUtils.isEmpty(targetUrl))
+                                            startActivity(new Intent(AddAroundRedBagActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                    }
 
+                                }
+                            })
+                            .start();
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                LocalLog.d(TAG, "获取失败!");
+            }
+        });
+    }
 
     private void initAdapter() {
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
@@ -237,6 +315,11 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         popupCircleTypeView.startAnimation(animationCircleType);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getVipStatus();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -306,6 +389,23 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         setResult(2, intent);
         finish();
     }
+    private void getVipStatus() {
+        LocalLog.d(TAG,"getVipStatus() enter");
+        Presenter.getInstance(AddAroundRedBagActivity.this).getPaoBuSimple(NetApi.urlUser + FlagPreference.getUid(AddAroundRedBagActivity.this), null, new PaoTipsCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
+                    isVip = userInfoResponse.getData().getGvip() == 1;
+                    attion.setVisibility(isVip ? View.GONE : View.VISIBLE);
+                } catch (Exception j) {
+                    j.printStackTrace();
+                }
+            }
+
+        });
+    }
+
 
     @OnClick({R.id.linear_shop, R.id.btn_confirm, R.id.attion})
     public void onClick(View view) {

@@ -67,8 +67,19 @@ public class AroundRedBagResponse {
 
     public class DataBean {
         /*"is_receive":0
+        "message":"小主，今日你已经已经领取了10个了，要不发一个遍地红包试试"
         * */
         int remain_time;
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        String message;
 
         public int getIs_receive() {
             return is_receive;

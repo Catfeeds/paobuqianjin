@@ -305,7 +305,8 @@
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/new_s"
@@ -367,7 +368,7 @@
                         android:layout_gravity="bottom|center_horizontal"
                         android:gravity="bottom"
                         android:paddingBottom="8dp"
-                        android:text="现金红包"
+                        android:text="遍地红包"
                         android:textColor="@color/color_f8"
                         android:textSize="14dp" />
                 </FrameLayout>
@@ -382,7 +383,7 @@
                         android:layout_width="170dp"
                         android:layout_height="85dp"
                         android:layout_gravity="center_horizontal"
-                        android:background="@drawable/create_cicle_selector"
+                        android:background="@drawable/heme_page_selector"
                         android:scaleType="centerCrop" />
 
                     <TextView
@@ -392,7 +393,7 @@
                         android:layout_gravity="bottom|center_horizontal"
                         android:gravity="bottom"
                         android:paddingBottom="8dp"
-                        android:text="发红包"
+                        android:text="附近红包"
                         android:textColor="@color/color_f8"
                         android:textSize="14dp" />
                 </FrameLayout>
@@ -426,7 +427,7 @@
                         android:layout_gravity="bottom|center_horizontal"
                         android:gravity="bottom"
                         android:paddingBottom="8dp"
-                        android:text="领消费红包"
+                        android:text="消费红包"
                         android:textColor="@color/color_f8"
                         android:textSize="14dp" />
 
@@ -468,8 +469,8 @@
 
             <ImageView
                 android:id="@+id/zhuan_pkg"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/red_pkg_task" />
 
@@ -486,7 +487,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/zhuan_pkg"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="20dp"
                 android:text="专享红包"
                 android:textColor="@color/color_f8"
                 android:textSize="14dp" />

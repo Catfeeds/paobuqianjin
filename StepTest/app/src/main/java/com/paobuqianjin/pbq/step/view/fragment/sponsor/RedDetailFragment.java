@@ -195,7 +195,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.red_images_span)
     FrameLayout redImagesSpan;
     @Bind(R.id.sponsor_sample)
-    RelativeLayout sponsorSample;
+    LinearLayout sponsorSample;
     @Bind(R.id.sponsor_pic_line)
     ImageView sponsorPicLine;
     @Bind(R.id.kepp_sponsor_desc)

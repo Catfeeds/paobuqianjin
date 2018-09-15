@@ -8,7 +8,7 @@ public class ShopSendedRedBagResponse {
     private String message;
     private DataBean data;
 
-    public class ShopSendedRedBagBean {
+    public static class ShopSendedRedBagBean {
         private String id;
         private String voucherid;
         private String nickname;

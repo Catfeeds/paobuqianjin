@@ -8,14 +8,23 @@
         android:id="@+id/task_bar"
         layout="@layout/bar_return_a_style"></include>
 
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_below="@+id/task_bar"
+        android:paddingBottom="5dp">
+
+    </com.youth.banner.Banner>
+
     <LinearLayout
         android:id="@+id/bar"
-        android:layout_below="@+id/task_bar"
         android:layout_width="match_parent"
         android:layout_height="30dp"
+        android:layout_below="@+id/banner"
         android:layout_marginLeft="38dp"
         android:layout_marginRight="38dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:background="@drawable/rectangle_four_dp">
 
         <Button
@@ -52,18 +61,10 @@
             android:textSize="16dp" />
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/line1"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_below="@+id/bar"
-        android:layout_marginTop="10dp"
-        android:background="@color/color_d9d9d9" />
-
     <RelativeLayout
         android:id="@+id/container_task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/line1"></RelativeLayout>
+        android:layout_below="@+id/bar"></RelativeLayout>
 
 </RelativeLayout>

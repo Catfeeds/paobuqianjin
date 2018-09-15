@@ -103,6 +103,7 @@
                             android:layout_height="match_parent"></android.support.v4.view.ViewPager>
 
                         <RelativeLayout
+                            android:visibility="gone"
                             android:id="@+id/pic_index"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
@@ -544,31 +545,6 @@
 
         </LinearLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
-    <LinearLayout
-        android:id="@+id/att_money"
-        android:layout_width="310dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="64dp"
-        android:background="@drawable/ad_attion"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:paddingLeft="14dp"
-            android:text="吾皇，请批阅批示一下广告再去看红包!"
-            android:textColor="@color/color_f8"
-            android:textSize="15dp" />
-
-        <ImageView
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/go_red" />
-    </LinearLayout>
     <View
         android:id="@+id/v_empty"
         android:layout_width="match_parent"

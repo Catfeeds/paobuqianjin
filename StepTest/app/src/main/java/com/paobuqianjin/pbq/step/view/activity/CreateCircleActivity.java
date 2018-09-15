@@ -2,6 +2,8 @@ package com.paobuqianjin.pbq.step.view.activity;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -368,12 +370,12 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     private void loadBanner() {
         String bannerUrl = NetApi.urlAd + "?position=circle_create";
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
-        Presenter.getInstance(this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
+        Presenter.getInstance(CreateCircleActivity.this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 try {
                     Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
-                    adList = new ArrayList<>();
+                    final ArrayList<AdObject> adList = new ArrayList<>();
                     if (adresponse.getData() != null && adresponse.getData().size() > 0) {
                         int size = adresponse.getData().size();
                         for (int i = 0; i < size; i++) {
@@ -382,6 +384,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                                 int imgSize = adresponse.getData().get(i).getImgs().size();
                                 for (int j = 0; j < imgSize; j++) {
                                     AdObject adObject = new AdObject();
+                                    adObject.setRid(Integer.parseInt(adresponse.getData().get(i).getRid()));
                                     adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
                                     adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
                                     adList.add(adObject);
@@ -399,8 +402,19 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                             .setOnBannerListener(new OnBannerListener() {
                                 @Override
                                 public void OnBannerClick(int position) {
-                                    String targetUrl = adList.get(position).getTarget_url();
-                                    if(!TextUtils.isEmpty(targetUrl)) startActivity(new Intent(CreateCircleActivity.this, SingleWebViewActivity.class).putExtra("url",targetUrl));
+                                    if (adList.get(position).getRid() == 0) {
+                                        LocalLog.d(TAG, "复制微信号");
+                                        ClipboardManager cmb = (ClipboardManager) CreateCircleActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                        ClipData textClipData = ClipData.newPlainText("Label", getString(R.string.wx_code));
+                                        cmb.setPrimaryClip(textClipData);
+                                        LocalLog.d(TAG, "  msg = " + cmb.getText());
+                                        PaoToastUtils.showLongToast(CreateCircleActivity.this, "微信号复制成功");
+                                    } else {
+                                        String targetUrl = adList.get(position).getTarget_url();
+                                        if (!TextUtils.isEmpty(targetUrl))
+                                            startActivity(new Intent(CreateCircleActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                    }
+
                                 }
                             })
                             .start();

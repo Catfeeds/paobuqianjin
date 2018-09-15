@@ -165,8 +165,6 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     TextView addressText;
     @Bind(R.id.list_reds)
     LinearLayout listReds;
-    @Bind(R.id.att_money)
-    LinearLayout attMoney;
     @Bind(R.id.scroll_view)
     BounceScrollView scrollView;
     private int localVoteNum = 0;
@@ -203,7 +201,6 @@ public class RoundRedDetailActivity extends BaseBarActivity {
 
     @Override
     protected void initView() {
-        attMoney = (LinearLayout) findViewById(R.id.att_money);
         scrollView = (BounceScrollView) findViewById(R.id.scroll_view);
         mScreenWidth = ImagePickerComUtils.getScreenWidth(this);
         mScreenHeight = ImagePickerComUtils.getScreenHeight(this);

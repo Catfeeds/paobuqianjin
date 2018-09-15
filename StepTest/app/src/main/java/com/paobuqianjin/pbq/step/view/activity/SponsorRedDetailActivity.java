@@ -1,6 +1,8 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
-import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -27,25 +30,22 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
+import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByRedResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearBySponsorResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.PagenationBean;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ShopSendedRedBagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
-import com.paobuqianjin.pbq.step.data.netcallback.PaoTipsCallBack;
 import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.utils.Constants;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
-import com.paobuqianjin.pbq.step.view.base.adapter.owner.ConsumptiveRedBagListAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.ReleaseRecordAdapter;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
@@ -82,6 +82,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/6/26.
@@ -104,12 +105,18 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
     SwipeRefreshLayout redPkgRefresh;
     LinearLayoutManager layoutManager;
     ReleaseRecordAdapter adapter;
-    @Bind(R.id.no_red_data)
-    ImageView noRedData;
     @Bind(R.id.sponsor_red)
     RelativeLayout sponsorRed;
     @Bind(R.id.mapview)
     MapView mapview;
+    @Bind(R.id.iv_history)
+    ImageView ivHistory;
+    @Bind(R.id.linear_history)
+    LinearLayout linearHistory;
+    @Bind(R.id.iv_send_red_bag)
+    TextView ivSendRedBag;
+    @Bind(R.id.iv_sponsor)
+    ImageView ivSponsor;
     private List<?> data;
     ImageView openRedPkgView;
     private View popRedPkgView;
@@ -145,12 +152,12 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
 
     @Override
     protected String title() {
-        return "商家红包";
+        return "附近红包";
     }
 
     @Override
     public Object right() {
-        return "历史记录";
+        return "";
     }
 
     @Override
@@ -158,35 +165,22 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sponsor_red_detail_activity_layout);
         ButterKnife.bind(this);
-        initMapView(savedInstanceState);
+        //initMapView(savedInstanceState);
         setToolBarListener(this);
     }
 
     @Override
     protected void onResume() {
-        mapview.onResume();
         super.onResume();
-        mapview.post(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    popRedPkgButton();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
     }
 
     @Override
     protected void onPause() {
-        mapview.onPause();
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        mapview.onStop();
         super.onStop();
     }
 
@@ -197,14 +191,11 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
 
     @Override
     public void clickRight() {
-        Intent hisIntent = new Intent(this, RedHsRecordActivity.class);
-        hisIntent.setAction(NEAR_ACTION);
-        startActivity(hisIntent);
+
     }
 
     @Override
     protected void onDestroy() {
-        mapview.onDestroy();
         if (popOpWindowRedButtonHori != null) {
             popOpWindowRedButtonHori.dismiss();
             popOpWindowRedButtonHori = null;
@@ -219,17 +210,30 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
             @Override
             public boolean canScrollVertically() {
-                return false;
+                return true;
             }
         };
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(this);
         redPkgRecycler = (SwipeMenuRecyclerView) findViewById(R.id.red_pkg_recycler);
         redPkgRecycler.setLayoutManager(layoutManager);
-        noRedData = (ImageView) findViewById(R.id.no_red_data);
+        redPkgRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                redPkgRefresh.setEnabled(topRowVerticalPosition >= 0);
+            }
+        });
         requestPermission(Permission.Group.LOCATION);
         banner = (Banner) findViewById(R.id.banner);
-        //loadBanner();
+        loadBanner();
     }
 
         /*权限适配*/
@@ -241,7 +245,9 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
                 .onGranted(new Action() {
                     @Override
                     public void onAction(List<String> permissions) {
-                        loadData();
+                        if (loadData()) {
+                            showLoadingBar();
+                        }
                         startLocation();
                     }
                 }).onDenied(new Action() {
@@ -307,14 +313,14 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
     }
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=redpack_list";
+        String bannerUrl = NetApi.urlAd + "?position=red_near";
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
-        Presenter.getInstance(this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
+        Presenter.getInstance(SponsorRedDetailActivity.this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 try {
                     Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
-                    adList = new ArrayList<>();
+                    final ArrayList<AdObject> adList = new ArrayList<>();
                     if (adresponse.getData() != null && adresponse.getData().size() > 0) {
                         int size = adresponse.getData().size();
                         for (int i = 0; i < size; i++) {
@@ -323,6 +329,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
                                 int imgSize = adresponse.getData().get(i).getImgs().size();
                                 for (int j = 0; j < imgSize; j++) {
                                     AdObject adObject = new AdObject();
+                                    adObject.setRid(Integer.parseInt(adresponse.getData().get(i).getRid()));
                                     adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
                                     adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
                                     adList.add(adObject);
@@ -340,9 +347,19 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
                             .setOnBannerListener(new OnBannerListener() {
                                 @Override
                                 public void OnBannerClick(int position) {
-                                    String targetUrl = adList.get(position).getTarget_url();
-                                    if (!TextUtils.isEmpty(targetUrl))
-                                        startActivity(new Intent(SponsorRedDetailActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                    if (adList.get(position).getRid() == 0) {
+                                        LocalLog.d(TAG, "复制微信号");
+                                        ClipboardManager cmb = (ClipboardManager) SponsorRedDetailActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                        ClipData textClipData = ClipData.newPlainText("Label", getString(R.string.wx_code));
+                                        cmb.setPrimaryClip(textClipData);
+                                        LocalLog.d(TAG, "  msg = " + cmb.getText());
+                                        PaoToastUtils.showLongToast(SponsorRedDetailActivity.this, "微信号复制成功");
+                                    } else {
+                                        String targetUrl = adList.get(position).getTarget_url();
+                                        if (!TextUtils.isEmpty(targetUrl))
+                                            startActivity(new Intent(SponsorRedDetailActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                    }
+
                                 }
                             })
                             .start();
@@ -630,48 +647,53 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
     }
 
 
-    private void loadData() {
+    private boolean loadData() {
         LocalLog.d(TAG, "获取红包!");
         String[] location = FlagPreference.getLocation(this);
         if (location != null && location.length >= 2) {
             if (TextUtils.isEmpty(location[0]) || TextUtils.isEmpty(location[1])) {
-                return;
+                return false;
             }
         }
         String redPkgUrl = NetApi.urlNearBySponsorRed + "latitude=" + location[0] + "&longitude=" +
                 location[1];
+        if (nowLocation[0] != 0 && nowLocation[1] != 0) {
+
+        }
         Presenter.getInstance(this).getPaoBuSimple(redPkgUrl, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
+                hideLoadingBar();
                 redPkgRefresh.setRefreshing(false);
-                noRedData.setVisibility(View.GONE);
-                redPkgRecycler.setVisibility(View.VISIBLE);
                 try {
                     NearBySponsorResponse nearBySponsorResponse = new Gson().fromJson(s, NearBySponsorResponse.class);
                     if (nearBySponsorResponse.getMessage().contains("附近没有可领取的红包")) {
-                        noRedData.setVisibility(View.VISIBLE);
-                        redPkgRecycler.setVisibility(View.GONE);
                         showInfo();
                         return;
                     }
                     if (nearBySponsorResponse.getData() == null) {
-                        noRedData.setVisibility(View.VISIBLE);
-                        redPkgRecycler.setVisibility(View.GONE);
                         showInfo();
                         return;
                     }
 
                     if (nearBySponsorResponse.getData().getLedredpacket() == null
                             && nearBySponsorResponse.getData().getNearedpacket() == null) {
-                        noRedData.setVisibility(View.VISIBLE);
-                        redPkgRecycler.setVisibility(View.GONE);
                         showInfo();
                         return;
                     }
                     if (nearBySponsorResponse.getData().getUserstatus() == 0) {
                         if (nearBySponsorResponse.getData() != null && nearBySponsorResponse.getData().getNearedpacket() != null
                                 && nearBySponsorResponse.getData().getNearedpacket().size() > 0) {
-                            data = nearBySponsorResponse.getData().getNearedpacket();
+                            //插入广告标签
+                            List<NearBySponsorResponse.DataBean.NearedpacketBean> tempData = nearBySponsorResponse.getData().getNearedpacket();
+                            int tempSize = tempData.size();
+                            if (tempSize > 0 && tempSize < 4) {
+                                for (int i = tempSize; i < 4; i++) {
+                                    NearBySponsorResponse.DataBean.NearedpacketBean adLabel = new NearBySponsorResponse.DataBean.NearedpacketBean();
+                                    tempData.add(adLabel);
+                                }
+                            }
+                            data = tempData;
                             adapter = new ReleaseRecordAdapter(SponsorRedDetailActivity.this, data);
                             adapter.setStep(nearBySponsorResponse.getData().getUserstep());
                             redPkgRecycler.setAdapter(adapter);
@@ -679,7 +701,16 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
                     } else {
                         if (nearBySponsorResponse.getData() != null && nearBySponsorResponse.getData().getLedredpacket() != null
                                 && nearBySponsorResponse.getData().getLedredpacket().size() > 0) {
-                            data = nearBySponsorResponse.getData().getLedredpacket();
+                            //插入广告标签
+                            List<NearBySponsorResponse.DataBean.Ledredpacket> tempData = nearBySponsorResponse.getData().getLedredpacket();
+                            int tempSize = tempData.size();
+                            if (tempSize > 0 && tempSize < 4) {
+                                for (int i = tempSize; i < 4; i++) {
+                                    NearBySponsorResponse.DataBean.Ledredpacket adLabel = new NearBySponsorResponse.DataBean.Ledredpacket();
+                                    tempData.add(adLabel);
+                                }
+                            }
+                            data = tempData;
                             adapter = new ReleaseRecordAdapter(SponsorRedDetailActivity.this, data);
                             adapter.setStep(nearBySponsorResponse.getData().getUserstep());
                             redPkgRecycler.setAdapter(adapter);
@@ -695,16 +726,25 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                 redPkgRefresh.setRefreshing(false);
+                hideLoadingBar();
                 LocalLog.d(TAG, "errorBean = " + errorBean.toString());
                 if (errorBean != null) {
+                    List<NearBySponsorResponse.DataBean.NearedpacketBean> tempData = new ArrayList<>();
+                    int tempSize = tempData.size();
+                    for (int i = tempSize; i < 4; i++) {
+                        NearBySponsorResponse.DataBean.NearedpacketBean adLabel = new NearBySponsorResponse.DataBean.NearedpacketBean();
+                        tempData.add(adLabel);
+                    }
+                    data = tempData;
+                    adapter = new ReleaseRecordAdapter(SponsorRedDetailActivity.this, data);
+                    redPkgRecycler.setAdapter(adapter);
                     if (errorBean.getError() == 1) {
-                        noRedData.setVisibility(View.VISIBLE);
-                        redPkgRecycler.setVisibility(View.GONE);
                         showInfo();
                     }
                 }
             }
         });
+        return true;
     }
 
     /**
@@ -839,7 +879,8 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
             double longitude = location.getLongitude();
             this.nowLocation[0] = latitude;
             this.nowLocation[1] = longitude;
-            if (location.getPoiList() != null && location.getPoiList().size() > 0) {
+            loadData();
+/*            if (location.getPoiList() != null && location.getPoiList().size() > 0) {
                 this.currentAddrName = location.getPoiList().get(0).getName();
             }
             TencentMap tencentMap = mapview.getMap();
@@ -848,7 +889,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
             tencentMap.zoomToSpan(new LatLng(nowLocation[0] - 0.01, nowLocation[1] + 0.008), new LatLng(nowLocation[0] + 0.01, nowLocation[1] - 0.008));
             tencentMap.setCenter(new LatLng(nowLocation[0], nowLocation[1]));
             addMark();
-            addMyLocation();
+            addMyLocation();*/
         } else {
 //            PaoToastUtils.showShortToast(this, reason);
         }
@@ -920,5 +961,30 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
         mapview.getMap().setCenter(new LatLng(nowLocation[0], nowLocation[1]));
         addMyLocation();
         addMark();
+    }
+
+    @OnClick({R.id.iv_history, R.id.iv_send_red_bag, R.id.iv_sponsor})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_history:
+                LocalLog.d(TAG, "查看红包历史记录");
+                Intent hisIntent = new Intent(this, RedHsRecordActivity.class);
+                hisIntent.setAction(NEAR_ACTION);
+                startActivity(hisIntent);
+                break;
+            case R.id.iv_send_red_bag:
+                LocalLog.d(TAG, "发附近红包");
+                Intent intent = new Intent();
+                intent.setAction(SPOSNOR_ACTION);
+                intent.setClass(SponsorRedDetailActivity.this, TaskReleaseActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.iv_sponsor:
+                LocalLog.d(TAG, "我的店铺");
+                Intent intentBuss = new Intent();
+                intentBuss.setClass(this, SponsorManagerActivity.class);
+                startActivity(intentBuss);
+                break;
+        }
     }
 }

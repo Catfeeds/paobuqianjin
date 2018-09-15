@@ -236,6 +236,7 @@ public class SplashActivity extends UmengNotifyClickActivity {
                                 int imgSize = adresponse.getData().get(i).getImgs().size();
                                 for (int j = 0; j < imgSize; j++) {
                                     AdObject adObject = new AdObject();
+                                    adObject.setRid(Integer.parseInt(adresponse.getData().get(i).getRid()));
                                     adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
                                     adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
                                     adList.add(adObject);

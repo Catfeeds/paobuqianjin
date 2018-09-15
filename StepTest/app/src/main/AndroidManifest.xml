@@ -253,7 +253,7 @@
         <activity
             android:name=".view.activity.TaskReleaseActivity"
             android:theme="@style/ImageTranslucentTheme"
-            android:windowSoftInputMode="adjustPan" >
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="com.paobuqianjin.person.PKG_ACTION"></action>
                 <action android:name="com.paobuqianjin.person.SPONSOR_ACTION"></action>
@@ -839,7 +839,9 @@
             android:name=".view.activity.TransparentGuideActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".view.activity.ConsumptiveRedBagActivity" />
-        <activity android:name=".view.activity.AddConsumptiveRedBagActivity" />
+        <activity
+            android:name=".view.activity.AddConsumptiveRedBagActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".view.activity.ShopRedBagActivity" />
         <activity android:name=".view.activity.GetConsumptiveRedBagHisActivity" />
         <activity android:name=".view.activity.MyConsumptiveRedBagActivity" />

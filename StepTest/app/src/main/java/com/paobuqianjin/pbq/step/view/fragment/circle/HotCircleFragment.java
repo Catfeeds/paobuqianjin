@@ -1,6 +1,8 @@
 package com.paobuqianjin.pbq.step.view.fragment.circle;
 
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -52,6 +54,7 @@ import com.paobuqianjin.pbq.step.presenter.im.QueryRedPkgInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.LiveDetailActivity;
@@ -690,7 +693,7 @@ public class HotCircleFragment extends BaseFragment {
             protected void onSuc(String s) {
                 try {
                     Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
-                    adList = new ArrayList<>();
+                    final ArrayList<AdObject> adList = new ArrayList<>();
                     if (adresponse.getData() != null && adresponse.getData().size() > 0) {
                         int size = adresponse.getData().size();
                         for (int i = 0; i < size; i++) {
@@ -699,6 +702,7 @@ public class HotCircleFragment extends BaseFragment {
                                 int imgSize = adresponse.getData().get(i).getImgs().size();
                                 for (int j = 0; j < imgSize; j++) {
                                     AdObject adObject = new AdObject();
+                                    adObject.setRid(Integer.parseInt(adresponse.getData().get(i).getRid()));
                                     adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
                                     adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
                                     adList.add(adObject);
@@ -716,9 +720,19 @@ public class HotCircleFragment extends BaseFragment {
                             .setOnBannerListener(new OnBannerListener() {
                                 @Override
                                 public void OnBannerClick(int position) {
-                                    String targetUrl = adList.get(position).getTarget_url();
-                                    if (!TextUtils.isEmpty(targetUrl))
-                                        startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                    if (adList.get(position).getRid() == 0) {
+                                        LocalLog.d(TAG, "复制微信号");
+                                        ClipboardManager cmb = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                                        ClipData textClipData = ClipData.newPlainText("Label", getString(R.string.wx_code));
+                                        cmb.setPrimaryClip(textClipData);
+                                        LocalLog.d(TAG, "  msg = " + cmb.getText());
+                                        PaoToastUtils.showLongToast(getActivity(), "微信号复制成功");
+                                    } else {
+                                        String targetUrl = adList.get(position).getTarget_url();
+                                        if (!TextUtils.isEmpty(targetUrl))
+                                            startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                    }
+
                                 }
                             })
                             .start();

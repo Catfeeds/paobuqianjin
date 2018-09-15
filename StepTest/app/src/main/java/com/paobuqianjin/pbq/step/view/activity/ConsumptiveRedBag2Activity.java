@@ -1,6 +1,9 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.Manifest;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -33,12 +36,16 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AroundRedBagResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ShopSendedRedBagResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoTipsCallBack;
+import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.SharedPreferencesUtil;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
@@ -78,6 +85,8 @@ import butterknife.OnClick;
 public class ConsumptiveRedBag2Activity extends BaseBarActivity implements TencentLocationListener, TencentMap.OnMarkerClickListener {
     private static final String TAG = ConsumptiveRedBag2Activity.class.getSimpleName();
     private final static String ROUND_ACTION = "com.paobuqianjin.pbq.ROUND_PKG.ACTION";
+    private final static String SPOSNOR_ACTION = "com.paobuqianjin.person.SPONSOR_ACTION";
+    private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
     @Bind(R.id.mapview)
     MapView mapview;
     @Bind(R.id.iv_location)
@@ -123,6 +132,8 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     private boolean canRev = true;
     private final static int REQUEST_AROUND = 101;
     private final static int REQUEST_VIP = 102;
+    String vip_message = "";
+    private boolean isVip;
 
     @Override
     protected String title() {
@@ -153,16 +164,30 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         loadBanner();
     }
 
+    private void getVipStatus() {
+        Presenter.getInstance(ConsumptiveRedBag2Activity.this).getPaoBuSimple(NetApi.urlUser + FlagPreference.getUid(ConsumptiveRedBag2Activity.this), null, new PaoTipsCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
+                    isVip = userInfoResponse.getData().getGvip() == 1;
+                } catch (Exception j) {
+                    j.printStackTrace();
+                }
+            }
+
+        });
+    }
 
     private void loadBanner() {
         String bannerUrl = NetApi.urlAd + "?position=red_map";
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
-        Presenter.getInstance(this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
+        Presenter.getInstance(ConsumptiveRedBag2Activity.this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 try {
                     Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
-                    adList = new ArrayList<>();
+                    final ArrayList<AdObject> adList = new ArrayList<>();
                     if (adresponse.getData() != null && adresponse.getData().size() > 0) {
                         int size = adresponse.getData().size();
                         for (int i = 0; i < size; i++) {
@@ -171,6 +196,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                                 int imgSize = adresponse.getData().get(i).getImgs().size();
                                 for (int j = 0; j < imgSize; j++) {
                                     AdObject adObject = new AdObject();
+                                    adObject.setRid(Integer.parseInt(adresponse.getData().get(i).getRid()));
                                     adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
                                     adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
                                     adList.add(adObject);
@@ -188,9 +214,19 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                             .setOnBannerListener(new OnBannerListener() {
                                 @Override
                                 public void OnBannerClick(int position) {
-                                    String targetUrl = adList.get(position).getTarget_url();
-                                    if (!TextUtils.isEmpty(targetUrl))
-                                        startActivity(new Intent(ConsumptiveRedBag2Activity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                    if (adList.get(position).getRid() == 0) {
+                                        LocalLog.d(TAG, "复制微信号");
+                                        ClipboardManager cmb = (ClipboardManager) ConsumptiveRedBag2Activity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                        ClipData textClipData = ClipData.newPlainText("Label", getString(R.string.wx_code));
+                                        cmb.setPrimaryClip(textClipData);
+                                        LocalLog.d(TAG, "  msg = " + cmb.getText());
+                                        PaoToastUtils.showLongToast(ConsumptiveRedBag2Activity.this, "微信号复制成功");
+                                    } else {
+                                        String targetUrl = adList.get(position).getTarget_url();
+                                        if (!TextUtils.isEmpty(targetUrl))
+                                            startActivity(new Intent(ConsumptiveRedBag2Activity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                    }
+
                                 }
                             })
                             .start();
@@ -230,7 +266,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
 
 //        addRedBagView();
         tencentMap.setOnMarkerClickListener(this);
-
+        showLoadingBar();
         if (Build.VERSION.SDK_INT >= 23) {
             String[] permissions = {
                     Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -411,6 +447,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                 getPageData(1, false);
             }
         }
+        getVipStatus();
         //startCountDown(2 * 60 * 60 * 1000);
     }
 
@@ -439,11 +476,30 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         super.onDestroy();
     }
 
-    public void popVipWindow() {
+    /*@desc
+    *@function  检查当天是否提示过该提醒
+    *@param
+    *@return 
+    */
+    private boolean checkShowedToday(String title, int errorCode) {
+        if (errorCode == 0) {
+            return false;
+        }
+        String historyDays = (String) SharedPreferencesUtil.get("around_error" + String.valueOf(errorCode), "");
+        String today = DateTimeUtil.getCurrentTime();
+        if (historyDays.equals(today)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void popVipWindow(String title, int errorCode) {
         if (vipPopWnd != null && vipPopWnd.isShowing()) {
             LocalLog.d(TAG, "在显示");
             return;
         }
+        if (checkShowedToday(title, errorCode))
+            return;
         vipView = View.inflate(this, R.layout.target_dest_popwindow, null);
         vipPopWnd = new PopupWindow(vipView,
                 WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
@@ -458,29 +514,151 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         vipPopWnd.setBackgroundDrawable(new BitmapDrawable());
 
         TextView textTile = (TextView) vipView.findViewById(R.id.quit_title);
-        SpannableString spannableString = new SpannableString(getString(R.string.vip_goto));
-        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.color_e4393c)),
-                0, getString(R.string.vip_goto).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        textTile.setText(spannableString);
-        textTile.setGravity(Gravity.CENTER);
         TextView textDes = (TextView) vipView.findViewById(R.id.read_des);
-        textDes.setText("去开通");
         TextView textLeft = (TextView) vipView.findViewById(R.id.read_des_left);
-        textLeft.setVisibility(View.VISIBLE);
-        textLeft.setText("取消");
+        LocalLog.d(TAG, "error_code = " + errorCode);
+        switch (errorCode) {
+            case -1:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("发红包");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        LocalLog.d(TAG, "发遍地红包");
+                        Intent intentAround = new Intent();
+                        intentAround.setClass(ConsumptiveRedBag2Activity.this, AddAroundRedBagActivity.class);
+                        startActivityForResult(intentAround, REQUEST_AROUND);
+                    }
+                });
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                break;
+            case 0:
+                SpannableString spannableString = new SpannableString(title);
+                spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.color_e4393c)),
+                        0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                textTile.setText(spannableString);
+                textTile.setGravity(Gravity.CENTER);
+
+                textDes.setText("去开通");
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        Intent intent = new Intent();
+                        intent.setClass(ConsumptiveRedBag2Activity.this, VipActivity.class);
+                        startActivityForResult(intent, REQUEST_VIP);
+                    }
+                });
+                break;
+            case 2:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("发红包");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        LocalLog.d(TAG, "发遍地红包");
+                        Intent intentAround = new Intent();
+                        intentAround.setClass(ConsumptiveRedBag2Activity.this, AddAroundRedBagActivity.class);
+                        startActivityForResult(intentAround, REQUEST_AROUND);
+                    }
+                });
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                break;
+            case 3:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("发红包");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        LocalLog.d(TAG, "发附近红包");
+                        Intent intent = new Intent();
+                        intent.setAction(SPOSNOR_ACTION);
+                        intent.setClass(ConsumptiveRedBag2Activity.this, TaskReleaseActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                break;
+            case 4:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("发红包");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        LocalLog.d(TAG, "发专享红包");
+                        Intent intent = new Intent();
+                        intent.setAction(PKG_ACTION);
+                        intent.setClass(ConsumptiveRedBag2Activity.this, TaskReleaseActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                break;
+            case 5:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("去开通");
+                if (isVip) {
+                    textDes.setText("发红包");
+                }
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        LocalLog.d(TAG, "办理金牌会员");
+                        if (isVip) {
+                            Intent intent = new Intent();
+                            intent.setClass(ConsumptiveRedBag2Activity.this, AddConsumptiveRedBagActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent();
+                            intent.setClass(ConsumptiveRedBag2Activity.this, GoldenSponsoractivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                break;
+            case 6:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("发红包");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        LocalLog.d(TAG, "发消费红包");
+                        Intent intent = new Intent();
+                        intent.setClass(ConsumptiveRedBag2Activity.this, AddConsumptiveRedBagActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                break;
+            default:
+                break;
+        }
         textLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 vipPopWnd.dismiss();
-            }
-        });
-        textDes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                vipPopWnd.dismiss();
-                Intent intent = new Intent();
-                intent.setClass(ConsumptiveRedBag2Activity.this, VipActivity.class);
-                startActivityForResult(intent, REQUEST_VIP);
             }
         });
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
@@ -491,6 +669,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         vipPopWnd.showAtLocation(findViewById(R.id.consum_red_bag2), Gravity.CENTER, 0, 0);
 
         vipView.startAnimation(animationCircleType);
+        SharedPreferencesUtil.put("around_error" + String.valueOf(errorCode), DateTimeUtil.getCurrentTime());
     }
 
     public void popRoundRedPkg(final int position) {
@@ -662,7 +841,11 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         });
     }
 
-
+    /*@desc
+    *@function 是否可继续领：-1.无可领红包 0.办理个人员 1.不限领取 2.发遍地包 3.发附近包 4.发专享包 5.办理金牌员 6.发消费包 7.不能领取(限制)
+    *@param
+    *@return
+    */
     private void getAroundRedBag() {
         if (!isNoConsumptive) return;
         Presenter.getInstance(this).getPaoBuSimple(NetApi.urlGetRedpacketMap, null, new PaoTipsCallBack() {
@@ -670,11 +853,30 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
             protected void onSuc(String s) {
                 hideLoadingBar();
                 AroundRedBagResponse aroundRedBagResponse = new Gson().fromJson(s, AroundRedBagResponse.class);
-                if (aroundRedBagResponse.getData().getIs_receive() == 0) {
-                    canRev = false;
-                } else {
-                    canRev = true;
+                switch (aroundRedBagResponse.getData().getIs_receive()) {
+                    case 0:
+                        canRev = false;
+                        vip_message = aroundRedBagResponse.getData().getMessage();
+                        /*popVipWindow(aroundRedBagResponse.getMessage(), aroundRedBagResponse.getData().getIs_receive());*/
+                        break;
+                    case 1:
+                        canRev = true;
+                        LocalLog.d(TAG, "无限制领取");
+                        break;
+                    case -1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                        canRev = true;
+                        popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
+                        break;
+                    default:
+                        break;
                 }
+
                 listAroundRedBagBean.clear();
                 listAroundRedBagBean.addAll(aroundRedBagResponse.getData().getRedpacket_list());
                /* if (aroundRedBagResponse.getData().getRemain_time() > 0) {
@@ -705,8 +907,13 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                 super.onFal(e, errorStr, errorBean);
                 hideLoadingBar();
                 if (errorBean != null) {
-                    if (errorBean.getError() == -1) {
-                        PaoToastUtils.showLongToast(ConsumptiveRedBag2Activity.this, "小主，一大批红包正在急速赶来的路上，请耐心等待哦。");
+                    switch (errorBean.getError()) {
+                        /*-1.无可领红包 0.办理个人员 1.不限领取 2.发遍地包 3.发附近包 4.发专享包 5.办理金牌员 6.发消费包 7.不能领取(限制)*/
+                        case -1:
+                            PaoToastUtils.showLongToast(ConsumptiveRedBag2Activity.this, "小主，一大批红包正在急速赶来的路上，请耐心等待哦。");
+                            break;
+                        case 0:
+                            break;
                     }
                 }
             }
@@ -860,14 +1067,14 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                 if (tvCutdownTime.getVisibility() == View.GONE) {
                     markerIdStr = markerIdStr.split(":")[1];
                     int position = Integer.parseInt(markerIdStr);
-                    if (position <= listAroundRedBagBean.size()) {
+                    if (position <listAroundRedBagBean.size()) {
                         final AroundRedBagResponse.AroundRedBagBean redBagBean = listAroundRedBagBean.get(position);
                         if (redBagBean.getStatus() == 0) {
                             if (canRev) {
                                 popRoundRedPkg(position);
                             } else {
                                 LocalLog.d(TAG, "不能领取");
-                                popVipWindow();
+                                popVipWindow(vip_message, 0);
                             }
                         } else if (redBagBean.getStatus() == 1) {
                             Intent intent = new Intent();

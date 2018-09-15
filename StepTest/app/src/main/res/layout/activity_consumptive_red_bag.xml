@@ -13,21 +13,21 @@
         android:id="@+id/mapview"
         android:layout_width="fill_parent"
         android:layout_height="200dp"
-        android:layout_below="@+id/rl_bar" />
+        android:layout_below="@+id/rl_bar"
+        android:visibility="gone" />
 
     <com.youth.banner.Banner
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:layout_below="@+id/rl_bar"
-        android:paddingBottom="8dp"
-        android:visibility="gone"></com.youth.banner.Banner>
+        android:paddingBottom="8dp"></com.youth.banner.Banner>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/mapview">
+        android:layout_below="@+id/banner">
 
         <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
             android:id="@+id/rv_coupon"

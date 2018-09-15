@@ -57,11 +57,11 @@ public class SearchResponse {
          * avatar : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/257612018070314288037034.jpg
          * vip : 1
          * cusvip : 0
-         *follow: 0
+         * follow: 0
          */
         private int follow;
         private int userid;
-        private int userno;
+        private String userno;
         private String nickname;
         private String avatar;
         private int vip;
@@ -75,11 +75,11 @@ public class SearchResponse {
             this.userid = userid;
         }
 
-        public int getUserno() {
+        public String getUserno() {
             return userno;
         }
 
-        public void setUserno(int userno) {
+        public void setUserno(String userno) {
             this.userno = userno;
         }
 

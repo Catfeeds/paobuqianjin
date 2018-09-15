@@ -528,7 +528,10 @@ public final class Engine {
     }
 
     public void postTaskSponsorRelease(TaskSponsorParam taskSponsorParam) {
-        LocalLog.d(TAG, "商家发红包");
+        if (taskSponsorParam == null) {
+            return;
+        }
+        LocalLog.d(TAG, "商家发红包" + taskSponsorParam.paramString());
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
