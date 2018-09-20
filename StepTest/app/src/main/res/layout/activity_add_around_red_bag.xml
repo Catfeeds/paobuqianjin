@@ -11,7 +11,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/btn_confirm"
+        android:layout_above="@id/linear_rel"
         android:layout_below="@id/rl_bar">
 
 
@@ -55,6 +55,32 @@
                     android:layout_marginRight="14dp"
                     android:src="@drawable/go_to" />
             </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/select_historty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="选择历史记录"
+                    android:textColor="@color/color_d6d6d6"
+                    android:textSize="12dp" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/iv_history_release" />
+            </LinearLayout>
 
             <EditText
                 android:id="@+id/et_information"
@@ -218,6 +244,81 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/select_circle"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_f8"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="选择圈子"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/sponor_circle_detail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="39dp"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:hint="选择您创建的圈子"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="19dp"
+                    android:src="@drawable/go_to" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/password_circle"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_f8"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="圈子密码"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/circle_pass"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="39dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="如有密码则填写"
+                    android:maxLength="6"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/linear_shop"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -249,6 +350,16 @@
                     android:textSize="14sp" />
 
                 <ImageView
+                    android:id="@+id/iv_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@id/item_grid_image"
+                    android:layout_marginRight="10dp"
+                    android:padding="4dp"
+                    android:src="@mipmap/ic_transparent_bg_delete"
+                    android:visibility="gone" />
+
+                <ImageView
                     android:layout_width="7dp"
                     android:layout_height="14dp"
                     android:layout_alignParentRight="true"
@@ -257,18 +368,62 @@
                     android:src="@drawable/go_to" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_f6f6f6"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:text="遍地红包说明"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@mipmap/wenhao2"
+                    android:padding="10dp"
+                    android:scaleType="centerInside" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/btn_confirm"
+    <LinearLayout
+        android:id="@+id/linear_rel"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/create_button"
-        android:stateListAnimator="@null"
-        android:text="确认"
-        android:textColor="@color/color_fefefe"
-        android:textSize="16dp" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_prescan"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/rectangle_zero_dp"
+            android:stateListAnimator="@null"
+            android:text="预览"
+            android:textColor="@color/color_6c71c4"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/rect_no_corner"
+            android:stateListAnimator="@null"
+            android:text="塞进红包"
+            android:textColor="@color/color_fefefe"
+            android:textSize="16dp" />
+    </LinearLayout>
+
 </RelativeLayout>

@@ -7,7 +7,7 @@
         android:id="@+id/circle_hot_a"
         android:layout_width="58dp"
         android:layout_height="58dp"
-        android:src="@drawable/quan_a" />
+        android:src="@drawable/default_head_ico" />
 
     <TextView
         android:layout_width="wrap_content"

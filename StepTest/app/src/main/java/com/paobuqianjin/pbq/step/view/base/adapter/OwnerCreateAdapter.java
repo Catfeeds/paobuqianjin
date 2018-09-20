@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.base.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -125,7 +126,12 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
             String sAgeFormat = mContext.getResources().getString(R.string.member_number);
             String sFinalMember = String.format(sAgeFormat, tmpData.getMember_number());
             holder.searchCircleDesListNum.setText(sFinalMember);
-            holder.joinIn.setText("管理");
+            if (tmpData.isCan_select()) {
+                holder.joinIn.setText("选择");
+            } else {
+                holder.joinIn.setText("管理");
+            }
+
             if (tmpData.getIs_recharge() == 1) {
                 holder.is_recharge = true;
             } else if (tmpData.getIs_recharge() == 0) {
@@ -188,6 +194,8 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
         TextView searchCircleDesListNum;
         TextView locationDescSearchList;
         Button joinIn;
+        /*是否被选中*/
+        boolean is_select;
 
         public OwnerCreateViewHolder(View view) {
             super(view);
@@ -198,7 +206,7 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
             circleLogoSearch = (ImageView) view.findViewById(R.id.circle_logo_search);
             circleLogoSearch.setOnClickListener(onClickListener);
             list_item_search = view.findViewById(R.id.list_item_search);
-            if(list_item_search !=null) list_item_search.setOnClickListener(onClickListener);
+            if (list_item_search != null) list_item_search.setOnClickListener(onClickListener);
             searchCircleDesListName = (TextView) view.findViewById(R.id.search_circle_des_list_name);
             lock = (ImageView) view.findViewById(R.id.lock);
             searchCircleDesListNum = (TextView) view.findViewById(R.id.search_circle_des_list_num);
@@ -212,19 +220,31 @@ public class OwnerCreateAdapter extends RecyclerView.Adapter<OwnerCreateAdapter.
             public void onClick(View view) {
                 switch (view.getId()) {
                     case R.id.join_in:
-                        if (is_recharge) {
-                            LocalLog.d(TAG, "管理");
-                        } else {
-                            LocalLog.d(TAG, "充值");
+                        switch (joinIn.getText().toString().trim()) {
+                            case "管理":
+                                if (is_recharge) {
+                                    LocalLog.d(TAG, "管理");
+                                } else {
+                                    LocalLog.d(TAG, "充值");
+                                }
+                                Intent intentManager = new Intent();
+                                intentManager.setAction(MEMBER_MANANGER_ACTION);
+                                intentManager.setClass(mContext, MemberManagerActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString(CIRCLE_ID, String.valueOf(getCircleid()));
+                                intentManager.putExtra(mContext.getPackageName(), bundle);
+                                intentManager.putExtra(mContext.getPackageName() + "position", getAdapterPosition());
+                                fragment.startActivityForResult(intentManager, REQUEST_MEMBER);
+                                break;
+                            case "选择":
+                                if (data.get(getAdapterPosition()) instanceof MyCreateCircleResponse.DataBeanX.DataBean) {
+                                    Intent intent = new Intent();
+                                    intent.putExtra("circle", (MyCreateCircleResponse.DataBeanX.DataBean) data.get(getAdapterPosition()));
+                                    fragment.getActivity().setResult(Activity.RESULT_OK, intent);
+                                    fragment.getActivity().finish();
+                                }
+                                break;
                         }
-                        Intent intentManager = new Intent();
-                        intentManager.setAction(MEMBER_MANANGER_ACTION);
-                        intentManager.setClass(mContext, MemberManagerActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString(CIRCLE_ID, String.valueOf(getCircleid()));
-                        intentManager.putExtra(mContext.getPackageName(), bundle);
-                        intentManager.putExtra(mContext.getPackageName() + "position", getAdapterPosition());
-                        fragment.startActivityForResult(intentManager, REQUEST_MEMBER);
                         break;
                     case R.id.circle_logo_search:
                     case R.id.list_item_search:

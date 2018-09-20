@@ -54,6 +54,7 @@ public class DispatchRecordFragment extends BaseFragment {
     LinearLayoutManager layoutManager;
     RedHisAdapter redHisAdapter;
     private String currentAction = null;
+    private boolean canSelect;
 
     @Override
 
@@ -218,6 +219,7 @@ public class DispatchRecordFragment extends BaseFragment {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
                         if (pageIndex == 1 && redSendHisResponse.getData() != null) {
                             arrayList.clear();
                             if (redSendHisResponse.getData().getRedpacket_list() != null && redSendHisResponse.getData().getRedpacket_list().getData() != null) {

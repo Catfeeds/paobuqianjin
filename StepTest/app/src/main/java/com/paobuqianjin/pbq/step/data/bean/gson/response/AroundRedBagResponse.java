@@ -17,6 +17,8 @@ public class AroundRedBagResponse {
                  "money":"31",
                  "receive_num":0,
                  "target_url":""
+                 "ad_url":"https:\/\/www.bianxianguanjia.com\/toGamePageByjgg\/10844366\/1267\/1?call=0"
+                 "ad_title":"幸运大转盘"
                  "status":1*/
         private String red_id;
         private String userid;
@@ -25,6 +27,27 @@ public class AroundRedBagResponse {
         private String money;
         private String receive_num;
         private String target_url;
+
+        public String getAd_title() {
+            return ad_title;
+        }
+
+        public void setAd_title(String ad_title) {
+            this.ad_title = ad_title;
+        }
+
+        private String ad_title;
+
+        public String getAd_url() {
+            return ad_url;
+        }
+
+        public void setAd_url(String ad_url) {
+            this.ad_url = ad_url;
+        }
+
+        /*变现流量管家链接，特殊广告*/
+        private String ad_url;
 
         public int getStatus() {
             return status;

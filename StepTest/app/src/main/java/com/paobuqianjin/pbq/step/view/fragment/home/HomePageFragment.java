@@ -831,22 +831,31 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             }, 500);
             drawProcess(targetStep, lastStep);
             showStep = stepToday;
+
+            LocalLog.d(TAG, "stepToday = " + stepToday);
+            Message messageNet = Message.obtain();
+            messageNet.what = MSG_UPDATE_STEP;
+            messageNet.arg1 = stepToday;
+            updateHandler.sendMessageDelayed(messageNet, 10000);
         } else {
             toayStep.setText(String.valueOf(stepToday));
             if (lastStep < stepToday) {
                 float addAngle = (stepToday - lastStep) * 360.0f / targetStep;
-                lastStep = stepToday;
-                toayStep.setText(String.valueOf(lastStep));
+                toayStep.setText(String.valueOf(stepToday));
                 if (stepProcessDrawable != null) {
                     stepProcessDrawable.add(addAngle);
                 }
             }
+            if (stepToday - lastStep > 100) {
+                LocalLog.d(TAG, "stepToday = " + stepToday);
+                Message messageNet = Message.obtain();
+                messageNet.what = MSG_UPDATE_STEP;
+                messageNet.arg1 = stepToday;
+                updateHandler.sendMessageDelayed(messageNet, 10000);
+                lastStep = stepToday;
+            }
         }
-        LocalLog.d(TAG, "stepToday = " + stepToday);
-        Message messageNet = Message.obtain();
-        messageNet.what = MSG_UPDATE_STEP;
-        messageNet.arg1 = stepToday;
-        updateHandler.sendMessageDelayed(messageNet, 10000);
+
     }
 
     @Override

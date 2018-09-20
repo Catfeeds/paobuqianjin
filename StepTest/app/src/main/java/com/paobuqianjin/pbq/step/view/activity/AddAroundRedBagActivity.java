@@ -19,8 +19,11 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,6 +48,7 @@ import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
@@ -97,6 +101,20 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     RelativeLayout attion;
     @Bind(R.id.banner)
     Banner banner;
+    @Bind(R.id.sponor_circle_detail)
+    TextView sponorCircleDetail;
+    @Bind(R.id.select_circle)
+    LinearLayout selectCircle;
+    @Bind(R.id.circle_pass)
+    EditText circlePass;
+    @Bind(R.id.password_circle)
+    LinearLayout passwordCircle;
+    @Bind(R.id.iv_delete)
+    ImageView ivDelete;
+    @Bind(R.id.btn_prescan)
+    Button btnPrescan;
+    @Bind(R.id.select_historty)
+    LinearLayout selectHistorty;
     private GridAddPic2Adapter adapter;
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
@@ -115,6 +133,11 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     private final static int MAP_RED_PAY = 200;
     private final static String CIRCLE_RECHARGE = "pay";
     private boolean isVip;
+    private final static String SELECT_CIRCLE_ACTION = "com.paobuqianjin.pbq.SELECT_ACTION";
+    private final static String ROUND_ACTION = "com.paobuqianjin.pbq.ROUND_PKG.ACTION";
+    private final static int SELECT_CIRCLE = 77;
+    private String circleId;
+
     @Override
     protected String title() {
         return getString(R.string.add_around_red_bag);
@@ -134,6 +157,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         getDefaultBusiness();
         loadBanner();
     }
+
     private void loadBanner() {
         String bannerUrl = NetApi.urlAd + "?position=redmap_create";
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
@@ -348,6 +372,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                 businessId = data.getIntExtra("businessId", -1);
                 if (businessId != -1) {
                     sponorMsgDesDetail.setText(data.getStringExtra("name"));
+                    ivDelete.setVisibility(View.VISIBLE);
                 }
             } else {
                 getDefaultBusiness();
@@ -359,12 +384,33 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                     hasBusiness = true;
                     this.businessId = businessId;
                     sponorMsgDesDetail.setText(data.getStringExtra("name"));
+                    ivDelete.setVisibility(View.VISIBLE);
+
                 }
             }
         } else if (requestCode == MAP_RED_PAY) {
             if (resultCode == Activity.RESULT_OK) {
                 LocalLog.d(TAG, "支付成功");
                 finish();
+            }
+        } else if (requestCode == SELECT_CIRCLE) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    try {
+                        MyCreateCircleResponse.DataBeanX.DataBean circleData = (MyCreateCircleResponse.DataBeanX.DataBean) data.getSerializableExtra("circle");
+                        if (circleData != null && circleData.getId() > 0) {
+                            sponorCircleDetail.setText(circleData.getName());
+                            circleId = String.valueOf(circleData.getId());
+                            if (circleData.getIs_pwd() == 1) {
+                                circlePass.setEnabled(true);
+                            } else {
+                                circlePass.setEnabled(false);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
@@ -389,8 +435,9 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         setResult(2, intent);
         finish();
     }
+
     private void getVipStatus() {
-        LocalLog.d(TAG,"getVipStatus() enter");
+        LocalLog.d(TAG, "getVipStatus() enter");
         Presenter.getInstance(AddAroundRedBagActivity.this).getPaoBuSimple(NetApi.urlUser + FlagPreference.getUid(AddAroundRedBagActivity.this), null, new PaoTipsCallBack() {
             @Override
             protected void onSuc(String s) {
@@ -407,9 +454,27 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     }
 
 
-    @OnClick({R.id.linear_shop, R.id.btn_confirm, R.id.attion})
+    @OnClick({R.id.linear_shop, R.id.btn_confirm, R.id.attion, R.id.select_circle, R.id.iv_delete, R.id.btn_prescan, R.id.select_historty})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.select_historty:
+                LocalLog.d(TAG, "选择历史记录红包再发");
+                Intent hisIntent = new Intent(this, RedHsRecordActivity.class);
+                hisIntent.putExtra("select", "round");
+                hisIntent.setAction(ROUND_ACTION);
+                startActivity(hisIntent);
+                break;
+            case R.id.iv_delete:
+                LocalLog.d(TAG, "删除默认店铺");
+                sponorMsgDesDetail.setText("");
+                ivDelete.setVisibility(View.GONE);
+                break;
+            case R.id.select_circle:
+                Intent selectCircleIntent = new Intent();
+                selectCircleIntent.setAction(SELECT_CIRCLE_ACTION);
+                selectCircleIntent.setClass(this, OwnerCircleActivity.class);
+                startActivityForResult(selectCircleIntent, SELECT_CIRCLE);
+                break;
             case R.id.attion:
                 startActivity(GoldenSponsoractivity.class, null);
                 break;
@@ -428,6 +493,9 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                     startActivityForResult(intent, REQUEST_ADD);
                 }
                 break;
+            case R.id.btn_prescan:
+
+                break;
             case R.id.btn_confirm:
                 if (fillter()) {
                     String images = "";
@@ -439,12 +507,23 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                     }
 
                     Map<String, String> params = new HashMap<>();
-                    params.put("number", etRedBagNum.getText().toString());
-                    params.put("money", etRedBagTotalMoney.getText().toString());
-                    params.put("businessid", businessId + "");
-                    params.put("content", etInformation.getText().toString());
-                    params.put("images", images);
-                    params.put("target_url", tvLink.getText().toString());
+                    if (!TextUtils.isEmpty(etRedBagNum.getText().toString()))
+                        params.put("number", etRedBagNum.getText().toString());
+                    if (!TextUtils.isEmpty(etRedBagTotalMoney.getText().toString()))
+                        params.put("money", etRedBagTotalMoney.getText().toString());
+                    if (businessId != -1 && !TextUtils.isEmpty(sponorCircleDetail.getText().toString().trim()))
+                        params.put("businessid", businessId + "");
+                    if (!TextUtils.isEmpty(etInformation.getText().toString()))
+                        params.put("content", etInformation.getText().toString());
+                    if (!TextUtils.isEmpty(images))
+                        params.put("images", images);
+                    if (!TextUtils.isEmpty(tvLink.getText().toString()))
+                        params.put("target_url", tvLink.getText().toString());
+                    if (!TextUtils.isEmpty(circleId)) {
+                        params.put("circleid", circleId);
+                        if (!TextUtils.isEmpty(circlePass.getText().toString()))
+                            params.put("circle_pwd", circlePass.getText().toString());
+                    }
                     Presenter.getInstance(this).postPaoBuSimple(NetApi.urlRedpacketMap, params, new PaoTipsCallBack() {
                         @Override
                         protected void onSuc(String s) {
@@ -464,6 +543,12 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                                 e.printStackTrace();
                             }
                         }
+
+                        @Override
+                        protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                            super.onFal(e, errorStr, errorBean);
+                            LocalLog.d(TAG, errorStr);
+                        }
                     });
                 }
                 break;
@@ -471,10 +556,10 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     }
 
     private boolean fillter() {
-        if (TextUtils.isEmpty(etInformation.getText().toString().trim())) {
+/*        if (TextUtils.isEmpty(etInformation.getText().toString().trim())) {
             PaoToastUtils.showShortToast(this, "请输入推广信息");
             return false;
-        }
+        }*/
         /*if (resultList.size() < 1) {
             PaoToastUtils.showShortToast(this, "请选择图片");
             return false;
@@ -489,10 +574,10 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
             PaoToastUtils.showShortToast(this, "请输入红包总金额");
             return false;
         }
-        if (businessId < 1) {
+/*        if (businessId < 1) {
             PaoToastUtils.showShortToast(this, "请选择您的商铺");
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -556,6 +641,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                                 if (sponorMsgDesDetail != null) {
                                     businessId = shopBean.getBusinessid();
                                     sponorMsgDesDetail.setText(shopBean.getName());
+                                    ivDelete.setVisibility(View.VISIBLE);
                                 }
                             }
                         }

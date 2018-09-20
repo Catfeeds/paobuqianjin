@@ -195,6 +195,18 @@
                 android:inputType="numberDecimal"
                 android:textColorHint="@color/color_cbcacf"
                 android:textSize="17dp" />
+
+            <TextView
+                android:id="@+id/crash_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/can_crash"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/can_crash"
+                android:layout_marginRight="14dp"
+                android:text="全部提现"
+                android:textColor="@color/color_6c71c4"
+                android:textSize="17dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -234,26 +246,24 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_below="@id/protocl_pay"
             android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="20dp"
             android:text="@string/tips_title"
             android:textColor="@color/color_8a8a8a"
-            android:textSize="12sp"
-            android:layout_below="@id/protocl_pay"
-            />
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginStart="24dp"
+            android:layout_below="@id/textView5"
             android:layout_marginEnd="20dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="6dp"
             android:text="@string/transfer_limite_tips"
             android:textColor="@color/color_8a8a8a"
-            android:textSize="12sp"
-            android:layout_below="@id/textView5"
-            />
+            android:textSize="12sp" />
     </RelativeLayout>
 
 

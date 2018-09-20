@@ -47,6 +47,22 @@ public class NearByRedResponse {
     }
 
     public static class DataBean {
+        public String getCircleid() {
+            return circleid;
+        }
+
+        public void setCircleid(String circleid) {
+            this.circleid = circleid;
+        }
+
+        public String getCircle_pwd() {
+            return circle_pwd;
+        }
+
+        public void setCircle_pwd(String circle_pwd) {
+            this.circle_pwd = circle_pwd;
+        }
+
         /**
          * red_id : 1493
          * userid : 35876
@@ -82,8 +98,11 @@ public class NearByRedResponse {
          * business_img : ["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/B8910D85-4DA1-4692-BA71-ED13DDEBC3C2.jpg"]
          * income_money : 0.06
          * receiver_list : [{"actually":"0.17","userid":35876,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"},{"actually":"0.04","userid":35876,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"},{"actually":"0.06","userid":35822,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg"},{"actually":"0.05","userid":35875,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/25/35875201808251431128180.jpg"},{"actually":"0.06","userid":35821,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/23/35821201808231407665212.jpg"},{"actually":"0.08","userid":35881,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"}]
+         * "circleid":101603,
+         * "circle_pwd":""
          */
-
+        private String circleid;
+        private String circle_pwd;
         private int red_id;
         private int userid;
         private String red_name;

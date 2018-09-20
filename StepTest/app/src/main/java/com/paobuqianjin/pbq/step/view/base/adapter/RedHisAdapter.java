@@ -19,6 +19,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.RedSendHisResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SendNearPkgResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.FriendDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.RedInfoActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorDetailActivity;
@@ -117,6 +118,7 @@ public class RedHisAdapter extends RecyclerView.Adapter<RedHisAdapter.RedHisView
         TextView commentNum;
         String userId;
         LinearLayout contentLinear;
+        TextView repay;
 
         public RedHisViewHolder(View view) {
             super(view);
@@ -127,6 +129,10 @@ public class RedHisAdapter extends RecyclerView.Adapter<RedHisAdapter.RedHisView
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
+                    case R.id.repay:
+                        LocalLog.d(TAG, "再一次发该红包");
+
+                        break;
                     case R.id.content_layout:
                         String redId = "";
                         Intent intent = new Intent();
@@ -187,6 +193,8 @@ public class RedHisAdapter extends RecyclerView.Adapter<RedHisAdapter.RedHisView
             contentLinear = (LinearLayout) view.findViewById(R.id.content_layout);
             contentLinear.setOnClickListener(onClickListener);
             headIcon.setOnClickListener(onClickListener);
+            repay = (TextView) view.findViewById(R.id.repay);
+            repay.setOnClickListener(onClickListener);
         }
     }
 }

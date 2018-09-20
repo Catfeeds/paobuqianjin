@@ -63,12 +63,12 @@ public class OwnerCreateFragment extends BaseFragment {
     private final static String DELETE_ACTION = "com.paobuqianjin.pbq.step.DELETE_CIRCLE";
     private final static String DELETE_MEMBER = "com.paobuqianjin.pbq.step.DELETE_MEMBER";
     private final static String CIRCLE_EDIT = "com.paobuqianjin.pbq.step.EDIT_CIRCLE";
+    private final static String SELECT_CIRCLE_ACTION = "com.paobuqianjin.pbq.SELECT_ACTION";
+    private String currentAction = "";
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Presenter.getInstance(context).attachUiInterface(myCreatCircleInterface);
-        Presenter.getInstance(getContext()).attachUiInterface(reflashMyCircleInterface);
     }
 
     public void searchKeyWord(String keyWord) {
@@ -121,7 +121,14 @@ public class OwnerCreateFragment extends BaseFragment {
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
+        Presenter.getInstance(getActivity()).attachUiInterface(myCreatCircleInterface);
+        Presenter.getInstance(getActivity()).attachUiInterface(reflashMyCircleInterface);
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            if (SELECT_CIRCLE_ACTION.equals(intent.getAction())) {
+                currentAction = SELECT_CIRCLE_ACTION;
+            }
+        }
         LocalLog.d(TAG, "initView() enter");
         ownerCreateCircleLists = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.owner_create_circle_lists);
         createCircleSwipe = (SwipeRefreshLayout) viewRoot.findViewById(R.id.create_circle_swipe);
@@ -265,58 +272,69 @@ public class OwnerCreateFragment extends BaseFragment {
             if (!isAdded()) {
                 return;
             }
-            if (myCreateCircleResponse.getError() == 0) {
-                LocalLog.d(TAG, myCreateCircleResponse.getMessage());
-                if (createCircleSwipe == null) {
-                    return;
-                }
-                notFoundData.setVisibility(View.GONE);
-                createCircleSwipe.setVisibility(View.VISIBLE);
-                if (!isSearch) {
-                    pageCount = myCreateCircleResponse.getData().getPagenation().getTotalPage();
-                    LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
-                    loadMore((ArrayList<MyCreateCircleResponse.DataBeanX.DataBean>) myCreateCircleResponse.getData().getData());
-                    if (pageIndex == 1) {
-                        ownerCreateCircleLists.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                LocalLog.d(TAG, "滑动到顶端");
-                                ownerCreateCircleLists.scrollToPosition(0);
-                            }
-                        }, 10);
-                    }
-                    pageIndex++;
-                    mCurrentIndex = pageIndex;
-                } else {
-                    pageCount = myCreateCircleResponse.getData().getPagenation().getTotalPage();
-                    LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
-                    searchMore((ArrayList<MyCreateCircleResponse.DataBeanX.DataBean>) myCreateCircleResponse.getData().getData());
-                    if (pageIndex == 1) {
-                        ownerCreateCircleLists.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                LocalLog.d(TAG, "滑动到顶端");
-                                ownerCreateCircleLists.scrollToPosition(0);
-                            }
-                        }, 10);
-                    }
-                    pageIndex++;
-                }
-
-            } else if (myCreateCircleResponse.getError() == 1) {
-                if (pageIndex == 1) {
-                    LocalLog.d(TAG, "显示无数据界面");
-                    if (notFoundData == null) {
+            try {
+                if (myCreateCircleResponse.getError() == 0) {
+                    LocalLog.d(TAG, myCreateCircleResponse.getMessage());
+                    if (createCircleSwipe == null) {
                         return;
                     }
-                    notFoundData.setVisibility(View.VISIBLE);
-                    createCircleSwipe.setVisibility(View.GONE);
-                } else {
-                    LocalLog.d(TAG, "其他页无数据!");
+                    if (SELECT_CIRCLE_ACTION.equals(currentAction)) {
+                        LocalLog.d(TAG, "选中圈子");
+                        int size = myCreateCircleResponse.getData().getData().size();
+                        for (int i = 0; i < size; i++) {
+                            myCreateCircleResponse.getData().getData().get(i).setCan_select(true);
+                        }
+                    }
+                    notFoundData.setVisibility(View.GONE);
+                    createCircleSwipe.setVisibility(View.VISIBLE);
+                    if (!isSearch) {
+                        pageCount = myCreateCircleResponse.getData().getPagenation().getTotalPage();
+                        LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
+                        loadMore((ArrayList<MyCreateCircleResponse.DataBeanX.DataBean>) myCreateCircleResponse.getData().getData());
+                        if (pageIndex == 1) {
+                            ownerCreateCircleLists.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    LocalLog.d(TAG, "滑动到顶端");
+                                    ownerCreateCircleLists.scrollToPosition(0);
+                                }
+                            }, 10);
+                        }
+                        pageIndex++;
+                        mCurrentIndex = pageIndex;
+                    } else {
+                        pageCount = myCreateCircleResponse.getData().getPagenation().getTotalPage();
+                        LocalLog.d(TAG, "pageIndex = " + pageIndex + "pageCount = " + pageCount);
+                        searchMore((ArrayList<MyCreateCircleResponse.DataBeanX.DataBean>) myCreateCircleResponse.getData().getData());
+                        if (pageIndex == 1) {
+                            ownerCreateCircleLists.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    LocalLog.d(TAG, "滑动到顶端");
+                                    ownerCreateCircleLists.scrollToPosition(0);
+                                }
+                            }, 10);
+                        }
+                        pageIndex++;
+                    }
+
+                } else if (myCreateCircleResponse.getError() == 1) {
+                    if (pageIndex == 1) {
+                        LocalLog.d(TAG, "显示无数据界面");
+                        if (notFoundData == null) {
+                            return;
+                        }
+                        notFoundData.setVisibility(View.VISIBLE);
+                        createCircleSwipe.setVisibility(View.GONE);
+                    } else {
+                        LocalLog.d(TAG, "其他页无数据!");
+                    }
+                } else if (myCreateCircleResponse.getError() == -100) {
+                    LocalLog.d(TAG, "Token 过期!");
+                    exitTokenUnfect();
                 }
-            } else if (myCreateCircleResponse.getError() == -100) {
-                LocalLog.d(TAG, "Token 过期!");
-                exitTokenUnfect();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 

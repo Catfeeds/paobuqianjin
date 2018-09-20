@@ -170,6 +170,7 @@
             android:name=".view.activity.OwnerCircleActivity"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.SELECT_ACTION" />
                 <action android:name="com.paobuqianjin.pbq.GUIDE_ACTION" />
                 <action android:name="com.paobuqianjin.pbq.ACTION.GOTO_MYCIRCLE" />
             </intent-filter>
@@ -864,6 +865,9 @@
         <activity android:name=".view.activity.SingleWebViewActivity"></activity>
         <activity android:name=".view.activity.RedHsRecordActivity">
             <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.SELECT_HIS_TICK_ACTION" />
+                <action android:name="com.paobuqianjin.pbq.SELECT_HIS_NEAR_ACTION" />
+                <action android:name="com.paobuqianjin.pbq.SELECT_HIS_AROUND_ACTION" />
                 <action android:name="com.paobuqianjin.pbq.ROUND_PKG.ACTION" />
                 <action android:name="com.paobuqianjin.pbq.NEAR_PKG.ACTION" />
             </intent-filter>

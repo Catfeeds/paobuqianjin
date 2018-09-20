@@ -140,6 +140,7 @@ public class MyCreateCircleResponse {
              * member_number : 20
              * order_no : wx0000000000000000
              * is_recharge : 1
+             * can_select 0
              */
 
             private int id;
@@ -150,6 +151,16 @@ public class MyCreateCircleResponse {
             private int member_number;
             private String order_no;
             private int is_recharge;
+
+            public boolean isCan_select() {
+                return can_select;
+            }
+
+            public void setCan_select(boolean can_select) {
+                this.can_select = can_select;
+            }
+
+            private boolean can_select;
 
             public int getId() {
                 return id;

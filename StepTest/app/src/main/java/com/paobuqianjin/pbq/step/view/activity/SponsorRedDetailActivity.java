@@ -282,7 +282,6 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
             popOpWindowRedButtonHori = new PopupWindow(popCircleOpBarHori,
                     WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
             final Button button = (Button) popCircleOpBarHori.findViewById(R.id.red_pkg_button);
-            button.setBackgroundResource(R.drawable.near_pkg);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

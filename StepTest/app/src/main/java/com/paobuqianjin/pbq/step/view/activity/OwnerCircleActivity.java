@@ -21,7 +21,7 @@ public class OwnerCircleActivity extends BaseActivity {
     private OwnerCreateJoinFragment ownerCircleFragment = new OwnerCreateJoinFragment();
     private int my_create_total_page = 0;
     private int my_join_total_page = 0;
-
+    private final static String SELECT_CIRCLE_ACTION = "com.paobuqianjin.pbq.SELECT_ACTION";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +30,6 @@ public class OwnerCircleActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        super.initView();
         LocalLog.d(TAG, "initView() enter");
        /* Intent intent = getIntent();
         MyCreateCircleBundleData myCreateCircleBundleData = null;

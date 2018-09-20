@@ -32,7 +32,6 @@ import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
-import com.paobuqianjin.pbq.step.view.activity.TransferActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -85,17 +84,19 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     EditText canCrash;
     @Bind(R.id.select_icon)
     ImageView selectIcon;
+    @Bind(R.id.crash_all)
+    TextView crashAll;
     private float canCrashNum;
     private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
     private final static int CRASH_PROTOCAL = 206;
     private boolean isauthWx;
     private ProgressDialog dialog;
     private String action = "";
-    CrashToParam crashToParam = new CrashToParam();
+    CrashToParam crashToParam;
 
     @Override
     protected String title() {
-        return "提现";
+        return "提现到微信";
     }
 
     @Override
@@ -119,7 +120,6 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         canCrash = (EditText) viewRoot.findViewById(R.id.can_crash);
         protoclText = (TextView) viewRoot.findViewById(R.id.protocl_text);
         confirmCrash = (Button) viewRoot.findViewById(R.id.confirm_crash);
@@ -165,9 +165,14 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
-    @OnClick({R.id.wechat_pay, R.id.confirm_crash, R.id.protocl_pay, R.id.select_icon})
+    @OnClick({R.id.wechat_pay, R.id.confirm_crash, R.id.protocl_pay, R.id.select_icon, R.id.crash_all})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.crash:
+                if (canCrashNum > 0.0f) {
+                    canCrash.setText(String.valueOf(canCrashNum));
+                }
+                break;
             case R.id.wechat_pay:
                 LocalLog.d(TAG, "绑定微信或者更换绑定的微信");
                 if (!isauthWx) {
@@ -187,17 +192,18 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                 }
                 action = "wx";
                 if ("wx".equals(action)) {
-                    if (TextUtils.isEmpty(crashToParam.getWx_openid())) {
-                        PaoToastUtils.showLongToast(getContext(), "至少绑定一个微信");
+                    if (crashToParam == null || TextUtils.isEmpty(crashToParam.getWx_openid())) {
+                        PaoToastUtils.showLongToast(getContext(), "选择提现的微信");
                         return;
                     }
                 }
-                crashToParam.setAmount(canCrash.getText().toString()).setTypeid(String.valueOf(1));
+                crashToParam.setAmount((canCrash.getText().toString().trim()));
+                Presenter.getInstance(getContext()).postCrashTo(crashToParam);
 
-                Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
+   /*             Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
                     @Override
                     public void onIdentifed() {
-                        Presenter.getInstance(getContext()).postCrashTo(crashToParam);
+                        //Presenter.getInstance(getContext()).postCrashTo(crashToParam);
                     }
 
                     @Override
@@ -211,7 +217,7 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
 
                     }
                 });
-
+*/
                 break;
             case R.id.protocl_pay:
                 Intent intent = new Intent();
@@ -291,6 +297,9 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         public void onComplete(SHARE_MEDIA share_media, int i, Map<String, String> map) {
             LocalLog.d(TAG, "授权成功callback:" + share_media.toString());
             String temp = "";
+            if (crashToParam == null) {
+                crashToParam = new CrashToParam();
+            }
             if (share_media.ordinal() == SHARE_MEDIA.WEIXIN.ordinal()) {
                 if (!isauthWx) {
                     UMShareAPI.get(getActivity()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, this);
@@ -301,25 +310,33 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                     temp = temp + key + ":" + map.get(key) + "\n";
                     switch (key) {
                         case "openid":
-                            crashToParam.setWx_openid(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key)))
+                                crashToParam.setWx_openid(map.get(key));
                             break;
                         case "screen_name":
                             wxDearName.setText(map.get(key));
+                            if (!TextUtils.isEmpty(map.get(key)))
+                                crashToParam.setWx_nickname(map.get(key));
                             continue;
                         case "iconurl":
-
+                            if (!TextUtils.isEmpty(map.get(key)))
+                                crashToParam.setWx_avatar(map.get(key));
                             continue;
                         case "province":
-
+                            if (!TextUtils.isEmpty(map.get(key)))
+                                crashToParam.setWx_province(map.get(key));
                             continue;
                         case "city":
-
+                            if (!TextUtils.isEmpty(map.get(key)))
+                                crashToParam.setWx_city(map.get(key));
                             continue;
                         case "gender":
-
+                            if (!TextUtils.isEmpty(map.get(key)))
+                                crashToParam.setWx_sex(map.get(key));
                             continue;
                         case "unionid":
-
+                            if (!TextUtils.isEmpty(map.get(key)))
+                                crashToParam.setWx_unionid(map.get(key));
                             break;
                         default:
                             continue;

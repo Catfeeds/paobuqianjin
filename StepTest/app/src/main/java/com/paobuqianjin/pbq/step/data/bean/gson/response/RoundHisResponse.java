@@ -98,6 +98,8 @@ public class RoundHisResponse {
          * scope:
          * longitude : 113.111111
          * latitude : 22.555556
+         * circleid:101603
+         * circle_pwd:""
          */
         private String do_day;
         private String s_do_time;
@@ -121,6 +123,26 @@ public class RoundHisResponse {
         private int is_me;
         private String income_money;
         private int is_zan;
+
+        public String getCircleid() {
+            return circleid;
+        }
+
+        public void setCircleid(String circleid) {
+            this.circleid = circleid;
+        }
+
+        public String getCircle_pwd() {
+            return circle_pwd;
+        }
+
+        public void setCircle_pwd(String circle_pwd) {
+            this.circle_pwd = circle_pwd;
+        }
+
+        private String circleid;
+        private String circle_pwd;
+
         public String getLatitude() {
             return latitude;
         }
@@ -139,6 +161,7 @@ public class RoundHisResponse {
 
         private String latitude;
         private String longitude;
+
         public String getScope() {
             return scope;
         }
@@ -148,6 +171,7 @@ public class RoundHisResponse {
         }
 
         private String scope;
+
         public int getZan_count() {
             return zan_count;
         }

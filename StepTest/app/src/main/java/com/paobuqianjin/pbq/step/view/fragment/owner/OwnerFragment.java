@@ -635,8 +635,8 @@ public final class OwnerFragment extends BaseFragment {
                             goldenSponsor.setImageResource(R.drawable.vip_flg);
                             sex.setImageResource(R.drawable.vip_flg);
                         } else {
-                            goldenSponsor.setImageResource(R.drawable.vip_sponsor);
-                            sex.setImageResource(R.drawable.vip_sponsor);
+                            /*goldenSponsor.setImageResource(R.drawable.vip_sponsor);
+                            sex.setImageResource(R.drawable.vip_sponsor);*/
                         }
 
                     } else {

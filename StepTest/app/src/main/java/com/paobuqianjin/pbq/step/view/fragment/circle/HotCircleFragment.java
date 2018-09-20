@@ -64,6 +64,7 @@ import com.paobuqianjin.pbq.step.view.activity.SearchCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorRedDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
+import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.adapter.CircleChooseGoodAdapter;
 import com.paobuqianjin.pbq.step.view.emoji.LQREmotionKit;
@@ -294,6 +295,7 @@ public class HotCircleFragment extends BaseFragment {
         loadBanner();
         searchEdit = (EditText) rootView.findViewById(R.id.search_pan).findViewById(R.id.search_circle_text);
         searchEdit.setHint("请输入圈子名称/ID");
+        //((BaseActivity) getActivity()).showLoadingBar();
     }
 
     private InnerCallBack innerCallBack = new InnerCallBack() {
@@ -622,6 +624,7 @@ public class HotCircleFragment extends BaseFragment {
             if (!isAdded()) {
                 return;
             }
+            //((BaseActivity) getActivity()).hideLoadingBar();
             if (choiceCircleResponse.getError() == 0) {
                 LocalLog.d(TAG, " response() 更新精选圈子 size = " + choiceCircleResponse.getData().getData().size());
                 choiceCircleData = (ArrayList<ChoiceCircleResponse.DataBeanX.DataBean>) choiceCircleResponse.getData().getData();

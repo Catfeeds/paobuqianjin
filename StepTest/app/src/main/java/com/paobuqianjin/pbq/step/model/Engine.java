@@ -1028,11 +1028,10 @@ public final class Engine {
     //TODO 用户提现
     public void postCrashTo(CrashToParam crashToParam) {
         LocalLog.d(TAG, crashToParam.paramString());
-        crashToParam.setUserid(String.valueOf(getId(mContext)));
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))
-                .url(NetApi.urlCrashTo)
+                .url(NetApi.urlCrashToWx)
                 .params(crashToParam.getParams())
                 .build()
                 .execute(new NetStringCallBack(crashInterface, COMMAND_CRASH_TO));

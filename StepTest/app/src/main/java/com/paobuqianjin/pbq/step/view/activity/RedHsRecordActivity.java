@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -30,6 +31,8 @@ import butterknife.ButterKnife;
 public class RedHsRecordActivity extends BaseBarActivity {
     TabLayout redHisTab;
     ViewPager redRecordPager;
+    private final static String ROUND_ACTION = "com.paobuqianjin.pbq.ROUND_PKG.ACTION";
+    private final static String NEAR_ACTION = "com.paobuqianjin.pbq.NEAR_PKG.ACTION";
 
     @Override
     protected String title() {
@@ -46,25 +49,38 @@ public class RedHsRecordActivity extends BaseBarActivity {
     protected void initView() {
         redHisTab = (TabLayout) findViewById(R.id.red_his_tab);
         redRecordPager = (ViewPager) findViewById(R.id.red_record_pager);
-        String[] titles = {"已抢红包", "已发红包"};
-        List<Fragment> fragments = new ArrayList<>();
-        RevRecordFragment revRecordFragment = new RevRecordFragment();
-        DispatchRecordFragment dispatchRecordFragment = new DispatchRecordFragment();
-        fragments.add(revRecordFragment);
-        fragments.add(dispatchRecordFragment);
-        TabAdapter tabAdapter = new TabAdapter(this
-                , getSupportFragmentManager(), fragments, titles);
-        redRecordPager.setAdapter(tabAdapter);
-        redHisTab.setupWithViewPager(redRecordPager);
-        redHisTab.post(new Runnable() {
-            @Override
-            public void run() {
-                if (redHisTab != null) {
-                    setIndicator(redHisTab, 50, 50);
-                }
+        Intent intent = getIntent();
+        if (intent != null) {
+            String selectAction = intent.getStringExtra("select");
+            String[] titles = null;
+            List<Fragment> fragments = new ArrayList<>();
+            if (selectAction != null) {
+                titles = new String[]{"已发红包"};
+                redHisTab.setVisibility(View.GONE);
+                DispatchRecordFragment dispatchRecordFragment = new DispatchRecordFragment();
+                fragments.add(dispatchRecordFragment);
+            } else {
+                titles = new String[]{"已抢红包", "已发红包"};
+                RevRecordFragment revRecordFragment = new RevRecordFragment();
+                DispatchRecordFragment dispatchRecordFragment = new DispatchRecordFragment();
+                fragments.add(revRecordFragment);
+                fragments.add(dispatchRecordFragment);
             }
-        });
 
+            TabAdapter tabAdapter = new TabAdapter(this
+                    , getSupportFragmentManager(), fragments, titles);
+            redRecordPager.setAdapter(tabAdapter);
+            redHisTab.setupWithViewPager(redRecordPager);
+            redHisTab.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (redHisTab != null) {
+                        setIndicator(redHisTab, 50, 50);
+                    }
+                }
+            });
+
+        }
     }
 
     public void setIndicator(TabLayout tab, int leftDip, int rightDip) {

@@ -60,6 +60,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorLabelResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskSponsorRespone;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
@@ -76,7 +77,9 @@ import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
+import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
+import com.paobuqianjin.pbq.step.view.activity.RedHsRecordActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -181,6 +184,16 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     EditText sponsorLinkEdit;
     @Bind(R.id.attion)
     RelativeLayout attion;
+    @Bind(R.id.select_historty)
+    LinearLayout selectHistorty;
+    @Bind(R.id.select_circle)
+    LinearLayout selectCircle;
+    @Bind(R.id.circle_pass)
+    EditText circlePass;
+    @Bind(R.id.password_circle)
+    LinearLayout passwordCircle;
+    @Bind(R.id.sponor_circle_detail)
+    TextView sponorCircleDetail;
     private boolean isFirstLocal = true;
     private StepLocationReciver stepLocationReciver = new StepLocationReciver();
     private TaskSponsorParam taskSponsorParam;
@@ -213,6 +226,11 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     private final int REQUEST_CODE = 111;
     ArrayList<ImageBean> resultList = new ArrayList<>();
     private boolean isVip;
+    private final static String NEAR_ACTION = "com.paobuqianjin.pbq.NEAR_PKG.ACTION";
+    private final static int SELECT_HIS = 777;
+    private final static int SELECT_CIRCLE = 77;
+    private final static String SELECT_CIRCLE_ACTION = "com.paobuqianjin.pbq.SELECT_ACTION";
+    private String circleId;//微商圈ID
 
     @Override
     protected String title() {
@@ -336,6 +354,9 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
         targetStepDayNum = (EditText) viewRoot.findViewById(R.id.target_step_day_num);
         targetStepDayNum.setText(DEVALUE_STEP + "");
         sponsorLinkEdit = (EditText) viewRoot.findViewById(R.id.sponsor_link_edit);
+        passwordCircle = (LinearLayout) viewRoot.findViewById(R.id.password_circle);
+        circlePass = (EditText) viewRoot.findViewById(R.id.circle_pass);
+        sponorCircleDetail = (TextView) viewRoot.findViewById(R.id.sponor_circle_detail);
         Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlTarget, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
@@ -654,6 +675,11 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                 taskSponsorParam.setRed_content(etInformation.getText().toString().trim());
             if (!TextUtils.isEmpty(sponsorLinkEdit.getText().toString().trim()))
                 taskSponsorParam.setTarget_url(sponsorLinkEdit.getText().toString().trim());
+            if (!TextUtils.isEmpty(circleId)) {
+                taskSponsorParam.setCircleid(circleId);
+                if (!TextUtils.isEmpty(circlePass.getText().toString()))
+                    taskSponsorParam.setCircle_pwd(circlePass.getText().toString().trim());
+            }
             Presenter.getInstance(getContext()).postTaskSponsorRelease(taskSponsorParam);
         }
     }
@@ -678,13 +704,32 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
         super.onDestroyView();
         ButterKnife.unbind(this);
         getActivity().unregisterReceiver(stepLocationReciver);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
-    @OnClick({R.id.day_step_target_span, R.id.target_step_day_num, R.id.people_target_span, R.id.sponor_msg_span, R.id.attion})
+    @OnClick({R.id.day_step_target_span, R.id.target_step_day_num, R.id.people_target_span, R.id.sponor_msg_span, R.id.attion
+            , R.id.select_historty, R.id.select_circle})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
+            case R.id.select_circle:
+                Intent selectCircleIntent = new Intent();
+                selectCircleIntent.setAction(SELECT_CIRCLE_ACTION);
+                selectCircleIntent.setClass(getActivity(), OwnerCircleActivity.class);
+                startActivityForResult(selectCircleIntent, SELECT_CIRCLE);
+                break;
+            case R.id.select_historty:
+                LocalLog.d(TAG, "选择历史记录再发");
+                Intent hisIntent = new Intent(getContext(), RedHsRecordActivity.class);
+                hisIntent.putExtra("select", "round");
+                hisIntent.setAction(NEAR_ACTION);
+                startActivityForResult(hisIntent, SELECT_HIS);
+                break;
             case R.id.attion:
                 startActivity(GoldenSponsoractivity.class, null);
                 break;
@@ -860,6 +905,25 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                 LocalLog.d(TAG, "未知操作");
             }
             return;
+        } else if (requestCode == SELECT_CIRCLE) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    try {
+                        MyCreateCircleResponse.DataBeanX.DataBean circleData = (MyCreateCircleResponse.DataBeanX.DataBean) data.getSerializableExtra("circle");
+                        if (circleData != null && circleData.getId() > 0) {
+                            sponorCircleDetail.setText(circleData.getName());
+                            circleId = String.valueOf(circleData.getId());
+                            if (circleData.getIs_pwd() == 1) {
+                                circlePass.setEnabled(true);
+                            } else {
+                                circlePass.setEnabled(false);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
 
     }

@@ -30,6 +30,29 @@ public class TaskSponsorParam {
     private String remark;
     private String trading_area;
 
+    public String getCircleid() {
+        return circleid;
+    }
+
+    public TaskSponsorParam setCircleid(String circleid) {
+        this.circleid = circleid;
+        params.put("circleid", circleid);
+        return this;
+    }
+
+    public String getCircle_pwd() {
+        return circle_pwd;
+    }
+
+    public TaskSponsorParam setCircle_pwd(String circle_pwd) {
+        this.circle_pwd = circle_pwd;
+        params.put("circle_pwd", circle_pwd);
+        return this;
+    }
+
+    private String circleid;
+    private String circle_pwd;
+
     public String getTarget_url() {
         return target_url;
     }

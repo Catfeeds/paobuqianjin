@@ -66,6 +66,22 @@ public class RoundDetailStyleResponse {
             this.e_do_time = e_do_time;
         }
 
+        public String getCircleid() {
+            return circleid;
+        }
+
+        public void setCircleid(String circleid) {
+            this.circleid = circleid;
+        }
+
+        public String getCircle_pwd() {
+            return circle_pwd;
+        }
+
+        public void setCircle_pwd(String circle_pwd) {
+            this.circle_pwd = circle_pwd;
+        }
+
         /**
          * red_id : 58
          * userid : 35822
@@ -95,7 +111,11 @@ public class RoundDetailStyleResponse {
          * scope:
          * longitude : 113.111111
          * latitude : 22.555556
+         * "circleid":101603,
+         * "circle_pwd":""
          */
+        private String circleid;
+        private String circle_pwd;
         private String do_day;
         private String s_do_time;
         private String e_do_time;

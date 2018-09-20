@@ -76,6 +76,7 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
     private int selectPage = 0;
     private String action = "";
     private final static String GUIDE_ACTION = "com.paobuqianjin.pbq.GUIDE_ACTION";
+    private final static String SELECT_CIRCLE_ACTION = "com.paobuqianjin.pbq.SELECT_ACTION";
 
     @Override
     protected int getLayoutResId() {
@@ -122,11 +123,19 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
                 startActivityForResult(intent, REQUEST_CREATE);
             }
         });
-        String[] title = {"我创建的", "我加入的"};
-        List<Fragment> fragments = new ArrayList<>();
-        fragments.add(ownerCreateFragment);
-        fragments.add(ownerJoinFragment);
+        String[] title = null;
         createOrJoin = (TabLayout) viewRoot.findViewById(R.id.create_or_join);
+        List<Fragment> fragments = new ArrayList<>();
+
+        if (SELECT_CIRCLE_ACTION.equals(action)) {
+            title = new String[]{""};
+            createOrJoin.setVisibility(View.GONE);
+            fragments.add(ownerCreateFragment);
+        } else {
+            title = new String[]{"我创建的", "我加入的"};
+            fragments.add(ownerCreateFragment);
+            fragments.add(ownerJoinFragment);
+        }
         ownerCreateJoinPager = (ViewPager) viewRoot.findViewById(R.id.owner_create_join_pager);
         TabAdapter pageAdapter = new TabAdapter(getContext()
                 , getActivity().getSupportFragmentManager(), fragments, title);
