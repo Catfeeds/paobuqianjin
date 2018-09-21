@@ -9,25 +9,26 @@
         android:id="@+id/bar"
         layout="@layout/bar_return_a_style" />
 
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_below="@+id/bar"></com.youth.banner.Banner>
+
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/bar">
+        android:layout_below="@+id/banner">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.youth.banner.Banner
-                android:id="@+id/banner"
-                android:layout_width="match_parent"
-                android:layout_height="140dp"></com.youth.banner.Banner>
 
             <RelativeLayout
                 android:id="@+id/target_task_span"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/banner"
                 android:layout_marginTop="10dp">
 
                 <TextView

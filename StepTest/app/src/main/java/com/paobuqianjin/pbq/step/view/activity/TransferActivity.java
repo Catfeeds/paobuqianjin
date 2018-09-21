@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
@@ -12,6 +13,7 @@ import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.fragment.owner.MyWalletFragment;
 
@@ -22,6 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TransferActivity extends BaseBarActivity {
+    private final static String TAG = TransferActivity.class.getSimpleName();
 
     @Override
     protected String title() {
@@ -33,7 +36,11 @@ public class TransferActivity extends BaseBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transfer);
         ButterKnife.bind(this);
-
+        if (!Utils.checkPackage(this, "com.tencent.mm")) {
+            LocalLog.d(TAG, "未安装微信");
+            LinearLayout wxLinear = findViewById(R.id.linear_wechat);
+            wxLinear.setVisibility(View.GONE);
+        }
     }
 
     @OnClick({R.id.linear_wechat, R.id.linear_card})

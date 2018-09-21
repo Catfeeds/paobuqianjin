@@ -56,6 +56,19 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"></android.support.v4.view.ViewPager>
 
+                    <TextView
+                        android:id="@+id/notify"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:background="#80000000"
+                        android:gravity="center"
+                        android:text="点击图片查看网店详情"
+                        android:textColor="@color/red0"
+                        android:textSize="14dp"
+                        android:visibility="gone" />
+
                     <RelativeLayout
                         android:id="@+id/pic_index"
                         android:layout_width="50dp"
@@ -63,7 +76,8 @@
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginRight="10dp">
+                        android:layout_marginRight="10dp"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="50dp"

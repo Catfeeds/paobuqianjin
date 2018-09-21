@@ -249,6 +249,8 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
     private String info;
     private String red_id;
     RelativeLayout barNull;
+    @Bind(R.id.notify)
+    TextView notifyText;
 
     @Override
     protected String title() {
@@ -287,6 +289,7 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
         listReds = (LinearLayout) viewRoot.findViewById(R.id.list_reds);
         sponsorScroll = (BounceScrollView) viewRoot.findViewById(R.id.sponsor_scroll);
         barNull = (RelativeLayout) viewRoot.findViewById(R.id.sponsor_detail);
+        notifyText = (TextView) viewRoot.findViewById(R.id.notify);
         gotoSponsor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -528,6 +531,9 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
 
                         int sizeEnv = 0;
                         final String tarUrl = dataBean.getTarget_url();
+                        if (!TextUtils.isEmpty(tarUrl)) {
+                            notifyText.setVisibility(View.VISIBLE);
+                        }
                         if (dataBean.getRed_img() != null) {
                             sizeEnv = dataBean.getRed_img().size();
                             redImagesSpan.setVisibility(View.VISIBLE);

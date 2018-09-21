@@ -99,6 +99,8 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     LinearLayout linearHistory;
     @Bind(R.id.iv_send_red_bag)
     TextView ivSendRedBag;
+    @Bind(R.id.red_rule)
+    LinearLayout redRule;
     private int currentPage = 1;
     private List<ShopSendedRedBagResponse.ShopSendedRedBagBean> listData = new ArrayList<>();
     private List<AroundRedBagResponse.AroundRedBagBean> listAroundRedBagBean = new ArrayList<>();
@@ -1168,9 +1170,12 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         countDownTimer.start();
     }
 
-    @OnClick({R.id.search_circle_text, R.id.iv_location, R.id.iv_history, R.id.iv_send_red_bag})
+    @OnClick({R.id.search_circle_text, R.id.iv_location, R.id.iv_history, R.id.iv_send_red_bag, R.id.red_rule})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.red_rule:
+                LocalLog.d(TAG, "查看红包规则");
+                break;
             case R.id.search_circle_text:
                 Intent intent = new Intent(this,
                         SponsorSearchPositionActivity.class);

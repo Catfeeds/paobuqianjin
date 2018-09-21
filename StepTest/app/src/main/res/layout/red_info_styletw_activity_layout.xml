@@ -11,15 +11,15 @@
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
         android:id="@+id/scroll_info"
-        android:scrollbars="none"
-        android:background="@drawable/red_detail_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/red_detail"
         android:layout_marginBottom="48dp"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp">
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/red_detail_bg"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,9 +72,9 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -102,15 +102,28 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"></android.support.v4.view.ViewPager>
 
-                        <RelativeLayout
+                        <TextView
+                            android:id="@+id/notify"
                             android:visibility="gone"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_width="160dp"
+                            android:layout_height="wrap_content"
+                            android:background="#80000000"
+                            android:text="点击图片查看网店详情"
+                            android:gravity="center"
+                            android:textColor="@color/red0"
+                            android:textSize="14dp" />
+
+                        <RelativeLayout
                             android:id="@+id/pic_index"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"
                             android:layout_marginBottom="10dp"
-                            android:layout_marginRight="10dp">
+                            android:layout_marginRight="10dp"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:layout_width="50dp"
@@ -344,9 +357,9 @@
 
                     <LinearLayout
                         android:id="@+id/list_reds"
-                        android:layout_marginLeft="10dp"
                         android:layout_width="match_parent"
                         android:layout_height="98dp"
+                        android:layout_marginLeft="10dp"
                         android:background="@color/color_f8"
                         android:orientation="vertical">
 
@@ -407,6 +420,31 @@
                             android:layout_marginRight="14dp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/red_result" />
+
+                        <RelativeLayout
+                            android:id="@+id/circle_qr"
+                            android:layout_width="122dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical|right"
+                            android:layout_marginRight="14dp"
+                            android:background="#80000000"
+                            android:visibility="gone">
+
+                            <RelativeLayout
+                                android:id="@+id/qr_linear"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerInParent="true"
+                                android:background="@color/color_f8">
+
+                                <ImageView
+                                    android:id="@+id/qrcode"
+                                    android:layout_width="69dp"
+                                    android:layout_height="69dp"
+                                    android:layout_centerInParent="true"
+                                    android:scaleType="centerCrop" />
+                            </RelativeLayout>
+                        </RelativeLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -545,6 +583,7 @@
 
         </LinearLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
     <View
         android:id="@+id/v_empty"
         android:layout_width="match_parent"

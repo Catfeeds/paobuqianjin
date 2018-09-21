@@ -34,7 +34,7 @@
             android:layout_weight="1"
             android:background="@drawable/rectangle_four_full_r_selected"
             android:stateListAnimator="@null"
-            android:text="全部"
+            android:text="今日专享"
             android:textColor="@color/color_f8"
             android:textSize="16dp" />
 
@@ -45,7 +45,7 @@
             android:layout_weight="1"
             android:background="@drawable/rectangle_four_fill_outline_unselected"
             android:stateListAnimator="@null"
-            android:text="未完成"
+            android:text="完成专享"
             android:textColor="@color/color_161727"
             android:textSize="16dp" />
 
@@ -56,15 +56,30 @@
             android:layout_weight="1"
             android:background="@drawable/rectangle_four_full_left_unselect"
             android:stateListAnimator="@null"
-            android:text="已完成"
+            android:text="已发专享"
             android:textColor="@color/color_161727"
             android:textSize="16dp" />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/bar"
+        android:layout_marginTop="10dp"
+        android:background="@color/color_646464" />
+
+    <ImageView
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_below="@+id/line"
+        android:background="@color/color_d9d9d9" />
 
     <RelativeLayout
         android:id="@+id/container_task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bar"></RelativeLayout>
+        android:layout_below="@+id/line2"></RelativeLayout>
 
 </RelativeLayout>

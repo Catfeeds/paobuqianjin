@@ -19,16 +19,12 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.AddDeleteFollowResponse
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FollowStatusResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.UserCenterResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
-import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -73,6 +69,8 @@ public class CrashDetailActivity extends BaseBarActivity {
     TextView timeArrv;
     @Bind(R.id.tel)
     TextView tel;
+    @Bind(R.id.crash_bank)
+    TextView crashBank;
 
     @Override
     protected String title() {
@@ -101,8 +99,9 @@ public class CrashDetailActivity extends BaseBarActivity {
         tel = (TextView) findViewById(R.id.tel);
         if (intent != null) {
             String withdrawId = intent.getStringExtra("withdrawid");
-            if (!TextUtils.isEmpty(withdrawId)) {
-                crashDetail(withdrawId);
+            String type_id = intent.getStringExtra("type_id");
+            if (!TextUtils.isEmpty(withdrawId) && !TextUtils.isEmpty(type_id)) {
+                crashDetail(withdrawId, type_id);
             }
         }
 
@@ -177,15 +176,23 @@ public class CrashDetailActivity extends BaseBarActivity {
         });
     }
 
-    private void crashDetail(String withdrawId) {
+    private void crashDetail(final String withdrawId, final String type_id) {
         Map<String, String> param = new HashMap<>();
         param.put("withdraw_id", withdrawId);
+        param.put("type_id", type_id);
         Presenter.getInstance(this).postPaoBuSimple(NetApi.urlCrashDetail, param, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 try {
                     final CrashInfoResponse crashInfoResponse = new Gson().fromJson(s, CrashInfoResponse.class);
-                    crashTo.setText("零钱提现-到" + crashInfoResponse.getData().getBankname() + "(" + crashInfoResponse.getData().getBank_card() + ")");
+                    if (crashInfoResponse.getData().getTypeid() != 1) {
+                        crashTo.setText("零钱提现-到" + crashInfoResponse.getData().getBankname() + "(" + crashInfoResponse.getData().getBank_card() + ")");
+                    } else if (crashInfoResponse.getData().getTypeid() == 1) {
+                        crashTo.setText("零钱提现-到" + crashInfoResponse.getData().getWithdraw_type() + "(" + crashInfoResponse.getData().getNickname() + ")");
+                        crashBank.setVisibility(View.GONE);
+                        bankTo.setVisibility(View.GONE);
+
+                    }
                     crashMoney.setText(crashInfoResponse.getData().getAmount());
                     if (crashInfoResponse.getData().getWithdraw_status() == 0) {
                         crashStatusStr.setText("申请中");

@@ -25,6 +25,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -81,7 +82,8 @@ import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.RedHsRecordActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
+import com.paobuqianjin.pbq.step.view.activity.SponsorDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.SponsorRedDetailActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.umeng.socialize.utils.SocializeUtils;
 import com.youth.banner.Banner;
@@ -194,6 +196,10 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     LinearLayout passwordCircle;
     @Bind(R.id.sponor_circle_detail)
     TextView sponorCircleDetail;
+    @Bind(R.id.btn_prescan)
+    Button btnPrescan;
+    @Bind(R.id.btn_confirm)
+    Button btnConfirm;
     private boolean isFirstLocal = true;
     private StepLocationReciver stepLocationReciver = new StepLocationReciver();
     private TaskSponsorParam taskSponsorParam;
@@ -383,7 +389,7 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
         getTopText();
         banner = (Banner) viewRoot.findViewById(R.id.banner);
         loadBanner();
-        setToolBarListener(new BaseBarImageViewFragment.ToolBarListener() {
+/*        setToolBarListener(new BaseBarImageViewFragment.ToolBarListener() {
             @Override
             public void clickLeft() {
                 getActivity().onBackPressed();
@@ -393,7 +399,7 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
             public void clickRight() {
                 confirm();
             }
-        });
+        });*/
 
         pdialog = new ProgressDialog(getActivity());
         pdialog.setMessage("上传中");
@@ -574,6 +580,139 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
         });
     }
 
+    private void preScan() {
+        if (isAdded()) {
+            LocalLog.d(TAG, "确定");
+            //任务名称
+            String targetTaskStepNumStr = targetTaskStepNum.getText().toString().trim();
+            String targetTaskMoneyNumStr = targetTaskMoneyNum.getText().toString().trim();
+            //任务天数
+            String targetTaskDayNumStr = targetTaskDayNum.getText().toString().trim();
+            //每日红包个数
+            String packDayNumStr = packDayNum.getText().toString().trim();
+            //目标步数
+            String targetStepDayNumStr = targetStepDayNum.getText().toString().trim();
+            //目标人群
+            if (TextUtils.isEmpty(targetTaskStepNumStr.trim()) || filter.calculateLength(targetTaskStepNumStr) < 4
+                    || filter.calculateLength(targetTaskStepNumStr) > 32) {
+                if (dialog == null) {
+                    dialog = new NormalDialog(getContext());
+                    dialog.setMessage("请输入2-16位任务名称");
+                    dialog.setSingleBtn(true);
+                    dialog.setYesOnclickListener("确定", new NormalDialog.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+                            dialog.dismiss();
+                        }
+                    });
+                }
+                dialog.show();
+                return;
+            }
+            try {
+/*                    if (TextUtils.isEmpty(targetTaskMoneyNumStr.trim()) || Integer.parseInt(targetTaskMoneyNumStr) < 10) {
+                        PaoToastUtils.showShortToast(getActivity(), "商家每次发红包金额不低于10元");
+                        return;
+                    }*/
+                if (TextUtils.isEmpty(targetTaskMoneyNumStr.trim())) {
+                    PaoToastUtils.showLongToast(getActivity(), "请输入红包金额");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
+            if (TextUtils.isEmpty(targetTaskDayNumStr.trim())) {
+                Toast.makeText(getActivity(), "请输入任务天数", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (targetTaskDayNumStr.trim().equals("0")) {
+                Toast.makeText(getActivity(), "任务天数不能为0", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String images = "";
+            for (SelectPicBean bean : adapter.getData()) {
+                if (!TextUtils.isEmpty(images)) {
+                    images += ",";
+                }
+                images += bean.getImageUrl();
+            }
+            if (taskSponsorParam == null) {
+                taskSponsorParam = new TaskSponsorParam();
+            }
+            if (!TextUtils.isEmpty(images))
+                taskSponsorParam.setImages(images);
+
+            if (TextUtils.isEmpty(packDayNumStr.trim())) {
+                Toast.makeText(getActivity(), "请输入每日红包个数", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (TextUtils.isEmpty(targetStepDayNumStr.trim())) {
+                Toast.makeText(getActivity(), "请输入目标步数", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            taskSponsorParam.setUserid(Presenter.getInstance(getActivity()).getId() + "");
+            taskSponsorParam.setNumber(Integer.valueOf(packDayNumStr));
+            taskSponsorParam.setMoney(targetTaskMoneyNumStr);
+            taskSponsorParam.setDay(targetTaskDayNumStr);
+            taskSponsorParam.setRed_name(targetTaskStepNumStr);
+            taskSponsorParam.setStep(targetStepDayNumStr);
+            if (latitudeStr != 0d)
+                taskSponsorParam.setLatitude(((float) latitudeStr));
+            if (longitudeStr != 0d)
+                taskSponsorParam.setLongitude(((float) longitudeStr));
+            if (businessId != -1)
+                taskSponsorParam.setBusinessid(businessId + "");
+            if (!TextUtils.isEmpty(sexStr))
+                taskSponsorParam.setSex(sexStr);
+            if (!TextUtils.isEmpty(distanceStr))
+                taskSponsorParam.setDistance(distanceStr);
+            if (!TextUtils.isEmpty(ageMaxStr))
+                taskSponsorParam.setAge_max(ageMaxStr);
+            if (!TextUtils.isEmpty(ageMinStr))
+                taskSponsorParam.setAge_min(ageMinStr);
+            if (!TextUtils.isEmpty(city))
+                taskSponsorParam.setCity(city);
+            if (!TextUtils.isEmpty(cityCode))
+                taskSponsorParam.setCity_code(cityCode);
+            if (!TextUtils.isEmpty(address))
+                taskSponsorParam.setTrading_area(address);
+            if (!TextUtils.isEmpty(etInformation.getText().toString().trim()))
+                taskSponsorParam.setRed_content(etInformation.getText().toString().trim());
+            if (!TextUtils.isEmpty(sponsorLinkEdit.getText().toString().trim()))
+                taskSponsorParam.setTarget_url(sponsorLinkEdit.getText().toString().trim());
+            if (!TextUtils.isEmpty(circleId)) {
+                taskSponsorParam.setCircleid(circleId);
+                if (!TextUtils.isEmpty(circlePass.getText().toString()))
+                    taskSponsorParam.setCircle_pwd(circlePass.getText().toString().trim());
+            }
+            Presenter.getInstance(getActivity()).postPaoBuSimple(NetApi.urlSendTaskRedBag, taskSponsorParam.getParams(), new PaoCallBack() {
+                @Override
+                protected void onSuc(String s) {
+                    try {
+                        TaskSponsorRespone taskSponsorRespone = new Gson().fromJson(s, TaskSponsorRespone.class);
+                        if (!TextUtils.isEmpty(taskSponsorRespone.getData().getRed_id())) {
+                            /*生成预览*/
+                            Intent intent = new Intent();
+                            intent.putExtra(getActivity().getPackageName() + "businessid", businessId);
+                            intent.putExtra(getActivity().getPackageName() + "red_id", taskSponsorRespone.getData().getRed_id());
+                            intent.putExtra(getActivity() + "red_result", "你还未领取该红包");
+                            intent.setClass(getContext(), SponsorDetailActivity.class);
+                            startActivity(intent);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                }
+            });
+        }
+    }
+
     private void confirm() {
         if (isAdded()) {
             LocalLog.d(TAG, "确定");
@@ -713,10 +852,18 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     }
 
     @OnClick({R.id.day_step_target_span, R.id.target_step_day_num, R.id.people_target_span, R.id.sponor_msg_span, R.id.attion
-            , R.id.select_historty, R.id.select_circle})
+            , R.id.select_historty, R.id.select_circle, R.id.btn_prescan, R.id.btn_confirm})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
+            case R.id.btn_prescan:
+                LocalLog.d(TAG, "红包预览");
+                preScan();
+                break;
+            case R.id.btn_confirm:
+                LocalLog.d(TAG, "支付");
+                confirm();
+                break;
             case R.id.select_circle:
                 Intent selectCircleIntent = new Intent();
                 selectCircleIntent.setAction(SELECT_CIRCLE_ACTION);
@@ -914,9 +1061,9 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                             sponorCircleDetail.setText(circleData.getName());
                             circleId = String.valueOf(circleData.getId());
                             if (circleData.getIs_pwd() == 1) {
-                                circlePass.setEnabled(true);
+                                passwordCircle.setVisibility(View.VISIBLE);
                             } else {
-                                circlePass.setEnabled(false);
+                                passwordCircle.setVisibility(View.GONE);
                             }
                         }
                     } catch (Exception e) {

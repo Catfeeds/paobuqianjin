@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.sponsor;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +28,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.lwkandroid.imagepicker.data.ImageDataModel;
 import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
 import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
@@ -46,6 +54,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.QrCodeMakeActivity;
 import com.paobuqianjin.pbq.step.view.activity.RoundRedRelActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
@@ -65,6 +74,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -238,7 +248,8 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     private String info;
     private String red_id;
     RelativeLayout barNull;
-
+    @Bind(R.id.notify)
+    TextView notifyText;
 
     @Override
     protected String title() {
@@ -278,6 +289,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
         sponsorScroll = (BounceScrollView) viewRoot.findViewById(R.id.sponsor_scroll);
         barNull = (RelativeLayout) viewRoot.findViewById(R.id.sponsor_detail);
         picIndex = (RelativeLayout) viewRoot.findViewById(R.id.pic_index);
+        notifyText = (TextView) viewRoot.findViewById(R.id.notify);
         gotoSponsor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -329,8 +341,16 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                     loadContent(businessid);
                 }
 
+            } else {
+                if (red_id != -1) {
+                    this.red_id = String.valueOf(red_id);
+                    setTitle("红包详情");
+                    redResultStr = intent.getStringExtra(getContext().getPackageName() + "red_result");
+                    LocalLog.d(TAG, "redResultStr = " + redResultStr);
+                    getRedDetail(String.valueOf(red_id));
+                    collectSponsor.setVisibility(View.GONE);
+                }
             }
-
         }
         Mview.clear();
         keppSponsorIcon = (ImageView) viewRoot.findViewById(R.id.kepp_sponsor_icon);
@@ -475,13 +495,18 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                         } else {
                             redInfo.setVisibility(View.GONE);
                         }
-
-
                         if (!TextUtils.isEmpty(dataBean.getLogo())) {
                             View view = LayoutInflater.from(getContext()).inflate(R.layout.sponsor_image_view, null);
                             ImageView imageView = (ImageView) view.findViewById(R.id.sponsor_env_img);
+                            ImageView qrCode = (ImageView) view.findViewById(R.id.qrcode);
+                            RelativeLayout circleQr = (RelativeLayout) view.findViewById(R.id.circle_qr);
                             if (!TextUtils.isEmpty(redResultStr)) {
                                 imageView.setImageResource(R.drawable.red_result);
+                                circleQr.setVisibility(View.VISIBLE);
+                                if (!TextUtils.isEmpty(dataBean.getCircleid())) {
+                                    final String circleUlr = NetApi.urlShareCd + dataBean.getCircleid();
+                                    encodeBitmap(qrCode, circleUlr, 1, 1);
+                                }
                                 TextView redResultTV = (TextView) view.findViewById(R.id.red_result);
                                 TextView redSuccessTv = (TextView) view.findViewById(R.id.red_success);
                                 TextView redInWalletTv = (TextView) view.findViewById(R.id.into_wallet);
@@ -503,6 +528,9 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
 
                         int sizeEnv = 0;
                         final String tarUrl = dataBean.getTarget_url();
+                        if (!TextUtils.isEmpty(tarUrl)) {
+                            notifyText.setVisibility(View.VISIBLE);
+                        }
                         if (dataBean.getRed_img() != null) {
                             sizeEnv = dataBean.getRed_img().size();
                             redImagesSpan.setVisibility(View.VISIBLE);
@@ -577,6 +605,50 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
 
             }
         });
+    }
+
+    private void encodeBitmap(ImageView imageView, String url, int mgWidth, int imgWidth) {
+        BitMatrix result = null;
+
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+       /* try {
+            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 175, 175);
+            int w = result.getWidth();
+            int h = result.getHeight();
+            int[] pixels = new int[w * h];
+            for (int y = 0; y < h; y++) {
+                int offset = y * w;
+                for (int x = 0; x < w; x++) {
+                    pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+                }
+            }
+            bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+            bitmap.setPixels(pixels, 0, w, 0, 0, w, h);
+        } catch (WriterException e) {
+            LocalLog.e(TAG, e.getMessage());
+        }*/
+
+        try {
+            Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
+            // 指定纠错等级,纠错级别（L 7%、M 15%、Q 25%、H 30%）
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+            // 内容所使用字符集编码
+            hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+            hints.put(EncodeHintType.MARGIN, 0);
+
+            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 116, 116, hints);
+//            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 175, 175);
+            // 使用 ZXing Android Embedded 要写的代码
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            final Bitmap bitmap = barcodeEncoder.createBitmap(result);
+            imageView.setImageBitmap(bitmap);
+            imageView.setVisibility(View.VISIBLE);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException iae) {
+            return;
+        }
+        return;
     }
 
     private void selectMap(List<String> strings, final String dqAddress, final String gotoAddress,

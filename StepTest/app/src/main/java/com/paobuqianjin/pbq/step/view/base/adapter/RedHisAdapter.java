@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.j256.ormlite.stmt.query.In;
@@ -60,6 +61,7 @@ public class RedHisAdapter extends RecyclerView.Adapter<RedHisAdapter.RedHisView
             holder.textTime.setText(timeStr);
             holder.userId = ((RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getFrom_uid();
         } else if (mData.get(position) instanceof RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) {
+            holder.editSpan.setVisibility(View.VISIBLE);
             Presenter.getInstance(mContext).getPlaceErrorImage(holder.headIcon, ((RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.userName.setText(((RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getUser_nickname());
@@ -84,6 +86,8 @@ public class RedHisAdapter extends RecyclerView.Adapter<RedHisAdapter.RedHisView
             String timeStr = DateTimeUtil.formatDateTime(recTime * 1000, DateTimeUtil.DF_MM_DD_HH_mm);
             holder.textTime.setText(timeStr);
         } else if (mData.get(position) instanceof SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) {
+            LocalLog.d(TAG, "显示可编辑和再发按钮");
+            holder.editSpan.setVisibility(View.VISIBLE);
             Presenter.getInstance(mContext).getPlaceErrorImage(holder.headIcon, ((SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
             holder.userName.setText(((SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(position)).getUser_nickname());
@@ -118,7 +122,9 @@ public class RedHisAdapter extends RecyclerView.Adapter<RedHisAdapter.RedHisView
         TextView commentNum;
         String userId;
         LinearLayout contentLinear;
-        TextView repay;
+        RelativeLayout editSpan;
+        LinearLayout editInfo;
+        ImageView rePayRed;
 
         public RedHisViewHolder(View view) {
             super(view);
@@ -129,9 +135,11 @@ public class RedHisAdapter extends RecyclerView.Adapter<RedHisAdapter.RedHisView
             @Override
             public void onClick(View v) {
                 switch (v.getId()) {
-                    case R.id.repay:
-                        LocalLog.d(TAG, "��һ�η��ú��");
-
+                    case R.id.edit_red_info:
+                        LocalLog.d(TAG, "编辑红包");
+                        break;
+                    case R.id.put_red:
+                        LocalLog.d(TAG, "再次发红包");
                         break;
                     case R.id.content_layout:
                         String redId = "";
@@ -193,8 +201,11 @@ public class RedHisAdapter extends RecyclerView.Adapter<RedHisAdapter.RedHisView
             contentLinear = (LinearLayout) view.findViewById(R.id.content_layout);
             contentLinear.setOnClickListener(onClickListener);
             headIcon.setOnClickListener(onClickListener);
-            repay = (TextView) view.findViewById(R.id.repay);
-            repay.setOnClickListener(onClickListener);
+            editSpan = (RelativeLayout) view.findViewById(R.id.edit_span);
+            editInfo = (LinearLayout) view.findViewById(R.id.edit_red_info);
+            rePayRed = (ImageView) view.findViewById(R.id.put_red);
+            editInfo.setOnClickListener(onClickListener);
+            rePayRed.setOnClickListener(onClickListener);
         }
     }
 }

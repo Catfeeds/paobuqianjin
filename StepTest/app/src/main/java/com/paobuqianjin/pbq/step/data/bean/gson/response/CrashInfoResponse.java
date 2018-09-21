@@ -69,9 +69,20 @@ public class CrashInfoResponse {
          * withdraw_status : 0
          * servicer_id : 94739
          * servicer_phone : 0755-86540067
+         * "nickname":"黄钦平"
          */
 
         private int id;
+
+        public String getNickname() {
+            return nickname;
+        }
+
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
+
+        private String nickname;
         private int userid;
         private int typeid;
         private String order_no;

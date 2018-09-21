@@ -72,7 +72,6 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         layoutManager = new LinearLayoutManager(getContext());
         incomeRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.income_recycler);
         inComeRefresh = (SwipeRefreshLayout) viewRoot.findViewById(R.id.in_come_refresh);
@@ -93,6 +92,7 @@ public class CrashDetailFragment extends BaseFragment implements CrashRecordInte
                     //TODO crash detail
                     Intent intent = new Intent();
                     intent.putExtra("withdrawid", String.valueOf(myCrashAllData.get(position).getId()));
+                    intent.putExtra("type_id", String.valueOf(myCrashAllData.get(position).getTypeid()));
                     intent.setClass(getActivity(), CrashDetailActivity.class);
                     startActivity(intent);
                 }

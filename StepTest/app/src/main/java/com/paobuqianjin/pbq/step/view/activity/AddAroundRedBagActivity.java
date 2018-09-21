@@ -402,9 +402,9 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                             sponorCircleDetail.setText(circleData.getName());
                             circleId = String.valueOf(circleData.getId());
                             if (circleData.getIs_pwd() == 1) {
-                                circlePass.setEnabled(true);
+                                passwordCircle.setVisibility(View.VISIBLE);
                             } else {
-                                circlePass.setEnabled(false);
+                                passwordCircle.setVisibility(View.GONE);
                             }
                         }
                     } catch (Exception e) {

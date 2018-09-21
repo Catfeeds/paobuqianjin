@@ -354,7 +354,7 @@ public class GoldenPayFragment extends BaseBarStyleTextViewFragment implements P
                 }, 15000);
                 int style = getSelect();
                 if (style == 1) {
-                    Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
+     /*               Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
                         @Override
                         public void onIdentifed() {
                             realPay();
@@ -370,7 +370,8 @@ public class GoldenPayFragment extends BaseBarStyleTextViewFragment implements P
                         public void onGetIdentifyStatusError() {
 
                         }
-                    });
+                    });*/
+                    realPay();
                 } else {
                     realPay();
                 }

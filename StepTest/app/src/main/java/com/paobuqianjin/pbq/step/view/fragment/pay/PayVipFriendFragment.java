@@ -777,7 +777,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                 }, 15000);
                 int style = getSelect();
                 if (style == 1) {
-                    Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
+/*                    Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
                         @Override
                         public void onIdentifed() {
                             realPay();
@@ -793,7 +793,8 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
                         public void onGetIdentifyStatusError() {
 
                         }
-                    });
+                    });*/
+                    realPay();
                 } else {
                     realPay();
                 }

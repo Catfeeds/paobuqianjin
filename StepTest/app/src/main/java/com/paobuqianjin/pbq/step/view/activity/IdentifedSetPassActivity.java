@@ -1,24 +1,30 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
+import com.paobuqianjin.pbq.step.view.fragment.login.BindPhoneFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +38,7 @@ import butterknife.OnClick;
  */
 
 public class IdentifedSetPassActivity extends BaseBarActivity {
+    private final static String TAG = IdentityAuth2Activity.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -40,21 +47,29 @@ public class IdentifedSetPassActivity extends BaseBarActivity {
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
-    @Bind(R.id.real_name)
-    EditText realName;
-    @Bind(R.id.id_number)
-    EditText idNumber;
     @Bind(R.id.pass_word)
     EditText passWord;
     @Bind(R.id.pass_word_again)
     EditText passWordAgain;
-    @Bind(R.id.button_confirm)
-    Button buttonConfirm;
+    @Bind(R.id.sign_code_edit)
+    EditText signCodeEdit;
+    @Bind(R.id.sign_code_span)
+    LinearLayout signCodeSpan;
+    @Bind(R.id.btn_code)
+    Button btnCode;
     private NormalDialog normalDialog;
+    private Thread thread;
+    public int T = 60; //倒计时时长
+    private Handler mHandler = new Handler();
 
     @Override
     protected String title() {
-        return "设置密码";
+        return "设置钱包支付密码";
+    }
+
+    @Override
+    public Object right() {
+        return "确定";
     }
 
     @Override
@@ -90,6 +105,42 @@ public class IdentifedSetPassActivity extends BaseBarActivity {
 
     @Override
     protected void initView() {
+        setToolBarListener(new ToolBarListener() {
+            @Override
+            public void clickLeft() {
+                onBackPressed();
+            }
+
+            @Override
+            public void clickRight() {
+                if (!passWord.getText().toString().equals(passWordAgain.getText().toString())) {
+                    PaoToastUtils.showShortToast(getApplicationContext(), "两次输入的密码不一致");
+                    return;
+                }
+                if (TextUtils.isEmpty(signCodeEdit.getText().toString().trim())) {
+                    PaoToastUtils.showShortToast(getApplicationContext(), "请输入验证码");
+                    return;
+                }
+                String psw = passWordAgain.getText().toString();
+                Map<String, String> params = new HashMap<>();
+                params.put("paypw", Base64Util.makeUidToBase64(psw));
+                params.put("code", signCodeEdit.getText().toString().trim());
+                Presenter.getInstance(IdentifedSetPassActivity.this).postPaoBuSimple(NetApi.urlAddPassIdentify, params, new PaoCallBack() {
+                    @Override
+                    protected void onSuc(String s) {
+                        PaoToastUtils.showLongToast(getApplicationContext(), "密码设置成功!");
+                        finish();
+                    }
+
+                    @Override
+                    protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                        if (errorBean != null) {
+                            PaoToastUtils.showLongToast(getApplicationContext(), errorBean.getMessage());
+                        }
+                    }
+                });
+            }
+        });
         passWordAgain = (EditText) findViewById(R.id.pass_word_again);
         passWordAgain.addTextChangedListener(new TextWatcher() {
             @Override
@@ -104,52 +155,87 @@ public class IdentifedSetPassActivity extends BaseBarActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (realName.getText().toString().trim().length() >= 2
-                        && idNumber.getText().toString().trim().length() >= 15
-                        && idNumber.getText().toString().trim().length() <= 18
-                        && passWord.getText().toString().length() == 6
+                if (passWord.getText().toString().length() == 6
                         && passWordAgain.getText().toString().length() == 6) {
-                    buttonConfirm.setEnabled(true);
+
                 } else {
-                    buttonConfirm.setEnabled(false);
+
                 }
             }
         });
     }
 
-    @OnClick(R.id.button_confirm)
+
+    private class MyCountDownTimer implements Runnable {
+        public void run() {
+
+            //倒计时开始，循环
+            while (T > 0) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (btnCode != null) {
+                            btnCode.setClickable(false);
+                            btnCode.setText(T + "秒");
+                        }
+                    }
+                });
+                try {
+                    Thread.sleep(1000); //强制线程休眠1秒，就是设置倒计时的间隔时间为1秒。
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                T--;
+            }
+            //倒计时结束，也就是循环结束
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (btnCode != null) {
+                        btnCode.setClickable(true);
+                        btnCode.setText("获取验证码");
+                    }
+                }
+            });
+            T = 60; //最后再恢复倒计时时长
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (thread != null) {
+            if (thread.isAlive()) {
+                thread.interrupt();
+            }
+        }
+    }
+
+    @OnClick(R.id.btn_code)
     public void onClick() {
-        if (realName.getText().toString().trim().length() <= 1) {
-            PaoToastUtils.showShortToast(getApplicationContext(), "请填写正确的姓名");
+        LocalLog.d(TAG, "获取验证码");
+        UserInfoResponse.DataBean userInfoResponse = Presenter.getInstance(this).getCurrentUser();
+        if (userInfoResponse == null || TextUtils.isEmpty(userInfoResponse.getMobile())) {
             return;
         }
-        if (!(idNumber.getText().toString().trim().length() >= 15
-                && idNumber.getText().toString().trim().length() <= 18)) {
-            PaoToastUtils.showShortToast(getApplicationContext(), "请输入正确身份证号码");
-            return;
-        }
-        if (!passWord.getText().toString().equals(passWordAgain.getText().toString())) {
-            PaoToastUtils.showShortToast(getApplicationContext(), "两次输入的密码不一致");
-            return;
-        }
-        String psw = passWordAgain.getText().toString();
-        Map<String, String> params = new HashMap<>();
-        params.put("paypw", Base64Util.makeUidToBase64(psw));
-        params.put("realname", realName.getText().toString().trim());
-        params.put("idcard", idNumber.getText().toString().trim());
-        Presenter.getInstance(this).postPaoBuSimple(NetApi.urlAddPassIdentify, params, new PaoCallBack() {
+        Presenter.getInstance(this).getPaoBuSimple(NetApi.urlSignCode + "/?mobile=" + userInfoResponse.getMobile(), null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
-                PaoToastUtils.showLongToast(getApplicationContext(), "密码设置成功!");
-                finish();
+                PaoToastUtils.showLongToast(IdentifedSetPassActivity.this, "验证码发送成功");
             }
 
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                if (errorBean != null) {
-                    PaoToastUtils.showLongToast(getApplicationContext(), errorBean.getMessage());
+                if (errorStr != null) {
+                    PaoToastUtils.showLongToast(IdentifedSetPassActivity.this, errorStr);
                 }
             }
         });
+        if (thread != null && thread.isAlive()) {
+            return;
+        } else {
+            thread = new Thread(new MyCountDownTimer());
+            thread.start();
+        }
     }
 }

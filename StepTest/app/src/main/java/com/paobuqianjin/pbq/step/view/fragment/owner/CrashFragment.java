@@ -19,25 +19,40 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
+import com.paobuqianjin.pbq.step.customview.WalletPassDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
 import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
+import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
+import com.paobuqianjin.pbq.step.view.activity.ForgetPayWordActivity;
+import com.paobuqianjin.pbq.step.view.activity.IdentifedSetPassActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
+import com.paobuqianjin.pbq.step.view.activity.TransferCardActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.utils.SocializeUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -93,6 +108,8 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     private ProgressDialog dialog;
     private String action = "";
     CrashToParam crashToParam;
+    private NormalDialog passWordSetDialog;
+    private WalletPassDialog walletPassDialog;
 
     @Override
     protected String title() {
@@ -165,10 +182,61 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
+    private void popPayPass() {
+        if (walletPassDialog == null) {
+            walletPassDialog = new WalletPassDialog(getActivity());
+            walletPassDialog.setPassEditListener(new WalletPassDialog.PassEditListener() {
+                @Override
+                public void onPassWord(String pass) {
+                    LocalLog.d(TAG, "pass =" + pass);
+                    walletPassDialog.dismiss();
+                    String base64Pass = Base64Util.makeUidToBase64(pass);
+                    Map<String, String> params = new HashMap<>();
+                    params.put("paypw", base64Pass);
+                    Presenter.getInstance(getActivity()).postPaoBuSimple(NetApi.urlPayPass, params, new PaoCallBack() {
+                        @Override
+                        protected void onSuc(String s) {
+                            try {
+                                ErrorCode errorCode = new Gson().fromJson(s, ErrorCode.class);
+                                if ("密码正确".equals(errorCode.getMessage())) {
+                                    Presenter.getInstance(getContext()).postCrashTo(crashToParam);
+                                } else {
+
+                                }
+                            } catch (JsonSyntaxException j) {
+                                LocalLog.d(TAG, "error data format!");
+                            }
+                        }
+
+                        @Override
+                        protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                            if (errorBean.getError() != 100) {
+                                PaoToastUtils.showShortToast(getContext(), errorBean.getMessage());
+                            }
+                        }
+                    });
+                }
+            });
+
+            walletPassDialog.setForgetPassOnclickListener(new WalletPassDialog.ForgetPassOnclickListener() {
+                @Override
+                public void onForgetPassClick() {
+                    LocalLog.d(TAG, "忘记支付密码");
+                    startActivity(ForgetPayWordActivity.class, null);
+                }
+            });
+        }
+        if (!walletPassDialog.isShowing() && !getActivity().isFinishing()) {
+            walletPassDialog.clearPassword();
+            walletPassDialog.show();
+        }
+    }
+
     @OnClick({R.id.wechat_pay, R.id.confirm_crash, R.id.protocl_pay, R.id.select_icon, R.id.crash_all})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.crash:
+            case R.id.crash_all:
+                LocalLog.d(TAG, "全部提现");
                 if (canCrashNum > 0.0f) {
                     canCrash.setText(String.valueOf(canCrashNum));
                 }
@@ -198,26 +266,50 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                     }
                 }
                 crashToParam.setAmount((canCrash.getText().toString().trim()));
-                Presenter.getInstance(getContext()).postCrashTo(crashToParam);
-
-   /*             Presenter.getInstance(getContext()).getIdentifyStatu(getActivity(), new OnIdentifyLis() {
+                //TODO 判断是否设置过密码
+                Presenter.getInstance(getActivity()).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
                     @Override
-                    public void onIdentifed() {
-                        //Presenter.getInstance(getContext()).postCrashTo(crashToParam);
+                    protected void onSuc(String s) {
+                        try {
+                            JSONObject jsonObj = new JSONObject(s);
+                            jsonObj = jsonObj.getJSONObject("data");
+                            String status = jsonObj.getString("setpw");
+                            if (status.equals("1")) {
+                                popPayPass();
+                            } else if (status.equals("0")) {
+                                if (passWordSetDialog == null) {
+                                    passWordSetDialog = new NormalDialog(getActivity());
+                                }
+                                passWordSetDialog.setMessage("您还未设置支付密码，去上设置支付密码?");
+                                passWordSetDialog.setYesOnclickListener("去设置", new NormalDialog.onYesOnclickListener() {
+                                    @Override
+                                    public void onYesClick() {
+                                        startActivity(IdentifedSetPassActivity.class, null);
+                                        if (passWordSetDialog != null)
+                                            passWordSetDialog.dismiss();
+                                    }
+                                });
+                                passWordSetDialog.setNoOnclickListener("不设置", new NormalDialog.onNoOnclickListener() {
+                                    @Override
+                                    public void onNoClick() {
+                                        if (passWordSetDialog != null)
+                                            passWordSetDialog.dismiss();
+                                    }
+                                });
+                                if (!passWordSetDialog.isShowing())
+                                    passWordSetDialog.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                     @Override
-                    public void onUnidentify() {
-                        Intent intent = new Intent(getActivity(), IdentityAuth1Activity.class);
-                        startActivityForResult(intent, 1);
-                    }
-
-                    @Override
-                    public void onGetIdentifyStatusError() {
+                    protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
 
                     }
                 });
-*/
+
                 break;
             case R.id.protocl_pay:
                 Intent intent = new Intent();
@@ -342,6 +434,7 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                             continue;
                     }
                 }
+                LocalLog.d(TAG, "tmp =" + temp);
                 SocializeUtils.safeCloseDialog(dialog);
             }
 

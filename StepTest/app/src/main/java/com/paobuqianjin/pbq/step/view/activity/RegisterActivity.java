@@ -229,7 +229,7 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
                     }
                 }, 15000);
                 if (!isBool) {
-                    Toast.makeText(RegisterActivity.this, "请阅读《跑步钱进服务协议》", Toast.LENGTH_SHORT).show();
+                    PaoToastUtils.showLongToast(this, "请阅读《跑步钱进服务协议》");
                 } else {
                     Presenter.getInstance(getApplicationContext()).registerByPhoneNumber(collectSignUserInfo());
                 }

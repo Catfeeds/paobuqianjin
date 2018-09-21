@@ -1,6 +1,7 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,6 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.EncodeHintType;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.lwkandroid.imagepicker.data.ImageDataModel;
 import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
 import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
@@ -60,6 +68,7 @@ import com.paobuqianjin.pbq.step.view.emoji.IEmotionSelectedListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -171,6 +180,12 @@ public class RedInfoActivity extends BaseBarActivity {
     RelativeLayout redInfoLayout;
     @Bind(R.id.pic_index)
     RelativeLayout picIndex;
+    @Bind(R.id.qrcode)
+    ImageView qrcode;
+    @Bind(R.id.circle_qr)
+    RelativeLayout circleQr;
+    @Bind(R.id.notify)
+    TextView notifyText;
     private int localVoteNum = 0;
     private int localCommentNum = 0;
     CustomEdit commentEditText;
@@ -283,6 +298,50 @@ public class RedInfoActivity extends BaseBarActivity {
             popBirthSelectView.startAnimation(animationCircleType);
         }
     };
+
+    private void encodeBitmap(ImageView imageView, String url, int mgWidth, int imgWidth) {
+        BitMatrix result = null;
+
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+       /* try {
+            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 175, 175);
+            int w = result.getWidth();
+            int h = result.getHeight();
+            int[] pixels = new int[w * h];
+            for (int y = 0; y < h; y++) {
+                int offset = y * w;
+                for (int x = 0; x < w; x++) {
+                    pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+                }
+            }
+            bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+            bitmap.setPixels(pixels, 0, w, 0, 0, w, h);
+        } catch (WriterException e) {
+            LocalLog.e(TAG, e.getMessage());
+        }*/
+
+        try {
+            Hashtable<EncodeHintType, Object> hints = new Hashtable<EncodeHintType, Object>();
+            // 指定纠错等级,纠错级别（L 7%、M 15%、Q 25%、H 30%）
+            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
+            // 内容所使用字符集编码
+            hints.put(EncodeHintType.CHARACTER_SET, "utf-8");
+            hints.put(EncodeHintType.MARGIN, 0);
+
+            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 116, 116, hints);
+//            result = multiFormatWriter.encode(url, BarcodeFormat.QR_CODE, 175, 175);
+            // 使用 ZXing Android Embedded 要写的代码
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            final Bitmap bitmap = barcodeEncoder.createBitmap(result);
+            imageView.setImageBitmap(bitmap);
+            imageView.setVisibility(View.VISIBLE);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException iae) {
+            return;
+        }
+        return;
+    }
 
     @Override
     protected void initView() {
@@ -452,9 +511,13 @@ public class RedInfoActivity extends BaseBarActivity {
                             redSuccess.setVisibility(View.VISIBLE);
                         }
                     }
+                    if (!TextUtils.isEmpty(roundHisResponse.getData().getCircleid())) {
+                        circleQr.setVisibility(View.VISIBLE);
+                        final String circleUlr = NetApi.urlShareCd + roundHisResponse.getData().getCircleid();
+                        encodeBitmap(qrcode, circleUlr, 1, 1);
+                    }
                     if (roundHisResponse.getData().getIs_zan() == 1) {
                         is_vote = true;
-
                     } else {
                         is_vote = false;
                     }
@@ -485,6 +548,9 @@ public class RedInfoActivity extends BaseBarActivity {
                                 ImageView imageView = (ImageView) view.findViewById(R.id.red_content_img);
                                 Presenter.getInstance(RedInfoActivity.this).getPlaceErrorImage(imageView, roundHisResponse.getData().getRed_img()
                                         .get(j).getUrl(), R.drawable.null_bitmap, R.drawable.null_bitmap);
+                                if (!TextUtils.isEmpty(tarUrl)) {
+                                    notifyText.setVisibility(View.VISIBLE);
+                                }
                                 imageView.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {

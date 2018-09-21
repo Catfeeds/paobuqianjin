@@ -40,6 +40,7 @@ import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.fragment.owner.ReleaseRecordFragment;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -72,8 +73,8 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
 
     AllTaskFragment allTaskFragment;
     FinishedTaskFragment finishedTaskFragment;
-    UnFinishTaskFragment unFinishTaskFragment;
     EmptyTaskFragment emptyTaskFragment;
+    ReleaseRecordFragment releaseRecordFragment;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
     @Bind(R.id.bar_return_drawable)
@@ -88,7 +89,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
     private IntentFilter intentFilter;
     private LocalBroadcastManager localBroadcastManager;
     private LocalReceiver localReceiver;
-    private ArrayList<MyRecTaskRecordResponse.DataBeanX.DataBean> allTaskList, doingTaskList, finishTaskList;
+    private ArrayList<MyRecTaskRecordResponse.DataBeanX.DataBean> allTaskList, finishTaskList;
     private final static String REC_TASK_ACTION = "com.paobuqianjin.pbq.step.REC_TASK_ACTION";
     private final static String REC_GIFT_ACTION = "com.paobuqianjin.pbq.step.REC_GIFT_ACTION";
     private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
@@ -140,25 +141,24 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
     protected void initView(View viewRoot) {
         allTaskFragment = new AllTaskFragment();
         finishedTaskFragment = new FinishedTaskFragment();
-        unFinishTaskFragment = new UnFinishTaskFragment();
         emptyTaskFragment = new EmptyTaskFragment();
+        releaseRecordFragment = new ReleaseRecordFragment();
         allTaskFragment.setReloadDataInterface(reloadDataInterface);
         finishedTaskFragment.setReloadDataInterface(reloadDataInterface);
-        unFinishTaskFragment.setReloadDataInterface(reloadDataInterface);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
         barTvRight = (TextView) viewRoot.findViewById(R.id.bar_tv_right);
         barTitle.setText("任务列表");
         barTvRight.setText("发布");
         banner = (Banner) viewRoot.findViewById(R.id.banner);
-        mFragments = new Fragment[]{allTaskFragment, unFinishTaskFragment, finishedTaskFragment};
+        mFragments = new Fragment[]{allTaskFragment, finishedTaskFragment, releaseRecordFragment};
         getActivity().getSupportFragmentManager().beginTransaction()
                 .add(R.id.container_task, allTaskFragment)
-                .add(R.id.container_task, unFinishTaskFragment)
                 .add(R.id.container_task, finishedTaskFragment)
+                .add(R.id.container_task, releaseRecordFragment)
                 .add(R.id.container_task, emptyTaskFragment)
                 .show(allTaskFragment)
-                .hide(unFinishTaskFragment)
                 .hide(finishedTaskFragment)
+                .hide(releaseRecordFragment)
                 .hide(emptyTaskFragment)
                 .commit();
 
@@ -251,7 +251,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
 
         }
         allTaskList = null;
-        doingTaskList = null;
+
         finishTaskList = null;
     }
 
@@ -260,17 +260,17 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
         switch (view.getId()) {
             case R.id.task_all:
                 mIndex = 0;
-                LocalLog.d(TAG, "全部");
+                LocalLog.d(TAG, "今日专享");
                 onTabIndex(mIndex);
                 break;
             case R.id.task_un_finish:
                 mIndex = 1;
-                LocalLog.d(TAG, "未完成");
+                LocalLog.d(TAG, "完成专享");
                 onTabIndex(mIndex);
                 break;
             case R.id.task_finished:
                 mIndex = 2;
-                LocalLog.d(TAG, "已完成");
+                LocalLog.d(TAG, "已发专享");
                 onTabIndex(mIndex);
                 break;
             case R.id.bar_tv_right:
@@ -347,18 +347,6 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
                     trx.show(mFragments[fragmentIndex]).commit();
                 }
             } else if (fragmentIndex == 1) {
-                if (doingTaskList == null) {
-                    if (!emptyTaskFragment.isAdded()) {
-                        trx.add(R.id.fragment_container, emptyTaskFragment);
-                    }
-                    trx.show(emptyTaskFragment).commit();
-                } else {
-                    if (!emptyTaskFragment.isHidden()) {
-                        trx.hide(emptyTaskFragment);
-                    }
-                    trx.show(mFragments[fragmentIndex]).commit();
-                }
-            } else if (fragmentIndex == 2) {
                 if (finishTaskList == null) {
                     if (!emptyTaskFragment.isAdded()) {
                         trx.add(R.id.fragment_container, emptyTaskFragment);
@@ -370,6 +358,11 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
                     }
                     trx.show(mFragments[fragmentIndex]).commit();
                 }
+            } else if (fragmentIndex == 2) {
+                if (!emptyTaskFragment.isHidden()) {
+                    trx.hide(emptyTaskFragment);
+                }
+                trx.show(mFragments[fragmentIndex]).commit();
             }
 
             setCurrentIndexStateUnSelect();
@@ -398,10 +391,8 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
         pageIndex = 1;
         pageCount = 0;
         allTaskList = null;
-        doingTaskList = null;
         finishTaskList = null;
         allTaskFragment.setData(null);
-        unFinishTaskFragment.setData(null);
         finishedTaskFragment.setData(null);
         Presenter.getInstance(getContext()).getAllMyRecTask(pageIndex, PAGESIZE);
     }
@@ -424,13 +415,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
                 if (myRecvTaskRecordResponse.getData().getData().get(i).getIs_receive() == 1) {
                     LocalLog.d(TAG, "已接任务");
                     if (myRecvTaskRecordResponse.getData().getData().get(i).getIs_finished() == 0) {
-                        if (doingTaskList == null) {
-                            doingTaskList = new ArrayList<>();
-                            doingTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
-                        } else {
-                            doingTaskList.add(myRecvTaskRecordResponse.getData().getData().get(i));
-                        }
-                        unFinishTaskFragment.notifyAddData(myRecvTaskRecordResponse.getData().getData().get(i));
+
                     } else {
                         if (finishTaskList == null) {
                             finishTaskList = new ArrayList<>();

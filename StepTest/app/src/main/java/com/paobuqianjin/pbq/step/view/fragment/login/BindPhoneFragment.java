@@ -310,9 +310,7 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
             });
             T = 60; //最后再恢复倒计时时长
         }
-    }
-
-    ;
+    };
 
     @Override
     public void onDestroy() {

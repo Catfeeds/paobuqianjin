@@ -18,6 +18,27 @@
         android:paddingBottom="8dp"
         android:visibility="gone"></com.youth.banner.Banner>
 
+    <LinearLayout
+        android:id="@+id/red_rule"
+        android:layout_width="80dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/banner"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/ad_attion"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:paddingLeft="14dp"
+            android:text="规则说明"
+            android:textColor="@color/color_f8"
+            android:textSize="15dp" />
+    </LinearLayout>
+
     <com.tencent.tencentmap.mapsdk.map.MapView
         android:id="@+id/mapview"
         android:layout_width="fill_parent"
