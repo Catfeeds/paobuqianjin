@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.view.base.view.PaoToastView;
@@ -19,7 +20,7 @@ public class PaoToastUtils {
     }
 
     public static void showShortToast(Context context, String showMsg) {
-        if(null != paoToastView) {
+        if (null != paoToastView) {
             paoToastView = null;
         }
 
@@ -45,7 +46,10 @@ public class PaoToastUtils {
     }
 
     public static void showLongToast(Context context, String showMsg) {
-        if(null != paoToastView) {
+        if (TextUtils.isEmpty(showMsg)) {
+            return;
+        }
+        if (null != paoToastView) {
             paoToastView = null;
         }
 
@@ -58,7 +62,7 @@ public class PaoToastUtils {
     public static void showMomentToast(Activity activity, final Context context, final String showMsg) {
         activity.runOnUiThread(new Runnable() {
             public void run() {
-                if(null == PaoToastUtils.paoToastView) {
+                if (null == PaoToastUtils.paoToastView) {
                     PaoToastUtils.paoToastView = new PaoToastView(context);
                     PaoToastUtils.paoToastView.setShowText(showMsg);
                     PaoToastUtils.paoToastView.setDuration(Toast.LENGTH_SHORT);
@@ -71,7 +75,7 @@ public class PaoToastUtils {
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
-                        if(null != PaoToastUtils.paoToastView) {
+                        if (null != PaoToastUtils.paoToastView) {
                             PaoToastUtils.paoToastView.cancel();
                         }
                     }

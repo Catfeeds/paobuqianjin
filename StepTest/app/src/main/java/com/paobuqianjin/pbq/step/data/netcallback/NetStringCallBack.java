@@ -1295,6 +1295,12 @@ public class NetStringCallBack extends StringCallback {
             }
         } else {
             LocalLog.e(TAG, " dispatch not match");
+            LocalLog.e(TAG, "未知错误");
+            ErrorCode errorCode = new ErrorCode();
+            errorCode.setError(-1);
+            errorCode.setMessage("开小差了，请稍后再试");
+            if (callBackInterface != null)
+                callBackInterface.response(errorCode);
         }
     }
 }

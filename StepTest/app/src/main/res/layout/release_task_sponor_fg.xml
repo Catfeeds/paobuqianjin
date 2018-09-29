@@ -95,7 +95,7 @@
                 android:background="@color/color_f8"
                 android:backgroundTint="@color/white"
                 android:gravity="left"
-                android:hint="请输入您的推广信息，限定300个字以内..."
+                android:hint="(必填) 请输入您的推广信息限定300个字以内..."
                 android:maxLength="300"
                 android:minHeight="100dp"
                 android:padding="8dp"
@@ -118,12 +118,23 @@
                 android:verticalSpacing="8dp"
                 tools:listitem="@layout/item_add_pic_grid2" />
 
+            <TextView
+                android:background="@color/color_f8"
+                android:id="@+id/pic_tric"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/grid_view"
+                android:paddingLeft="20dp"
+                android:paddingBottom="5dp"
+                android:hint="必填一张图片"
+                android:textSize="12dp" />
+
             <ImageView
                 android:id="@+id/line_sp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_alignLeft="@+id/target_task_span"
-                android:layout_below="@+id/grid_view"
+                android:layout_below="@+id/pic_tric"
                 android:background="@color/color_ebebed" />
 
             <RelativeLayout
@@ -152,7 +163,7 @@
                     android:layout_toRightOf="@id/target_step_des"
                     android:background="@color/color_f8"
                     android:gravity="right"
-                    android:hint="输入任务名称"
+                    android:hint="请输入八个字以内任务名称(必填)"
                     android:maxEms="16"
                     android:maxLength="32"
                     android:paddingLeft="40dp"
@@ -206,7 +217,7 @@
                     android:layout_toRightOf="@id/target_money_des"
                     android:background="@null"
                     android:gravity="right"
-                    android:hint="请输入红包金额"
+                    android:hint="请输入红包总金额(≥20元)"
                     android:inputType="numberDecimal"
                     android:maxLength="6"
                     android:maxLines="1"
@@ -288,7 +299,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="14dp"
-                    android:text="每日红包个数"
+                    android:text="每日红包个数(每个≥0.2元)"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
 
@@ -498,11 +509,23 @@
                     android:layout_marginRight="39dp"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:hint="选择您创建的圈子"
+                    android:hint="添加您创建的圈子"
                     android:textColor="@color/color_161727"
                     android:textSize="14sp" />
 
                 <ImageView
+                    android:id="@+id/circle_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:layout_toStartOf="@+id/go_to_circle"
+                    android:padding="4dp"
+                    android:src="@mipmap/ic_transparent_bg_delete"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/go_to_circle"
                     android:layout_width="7dp"
                     android:layout_height="14dp"
                     android:layout_alignParentRight="true"

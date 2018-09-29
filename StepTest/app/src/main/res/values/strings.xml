@@ -161,8 +161,8 @@
     <string name="put_in_wallet">已存入我的钱包</string>
     <string name="get_red">恭喜您获得</string>
     <string name="add_card">添加银行卡</string>
-    <string name="transfer_limite_tips">1、初期为确保广大用户的资金安全，每天只能提现1次，满10元即可提现，目前每日最高提现200元。
-        \n2、提现手续费为第三方支付通道收取，跑步钱进不收取手续费，到账金额为提现金额扣除手续费后的金额。
+    <string name="transfer_limite_tips">1、应部分用户要求，我们加紧申请开通了微信提现，以后身份验证等程序简化很多。请大家再提现时设定提现密码，凡是经本人设定提现密码提现的，视为本人操作，本人对结果负责。
+        \n2、但由于时间仓促，而且经常有人拥有很多微信，甚至可以破解别人的微信，为确保用户的资金安全，目前试运行期提现金额设定为每天1次，每次10-30元之间，请大家放心使用，资金安全是我们的第一追求。
      </string>
     <string name="transfer_limite_tip_part2">\n3、为了保障广大用户资金的安全,发起提现后将在申请后的24小时内提现到用户的银行卡中,请耐心等待,以此带来的不便请谅解。谢谢!</string>
     <string name="suggest_content">跑步钱进是一个以帮助孩子、大人、老人远离手机游戏，鼓励大家多走路多运动为目地的软件，这是一群深具人本情怀和春秋大义的中国人用传统智慧开创的利国利民的事业。我们不要百姓一分钱，我们开创了从此以后免费打广告的模式，商家的生意更好做一些。从此以后，每个人走走路，跑跑步就可以赚到钱。 \n你也可以通过她免费鼓励您的孩子、家人、亲朋好友，这是一个百利而无一害的好事业。 \n但是我们深知自己水平有限，一定有很多不完善的地方，需要您的智慧和提醒，您的任何建议我们都会铭记！您的任何帮助都在推动我们进步！您的卓越的建议不但会让我们铭刻在心，还会给予实际的红包奖励。我们开发团队的全体同仁再次向您致敬，感谢您的关注和支持！</string>
@@ -200,7 +200,7 @@
     <string name="aply_to_golden">申请金牌会员</string>
     <string name="aply_to_free">申请免费试用</string>
     <string name="day_congratulate">恭喜您第%d天获得</string>
-    <string name="day_reg_red_des">邀请好友下载得30元\n每天都有很多红包抢</string>
+    <string name="day_reg_red_des">鼓励身边多走多动一起领红包\n邀请一个陆续会得到30元的奖励</string>
     <string name="day_step_dollar">%d积分</string>
     <string name="golden_des_top">\u3000\u3000公司针对信誉好、店面大、品质优良的正规商家，</string>
     <string name="golden_des_top_part">发放少量金牌会员名额，一年只需365元，即可换取价值万元大礼包。</string>
@@ -290,5 +290,5 @@
     <string name="golden_vip_around">温馨提示：现在可免费试用，以后只有金牌商家会员才能发布遍地红包。现在办理365元每年，以后办理每年3650元每年！现在开通!</string>
     <string name="near_ad_to">"附近红包的功能是商家向1-50km内的客户推送红包，增加你的客流量，扩展你的产品知名度。点击发红包 >"</string>
     <string name="pick_ad_to">"消费红包的功能是商家向50km内的客户推送消费劵，增加你的客流量，扩展你的产品知名度。点击发红包 >"</string>
-    <string name="wx_code">pbqj123456</string>
+    <string name="wx_code">runmanQin</string>
 </resources>

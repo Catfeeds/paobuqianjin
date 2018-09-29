@@ -138,7 +138,7 @@ public class SingleWebViewActivity extends BaseBarActivity {
         if (TextUtils.isEmpty(redid)) return;
         Map<String, String> params = new HashMap<>();
         params.put("redid", redid);
-        params.put("is_tuen", String.valueOf(1));
+        params.put("is_turn", String.valueOf(1));
         Presenter.getInstance(this).postPaoBuSimple(NetApi.receiveAroundRed, params, new PaoTipsCallBack() {
             @Override
             protected void onSuc(String s) {
@@ -214,7 +214,7 @@ public class SingleWebViewActivity extends BaseBarActivity {
         ButterKnife.bind(this);
         urlStr = getIntent().getStringExtra("url");
         red_id = getIntent().getStringExtra("red_id");
-        LocalLog.d(TAG, "urlStr: " + urlStr);
+        LocalLog.d(TAG, "urlStr: " + urlStr + "red_id =" + red_id);
         if (urlStr.startsWith("https://www.bianxianguanjia.com")
                 && !TextUtils.isEmpty(red_id)) {
             attMoney.setVisibility(View.VISIBLE);
@@ -271,7 +271,6 @@ public class SingleWebViewActivity extends BaseBarActivity {
                                 popRoundRedPkg(red_id);
                             } else {
                                 LocalLog.d(TAG, "非转盘广告");
-                                popRoundRedPkg(red_id);
                             }
                         }
                     }, 2000);

@@ -360,7 +360,6 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
             return;
         }
         if (crashResponse.getError() == 0) {
-            PaoToastUtils.showLongToast(getActivity(), crashResponse.getMessage());
             ((CrashActivity) getActivity()).showCrashResult(crashResponse);
         } else if (crashResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
@@ -375,6 +374,8 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
+        } else {
+
         }
     }
 

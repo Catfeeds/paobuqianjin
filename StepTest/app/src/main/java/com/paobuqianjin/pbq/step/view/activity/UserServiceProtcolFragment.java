@@ -34,6 +34,10 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
     public final static String USER_SERVICE_AGREEMENT_ACTION = "com.paobuqianjin.pbq.step.SERVICE_ACTION";
     public final static String USER_CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
     private final static String USER_INVITE_AGREEMENT_ACTION = "com.paobuqianjin.step.pbq.INVITE_ACTION";
+    private final static String TICK_RED_RULE = "com.paobuqianjin.pbq.step.TICK_RED_RULE";
+    private final static String PERSON_RED_RULE = "com.paobuqianjin.pbq.step.PERSON_RED_RULE";
+    private final static String ROUND_RED_RULE = "com.paobuqianjin.pbq.step.ROUND_RED_RULE";
+    private final static String NEAR_RED_RULE = "com.paobuqianjin.pbq.step.NEAR_RED_RULE";
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -86,6 +90,18 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
             } else if (USER_INVITE_AGREEMENT_ACTION.equals(intent.getAction())) {
                 Presenter.getInstance(getContext()).protocol("2");
                 action = "2";
+            } else if (TICK_RED_RULE.equals(intent.getAction())) {
+                Presenter.getInstance(getContext()).protocol("8");
+                action = "8";
+            } else if (PERSON_RED_RULE.equals(intent.getAction())) {
+                Presenter.getInstance(getContext()).protocol("7");
+                action = "7";
+            } else if (ROUND_RED_RULE.equals(intent.getAction())) {
+                Presenter.getInstance(getContext()).protocol("5");
+                action = "5";
+            } else if (NEAR_RED_RULE.equals(intent.getAction())) {
+                Presenter.getInstance(getContext()).protocol("6");
+                action = "6";
             }
         }
     }
@@ -126,7 +142,7 @@ public class UserServiceProtcolFragment extends BaseBarStyleTextViewFragment imp
 //            webview.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
 //            webview.getSettings().setLoadWithOverviewMode(true)
             webview.getSettings().setDefaultTextEncodingName("utf-8");
-            webview.loadDataWithBaseURL(null,content, "text/html", "utf-8",null); // 加载定义的代码，并设定编码格式和字符集。
+            webview.loadDataWithBaseURL(null, content, "text/html", "utf-8", null); // 加载定义的代码，并设定编码格式和字符集。
         } else if (protocolResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             Presenter.getInstance(getContext()).setId(-1);

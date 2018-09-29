@@ -82,6 +82,8 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
     LinearLayout linearEmpty;
     @Bind(R.id.mapview)
     MapView mapview;
+    @Bind(R.id.red_rule)
+    LinearLayout redRule;
     private int currentPage = 1;
     private double[] location;
     private List<ShopSendedRedBagResponse.ShopSendedRedBagBean> listData = new ArrayList<>();
@@ -96,7 +98,7 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
     private PopupWindow popOpWindowRedButtonHori;
     Banner banner;
     private ArrayList<AdObject> adList;
-
+    private final static String TICK_RED_RULE = "com.paobuqianjin.pbq.step.TICK_RED_RULE";
     @Override
     protected String title() {
         return getString(R.string.get_consumptive_red_bag);
@@ -135,7 +137,12 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
         rvCoupon.addFooterView(loadMoreView); // 添加为Footer。
         rvCoupon.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         rvCoupon.setLoadMoreListener(this);
-
+        redRule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(AgreementActivity.class, null, false, TICK_RED_RULE);
+            }
+        });
         rvCoupon.setSwipeItemClickListener(new SwipeItemClickListener() {
             @Override
             public void onItemClick(View itemView, final int position) {

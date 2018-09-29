@@ -918,4 +918,8 @@ public final class Presenter {
     public String getPaoBuSimpleSync(String url, Map<String, String> params) throws IOException {
         return engine.getSync(url, params);
     }
+
+    public void putPaoBuSimple(String url, Map<String, String> params, PaoCallBack callBack) {
+        engine.put(url, params, callBack);
+    }
 }

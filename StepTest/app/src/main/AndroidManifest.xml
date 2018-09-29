@@ -428,6 +428,10 @@
             android:launchMode="singleTask"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.TICK_RED_RULE"></action>
+                <action android:name="com.paobuqianjin.pbq.step.PERSON_RED_RULE"></action>
+                <action android:name="com.paobuqianjin.pbq.step.ROUND_RED_RULE"></action>
+                <action android:name="com.paobuqianjin.pbq.step.NEAR_RED_RULE"></action>
                 <action android:name="com.paobuqianjin.pbq.step.SERVICE_ACTION" />
                 <action android:name="com.paobuqianjin.pbq.step.CRASH_ACTION" />
             </intent-filter>
@@ -861,7 +865,12 @@
         <activity android:name=".view.activity.ConsumptiveRedBag2Activity" />
         <activity
             android:name=".view.activity.AddAroundRedBagActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.EDIT"></action>
+                <action android:name="com.paobuqianin.pbq.step.SEND"></action>
+            </intent-filter>
+        </activity>
         <activity android:name=".view.activity.SingleWebViewActivity"></activity>
         <activity android:name=".view.activity.RedHsRecordActivity">
             <intent-filter>

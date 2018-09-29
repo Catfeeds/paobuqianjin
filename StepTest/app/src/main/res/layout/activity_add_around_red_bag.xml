@@ -90,7 +90,7 @@
                 android:background="@null"
                 android:backgroundTint="@color/white"
                 android:gravity="left"
-                android:hint="请输入您的推广信息，限定300个字以内..."
+                android:hint="(必填) 请输入您的推广信息，限定300字以内..."
                 android:maxLength="300"
                 android:minHeight="100dp"
                 android:padding="8dp"
@@ -113,6 +113,13 @@
                 android:verticalSpacing="8dp"
                 tools:listitem="@layout/item_add_pic_grid2" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:hint="必填一张图片"
+                android:paddingBottom="5dp"
+                android:textSize="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -139,7 +146,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="right"
-                    android:hint="输入红包个数"
+                    android:hint="最高2万个(每个红包≥0.02元)"
                     android:inputType="number"
                     android:maxLines="1"
                     android:paddingRight="39dp"
@@ -182,7 +189,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="right"
-                    android:hint="输入红包总金额"
+                    android:hint="红包总金额(最低30元)"
                     android:inputType="number"
                     android:maxLines="1"
                     android:paddingRight="39dp"
@@ -268,12 +275,21 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="39dp"
+                    android:layout_marginRight="29dp"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:hint="选择您创建的圈子"
+                    android:hint="添加您创建的圈子(选填)"
                     android:textColor="@color/color_161727"
                     android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/circle_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:padding="4dp"
+                    android:src="@mipmap/ic_transparent_bg_delete"
+                    android:visibility="gone" />
 
                 <ImageView
                     android:layout_width="7dp"
@@ -313,7 +329,7 @@
                     android:layout_weight="1"
                     android:background="@null"
                     android:gravity="right"
-                    android:hint="如有密码则填写"
+                    android:hint="如有密码则填写(选填)"
                     android:maxLength="6"
                     android:textColor="@color/color_161727"
                     android:textSize="14sp" />
@@ -370,6 +386,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/red_rule"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"

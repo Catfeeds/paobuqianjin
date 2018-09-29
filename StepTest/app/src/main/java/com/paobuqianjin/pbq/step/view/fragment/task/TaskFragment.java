@@ -37,6 +37,7 @@ import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
@@ -83,6 +84,10 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
     RelativeLayout buttonReturnBar;
     @Bind(R.id.banner)
     Banner banner;
+    @Bind(R.id.red_rule)
+    LinearLayout redRule;
+    @Bind(R.id.iv_send_red_bag)
+    TextView ivSendRedBag;
     private int mCurrentIndex = 0;
     private int mIndex = 0;
     private Fragment[] mFragments;
@@ -96,6 +101,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 50;
     private boolean isReloading = false;
+    private final static String PERSON_RED_RULE = "com.paobuqianjin.pbq.step.PERSON_RED_RULE";
 
     @Override
 
@@ -147,8 +153,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
         finishedTaskFragment.setReloadDataInterface(reloadDataInterface);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
         barTvRight = (TextView) viewRoot.findViewById(R.id.bar_tv_right);
-        barTitle.setText("任务列表");
-        barTvRight.setText("发布");
+        barTitle.setText("专享红包");
         banner = (Banner) viewRoot.findViewById(R.id.banner);
         mFragments = new Fragment[]{allTaskFragment, finishedTaskFragment, releaseRecordFragment};
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -170,8 +175,28 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
         localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
         localBroadcastManager.registerReceiver(localReceiver, intentFilter);
         loadBanner();
+        redRule = (LinearLayout) viewRoot.findViewById(R.id.red_rule);
+        redRule.setOnClickListener(onClickListener);
+        ivSendRedBag = (TextView) viewRoot.findViewById(R.id.iv_send_red_bag);
+        ivSendRedBag.setOnClickListener(onClickListener);
     }
 
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.red_rule:
+                    startActivity(AgreementActivity.class, null, false, PERSON_RED_RULE);
+                    break;
+                case R.id.iv_send_red_bag:
+                    Intent intent = new Intent();
+                    intent.setAction(PKG_ACTION);
+                    intent.setClass(getContext(), TaskReleaseActivity.class);
+                    startActivity(intent);
+                    break;
+            }
+        }
+    };
 
     private void loadBanner() {
         final String bannerUrl = NetApi.urlAd + "?position=task_list";
@@ -275,10 +300,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
                 break;
             case R.id.bar_tv_right:
                 LocalLog.d(TAG, "发布");
-                Intent intent = new Intent();
-                intent.setAction(PKG_ACTION);
-                intent.setClass(getContext(), TaskReleaseActivity.class);
-                startActivity(intent);
+
                 break;
             case R.id.bar_return_drawable:
                 getActivity().onBackPressed();

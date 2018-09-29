@@ -393,7 +393,7 @@
                         android:layout_gravity="bottom|center_horizontal"
                         android:gravity="bottom"
                         android:paddingBottom="8dp"
-                        android:text="附近红包"
+                        android:text="精准红包"
                         android:textColor="@color/color_f8"
                         android:textSize="14dp" />
                 </FrameLayout>

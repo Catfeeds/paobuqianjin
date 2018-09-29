@@ -66,7 +66,7 @@ public class CrashSuccessFragment extends BaseBarStyleTextViewFragment {
 
     @OnClick(R.id.finish)
     public void onClick() {
-        LocalLog.d(TAG,"确认提现结果");
-        getActivity().finish();
+        LocalLog.d(TAG, "确认提现结果");
+        getActivity().onBackPressed();
     }
 }

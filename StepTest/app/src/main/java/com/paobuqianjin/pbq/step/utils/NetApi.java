@@ -361,4 +361,8 @@ public class NetApi {
     public final static String urlNearByRedHis = url + "v1/RedpacketNew/historyList";
     //info
     public final static String urlNearInof = url + "v1/RedpacketNew/redReceiveInfo";
+    //编辑遍地红包
+    public final static String ulrEditRRED = url + "v1/RedpacketMap/";
+    //编辑精准红包
+    public final static String urlEditNear = url + "v1/RedpacketNew/";
 }

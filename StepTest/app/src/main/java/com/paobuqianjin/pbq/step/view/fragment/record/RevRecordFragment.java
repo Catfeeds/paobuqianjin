@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.fragment.record;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,17 +19,16 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
-import com.paobuqianjin.pbq.step.view.activity.RedInfoActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.RedHisAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefineLoadMoreView;
-import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -47,6 +47,8 @@ public class RevRecordFragment extends BaseFragment {
     TextView hisPartDesC;
     SwipeMenuRecyclerView redRecordRecycler;
     TextView notFoundData;
+    @Bind(R.id.swipe_layout)
+    SwipeRefreshLayout swipeLayout;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGE_SIZE_DEFAULT = 10;
     ArrayList<RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean> arrayList = new ArrayList<>();
@@ -70,6 +72,8 @@ public class RevRecordFragment extends BaseFragment {
 
     @Override
     protected void initView(View viewRoot) {
+        swipeLayout = (SwipeRefreshLayout) viewRoot.findViewById(R.id.swipe_layout);
+        swipeLayout.setEnabled(false);
         hisPartA = (TextView) viewRoot.findViewById(R.id.his_part_a);
         hisPartB = (TextView) viewRoot.findViewById(R.id.his_part_b);
         hisPartC = (TextView) viewRoot.findViewById(R.id.his_part_c);

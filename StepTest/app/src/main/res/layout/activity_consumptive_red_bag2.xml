@@ -18,13 +18,19 @@
         android:paddingBottom="8dp"
         android:visibility="gone"></com.youth.banner.Banner>
 
+    <com.tencent.tencentmap.mapsdk.map.MapView
+        android:id="@+id/mapview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/banner" />
+
     <LinearLayout
         android:id="@+id/red_rule"
         android:layout_width="80dp"
         android:layout_height="32dp"
-        android:layout_below="@+id/banner"
+        android:layout_alignTop="@+id/mapview"
         android:layout_marginTop="10dp"
-        android:background="@drawable/ad_attion"
+        android:background="@drawable/rect_right_bg"
         android:orientation="horizontal">
 
         <TextView
@@ -34,16 +40,10 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:paddingLeft="14dp"
-            android:text="规则说明"
+            android:text="红包说明"
             android:textColor="@color/color_f8"
             android:textSize="15dp" />
     </LinearLayout>
-
-    <com.tencent.tencentmap.mapsdk.map.MapView
-        android:id="@+id/mapview"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@+id/banner" />
 
     <RelativeLayout
         android:id="@+id/rl_search"

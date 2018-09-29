@@ -87,6 +87,8 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     private final static String SPOSNOR_ACTION = "com.paobuqianjin.person.SPONSOR_ACTION";
     private final static String ROUND_ACTION = "com.paobuqianjin.pbq.ROUND_PKG.ACTION";
     private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
+    private final static String SEND_ACTION = "com.paobuqianin.pbq.step.SEND";//发红包
+    private final static String ROUND_RED_RULE = "com.paobuqianjin.pbq.step.ROUND_RED_RULE";
     @Bind(R.id.mapview)
     MapView mapview;
     @Bind(R.id.iv_location)
@@ -134,6 +136,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     private boolean canRev = true;
     private final static int REQUEST_AROUND = 101;
     private final static int REQUEST_VIP = 102;
+    private final static int AD_RED = 103;
     String vip_message = "";
     private boolean isVip;
 
@@ -496,7 +499,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     }
 
     public void popVipWindow(String title, int errorCode) {
-        if (vipPopWnd != null && vipPopWnd.isShowing()) {
+        if (vipPopWnd != null && vipPopWnd.isShowing() && !TextUtils.isEmpty(title)) {
             LocalLog.d(TAG, "在显示");
             return;
         }
@@ -530,6 +533,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                         vipPopWnd.dismiss();
                         LocalLog.d(TAG, "发遍地红包");
                         Intent intentAround = new Intent();
+                        intentAround.setAction(SEND_ACTION);
                         intentAround.setClass(ConsumptiveRedBag2Activity.this, AddAroundRedBagActivity.class);
                         startActivityForResult(intentAround, REQUEST_AROUND);
                     }
@@ -568,6 +572,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                         vipPopWnd.dismiss();
                         LocalLog.d(TAG, "发遍地红包");
                         Intent intentAround = new Intent();
+                        intentAround.setAction(SEND_ACTION);
                         intentAround.setClass(ConsumptiveRedBag2Activity.this, AddAroundRedBagActivity.class);
                         startActivityForResult(intentAround, REQUEST_AROUND);
                     }
@@ -1077,10 +1082,10 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                                 if (TextUtils.isEmpty(listAroundRedBagBean.get(position).getAd_url())) {
                                     popRoundRedPkg(position);
                                 } else {
-                                    startActivity(new Intent(ConsumptiveRedBag2Activity.this, SingleWebViewActivity.class)
+                                    startActivityForResult(new Intent(ConsumptiveRedBag2Activity.this, SingleWebViewActivity.class)
                                             .putExtra("url", listAroundRedBagBean.get(position).getAd_url())
                                             .putExtra("red_id", listAroundRedBagBean.get(position).getRed_id())
-                                            .putExtra("title", listAroundRedBagBean.get(position).getAd_title()));
+                                            .putExtra("title", listAroundRedBagBean.get(position).getAd_title()), AD_RED);
                                 }
 
                             } else {
@@ -1132,7 +1137,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
             setPosition(data.getFloatExtra("lat", (float) currentLocation[0]),
                     data.getFloatExtra("lng", (float) currentLocation[1]));
         }
-        if (requestCode == REQUEST_AROUND || requestCode == REQUEST_VIP) {
+        if (requestCode == REQUEST_AROUND || requestCode == REQUEST_VIP || requestCode == AD_RED) {
             LocalLog.d(TAG, "刷新红包列表");
             getAroundRedBag();
         }
@@ -1175,6 +1180,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         switch (view.getId()) {
             case R.id.red_rule:
                 LocalLog.d(TAG, "查看红包规则");
+                startActivity(AgreementActivity.class, null, false, ROUND_RED_RULE);
                 break;
             case R.id.search_circle_text:
                 Intent intent = new Intent(this,
@@ -1195,6 +1201,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
             case R.id.iv_send_red_bag:
                 Intent intentAround = new Intent();
                 intentAround.setClass(ConsumptiveRedBag2Activity.this, AddAroundRedBagActivity.class);
+                intentAround.setAction(SEND_ACTION);
                 startActivityForResult(intentAround, REQUEST_AROUND);
                 break;
         }

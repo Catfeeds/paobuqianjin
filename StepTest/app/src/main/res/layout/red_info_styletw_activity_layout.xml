@@ -104,16 +104,16 @@
 
                         <TextView
                             android:id="@+id/notify"
-                            android:visibility="gone"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentBottom="true"
                             android:layout_width="160dp"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
                             android:background="#80000000"
-                            android:text="点击图片查看网店详情"
                             android:gravity="center"
+                            android:text="点击图片查看网店详情"
                             android:textColor="@color/red0"
-                            android:textSize="14dp" />
+                            android:textSize="14dp"
+                            android:visibility="gone" />
 
                         <RelativeLayout
                             android:id="@+id/pic_index"
@@ -423,26 +423,53 @@
 
                         <RelativeLayout
                             android:id="@+id/circle_qr"
-                            android:layout_width="122dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_gravity="center_vertical|right"
                             android:layout_marginRight="14dp"
-                            android:background="#80000000"
                             android:visibility="gone">
 
                             <RelativeLayout
                                 android:id="@+id/qr_linear"
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:layout_centerInParent="true"
-                                android:background="@color/color_f8">
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_marginBottom="5dp"
+                                android:layout_marginRight="5dp"
+                                android:background="#00000000">
 
                                 <ImageView
                                     android:id="@+id/qrcode"
                                     android:layout_width="69dp"
                                     android:layout_height="69dp"
-                                    android:layout_centerInParent="true"
+                                    android:layout_centerHorizontal="true"
                                     android:scaleType="centerCrop" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/qrcode"
+                                    android:layout_marginTop="5dp"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:text="长按二维码进商家圈子"
+                                        android:textColor="@color/color_161727"
+                                        android:textSize="12dp" />
+
+                                    <TextView
+                                        android:id="@+id/circle_pwd"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:layout_marginTop="5dp"
+                                        android:text=""
+                                        android:textColor="@color/color_161727"
+                                        android:textSize="12dp" />
+                                </LinearLayout>
                             </RelativeLayout>
                         </RelativeLayout>
 

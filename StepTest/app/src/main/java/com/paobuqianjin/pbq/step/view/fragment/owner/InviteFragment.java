@@ -171,7 +171,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
             web = new UMWeb(NetApi.urlShareIc + userInfo.getNo());
             web.setTitle("大道之行,跑步钱进");
             web.setThumb(new UMImage(getContext(), R.mipmap.app_icon));
-            web.setDescription("邀请好友成功注册,有机会获得30元邀请奖励");
+            web.setDescription("邀请好友成功注册,陆续将获得三十元奖励");
         }
         adapter = new InviteDanAdapter(getContext(), null);
         inviteDanFragment.setDanAdapter(adapter);

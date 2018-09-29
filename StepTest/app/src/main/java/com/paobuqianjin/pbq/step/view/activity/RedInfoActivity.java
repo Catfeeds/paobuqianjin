@@ -512,9 +512,37 @@ public class RedInfoActivity extends BaseBarActivity {
                         }
                     }
                     if (!TextUtils.isEmpty(roundHisResponse.getData().getCircleid())) {
-                        circleQr.setVisibility(View.VISIBLE);
-                        final String circleUlr = NetApi.urlShareCd + roundHisResponse.getData().getCircleid();
-                        encodeBitmap(qrcode, circleUlr, 1, 1);
+                        try {
+                            if (Integer.parseInt(roundHisResponse.getData().getCircleid()) >= 1) {
+                                circleQr.setVisibility(View.VISIBLE);
+                                qrcode.setOnLongClickListener(new View.OnLongClickListener() {
+                                    @Override
+                                    public boolean onLongClick(View v) {
+                                        try {
+                                            Intent intent = new Intent();
+                                            intent.setClass(RedInfoActivity.this, CirCleDetailActivity.class);
+                                            intent.putExtra(getPackageName() + "circleid", Integer.parseInt(roundHisResponse.getData().getCircleid()));
+                                            startActivity(intent);
+                                        } catch (NumberFormatException e) {
+                                            e.printStackTrace();
+                                        }
+                                        return false;
+                                    }
+                                });
+                                final String circleUlr = NetApi.urlShareCd + roundHisResponse.getData().getCircleid();
+                                encodeBitmap(qrcode, circleUlr, 1, 1);
+                                TextView pswTv = (TextView) circleQr.findViewById(R.id.circle_pwd);
+                                if (!TextUtils.isEmpty(roundHisResponse.getData().getCircle_pwd())) {
+                                    pswTv.setText("圈子密码：" + roundHisResponse.getData().getCircle_pwd());
+                                    pswTv.setVisibility(View.VISIBLE);
+                                } else {
+                                    pswTv.setVisibility(View.GONE);
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                     }
                     if (roundHisResponse.getData().getIs_zan() == 1) {
                         is_vote = true;

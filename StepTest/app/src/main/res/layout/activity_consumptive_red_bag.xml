@@ -29,12 +29,39 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/banner">
 
-        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-            android:id="@+id/rv_coupon"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+            <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+                android:id="@+id/rv_coupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+
+            <LinearLayout
+                android:id="@+id/red_rule"
+                android:layout_width="80dp"
+                android:layout_height="32dp"
+                android:layout_alignTop="@+id/rv_coupon"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect_right_bg"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:paddingLeft="14dp"
+                    android:text="红包说明"
+                    android:textColor="@color/color_f8"
+                    android:textSize="15dp" />
+            </LinearLayout>
+        </RelativeLayout>
+
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout

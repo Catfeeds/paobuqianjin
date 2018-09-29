@@ -27,6 +27,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -62,6 +63,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.MyCreateCircleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.SendNearPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorLabelResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskSponsorRespone;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
@@ -77,13 +79,13 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.RedHsRecordActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorDetailActivity;
-import com.paobuqianjin.pbq.step.view.activity.SponsorRedDetailActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.umeng.socialize.utils.SocializeUtils;
 import com.youth.banner.Banner;
@@ -92,7 +94,9 @@ import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -106,7 +110,7 @@ import static android.app.Activity.RESULT_OK;
  * 2018/4/19.
  */
 
-public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment implements TaskSponsorInterface, InnerCallBack {
+public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment implements TaskSponsorInterface {
     private final static String TAG = ReleaseTaskSponsorFragment.class.getSimpleName();
     private final static int REQUEST_TARGET_PEOPLE = 0;
     public final static int REQUEST_SPONSOR_MSG = 1;
@@ -170,6 +174,7 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     private static String TARGET_PEOPLE_ACTION = "com.paobuqianjin.pbq.step.TARGET_ACTION";
     private static String SPONSOR_INFO_ACTION = "com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
+    private final static String NEAR_RED_RULE = "com.paobuqianjin.pbq.step.NEAR_RED_RULE";
     private final static String CIRCLE_ID = "id";
     private final static String CIRCLE_NAME = "name";
     private final static String CIRCLE_LOGO = "logo";
@@ -200,6 +205,12 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     Button btnPrescan;
     @Bind(R.id.btn_confirm)
     Button btnConfirm;
+    @Bind(R.id.iv_delete)
+    ImageView ivDelete;
+    @Bind(R.id.circle_delete)
+    ImageView circleDelete;
+    @Bind(R.id.pkg_des)
+    LinearLayout pkgDes;
     private boolean isFirstLocal = true;
     private StepLocationReciver stepLocationReciver = new StepLocationReciver();
     private TaskSponsorParam taskSponsorParam;
@@ -214,6 +225,7 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     private String address;
     private boolean hasBusiness;
     private int businessId = -1;
+    private int lastBusinessId = -1;
     private NormalDialog dialog;
     private LimitLengthFilter filter;
 
@@ -237,10 +249,13 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     private final static int SELECT_CIRCLE = 77;
     private final static String SELECT_CIRCLE_ACTION = "com.paobuqianjin.pbq.SELECT_ACTION";
     private String circleId;//微商圈ID
+    private boolean editAble;
+    SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean dataBean;
+    String hisImage;
 
     @Override
     protected String title() {
-        return "添加红包";
+        return "添加精准红包";
     }
 
     @Override
@@ -253,7 +268,6 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        getDefaultBusiness();
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(LOCATION_ACTION);
         getContext().registerReceiver(stepLocationReciver, intentFilter);
@@ -341,11 +355,36 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     }
 
 
-    private void getDefaultBusiness() {
-        LocalLog.d(TAG, "获取默认的店铺!");
-        GetUserBusinessParam param = new GetUserBusinessParam();
-        param.setUserid(Presenter.getInstance(getContext()).getId()).setPage(1);
-        Presenter.getInstance(getContext()).getUserBusiness(param, this);
+    public void getDefaultBusiness(final boolean show) {
+        LocalLog.d(TAG, "getDefaultBusiness() enter");
+        //商铺信息
+        Map<String, String> params = new HashMap<>();
+        params.put("page", "1");
+        params.put("pagesize", "1");
+        Presenter.getInstance(getActivity()).postPaoBuSimple(NetApi.urlGetUserBusiness, params, new PaoTipsCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    GetUserBusinessResponse businessResponse = new Gson().fromJson(s, GetUserBusinessResponse.class);
+                    if (businessResponse.getError() == 0) {
+                        hasBusiness = true;
+                        if (businessResponse.getData().getData().size() > 0) {
+                            GetUserBusinessResponse.DataBeanX.DataBean shopBean = businessResponse.getData().getData().get(0);
+                            if (shopBean.getDefaultX() == 1) {
+                                lastBusinessId = shopBean.getBusinessid();
+                                if (sponorMsgDesDetail != null && show) {
+                                    businessId = shopBean.getBusinessid();
+                                    sponorMsgDesDetail.setText(shopBean.getName());
+                                    ivDelete.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        }
+                    }
+                } catch (JsonSyntaxException j) {
+                    j.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
@@ -356,6 +395,8 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
 
     @Override
     protected void initView(View viewRoot) {
+        selectHistorty = (LinearLayout) viewRoot.findViewById(R.id.select_historty);
+        ivDelete = (ImageView) viewRoot.findViewById(R.id.iv_delete);
         attion = (RelativeLayout) viewRoot.findViewById(R.id.attion);
         targetStepDayNum = (EditText) viewRoot.findViewById(R.id.target_step_day_num);
         targetStepDayNum.setText(DEVALUE_STEP + "");
@@ -363,6 +404,9 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
         passwordCircle = (LinearLayout) viewRoot.findViewById(R.id.password_circle);
         circlePass = (EditText) viewRoot.findViewById(R.id.circle_pass);
         sponorCircleDetail = (TextView) viewRoot.findViewById(R.id.sponor_circle_detail);
+        btnPrescan = (Button) viewRoot.findViewById(R.id.btn_prescan);
+        btnConfirm = (Button) viewRoot.findViewById(R.id.btn_confirm);
+        sponorMsgDesDetail = (TextView) viewRoot.findViewById(R.id.sponor_msg_des_detail);
         Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlTarget, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
@@ -407,9 +451,127 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
         cachePath = Utils.getDiskCacheDir(getActivity()).getAbsolutePath();
         etInformation = (EditText) viewRoot.findViewById(R.id.et_information);
         gridView = (RongGridView) viewRoot.findViewById(R.id.grid_view);
+        targetTaskStepNum = (EditText) viewRoot.findViewById(R.id.target_task_step_num);
+        targetTaskMoneyNum = (EditText) viewRoot.findViewById(R.id.target_task_money_num);
+        targetTaskDayNum = (EditText) viewRoot.findViewById(R.id.target_task_day_num);
+        packDayNum = (EditText) viewRoot.findViewById(R.id.pack_day_num);
+        circleDelete = (ImageView) viewRoot.findViewById(R.id.circle_delete);
+        adapter = new GridAddPic2Adapter(getActivity(), MAX_SIZE);
+        Intent intent = getActivity().getIntent();
+        if (intent != null) {
+            boolean isEditable = intent.getBooleanExtra("edit", false);
+            if (isEditable) {
+                editAble = isEditable;
+                btnPrescan.setVisibility(View.GONE);
+                btnConfirm.setText("确定");
+                setTitle("编辑精准红包");
+            } else {
+                setTitle("添加精准红包");
+            }
+            try {
+                dataBean = (SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) intent.getSerializableExtra("near");
+                if (dataBean != null) {
+                    LocalLog.d(TAG, "dataBean = " + dataBean.toString());
+                    selectHistorty.setVisibility(View.GONE);
+                    initEdit(dataBean, editAble);
+                } else {
+                    getDefaultBusiness(true);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         initAdapter();
     }
 
+
+    private void initEdit(SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean dataBean, boolean editAble) {
+        LocalLog.d(TAG, "initEdit() enter");
+        //任务名称
+        if (!TextUtils.isEmpty(dataBean.getRed_name())) {
+            targetTaskStepNum.setText(dataBean.getRed_name());
+        }
+        if (!TextUtils.isEmpty(dataBean.getMoney())) {
+            targetTaskMoneyNum.setText(dataBean.getMoney());
+            if (editAble)
+                targetTaskMoneyNum.setEnabled(false);
+        }
+        //任务天数
+        if (!TextUtils.isEmpty(String.valueOf(dataBean.getDay())) && dataBean.getDay() > 0) {
+            targetTaskDayNum.setText(String.valueOf(dataBean.getDay()));
+            if (editAble)
+                targetTaskDayNum.setEnabled(false);
+        }
+        //每日红包个数
+        if (!TextUtils.isEmpty(String.valueOf(dataBean.getNumber())) && dataBean.getNumber() > 0) {
+            packDayNum.setText(String.valueOf(dataBean.getNumber()));
+            if (editAble)
+                packDayNum.setEnabled(false);
+        }
+
+        //目标步数
+        if (!TextUtils.isEmpty(dataBean.getRed_step())) {
+            targetStepDayNum.setText(dataBean.getRed_step());
+        }
+        //目标人群
+
+        if (dataBean.getMap_img_arr() != null) {
+            int size = dataBean.getMap_img_arr().size();
+            List<SelectPicBean> selectPicBeans = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                SelectPicBean selectPicBean = new SelectPicBean();
+                selectPicBean.setImageUrl(dataBean.getMap_img_arr().get(i));
+                selectPicBeans.add(selectPicBean);
+            }
+            adapter.setDatas(selectPicBeans);
+            for (SelectPicBean bean : adapter.getData()) {
+                if (!TextUtils.isEmpty(hisImage)) {
+                    hisImage += ",";
+                }
+                hisImage += bean.getImageUrl();
+                LocalLog.d(TAG, "hisImage = " + hisImage);
+            }
+        }
+        if (!TextUtils.isEmpty(dataBean.getRed_content())) {
+            etInformation.setText(dataBean.getRed_content());
+        }
+        if (!TextUtils.isEmpty(dataBean.getTarget_url())) {
+            sponsorLinkEdit.setText(dataBean.getTarget_url());
+        }
+        if (!TextUtils.isEmpty(dataBean.getCircleid()) && Integer.parseInt(dataBean.getCircleid()) > 0) {
+            if (!TextUtils.isEmpty(dataBean.getCircle_name())) {
+                sponorCircleDetail.setText(dataBean.getCircle_name());
+            }
+            circleDelete.setVisibility(View.VISIBLE);
+            circleId = dataBean.getCircleid();
+            if (!TextUtils.isEmpty(dataBean.getCircle_pwd())) {
+                passwordCircle.setVisibility(View.VISIBLE);
+                circlePass.setText(dataBean.getCircle_pwd());
+            } else {
+                passwordCircle.setVisibility(View.GONE);
+            }
+        }
+
+        if (dataBean.getBusinessid() > 0) {
+            hasBusiness = true;
+            this.businessId = dataBean.getBusinessid();
+            sponorMsgDesDetail.setText(dataBean.getBusiness_name());
+            ivDelete.setVisibility(View.VISIBLE);
+        }
+        getDefaultBusiness(false);
+
+        //隐形条件
+        sexStr = String.valueOf(dataBean.getSex());
+        ageMinStr = String.valueOf(dataBean.getAge_min());
+        ageMaxStr = String.valueOf(dataBean.getAge_max());
+        longitudeStr = dataBean.getRlongitude();
+        latitudeStr = dataBean.getRlatitude();
+        distanceStr = dataBean.getDistance();
+        city = dataBean.getCity();
+        cityCode = dataBean.getCity_code();
+        address = dataBean.getVillage();
+    }
 
     public void popImageView(String url) {
         LocalLog.d(TAG, "查看大图");
@@ -445,7 +607,6 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
 
     private void initAdapter() {
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
-        adapter = new GridAddPic2Adapter(getActivity(), MAX_SIZE);
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -458,11 +619,6 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                 }
             }
         });
-    }
-
-    @Override
-    public Object right() {
-        return "确定";
     }
 
 
@@ -657,16 +813,25 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
             taskSponsorParam.setDay(targetTaskDayNumStr);
             taskSponsorParam.setRed_name(targetTaskStepNumStr);
             taskSponsorParam.setStep(targetStepDayNumStr);
-            if (latitudeStr != 0d)
+            if (latitudeStr != 0d) {
                 taskSponsorParam.setLatitude(((float) latitudeStr));
-            if (longitudeStr != 0d)
+            } else {
+                taskSponsorParam.setLatitude((float) Presenter.getInstance(getActivity()).getLocation()[0]);
+            }
+            if (longitudeStr != 0d) {
                 taskSponsorParam.setLongitude(((float) longitudeStr));
-            if (businessId != -1)
+            } else {
+                taskSponsorParam.setLongitude((float) Presenter.getInstance(getActivity()).getLocation()[1]);
+            }
+            if (businessId > 0)
                 taskSponsorParam.setBusinessid(businessId + "");
             if (!TextUtils.isEmpty(sexStr))
                 taskSponsorParam.setSex(sexStr);
-            if (!TextUtils.isEmpty(distanceStr))
+            if (!TextUtils.isEmpty(distanceStr)) {
                 taskSponsorParam.setDistance(distanceStr);
+            } else {
+                taskSponsorParam.setDistance("50000");
+            }
             if (!TextUtils.isEmpty(ageMaxStr))
                 taskSponsorParam.setAge_max(ageMaxStr);
             if (!TextUtils.isEmpty(ageMinStr))
@@ -695,7 +860,7 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                             /*生成预览*/
                             Intent intent = new Intent();
                             intent.putExtra(getActivity().getPackageName() + "businessid", businessId);
-                            intent.putExtra(getActivity().getPackageName() + "red_id", taskSponsorRespone.getData().getRed_id());
+                            intent.putExtra(getActivity().getPackageName() + "red_id", Integer.parseInt(taskSponsorRespone.getData().getRed_id()));
                             intent.putExtra(getActivity() + "red_result", "你还未领取该红包");
                             intent.setClass(getContext(), SponsorDetailActivity.class);
                             startActivity(intent);
@@ -710,6 +875,106 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
 
                 }
             });
+        }
+    }
+
+    private void update() {
+        if (isAdded()) {
+            String targetTaskStepNumStr = targetTaskStepNum.getText().toString().trim();
+            if (TextUtils.isEmpty(targetTaskStepNumStr.trim()) || filter.calculateLength(targetTaskStepNumStr) < 4
+                    || filter.calculateLength(targetTaskStepNumStr) > 32) {
+                if (dialog == null) {
+                    dialog = new NormalDialog(getContext());
+                    dialog.setMessage("请输入2-16位任务名称");
+                    dialog.setSingleBtn(true);
+                    dialog.setYesOnclickListener("确定", new NormalDialog.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+                            dialog.dismiss();
+                        }
+                    });
+                }
+                dialog.show();
+                return;
+            }
+            Map<String, String> param = new HashMap<>();
+
+            if (dataBean != null) {
+                if (!targetTaskStepNumStr.equals(dataBean.getRed_name())) {
+                    param.put("red_name", targetTaskStepNumStr);
+                }
+
+                if (businessId < 1) {
+                    param.put("businessid", "");
+                }
+                if (businessId > 0 && dataBean.getBusinessid() != businessId) {
+                    param.put("businessid", String.valueOf(businessId));
+                }
+
+                if (TextUtils.isEmpty(circleId) && !TextUtils.isEmpty(dataBean.getCircleid())) {
+                    param.put("circleid", "");
+                    if (!TextUtils.isEmpty(dataBean.getCircle_pwd())) {
+                        param.put("circle_pwd", "");
+                    }
+                }
+                if (!TextUtils.isEmpty(circleId) && !circleId.equals(dataBean.getCircleid())) {
+                    param.put("circleid", circleId);
+                    if (!TextUtils.isEmpty(circlePass.getText())) {
+                        param.put("circle_pwd", circlePass.getText().toString().trim());
+                    }
+                }
+
+                if (TextUtils.isEmpty(sponsorLinkEdit.getText().toString().trim())
+                        && !TextUtils.isEmpty(dataBean.getTarget_url())) {
+                    param.put("target_url", "");
+                }
+                if (!TextUtils.isEmpty(sponsorLinkEdit.getText().toString().trim())
+                        && !sponsorLinkEdit.getText().toString().trim().equals(dataBean.getTarget_url())) {
+                    param.put("target_url", sponsorLinkEdit.getText().toString().trim());
+                }
+
+                if (TextUtils.isEmpty(etInformation.getText().toString().trim())
+                        && !TextUtils.isEmpty(dataBean.getRed_content())) {
+                    param.put("red_content", "");
+                }
+                if (!TextUtils.isEmpty(etInformation.getText().toString().trim())
+                        && etInformation.getText().toString().trim().equals(dataBean.getRed_content())) {
+                    param.put("red_content", etInformation.getText().toString().trim());
+                }
+                String images = "";
+                for (SelectPicBean bean : adapter.getData()) {
+                    if (!TextUtils.isEmpty(images)) {
+                        images += ",";
+                    }
+                    images += bean.getImageUrl();
+                }
+                if (TextUtils.isEmpty(images) && !TextUtils.isEmpty(hisImage)) {
+                    param.put("images", "");
+                }
+                if (!TextUtils.isEmpty(images) && !images.equals(hisImage)) {
+                    param.put("images", images);
+                }
+
+                if (param.keySet().size() <= 0) {
+                    PaoToastUtils.showLongToast(getActivity(), "没有做任何修改");
+                    return;
+                }
+                Presenter.getInstance(getActivity()).putPaoBuSimple(NetApi.urlEditNear + dataBean.getRed_id(), param, new PaoCallBack() {
+                    @Override
+                    protected void onSuc(String s) {
+                        PaoToastUtils.showLongToast(getActivity(), "编辑成功");
+                        getActivity().setResult(Activity.RESULT_OK);
+                        getActivity().finish();
+                    }
+
+                    @Override
+                    protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                        if (errorBean != null) {
+                            PaoToastUtils.showLongToast(getActivity(), errorBean.getMessage());
+                        }
+                    }
+                });
+            }
         }
     }
 
@@ -852,16 +1117,24 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     }
 
     @OnClick({R.id.day_step_target_span, R.id.target_step_day_num, R.id.people_target_span, R.id.sponor_msg_span, R.id.attion
-            , R.id.select_historty, R.id.select_circle, R.id.btn_prescan, R.id.btn_confirm})
+            , R.id.select_historty, R.id.select_circle, R.id.btn_prescan, R.id.btn_confirm, R.id.circle_delete, R.id.iv_delete,
+            R.id.pkg_des})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
+            case R.id.pkg_des:
+                startActivity(AgreementActivity.class, null, false, NEAR_RED_RULE);
+                break;
             case R.id.btn_prescan:
                 LocalLog.d(TAG, "红包预览");
                 preScan();
                 break;
             case R.id.btn_confirm:
                 LocalLog.d(TAG, "支付");
+                if ("确定".equals(btnConfirm.getText().toString())) {
+                    update();
+                    return;
+                }
                 confirm();
                 break;
             case R.id.select_circle:
@@ -882,6 +1155,10 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                 break;
             case R.id.day_step_target_span:
             case R.id.target_step_day_num:
+                if (editAble) {
+                    LocalLog.d(TAG, "编辑不可选");
+                    return;
+                }
                 LocalLog.d(TAG, "商家设置任务目标步数");
                 if (wheelPopWindow == null && targetStepArr.size() > 0) {
                     wheelPopWindow = new ChooseOneItemWheelPopWindow(getActivity(), targetStepArr);
@@ -902,6 +1179,10 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                 break;
 
             case R.id.people_target_span:
+                if (editAble) {
+                    LocalLog.d(TAG, "编辑不可选");
+                    return;
+                }
                 LocalLog.d(TAG, "目标人群筛选");
                 intent.setClass(getContext(), TargetPeopleActivity.class);
                 intent.putExtra("sexStr", sexStr);
@@ -920,7 +1201,13 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                 if (hasBusiness) {
                     LocalLog.d(TAG, "商铺信息");
                     intent.setClass(getContext(), SponsorManagerActivity.class);
-                    intent.putExtra("businessId", businessId);
+                    if (businessId > 0) {
+                        intent.putExtra("businessId", businessId);
+                    } else {
+                        if (lastBusinessId > 0) {
+                            intent.putExtra("businessId", lastBusinessId);
+                        }
+                    }
                     intent.setAction(SPONSOR_INFO_ACTION);
                     startActivityForResult(intent, REQUEST_SPONSOR_MSG);
                 } else {
@@ -929,6 +1216,18 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                     intent.setClass(getContext(), SponsorInfoActivity.class);
                     startActivityForResult(intent, REQUEST_SPONSOR_INFO);
                 }
+                break;
+            case R.id.circle_delete:
+                circleDelete.setVisibility(View.GONE);
+                sponorCircleDetail.setText("");
+                circlePass.setVisibility(View.GONE);
+                circleId = null;
+                break;
+            case R.id.iv_delete:
+                ivDelete.setVisibility(View.GONE);
+                sponorMsgDesDetail.setText("");
+                lastBusinessId = businessId;
+                businessId = -1;
                 break;
             default:
                 break;
@@ -1007,6 +1306,7 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                 int businessId = data.getIntExtra("businessId", -1);
                 if (businessId != -1) {
                     this.businessId = businessId;
+                    ivDelete.setVisibility(View.VISIBLE);
                     sponorMsgDesDetail.setText(data.getStringExtra("name"));
                 }
             } else if (resultCode == ReleaseTaskSponsorFragment.RESULT_NO_SPONSOR) {
@@ -1017,10 +1317,10 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                 businessId = -1;
                 sponorMsgDesDetail.setText("");
             } else {
-                getDefaultBusiness();
+                getDefaultBusiness(true);
             }
         } else if (requestCode == REQUEST_SPONSOR_INFO) {
-            if (requestCode > 0) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
                 int businessId = data.getIntExtra("businessId", -1);
                 if (businessId != -1) {
                     hasBusiness = true;
@@ -1060,6 +1360,7 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                         if (circleData != null && circleData.getId() > 0) {
                             sponorCircleDetail.setText(circleData.getName());
                             circleId = String.valueOf(circleData.getId());
+                            circleDelete.setVisibility(View.VISIBLE);
                             if (circleData.getIs_pwd() == 1) {
                                 passwordCircle.setVisibility(View.VISIBLE);
                             } else {
@@ -1114,24 +1415,6 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
             //SocializeUtils.safeCloseDialog(dialog);
 //            putUserInfoParam.setAvatar(s);
 //            Presenter.getInstance(getContext()).putUserInfo(userInfo.getId(), putUserInfoParam);
-        }
-    }
-
-    @Override
-    public void innerCallBack(Object object) {
-        if (object instanceof GetUserBusinessResponse) {
-            if (((GetUserBusinessResponse) object).getError() == 0) {
-                hasBusiness = true;
-                if (((GetUserBusinessResponse) object).getData().getData().size() > 0) {
-                    GetUserBusinessResponse.DataBeanX.DataBean bean = ((GetUserBusinessResponse) object).getData().getData().get(0);
-                    if (bean.getDefaultX() == 1) {
-                        businessId = bean.getBusinessid();
-                        if (isAdded() && sponorMsgDesDetail != null) {
-                            sponorMsgDesDetail.setText(bean.getName());
-                        }
-                    }
-                }
-            }
         }
     }
 }

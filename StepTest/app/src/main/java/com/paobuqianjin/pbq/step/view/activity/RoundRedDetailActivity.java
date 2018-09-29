@@ -66,6 +66,7 @@ import com.paobuqianjin.pbq.step.view.emoji.EmotionKeyboard;
 import com.paobuqianjin.pbq.step.view.emoji.EmotionLayout;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionExtClickListener;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionSelectedListener;
+import com.umeng.commonsdk.debug.E;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -204,6 +205,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     private int scrollYT = 1040;
     @Bind(R.id.notify)
     TextView notifyText;
+
     @Override
     protected String title() {
         return "红包详情";
@@ -373,15 +375,42 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                             redResult.setText(spannableString);
                             intoWallet.setVisibility(View.VISIBLE);
                         } else {
-                            if (Double.parseDouble(roundDetailStyleResponse.getData().getIncome_money()) <= 0.0d) {
+                            if (TextUtils.isEmpty(roundDetailStyleResponse.getData().getIncome_money()) || Double.parseDouble(roundDetailStyleResponse.getData().getIncome_money()) <= 0.0d) {
                                 redSuccess.setText("还未领取过该红包");
                                 redSuccess.setVisibility(View.VISIBLE);
                             }
                         }
                         if (!TextUtils.isEmpty(roundDetailStyleResponse.getData().getCircleid())) {
-                            qrLinear.setVisibility(View.VISIBLE);
-                            final String circleUlr = NetApi.urlShareCd + roundDetailStyleResponse.getData().getCircleid();
-                            encodeBitmap(qrcode, circleUlr, 1, 1);
+                            try {
+                                if (Integer.parseInt(roundDetailStyleResponse.getData().getCircleid()) >= 1) {
+                                    qrLinear.setVisibility(View.VISIBLE);
+                                    final String circleUlr = NetApi.urlShareCd + roundDetailStyleResponse.getData().getCircleid();
+                                    qrcode.setOnLongClickListener(new View.OnLongClickListener() {
+                                        @Override
+                                        public boolean onLongClick(View v) {
+                                            try {
+                                                Intent intent = new Intent();
+                                                intent.setClass(RoundRedDetailActivity.this, CirCleDetailActivity.class);
+                                                intent.putExtra(getPackageName() + "circleid", Integer.parseInt(roundDetailStyleResponse.getData().getCircleid()));
+                                                startActivity(intent);
+                                            } catch (NumberFormatException e) {
+                                                e.printStackTrace();
+                                            }
+                                            return false;
+                                        }
+                                    });
+                                    encodeBitmap(qrcode, circleUlr, 1, 1);
+                                    TextView pswTv = (TextView) qrLinear.findViewById(R.id.circle_pwd);
+                                    if (!TextUtils.isEmpty(roundDetailStyleResponse.getData().getCircle_pwd())) {
+                                        pswTv.setText("圈子密码：" + roundDetailStyleResponse.getData().getCircle_pwd());
+                                        pswTv.setVisibility(View.VISIBLE);
+                                    } else {
+                                        pswTv.setVisibility(View.GONE);
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                         if (arrayRecList.size() > 0) {
                             LikeUserAdapter likeUserAdapter = new LikeUserAdapter(RoundRedDetailActivity.this, arrayRecList);

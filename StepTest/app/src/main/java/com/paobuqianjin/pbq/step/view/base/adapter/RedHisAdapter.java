@@ -21,9 +21,12 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.SendNearPkgResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.view.activity.AddAroundRedBagActivity;
+import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBag2Activity;
 import com.paobuqianjin.pbq.step.view.activity.FriendDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.RedInfoActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 
 import java.util.List;
 
@@ -39,6 +42,9 @@ public class RedHisAdapter extends RecyclerView.Adapter<RedHisAdapter.RedHisView
     private List<?> mData;
     private static String ROUND_RED = "com.paobuqianjin.pbq.ROUND_RED";
     private static String NEAR_READ = "com.paobuqianjin.pbq.NEAR_READ";
+    private final static String EDIT_ACTION = "com.paobuqianjin.pbq.step.EDIT";//编辑红包
+    private final static String SEND_ACTION = "com.paobuqianin.pbq.step.SEND";//发红包
+    private final static String SPOSNOR_ACTION = "com.paobuqianjin.person.SPONSOR_ACTION";
 
     public RedHisAdapter(Context context, List<?> data) {
         mContext = context;
@@ -107,6 +113,7 @@ public class RedHisAdapter extends RecyclerView.Adapter<RedHisAdapter.RedHisView
         return new RedHisViewHolder(LayoutInflater.from(mContext).inflate(R.layout.red_record_item, parent, false));
     }
 
+
     @Override
     public int getItemCount() {
         return (mData == null) ? 0 : mData.size();
@@ -137,41 +144,86 @@ public class RedHisAdapter extends RecyclerView.Adapter<RedHisAdapter.RedHisView
                 switch (v.getId()) {
                     case R.id.edit_red_info:
                         LocalLog.d(TAG, "编辑红包");
+                        Intent aroundIntent = new Intent();
+                        try {
+                            if (mData.get(getAdapterPosition()) instanceof RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) {
+                                aroundIntent.setAction(EDIT_ACTION);
+                                aroundIntent.putExtra("around", (RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition()));
+                                aroundIntent.setClass(mContext, AddAroundRedBagActivity.class);
+                                mContext.startActivity(aroundIntent);
+                            } else if (mData.get(getAdapterPosition()) instanceof SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) {
+                                aroundIntent.putExtra("near", (SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition()));
+                                aroundIntent.putExtra("edit", true);
+                                aroundIntent.setAction(SPOSNOR_ACTION);
+                                aroundIntent.setClass(mContext, TaskReleaseActivity.class);
+                                mContext.startActivity(aroundIntent);
+                            } else {
+                                LocalLog.d(TAG, "ERROR");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                         break;
                     case R.id.put_red:
                         LocalLog.d(TAG, "再次发红包");
+                        Intent aroundIntentSend = new Intent();
+                        try {
+                            if (mData.get(getAdapterPosition()) instanceof RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) {
+                                aroundIntentSend.setAction(SEND_ACTION);
+                                aroundIntentSend.putExtra("around", (RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition()));
+                                aroundIntentSend.setClass(mContext, AddAroundRedBagActivity.class);
+                                mContext.startActivity(aroundIntentSend);
+                            } else if (mData.get(getAdapterPosition()) instanceof SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) {
+                                aroundIntentSend.putExtra("near", (SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition()));
+                                aroundIntentSend.setAction(SPOSNOR_ACTION);
+                                aroundIntentSend.setClass(mContext, TaskReleaseActivity.class);
+                                mContext.startActivity(aroundIntentSend);
+                            } else {
+                                LocalLog.d(TAG, "ERROR");
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case R.id.content_layout:
                         String redId = "";
                         Intent intent = new Intent();
-                        if (mData.get(getAdapterPosition()) instanceof RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean) {
-                            redId = ((RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition())).getRed_id();
-                            intent.setAction(ROUND_RED);
-                            intent.putExtra(mContext.getPackageName() + "red_id", redId);
-                            intent.setClass(mContext, RedInfoActivity.class);
-                        } else if (mData.get(getAdapterPosition()) instanceof RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) {
-                            redId = ((RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition())).getRed_id();
-                            intent.setAction(ROUND_RED);
-                            intent.putExtra(mContext.getPackageName() + "red_id", redId);
-                            intent.setClass(mContext, RedInfoActivity.class);
-                        } else if (mData.get(getAdapterPosition()) instanceof RecvNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) {
-                            redId = ((RecvNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition())).getRed_id();
-                            String busid = String.valueOf(((RecvNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition())).getBusinessid());
-                            intent.putExtra(mContext.getPackageName() + "businessid", Integer.parseInt(busid));
-                            intent.setAction(NEAR_READ);
-                            intent.putExtra(mContext.getPackageName() + "red_id", Integer.parseInt(redId));
-                            intent.putExtra(mContext.getPackageName() + "info", "info");
-                            intent.setClass(mContext, SponsorDetailActivity.class);
-                        } else if (mData.get(getAdapterPosition()) instanceof SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) {
-                            redId = ((SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition())).getRed_id();
-                            String busid = String.valueOf(((SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition())).getBusinessid());
-                            intent.putExtra(mContext.getPackageName() + "businessid", Integer.parseInt(busid));
-                            intent.putExtra(mContext.getPackageName() + "info", "info");
-                            intent.putExtra(mContext.getPackageName() + "red_id", Integer.parseInt(redId));
-                            intent.setClass(mContext, SponsorDetailActivity.class);
-                            intent.setAction(NEAR_READ);
+                        try {
+                            if (mData.size() <= getAdapterPosition()) {
+                                return;
+                            }
+                            if (mData.get(getAdapterPosition()) instanceof RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean) {
+                                redId = ((RedRevHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition())).getRed_id();
+                                intent.setAction(ROUND_RED);
+                                intent.putExtra(mContext.getPackageName() + "red_id", redId);
+                                intent.setClass(mContext, RedInfoActivity.class);
+                            } else if (mData.get(getAdapterPosition()) instanceof RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) {
+                                redId = ((RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition())).getRed_id();
+                                intent.setAction(ROUND_RED);
+                                intent.putExtra(mContext.getPackageName() + "red_id", redId);
+                                intent.setClass(mContext, RedInfoActivity.class);
+                            } else if (mData.get(getAdapterPosition()) instanceof RecvNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) {
+                                redId = ((RecvNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition())).getRed_id();
+                                String busid = String.valueOf(((RecvNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition())).getBusinessid());
+                                intent.putExtra(mContext.getPackageName() + "businessid", Integer.parseInt(busid));
+                                intent.setAction(NEAR_READ);
+                                intent.putExtra(mContext.getPackageName() + "red_id", Integer.parseInt(redId));
+                                intent.putExtra(mContext.getPackageName() + "info", "info");
+                                intent.setClass(mContext, SponsorDetailActivity.class);
+                            } else if (mData.get(getAdapterPosition()) instanceof SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) {
+                                redId = ((SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition())).getRed_id();
+                                String busid = String.valueOf(((SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean) mData.get(getAdapterPosition())).getBusinessid());
+                                intent.putExtra(mContext.getPackageName() + "businessid", Integer.parseInt(busid));
+                                intent.putExtra(mContext.getPackageName() + "info", "info");
+                                intent.putExtra(mContext.getPackageName() + "red_id", Integer.parseInt(redId));
+                                intent.setClass(mContext, SponsorDetailActivity.class);
+                                intent.setAction(NEAR_READ);
+                            }
+                            mContext.startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        mContext.startActivity(intent);
                         break;
                     case R.id.head_icon:
                         if (!TextUtils.isEmpty(userId)) {

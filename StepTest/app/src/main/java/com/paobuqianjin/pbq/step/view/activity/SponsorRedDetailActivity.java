@@ -35,7 +35,6 @@ import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByRedResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearBySponsorResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
@@ -91,6 +90,7 @@ import butterknife.OnClick;
 public class SponsorRedDetailActivity extends BaseBarActivity implements TencentMap.OnMapClickListener, TencentMap.OnMarkerClickListener, TencentLocationListener, BaseBarActivity.ToolBarListener {
     private final static String TAG = SponsorRedDetailActivity.class.getSimpleName();
     private final static String NEAR_ACTION = "com.paobuqianjin.pbq.NEAR_PKG.ACTION";
+    private final static String NEAR_RED_RULE = "com.paobuqianjin.pbq.step.NEAR_RED_RULE";
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -117,6 +117,8 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
     TextView ivSendRedBag;
     @Bind(R.id.iv_sponsor)
     ImageView ivSponsor;
+    @Bind(R.id.red_rule)
+    LinearLayout redRule;
     private List<?> data;
     ImageView openRedPkgView;
     private View popRedPkgView;
@@ -152,7 +154,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
 
     @Override
     protected String title() {
-        return "附近红包";
+        return "精准红包";
     }
 
     @Override
@@ -666,7 +668,17 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
                 redPkgRefresh.setRefreshing(false);
                 try {
                     NearBySponsorResponse nearBySponsorResponse = new Gson().fromJson(s, NearBySponsorResponse.class);
-                    if (nearBySponsorResponse.getMessage().contains("附近没有可领取的红包")) {
+                    if (nearBySponsorResponse.getMessage().contains("附近没有可领取的红包")
+                            && nearBySponsorResponse.getData().getLedredpacket().size() == 0) {
+                        List<NearBySponsorResponse.DataBean.NearedpacketBean> tempData = new ArrayList<>();
+                        int tempSize = tempData.size();
+                        for (int i = tempSize; i < 4; i++) {
+                            NearBySponsorResponse.DataBean.NearedpacketBean adLabel = new NearBySponsorResponse.DataBean.NearedpacketBean();
+                            tempData.add(adLabel);
+                        }
+                        data = tempData;
+                        adapter = new ReleaseRecordAdapter(SponsorRedDetailActivity.this, data);
+                        redPkgRecycler.setAdapter(adapter);
                         showInfo();
                         return;
                     }
@@ -962,9 +974,13 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
         addMark();
     }
 
-    @OnClick({R.id.iv_history, R.id.iv_send_red_bag, R.id.iv_sponsor})
+    @OnClick({R.id.iv_history, R.id.iv_send_red_bag, R.id.iv_sponsor, R.id.red_rule})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.red_rule:
+                LocalLog.d(TAG, "查看红包规则");
+                startActivity(AgreementActivity.class, null, false, NEAR_RED_RULE);
+                break;
             case R.id.iv_history:
                 LocalLog.d(TAG, "查看红包历史记录");
                 Intent hisIntent = new Intent(this, RedHsRecordActivity.class);

@@ -4153,6 +4153,30 @@ public final class Engine {
                 .execute(callBack);
     }
 
+
+    public void put(String url, Map<String, String> params, PaoCallBack callBack) {
+        if (params == null) params = new HashMap<>();
+        LocalLog.d(TAG, gsonPrint.toJson(params));
+        callBack.setMyUrl(url);
+        OkHttpUtils.put()
+                .addHeader("headtoken", getToken(mContext))
+                .addHeader("limit_version_name", Constants.LIMITE_VERSION)
+                .url(url)
+                .requestBody(new RequestBody() {
+                    @Override
+                    public MediaType contentType() {
+                        return MediaType.parse("application/x-www-form-urlencoded");
+                    }
+
+                    @Override
+                    public void writeTo(BufferedSink sink) throws IOException {
+
+                    }
+                })
+                .params(params)
+                .build().execute(callBack);
+    }
+
     public void get(String url, Map<String, String> params, PaoCallBack callBack) {
         if (params == null) params = new HashMap<>();
         LocalLog.d(TAG, "提交数据：" + new Gson().toJson(params));

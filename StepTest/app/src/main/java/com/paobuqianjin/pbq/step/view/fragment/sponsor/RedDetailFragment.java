@@ -54,7 +54,9 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeMakeActivity;
+import com.paobuqianjin.pbq.step.view.activity.RedInfoActivity;
 import com.paobuqianjin.pbq.step.view.activity.RoundRedRelActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
@@ -502,10 +504,38 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                             RelativeLayout circleQr = (RelativeLayout) view.findViewById(R.id.circle_qr);
                             if (!TextUtils.isEmpty(redResultStr)) {
                                 imageView.setImageResource(R.drawable.red_result);
-                                circleQr.setVisibility(View.VISIBLE);
                                 if (!TextUtils.isEmpty(dataBean.getCircleid())) {
-                                    final String circleUlr = NetApi.urlShareCd + dataBean.getCircleid();
-                                    encodeBitmap(qrCode, circleUlr, 1, 1);
+                                    try {
+                                        if (Integer.parseInt(dataBean.getCircleid()) >= 1) {
+                                            circleQr.setVisibility(View.VISIBLE);
+                                            final String circleUlr = NetApi.urlShareCd + dataBean.getCircleid();
+                                            encodeBitmap(qrCode, circleUlr, 1, 1);
+                                            qrCode.setOnLongClickListener(new View.OnLongClickListener() {
+                                                @Override
+                                                public boolean onLongClick(View v) {
+                                                    try {
+                                                        Intent intent = new Intent();
+                                                        intent.setClass(getContext(), CirCleDetailActivity.class);
+                                                        intent.putExtra(getContext().getPackageName() + "circleid", Integer.parseInt(dataBean.getCircleid()));
+                                                        startActivity(intent);
+                                                    } catch (NumberFormatException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    return false;
+                                                }
+                                            });
+                                            TextView pswTv = (TextView) view.findViewById(R.id.circle_pwd);
+                                            if (!TextUtils.isEmpty(dataBean.getCircle_pwd())) {
+                                                pswTv.setText("圈子密码：" + dataBean.getCircle_pwd());
+                                                pswTv.setVisibility(View.VISIBLE);
+                                            }else{
+                                                pswTv.setVisibility(View.GONE);
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
                                 }
                                 TextView redResultTV = (TextView) view.findViewById(R.id.red_result);
                                 TextView redSuccessTv = (TextView) view.findViewById(R.id.red_success);
