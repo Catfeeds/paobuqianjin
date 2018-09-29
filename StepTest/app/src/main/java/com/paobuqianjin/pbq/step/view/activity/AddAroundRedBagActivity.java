@@ -467,7 +467,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         if (businessId <= 0) {
             params.put("businessid", 0 + "");
         }
-        if (businessId > 0 && !TextUtils.isEmpty(sponorCircleDetail.getText().toString().trim())
+        if (businessId > 0 && !TextUtils.isEmpty(sponorMsgDesDetail.getText().toString().trim())
                 && !String.valueOf(businessId).equals(dataBean.getBusinessid()))
             params.put("businessid", businessId + "");
 
@@ -493,7 +493,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         if (!TextUtils.isEmpty(tvLink.getText().toString()))
             params.put("target_url", tvLink.getText().toString());
 
-        if (TextUtils.isEmpty(circleId) && !TextUtils.isEmpty(dataBean.getCircleid())) {
+        if (TextUtils.isEmpty(circleId) && !TextUtils.isEmpty(dataBean.getCircleid()) && Integer.parseInt(dataBean.getCircleid()) > 0) {
             params.put("circleid", "");
         }
 

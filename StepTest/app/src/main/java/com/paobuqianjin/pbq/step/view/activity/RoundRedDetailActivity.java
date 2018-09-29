@@ -376,8 +376,10 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                             intoWallet.setVisibility(View.VISIBLE);
                         } else {
                             if (TextUtils.isEmpty(roundDetailStyleResponse.getData().getIncome_money()) || Double.parseDouble(roundDetailStyleResponse.getData().getIncome_money()) <= 0.0d) {
-                                redSuccess.setText("还未领取过该红包");
-                                redSuccess.setVisibility(View.VISIBLE);
+                                if (TextUtils.isEmpty(result_str)) {
+                                    redSuccess.setText("还未领取过该红包");
+                                    redSuccess.setVisibility(View.VISIBLE);
+                                }
                             }
                         }
                         if (!TextUtils.isEmpty(roundDetailStyleResponse.getData().getCircleid())) {

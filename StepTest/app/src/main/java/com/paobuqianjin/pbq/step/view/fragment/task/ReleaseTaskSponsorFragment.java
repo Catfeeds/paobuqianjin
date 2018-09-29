@@ -938,7 +938,7 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                     param.put("red_content", "");
                 }
                 if (!TextUtils.isEmpty(etInformation.getText().toString().trim())
-                        && etInformation.getText().toString().trim().equals(dataBean.getRed_content())) {
+                        && !etInformation.getText().toString().trim().equals(dataBean.getRed_content())) {
                     param.put("red_content", etInformation.getText().toString().trim());
                 }
                 String images = "";

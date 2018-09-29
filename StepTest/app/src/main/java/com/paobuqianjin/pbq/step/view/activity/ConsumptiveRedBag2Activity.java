@@ -499,7 +499,10 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     }
 
     public void popVipWindow(String title, int errorCode) {
-        if (vipPopWnd != null && vipPopWnd.isShowing() && !TextUtils.isEmpty(title)) {
+        if (TextUtils.isEmpty(title)) {
+            return;
+        }
+        if (vipPopWnd != null && vipPopWnd.isShowing()) {
             LocalLog.d(TAG, "在显示");
             return;
         }
