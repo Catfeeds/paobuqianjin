@@ -52,7 +52,7 @@ public class PhoneCheckResponse {
 
         private int status;
         private int userid;
-        private int userno;
+        private String userno;
         private String nickname;
         private String avatar;
         private int follow_type;
@@ -73,11 +73,11 @@ public class PhoneCheckResponse {
             this.userid = userid;
         }
 
-        public int getUserno() {
+        public String getUserno() {
             return userno;
         }
 
-        public void setUserno(int userno) {
+        public void setUserno(String userno) {
             this.userno = userno;
         }
 

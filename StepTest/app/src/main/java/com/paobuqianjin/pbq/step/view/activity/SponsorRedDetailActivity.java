@@ -738,7 +738,6 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                 redPkgRefresh.setRefreshing(false);
                 hideLoadingBar();
-                LocalLog.d(TAG, "errorBean = " + errorBean.toString());
                 if (errorBean != null) {
                     List<NearBySponsorResponse.DataBean.NearedpacketBean> tempData = new ArrayList<>();
                     int tempSize = tempData.size();

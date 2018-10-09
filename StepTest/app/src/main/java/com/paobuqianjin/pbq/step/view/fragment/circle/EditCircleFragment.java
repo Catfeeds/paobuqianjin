@@ -283,7 +283,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
                     switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a));
                     is_recharge = 1;
                     enableMoneyEdit();
-                    circleReadPackageEditor.setText(String.valueOf(dataBean.getRed_packet()));
+                    circleReadPackageEditor.setText(String.valueOf(dataBean.getRed_packet_amount()));
                     moneyPkgNumEditor.setText(String.valueOf(dataBean.getRed_packetInt()));
                 } else {
                     switchCircleMoneyAddOff.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.switch_bar_a_pass));

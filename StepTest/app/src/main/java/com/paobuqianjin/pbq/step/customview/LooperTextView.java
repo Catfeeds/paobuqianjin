@@ -26,7 +26,7 @@ public class LooperTextView extends FrameLayout {
     private List<String> tipList;
     private int curTipIndex = 0;
     private long lastTimeMillis;
-    private static final int ANIM_DELAYED_MILLIONS = 3 * 1000;
+    private static final int ANIM_DELAYED_MILLIONS = 5 * 1000;
     /**
      * 动画持续时长
      */

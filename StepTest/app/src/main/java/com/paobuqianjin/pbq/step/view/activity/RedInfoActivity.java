@@ -599,7 +599,7 @@ public class RedInfoActivity extends BaseBarActivity {
                             if (Mview.size() == 1) {
                                 picIndex.setVisibility(View.GONE);
                             } else {
-
+                                picIndex.setVisibility(View.VISIBLE);
                             }
                             currentPic.setText(String.valueOf(1) + "/" + Mview.size());
                             sponsorImages.setAdapter(new ImageViewPagerAdapter(RedInfoActivity.this, Mview));

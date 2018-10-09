@@ -147,7 +147,7 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected String title() {
-        return "任务红包";
+        return "添加专享红包";
     }
 
     private void loadBanner() {

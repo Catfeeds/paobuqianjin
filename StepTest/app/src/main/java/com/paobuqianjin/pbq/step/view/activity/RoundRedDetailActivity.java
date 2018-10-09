@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -66,7 +68,6 @@ import com.paobuqianjin.pbq.step.view.emoji.EmotionKeyboard;
 import com.paobuqianjin.pbq.step.view.emoji.EmotionLayout;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionExtClickListener;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionSelectedListener;
-import com.umeng.commonsdk.debug.E;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -184,6 +185,10 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     RelativeLayout qrLinear;
     @Bind(R.id.red_detail_layout)
     FrameLayout redDetailLayout;
+    @Bind(R.id.time_wait)
+    TextView timeWait;
+    @Bind(R.id.pic_intor)
+    RelativeLayout picIntor;
     private int localVoteNum = 0;
     private int localCommentNum = 0;
     CustomEdit commentEditText;
@@ -205,6 +210,10 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     private int scrollYT = 1040;
     @Bind(R.id.notify)
     TextView notifyText;
+    Thread thread;
+
+    public int T = 3; //倒计时时长
+    private Handler mHandler = new Handler();
 
     @Override
     protected String title() {
@@ -223,6 +232,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
         scrollView = (BounceScrollView) findViewById(R.id.scroll_view);
         mScreenWidth = ImagePickerComUtils.getScreenWidth(this);
         mScreenHeight = ImagePickerComUtils.getScreenHeight(this);
+        timeWait = (TextView) findViewById(R.id.time_wait);
         redSuccess = (TextView) findViewById(R.id.red_success);
         redResult = (TextView) findViewById(R.id.red_result);
         intoWallet = (TextView) findViewById(R.id.into_wallet);
@@ -246,6 +256,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
         sponsorContentAdapter = new SponsorContentAdapter(this, arrayList);
         contentRecycler.setAdapter(sponsorContentAdapter);
         editStill = (LinearLayout) findViewById(R.id.linear_edit);
+        qrLinear = (RelativeLayout) findViewById(R.id.circle_qr);
         contentRecycler.addOnItemTouchListener(new RecyclerItemClickListener(RoundRedDetailActivity.this, contentRecycler, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void OnItemLongClick(View view, int position) {
@@ -268,6 +279,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                 getRedDetail(red_id);
             }
             if (!TextUtils.isEmpty(result_str)) {
+                secondWait();
                 try {
                     float red_result = Float.parseFloat(result_str);
                     redSuccess.setVisibility(View.VISIBLE);
@@ -304,6 +316,83 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     private void onRedInfo() {
         if (!TextUtils.isEmpty(red_id))
             redRelInfo(red_id);
+    }
+
+    private void secondWait() {
+        timeWait.setVisibility(View.VISIBLE);
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+        if (thread != null && thread.isAlive()) {
+            return;
+        } else {
+            thread = new Thread(new MyCountDownTimer());
+            thread.start();
+        }
+    }
+
+    /**
+     * 自定义倒计时类，实现Runnable接口
+     */
+
+    class MyCountDownTimer implements Runnable {
+
+
+        public void run() {
+
+            //倒计时开始，循环
+            while (T > 0) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        timeWait.setText(T + "");
+
+                    }
+
+                });
+                try {
+                    Thread.sleep(1000); //强制线程休眠1秒，就是设置倒计时的间隔时间为1秒。
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+
+                }
+                T--;
+
+            }
+
+            //倒计时结束，也就是循环结束
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+
+                    scrollView.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            return false;
+                        }
+                    });
+                    timeWait.setVisibility(View.GONE);
+
+
+                }
+
+            });
+            T = 3; //最后再恢复倒计时时长
+
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (thread != null && thread.isAlive()) {
+            thread.interrupt();
+        }
     }
 
     private void encodeBitmap(ImageView imageView, String url, int mgWidth, int imgWidth) {
@@ -451,6 +540,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                             }
                         }
                         if (Mview.size() > 0) {
+                            picIntor.setVisibility(View.VISIBLE);
                             currentPic.setText(String.valueOf(1) + "/" + Mview.size());
                             sponsorImages.setAdapter(new ImageViewPagerAdapter(RoundRedDetailActivity.this, Mview));
                             sponsorImages.addOnPageChangeListener(onPageChangeListener);
@@ -470,6 +560,9 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                                     }
                                 }
                             });
+                        } else {
+                            sponsorImages.setVisibility(View.GONE);
+                            picIntor.setVisibility(View.GONE);
                         }
 
                         //环境照

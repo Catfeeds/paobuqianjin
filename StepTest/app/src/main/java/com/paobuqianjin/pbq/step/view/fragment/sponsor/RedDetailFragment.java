@@ -6,12 +6,14 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -55,8 +57,6 @@ import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
-import com.paobuqianjin.pbq.step.view.activity.QrCodeMakeActivity;
-import com.paobuqianjin.pbq.step.view.activity.RedInfoActivity;
 import com.paobuqianjin.pbq.step.view.activity.RoundRedRelActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
@@ -224,6 +224,8 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     View vEmpty;
     @Bind(R.id.pic_index)
     RelativeLayout picIndex;
+    @Bind(R.id.time_wait)
+    TextView timeWait;
     private int bussinessId = -1;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 10;
@@ -252,6 +254,10 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     RelativeLayout barNull;
     @Bind(R.id.notify)
     TextView notifyText;
+    Thread thread;
+
+    public int T = 3; //倒计时时长
+    private Handler mHandler = new Handler();
 
     @Override
     protected String title() {
@@ -276,6 +282,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
         mScreenWidth = ImagePickerComUtils.getScreenWidth(getContext());
         mScreenHeight = ImagePickerComUtils.getScreenHeight(getContext());
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
+        timeWait = (TextView) viewRoot.findViewById(R.id.time_wait);
         sponsorTelNumStr = (TextView) viewRoot.findViewById(R.id.sponsor_tel_num_str);
         sponsorTimeNumStr = (TextView) viewRoot.findViewById(R.id.sponsor_time_num_str);
         locationStr = (TextView) viewRoot.findViewById(R.id.location_str);
@@ -321,6 +328,9 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                     setTitle("红包详情");
                     redResultStr = intent.getStringExtra(getContext().getPackageName() + "red_result");
                     LocalLog.d(TAG, "redResultStr = " + redResultStr);
+                    if (!TextUtils.isEmpty(redResultStr)) {
+                        secondWait();
+                    }
                     getRedDetail(String.valueOf(red_id));
                     collectSponsor.setVisibility(View.GONE);
                     loadContent(businessid);
@@ -349,6 +359,9 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                     setTitle("红包详情");
                     redResultStr = intent.getStringExtra(getContext().getPackageName() + "red_result");
                     LocalLog.d(TAG, "redResultStr = " + redResultStr);
+                    if (!TextUtils.isEmpty(redResultStr)) {
+                        secondWait();
+                    }
                     getRedDetail(String.valueOf(red_id));
                     collectSponsor.setVisibility(View.GONE);
                 }
@@ -422,6 +435,79 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
 
     }
 
+    private void secondWait() {
+        if (isAdded()) {
+            timeWait.setVisibility(View.VISIBLE);
+            sponsorScroll.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
+            if (thread != null && thread.isAlive()) {
+                return;
+            } else {
+                thread = new Thread(new MyCountDownTimer());
+                thread.start();
+            }
+        }
+    }
+
+    /**
+     * 自定义倒计时类，实现Runnable接口
+     */
+
+    class MyCountDownTimer implements Runnable {
+
+
+        public void run() {
+
+            //倒计时开始，循环
+            while (T > 0) {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isAdded()) {
+                            timeWait.setText(T + "");
+                        }
+
+                    }
+
+                });
+                try {
+                    Thread.sleep(1000); //强制线程休眠1秒，就是设置倒计时的间隔时间为1秒。
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+
+                }
+                T--;
+
+            }
+
+            //倒计时结束，也就是循环结束
+            mHandler.post(new Runnable() {
+                @Override
+
+
+                public void run() {
+                    if (isAdded()) {
+                        sponsorScroll.setOnTouchListener(new View.OnTouchListener() {
+                            @Override
+                            public boolean onTouch(View v, MotionEvent event) {
+                                return false;
+                            }
+                        });
+                        timeWait.setVisibility(View.GONE);
+                    }
+
+                }
+
+            });
+            T = 3; //最后再恢复倒计时时长
+
+        }
+
+    }
 
     private void getRedDetail(String red_id) {
         Map<String, String> param = new HashMap<>();
@@ -528,7 +614,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                                             if (!TextUtils.isEmpty(dataBean.getCircle_pwd())) {
                                                 pswTv.setText("圈子密码：" + dataBean.getCircle_pwd());
                                                 pswTv.setVisibility(View.VISIBLE);
-                                            }else{
+                                            } else {
                                                 pswTv.setVisibility(View.GONE);
                                             }
                                         }
@@ -1229,6 +1315,9 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
         if (popupSelectWindow != null) {
             popupSelectWindow.dismiss();
             popupSelectWindow = null;
+        }
+        if (thread != null && thread.isAlive()) {
+            thread.interrupt();
         }
     }
 

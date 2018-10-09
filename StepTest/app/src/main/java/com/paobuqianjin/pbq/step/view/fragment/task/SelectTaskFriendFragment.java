@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.SelectUserFriendInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.AddFriendAddressActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.task.SelectTaskFriendAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
@@ -62,6 +63,8 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     BounceScrollView friendScroll;
     @Bind(R.id.not_found_data)
     TextView notFoundData;
+    @Bind(R.id.text_extral)
+    TextView textExtral;
     private LinearLayoutManager layoutManager;
     private static final int SELECT_FRIENDS = 0;
     FriendBundleData friendBundleData = null;
@@ -71,6 +74,7 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     private boolean isSearch = false;
     private ArrayList<UserFriendResponse.DataBeanX.DataBean> friendAll = new ArrayList<>();
     private ArrayList<UserFriendResponse.DataBeanX.DataBean> searchData;
+    private final static int ADD_FRIEND = 100;
 
     @Override
     protected int getLayoutResId() {
@@ -107,10 +111,19 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
+        textExtral = (TextView) viewRoot.findViewById(R.id.text_extral);
         barReturnLeft = (TextView) viewRoot.findViewById(R.id.bar_return_left);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
         barTvRight = (TextView) viewRoot.findViewById(R.id.bar_tv_right);
+        if (textExtral != null) {
+            textExtral.setText("添加好友");
+            textExtral.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivityForResult(new Intent().setClass(getContext(), AddFriendAddressActivity.class), ADD_FRIEND);
+                }
+            });
+        }
         barReturnLeft.setText("取消");
         barTitle.setText("选择好友");
         barTvRight.setText("确认");
@@ -299,6 +312,19 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
         if (errorCode.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_FRIEND) {
+            LocalLog.d(TAG,"添加好友");
+            pageIndex = 1;
+            keyWord = null;
+            friendAll.clear();
+            selectTaskFriendAdapter.notifyDataSetChanged();
+            Presenter.getInstance(getContext()).getUserFiends(pageIndex, PAGE_SIZE, keyWord);
         }
     }
 }
