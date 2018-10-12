@@ -36,6 +36,16 @@ public class BounceScrollView extends ScrollView {
     private final static int BOTTOM = 1, TOP = 0;
     private int topOrBottom = 0;
 
+    public boolean isHasAnimation() {
+        return hasAnimation;
+    }
+
+    public void setHasAnimation(boolean hasAnimation) {
+        this.hasAnimation = hasAnimation;
+    }
+
+    private boolean hasAnimation = true;
+
     public static interface ScrollListener {
         public void scrollOritention(int l, int t, int oldl, int oldt);
     }
@@ -67,6 +77,9 @@ public class BounceScrollView extends ScrollView {
 
         currentX = ev.getX();
         currentY = ev.getY();
+        if (!hasAnimation) {
+            return true;
+        }
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
 

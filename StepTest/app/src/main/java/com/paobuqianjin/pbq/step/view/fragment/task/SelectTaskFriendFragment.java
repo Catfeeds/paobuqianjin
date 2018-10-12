@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -65,7 +66,7 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     @Bind(R.id.not_found_data)
     TextView notFoundData;
     @Bind(R.id.add_frined)
-    LinearLayout addFrined;
+    ImageView addFrined;
     private LinearLayoutManager layoutManager;
     private static final int SELECT_FRIENDS = 0;
     FriendBundleData friendBundleData = null;
@@ -112,7 +113,7 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
 
     @Override
     protected void initView(View viewRoot) {
-        addFrined = (LinearLayout) viewRoot.findViewById(R.id.add_frined);
+        addFrined = (ImageView) viewRoot.findViewById(R.id.add_frined);
         barReturnLeft = (TextView) viewRoot.findViewById(R.id.bar_return_left);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
         barTvRight = (TextView) viewRoot.findViewById(R.id.bar_tv_right);

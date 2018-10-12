@@ -28,7 +28,6 @@ public class AddFriendAddressActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        super.initView();
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.add_friend_container, addFriendFragment)
                 .show(addFriendFragment)
@@ -41,13 +40,13 @@ public class AddFriendAddressActivity extends BaseActivity {
         if (data != null && resultCode == REQUEST_CODE) {
             String scanResult = data.getStringExtra(getPackageName() + "scanresult");
             if (scanResult == null) {
-                Toast.makeText(this, "ÄÚÈİÎª¿Õ", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "å†…å®¹ä¸ºç©º", Toast.LENGTH_LONG).show();
             } else {
-                // ScanResult Îª »ñÈ¡µ½µÄ×Ö·û´®
+                // ScanResult ä¸º è·å–åˆ°çš„å­—ç¬¦ä¸²
                 String ScanResult = scanResult;
                 LocalLog.d(TAG, ScanResult);
                 if (ScanResult.startsWith(NetApi.urlShareIc)) {
-                    LocalLog.d(TAG, "É¨Ãè¸öÈË");
+                    LocalLog.d(TAG, "æ‰«æä¸ªäºº");
                     String userNo = ScanResult.substring(NetApi.urlShareIc.length(), ScanResult.length());
                     LocalLog.d(TAG, "userid = " + userNo);
                     try {
@@ -61,7 +60,7 @@ public class AddFriendAddressActivity extends BaseActivity {
                     }
 
                 } else if (ScanResult.startsWith(NetApi.urlShareCd)) {
-                    LocalLog.d(TAG, "É¨ÃèÈ¦×Ó");
+                    LocalLog.d(TAG, "æ‰«æåœˆå­");
                     String circleid = ScanResult.substring(NetApi.urlShareCd.length(), ScanResult.length());
                     LocalLog.d(TAG, "circleid = " + circleid);
                     //TODO ACTION_SCAND_CIRCLE_ID

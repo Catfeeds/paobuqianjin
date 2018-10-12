@@ -334,6 +334,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     private void secondWait() {
         timeWait.setVisibility(View.VISIBLE);
         buttonReturnBar.setEnabled(false);
+        scrollView.setHasAnimation(false);
         scrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -382,7 +383,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-
+                    scrollView.setHasAnimation(true);
                     scrollView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {

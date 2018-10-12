@@ -52,7 +52,7 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
-            android:src="@drawable/address_mail" />
+            android:src="@drawable/friend_scan" />
 
         <TextView
             android:id="@+id/scan_qrcode_text"

@@ -445,17 +445,20 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                 @Override
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                     if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-                        LocalLog.d(TAG,"back 键被点击");
+                        LocalLog.d(TAG, "back 键被点击");
                     }
                     return true;
                 }
             });
+            sponsorScroll.setHasAnimation(false);
             sponsorScroll.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+
                     return true;
                 }
             });
+
             if (thread != null && thread.isAlive()) {
                 return;
             } else {
@@ -509,11 +512,12 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                                 return false;
                             }
                         });
+                        sponsorScroll.setHasAnimation(true);
                         getView().setOnKeyListener(new View.OnKeyListener() {
                             @Override
                             public boolean onKey(View v, int keyCode, KeyEvent event) {
                                 if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-                                    LocalLog.d(TAG,"back 键可以被点击");
+                                    LocalLog.d(TAG, "back 键可以被点击");
                                 }
                                 return false;
                             }
