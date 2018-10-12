@@ -14,7 +14,6 @@ import com.paobuqianjin.pbq.step.view.fragment.owner.CrashSuccessFragment;
 /**
  * Created by pbq on 2018/1/17.
  */
-
 public class CrashActivity extends BaseActivity {
     private final static String TAG = CrashActivity.class.getSimpleName();
     private CrashFragment crashFragment = new CrashFragment();

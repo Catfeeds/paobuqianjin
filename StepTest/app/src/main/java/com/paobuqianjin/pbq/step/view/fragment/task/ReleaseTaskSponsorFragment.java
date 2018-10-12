@@ -56,7 +56,6 @@ import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.alioss.AliOss;
 import com.paobuqianjin.pbq.step.data.alioss.OssService;
 import com.paobuqianjin.pbq.step.data.bean.AdObject;
-import com.paobuqianjin.pbq.step.data.bean.gson.param.GetUserBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
@@ -73,12 +72,12 @@ import com.paobuqianjin.pbq.step.data.netcallback.PaoTipsCallBack;
 import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.TaskSponsorInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.AddLittleConsumActivity;
 import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
@@ -119,6 +118,7 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     public static final int RESULT_NO_SPONSOR = 9;
     public static final int RESULT_DELETE_SPONSOR = 8;
     public static final int REQUEST_PAY_SPONSOR_PKG = 9;
+    private final static int REQUEST_CONSUM_RED = 10;
     @Bind(R.id.target_step_des)
     TextView targetStepDes;
     @Bind(R.id.target_task_step_num)
@@ -211,6 +211,12 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     ImageView circleDelete;
     @Bind(R.id.pkg_des)
     LinearLayout pkgDes;
+    @Bind(R.id.consum_red_des_detail)
+    TextView consumRedDesDetail;
+    @Bind(R.id.consum_red_delete)
+    ImageView consumRedDelete;
+    @Bind(R.id.consum_red_msg_span)
+    RelativeLayout consumRedMsgSpan;
     private boolean isFirstLocal = true;
     private StepLocationReciver stepLocationReciver = new StepLocationReciver();
     private TaskSponsorParam taskSponsorParam;
@@ -1055,16 +1061,26 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
             taskSponsorParam.setDay(targetTaskDayNumStr);
             taskSponsorParam.setRed_name(targetTaskStepNumStr);
             taskSponsorParam.setStep(targetStepDayNumStr);
-            if (latitudeStr != 0d)
+            if (latitudeStr != 0d) {
                 taskSponsorParam.setLatitude(((float) latitudeStr));
-            if (longitudeStr != 0d)
+            } else {
+                taskSponsorParam.setLatitude((float) Presenter.getInstance(getActivity()).getLocation()[0]);
+            }
+            if (longitudeStr != 0d) {
                 taskSponsorParam.setLongitude(((float) longitudeStr));
+            } else {
+                taskSponsorParam.setLongitude((float) Presenter.getInstance(getActivity()).getLocation()[1]);
+            }
+
             if (businessId != -1)
                 taskSponsorParam.setBusinessid(businessId + "");
             if (!TextUtils.isEmpty(sexStr))
                 taskSponsorParam.setSex(sexStr);
-            if (!TextUtils.isEmpty(distanceStr))
+            if (!TextUtils.isEmpty(distanceStr)) {
                 taskSponsorParam.setDistance(distanceStr);
+            } else {
+                taskSponsorParam.setDistance("50000");
+            }
             if (!TextUtils.isEmpty(ageMaxStr))
                 taskSponsorParam.setAge_max(ageMaxStr);
             if (!TextUtils.isEmpty(ageMinStr))
@@ -1118,7 +1134,7 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
 
     @OnClick({R.id.day_step_target_span, R.id.target_step_day_num, R.id.people_target_span, R.id.sponor_msg_span, R.id.attion
             , R.id.select_historty, R.id.select_circle, R.id.btn_prescan, R.id.btn_confirm, R.id.circle_delete, R.id.iv_delete,
-            R.id.pkg_des})
+            R.id.pkg_des, R.id.consum_red_msg_span})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -1228,6 +1244,10 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                 sponorMsgDesDetail.setText("");
                 lastBusinessId = businessId;
                 businessId = -1;
+                break;
+            case R.id.consum_red_msg_span:
+                //创建消费券
+                startActivityForResult(new Intent().setClass(getContext(), AddLittleConsumActivity.class), REQUEST_CONSUM_RED);
                 break;
             default:
                 break;
@@ -1372,6 +1392,9 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                     }
                 }
             }
+        } else if (requestCode == REQUEST_CONSUM_RED) {
+            LocalLog.d(TAG, "填写消费券信息");
+
         }
 
     }

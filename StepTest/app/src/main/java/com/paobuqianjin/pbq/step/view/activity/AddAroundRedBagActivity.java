@@ -85,6 +85,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     public static final int MAX_SIZE = 9;
     private static final int REQUEST_CHANGE = 1;
     private static final int REQUEST_ADD = 2;
+    private final static int REQUEST_CONSUM_RED= 10;
     @Bind(R.id.grid_view)
     GridView gridView;
     String title;
@@ -122,6 +123,12 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     LinearLayout selectHistorty;
     @Bind(R.id.red_rule)
     LinearLayout redRule;
+    @Bind(R.id.consum_red_des)
+    TextView consumRedDes;
+    @Bind(R.id.iv_delete_consum)
+    ImageView ivDeleteConsum;
+    @Bind(R.id.linear_consum_red)
+    LinearLayout linearConsumRed;
     private GridAddPic2Adapter adapter;
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
@@ -186,7 +193,6 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                 btnConfirm.setText("确定");
                 selectHistorty.setVisibility(View.GONE);
                 if (dataBean != null) {
-                    LocalLog.d(TAG, "dataBean =" + dataBean.toString());
                     initEdit(dataBean, false);
                 } else {
                     getDefaultBusiness(true);
@@ -196,6 +202,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     }
 
     private void initEdit(RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean dataBean, boolean canEditable) {
+        LocalLog.d(TAG, "dataBean =" + dataBean.toString());
         if (!TextUtils.isEmpty(dataBean.getMap_content())) {
             etInformation.setText(dataBean.getMap_content());
         }
@@ -255,6 +262,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         }
 
         if (Integer.parseInt(dataBean.getBusinessid()) > 0) {
+            hasBusiness = true;
             businessId = Integer.parseInt(dataBean.getBusinessid());
             sponorMsgDesDetail.setText(dataBean.getBusiness_name());
             ivDelete.setVisibility(View.VISIBLE);
@@ -592,6 +600,8 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                     }
                 }
             }
+        }else if(requestCode == REQUEST_CONSUM_RED){
+            LocalLog.d(TAG,"选择了消费券");
         }
     }
 
@@ -612,7 +622,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                 params.put("number", etRedBagNum.getText().toString());
             if (!TextUtils.isEmpty(etRedBagTotalMoney.getText().toString()))
                 params.put("money", etRedBagTotalMoney.getText().toString());
-            if (businessId > 0 && !TextUtils.isEmpty(sponorCircleDetail.getText().toString().trim()))
+            if (businessId > 0 && !TextUtils.isEmpty(sponorMsgDesDetail.getText().toString().trim()))
                 params.put("businessid", businessId + "");
             if (!TextUtils.isEmpty(etInformation.getText().toString()))
                 params.put("content", etInformation.getText().toString());
@@ -689,7 +699,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     }
 
     @OnClick({R.id.linear_shop, R.id.btn_confirm, R.id.attion, R.id.select_circle, R.id.iv_delete, R.id.btn_prescan, R.id.select_historty,
-            R.id.circle_delete, R.id.red_rule})
+            R.id.circle_delete, R.id.red_rule,R.id.linear_consum_red})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.red_rule:
@@ -811,6 +821,11 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                         }
                     });
                 }
+                break;
+            case R.id.linear_consum_red:
+                startActivityForResult(new Intent().setClass(this,AddLittleConsumActivity.class),REQUEST_CONSUM_RED);
+                break;
+            default:
                 break;
         }
     }

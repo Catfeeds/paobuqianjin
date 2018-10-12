@@ -291,4 +291,5 @@
     <string name="near_ad_to">"附近红包的功能是商家向1-50km内的客户推送红包，增加你的客流量，扩展你的产品知名度。点击发红包 >"</string>
     <string name="pick_ad_to">"消费红包的功能是商家向50km内的客户推送消费劵，增加你的客流量，扩展你的产品知名度。点击发红包 >"</string>
     <string name="wx_code">runmanQin</string>
+    <string name="consum_red_rule">温馨提示：您所发的消费红包优惠券必须是可以兑现的。客户领取后到店消费时，满足您的消费红包使用条件可则可享受相应的优惠，否则您将造成虚假宣传，欺骗消费者行为，跑步钱进有权采取包括但不限于取消您的金牌会员权益。</string>
 </resources>

@@ -15,11 +15,78 @@
         android:layout_height="60dp"
         android:layout_below="@+id/bar_add_from_address"></include>
 
+    <LinearLayout
+        android:id="@+id/qr_code"
+        android:layout_width="wrap_content"
+        android:layout_height="53dp"
+        android:layout_below="@+id/search_friend"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的跑步钱进号: 10086"
+            android:textColor="@color/color_161727"
+            android:textSize="12dp" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/qr_icon" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/scan_qrcode"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/qr_code"
+        android:background="@color/color_f8">
+
+        <ImageView
+            android:id="@+id/scan_qrcode_icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:src="@drawable/address_mail" />
+
+        <TextView
+            android:id="@+id/scan_qrcode_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="14dp"
+            android:layout_toRightOf="@+id/scan_qrcode_icon"
+            android:text="扫一扫"
+            android:textColor="@color/color_161727"
+            android:textSize="17dp" />
+
+        <ImageView
+            android:layout_width="7dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/go_to" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignLeft="@+id/scan_qrcode_text"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="14dp"
+            android:background="@color/color_ebebed" />
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/mail_address_layer"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@+id/search_friend"
+        android:layout_below="@+id/scan_qrcode"
         android:background="@color/color_f8">
 
         <ImageView
@@ -40,6 +107,14 @@
             android:text="发现通讯录好友"
             android:textColor="@color/color_161727"
             android:textSize="17dp" />
+
+        <ImageView
+            android:layout_width="7dp"
+            android:layout_height="14dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/go_to" />
 
         <ImageView
             android:layout_width="match_parent"

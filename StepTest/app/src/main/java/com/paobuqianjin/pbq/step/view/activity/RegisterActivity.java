@@ -156,7 +156,7 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
         String newAccountStr = newAccount.getText().toString().trim();
         String newPwdStr = newPwd.getText().toString().trim();
         String indntifyingCodeStr = indntifyingCode.getText().toString().trim();
-        if ((newAccountStr.length() == 11) && (newPwdStr.length() >= 8) && (newPwdStr.length() <= 16) && (indntifyingCodeStr.length() == 6)) {
+        if ((newAccountStr.length() == 11) && (newPwdStr.length() >= 8) && (newPwdStr.length() <= 16) && (indntifyingCodeStr.length() == 6) && isBool) {
             newBtnRegister.setEnabled(true);
         } else {
             newBtnRegister.setEnabled(false);
@@ -205,32 +205,30 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
                             isBool = true;
                             userreadchoose.setBackgroundResource(R.drawable.choose);
                             Log.d(TAG, "onChecked: " + b);
+                            newBtnRegister.setEnabled(true);
                         } else {
                             isBool = false;
+                            newBtnRegister.setEnabled(false);
                             userreadchoose.setBackgroundResource(R.drawable.nochoose);
-                            Log.d(TAG, "onCheckedChanged: " + b);
-                            Toast.makeText(RegisterActivity.this, "请阅读《跑步钱进服务协议》", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
                 break;
 
             case R.id.new_btn_register:
-                showProgressDialog("请稍等");
-                newBtnRegister.setEnabled(false);
                 newBtnRegister.setBackground(ContextCompat.getDrawable(this, R.drawable.rect_angle_diss_bt));
                 newBtnRegister.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         if (newBtnRegister != null) {
-                            newBtnRegister.setEnabled(true);
-                            newBtnRegister.setBackground(ContextCompat.getDrawable(RegisterActivity.this, R.drawable.change_color_btn));
+                            checkConfirmEnable();
                         }
                     }
                 }, 15000);
                 if (!isBool) {
                     PaoToastUtils.showLongToast(this, "请阅读《跑步钱进服务协议》");
                 } else {
+                    showProgressDialog("请稍等");
                     Presenter.getInstance(getApplicationContext()).registerByPhoneNumber(collectSignUserInfo());
                 }
                 break;

@@ -33,30 +33,6 @@ public class PersonVipFragment extends BaseFragment {
     private final static String ACTION_VIP_FRIEND = "com.paobuqianjin.pbq.step.VIP_FRIEND_ACTION";
     private final static int PAY_VIP_SELF_RESULT = 401;
     private final static int PAY_VIP_FRIEND_RESULT = 402;
-    @Bind(R.id.vip_head_ico)
-    ImageView vipHeadIco;
-    @Bind(R.id.vip_head_des)
-    TextView vipHeadDes;
-    @Bind(R.id.vip_head_pan)
-    RelativeLayout vipHeadPan;
-    @Bind(R.id.vip_pkg_ico)
-    ImageView vipPkgIco;
-    @Bind(R.id.vip_pkg_des)
-    TextView vipPkgDes;
-    @Bind(R.id.vip_pkg_pan)
-    RelativeLayout vipPkgPan;
-    @Bind(R.id.vip_time_ico)
-    ImageView vipTimeIco;
-    @Bind(R.id.vip_timer_des)
-    TextView vipTimerDes;
-    @Bind(R.id.vip_time_pan)
-    RelativeLayout vipTimePan;
-    @Bind(R.id.vip_data_ico)
-    ImageView vipDataIco;
-    @Bind(R.id.vip_data_des)
-    TextView vipDataDes;
-    @Bind(R.id.vip_data_pan)
-    RelativeLayout vipDataPan;
     @Bind(R.id.vip_friend)
     Button vipFriend;
     @Bind(R.id.vip_self)

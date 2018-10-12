@@ -292,7 +292,7 @@
             <RelativeLayout
                 android:id="@+id/sponsor_tel_span"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/sponsor_name">
 
                 <ImageView
@@ -331,19 +331,22 @@
                     android:textIsSelectable="true"
                     android:textSize="14dp" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/sponsor_tel_icon"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/color_ebebed" />
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/sponsor_tel_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/sponsor_tel_span"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_ebebed" />
 
             <RelativeLayout
                 android:id="@+id/sponsor_time_span"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_below="@+id/sponsor_tel_span">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sponsor_tel_line">
 
                 <ImageView
                     android:id="@+id/sponsor_time_icon"
@@ -378,19 +381,23 @@
                     android:textColor="@color/color_8a8a8a"
                     android:textSize="14dp" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/sponsor_time_icon"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/color_ebebed" />
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/sponsor_time_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/sponsor_time_span"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_ebebed" />
 
             <RelativeLayout
                 android:id="@+id/sponsor_location_span"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_below="@+id/sponsor_time_span">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sponsor_time_line"
+                android:paddingBottom="5dp">
 
                 <ImageView
                     android:id="@+id/sponsor_location_icon"

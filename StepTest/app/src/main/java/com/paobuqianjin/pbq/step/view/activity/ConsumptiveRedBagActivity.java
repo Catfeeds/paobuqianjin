@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -98,7 +99,9 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
     private PopupWindow popOpWindowRedButtonHori;
     Banner banner;
     private ArrayList<AdObject> adList;
+    LinearLayoutManager layoutManager;
     private final static String TICK_RED_RULE = "com.paobuqianjin.pbq.step.TICK_RED_RULE";
+
     @Override
     protected String title() {
         return getString(R.string.get_consumptive_red_bag);
@@ -128,7 +131,27 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
         location = Presenter.getInstance(this).getLocation();
 
         adapter = new ConsumptiveRedBagListAdapter(this, listData);
-        rvCoupon.setLayoutManager(new LinearLayoutManager(this));
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false) {
+            @Override
+            public boolean canScrollVertically() {
+                return true;
+            }
+        };
+        rvCoupon.setLayoutManager(layoutManager);
+        rvCoupon.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                refreshLayout.setEnabled(topRowVerticalPosition >= 0);
+            }
+        });
 //        rvCoupon.setAutoLoadMore(true);
 //        rvCoupon.useDefaultLoadMore();
         // 自定义的核心就是DefineLoadMoreView类。

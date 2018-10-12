@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,8 +64,8 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     BounceScrollView friendScroll;
     @Bind(R.id.not_found_data)
     TextView notFoundData;
-    @Bind(R.id.text_extral)
-    TextView textExtral;
+    @Bind(R.id.add_frined)
+    LinearLayout addFrined;
     private LinearLayoutManager layoutManager;
     private static final int SELECT_FRIENDS = 0;
     FriendBundleData friendBundleData = null;
@@ -111,13 +112,12 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
 
     @Override
     protected void initView(View viewRoot) {
-        textExtral = (TextView) viewRoot.findViewById(R.id.text_extral);
+        addFrined = (LinearLayout) viewRoot.findViewById(R.id.add_frined);
         barReturnLeft = (TextView) viewRoot.findViewById(R.id.bar_return_left);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
         barTvRight = (TextView) viewRoot.findViewById(R.id.bar_tv_right);
-        if (textExtral != null) {
-            textExtral.setText("添加好友");
-            textExtral.setOnClickListener(new View.OnClickListener() {
+        if (addFrined != null) {
+            addFrined.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     startActivityForResult(new Intent().setClass(getContext(), AddFriendAddressActivity.class), ADD_FRIEND);
@@ -319,7 +319,7 @@ public class SelectTaskFriendFragment extends BaseFragment implements SelectUser
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADD_FRIEND) {
-            LocalLog.d(TAG,"添加好友");
+            LocalLog.d(TAG, "添加好友");
             pageIndex = 1;
             keyWord = null;
             friendAll.clear();

@@ -8,31 +8,16 @@
         android:id="@+id/bar_vip"
         layout="@layout/bar_return_a_style"></include>
 
-    <ImageView
-        android:id="@+id/vip_banner"
-        android:layout_width="match_parent"
-        android:layout_height="185dp"
-        android:layout_below="@+id/bar_vip"
-        android:scaleType="centerCrop"
-        android:src="@drawable/banner_personal" />
-
     <android.support.design.widget.TabLayout
         android:id="@+id/vip_tab_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/vip_banner"
+        android:layout_below="@+id/bar_vip"
         app:tabIndicatorColor="@color/color_feb913"
         app:tabIndicatorHeight="2dp"
         app:tabSelectedTextColor="@color/color_feb913"
         app:tabTextAppearance="@style/MyTabLayoutTextAppearanceStyle_17"
         app:tabTextColor="@color/color_8a8a8a" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignBottom="@+id/vip_tab_bar"
-        android:background="@color/color_d9d9d9"
-        android:paddingBottom="1dp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/vip_viewpager"

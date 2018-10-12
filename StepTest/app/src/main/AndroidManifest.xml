@@ -847,6 +847,8 @@
         <activity
             android:name=".view.activity.AddConsumptiveRedBagActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".view.activity.AddLittleConsumActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".view.activity.ShopRedBagActivity" />
         <activity android:name=".view.activity.GetConsumptiveRedBagHisActivity" />
         <activity android:name=".view.activity.MyConsumptiveRedBagActivity" />

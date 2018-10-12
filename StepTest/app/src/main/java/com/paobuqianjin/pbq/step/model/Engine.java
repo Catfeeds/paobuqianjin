@@ -2930,6 +2930,10 @@ public final class Engine {
 
     public void postUserStatus(final Button button, int followid) {
         LocalLog.d(TAG, "followid =   " + followid);
+        if(followid == getId(mContext)){
+            PaoToastUtils.showLongToast(mContext,"不能自己关注自己");
+            return;
+        }
         OkHttpUtils
                 .post()
                 .addHeader("headtoken", getToken(mContext))

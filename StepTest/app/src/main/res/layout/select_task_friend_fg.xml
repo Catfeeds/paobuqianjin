@@ -25,10 +25,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <LinearLayout
+                android:id="@+id/add_frined"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:id="@+id/add_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:text="添加好友"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:layout_gravity="bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginLeft="14dp"
+                    android:background="@color/color_ebebed" />
+            </LinearLayout>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/friend_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/add_frined">
 
             </android.support.v7.widget.RecyclerView>
         </RelativeLayout>

@@ -191,7 +191,7 @@
                 android:layout_marginTop="50dp"
                 android:layout_toRightOf="@+id/money_ico"
                 android:background="@null"
-                android:hint=""
+                android:hint="提现金额10～30元"
                 android:inputType="numberDecimal"
                 android:textColorHint="@color/color_cbcacf"
                 android:textSize="17dp" />
@@ -206,7 +206,8 @@
                 android:layout_marginRight="14dp"
                 android:text="全部提现"
                 android:textColor="@color/color_6c71c4"
-                android:textSize="17dp" />
+                android:textSize="17dp"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout

@@ -15,6 +15,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -212,7 +213,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     TextView notifyText;
     Thread thread;
 
-    public int T = 3; //倒计时时长
+    public int T = 4; //倒计时时长
     private Handler mHandler = new Handler();
 
     @Override
@@ -232,6 +233,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
         scrollView = (BounceScrollView) findViewById(R.id.scroll_view);
         mScreenWidth = ImagePickerComUtils.getScreenWidth(this);
         mScreenHeight = ImagePickerComUtils.getScreenHeight(this);
+        buttonReturnBar = (RelativeLayout) findViewById(R.id.button_return_bar);
         timeWait = (TextView) findViewById(R.id.time_wait);
         redSuccess = (TextView) findViewById(R.id.red_success);
         redResult = (TextView) findViewById(R.id.red_result);
@@ -318,8 +320,20 @@ public class RoundRedDetailActivity extends BaseBarActivity {
             redRelInfo(red_id);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (T > 0 && keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN
+                && !TextUtils.isEmpty(result_str)) {
+            LocalLog.d(TAG, "back键被点击");
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+
+    }
+
     private void secondWait() {
         timeWait.setVisibility(View.VISIBLE);
+        buttonReturnBar.setEnabled(false);
         scrollView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -375,13 +389,13 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                             return false;
                         }
                     });
+                    buttonReturnBar.setEnabled(true);
                     timeWait.setVisibility(View.GONE);
 
 
                 }
 
             });
-            T = 3; //最后再恢复倒计时时长
 
         }
 

@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -256,7 +257,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     TextView notifyText;
     Thread thread;
 
-    public int T = 3; //倒计时时长
+    public int T = 4; //倒计时时长
     private Handler mHandler = new Handler();
 
     @Override
@@ -282,6 +283,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
         mScreenWidth = ImagePickerComUtils.getScreenWidth(getContext());
         mScreenHeight = ImagePickerComUtils.getScreenHeight(getContext());
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
+        buttonReturnBar = (RelativeLayout) viewRoot.findViewById(R.id.button_return_bar);
         timeWait = (TextView) viewRoot.findViewById(R.id.time_wait);
         sponsorTelNumStr = (TextView) viewRoot.findViewById(R.id.sponsor_tel_num_str);
         sponsorTimeNumStr = (TextView) viewRoot.findViewById(R.id.sponsor_time_num_str);
@@ -329,7 +331,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                     redResultStr = intent.getStringExtra(getContext().getPackageName() + "red_result");
                     LocalLog.d(TAG, "redResultStr = " + redResultStr);
                     if (!TextUtils.isEmpty(redResultStr)) {
-                        secondWait();
+                        secondWait(viewRoot);
                     }
                     getRedDetail(String.valueOf(red_id));
                     collectSponsor.setVisibility(View.GONE);
@@ -360,7 +362,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                     redResultStr = intent.getStringExtra(getContext().getPackageName() + "red_result");
                     LocalLog.d(TAG, "redResultStr = " + redResultStr);
                     if (!TextUtils.isEmpty(redResultStr)) {
-                        secondWait();
+                        secondWait(viewRoot);
                     }
                     getRedDetail(String.valueOf(red_id));
                     collectSponsor.setVisibility(View.GONE);
@@ -435,9 +437,19 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
 
     }
 
-    private void secondWait() {
+    private void secondWait(View view) {
         if (isAdded()) {
             timeWait.setVisibility(View.VISIBLE);
+            buttonReturnBar.setEnabled(false);
+            view.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                        LocalLog.d(TAG,"back 键被点击");
+                    }
+                    return true;
+                }
+            });
             sponsorScroll.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -497,13 +509,22 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                                 return false;
                             }
                         });
+                        getView().setOnKeyListener(new View.OnKeyListener() {
+                            @Override
+                            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                                if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                                    LocalLog.d(TAG,"back 键可以被点击");
+                                }
+                                return false;
+                            }
+                        });
                         timeWait.setVisibility(View.GONE);
+                        buttonReturnBar.setEnabled(true);
                     }
 
                 }
 
             });
-            T = 3; //最后再恢复倒计时时长
 
         }
 
@@ -1407,12 +1428,12 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
         });
     }
 
+
     public interface PopBigImageInterface {
         public void popImageView(String url);
 
         public void popImageView(List<String> images, int index);
     }
-
 
     private PopBigImageInterface popBigImageInterface = new PopBigImageInterface() {
         @Override
@@ -1516,4 +1537,5 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
             }
         });
     }
+
 }

@@ -86,9 +86,9 @@ public class TransferCardActivity extends BaseBarActivity {
         Intent intent = getIntent();
         if (intent != null) {
             canCrashNum = intent.getFloatExtra("total", 0.0f);
-            String canCrashStrFormat = getString(R.string.can_crash);
+/*            String canCrashStrFormat = getString(R.string.can_crash);
             String canCrashStr = String.format(canCrashStrFormat, canCrashNum);
-            etCanTransfer.setHint(canCrashStr);
+            etCanTransfer.setHint(canCrashStr);*/
         }
 
         rvBank.setLayoutManager(new LinearLayoutManager(this));

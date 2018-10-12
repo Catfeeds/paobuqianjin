@@ -26,18 +26,6 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_marginTop="5dp"
-                android:id="@+id/time_wait"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/time_wait_bg"
-                android:gravity="center"
-                android:textColor="@color/color_f8"
-                android:textSize="14dp"
-                android:visibility="gone" />
-
-            <TextView
                 android:id="@+id/red_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -144,7 +132,7 @@
             <RelativeLayout
                 android:id="@+id/sponsor_tel_span"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/sponsor_name">
 
                 <ImageView
@@ -153,7 +141,7 @@
                     android:layout_height="16dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:scaleType="fitCenter"
+                    android:scaleType="centerInside"
                     android:src="@drawable/sponsor_tel" />
 
                 <TextView
@@ -183,19 +171,22 @@
                     android:textIsSelectable="true"
                     android:textSize="14dp" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/sponsor_tel_icon"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/color_ebebed" />
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/sponsor_tel_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/sponsor_tel_span"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/color_ebebed" />
 
             <RelativeLayout
                 android:id="@+id/sponsor_time_span"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_below="@+id/sponsor_tel_span">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sponsor_tel_line">
 
                 <ImageView
                     android:id="@+id/sponsor_time_icon"
@@ -203,7 +194,7 @@
                     android:layout_height="16dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="15dp"
-                    android:scaleType="fitCenter"
+                    android:scaleType="centerInside"
                     android:src="@drawable/sponsor_location" />
 
                 <TextView
@@ -230,19 +221,23 @@
                     android:textColor="@color/color_8a8a8a"
                     android:textSize="14dp" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/sponsor_time_icon"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/color_ebebed" />
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/sponsor_time_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/sponsor_time_span"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/color_ebebed" />
 
             <RelativeLayout
                 android:id="@+id/sponsor_location_span"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_below="@+id/sponsor_time_span">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/sponsor_time_line"
+                android:paddingBottom="10dp">
 
                 <ImageView
                     android:id="@+id/sponsor_location_icon"
@@ -250,7 +245,7 @@
                     android:layout_height="16dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="16dp"
-                    android:scaleType="fitCenter"
+                    android:scaleType="centerInside"
                     android:src="@drawable/bus_desc" />
 
                 <TextView
@@ -370,65 +365,11 @@
                 android:layout_marginTop="20dp"
                 android:background="@color/color_d9d9d9" />
 
-            <LinearLayout
-                android:id="@+id/list_reds"
-                android:layout_width="match_parent"
-                android:layout_height="98dp"
-                android:layout_below="@+id/sponsor_pic_line"
-                android:layout_marginTop="10dp"
-                android:background="@color/color_f8"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/recv_person"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:paddingLeft="10dp"
-                    android:text="已领取"
-                    android:textColor="@color/color_646464"
-                    android:textSize="12dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="bottom"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/head_recycler"
-                        android:layout_width="wrap_content"
-                        android:layout_height="35dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="6"
-                        android:nestedScrollingEnabled="false"
-                        android:orientation="horizontal"></android.support.v7.widget.RecyclerView>
-
-                    <LinearLayout
-                        android:id="@+id/go_to_details"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="4"
-                        android:gravity="right">
-
-                        <ImageView
-                            android:layout_width="7dp"
-                            android:layout_height="14dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginRight="10dp"
-                            android:src="@drawable/go_to" />
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
-
             <RelativeLayout
                 android:id="@+id/sponsor_face_span"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:layout_below="@+id/list_reds"
+                android:layout_below="@+id/sponsor_pic_line"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp">
 
@@ -483,10 +424,131 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/list_reds"
+                android:layout_width="match_parent"
+                android:layout_height="98dp"
+                android:layout_below="@+id/sponsor_face_span"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_f8"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/recv_person"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingLeft="10dp"
+                    android:text="已领取"
+                    android:textColor="@color/color_646464"
+                    android:textSize="12dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/head_recycler"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="6"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"></android.support.v7.widget.RecyclerView>
+
+                    <LinearLayout
+                        android:id="@+id/go_to_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="4"
+                        android:gravity="right">
+
+                        <ImageView
+                            android:layout_width="7dp"
+                            android:layout_height="14dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/go_to" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/ticket_s"
+                android:layout_width="match_parent"
+                android:layout_height="99dp"
+                android:layout_below="@+id/list_reds"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/tick_bg" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="￥20.00店铺优惠券"
+                            android:textColor="#FF3131"
+                            android:textSize="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="订单满100元可用"
+                            android:textColor="#E9890C"
+                            android:textSize="12dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="有效期至:2018.07.30"
+                            android:textColor="#E9890C"
+                            android:textSize="12dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/recv_tick"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="立即领取"
+                        android:textColor="#FF3131"
+                        android:textSize="15dp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
                 android:id="@+id/sponsor_opreation"
                 android:layout_width="match_parent"
                 android:layout_height="90dp"
-                android:layout_below="@+id/sponsor_face_span"
+                android:layout_below="@+id/ticket_s"
                 android:layout_marginLeft="11dp"
                 android:layout_marginRight="11dp"
                 android:layout_marginTop="20dp"

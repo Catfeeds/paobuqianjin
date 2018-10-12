@@ -42,8 +42,6 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
-    @Bind(R.id.vip_banner)
-    ImageView vipBanner;
     @Bind(R.id.vip_tab_bar)
     TabLayout vipTabBar;
     @Bind(R.id.vip_viewpager)
@@ -63,8 +61,6 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected void initView(final View viewRoot) {
-        super.initView(viewRoot);
-        vipBanner = (ImageView) viewRoot.findViewById(R.id.vip_banner);
         SponsorVipFragment sponsorVipFragment = new SponsorVipFragment();
         PersonVipFragment personVipFragment = new PersonVipFragment();
         List<Fragment> fragments = new ArrayList<>();
@@ -98,12 +94,10 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
                     case 0:
                         selectPage = 0;
                         LocalLog.d(TAG, "onTabSelected() selectPage = " + selectPage);
-                        vipBanner.setImageResource(R.drawable.banner_personal);
                         break;
                     case 1:
                         selectPage = 1;
                         LocalLog.d(TAG, "onTabSelected() selectPage = " + selectPage);
-                        vipBanner.setImageResource(R.drawable.banner_business);
                         break;
                     default:
                         break;

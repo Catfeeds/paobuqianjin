@@ -666,6 +666,10 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                 PaoToastUtils.showLongToast(ConsumptiveRedBag2Activity.this, title);
                 break;
         }
+        if (errorCode >= 7) {
+            vipPopWnd = null;
+            return;
+        }
         textLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

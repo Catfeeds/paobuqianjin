@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_bar"
     android:layout_width="match_parent"
     android:layout_height="64dp"
     android:layout_alignParentTop="true"
-    android:id="@+id/rl_bar"
     android:background="@color/color_232433">
 
     <RelativeLayout
@@ -24,6 +24,18 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="14dp"
                 android:src="@drawable/bar_bg_selector" />
+
+            <TextView
+                android:id="@+id/time_wait"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@+id/bar_return_drawable"
+                android:gravity="center"
+                android:textColor="@color/color_f8"
+                android:textSize="14dp"
+                android:visibility="gone" />
         </RelativeLayout>
         <!--        <ImageView
                     android:id="@+id/bar_return_drawable"

@@ -386,6 +386,57 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/linear_consum_red"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_f8"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="消费红包"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/consum_red_des"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="39dp"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:hint="添加店铺消费优惠券"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_delete_consum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@id/item_grid_image"
+                    android:layout_marginRight="10dp"
+                    android:padding="4dp"
+                    android:src="@mipmap/ic_transparent_bg_delete"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="19dp"
+                    android:src="@drawable/go_to" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/red_rule"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
