@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.fragment.sponsor;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,7 +11,11 @@ import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.TypefaceSpan;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -227,6 +232,16 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     RelativeLayout picIndex;
     @Bind(R.id.time_wait)
     TextView timeWait;
+    @Bind(R.id.tick_money)
+    TextView tickMoney;
+    @Bind(R.id.tick_condition)
+    TextView tickCondition;
+    @Bind(R.id.tick_time)
+    TextView tickTime;
+    @Bind(R.id.recv_tick)
+    TextView recvTick;
+    @Bind(R.id.ticket_s)
+    RelativeLayout ticketS;
     private int bussinessId = -1;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 10;
@@ -301,6 +316,11 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
         barNull = (RelativeLayout) viewRoot.findViewById(R.id.sponsor_detail);
         picIndex = (RelativeLayout) viewRoot.findViewById(R.id.pic_index);
         notifyText = (TextView) viewRoot.findViewById(R.id.notify);
+        ticketS = (RelativeLayout) viewRoot.findViewById(R.id.ticket_s);
+        tickMoney = (TextView) viewRoot.findViewById(R.id.tick_money);
+        tickCondition = (TextView) viewRoot.findViewById(R.id.tick_condition);
+        tickTime = (TextView) viewRoot.findViewById(R.id.tick_time);
+        recvTick = (TextView) viewRoot.findViewById(R.id.recv_tick);
         gotoSponsor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -544,7 +564,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                     return;
                 }
                 try {
-                    NearByRedResponse nearByRedResponse = new Gson().fromJson(s, NearByRedResponse.class);
+                    final NearByRedResponse nearByRedResponse = new Gson().fromJson(s, NearByRedResponse.class);
                     final NearByRedResponse.DataBean dataBean = nearByRedResponse.getData();
                     redResultStr = nearByRedResponse.getData().getIncome_money();
                     if (dataBean != null) {
@@ -656,9 +676,18 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                                     if (money > 0f) {
                                         redSuccessTv.setVisibility(View.VISIBLE);
                                         redInWalletTv.setVisibility(View.VISIBLE);
-                                        redResultTV.setText("￥" + redResultStr + "元");
+                                        String showResult = "￥" + redResultStr + "元";
+                                        SpannableString spannableString = new SpannableString(showResult);
+                                        spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("￥" + redResultStr).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                                        redResultTV.setText(spannableString);
+                                    } else {
+                                        redResultTV.setTextSize(14);
+                                        redResultTV.setTextColor(Color.BLACK);
+                                        redResultTV.setText("您还未领取该红包");
                                     }
                                 } catch (Exception e) {
+                                    redResultTV.setTextSize(14);
+                                    redResultTV.setTextColor(Color.BLACK);
                                     redResultTV.setText(redResultStr);
                                 }
                             } else {
@@ -667,6 +696,41 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                             Mview.add(view);
                         }
 
+                        /*优惠券*/
+                        if (nearByRedResponse.getData().getVoucherid() > 0) {
+                            ticketS.setVisibility(View.VISIBLE);
+                            String money = "￥" + nearByRedResponse.getData().getVoucher().getMoney() + "店铺优惠券";
+                            SpannableString spannableString = new SpannableString(money);
+                            spannableString.setSpan(new AbsoluteSizeSpan(28, true), "￥".length(), ("￥" + nearByRedResponse.getData().getVoucher().getMoney()).length(),
+                                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                            spannableString.setSpan(new TypefaceSpan("bold"), "￥".length(), ("￥" + nearByRedResponse.getData().getVoucher().getMoney()).length(),
+                                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                            tickMoney.setText(spannableString);
+                            tickCondition.setText("订单满" + nearByRedResponse.getData().getVoucher().getCondition() + "元可用");
+                            String time = DateTimeUtil.formatDateTime(nearByRedResponse.getData().getVoucher().getE_time() * 1000, DateTimeUtil.DF_YYYY_MM_DD);
+                            tickTime.setText("有效期至:" + time.replace("-", "."));
+                            if (nearByRedResponse.getData().getVoucher().getStatus() == 0) {
+                                recvTick.setText("立即领取");
+                                recvTick.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if ("立即领取".equals(recvTick.getText().toString()))
+                                            pullDownConsumptiveRedBag(String.valueOf(nearByRedResponse.getData().getVoucher().getVid()));
+                                    }
+                                });
+                            } else if (nearByRedResponse.getData().getVoucher().getStatus() == 1) {
+                                recvTick.setText("已领取");
+                            } else if (nearByRedResponse.getData().getVoucher().getStatus() == 2) {
+                                recvTick.setText("已下架");
+                            } else if (nearByRedResponse.getData().getVoucher().getStatus() == 3) {
+                                recvTick.setText("已过期");
+                            } else if (nearByRedResponse.getData().getVoucher().getStatus() == 4) {
+                                recvTick.setText("已领完");
+                            }
+                        } else {
+                            ticketS.setVisibility(View.GONE);
+                        }
+                    /*优惠券*/
                         int sizeEnv = 0;
                         final String tarUrl = dataBean.getTarget_url();
                         if (!TextUtils.isEmpty(tarUrl)) {
@@ -743,6 +807,38 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
 
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
+    }
+
+    /**
+     * 领取消费红包
+     */
+    private void pullDownConsumptiveRedBag(String idStr) {
+        double[] location = Presenter.getInstance(getContext()).getLocation();
+        if (location[0] == 0d && location[1] == 0d) {
+            PaoToastUtils.showLongToast(getContext(), "获取位置失败!");
+            return;
+        }
+        Map<String, String> params = new HashMap<>();
+        params.put("voucherid", idStr);
+        params.put("longitude", String.valueOf(location[1]));
+        params.put("latitude", String.valueOf(location[0]));
+        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.receiveVoucher, params, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                if (isAdded())
+                    recvTick.setText("已领取");
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorStr.contains("距离")) {
+
+                } else {
+
+                }
 
             }
         });

@@ -10,7 +10,7 @@ public class RoundDetailStyleResponse {
     /**
      * error : 0
      * message : success
-     * data : {"red_id":58,"userid":35822,"businessid":1636,"content":"8月的荔枝只要11元一斤","number":10,"money":"100","receive_num":2,"target_url":"","distance":5000,"create_time":1534477212,"logo":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007600980.jpg","name":"《胥毋生》","tel":"13424156026","addra":"广东省/深圳市/南山区","address":"腾讯大厦","red_img":[{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139368775.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139465634.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139994669.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139223395.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139556606.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139878923.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139636960.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139726594.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139662217.jpg"}],"business_img":[{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007600980.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007691959.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007680156.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007604802.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007672293.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007105623.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007691959.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007680156.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007604802.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007672293.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007105623.jpg"}],"receiver_list":[{"money":"11.16000","receive_uid":35819,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/7/27/35819201807271443174876.jpg"},{"money":"9.00000","receive_uid":35882,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"}],"income_money":"9.00000","comment_count":10,"comment_list":[{"eid":260,"userid":35882,"grade":0,"fatherid":0,"score":"0.0","content":"收藏了","businessid":1636,"create_time":1534486883,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png","nickname":"rm_13148896029","father_avatar":null,"father_nickname":null,"user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":259,"userid":35882,"grade":0,"fatherid":0,"score":"0.0","content":"","businessid":1636,"create_time":1534486864,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png","nickname":"rm_13148896029","father_avatar":null,"father_nickname":null,"user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":85,"userid":35822,"grade":0,"fatherid":0,"score":"0.0","content":"干活哈哈","businessid":1636,"create_time":1534218100,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","nickname":"rm_13424156029","father_avatar":null,"father_nickname":null,"user_is_vip":1,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":84,"userid":35822,"grade":0,"fatherid":0,"score":"0.0","content":"发广告","businessid":1636,"create_time":1534218092,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","nickname":"rm_13424156029","father_avatar":null,"father_nickname":null,"user_is_vip":1,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":83,"userid":35822,"grade":0,"fatherid":0,"score":"0.0","content":"就看看","businessid":1636,"create_time":1534217636,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","nickname":"rm_13424156029","father_avatar":null,"father_nickname":null,"user_is_vip":1,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":76,"userid":35845,"grade":1,"fatherid":71,"score":"0.0","content":"0000","businessid":1636,"create_time":1534162547,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","father_nickname":"rm_13424156029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":1,"father_is_cusvip":0,"father_is_gvip":0},{"eid":75,"userid":35845,"grade":1,"fatherid":74,"score":"0.0","content":"狗狗喝够了","businessid":1636,"create_time":1534162474,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","father_nickname":"rm_13148896029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":0,"father_is_cusvip":0,"father_is_gvip":0},{"eid":74,"userid":35845,"grade":0,"fatherid":0,"score":"0.0","content":"第二","businessid":1636,"create_time":1534162413,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":null,"father_nickname":null,"user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":73,"userid":35845,"grade":1,"fatherid":71,"score":"0.0","content":"XXX","businessid":1636,"create_time":1534162206,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","father_nickname":"rm_13424156029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":1,"father_is_cusvip":0,"father_is_gvip":0},{"eid":72,"userid":35845,"grade":1,"fatherid":68,"score":"0.0","content":"ooo","businessid":1636,"create_time":1534162195,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","father_nickname":"rm_13424156029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":1,"father_is_cusvip":0,"father_is_gvip":0}]}
+     * data : {"red_id":58,"voucherid":238,"userid":35822,"businessid":1636,"content":"8月的荔枝只要11元一斤","number":10,"money":"100","receive_num":2,"target_url":"","distance":5000,"create_time":1534477212,"logo":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007600980.jpg","name":"《胥毋生》","tel":"13424156026","addra":"广东省/深圳市/南山区","address":"腾讯大厦","red_img":[{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139368775.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139465634.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139994669.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139223395.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139556606.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139878923.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139636960.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139726594.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139662217.jpg"}],"business_img":[{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007600980.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007691959.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007680156.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007604802.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007672293.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007105623.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007691959.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007680156.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007604802.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007672293.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007105623.jpg"}],"receiver_list":[{"money":"11.16000","receive_uid":35819,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/7/27/35819201807271443174876.jpg"},{"money":"9.00000","receive_uid":35882,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"}],"income_money":"9.00000","comment_count":10,"comment_list":[{"eid":260,"userid":35882,"grade":0,"fatherid":0,"score":"0.0","content":"收藏了","businessid":1636,"create_time":1534486883,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png","nickname":"rm_13148896029","father_avatar":null,"father_nickname":null,"user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":259,"userid":35882,"grade":0,"fatherid":0,"score":"0.0","content":"","businessid":1636,"create_time":1534486864,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png","nickname":"rm_13148896029","father_avatar":null,"father_nickname":null,"user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":85,"userid":35822,"grade":0,"fatherid":0,"score":"0.0","content":"干活哈哈","businessid":1636,"create_time":1534218100,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","nickname":"rm_13424156029","father_avatar":null,"father_nickname":null,"user_is_vip":1,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":84,"userid":35822,"grade":0,"fatherid":0,"score":"0.0","content":"发广告","businessid":1636,"create_time":1534218092,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","nickname":"rm_13424156029","father_avatar":null,"father_nickname":null,"user_is_vip":1,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":83,"userid":35822,"grade":0,"fatherid":0,"score":"0.0","content":"就看看","businessid":1636,"create_time":1534217636,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","nickname":"rm_13424156029","father_avatar":null,"father_nickname":null,"user_is_vip":1,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":76,"userid":35845,"grade":1,"fatherid":71,"score":"0.0","content":"0000","businessid":1636,"create_time":1534162547,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","father_nickname":"rm_13424156029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":1,"father_is_cusvip":0,"father_is_gvip":0},{"eid":75,"userid":35845,"grade":1,"fatherid":74,"score":"0.0","content":"狗狗喝够了","businessid":1636,"create_time":1534162474,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","father_nickname":"rm_13148896029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":0,"father_is_cusvip":0,"father_is_gvip":0},{"eid":74,"userid":35845,"grade":0,"fatherid":0,"score":"0.0","content":"第二","businessid":1636,"create_time":1534162413,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":null,"father_nickname":null,"user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":73,"userid":35845,"grade":1,"fatherid":71,"score":"0.0","content":"XXX","businessid":1636,"create_time":1534162206,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","father_nickname":"rm_13424156029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":1,"father_is_cusvip":0,"father_is_gvip":0},{"eid":72,"userid":35845,"grade":1,"fatherid":68,"score":"0.0","content":"ooo","businessid":1636,"create_time":1534162195,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","father_nickname":"rm_13424156029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":1,"father_is_cusvip":0,"father_is_gvip":0}],"voucher":{"vid":238,"vname":"咸鱼优惠","money":"100.00","condition":"1500.00","e_time":1542124799,"status":0}}
      */
 
     private int error;
@@ -85,6 +85,7 @@ public class RoundDetailStyleResponse {
         /**
          * red_id : 58
          * userid : 35822
+         * voucherid : 238
          * businessid : 1636
          * content : 8月的荔枝只要11元一斤
          * number : 10
@@ -113,12 +114,99 @@ public class RoundDetailStyleResponse {
          * latitude : 22.555556
          * "circleid":101603,
          * "circle_pwd":""
+         * voucher : {"vid":238,"vname":"咸鱼优惠","money":"100.00","condition":"1500.00","e_time":1542124799,"status":0}
          */
         private String circleid;
         private String circle_pwd;
         private String do_day;
         private String s_do_time;
         private String e_do_time;
+
+        public VoucherBean getVoucher() {
+            return voucher;
+        }
+
+        public void setVoucher(VoucherBean voucher) {
+            this.voucher = voucher;
+        }
+
+        private VoucherBean voucher;
+
+        public static class VoucherBean {
+            /**
+             * vid : 238
+             * vname : 咸鱼优惠
+             * money : 100.00
+             * condition : 1500.00
+             * e_time : 1542124799
+             * status : 0
+             */
+
+            private int vid;
+            private String vname;
+            private String money;
+            private String condition;
+            private long e_time;
+            private int status;
+
+            public int getVid() {
+                return vid;
+            }
+
+            public void setVid(int vid) {
+                this.vid = vid;
+            }
+
+            public String getVname() {
+                return vname;
+            }
+
+            public void setVname(String vname) {
+                this.vname = vname;
+            }
+
+            public String getMoney() {
+                return money;
+            }
+
+            public void setMoney(String money) {
+                this.money = money;
+            }
+
+            public String getCondition() {
+                return condition;
+            }
+
+            public void setCondition(String condition) {
+                this.condition = condition;
+            }
+
+            public long getE_time() {
+                return e_time;
+            }
+
+            public void setE_time(long e_time) {
+                this.e_time = e_time;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+        }
+
+        public int getVoucherid() {
+            return voucherid;
+        }
+
+        public void setVoucherid(int voucherid) {
+            this.voucherid = voucherid;
+        }
+
+        private int voucherid;
         private int red_id;
         private int userid;
         private int businessid;

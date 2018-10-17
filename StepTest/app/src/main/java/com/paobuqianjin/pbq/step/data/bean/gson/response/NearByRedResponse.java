@@ -15,7 +15,7 @@ public class NearByRedResponse {
     /**
      * error : 0
      * message : success
-     * data : {"red_id":1493,"userid":35876,"red_name":"图图乐乐","red_content":"","number":10,"money":"50.00","sex":0,"step":1,"day":50,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":1533484800,"e_time":1537804800,"create_time":1533543710,"target_url":"","rlongitude":"113.930750","rlatitude":"22.548560","businessid":1616,"logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/6037D1C6-46BD-465F-B2A9-9040F597DA01.jpg","name":"跑步回来","tel":"13682385800","addra":"广东省/深圳市/福田区","address":"车公庙太空旅客哭唧唧卡里没钱了拒绝屠龙记录考虑兔兔扣扣据了解兔兔看看","longitude":"114.054540","latitude":"22.522910","scope":"","red_img":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/6037D1C6-46BD-465F-B2A9-9040F597DA01.jpg"],"is_receive":1,"business_img":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/B8910D85-4DA1-4692-BA71-ED13DDEBC3C2.jpg"],"income_money":"0.06","receiver_list":[{"actually":"0.17","userid":35876,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"},{"actually":"0.04","userid":35876,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"},{"actually":"0.06","userid":35822,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg"},{"actually":"0.05","userid":35875,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/25/35875201808251431128180.jpg"},{"actually":"0.06","userid":35821,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/23/35821201808231407665212.jpg"},{"actually":"0.08","userid":35881,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"}]}
+     * data : {"red_id":1493,"voucherid":238,"userid":35876,"red_name":"图图乐乐","red_content":"","number":10,"money":"50.00","sex":0,"step":1,"day":50,"age_min":0,"age_max":0,"education":0,"distance":0,"trading_area":"","s_time":1533484800,"e_time":1537804800,"create_time":1533543710,"target_url":"","rlongitude":"113.930750","rlatitude":"22.548560","businessid":1616,"logo":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/6037D1C6-46BD-465F-B2A9-9040F597DA01.jpg","name":"跑步回来","tel":"13682385800","addra":"广东省/深圳市/福田区","address":"车公庙太空旅客哭唧唧卡里没钱了拒绝屠龙记录考虑兔兔扣扣据了解兔兔看看","longitude":"114.054540","latitude":"22.522910","scope":"","red_img":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/6037D1C6-46BD-465F-B2A9-9040F597DA01.jpg"],"is_receive":1,"business_img":["http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/B8910D85-4DA1-4692-BA71-ED13DDEBC3C2.jpg"],"income_money":"0.06","receiver_list":[{"actually":"0.17","userid":35876,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"},{"actually":"0.04","userid":35876,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"},{"actually":"0.06","userid":35822,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg"},{"actually":"0.05","userid":35875,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/25/35875201808251431128180.jpg"},{"actually":"0.06","userid":35821,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/23/35821201808231407665212.jpg"},{"actually":"0.08","userid":35881,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"}],"voucher":{"vid":238,"vname":"咸鱼优惠","money":"100.00","condition":"1500.00","e_time":1542124799,"status":0}}
      */
 
     private int error;
@@ -66,6 +66,7 @@ public class NearByRedResponse {
         /**
          * red_id : 1493
          * userid : 35876
+         * voucherid : 238
          * red_name : 图图乐乐
          * red_content :
          * number : 10
@@ -100,6 +101,7 @@ public class NearByRedResponse {
          * receiver_list : [{"actually":"0.17","userid":35876,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"},{"actually":"0.04","userid":35876,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"},{"actually":"0.06","userid":35822,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg"},{"actually":"0.05","userid":35875,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/25/35875201808251431128180.jpg"},{"actually":"0.06","userid":35821,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/23/35821201808231407665212.jpg"},{"actually":"0.08","userid":35881,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"}]
          * "circleid":101603,
          * "circle_pwd":""
+         * voucher : {"vid":238,"vname":"咸鱼优惠","money":"100.00","condition":"1500.00","e_time":1542124799,"status":0}
          */
         private String circleid;
         private String circle_pwd;
@@ -137,9 +139,138 @@ public class NearByRedResponse {
         private List<String> red_img;
         private List<String> business_img;
         private List<ReceiverListBean> receiver_list;
+        private int voucherid;
+        private VoucherBean voucher;
 
         public int getRed_id() {
             return red_id;
+        }
+
+        public VoucherBean getVoucher() {
+            return voucher;
+        }
+
+        public void setVoucher(VoucherBean voucher) {
+            this.voucher = voucher;
+        }
+
+        public int getVoucherid() {
+            return voucherid;
+        }
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "circleid='" + circleid + '\'' +
+                    ", circle_pwd='" + circle_pwd + '\'' +
+                    ", red_id=" + red_id +
+                    ", userid=" + userid +
+                    ", red_name='" + red_name + '\'' +
+                    ", red_content='" + red_content + '\'' +
+                    ", number=" + number +
+                    ", money='" + money + '\'' +
+                    ", sex=" + sex +
+                    ", step=" + step +
+                    ", day=" + day +
+                    ", age_min=" + age_min +
+                    ", age_max=" + age_max +
+                    ", education=" + education +
+                    ", distance=" + distance +
+                    ", trading_area='" + trading_area + '\'' +
+                    ", s_time=" + s_time +
+                    ", e_time=" + e_time +
+                    ", create_time=" + create_time +
+                    ", target_url='" + target_url + '\'' +
+                    ", rlongitude='" + rlongitude + '\'' +
+                    ", rlatitude='" + rlatitude + '\'' +
+                    ", businessid=" + businessid +
+                    ", logo='" + logo + '\'' +
+                    ", name='" + name + '\'' +
+                    ", tel='" + tel + '\'' +
+                    ", addra='" + addra + '\'' +
+                    ", address='" + address + '\'' +
+                    ", longitude='" + longitude + '\'' +
+                    ", latitude='" + latitude + '\'' +
+                    ", scope='" + scope + '\'' +
+                    ", is_receive=" + is_receive +
+                    ", income_money='" + income_money + '\'' +
+                    ", red_img=" + red_img +
+                    ", business_img=" + business_img +
+                    ", receiver_list=" + receiver_list +
+                    ", voucherid=" + voucherid +
+                    ", voucher=" + voucher +
+                    '}';
+        }
+
+
+        public static class VoucherBean {
+            /**
+             * vid : 238
+             * vname : 咸鱼优惠
+             * money : 100.00
+             * condition : 1500.00
+             * e_time : 1542124799
+             * status : 0
+             */
+
+            private int vid;
+            private String vname;
+            private String money;
+            private String condition;
+            private long e_time;
+            private int status;
+
+            public int getVid() {
+                return vid;
+            }
+
+            public void setVid(int vid) {
+                this.vid = vid;
+            }
+
+            public String getVname() {
+                return vname;
+            }
+
+            public void setVname(String vname) {
+                this.vname = vname;
+            }
+
+            public String getMoney() {
+                return money;
+            }
+
+            public void setMoney(String money) {
+                this.money = money;
+            }
+
+            public String getCondition() {
+                return condition;
+            }
+
+            public void setCondition(String condition) {
+                this.condition = condition;
+            }
+
+            public long getE_time() {
+                return e_time;
+            }
+
+            public void setE_time(long e_time) {
+                this.e_time = e_time;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+        }
+
+        public void setVoucherid(int voucherid) {
+            this.voucherid = voucherid;
         }
 
         public void setRed_id(int red_id) {

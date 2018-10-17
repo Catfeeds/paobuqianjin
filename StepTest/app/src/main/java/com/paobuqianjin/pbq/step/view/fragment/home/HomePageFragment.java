@@ -60,6 +60,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.ConsumTotalActivity;
 import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBag2Activity;
 import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
@@ -1025,7 +1026,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     break;
                 case R.id.recv_sponsor_rpg:
                     LocalLog.d(TAG, "商家消费红包");
-                    startActivity(ConsumptiveRedBagActivity.class, null);
+                    startActivity(ConsumTotalActivity.class, null);
                     break;
                 case R.id.add_friend_image:
                     LocalLog.d(TAG, "商家金牌会员");

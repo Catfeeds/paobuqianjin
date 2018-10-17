@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -15,6 +16,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
 import com.paobuqianjin.pbq.step.customview.LimitLengthFilter;
 import com.paobuqianjin.pbq.step.data.bean.AdObject;
+import com.paobuqianjin.pbq.step.data.bean.bundle.TickDataValue;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
@@ -53,7 +55,6 @@ public class AddLittleConsumActivity extends BaseBarActivity implements BaseBarA
     EditText etNum;
     @Bind(R.id.banner)
     Banner banner;
-    private int businessId = -1;
     private LimitLengthFilter limitLengthFilter;
 
     @Override
@@ -69,13 +70,35 @@ public class AddLittleConsumActivity extends BaseBarActivity implements BaseBarA
     @Override
     public void clickRight() {
         if (fillter()) {
-            Map<String, String> params = new HashMap<>();
-            params.put("busid", businessId + "");
-            params.put("vname", etRedBagName.getText().toString());
-            params.put("amount", etNum.getText().toString());
-            params.put("condition", etLimiteMoney.getText().toString());
-            params.put("money", etMoney.getText().toString());
-            params.put("day", etDayNum.getText().toString());
+            if (!(!TextUtils.isEmpty(etRedBagName.getText().toString().trim())
+                    && !TextUtils.isEmpty(etNum.getText().toString().trim())
+                    && !TextUtils.isEmpty(etLimiteMoney.getText().toString().trim())
+                    && !TextUtils.isEmpty(etMoney.getText().toString().trim())
+                    && !TextUtils.isEmpty(etDayNum.getText().toString().trim()))) {
+                PaoToastUtils.showLongToast(this, "请完善消费红包信息");
+                return;
+            } else {
+                try {
+                    if (Float.parseFloat(etMoney.getText().toString().trim()) > Float.parseFloat(etLimiteMoney.getText().toString().trim())) {
+                        PaoToastUtils.showLongToast(this, "优惠金额不能超过满用金额");
+                        return;
+                    } else {
+                        Intent data = new Intent();
+                        TickDataValue tickDataValue = new TickDataValue();
+                        tickDataValue.setVoucher_name(etRedBagName.getText().toString().trim());
+                        tickDataValue.setDeduction_money(etMoney.getText().toString().trim());
+                        tickDataValue.setSpend_money(etLimiteMoney.getText().toString().trim());
+                        tickDataValue.setValid_day(etDayNum.getText().toString().trim());
+                        tickDataValue.setVoucher_number(etNum.getText().toString().trim());
+                        data.putExtra("tick", tickDataValue);
+                        setResult(Activity.RESULT_OK, data);
+                        finish();
+                    }
+                } catch (Exception e) {
+                    PaoToastUtils.showLongToast(this, "参数异常");
+                    return;
+                }
+            }
         }
     }
 
@@ -94,6 +117,17 @@ public class AddLittleConsumActivity extends BaseBarActivity implements BaseBarA
         etRedBagName.setFilters(new InputFilter[]{limitLengthFilter});
         setToolBarListener(this);
         //loadBanner();
+        Intent intent = getIntent();
+        if (intent != null) {
+            TickDataValue tickDataValue = (TickDataValue) intent.getSerializableExtra("tick");
+            if (tickDataValue != null) {
+                etRedBagName.setText(tickDataValue.getVoucher_name());
+                etMoney.setText(tickDataValue.getDeduction_money());
+                etLimiteMoney.setText(tickDataValue.getSpend_money());
+                etDayNum.setText(tickDataValue.getValid_day());
+                etNum.setText(tickDataValue.getVoucher_number());
+            }
+        }
     }
 
     private void loadBanner() {
@@ -190,10 +224,6 @@ public class AddLittleConsumActivity extends BaseBarActivity implements BaseBarA
         }
         if (TextUtils.isEmpty(etNum.getText().toString())) {
             PaoToastUtils.showShortToast(this, "请输入使用消费红包的数量");
-            return false;
-        }
-        if (businessId < 1) {
-            PaoToastUtils.showShortToast(this, "请选择您的商铺");
             return false;
         }
         return true;

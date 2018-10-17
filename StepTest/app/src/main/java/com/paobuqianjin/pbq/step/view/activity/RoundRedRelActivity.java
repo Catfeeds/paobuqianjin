@@ -144,12 +144,8 @@ public class RoundRedRelActivity extends BaseBarActivity {
 
                     if (TextUtils.isEmpty(info)) {
                         redInfo();
-                        redRecListAdapter = new RedRecListAdapter(RoundRedRelActivity.this, arrayList);
-                        recRecycler.setAdapter(redRecListAdapter);
                     } else {
                         redNearInfo();
-                        redRecListAdapter = new RedRecListAdapter(RoundRedRelActivity.this, beanArrayList);
-                        recRecycler.setAdapter(redRecListAdapter);
                     }
 
                 }
@@ -174,10 +170,15 @@ public class RoundRedRelActivity extends BaseBarActivity {
                             R.drawable.default_head_ico);
 
                     LocalLog.d(TAG, "领");
-                    String income = redInfoResponse.getData().getIncome_money() + "元";
-                    SpannableString spannableString = new SpannableString(income);
-                    spannableString.setSpan(new AbsoluteSizeSpan(14, true), redInfoResponse.getData().getIncome_money().length(), income.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                    pkgMoney.setText(spannableString);
+                    if ("0".equals(redInfoResponse.getData().getIncome_money())) {
+                        pkgMoney.setText("还未领取该红包");
+                        opDes.setVisibility(View.GONE);
+                    } else {
+                        String income = redInfoResponse.getData().getIncome_money() + "元";
+                        SpannableString spannableString = new SpannableString(income);
+                        spannableString.setSpan(new AbsoluteSizeSpan(14, true), redInfoResponse.getData().getIncome_money().length(), income.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                        pkgMoney.setText(spannableString);
+                    }
 
                     redDes.setText("已领取" + redInfoResponse.getData().getReceive_num() + "个" + "，共"
                             + redInfoResponse.getData().getRedpacket_num() + "个");
@@ -219,11 +220,16 @@ public class RoundRedRelActivity extends BaseBarActivity {
                             redInfoResponse.getData().getAvatar(), R.drawable.default_head_ico,
                             R.drawable.default_head_ico);
 
-                    LocalLog.d(TAG, "领");
-                    String income = redInfoResponse.getData().getIncome_money() + "元";
-                    SpannableString spannableString = new SpannableString(income);
-                    spannableString.setSpan(new AbsoluteSizeSpan(14, true), redInfoResponse.getData().getIncome_money().length(), income.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                    pkgMoney.setText(spannableString);
+                    if ("0".equals(redInfoResponse.getData().getIncome_money())) {
+                        pkgMoney.setText("还未领取该红包");
+                        opDes.setVisibility(View.GONE);
+                    } else {
+                        String income = redInfoResponse.getData().getIncome_money() + "元";
+                        SpannableString spannableString = new SpannableString(income);
+                        spannableString.setSpan(new AbsoluteSizeSpan(14, true), redInfoResponse.getData().getIncome_money().length(), income.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                        pkgMoney.setText(spannableString);
+                    }
+
 
                     redDes.setText("已领取" + redInfoResponse.getData().getReceive_num() + "个" + "，共"
                             + redInfoResponse.getData().getRedpacket_num() + "个");

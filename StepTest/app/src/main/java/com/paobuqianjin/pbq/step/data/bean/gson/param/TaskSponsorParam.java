@@ -29,6 +29,62 @@ public class TaskSponsorParam {
     private String city_code;
     private String remark;
     private String trading_area;
+    private String voucher_name;
+
+    public String getVoucher_name() {
+        return voucher_name;
+    }
+
+    public TaskSponsorParam setVoucher_name(String voucher_name) {
+        this.voucher_name = voucher_name;
+        params.put("voucher_name", voucher_name);
+        return this;
+    }
+
+    public String getSpend_money() {
+        return spend_money;
+    }
+
+    public TaskSponsorParam setSpend_money(String spend_money) {
+        this.spend_money = spend_money;
+        params.put("spend_money", spend_money);
+        return this;
+    }
+
+    public String getDeduction_money() {
+        return deduction_money;
+    }
+
+    public TaskSponsorParam setDeduction_money(String deduction_money) {
+        this.deduction_money = deduction_money;
+        params.put("deduction_money", deduction_money);
+        return this;
+    }
+
+    public String getValid_day() {
+        return valid_day;
+    }
+
+    public TaskSponsorParam setValid_day(String valid_day) {
+        this.valid_day = valid_day;
+        params.put("valid_day", valid_day);
+        return this;
+    }
+
+    public String getVoucher_number() {
+        return voucher_number;
+    }
+
+    public TaskSponsorParam setVoucher_number(String voucher_number) {
+        this.voucher_number = voucher_number;
+        params.put("voucher_number", voucher_number);
+        return this;
+    }
+
+    private String spend_money;
+    private String deduction_money;
+    private String valid_day;
+    private String voucher_number;
 
     public String getCircleid() {
         return circleid;

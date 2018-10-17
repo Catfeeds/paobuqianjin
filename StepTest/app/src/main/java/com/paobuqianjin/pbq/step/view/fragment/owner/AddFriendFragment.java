@@ -69,9 +69,12 @@ public class AddFriendFragment extends BaseBarStyleTextViewFragment {
     LinearLayout qrCode;
     @Bind(R.id.scan_qrcode)
     RelativeLayout scanQrcode;
+    @Bind(R.id.pb_num)
+    TextView pbNum;
     private UserInfoResponse.DataBean userInfo;
     private Rationale mRationale;
     private PermissionSetting mSetting;
+
     @Override
     protected String title() {
         return "添加关注";
@@ -104,6 +107,7 @@ public class AddFriendFragment extends BaseBarStyleTextViewFragment {
         qrCode.setOnClickListener(onClickListener);
         scanQrcode = (RelativeLayout) viewRoot.findViewById(R.id.scan_qrcode);
         scanQrcode.setOnClickListener(onClickListener);
+        pbNum = (TextView) viewRoot.findViewById(R.id.pb_num);
         searchCircleText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -121,6 +125,9 @@ public class AddFriendFragment extends BaseBarStyleTextViewFragment {
         });
 
         userInfo = Presenter.getInstance(getContext()).getCurrentUser();
+        if (userInfo != null) {
+            pbNum.setText("我的跑步钱进号:" + userInfo.getNo());
+        }
     }
 
     @Override

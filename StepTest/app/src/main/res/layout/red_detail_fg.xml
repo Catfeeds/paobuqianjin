@@ -478,19 +478,19 @@
             </LinearLayout>
 
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/ticket_s"
                 android:layout_width="match_parent"
                 android:layout_height="99dp"
                 android:layout_below="@+id/list_reds"
                 android:layout_marginLeft="32dp"
                 android:layout_marginRight="32dp"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="15dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
+                    android:scaleType="centerInside"
                     android:src="@drawable/tick_bg" />
 
                 <LinearLayout
@@ -510,25 +510,31 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:includeFontPadding="false"
+                            android:id="@+id/tick_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="￥20.00店铺优惠券"
+                            android:text=""
                             android:textColor="#FF3131"
                             android:textSize="12dp" />
 
                         <TextView
+                            android:includeFontPadding="false"
+                            android:id="@+id/tick_condition"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="订单满100元可用"
+                            android:layout_marginTop="2dp"
+                            android:text=""
                             android:textColor="#E9890C"
                             android:textSize="12dp" />
 
                         <TextView
+                            android:includeFontPadding="false"
+                            android:id="@+id/tick_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:text="有效期至:2018.07.30"
+                            android:layout_marginTop="2dp"
+                            android:text=""
                             android:textColor="#E9890C"
                             android:textSize="12dp" />
                     </LinearLayout>
@@ -538,7 +544,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:text="立即领取"
+                        android:text=""
                         android:textColor="#FF3131"
                         android:textSize="15dp" />
                 </LinearLayout>

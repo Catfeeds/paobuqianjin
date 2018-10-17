@@ -12,7 +12,7 @@ public class RedSendHisResponse {
     /**
      * error : 0
      * message : 获取历史记录成功
-     * data : {"count_info":{"send_total":"230.00","send_count":140,"recice_total":19},"redpacket_list":{"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":3},"data":[{"money":"100.00","number":10,"receive_num":5,"red_id":615,"map_content":"呱太","create_time":1537441224,"user_nickname":"江月何时初照人","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg","businessid":1666,"circleid":101557,"circle_pwd":"123456","target_url":"","circle_name":"呱哒环境","business_name":"疼训氪金有限公司","map_img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"],"map_img":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","zan_count":0,"comment_count":0},{"money":"30.00","number":30,"receive_num":7,"red_id":614,"map_content":"回来","create_time":1537357329,"user_nickname":"江月何时初照人","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg","businessid":1666,"circleid":101603,"circle_pwd":"","target_url":"","circle_name":"aasdddddd","business_name":"疼训氪金有限公司","map_img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"],"map_img":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","zan_count":0,"comment_count":0}]}}
+     * data : {"count_info":{"send_total":"230.00","send_count":140,"recice_total":19},"redpacket_list":{"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":3},"data":[{"money":"100.00","voucherid":242,"number":10,"receive_num":5,"red_id":615,"map_content":"呱太","create_time":1537441224,"user_nickname":"江月何时初照人","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg","businessid":1666,"circleid":101557,"circle_pwd":"123456","target_url":"","circle_name":"呱哒环境","business_name":"疼训氪金有限公司","map_img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"],"map_img":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","zan_count":0,"comment_count":0},{"money":"30.00","number":30,"receive_num":7,"red_id":614,"map_content":"回来","create_time":1537357329,"user_nickname":"江月何时初照人","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg","businessid":1666,"circleid":101603,"circle_pwd":"","target_url":"","circle_name":"aasdddddd","business_name":"疼训氪金有限公司","map_img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"],"map_img":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","zan_count":0,"comment_count":0}]}}
      */
 
     private int error;
@@ -46,7 +46,7 @@ public class RedSendHisResponse {
     public static class DataBeanX {
         /**
          * count_info : {"send_total":"230.00","send_count":140,"recice_total":19}
-         * redpacket_list : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":3},"data":[{"money":"100.00","number":10,"receive_num":5,"red_id":615,"map_content":"呱太","create_time":1537441224,"user_nickname":"江月何时初照人","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg","businessid":1666,"circleid":101557,"circle_pwd":"123456","target_url":"","circle_name":"呱哒环境","business_name":"疼训氪金有限公司","map_img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"],"map_img":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","zan_count":0,"comment_count":0},{"money":"30.00","number":30,"receive_num":7,"red_id":614,"map_content":"回来","create_time":1537357329,"user_nickname":"江月何时初照人","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg","businessid":1666,"circleid":101603,"circle_pwd":"","target_url":"","circle_name":"aasdddddd","business_name":"疼训氪金有限公司","map_img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"],"map_img":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","zan_count":0,"comment_count":0}]}
+         * redpacket_list : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":3},"data":[{"money":"100.00","number":10,"receive_num":5,"red_id":615,"map_content":"呱太","create_time":1537441224,"user_nickname":"江月何时初照人","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg","businessid":1666,"circleid":101557,"circle_pwd":"123456","target_url":"","circle_name":"呱哒环境","business_name":"疼训氪金有限公司","map_img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"],"map_img":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","zan_count":0,"comment_count":0},{"money":"30.00","number":30,"receive_num":7,"red_id":614,"map_content":"回来","create_time":1537357329,"user_nickname":"江月何时初照人","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg","businessid":1666,"circleid":101603,"circle_pwd":"","target_url":"","circle_name":"aasdddddd","business_name":"疼训氪金有限公司","lower_id":35822,"vname":"开业大酬宾","vnumber":10,"vday":1,"vcondition":"300.00","vmoney":"30.00","map_img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"],"map_img":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","zan_count":0,"comment_count":0}]}
          */
 
         private CountInfoBean count_info;
@@ -107,7 +107,7 @@ public class RedSendHisResponse {
         public static class RedpacketListBean {
             /**
              * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":3}
-             * data : [{"money":"100.00","number":10,"receive_num":5,"red_id":615,"map_content":"呱太","create_time":1537441224,"user_nickname":"江月何时初照人","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg","businessid":1666,"circleid":101557,"circle_pwd":"123456","target_url":"","circle_name":"呱哒环境","business_name":"疼训氪金有限公司","map_img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"],"map_img":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","zan_count":0,"comment_count":0},{"money":"30.00","number":30,"receive_num":7,"red_id":614,"map_content":"回来","create_time":1537357329,"user_nickname":"江月何时初照人","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg","businessid":1666,"circleid":101603,"circle_pwd":"","target_url":"","circle_name":"aasdddddd","business_name":"疼训氪金有限公司","map_img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"],"map_img":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","zan_count":0,"comment_count":0}]
+             * data : [{"money":"100.00","voucherid":242,"number":10,"receive_num":5,"red_id":615,"map_content":"呱太","create_time":1537441224,"user_nickname":"江月何时初照人","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg","businessid":1666,"circleid":101557,"circle_pwd":"123456","target_url":"","circle_name":"呱哒环境","business_name":"疼训氪金有限公司","lower_id":35822,"vname":"开业大酬宾","vnumber":10,"vday":1,"vcondition":"300.00","vmoney":"30.00","map_img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"],"map_img":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","zan_count":0,"comment_count":0},{"money":"30.00","number":30,"receive_num":7,"red_id":614,"map_content":"回来","create_time":1537357329,"user_nickname":"江月何时初照人","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg","businessid":1666,"circleid":101603,"circle_pwd":"","target_url":"","circle_name":"aasdddddd","business_name":"疼训氪金有限公司","map_img_arr":["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"],"map_img":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","zan_count":0,"comment_count":0}]
              */
 
             private PagenationBean pagenation;
@@ -178,6 +178,7 @@ public class RedSendHisResponse {
             public static class DataBean implements Serializable {
                 /**
                  * money : 100.00
+                 * voucherid:242
                  * number : 10
                  * receive_num : 5
                  * red_id : 615
@@ -191,12 +192,23 @@ public class RedSendHisResponse {
                  * target_url :
                  * circle_name : 呱哒环境
                  * business_name : 疼训氪金有限公司
+                 * vname:开业大酬宾
+                 * vnumber:10
+                 * vday:1
+                 * vmoney:30.00
+                 * vcondition:300.00
+                 * lower_id:0 (0正常，大于0表示已经上架)
                  * map_img_arr : ["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"]
                  * map_img : http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg
                  * zan_count : 0
                  * comment_count : 0
                  */
 
+                private int lower_id;
+                private String vname;
+                private int vday;
+                private String vcondition;
+                private String vmoney;
                 private String money;
                 private String number;
                 private String receive_num;
@@ -215,6 +227,16 @@ public class RedSendHisResponse {
                 private String zan_count;
                 private String comment_count;
                 private List<String> map_img_arr;
+
+                public int getVoucherid() {
+                    return voucherid;
+                }
+
+                public void setVoucherid(int voucherid) {
+                    this.voucherid = voucherid;
+                }
+
+                private int voucherid;
 
                 public String getMoney() {
                     return money;
@@ -360,10 +382,55 @@ public class RedSendHisResponse {
                     this.map_img_arr = map_img_arr;
                 }
 
+                public int getLower_id() {
+                    return lower_id;
+                }
+
+                public void setLower_id(int lower_id) {
+                    this.lower_id = lower_id;
+                }
+
+                public String getVname() {
+                    return vname;
+                }
+
+                public void setVname(String vname) {
+                    this.vname = vname;
+                }
+
+                public int getVday() {
+                    return vday;
+                }
+
+                public void setVday(int vday) {
+                    this.vday = vday;
+                }
+
+                public String getVcondition() {
+                    return vcondition;
+                }
+
+                public void setVcondition(String vcondition) {
+                    this.vcondition = vcondition;
+                }
+
+                public String getVmoney() {
+                    return vmoney;
+                }
+
+                public void setVmoney(String vmoney) {
+                    this.vmoney = vmoney;
+                }
+
                 @Override
                 public String toString() {
                     return "DataBean{" +
-                            "money='" + money + '\'' +
+                            "lower_id=" + lower_id +
+                            ", vname='" + vname + '\'' +
+                            ", vday=" + vday +
+                            ", vcondition='" + vcondition + '\'' +
+                            ", vmoney='" + vmoney + '\'' +
+                            ", money='" + money + '\'' +
                             ", number='" + number + '\'' +
                             ", receive_num='" + receive_num + '\'' +
                             ", red_id='" + red_id + '\'' +
@@ -381,6 +448,7 @@ public class RedSendHisResponse {
                             ", zan_count='" + zan_count + '\'' +
                             ", comment_count='" + comment_count + '\'' +
                             ", map_img_arr=" + map_img_arr +
+                            ", voucherid=" + voucherid +
                             '}';
                 }
             }

@@ -56,6 +56,7 @@ import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.alioss.AliOss;
 import com.paobuqianjin.pbq.step.data.alioss.OssService;
 import com.paobuqianjin.pbq.step.data.bean.AdObject;
+import com.paobuqianjin.pbq.step.data.bean.bundle.TickDataValue;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.TaskSponsorParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
@@ -77,6 +78,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.AddAroundRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.AddLittleConsumActivity;
 import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
@@ -170,7 +172,6 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     @Bind(R.id.sponor_msg_des_detail)
     TextView sponorMsgDesDetail;
 
-
     private static String TARGET_PEOPLE_ACTION = "com.paobuqianjin.pbq.step.TARGET_ACTION";
     private static String SPONSOR_INFO_ACTION = "com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION";
     private final static String LOCATION_ACTION = "com.paobuqianjin.intent.ACTION_LOCATION";
@@ -253,11 +254,15 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     private final static String NEAR_ACTION = "com.paobuqianjin.pbq.NEAR_PKG.ACTION";
     private final static int SELECT_HIS = 777;
     private final static int SELECT_CIRCLE = 77;
+    private final static int VIP_REQUEST = 11;
     private final static String SELECT_CIRCLE_ACTION = "com.paobuqianjin.pbq.SELECT_ACTION";
     private String circleId;//微商圈ID
     private boolean editAble;
     SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean dataBean;
     String hisImage;
+    TickDataValue tickDataValue;
+    NormalDialog normalDialog, lowDialog;
+    private int is_lower = 0;
 
     @Override
     protected String title() {
@@ -396,7 +401,6 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
     @Override
     public void onResume() {
         super.onResume();
-        getVipStatus();
     }
 
     @Override
@@ -413,6 +417,11 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
         btnPrescan = (Button) viewRoot.findViewById(R.id.btn_prescan);
         btnConfirm = (Button) viewRoot.findViewById(R.id.btn_confirm);
         sponorMsgDesDetail = (TextView) viewRoot.findViewById(R.id.sponor_msg_des_detail);
+        consumRedDesDetail = (TextView) viewRoot.findViewById(R.id.consum_red_des_detail);
+        passwordCircle = (LinearLayout) viewRoot.findViewById(R.id.password_circle);
+        consumRedMsgSpan = (RelativeLayout) viewRoot.findViewById(R.id.consum_red_msg_span);
+        consumRedDelete = (ImageView) viewRoot.findViewById(R.id.consum_red_delete);
+        sponorMsgSpan = (RelativeLayout) viewRoot.findViewById(R.id.sponor_msg_span);
         Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlTarget, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
@@ -488,10 +497,11 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
             }
         }
         initAdapter();
+        getVipStatus();
     }
 
 
-    private void initEdit(SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean dataBean, boolean editAble) {
+    private void initEdit(final SendNearPkgResponse.DataBeanX.RedpacketListBean.DataBean dataBean, boolean editAble) {
         LocalLog.d(TAG, "initEdit() enter");
         //任务名称
         if (!TextUtils.isEmpty(dataBean.getRed_name())) {
@@ -565,6 +575,54 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
             sponorMsgDesDetail.setText(dataBean.getBusiness_name());
             ivDelete.setVisibility(View.VISIBLE);
         }
+
+        if (editAble) {
+            if (dataBean.getVoucherid() > 0) {
+                if (dataBean.getLower_id() == 0) {
+                    checkConsumRedBack(false);
+                } else {
+                    checkConsumRedBack(true);
+                }
+                consumRedDesDetail.setText(dataBean.getVname());
+                consumRedMsgSpan.setEnabled(false);
+                consumRedDesDetail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (lowDialog == null) {
+                            lowDialog = new NormalDialog(getContext());
+                            lowDialog.setMessage("确定下架该消费券？");
+                            lowDialog.setYesOnclickListener("确定", new NormalDialog.onYesOnclickListener() {
+                                @Override
+                                public void onYesClick() {
+                                    cutDonwConsumptiveRedBag(dataBean.getVoucherid());
+                                    lowDialog.dismiss();
+                                }
+                            });
+
+                            lowDialog.setNoOnclickListener("取消", new NormalDialog.onNoOnclickListener() {
+                                @Override
+                                public void onNoClick() {
+                                    lowDialog.dismiss();
+                                }
+                            });
+                        }
+                        if (!lowDialog.isShowing())
+                            lowDialog.show();
+                    }
+                });
+            }
+        } else {
+            if (dataBean.getVoucherid() > 0) {
+                tickDataValue = new TickDataValue();
+                tickDataValue.setDeduction_money(dataBean.getVmoney());
+                tickDataValue.setValid_day(String.valueOf(dataBean.getVday()));
+                tickDataValue.setVoucher_number(dataBean.getVnumber());
+                tickDataValue.setVoucher_name(dataBean.getVname());
+                tickDataValue.setSpend_money(dataBean.getVcondition());
+                consumRedDesDetail.setText(tickDataValue.getVoucher_name());
+                consumRedDelete.setVisibility(View.VISIBLE);
+            }
+        }
         getDefaultBusiness(false);
 
         //隐形条件
@@ -577,6 +635,40 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
         city = dataBean.getCity();
         cityCode = dataBean.getCity_code();
         address = dataBean.getVillage();
+    }
+
+    /*消费券下架*/
+    private void cutDonwConsumptiveRedBag(final int vouchid) {
+        Map<String, String> params = new HashMap<>();
+        params.put("voucherid", String.valueOf(vouchid));
+        Presenter.getInstance(getActivity()).postPaoBuSimple(NetApi.lowerVoucher, params, new PaoTipsCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                consumRedDesDetail.setText(null);
+                consumRedDesDetail.setEnabled(false);
+                is_lower = 1;
+                checkConsumRedBack(true);
+                PaoToastUtils.showShortToast(getContext(), "下架成功");
+            }
+        });
+    }
+
+    private void checkConsumRedBack(boolean is_lowed) {
+        if (is_lowed) {
+            LocalLog.d(TAG, "已下架 可以进行店铺操作");
+            sponorMsgSpan.setEnabled(true);
+            sponsorLinkEdit.setEnabled(true);
+        } else {
+            LocalLog.d(TAG, "未下架 只能增加店铺或者链接");
+            if (!TextUtils.isEmpty(dataBean.getBusiness_name())) {
+                sponorMsgSpan.setEnabled(false);
+                ivDelete.setVisibility(View.GONE);
+                consumRedDelete.setVisibility(View.GONE);
+            }
+            if (!TextUtils.isEmpty(dataBean.getTarget_url())) {
+                sponsorLinkEdit.setEnabled(false);
+            }
+        }
     }
 
     public void popImageView(String url) {
@@ -857,6 +949,23 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                 if (!TextUtils.isEmpty(circlePass.getText().toString()))
                     taskSponsorParam.setCircle_pwd(circlePass.getText().toString().trim());
             }
+
+            if (tickDataValue != null) {
+                if (tickDataValue != null) {
+                    taskSponsorParam.setVoucher_name(tickDataValue.getVoucher_name());
+                    taskSponsorParam.setSpend_money(tickDataValue.getSpend_money());
+                    taskSponsorParam.setVoucher_number(tickDataValue.getVoucher_number());
+                    taskSponsorParam.setValid_day(tickDataValue.getValid_day());
+                    taskSponsorParam.setMoney(tickDataValue.getDeduction_money());
+
+                /*链接或者店铺必选其一*/
+                    if (TextUtils.isEmpty(sponorMsgDesDetail.getText().toString().trim())
+                            && TextUtils.isEmpty(sponsorLinkEdit.getText().toString().trim())) {
+                        PaoToastUtils.showLongToast(getActivity(), "有优惠券时店铺或者网店链接必填一项");
+                        return;
+                    }
+                }
+            }
             Presenter.getInstance(getActivity()).postPaoBuSimple(NetApi.urlSendTaskRedBag, taskSponsorParam.getParams(), new PaoCallBack() {
                 @Override
                 protected void onSuc(String s) {
@@ -961,6 +1070,11 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                     param.put("images", images);
                 }
 
+                if (dataBean.getVoucherid() > 0 && is_lower == 1) {
+                    LocalLog.d(TAG, "消费红包已下架!");
+                    param.put("vid", String.valueOf(dataBean.getVoucherid()));
+                    param.put("is_lower", String.valueOf(is_lower));
+                }
                 if (param.keySet().size() <= 0) {
                     PaoToastUtils.showLongToast(getActivity(), "没有做任何修改");
                     return;
@@ -1100,6 +1214,23 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                 if (!TextUtils.isEmpty(circlePass.getText().toString()))
                     taskSponsorParam.setCircle_pwd(circlePass.getText().toString().trim());
             }
+
+            if (tickDataValue != null) {
+                if (tickDataValue != null) {
+                    taskSponsorParam.setVoucher_name(tickDataValue.getVoucher_name());
+                    taskSponsorParam.setSpend_money(tickDataValue.getSpend_money());
+                    taskSponsorParam.setVoucher_number(tickDataValue.getVoucher_number());
+                    taskSponsorParam.setValid_day(tickDataValue.getValid_day());
+                    taskSponsorParam.setDeduction_money(tickDataValue.getDeduction_money());
+
+                /*链接或者店铺必选其一*/
+                    if (TextUtils.isEmpty(sponorMsgDesDetail.getText().toString().trim())
+                            && TextUtils.isEmpty(sponsorLinkEdit.getText().toString().trim())) {
+                        PaoToastUtils.showLongToast(getActivity(), "有优惠券时店铺或者网店链接必填一项");
+                        return;
+                    }
+                }
+            }
             Presenter.getInstance(getContext()).postTaskSponsorRelease(taskSponsorParam);
         }
     }
@@ -1134,7 +1265,7 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
 
     @OnClick({R.id.day_step_target_span, R.id.target_step_day_num, R.id.people_target_span, R.id.sponor_msg_span, R.id.attion
             , R.id.select_historty, R.id.select_circle, R.id.btn_prescan, R.id.btn_confirm, R.id.circle_delete, R.id.iv_delete,
-            R.id.pkg_des, R.id.consum_red_msg_span})
+            R.id.pkg_des, R.id.consum_red_delete, R.id.consum_red_msg_span})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -1213,6 +1344,10 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                 intent.setAction(TARGET_PEOPLE_ACTION);
                 startActivityForResult(intent, REQUEST_TARGET_PEOPLE);
                 break;
+            case R.id.consum_red_delete:
+                tickDataValue = null;
+                consumRedDelete.setVisibility(View.GONE);
+                break;
             case R.id.sponor_msg_span:
                 if (hasBusiness) {
                     LocalLog.d(TAG, "商铺信息");
@@ -1236,7 +1371,7 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
             case R.id.circle_delete:
                 circleDelete.setVisibility(View.GONE);
                 sponorCircleDetail.setText("");
-                circlePass.setVisibility(View.GONE);
+                passwordCircle.setVisibility(View.GONE);
                 circleId = null;
                 break;
             case R.id.iv_delete:
@@ -1247,7 +1382,34 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                 break;
             case R.id.consum_red_msg_span:
                 //创建消费券
-                startActivityForResult(new Intent().setClass(getContext(), AddLittleConsumActivity.class), REQUEST_CONSUM_RED);
+                if (isVip) {
+                    Intent intentTick = new Intent();
+                    if (tickDataValue != null) {
+                        intentTick.putExtra("tick", tickDataValue);
+                    }
+                    startActivityForResult(intentTick.setClass(getContext(), AddLittleConsumActivity.class), REQUEST_CONSUM_RED);
+                } else {
+                    if (normalDialog == null) {
+                        normalDialog = new NormalDialog(getActivity());
+                        normalDialog.setMessage("成为金牌会员才能发布消费券哦！");
+                        normalDialog.setYesOnclickListener("去开通", new NormalDialog.onYesOnclickListener() {
+                            @Override
+                            public void onYesClick() {
+                                normalDialog.dismiss();
+                                startActivityForResult(new Intent().setClass(getActivity(), GoldenSponsoractivity.class), VIP_REQUEST);
+                            }
+                        });
+                        normalDialog.setNoOnclickListener("取消", new NormalDialog.onNoOnclickListener() {
+                            @Override
+                            public void onNoClick() {
+                                normalDialog.dismiss();
+                            }
+                        });
+                    }
+                    if (!normalDialog.isShowing()) {
+                        normalDialog.show();
+                    }
+                }
                 break;
             default:
                 break;
@@ -1394,7 +1556,18 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
             }
         } else if (requestCode == REQUEST_CONSUM_RED) {
             LocalLog.d(TAG, "填写消费券信息");
-
+            if (resultCode == Activity.RESULT_OK) {
+                if (data != null) {
+                    tickDataValue = (TickDataValue) data.getSerializableExtra("tick");
+                    if (tickDataValue != null) {
+                        consumRedDelete.setVisibility(View.VISIBLE);
+                        consumRedDesDetail.setText(tickDataValue.getVoucher_name());
+                    }
+                }
+            }
+        } else if (requestCode == VIP_REQUEST) {
+            LocalLog.d(TAG, "VIP");
+            getVipStatus();
         }
 
     }

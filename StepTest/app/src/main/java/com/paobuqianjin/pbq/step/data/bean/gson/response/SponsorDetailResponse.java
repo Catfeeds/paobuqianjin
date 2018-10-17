@@ -250,6 +250,7 @@ public class SponsorDetailResponse {
                     ", do_day='" + do_day + '\'' +
                     ", s_do_time='" + s_do_time + '\'' +
                     ", e_do_time='" + e_do_time + '\'' +
+                    ", scope='" + scope + '\'' +
                     ", logo_imgs=" + logo_imgs +
                     ", goods_imgs=" + goods_imgs +
                     ", environment_imgs=" + environment_imgs +

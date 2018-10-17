@@ -14,9 +14,9 @@ import java.util.List;
 public class TabAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragments;
     private Context context;
-    private String[] tableTitle;
+    private Object[] tableTitle;
 
-    public TabAdapter(Context context, FragmentManager fm, List<Fragment> fragments, String[] title) {
+    public TabAdapter(Context context, FragmentManager fm, List<Fragment> fragments, Object[] title) {
         super(fm);
         this.context = context;
         this.fragments = fragments;
@@ -35,6 +35,10 @@ public class TabAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return tableTitle[position];
+        try {
+            return (String) tableTitle[position];
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

@@ -844,6 +844,7 @@
             android:name=".view.activity.TransparentGuideActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".view.activity.ConsumptiveRedBagActivity" />
+        <activity android:name=".view.activity.ConsumTotalActivity"></activity>
         <activity
             android:name=".view.activity.AddConsumptiveRedBagActivity"
             android:windowSoftInputMode="adjustPan" />

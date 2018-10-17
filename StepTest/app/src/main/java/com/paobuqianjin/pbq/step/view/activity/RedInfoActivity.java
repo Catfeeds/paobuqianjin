@@ -13,6 +13,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
+import android.text.style.TypefaceSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +66,9 @@ import com.paobuqianjin.pbq.step.view.emoji.EmotionKeyboard;
 import com.paobuqianjin.pbq.step.view.emoji.EmotionLayout;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionExtClickListener;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionSelectedListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -186,6 +190,16 @@ public class RedInfoActivity extends BaseBarActivity {
     RelativeLayout circleQr;
     @Bind(R.id.notify)
     TextView notifyText;
+    @Bind(R.id.tick_money)
+    TextView tickMoney;
+    @Bind(R.id.tick_condition)
+    TextView tickCondition;
+    @Bind(R.id.tick_time)
+    TextView tickTime;
+    @Bind(R.id.recv_tick)
+    TextView recvTick;
+    @Bind(R.id.ticket_s)
+    RelativeLayout ticketS;
     private int localVoteNum = 0;
     private int localCommentNum = 0;
     CustomEdit commentEditText;
@@ -544,6 +558,42 @@ public class RedInfoActivity extends BaseBarActivity {
                         }
 
                     }
+
+                    /*优惠券*/
+                    if (roundHisResponse.getData().getVoucherid() > 0) {
+                        ticketS.setVisibility(View.VISIBLE);
+                        String money = "￥" + roundHisResponse.getData().getVoucher().getMoney() + "店铺优惠券";
+                        SpannableString spannableString = new SpannableString(money);
+                        spannableString.setSpan(new AbsoluteSizeSpan(28, true), "￥".length(), ("￥" + roundHisResponse.getData().getVoucher().getMoney()).length(),
+                                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                        spannableString.setSpan(new TypefaceSpan("bold"), "￥".length(), ("￥" + roundHisResponse.getData().getVoucher().getMoney()).length(),
+                                Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                        tickMoney.setText(spannableString);
+                        tickCondition.setText("订单满" + roundHisResponse.getData().getVoucher().getCondition() + "元可用");
+                        String time = DateTimeUtil.formatDateTime(roundHisResponse.getData().getVoucher().getE_time() * 1000, DateTimeUtil.DF_YYYY_MM_DD);
+                        tickTime.setText("有效期至:" + time.replace("-", "."));
+                        if (roundHisResponse.getData().getVoucher().getStatus() == 0) {
+                            recvTick.setText("立即领取");
+                            recvTick.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if ("立即领取".equals(recvTick.getText().toString()))
+                                        pullDownConsumptiveRedBag(String.valueOf(roundHisResponse.getData().getVoucher().getVid()));
+                                }
+                            });
+                        } else if (roundHisResponse.getData().getVoucher().getStatus() == 1) {
+                            recvTick.setText("已领取");
+                        } else if (roundHisResponse.getData().getVoucher().getStatus() == 2) {
+                            recvTick.setText("已下架");
+                        } else if (roundHisResponse.getData().getVoucher().getStatus() == 3) {
+                            recvTick.setText("已过期");
+                        } else if (roundHisResponse.getData().getVoucher().getStatus() == 4) {
+                            recvTick.setText("已领完");
+                        }
+                    } else {
+                        ticketS.setVisibility(View.GONE);
+                    }
+                    /*优惠券*/
                     if (roundHisResponse.getData().getIs_zan() == 1) {
                         is_vote = true;
                     } else {
@@ -752,6 +802,31 @@ public class RedInfoActivity extends BaseBarActivity {
             }
         });
     }
+
+    /**
+     * 领取消费红包
+     */
+    private void pullDownConsumptiveRedBag(String idStr) {
+        Map<String, String> params = new HashMap<>();
+        params.put("voucherid", idStr);
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.receiveVoucher, params, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                recvTick.setText("已领取");
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorStr.contains("距离")) {
+
+                } else {
+
+                }
+
+            }
+        });
+    }
+
 
     private void initEditView(final String evaluateid, final int userid, final Object object) {
         LocalLog.d(TAG, "initEditView() enter evaluateid " + evaluateid + "name =" + (String) object);

@@ -474,6 +474,7 @@
                     android:layout_centerVertical="true"
                     android:background="@null"
                     android:gravity="right"
+                    android:inputType="textWebEditText"
                     android:hint="选填 请粘贴链接"
                     android:paddingRight="39dp"
                     android:textColor="@color/color_161727"
@@ -621,7 +622,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/consum_red_msg_span"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
