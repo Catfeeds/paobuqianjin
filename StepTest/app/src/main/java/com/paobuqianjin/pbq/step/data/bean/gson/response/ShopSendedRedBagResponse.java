@@ -30,6 +30,15 @@ public class ShopSendedRedBagResponse {
         private double latitude;
         private double longitude;
 
+        public String getDistance() {
+            return distance;
+        }
+
+        public void setDistance(String distance) {
+            this.distance = distance;
+        }
+
+        private String  distance;
         public double getLatitude() {
             return latitude;
         }

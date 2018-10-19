@@ -16,7 +16,8 @@
         android:id="@+id/tv_tab_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:textSize="12dp"
-        tools:text="测试" />
+        tools:text="" />
 
 </LinearLayout>

@@ -71,7 +71,7 @@ public class SlidingTabLayout extends TabLayout {
 
     public SlidingTabLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-        this.mSlideIcon = BitmapFactory.decodeResource(getResources(), R.drawable.home_jiaobiao);
+        /*this.mSlideIcon = BitmapFactory.decodeResource(getResources(), R.drawable.home_jiaobiao);*/
         this.mScreenWidth = getResources().getDisplayMetrics().widthPixels;
 
         //方案1：反射修改Tab宽度
@@ -85,6 +85,7 @@ public class SlidingTabLayout extends TabLayout {
             }
         });
     }
+
 
     private void reflectiveModifyTabWidth() {
         final Class<?> clz = TabLayout.class;
@@ -149,14 +150,13 @@ public class SlidingTabLayout extends TabLayout {
      */
     @Override
     protected void dispatchDraw(Canvas canvas) {
-        if (mSlideIcon == null) {
-            return;
+        if (mSlideIcon != null) {
+            canvas.save();
+            // 平移到正确的位置，修正tabs的平移量
+            canvas.translate(mInitTranslationX + mTranslationX, this.mInitTranslationY);
+            canvas.drawBitmap(this.mSlideIcon, 0, 0, null);
+            canvas.restore();
         }
-        canvas.save();
-        // 平移到正确的位置，修正tabs的平移量
-        canvas.translate(mInitTranslationX + mTranslationX, this.mInitTranslationY);
-        canvas.drawBitmap(this.mSlideIcon, 0, 0, null);
-        canvas.restore();
         super.dispatchDraw(canvas);
     }
 

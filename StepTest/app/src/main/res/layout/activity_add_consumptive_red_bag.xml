@@ -30,6 +30,32 @@
                 android:paddingBottom="5dp"></com.youth.banner.Banner>
 
             <LinearLayout
+                android:id="@+id/select_historty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="选择历史记录"
+                    android:textColor="@color/color_d6d6d6"
+                    android:textSize="12dp" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/iv_history_release" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/linear_open_vip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -57,6 +83,42 @@
                     android:layout_marginRight="19dp"
                     android:src="@drawable/go_to" />
             </LinearLayout>
+
+            <EditText
+                android:id="@+id/et_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:backgroundTint="@color/white"
+                android:gravity="left"
+                android:hint="(必填) 请输入您的推广信息"
+                android:minHeight="100dp"
+                android:padding="8dp"
+                android:paddingTop="5dp"
+                android:textColorHint="@color/color_8a8a8a"
+                android:textSize="15dp" />
+            <!--<GridView-->
+            <io.rong.imkit.model.RongGridView
+                android:id="@+id/grid_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_information"
+                android:layout_gravity="center_horizontal"
+                android:backgroundTint="@color/white"
+                android:gravity="center"
+                android:numColumns="3"
+                android:padding="16dp"
+                android:scrollbars="none"
+                android:verticalSpacing="8dp"
+                tools:listitem="@layout/item_add_pic_grid2" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:hint="必填一张图片"
+                android:paddingBottom="5dp"
+                android:textSize="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -330,10 +392,97 @@
                 </RelativeLayout>
             </LinearLayout>
 
+            <include layout="@layout/h_divide" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/color_f8"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="@string/out_link"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/tv_link"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/pack_day_des"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="选填 请粘贴链接"
+                    android:inputType="textWebEditText"
+                    android:maxLines="1"
+                    android:paddingRight="39dp"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:text="元"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
                 android:background="@color/color_efefef"></View>
+
+            <RelativeLayout
+                android:id="@+id/sponsor_style_span"
+                android:layout_width="match_parent"
+                android:layout_height="49dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="消费红包类型"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:id="@+id/switch_style_stand"
+                    android:layout_width="13dp"
+                    android:layout_height="7dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:src="@drawable/menu_age" />
+
+                <TextView
+                    android:id="@+id/tv_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:layout_toLeftOf="@+id/switch_style_stand"
+                    android:text=""
+                    android:textColor="@color/color_161727"
+                    android:textSize="12dp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/color_d9d9d9" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/sponor_msg_span"
@@ -343,6 +492,7 @@
                 android:background="@color/color_f8">
 
                 <TextView
+                    android:id="@+id/message_sponsor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -355,15 +505,27 @@
                     android:id="@+id/sponor_msg_des_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignRight="@+id/iv_delete"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="39dp"
+                    android:layout_marginRight="10dp"
                     android:gravity="right"
                     android:hint="立即完善"
                     android:textColor="@color/color_161727"
                     android:textSize="14sp" />
 
                 <ImageView
+                    android:id="@+id/iv_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignRight="@+id/item_grid_image"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:padding="4dp"
+                    android:src="@mipmap/ic_transparent_bg_delete"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/item_grid_image"
                     android:layout_width="7dp"
                     android:layout_height="14dp"
                     android:layout_alignParentRight="true"
@@ -372,7 +534,31 @@
                     android:src="@drawable/go_to" />
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/red_rule"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/color_f6f6f6"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/text_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:text="遍地红包说明"
+                    android:textSize="14dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@mipmap/wenhao2"
+                    android:padding="10dp"
+                    android:scaleType="centerInside" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

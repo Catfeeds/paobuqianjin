@@ -1,36 +1,61 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
+import com.lwkandroid.imagepicker.ImagePicker;
+import com.lwkandroid.imagepicker.data.ImageBean;
+import com.lwkandroid.imagepicker.data.ImageDataModel;
+import com.lwkandroid.imagepicker.data.ImagePickType;
+import com.lwkandroid.imagepicker.utils.GlideImagePickerDisplayer;
+import com.lwkandroid.imagepicker.utils.ImagePickerComUtils;
+import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorInfoActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
+import com.paobuqianjin.pbq.step.adapter.GridAddPic2Adapter;
 import com.paobuqianjin.pbq.step.customview.ChooseOneItemWheelPopWindow;
 import com.paobuqianjin.pbq.step.customview.LimitLengthFilter;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.customview.SponsorDialog;
+import com.paobuqianjin.pbq.step.data.alioss.AliOss;
+import com.paobuqianjin.pbq.step.data.alioss.OssService;
 import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ConSumRedStyleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
+import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoTipsCallBack;
 import com.paobuqianjin.pbq.step.model.FlagPreference;
@@ -38,8 +63,10 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
+import com.umeng.socialize.utils.SocializeUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -47,11 +74,13 @@ import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.rong.imkit.model.RongGridView;
 
 public class AddConsumptiveRedBagActivity extends BaseBarActivity implements BaseBarActivity.ToolBarListener {
 
@@ -85,6 +114,28 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
     LinearLayout linearOpenVip;
     @Bind(R.id.banner)
     Banner banner;
+    @Bind(R.id.select_historty)
+    LinearLayout selectHistorty;
+    @Bind(R.id.et_information)
+    EditText etInformation;
+    @Bind(R.id.grid_view)
+    RongGridView gridView;
+    @Bind(R.id.tv_link)
+    EditText tvLink;
+    @Bind(R.id.iv_delete)
+    ImageView ivDelete;
+    @Bind(R.id.red_rule)
+    LinearLayout redRule;
+    @Bind(R.id.btn_confirm)
+    Button btnConfirm;
+    @Bind(R.id.switch_style_stand)
+    ImageView switchStyleStand;
+    @Bind(R.id.tv_style)
+    TextView tvStyle;
+    @Bind(R.id.sponsor_style_span)
+    RelativeLayout sponsorStyleSpan;
+    @Bind(R.id.message_sponsor)
+    TextView messageSponsor;
 
     private ArrayList<String> targetStepArr = new ArrayList<>();
     private ChooseOneItemWheelPopWindow wheelPopWindow;
@@ -95,6 +146,17 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
     private LimitLengthFilter limitLengthFilter;
     SponsorDialog sponsorApplyDialog, sponsorDialogSuccess;
     private ArrayList<AdObject> adList;
+    private GridAddPic2Adapter adapter;
+    public static final int MAX_SIZE = 9;
+    private TranslateAnimation animationCircleType;
+    private View popupCircleTypeView;
+    private PopupWindow popupCircleTypeWindow;
+    private String cachePath;
+    private final int REQUEST_CODE = 111;
+    private ProgressDialog dialog;
+    private final static int VIP_REQUEST = 11;
+    ArrayList<ImageBean> resultList = new ArrayList<>();
+    private double[] location;
 
     @Override
     protected String title() {
@@ -109,7 +171,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
     @Override
     public void clickRight() {
         if (!isVip) {
-            goldenFreeApply();
+            PaoToastUtils.showLongToast(this, "只有金牌会员才能发消费红包");
             return;
         }
         if (fillter()) {
@@ -122,6 +184,30 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
             params.put("day", etDayNum.getText().toString());
             params.put("step", tvStep.getText().toString());
             //params.put("distance", tvStep.getText().toString());
+            if (!TextUtils.isEmpty(tvLink.getText().toString().trim())) {
+                params.put("target_url", tvLink.getText().toString().trim());
+            }
+
+            if (!TextUtils.isEmpty(etInformation.getText().toString().trim())) {
+                params.put("content", etInformation.getText().toString().trim());
+            }
+
+            String images = "";
+            for (SelectPicBean bean : adapter.getData()) {
+                if (!TextUtils.isEmpty(images)) {
+                    images += ",";
+                }
+                images += bean.getImageUrl();
+            }
+            if (!TextUtils.isEmpty(images))
+                params.put("images", images);
+            location = Presenter.getInstance(this).getLocation();
+            if (businessId < 0) {
+                if (location[0] > 0d && location[1] > 0d) {
+                    params.put("latitude", String.valueOf(location[0]));
+                    params.put("latitude", String.valueOf(location[1]));
+                }
+            }
             Presenter.getInstance(this).postPaoBuSimple(NetApi.getMySendVoucher, params, new PaoTipsCallBack() {
                 @Override
                 protected void onSuc(String s) {
@@ -147,10 +233,159 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
         limitLengthFilter = new LimitLengthFilter();
         etRedBagName.setFilters(new InputFilter[]{limitLengthFilter});
         tvStep.setText(DEVALUE_STEP + "");
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("上传中");
+        dialog.setCancelable(false);
+        cachePath = Utils.getDiskCacheDir(this).getAbsolutePath();
         initData();
         setToolBarListener(this);
         loadBanner();
+        initAdapter();
+        //获取金牌会员状态
+        getVipStatus();
     }
+
+
+    private void getConSumRedStyle() {
+        Presenter.getInstance(this).getPaoBuSimple(NetApi.urlConSumStyle, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    ConSumRedStyleResponse conSumRedStyleResponse = new Gson().fromJson(s, ConSumRedStyleResponse.class);
+                    int size = conSumRedStyleResponse.getData().size();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
+    }
+
+    private void initAdapter() {
+        gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
+        adapter = new GridAddPic2Adapter(this, MAX_SIZE);
+        gridView.setAdapter(adapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (position == adapter.getData().size()) {
+                    //点击+
+                    selectPicture();
+                } else {
+                    //点击图片查看大图
+                    popImageView(adapter.getData().get(position).getImageUrl());
+                }
+            }
+        });
+        String image = getIntent().getStringExtra("images");
+        if (!TextUtils.isEmpty(image)) {
+            String[] images = image.split(",");
+            List<SelectPicBean> list = new ArrayList<>();
+            for (String s : images) {
+                SelectPicBean bean = new SelectPicBean();
+                bean.setImageUrl(s);
+                list.add(bean);
+            }
+            adapter.setDatas(list);
+        }
+    }
+
+
+    public void popImageView(String url) {
+        LocalLog.d(TAG, "查看大图");
+        int mScreenWidth = ImagePickerComUtils.getScreenWidth(this);
+        int mScreenHeight = ImagePickerComUtils.getScreenHeight(this);
+        View popBirthSelectView = View.inflate(this, R.layout.image_big_view, null);
+        PhotoView photoView = (PhotoView) popBirthSelectView.findViewById(R.id.photo_view);
+        ImageDataModel.getInstance().getDisplayer().display(this, url, photoView, mScreenWidth, mScreenHeight);
+        PopupWindow popupSelectWindow = new PopupWindow(popBirthSelectView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+      /*  popupSelectWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popImageVie dismiss() ");
+                popupSelectWindow = null;
+            }
+        });*/
+
+        popupSelectWindow.setFocusable(true);
+        popupSelectWindow.setOutsideTouchable(true);
+        popupSelectWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupSelectWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+        popBirthSelectView.startAnimation(animationCircleType);
+    }
+
+
+    private void selectPicture() {
+        hideSoftInputView();
+        popupCircleTypeView = View.inflate(this, R.layout.select_camera_pic, null);
+        popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupCircleTypeWindow onDismiss() enter");
+                popupCircleTypeWindow = null;
+            }
+        });
+        popupCircleTypeWindow.setFocusable(true);
+        popupCircleTypeWindow.setOutsideTouchable(true);
+        popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
+        ((RelativeLayout) popupCircleTypeView.findViewById(R.id.select_camera)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "相机");
+                new ImagePicker()
+                        .pickType(ImagePickType.ONLY_CAMERA)//设置选取类型(拍照、单选、多选)
+                        .maxNum(1)//设置最大选择数量(拍照和单选都是1，修改后也无效)
+                        .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
+                        .cachePath(cachePath)//自定义缓存路径
+                        .doCrop(1, 1, 0, 0)//裁剪功能需要调用这个方法，多选模式下无效
+                        .displayer(new GlideImagePickerDisplayer())//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
+                        .start(AddConsumptiveRedBagActivity.this, REQUEST_CODE);
+                popupCircleTypeWindow.dismiss();
+            }
+        });
+        ((RelativeLayout) popupCircleTypeView.findViewById(R.id.xiangche_camera)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocalLog.d(TAG, "相册");
+                ImagePicker picker = new ImagePicker()
+                        .pickType(ImagePickType.MULTI)//设置选取类型(拍照、单选、多选)
+                        .needCamera(true)//是否需要在界面中显示相机入口(类似微信)
+                        .cachePath(cachePath)//自定义缓存路径
+                        .displayer(new GlideImagePickerDisplayer());//自定义图片加载器，默认是Glide实现的,可自定义图片加载器
+                //设置最大选择数量(拍照和单选都是1，修改后也无效)
+                picker.maxNum(MAX_SIZE - adapter.getData().size());
+                picker.start(AddConsumptiveRedBagActivity.this, REQUEST_CODE);
+                popupCircleTypeWindow.dismiss();
+            }
+        });
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
+                , 0, Animation.RELATIVE_TO_PARENT, 0,
+                Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupCircleTypeWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
+                , 0, 0);
+        popupCircleTypeView.startAnimation(animationCircleType);
+    }
+
 
     private void loadBanner() {
         String bannerUrl = NetApi.urlAd + "?position=voucher_create";
@@ -241,8 +476,6 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
     @Override
     protected void onResume() {
         super.onResume();
-        //获取金牌会员状态
-        getVipStatus();
     }
 
     private void getVipStatus() {
@@ -323,9 +556,16 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
             sponsorApplyDialog.show();
     }
 
-    @OnClick({R.id.stand_circle_pan, R.id.sponor_msg_span, R.id.linear_open_vip})
+    @OnClick({R.id.stand_circle_pan, R.id.sponor_msg_span, R.id.linear_open_vip, R.id.select_historty, R.id.sponsor_style_span})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.sponsor_style_span:
+
+                break;
+            case R.id.select_historty:
+                LocalLog.d(TAG, "选择历史记录");
+                //TODO
+                break;
             case R.id.stand_circle_pan:
                 if (wheelPopWindow == null && targetStepArr.size() > 0) {
                     wheelPopWindow = new ChooseOneItemWheelPopWindow(this, targetStepArr);
@@ -360,7 +600,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
                 }
                 break;
             case R.id.linear_open_vip:
-                startActivity(GoldenSponsoractivity.class, null);
+                startActivityForResult(new Intent().setClass(AddConsumptiveRedBagActivity.this, GoldenSponsoractivity.class), VIP_REQUEST);
                 break;
         }
     }
@@ -447,6 +687,49 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
         });
     }
 
+    public class ImageUpTask extends AsyncTask<ImageBean, Integer, String> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            SocializeUtils.safeShowDialog(dialog);
+        }
+
+        @Override
+        protected String doInBackground(ImageBean... strings) {
+            AliOss aliOss = new AliOss();
+            aliOss.initRegion(getApplicationContext());
+            OssService ossService = aliOss.initOSS(getApplicationContext());
+            for (ImageBean path : strings) {
+                LocalLog.d(TAG, "path = " + path);
+                String url = null;
+                url = ossService.asyncPutImageLocal(path.getImagePath());
+                final SelectPicBean selectPicBean = new SelectPicBean();
+                selectPicBean.setFileUrl(path.getImagePath());
+                selectPicBean.setImageUrl(url);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.setData(selectPicBean);
+                    }
+                });
+                LocalLog.d(TAG, "url = " + url);
+            }
+            SocializeUtils.safeCloseDialog(dialog);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            LocalLog.d(TAG, "onPostExecute() enter" + s);
+            super.onPostExecute(s);
+            //SocializeUtils.safeCloseDialog(dialog);
+//            putUserInfoParam.setAvatar(s);
+//            Presenter.getInstance(getContext()).putUserInfo(userInfo.getId(), putUserInfoParam);
+        }
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -469,6 +752,25 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
                     sponorMsgDesDetail.setText(data.getStringExtra("name"));
                 }
             }
+        } else if (requestCode == VIP_REQUEST) {
+            getVipStatus();
+        } else if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            SocializeUtils.safeShowDialog(dialog);
+            resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);
+            String content = "";
+            for (ImageBean imageBean : resultList) {
+                content = content + imageBean.toString() + "\n";
+            }
+            LocalLog.d(TAG, "content = " + content);
+            if (resultList != null && resultList.size() > 0) {
+                ImageBean[] beans = new ImageBean[resultList.size()];
+                beans = resultList.toArray(beans);
+                ImageUpTask imageUpTask = new ImageUpTask();
+                imageUpTask.execute(beans);
+            } else {
+                LocalLog.d(TAG, "未知操作");
+            }
+            return;
         }
     }
 }

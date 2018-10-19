@@ -15,7 +15,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
-import android.text.style.TypefaceSpan;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -49,12 +48,15 @@ import com.lwkandroid.imagepicker.widget.photoview.PhotoView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.BigImageView;
 import com.paobuqianjin.pbq.step.customview.ImageViewPager;
+import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.bean.bundle.GoodImageData;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ConSumRedDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByRedResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorCommentResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoTipsCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
@@ -63,6 +65,7 @@ import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.GetConsumptiveRBResultActivity;
 import com.paobuqianjin.pbq.step.view.activity.RoundRedRelActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
@@ -78,6 +81,7 @@ import com.paobuqianjin.pbq.step.view.emoji.EmotionLayout;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionExtClickListener;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionSelectedListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -93,16 +97,11 @@ import butterknife.OnClick;
 import static com.paobuqianjin.pbq.step.view.emoji.EmotionViewPagerAdapter.numToHex8;
 
 /**
- * Created by pbq on 2018/9/10.
+ * Created by pbq on 2018/10/19.
  */
-/*
-@className :RedDetailFragment
-*@date 2018/9/10
-*@author
-*@description 附近红包是对商家进行评论
-*/
-public class RedDetailFragment extends BaseBarStyleTextViewFragment {
-    private final static String TAG = RedDetailFragment.class.getSimpleName();
+
+public class ConsumRedDetailFragment extends BaseBarStyleTextViewFragment {
+    private final static String TAG = ConsumRedDetailFragment.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -111,10 +110,6 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
-    @Bind(R.id.sponsor_images)
-    ViewPager sponsorImages;
-    @Bind(R.id.pic_sample)
-    ImageView picSample;
     @Bind(R.id.current_pic)
     TextView currentPic;
     @Bind(R.id.sponsor_face_span)
@@ -208,8 +203,6 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     ViewPager redImages;
     @Bind(R.id.pic_red_sample)
     ImageView picRedSample;
-    @Bind(R.id.current_red_pic)
-    TextView currentRedPic;
     @Bind(R.id.red_images_span)
     FrameLayout redImagesSpan;
     @Bind(R.id.sponsor_sample)
@@ -230,18 +223,26 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     View vEmpty;
     @Bind(R.id.pic_index)
     RelativeLayout picIndex;
-    @Bind(R.id.time_wait)
-    TextView timeWait;
-    @Bind(R.id.tick_money)
-    TextView tickMoney;
-    @Bind(R.id.tick_condition)
-    TextView tickCondition;
-    @Bind(R.id.tick_time)
-    TextView tickTime;
-    @Bind(R.id.recv_tick)
-    TextView recvTick;
-    @Bind(R.id.ticket_s)
-    RelativeLayout ticketS;
+    @Bind(R.id.tv_name)
+    TextView tvName;
+    @Bind(R.id.tv_step)
+    TextView tvStep;
+    @Bind(R.id.im_loc)
+    ImageView imLoc;
+    @Bind(R.id.tv_distance)
+    TextView tvDistance;
+    @Bind(R.id.tv_step_linear)
+    LinearLayout tvStepLinear;
+    @Bind(R.id.tv_date)
+    TextView tvDate;
+    @Bind(R.id.tv_money)
+    TextView tvMoney;
+    @Bind(R.id.tv_limite_money)
+    TextView tvLimiteMoney;
+    @Bind(R.id.tv_status)
+    TextView tvStatus;
+    @Bind(R.id.ticket_des)
+    RelativeLayout ticketDes;
     private int bussinessId = -1;
     private int pageIndex = 1, pageCount = 0;
     private final static int PAGESIZE = 10;
@@ -253,13 +254,12 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     LinearLayout editStill;
     ArrayList<SponsorCommentResponse.DataBeanX.DataBean.CommentarrayBean> arrayList = new ArrayList<>();
     LinearLayoutManager layoutManager, layoutManagerRec;
-    private boolean isLoading = false;
     private TranslateAnimation animationCircleType;
     private View selectMapView;
     private PopupWindow selectMapWindow;
     List<View> mRedView = new ArrayList<>();
     List<String> mapList = new ArrayList<>();
-    ArrayList<NearByRedResponse.DataBean.ReceiverListBean> arrayRecList = new ArrayList<>();
+    ArrayList<ConSumRedDetailResponse.DataBean.ReceiverListBean> arrayRecList = new ArrayList<>();
     private int currentImage = 0;
     private View popBirthSelectView;
     private PopupWindow popupSelectWindow;
@@ -271,6 +271,8 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     @Bind(R.id.notify)
     TextView notifyText;
     Thread thread;
+    @Bind(R.id.time_wait)
+    TextView timeWait;
 
     public int T = 4; //倒计时时长
     private Handler mHandler = new Handler();
@@ -282,7 +284,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.red_detail_fg;
+        return R.layout.consum_red_detail_fg;
     }
 
     @Override
@@ -308,7 +310,6 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
         goodsA = (ImageView) viewRoot.findViewById(R.id.goods_a);
         goodsB = (ImageView) viewRoot.findViewById(R.id.goods_b);
         gotoSponsor = (RelativeLayout) viewRoot.findViewById(R.id.goto_sponsor);
-        sponsorImages = (ViewPager) viewRoot.findViewById(R.id.sponsor_images);
         sponsorName = (TextView) viewRoot.findViewById(R.id.sponsor_name);
         collectSponsor = (LinearLayout) viewRoot.findViewById(R.id.collect_sponsor);
         listReds = (LinearLayout) viewRoot.findViewById(R.id.list_reds);
@@ -316,11 +317,6 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
         barNull = (RelativeLayout) viewRoot.findViewById(R.id.sponsor_detail);
         picIndex = (RelativeLayout) viewRoot.findViewById(R.id.pic_index);
         notifyText = (TextView) viewRoot.findViewById(R.id.notify);
-        ticketS = (RelativeLayout) viewRoot.findViewById(R.id.ticket_s);
-        tickMoney = (TextView) viewRoot.findViewById(R.id.tick_money);
-        tickCondition = (TextView) viewRoot.findViewById(R.id.tick_condition);
-        tickTime = (TextView) viewRoot.findViewById(R.id.tick_time);
-        recvTick = (TextView) viewRoot.findViewById(R.id.recv_tick);
         gotoSponsor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -341,18 +337,17 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
         if (intent != null) {
             int businessid = intent.getIntExtra(getContext().getPackageName() + "businessid", -1);
             int red_id = intent.getIntExtra(getContext().getPackageName() + "red_id", -1);
-            info = intent.getStringExtra(getContext().getPackageName() + "info");
-            LocalLog.d(TAG, "businessid =  " + businessid + "red_id = " + red_id + "info =" + info);
+            LocalLog.d(TAG, "businessid =  " + businessid + "red_id = " + red_id);
             if (businessid != -1) {
                 this.bussinessId = businessid;
                 if (red_id != -1) {
                     this.red_id = String.valueOf(red_id);
                     setTitle("红包详情");
-                    redResultStr = intent.getStringExtra(getContext().getPackageName() + "red_result");
+ /*                   redResultStr = intent.getStringExtra(getContext().getPackageName() + "red_result");
                     LocalLog.d(TAG, "redResultStr = " + redResultStr);
                     if (!TextUtils.isEmpty(redResultStr)) {
                         secondWait(viewRoot);
-                    }
+                    }*/
                     getRedDetail(String.valueOf(red_id));
                     collectSponsor.setVisibility(View.GONE);
                     loadContent(businessid);
@@ -368,8 +363,8 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                         }
                     });*/
                 } else {
-                    redResultStr = intent.getStringExtra(getContext().getPackageName() + "red_result");
-                    LocalLog.d(TAG, "redResultStr = " + redResultStr);
+/*                    redResultStr = intent.getStringExtra(getContext().getPackageName() + "red_result");
+                    LocalLog.d(TAG, "redResultStr = " + redResultStr);*/
                     Presenter.getInstance(getContext()).businessDetail(businessid, sponsorInnerCallBack);
                     checkCollectState(false);
                     loadContent(businessid);
@@ -379,11 +374,11 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                 if (red_id != -1) {
                     this.red_id = String.valueOf(red_id);
                     setTitle("红包详情");
-                    redResultStr = intent.getStringExtra(getContext().getPackageName() + "red_result");
+                    /*redResultStr = intent.getStringExtra(getContext().getPackageName() + "red_result");
                     LocalLog.d(TAG, "redResultStr = " + redResultStr);
                     if (!TextUtils.isEmpty(redResultStr)) {
                         secondWait(viewRoot);
-                    }
+                    }*/
                     getRedDetail(String.valueOf(red_id));
                     collectSponsor.setVisibility(View.GONE);
                 }
@@ -555,30 +550,28 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
     }
 
     private void getRedDetail(String red_id) {
-        Map<String, String> param = new HashMap<>();
-        param.put("red_id", red_id);
-        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlNearRedPkg, param, new PaoCallBack() {
+        String url = NetApi.getMySendVoucher + "/" + red_id;
+        Presenter.getInstance(getContext()).getPaoBuSimple(url, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 if (!isAdded()) {
                     return;
                 }
                 try {
-                    final NearByRedResponse nearByRedResponse = new Gson().fromJson(s, NearByRedResponse.class);
-                    final NearByRedResponse.DataBean dataBean = nearByRedResponse.getData();
-                    redResultStr = nearByRedResponse.getData().getIncome_money();
+                    final ConSumRedDetailResponse conSumRedDetailResponse = new Gson().fromJson(s, ConSumRedDetailResponse.class);
+                    final ConSumRedDetailResponse.DataBean dataBean = conSumRedDetailResponse.getData();
                     if (dataBean != null) {
                         LocalLog.d(TAG, "dataBean  =  " + dataBean.toString());
                         if (sponsorTelNumStr == null) {
                             return;
                         }
-                        sponsorName.setText(dataBean.getName());
-                        sponsorTelNumStr.setText(dataBean.getTel());
+                        sponsorName.setText(dataBean.getBusinessname());
+                        sponsorTelNumStr.setText(dataBean.getPhone());
                         sponsorTelNumStr.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent intent1 = new Intent(Intent.ACTION_DIAL);
-                                intent1.setData(Uri.parse("tel:" + dataBean.getTel()));
+                                intent1.setData(Uri.parse("tel:" + dataBean.getPhone()));
                                 startActivity(intent1);
                             }
                         });
@@ -622,115 +615,15 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                             headRecycler.setAdapter(likeUserAdapter);
                         }
 
-                        if (!TextUtils.isEmpty(dataBean.getRed_content())) {
-                            redInfo.setText(dataBean.getRed_content());
+                        if (!TextUtils.isEmpty(dataBean.getContent())) {
+                            redInfo.setText(dataBean.getContent());
                             redInfo.setVisibility(View.VISIBLE);
                         } else {
                             redInfo.setVisibility(View.GONE);
                         }
-                        if (!TextUtils.isEmpty(dataBean.getLogo())) {
-                            View view = LayoutInflater.from(getContext()).inflate(R.layout.sponsor_image_view, null);
-                            ImageView imageView = (ImageView) view.findViewById(R.id.sponsor_env_img);
-                            ImageView qrCode = (ImageView) view.findViewById(R.id.qrcode);
-                            RelativeLayout circleQr = (RelativeLayout) view.findViewById(R.id.circle_qr);
-                            if (!TextUtils.isEmpty(redResultStr)) {
-                                imageView.setImageResource(R.drawable.red_result);
-                                if (!TextUtils.isEmpty(dataBean.getCircleid())) {
-                                    try {
-                                        if (Integer.parseInt(dataBean.getCircleid()) >= 1) {
-                                            circleQr.setVisibility(View.VISIBLE);
-                                            final String circleUlr = NetApi.urlShareCd + dataBean.getCircleid();
-                                            encodeBitmap(qrCode, circleUlr, 1, 1);
-                                            qrCode.setOnLongClickListener(new View.OnLongClickListener() {
-                                                @Override
-                                                public boolean onLongClick(View v) {
-                                                    try {
-                                                        Intent intent = new Intent();
-                                                        intent.setClass(getContext(), CirCleDetailActivity.class);
-                                                        intent.putExtra(getContext().getPackageName() + "circleid", Integer.parseInt(dataBean.getCircleid()));
-                                                        startActivity(intent);
-                                                    } catch (NumberFormatException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                    return false;
-                                                }
-                                            });
-                                            TextView pswTv = (TextView) view.findViewById(R.id.circle_pwd);
-                                            if (!TextUtils.isEmpty(dataBean.getCircle_pwd())) {
-                                                pswTv.setText("圈子密码：" + dataBean.getCircle_pwd());
-                                                pswTv.setVisibility(View.VISIBLE);
-                                            } else {
-                                                pswTv.setVisibility(View.GONE);
-                                            }
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-                                TextView redResultTV = (TextView) view.findViewById(R.id.red_result);
-                                TextView redSuccessTv = (TextView) view.findViewById(R.id.red_success);
-                                TextView redInWalletTv = (TextView) view.findViewById(R.id.into_wallet);
-                                try {
-                                    float money = Float.parseFloat(redResultStr);
-                                    if (money > 0f) {
-                                        redSuccessTv.setVisibility(View.VISIBLE);
-                                        redInWalletTv.setVisibility(View.VISIBLE);
-                                        String showResult = "￥" + redResultStr + "元";
-                                        SpannableString spannableString = new SpannableString(showResult);
-                                        spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("￥" + redResultStr).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                                        redResultTV.setText(spannableString);
-                                    } else {
-                                        redResultTV.setTextSize(14);
-                                        redResultTV.setTextColor(Color.BLACK);
-                                        redResultTV.setText("您还未领取该红包");
-                                    }
-                                } catch (Exception e) {
-                                    redResultTV.setTextSize(14);
-                                    redResultTV.setTextColor(Color.BLACK);
-                                    redResultTV.setText(redResultStr);
-                                }
-                            } else {
-                                Presenter.getInstance(getContext()).getImage(imageView, dataBean.getLogo());
-                            }
-                            Mview.add(view);
-                        }
+                        /*优惠券*/
 
                         /*优惠券*/
-                        if (nearByRedResponse.getData().getVoucherid() > 0) {
-                            ticketS.setVisibility(View.VISIBLE);
-                            String money = "￥" + nearByRedResponse.getData().getVoucher().getMoney() + "店铺优惠券";
-                            SpannableString spannableString = new SpannableString(money);
-                            spannableString.setSpan(new AbsoluteSizeSpan(28, true), "￥".length(), ("￥" + nearByRedResponse.getData().getVoucher().getMoney()).length(),
-                                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                            spannableString.setSpan(new TypefaceSpan("bold"), "￥".length(), ("￥" + nearByRedResponse.getData().getVoucher().getMoney()).length(),
-                                    Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                            tickMoney.setText(spannableString);
-                            tickCondition.setText("订单满" + nearByRedResponse.getData().getVoucher().getCondition() + "元可用");
-                            String time = DateTimeUtil.formatDateTime(nearByRedResponse.getData().getVoucher().getE_time() * 1000, DateTimeUtil.DF_YYYY_MM_DD);
-                            tickTime.setText("有效期至:" + time.replace("-", "."));
-                            if (nearByRedResponse.getData().getVoucher().getStatus() == 0) {
-                                recvTick.setText("立即领取");
-                                recvTick.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        if ("立即领取".equals(recvTick.getText().toString()))
-                                            pullDownConsumptiveRedBag(String.valueOf(nearByRedResponse.getData().getVoucher().getVid()));
-                                    }
-                                });
-                            } else if (nearByRedResponse.getData().getVoucher().getStatus() == 1) {
-                                recvTick.setText("已领取");
-                            } else if (nearByRedResponse.getData().getVoucher().getStatus() == 2) {
-                                recvTick.setText("已下架");
-                            } else if (nearByRedResponse.getData().getVoucher().getStatus() == 3) {
-                                recvTick.setText("已过期");
-                            } else if (nearByRedResponse.getData().getVoucher().getStatus() == 4) {
-                                recvTick.setText("已领完");
-                            }
-                        } else {
-                            ticketS.setVisibility(View.GONE);
-                        }
-                    /*优惠券*/
                         int sizeEnv = 0;
                         final String tarUrl = dataBean.getTarget_url();
                         if (!TextUtils.isEmpty(tarUrl)) {
@@ -738,11 +631,16 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                         }
                         if (dataBean.getRed_img() != null) {
                             sizeEnv = dataBean.getRed_img().size();
+                            List<String> strings = new ArrayList<>();
+                            for (int j = 0; j < sizeEnv; j++) {
+                                strings.add(dataBean.getRed_img().get(j).getUrl());
+                            }
+                            final List<String> stringImage = strings;
                             redImagesSpan.setVisibility(View.VISIBLE);
                             for (int i = 0; i < sizeEnv; i++) {
                                 View view = LayoutInflater.from(getContext()).inflate(R.layout.sponsor_image_view, null);
                                 ImageView imageView = (ImageView) view.findViewById(R.id.sponsor_env_img);
-                                Presenter.getInstance(getContext()).getImage(imageView, dataBean.getRed_img().get(i));
+                                Presenter.getInstance(getContext()).getImage(imageView, dataBean.getRed_img().get(i).getUrl());
                                 imageView.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -751,16 +649,13 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                                         } else {
                                             LocalLog.d(TAG, "查看大图 currentImage = " + currentImage);
                                             if (popBigImageInterface != null && dataBean.getRed_img().size() >= 1) {
-                                                popBigImageInterface.popImageView(dataBean.getRed_img(), currentImage);
+                                                popBigImageInterface.popImageView(stringImage, currentImage);
                                             }
                                         }
                                     }
                                 });
                                 mRedView.add(view);
                             }
-                        }
-                        if (Mview.size() > 0) {
-                            sponsorImages.setAdapter(new ImageViewPagerAdapter(getContext(), Mview));
                         }
                         if (mRedView.size() > 0) {
                             if (mRedView.size() == 1) {
@@ -776,26 +671,26 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                             size = dataBean.getBusiness_img().size();
                             for (int i = 0; i < size; i++) {
                                 SponsorDetailResponse.DataBean.EnvironmentImgsBean environmentImgsBean = new SponsorDetailResponse.DataBean.EnvironmentImgsBean();
-                                environmentImgsBean.setUrl(dataBean.getBusiness_img().get(i));
+                                environmentImgsBean.setUrl(dataBean.getBusiness_img().get(i).getUrl());
                                 goodsImgsBeans.add(environmentImgsBean);
                             }
 
                             if (size == 1) {
                                 goodsA.setVisibility(View.VISIBLE);
-                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getBusiness_img().get(0));
+                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getBusiness_img().get(0).getUrl());
                             } else if (size == 2) {
                                 goodsA.setVisibility(View.VISIBLE);
                                 centerPic.setVisibility(View.VISIBLE);
-                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getBusiness_img().get(0));
-                                Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getBusiness_img().get(1));
+                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getBusiness_img().get(0).getUrl());
+                                Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getBusiness_img().get(1).getUrl());
                             } else if (size >= 3) {
 
                                 goodsA.setVisibility(View.VISIBLE);
                                 centerPic.setVisibility(View.VISIBLE);
                                 goodsB.setVisibility(View.VISIBLE);
-                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getBusiness_img().get(0));
-                                Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getBusiness_img().get(1));
-                                Presenter.getInstance(getContext()).getImage(goodsB, dataBean.getBusiness_img().get(2));
+                                Presenter.getInstance(getContext()).getImage(goodsA, dataBean.getBusiness_img().get(0).getUrl());
+                                Presenter.getInstance(getContext()).getImage(centerPic, dataBean.getBusiness_img().get(1).getUrl());
+                                Presenter.getInstance(getContext()).getImage(goodsB, dataBean.getBusiness_img().get(2).getUrl());
                             }
                         }
 
@@ -812,37 +707,6 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
         });
     }
 
-    /**
-     * 领取消费红包
-     */
-    private void pullDownConsumptiveRedBag(String idStr) {
-        double[] location = Presenter.getInstance(getContext()).getLocation();
-        if (location[0] == 0d && location[1] == 0d) {
-            PaoToastUtils.showLongToast(getContext(), "获取位置失败!");
-            return;
-        }
-        Map<String, String> params = new HashMap<>();
-        params.put("voucherid", idStr);
-        params.put("longitude", String.valueOf(location[1]));
-        params.put("latitude", String.valueOf(location[0]));
-        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.receiveVoucher, params, new PaoCallBack() {
-            @Override
-            protected void onSuc(String s) {
-                if (isAdded())
-                    recvTick.setText("已领取");
-            }
-
-            @Override
-            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                if (errorStr.contains("距离")) {
-
-                } else {
-
-                }
-
-            }
-        });
-    }
 
     private void encodeBitmap(ImageView imageView, String url, int mgWidth, int imgWidth) {
         BitMatrix result = null;
@@ -1284,10 +1148,6 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                                 Mview.add(view);
                             }
                         }*/
-                        if (Mview.size() > 0) {
-                            sponsorImages.setAdapter(new ImageViewPagerAdapter(getContext(), Mview));
-                            /*sponsorImages.addOnPageChangeListener(onPageChangeListener);*/
-                        }
                         int size = 0;
                         if (dataBean.getEnvironment_imgs() != null) {
                             size = dataBean.getEnvironment_imgs().size();
@@ -1535,7 +1395,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
         public void popImageView(List<String> images, int index);
     }
 
-    private PopBigImageInterface popBigImageInterface = new PopBigImageInterface() {
+    private RedDetailFragment.PopBigImageInterface popBigImageInterface = new RedDetailFragment.PopBigImageInterface() {
         @Override
         public void popImageView(String url) {
             if (!isAdded()) {
@@ -1638,4 +1498,59 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
         });
     }
 
+/*
+    *//**
+     * 使用消费红包
+     *
+     * @param recordid
+     *//*
+    private void useConsumptiveRedBag(String recordid) {
+        Map<String, String> params = new HashMap<>();
+        params.put("recordid", recordid);
+        Presenter.getInstance(this).postPaoBuSimple(NetApi.useVoucher, params, new PaoTipsCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+
+                    JSONObject jsonObject = new JSONObject(s);
+                    jsonObject = jsonObject.getJSONObject("data");
+                    String vNo = jsonObject.getString("vno");
+                    final NormalDialog codeDialog = new NormalDialog(GetConsumptiveRBResultActivity.this);
+                    codeDialog.setMessage("消费红包码：" + vNo);
+                    codeDialog.setSingleBtn(true);
+                    codeDialog.setYesOnclickListener(getString(R.string.confirm), new NormalDialog.onYesOnclickListener() {
+                        @Override
+                        public void onYesClick() {
+                            codeDialog.dismiss();
+                        }
+                    });
+                    codeDialog.show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @OnClick(R.id.tv_status)
+    public void onClick() {
+        final NormalDialog dialog = new NormalDialog(this);
+        dialog.setMessage("确定要使用消费红包吗?\n" +
+                "使用后则无法再次使用。");
+        dialog.setYesOnclickListener(getString(R.string.confirm_yes), new NormalDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                dialog.dismiss();
+                useConsumptiveRedBag(myVoucherId);
+            }
+        });
+        dialog.setNoOnclickListener(getString(R.string.cancel_no), new NormalDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+    }*/
 }

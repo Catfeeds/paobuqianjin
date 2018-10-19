@@ -579,6 +579,7 @@
         <activity android:name=".view.activity.BindCardActivity" />
         <activity android:name=".view.activity.InputCardInfoActivity" />
         <activity android:name=".view.activity.MyBankCardActivity" />
+        <activity android:name=".view.activity.ConsumHsRedActivity"/>
         <!-- 密码管理 -->
         <activity android:name=".view.activity.PayManagerActivity" />
         <activity android:name=".view.activity.ForgetPayWordActivity" />

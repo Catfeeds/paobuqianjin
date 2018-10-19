@@ -40,7 +40,7 @@ public class ShopSendedRdBagAdapter extends RecyclerView.Adapter<ShopSendedRdBag
 
     @Override
     public ShopSendedRedBagHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ShopSendedRedBagHolder(LayoutInflater.from(context).inflate(R.layout.item_shop_sended_red_bag,null));
+        return new ShopSendedRedBagHolder(LayoutInflater.from(context).inflate(R.layout.item_shop_sended_red_bag_old, null));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ShopSendedRdBagAdapter extends RecyclerView.Adapter<ShopSendedRdBag
         holder.tv_step.setText(context.getString(R.string.target_step_s) + itemBean.getStep());
         holder.tv_date.setText(context.getString(R.string.end_time_x, dateFormat.format(new Date(itemBean.getE_time()))));
         holder.tv_money.setText(context.getString(R.string.yuan_icon) + itemBean.getMoney());
-        holder.tv_limite_money.setText(context.getString(R.string.use_by_x,itemBean.getCondition()));
+        holder.tv_limite_money.setText(context.getString(R.string.use_by_x, itemBean.getCondition()));
         holder.tv_shop_name.setText(itemBean.getBusinessname());
         switch (itemBean.getStatus()) {//0正常|1已下架|2已过期|3已领完
             case 0:
@@ -62,7 +62,7 @@ public class ShopSendedRdBagAdapter extends RecyclerView.Adapter<ShopSendedRdBag
                 holder.tv_status.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(myCustomClickLis!=null) myCustomClickLis.OnItemClick(view, position);
+                        if (myCustomClickLis != null) myCustomClickLis.OnItemClick(view, position);
                     }
                 });
                 break;

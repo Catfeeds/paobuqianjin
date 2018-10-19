@@ -281,6 +281,8 @@ public class NetApi {
     public final static String getMyVoucher = url + "v1/Voucher/myList";
     //获取我发布的消费红包
     public final static String getMySendVoucher = url + "v1/Voucher";
+    //我发布的消费红包历史记录
+    public final static String getMySendHis = url + "v1/Voucher/mySendList";
     //获取单个消费红包的领取记录
     public final static String getVoucherBeGetHis = url + "v1/Voucher/recordList";
     //获取所有消费红包的领取记录
@@ -365,4 +367,6 @@ public class NetApi {
     public final static String ulrEditRRED = url + "v1/RedpacketMap/";
     //编辑精准红包
     public final static String urlEditNear = url + "v1/RedpacketNew/";
+    //消费红包分类列表
+    public final static String urlConSumStyle = url + "v1/Voucher/cateList";
 }

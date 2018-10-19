@@ -66,7 +66,6 @@ public class AllTaskFragment extends BaseFragment implements ReceiveTaskInterfac
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         layoutManager = new LinearLayoutManager(getContext());
         allTaskRecycler = (RecyclerView) viewRoot.findViewById(R.id.all_task_recycler);
         allTaskRecycler.setLayoutManager(layoutManager);
