@@ -202,7 +202,7 @@ public class HotCircleFragment extends BaseFragment {
 
     public void popRedPkgButton() {
         LocalLog.d(TAG, "popRedPkgButton() 弹出红包");
-        if (!isAdded()) {
+        if (!isAdded() ||getActivity().isFinishing()) {
             return;
         }
         if (popOpWindowRedButtonHori != null && popOpWindowRedButtonHori.isShowing()) {

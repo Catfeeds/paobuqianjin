@@ -1,15 +1,15 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
-
-/**
- * Created by pbq on 2018/2/5.
- */
-
-public class PostUserStepResponse {
-
+/*
+@className :StepReWardResponse
+*@date 2018/10/23
+*@author
+*@description 领取步数积分奖励
+*/
+public class StepReWardResponse {
     /**
      * error : 0
      * message : success
-     * data : {"is_receive":1,"type":6}
+     * data : {"is_existe":0,"type":8,"credit":100}
      */
 
     private int error;
@@ -42,19 +42,21 @@ public class PostUserStepResponse {
 
     public static class DataBean {
         /**
-         * is_receive : 1
-         * type : 6
+         * is_existe : 0
+         * type : 8
+         * credit : 100
          */
 
-        private int is_receive;
+        private int is_existe;
         private int type;
+        private int credit;
 
-        public int getIs_receive() {
-            return is_receive;
+        public int getIs_existe() {
+            return is_existe;
         }
 
-        public void setIs_receive(int is_receive) {
-            this.is_receive = is_receive;
+        public void setIs_existe(int is_existe) {
+            this.is_existe = is_existe;
         }
 
         public int getType() {
@@ -63,6 +65,14 @@ public class PostUserStepResponse {
 
         public void setType(int type) {
             this.type = type;
+        }
+
+        public int getCredit() {
+            return credit;
+        }
+
+        public void setCredit(int credit) {
+            this.credit = credit;
         }
     }
 }

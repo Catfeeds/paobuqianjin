@@ -209,6 +209,22 @@ public class ConSumSendHisResponse {
             }
 
             public static class DataBean implements Serializable {
+                public String getCatid() {
+                    return catid;
+                }
+
+                public void setCatid(String catid) {
+                    this.catid = catid;
+                }
+
+                public String getCate_name() {
+                    return cate_name;
+                }
+
+                public void setCate_name(String cate_name) {
+                    this.cate_name = cate_name;
+                }
+
                 /**
                  * voucherid : 254
                  * type : 1
@@ -236,8 +252,11 @@ public class ConSumSendHisResponse {
                  * comment_count : 0
                  * vimg_arr : ["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/10/18/35822201810181427129953.jpg"]
                  * vimg : http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/10/18/35822201810181427129953.jpg
+                 * catid	整型	类别id
+                 cate_name	字符串	类别名称
                  */
-
+                private String catid;
+                private String cate_name;
                 private int voucherid;
                 private int type;
                 private String vname;

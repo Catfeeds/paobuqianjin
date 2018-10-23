@@ -238,6 +238,8 @@ public class NetApi {
     public final static String urlPassCheck = url + "v1/PayPassword/chcekPw";
     //TODO 添加支付密码,实名认证
     public final static String urlAddPassIdentify = url + "v1/PayPassword/realAddPw";
+    //TODO 短信修改支付密码
+    public final static String urlResPass = url + "v1/PayPassword/resetPwdByphone";
     //TODO 验证银行卡信息
     public final static String urlValidateBank = url + "v1/PayPassword/validateUserBank";
     //TODO 实名强制修改密码
@@ -369,4 +371,8 @@ public class NetApi {
     public final static String urlEditNear = url + "v1/RedpacketNew/";
     //消费红包分类列表
     public final static String urlConSumStyle = url + "v1/Voucher/cateList";
+    //消费红包的领取详细信息
+    public final static String urlConSumInfo = url + "v1/Voucher/voucherReceiveInfo";
+    //根据步数领取积分
+    public final static String urlStepReWard = url + "v1/UserCredit/receiveByStep";
 }

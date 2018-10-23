@@ -45,6 +45,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RecRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.StepReWardResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TwentyOneResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
@@ -87,6 +88,7 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -354,6 +356,105 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         });
     }
 
+    /*运动积分奖励*/
+    private void logAndStepReward(final int type) {
+        if (!isAdded()) {
+            return;
+        }
+        if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
+            LocalLog.d(TAG, "红包在显示");
+            return;
+        }
+        popRedPkgView = View.inflate(getContext(), R.layout.register_reword, null);
+        openRedPkgView = (ImageView) popRedPkgView.findViewById(R.id.open_first);
+        popupRedPkgWindow = new PopupWindow(popRedPkgView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupRedPkgWindow = null;
+            }
+        });
+
+        final RelativeLayout unOpenRkg = (RelativeLayout) popRedPkgView.findViewById(R.id.start_red_kg);
+        popupRedPkgWindow.setFocusable(true);
+        popupRedPkgWindow.setOutsideTouchable(true);
+        popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        popRedPkgView.findViewById(R.id.opened_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupRedPkgWindow.dismiss();
+            }
+        });
+        popRedPkgView.findViewById(R.id.cancel_open).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupRedPkgWindow.dismiss();
+                FlagPreference.setCurrentDate(getContext(), DateTimeUtil.getCurrentTime());
+            }
+        });
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+        openRedPkgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                LocalLog.d(TAG, "领取积分奖励");
+                final Rotate3dAnimation animation = new Rotate3dAnimation(0, 359, view.getWidth() / 2f, view.getHeight() / 2f, 30, true);
+                animation.setDuration(500);
+                animation.setRepeatCount(Animation.INFINITE);
+                animation.setFillAfter(true);
+                view.setAnimation(animation);
+                view.startAnimation(animation);
+
+                openRedPkgView.setEnabled(false);
+                openRedPkgView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (openRedPkgView != null && openRedPkgView.getVisibility() == View.VISIBLE
+                                && popupRedPkgWindow != null
+                                && popupRedPkgWindow.isShowing()) {
+                            openRedPkgView.clearAnimation();
+                        }
+                    }
+                }, 2 * 60 * 1000);
+                Map<String, String> param = new HashMap<>();
+                param.put("type", String.valueOf(type));
+                Presenter.getInstance(getActivity()).postPaoBuSimple(NetApi.urlStepReWard, param, new PaoCallBack() {
+                    @Override
+                    protected void onSuc(String s) {
+                        openRedPkgView.clearAnimation();
+                        try {
+                            StepReWardResponse stepReWardResponse = new Gson().fromJson(s, StepReWardResponse.class);
+                            RelativeLayout resultShow = (RelativeLayout) popRedPkgView.findViewById(R.id.red_result);
+                            String dayStepDollar = String.format(getString(R.string.day_step_dollar), stepReWardResponse.getData().getCredit());
+                            TextView dayStepTv = (TextView) popRedPkgView.findViewById(R.id.step_dollar);
+                            dayStepTv.setText(dayStepDollar);
+                            RedPkgAnimation pkgAnimation = new RedPkgAnimation();
+                            pkgAnimation.setHideAnimation(unOpenRkg, 200);
+                            pkgAnimation.setShowAnimation(resultShow, 200);
+                        } catch (JsonSyntaxException j) {
+                            LocalLog.d(TAG, "数据错误!");
+                        }
+                    }
+
+                    @Override
+                    protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                        LocalLog.d(TAG, "领取失败!");
+                        openRedPkgView.clearAnimation();
+                    }
+                });
+
+            }
+        });
+        popupRedPkgWindow.showAtLocation(getActivity().findViewById(R.id.home_page), Gravity.CENTER, 0, 0);
+
+        popRedPkgView.startAnimation(animationCircleType);
+    }
+
+    /*新手红包*/
     private void showFirstRedPkg() {
         if (!isAdded()) {
             return;
@@ -912,8 +1013,13 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
 
     @Override
     public void response(PostUserStepResponse postUserStepResponse) {
-        LocalLog.d(TAG, "PostUserStepResponse() enter");
 
+        if (postUserStepResponse.getData() != null) {
+            if (postUserStepResponse.getData().getIs_receive() == 1) {
+                LocalLog.d(TAG, "有步币可以领取");
+                logAndStepReward(postUserStepResponse.getData().getType());
+            }
+        }
     }
 
     @Override

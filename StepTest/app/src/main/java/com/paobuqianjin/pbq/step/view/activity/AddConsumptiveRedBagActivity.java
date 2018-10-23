@@ -52,6 +52,7 @@ import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ConSumRedStyleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ConSumSendHisResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetUserBusinessResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
@@ -71,6 +72,8 @@ import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -126,8 +129,6 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
     ImageView ivDelete;
     @Bind(R.id.red_rule)
     LinearLayout redRule;
-    @Bind(R.id.btn_confirm)
-    Button btnConfirm;
     @Bind(R.id.switch_style_stand)
     ImageView switchStyleStand;
     @Bind(R.id.tv_style)
@@ -136,9 +137,14 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
     RelativeLayout sponsorStyleSpan;
     @Bind(R.id.message_sponsor)
     TextView messageSponsor;
+    @Bind(R.id.btn_prescan)
+    Button btnPrescan;
+    @Bind(R.id.btn_confirm)
+    Button btnConfirm;
 
     private ArrayList<String> targetStepArr = new ArrayList<>();
-    private ChooseOneItemWheelPopWindow wheelPopWindow;
+    private ArrayList<String> styleArr = new ArrayList<>();
+    private ChooseOneItemWheelPopWindow wheelPopWindow, wheelPopStyle;
     private boolean hasBusiness;
     //    private GetUserBusinessResponse.DataBeanX.DataBean shopBean;
     private int businessId = -1;
@@ -157,6 +163,8 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
     private final static int VIP_REQUEST = 11;
     ArrayList<ImageBean> resultList = new ArrayList<>();
     private double[] location;
+    private Map<String, String> styleS = new HashMap<>();
+    ConSumSendHisResponse.DataBeanX.SendListBean.DataBean dataBean;
 
     @Override
     protected String title() {
@@ -164,12 +172,17 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
     }
 
     @Override
-    public Object right() {
-        return "确定";
+    public void clickRight() {
+
     }
 
     @Override
-    public void clickRight() {
+    public void clickLeft() {
+        onBackPressed();
+    }
+
+
+    private void commit() {
         if (!isVip) {
             PaoToastUtils.showLongToast(this, "只有金牌会员才能发消费红包");
             return;
@@ -208,6 +221,10 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
                     params.put("latitude", String.valueOf(location[1]));
                 }
             }
+
+            if (!TextUtils.isEmpty(tvStyle.getText().toString().trim())) {
+                params.put("cateid", styleS.get(tvStyle.getText().toString().trim()));
+            }
             Presenter.getInstance(this).postPaoBuSimple(NetApi.getMySendVoucher, params, new PaoTipsCallBack() {
                 @Override
                 protected void onSuc(String s) {
@@ -219,9 +236,73 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
         }
     }
 
-    @Override
-    public void clickLeft() {
-        onBackPressed();
+
+    private void preScan() {
+        if (!isVip) {
+            PaoToastUtils.showLongToast(this, "只有金牌会员才能发消费红包");
+            return;
+        }
+        if (fillter()) {
+            Map<String, String> params = new HashMap<>();
+            params.put("busid", businessId + "");
+            params.put("vname", etRedBagName.getText().toString());
+            params.put("amount", etNum.getText().toString());
+            params.put("condition", etLimiteMoney.getText().toString());
+            params.put("money", etMoney.getText().toString());
+            params.put("day", etDayNum.getText().toString());
+            params.put("step", tvStep.getText().toString());
+            //params.put("distance", tvStep.getText().toString());
+            if (!TextUtils.isEmpty(tvLink.getText().toString().trim())) {
+                params.put("target_url", tvLink.getText().toString().trim());
+            }
+
+            if (!TextUtils.isEmpty(etInformation.getText().toString().trim())) {
+                params.put("content", etInformation.getText().toString().trim());
+            }
+
+            String images = "";
+            for (SelectPicBean bean : adapter.getData()) {
+                if (!TextUtils.isEmpty(images)) {
+                    images += ",";
+                }
+                images += bean.getImageUrl();
+            }
+            if (!TextUtils.isEmpty(images))
+                params.put("images", images);
+            location = Presenter.getInstance(this).getLocation();
+            if (businessId < 0) {
+                if (location[0] > 0d && location[1] > 0d) {
+                    params.put("latitude", String.valueOf(location[0]));
+                    params.put("latitude", String.valueOf(location[1]));
+                }
+            }
+
+            if (!TextUtils.isEmpty(tvStyle.getText().toString().trim())) {
+                params.put("cateid", styleS.get(tvStyle.getText().toString().trim()));
+            }
+            if (params.keySet().size() <= 0) {
+                PaoToastUtils.showLongToast(this, "请填写消费红包信息");
+                return;
+            }
+            params.put("preview", "1");
+            Presenter.getInstance(this).postPaoBuSimple(NetApi.getMySendVoucher, params, new PaoTipsCallBack() {
+                @Override
+                protected void onSuc(String s) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        int vid = jsonObject.getJSONObject("data").getInt("voucherid");
+                        Intent intent = new Intent(AddConsumptiveRedBagActivity.this, GetConsumptiveRBResultActivity.class);
+                        intent.putExtra(getPackageName() + "red_id", vid);
+                        if (businessId > 0) {
+                            intent.putExtra(getPackageName() + "businessid", businessId);
+                        }
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -243,6 +324,32 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
         initAdapter();
         //获取金牌会员状态
         getVipStatus();
+        getConSumRedStyle();
+        Intent intent = getIntent();
+        if (intent != null) {
+            dataBean = (ConSumSendHisResponse.DataBeanX.SendListBean.DataBean) intent.getSerializableExtra("tick_info");
+            if (dataBean != null) {
+                etInformation.setText(dataBean.getVcontent());
+                etRedBagName.setText(dataBean.getVname());
+                etMoney.setText(dataBean.getMoney());
+                etLimiteMoney.setText(dataBean.getCondition());
+                etDayNum.setText(String.valueOf(dataBean.getDay()));
+                etNum.setText(String.valueOf(dataBean.getAmount()));
+                tvStep.setText(String.valueOf(dataBean.getStep()));
+                tvLink.setText(dataBean.getTarget_url());
+                if (dataBean.getBusinessid() > 0) {
+                    ivDelete.setVisibility(View.VISIBLE);
+                    sponorMsgDesDetail.setText(dataBean.getBusinessname());
+                    businessId = dataBean.getBusinessid();
+                    getDefaultBusiness(false);
+                } else {
+                    getDefaultBusiness(true);
+                }
+
+            } else {
+                getDefaultBusiness(true);
+            }
+        }
     }
 
 
@@ -253,6 +360,13 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
                 try {
                     ConSumRedStyleResponse conSumRedStyleResponse = new Gson().fromJson(s, ConSumRedStyleResponse.class);
                     int size = conSumRedStyleResponse.getData().size();
+                    for (int i = 0; i < size; i++) {
+                        styleS.put(conSumRedStyleResponse.getData().get(i).getName(), String.valueOf(conSumRedStyleResponse.getData().get(i).getId()));
+                        styleArr.add(conSumRedStyleResponse.getData().get(i).getName());
+                        if (dataBean != null && !TextUtils.isEmpty(dataBean.getCate_name()) && dataBean.getCate_name().equals(conSumRedStyleResponse.getData().get(i).getName())) {
+                            tvStyle.setText(dataBean.getCate_name());
+                        }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -469,7 +583,6 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
         });
 
         //获取默认商家
-        getDefaultBusiness();
 
     }
 
@@ -556,15 +669,45 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
             sponsorApplyDialog.show();
     }
 
-    @OnClick({R.id.stand_circle_pan, R.id.sponor_msg_span, R.id.linear_open_vip, R.id.select_historty, R.id.sponsor_style_span})
+    @OnClick({R.id.stand_circle_pan, R.id.sponor_msg_span, R.id.linear_open_vip, R.id.select_historty, R.id.sponsor_style_span, R.id.btn_confirm
+            , R.id.btn_prescan, R.id.iv_delete})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.iv_delete:
+                sponorMsgDesDetail.setText(null);
+                ivDelete.setVisibility(View.GONE);
+                break;
+            case R.id.btn_prescan:
+                LocalLog.d(TAG, "预览");
+                preScan();
+                break;
+            case R.id.btn_confirm:
+                commit();
+                break;
             case R.id.sponsor_style_span:
-
+                LocalLog.d(TAG, "选择消费券类型");
+                if (wheelPopStyle == null && styleArr.size() > 0) {
+                    wheelPopStyle = new ChooseOneItemWheelPopWindow(this, styleArr);
+                    wheelPopStyle.setItemConfirmListener(new ChooseOneItemWheelPopWindow.OnWheelItemConfirmListener() {
+                        @Override
+                        public void onItemSelectLis(String result) {
+                            tvStyle.setText(result);
+                        }
+                    });
+                }
+                if (wheelPopStyle.isShowing()) {
+                    wheelPopStyle.cancel();
+                    return;
+                }
+                wheelPopStyle.setCurrentSelectValue(tvStyle.getText().toString());
+                wheelPopStyle.show();
                 break;
             case R.id.select_historty:
                 LocalLog.d(TAG, "选择历史记录");
                 //TODO
+                Intent hisIntent = new Intent(this, ConsumHsRedActivity.class);
+                hisIntent.putExtra("select", "tick");
+                startActivity(hisIntent);
                 break;
             case R.id.stand_circle_pan:
                 if (wheelPopWindow == null && targetStepArr.size() > 0) {
@@ -658,7 +801,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
         return true;
     }
 
-    public void getDefaultBusiness() {
+    public void getDefaultBusiness(final boolean show) {
         //商铺信息
         Map<String, String> params = new HashMap<>();
         params.put("page", "1");
@@ -672,8 +815,9 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
                         hasBusiness = true;
                         if (businessResponse.getData().getData().size() > 0) {
                             GetUserBusinessResponse.DataBeanX.DataBean shopBean = businessResponse.getData().getData().get(0);
-                            if (shopBean.getDefaultX() == 1) {
+                            if (shopBean.getDefaultX() == 1 && show) {
                                 if (sponorMsgDesDetail != null) {
+                                    ivDelete.setVisibility(View.VISIBLE);
                                     businessId = shopBean.getBusinessid();
                                     sponorMsgDesDetail.setText(shopBean.getName());
                                 }
@@ -741,7 +885,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
                     sponorMsgDesDetail.setText(data.getStringExtra("name"));
                 }
             } else {
-                getDefaultBusiness();
+                getDefaultBusiness(true);
             }
         } else if (requestCode == REQUEST_ADD) {
             if (resultCode > 0) {

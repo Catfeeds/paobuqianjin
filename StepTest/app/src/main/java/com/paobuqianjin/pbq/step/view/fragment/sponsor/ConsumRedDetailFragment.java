@@ -3,7 +3,6 @@ package com.paobuqianjin.pbq.step.view.fragment.sponsor;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -65,6 +64,7 @@ import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.ConsumRedInfoActivity;
 import com.paobuqianjin.pbq.step.view.activity.GetConsumptiveRBResultActivity;
 import com.paobuqianjin.pbq.step.view.activity.RoundRedRelActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
@@ -72,6 +72,7 @@ import com.paobuqianjin.pbq.step.view.activity.SponsorGoodsPicLookActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorContentAdapter;
+import com.paobuqianjin.pbq.step.view.base.adapter.owner.ConsumptiveRedBagListAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.paobuqianjin.pbq.step.view.base.view.CustomEdit;
@@ -84,7 +85,9 @@ import com.paobuqianjin.pbq.step.view.emoji.IEmotionSelectedListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -276,6 +279,7 @@ public class ConsumRedDetailFragment extends BaseBarStyleTextViewFragment {
 
     public int T = 4; //倒计时时长
     private Handler mHandler = new Handler();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
 
     @Override
     protected String title() {
@@ -317,6 +321,12 @@ public class ConsumRedDetailFragment extends BaseBarStyleTextViewFragment {
         barNull = (RelativeLayout) viewRoot.findViewById(R.id.sponsor_detail);
         picIndex = (RelativeLayout) viewRoot.findViewById(R.id.pic_index);
         notifyText = (TextView) viewRoot.findViewById(R.id.notify);
+        tvName = (TextView) viewRoot.findViewById(R.id.tv_name);
+        tvDate = (TextView) viewRoot.findViewById(R.id.tv_date);
+        tvMoney = (TextView) viewRoot.findViewById(R.id.tv_money);
+        tvLimiteMoney = (TextView) viewRoot.findViewById(R.id.tv_limite_money);
+        tvStatus = (TextView) viewRoot.findViewById(R.id.tv_status);
+        tvStep = (TextView) viewRoot.findViewById(R.id.tv_step);
         gotoSponsor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -622,7 +632,46 @@ public class ConsumRedDetailFragment extends BaseBarStyleTextViewFragment {
                             redInfo.setVisibility(View.GONE);
                         }
                         /*优惠券*/
+                        tvName.setText(dataBean.getVname());
+                        tvStep.setText(getString(R.string.target_step_s) + "  " + dataBean.getStep());
+                        tvDate.setText(getString(R.string.end_time_x, dateFormat.format(new Date(dataBean.getE_time() * 1000))));
+                        String moneyStr = getString(R.string.yuan_icon) + dataBean.getMoney();
+                        SpannableString spannableString = new SpannableString(moneyStr);
+                        spannableString.setSpan(new AbsoluteSizeSpan(30, true), getString(R.string.yuan_icon).length(),
+                                moneyStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                        tvMoney.setText(spannableString);
+                        tvLimiteMoney.setText(getString(R.string.use_by_x, dataBean.getCondition()));
+                        switch (dataBean.getStatus()) {//0可领取|1条件不符|2已领过|3已领完
+                            case 0:
+                                tvStatus.setText(R.string.pull_down_now);
+                                tvStatus.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
 
+                                    }
+                                });
+                                break;
+                            case 1:
+                                tvStatus.setText(R.string.already_cut_down);
+                                tvStatus.setOnClickListener(null);
+                                break;
+                            case 2:
+                                tvStatus.setText(R.string.already_over_date);
+                                tvStatus.setOnClickListener(null);
+                                break;
+                            case 3:
+                                tvStatus.setText(R.string.already_pull_down_over);
+                                tvStatus.setOnClickListener(null);
+                                break;
+                            case 4:
+                                tvStatus.setText(R.string.alread_used);
+                                tvStatus.setOnClickListener(null);
+                                break;
+                            case 5:
+                                tvStatus.setText(R.string.alread_rev);
+                                tvStatus.setOnClickListener(null);
+                                break;
+                        }
                         /*优惠券*/
                         int sizeEnv = 0;
                         final String tarUrl = dataBean.getTarget_url();
@@ -1309,9 +1358,8 @@ public class ConsumRedDetailFragment extends BaseBarStyleTextViewFragment {
 
     private void redRelInfo(final String redId) {
         Intent intent = new Intent();
-        intent.setClass(getContext(), RoundRedRelActivity.class);
-        intent.putExtra(getContext().getPackageName() + "red_id", redId);
-        intent.putExtra(getContext().getPackageName() + "near", "near");
+        intent.setClass(getContext(), ConsumRedInfoActivity.class);
+        intent.putExtra(getContext().getPackageName() + "vid", redId);
         startActivity(intent);
     }
 
@@ -1395,7 +1443,7 @@ public class ConsumRedDetailFragment extends BaseBarStyleTextViewFragment {
         public void popImageView(List<String> images, int index);
     }
 
-    private RedDetailFragment.PopBigImageInterface popBigImageInterface = new RedDetailFragment.PopBigImageInterface() {
+    private PopBigImageInterface popBigImageInterface = new PopBigImageInterface() {
         @Override
         public void popImageView(String url) {
             if (!isAdded()) {
@@ -1472,7 +1520,7 @@ public class ConsumRedDetailFragment extends BaseBarStyleTextViewFragment {
             animationCircleType.setDuration(200);
 
 
-            popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.red_detail_fg), Gravity.CENTER, 0, 0);
+            popupSelectWindow.showAtLocation(getActivity().findViewById(R.id.consum_red_detail_fg), Gravity.CENTER, 0, 0);
             popBirthSelectView.startAnimation(animationCircleType);
         }
     };

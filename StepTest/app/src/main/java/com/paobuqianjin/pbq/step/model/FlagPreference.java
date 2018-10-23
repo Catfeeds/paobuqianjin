@@ -154,13 +154,14 @@ public final class FlagPreference {
     }
 
     public static String getMobile(Context context) {
-        LocalLog.d(TAG, "getMobile() 获取最新订单号");
+        LocalLog.d(TAG, "getMobile() 手机号码");
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
         String mobile = flagPreference.getString("mobile", "");
         return mobile;
     }
 
     public static void setMobile(Context context, String mobile) {
+        LocalLog.d(TAG, "mobile = " + mobile);
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = flagPreference.edit();
         editor.putString("mobile", mobile);
@@ -336,7 +337,7 @@ public final class FlagPreference {
     }
 
     public static String getAppId(Context context) {
-        LocalLog.d(TAG,"getAppId() enter ");
+        LocalLog.d(TAG, "getAppId() enter ");
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = flagPreference.edit();
         String appid = flagPreference.getString("appid", "");
@@ -344,7 +345,7 @@ public final class FlagPreference {
     }
 
     public static void setAppId(Context context, String appid) {
-        LocalLog.d(TAG,"setAppId() enter " + appid);
+        LocalLog.d(TAG, "setAppId() enter " + appid);
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = flagPreference.edit();
         editor.putString("appid", appid);

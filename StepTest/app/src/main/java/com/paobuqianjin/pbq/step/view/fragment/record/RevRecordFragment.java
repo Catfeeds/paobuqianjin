@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,7 +87,16 @@ public class RevRecordFragment extends BaseFragment {
         notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
         notFoundData.setText("没有红包领取记录");
         redRecordRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.red_record_recycler);
-        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext()) {
+            @Override
+            public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                try {
+                    super.onLayoutChildren(recycler, state);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
         redRecordRecycler.setLayoutManager(layoutManager);
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());
         redRecordRecycler.addFooterView(loadMoreView); // 添加为Footer。

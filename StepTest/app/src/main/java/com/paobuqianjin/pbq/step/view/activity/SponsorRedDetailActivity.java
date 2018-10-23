@@ -119,7 +119,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
     ImageView ivSponsor;
     @Bind(R.id.red_rule)
     LinearLayout redRule;
-    private List<?> data;
+    private List<?> data = new ArrayList<>();
     ImageView openRedPkgView;
     private View popRedPkgView;
     TextView totalRedPkg;
@@ -682,6 +682,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
                         showInfo();
                         return;
                     }
+                    data.clear();
                     if (nearBySponsorResponse.getData() == null) {
                         showInfo();
                         return;
@@ -692,40 +693,34 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
                         showInfo();
                         return;
                     }
-                    if (nearBySponsorResponse.getData().getUserstatus() == 0) {
-                        if (nearBySponsorResponse.getData() != null && nearBySponsorResponse.getData().getNearedpacket() != null
-                                && nearBySponsorResponse.getData().getNearedpacket().size() > 0) {
-                            //插入广告标签
-                            List<NearBySponsorResponse.DataBean.NearedpacketBean> tempData = nearBySponsorResponse.getData().getNearedpacket();
-                            int tempSize = tempData.size();
-                            if (tempSize > 0 && tempSize < 4) {
-                                for (int i = tempSize; i < 4; i++) {
-                                    NearBySponsorResponse.DataBean.NearedpacketBean adLabel = new NearBySponsorResponse.DataBean.NearedpacketBean();
-                                    tempData.add(adLabel);
-                                }
+                    if (nearBySponsorResponse.getData() != null && nearBySponsorResponse.getData().getNearedpacket() != null
+                            && nearBySponsorResponse.getData().getNearedpacket().size() > 0) {
+                        List<NearBySponsorResponse.DataBean.NearedpacketBean> tempData = nearBySponsorResponse.getData().getNearedpacket();
+                        int tempSize = tempData.size();
+                        if (tempSize > 0 && tempSize < 4) {
+                            for (int i = tempSize; i < 4; i++) {
+                                NearBySponsorResponse.DataBean.NearedpacketBean adLabel = new NearBySponsorResponse.DataBean.NearedpacketBean();
+                                tempData.add(adLabel);
                             }
-                            data = tempData;
-                            adapter = new ReleaseRecordAdapter(SponsorRedDetailActivity.this, data);
-                            adapter.setStep(nearBySponsorResponse.getData().getUserstep());
-                            redPkgRecycler.setAdapter(adapter);
                         }
-                    } else {
-                        if (nearBySponsorResponse.getData() != null && nearBySponsorResponse.getData().getLedredpacket() != null
-                                && nearBySponsorResponse.getData().getLedredpacket().size() > 0) {
-                            //插入广告标签
-                            List<NearBySponsorResponse.DataBean.Ledredpacket> tempData = nearBySponsorResponse.getData().getLedredpacket();
-                            int tempSize = tempData.size();
-                            if (tempSize > 0 && tempSize < 4) {
-                                for (int i = tempSize; i < 4; i++) {
-                                    NearBySponsorResponse.DataBean.Ledredpacket adLabel = new NearBySponsorResponse.DataBean.Ledredpacket();
-                                    tempData.add(adLabel);
-                                }
+                        data.addAll((List) tempData);
+                    }
+                    if (nearBySponsorResponse.getData() != null && nearBySponsorResponse.getData().getLedredpacket() != null
+                            && nearBySponsorResponse.getData().getLedredpacket().size() > 0) {
+                        List<NearBySponsorResponse.DataBean.Ledredpacket> tempData = nearBySponsorResponse.getData().getLedredpacket();
+                        int tempSize = tempData.size();
+                        if (tempSize > 0 && tempSize < 4) {
+                            for (int i = tempSize; i < 4; i++) {
+                                NearBySponsorResponse.DataBean.Ledredpacket adLabel = new NearBySponsorResponse.DataBean.Ledredpacket();
+                                tempData.add(adLabel);
                             }
-                            data = tempData;
-                            adapter = new ReleaseRecordAdapter(SponsorRedDetailActivity.this, data);
-                            adapter.setStep(nearBySponsorResponse.getData().getUserstep());
-                            redPkgRecycler.setAdapter(adapter);
                         }
+                        data.addAll((List) tempData);
+                    }
+                    if (data.size() > 0) {
+                        adapter = new ReleaseRecordAdapter(SponsorRedDetailActivity.this, data);
+                        adapter.setStep(nearBySponsorResponse.getData().getUserstep());
+                        redPkgRecycler.setAdapter(adapter);
                     }
 
                 } catch (JsonSyntaxException j) {

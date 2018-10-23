@@ -228,6 +228,8 @@
     <string name="condition_unavaliable">未达标</string>
     <string name="already_pull_down">已领过</string>
     <string name="already_pull_down_over">已领完</string>
+    <string name="alread_used">已使用</string>
+    <string name="alread_rev">已领过</string>
     <string name="use_now">立即使用</string>
     <string name="tips_open_vip">提示:商家金牌会员才能发消费红包,去申请免费试用</string>
     <string name="vip_name_x">会员名称：%1$s</string>

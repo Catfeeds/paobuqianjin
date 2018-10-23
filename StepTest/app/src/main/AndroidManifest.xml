@@ -579,10 +579,11 @@
         <activity android:name=".view.activity.BindCardActivity" />
         <activity android:name=".view.activity.InputCardInfoActivity" />
         <activity android:name=".view.activity.MyBankCardActivity" />
-        <activity android:name=".view.activity.ConsumHsRedActivity"/>
+        <activity android:name=".view.activity.ConsumHsRedActivity" />
         <!-- 密码管理 -->
         <activity android:name=".view.activity.PayManagerActivity" />
         <activity android:name=".view.activity.ForgetPayWordActivity" />
+        <activity android:name=".view.activity.RePwdPhoneActivity" />
         <activity android:name=".view.activity.PayPassWordActivity">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.ACTION_FIRST_CARD" />
@@ -849,12 +850,15 @@
         <activity
             android:name=".view.activity.AddConsumptiveRedBagActivity"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".view.activity.AddLittleConsumActivity"
-            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".view.activity.AddLittleConsumActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".view.activity.ShopRedBagActivity" />
         <activity android:name=".view.activity.GetConsumptiveRedBagHisActivity" />
         <activity android:name=".view.activity.MyConsumptiveRedBagActivity" />
-        <activity android:name=".view.activity.GetConsumptiveRBResultActivity" />
+        <activity
+            android:name=".view.activity.GetConsumptiveRBResultActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".CircleTypeActivity" />
         <activity android:name=".view.activity.GetMoreMoneyActivity" />
         <activity android:name=".view.activity.ChangeAccountActivity" />
@@ -898,6 +902,7 @@
         </activity>
         <activity android:name=".view.activity.RoundRedRelActivity" />
         <activity android:name=".view.activity.CrashDetailActivity"></activity>
+        <activity android:name=".view.activity.ConsumRedInfoActivity" />
     </application>
 
 </manifest>

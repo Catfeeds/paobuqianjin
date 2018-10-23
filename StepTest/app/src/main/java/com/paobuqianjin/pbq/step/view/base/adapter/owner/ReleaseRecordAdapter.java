@@ -188,8 +188,14 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.View
                     ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.VISIBLE);
                     ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
                     ((SponsorRedViewHolder) holder).canNoRec.setImageResource(R.drawable.rec_finish);
-                } else {
-
+                } else if(status == 3){
+                    localStatus ="已领取";
+                    ((SponsorRedViewHolder) holder).canRec.setVisibility(View.GONE);
+                    ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.VISIBLE);
+                    ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
+                    ((SponsorRedViewHolder) holder).canNoRec.setImageResource(R.drawable.have_rec);
+                }else if(status == 5){
+                    //红包开放时间未到
                 }
                 ((SponsorRedViewHolder) holder).statusStr = localStatus;
             }

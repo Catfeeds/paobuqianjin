@@ -51,6 +51,14 @@ public class ConSumRedDetailResponse {
     }
 
     public static class DataBean {
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
         /**
          * voucherid : 256
          * type : 1
@@ -77,12 +85,13 @@ public class ConSumRedDetailResponse {
          * logo : http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/FA600C53-D6FE-4AB5-BA9D-3EF94CBFDFDE.jpg
          * longitude : 113.930660
          * latitude : 22.548860
+         * status:1
          * scope :
          * receiver_list : [{"record_id":349,"busid":1684,"userid":35822,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg"},{"record_id":352,"busid":1684,"userid":35901,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/10/16/35901201810161006501862.jpg"}]
          * red_img : [{"url":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/83A82F4E-76CD-4093-849F-E95ED907D821.jpg"},{"url":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/2A200CEE-CDA0-4F0E-8B6F-1288ACF5E41D.jpg"},{"url":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/5707817D-B707-4C89-8A84-D672ADBF76AF.jpg"}]
          * business_img : [{"url":"http://runmoney-1255484416.cos.ap-guangzhou.myqcloud.com/A7E3ADF7-27B5-4FD1-A0BF-94D12D31A9FE.jpg"}]
          */
-
+        private int status;
         private int voucherid;
         private int type;
         private String vname;
@@ -94,7 +103,7 @@ public class ConSumRedDetailResponse {
         private int receive;
         private int day;
         private int create_time;
-        private int e_time;
+        private long e_time;
         private String content;
         private String target_url;
         private int busid;
@@ -193,7 +202,7 @@ public class ConSumRedDetailResponse {
             this.day = day;
         }
 
-        public int getCreate_time() {
+        public long getCreate_time() {
             return create_time;
         }
 
@@ -201,7 +210,7 @@ public class ConSumRedDetailResponse {
             this.create_time = create_time;
         }
 
-        public int getE_time() {
+        public long getE_time() {
             return e_time;
         }
 

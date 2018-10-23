@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ConSumRedDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.DynamicLikeListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.NearByRedResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RoundDetailStyleResponse;
@@ -69,6 +70,9 @@ public class LikeUserAdapter extends RecyclerView.Adapter<LikeUserAdapter.LikeUs
                     R.drawable.default_head_ico, R.drawable.default_head_ico);
         } else if (mData.get(position) instanceof NearByRedResponse.DataBean.ReceiverListBean) {
             Presenter.getInstance(context).getPlaceErrorImage(holder.shareIcon, ((NearByRedResponse.DataBean.ReceiverListBean) mData.get(position)).getAvatar(),
+                    R.drawable.default_head_ico, R.drawable.default_head_ico);
+        } else if (mData.get(position) instanceof ConSumRedDetailResponse.DataBean.ReceiverListBean) {
+            Presenter.getInstance(context).getPlaceErrorImage(holder.shareIcon, ((ConSumRedDetailResponse.DataBean.ReceiverListBean) mData.get(position)).getAvatar(),
                     R.drawable.default_head_ico, R.drawable.default_head_ico);
         }
     }

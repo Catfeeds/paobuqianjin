@@ -245,13 +245,6 @@ public class ConsumTotalActivity extends BaseBarActivity implements TencentLocat
 
     }
 
-    private void go2NetGetConsumptiveRBActivity(ShopSendedRedBagResponse.ShopSendedRedBagBean bean) {
-        Intent intent = new Intent(this, GetConsumptiveRBResultActivity.class);
-        intent.putExtra("idStr", bean.getVoucherid());
-        intent.putExtra("status", bean.getStatus());
-        intent.putExtra("nowLocation", nowLocation);
-        startActivityForResult(intent, 1);
-    }
 
     private void loadBanner() {
         String bannerUrl = NetApi.urlAd + "?position=red_voucher";
@@ -451,7 +444,6 @@ public class ConsumTotalActivity extends BaseBarActivity implements TencentLocat
                 startActivity(intent);
                 break;
             case R.id.iv_sponsor:
-                LocalLog.d(TAG, "我的店铺");
                 LocalLog.d(TAG, "我的店铺");
                 Intent intentBuss = new Intent();
                 intentBuss.setClass(this, SponsorManagerActivity.class);

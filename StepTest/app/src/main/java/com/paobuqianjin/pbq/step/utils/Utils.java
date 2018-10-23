@@ -125,7 +125,7 @@ public class Utils {
     电信：133、153、170、173、177、180、181、189、（1349卫通）
     总结起来就是第一位必定为1，第二位必定为3或5或8，其他位置的可以为0-9
     */
-        String num = "[1][3456789]\\d{9}";//"[1]"代表第1位为数字1，"[34578]"代表第二位可以为3、4、5、7、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
+        String num = "[1][23456789]\\d{9}";//"[1]"代表第1位为数字1，"[34578]"代表第二位可以为3、4、5、7、8中的一个，"\\d{9}"代表后面是可以是0～9的数字，有9位。
         if (TextUtils.isEmpty(number)) {
             return false;
         } else {
@@ -189,6 +189,7 @@ public class Utils {
         }
         return false;
     }
+
     /**
      * Get Mobile Type
      *
@@ -211,7 +212,7 @@ public class Utils {
 
             String brand = android.os.Build.BRAND;
 
-            switch (brand.toLowerCase()){
+            switch (brand.toLowerCase()) {
                 case "samsung":
                     componentName = new ComponentName("com.samsung.android.sm",
                             "com.samsung.android.sm.app.dashboard.SmartManagerDashBoardActivity");
@@ -248,9 +249,9 @@ public class Utils {
                     break;
             }
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            if(componentName!=null){
+            if (componentName != null) {
                 intent.setComponent(componentName);
-            }else{
+            } else {
                 intent.setAction(Settings.ACTION_SETTINGS);
             }
             context.startActivity(intent);
@@ -427,7 +428,7 @@ public class Utils {
     public static void openBaiduMap(Context context, String dqAddress, String gotoAddress, String currentLatitude, String currentLongitude, String gotoLatitude, String gotoLongitude) {
         try {
             double[] location = {Double.parseDouble(gotoLatitude), Double.parseDouble(gotoLongitude)};
-            location = gaoDeToBaidu(location[0],location[1]);
+            location = gaoDeToBaidu(location[0], location[1]);
             Intent intent = new Intent();
             String urls = "baidumap://map/walknavi?origin=" + currentLatitude + "," + currentLongitude + "&destination="
                     + String.valueOf(location[0]) + "," + String.valueOf(location[1]) + "&src=andr.baidu.openAPIdemo";

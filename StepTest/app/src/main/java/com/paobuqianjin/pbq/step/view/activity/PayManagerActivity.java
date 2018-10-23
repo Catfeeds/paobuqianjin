@@ -114,11 +114,6 @@ public class PayManagerActivity extends BaseBarActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.pass_word_forget:
-                if (!isIdentify) {
-                    LocalLog.d(TAG, "未认证");
-                    PaoToastUtils.showLongToast(getApplicationContext(), "请先去认证");
-                    return;
-                }
                 //TODO 判断是否设置过密码
                 Presenter.getInstance(this).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
                     @Override
@@ -166,11 +161,6 @@ public class PayManagerActivity extends BaseBarActivity {
                 });
                 break;
             case R.id.pass_word_rest:
-                if (!isIdentify) {
-                    LocalLog.d(TAG, "未认证");
-                    PaoToastUtils.showLongToast(getApplicationContext(), "请先去认证");
-                    return;
-                }
                 //TODO 判断是否设置过密码
                 Presenter.getInstance(this).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
                     @Override

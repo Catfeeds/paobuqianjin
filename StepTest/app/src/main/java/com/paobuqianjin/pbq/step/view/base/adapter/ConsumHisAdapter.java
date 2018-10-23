@@ -26,6 +26,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.view.activity.AddAroundRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.AddConsumptiveRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.FriendDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.GetConsumptiveRBResultActivity;
 import com.paobuqianjin.pbq.step.view.activity.RedInfoActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
@@ -152,7 +153,15 @@ public class ConsumHisAdapter extends RecyclerView.Adapter<ConsumHisAdapter.RedH
                         }
                         break;
                     case R.id.content_layout:
-                        LocalLog.d(TAG,"查看历史记录");
+                        LocalLog.d(TAG, "查看详情");
+                        if (mData.get(getAdapterPosition()) instanceof ConSumSendHisResponse.DataBeanX.SendListBean.DataBean) {
+                            Intent intent = new Intent(mContext, GetConsumptiveRBResultActivity.class);
+                            intent.putExtra(mContext.getPackageName() + "red_id", ((ConSumSendHisResponse.DataBeanX.SendListBean.DataBean) mData.get(getAdapterPosition())).getVoucherid());
+                            if (((ConSumSendHisResponse.DataBeanX.SendListBean.DataBean) mData.get(getAdapterPosition())).getBusinessid() > 0) {
+                                intent.putExtra(mContext.getPackageName() + "businessid", ((ConSumSendHisResponse.DataBeanX.SendListBean.DataBean) mData.get(getAdapterPosition())).getBusinessid());
+                            }
+                            fragment.startActivityForResult(intent, 1);
+                        }
                         break;
                     case R.id.head_icon:
                         if (!TextUtils.isEmpty(userId)) {

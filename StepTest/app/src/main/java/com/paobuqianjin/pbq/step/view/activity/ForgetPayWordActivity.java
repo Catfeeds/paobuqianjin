@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,7 +21,6 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
-import com.paobuqianjin.pbq.step.view.base.adapter.owner.BankCardAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.BankPswAdapter;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 
@@ -29,6 +29,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by pbq on 2018/6/7.
@@ -37,6 +38,7 @@ import butterknife.ButterKnife;
 public class ForgetPayWordActivity extends BaseBarActivity implements BaseBarActivity.ToolBarListener {
     private final static String ACTION_FORGET_PSW = "com.paobuqianjin.pbq.setp.ACTION_FORGET_PSW";
     private final static int BIND_CARD_RESULT = 100;
+    private final static int RESET_PWD = 11;
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -57,6 +59,8 @@ public class ForgetPayWordActivity extends BaseBarActivity implements BaseBarAct
     RelativeLayout emptyBankPan;
     @Bind(R.id.bank_bind_list)
     RelativeLayout bankBindList;
+    @Bind(R.id.phone_set_pass)
+    RelativeLayout phoneSetPass;
     private List<BankListResponse.CardBean> listData = new ArrayList<>();
     private BankPswAdapter bankPswAdapter;
     LinearLayoutManager layoutManager;
@@ -88,6 +92,10 @@ public class ForgetPayWordActivity extends BaseBarActivity implements BaseBarAct
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == BIND_CARD_RESULT) {
             getBankList();
+        } else if (requestCode == RESET_PWD) {
+            if (Activity.RESULT_OK == resultCode) {
+                finish();
+            }
         }
     }
 
@@ -164,7 +172,6 @@ public class ForgetPayWordActivity extends BaseBarActivity implements BaseBarAct
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                 if (errorBean != null) {
                     if (errorBean.getError() == 1 && !isFinishing()) {
-                        emptyBankPan.setVisibility(View.VISIBLE);
                         bankBindList.setVisibility(View.GONE);
                     } else {
                         PaoToastUtils.showShortToast(ForgetPayWordActivity.this, errorBean.getMessage());
@@ -172,5 +179,10 @@ public class ForgetPayWordActivity extends BaseBarActivity implements BaseBarAct
                 }
             }
         });
+    }
+
+    @OnClick(R.id.phone_set_pass)
+    public void onClick() {
+        startActivityForResult(new Intent().setClass(this, RePwdPhoneActivity.class), RESET_PWD);
     }
 }

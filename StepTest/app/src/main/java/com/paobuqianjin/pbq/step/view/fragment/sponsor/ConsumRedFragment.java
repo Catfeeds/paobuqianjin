@@ -91,6 +91,15 @@ public class ConsumRedFragment extends BaseFragment implements SwipeMenuRecycler
             public boolean canScrollVertically() {
                 return true;
             }
+
+            @Override
+            public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                try {
+                    super.onLayoutChildren(recycler, state);
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
+            }
         };
         rvCoupon.setLayoutManager(layoutManager);
         rvCoupon.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -165,7 +174,7 @@ public class ConsumRedFragment extends BaseFragment implements SwipeMenuRecycler
             @Override
             protected void onSuc(String s) {
                 Intent intent = new Intent(getActivity(), GetConsumptiveRBResultActivity.class);
-                intent.putExtra(getContext().getPackageName() + "red_id", voucherid);
+                intent.putExtra(getContext().getPackageName() + "red_id", Integer.parseInt(voucherid));
                 intent.putExtra(getContext().getPackageName() + "businessid", Integer.parseInt(bussinessid));
                 startActivityForResult(intent, 1);
             }
@@ -183,7 +192,7 @@ public class ConsumRedFragment extends BaseFragment implements SwipeMenuRecycler
     }
 
     private void getPageData(final int page) {
-        if(!isAdded()){
+        if (!isAdded()) {
             return;
         }
         currentPage = page;
@@ -226,9 +235,9 @@ public class ConsumRedFragment extends BaseFragment implements SwipeMenuRecycler
                /* if (errorBean != null && errorStr.contains("Not Found Data")) {
                     rvCoupon.loadMoreError(0, "暂无数据");
                 }*/
-               if(!isAdded()){
-                   return;
-               }
+                if (!isAdded()) {
+                    return;
+                }
                 listData.clear();
                 addEmpty();
                 adapter.notifyDataSetChanged();

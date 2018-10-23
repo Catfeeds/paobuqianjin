@@ -608,6 +608,7 @@ public final class OwnerFragment extends BaseFragment {
                     LocalLog.d(TAG, "vvvvvvvv");
                     return;
                 }
+                Presenter.getInstance(getContext()).setMobile(getContext(),userInfoResponse.getData().getMobile());
                 Presenter.getInstance(getContext()).setCurrentUser(userInfoResponse.getData());
                 Presenter.getInstance(getContext()).setTarget(getContext(), userInfoResponse.getData().getTarget_step());
                 Presenter.getInstance(getContext()).setAvatar(getContext(), userAvatar);
