@@ -429,9 +429,10 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         try {
                             StepReWardResponse stepReWardResponse = new Gson().fromJson(s, StepReWardResponse.class);
                             RelativeLayout resultShow = (RelativeLayout) popRedPkgView.findViewById(R.id.red_result);
+
                             String dayStepDollar = String.format(getString(R.string.day_step_dollar), stepReWardResponse.getData().getCredit());
                             TextView dayStepTv = (TextView) popRedPkgView.findViewById(R.id.step_dollar);
-                            dayStepTv.setText(dayStepDollar);
+                            dayStepTv.setText("+" + dayStepDollar);
                             RedPkgAnimation pkgAnimation = new RedPkgAnimation();
                             pkgAnimation.setHideAnimation(unOpenRkg, 200);
                             pkgAnimation.setShowAnimation(resultShow, 200);
@@ -652,7 +653,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     }
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=homepage"+ Presenter.getInstance(getContext()).getLocationStrFormat();
+        String bannerUrl = NetApi.urlAd + "?position=homepage" + Presenter.getInstance(getContext()).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(getContext()).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override

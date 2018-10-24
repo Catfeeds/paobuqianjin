@@ -11,7 +11,6 @@ public class ShopSendedRedBagResponse {
     public static class ShopSendedRedBagBean {
         private String id;
         private String voucherid;
-        private String nickname;
         private String type;
         private String vname;
         private String vcontent;
@@ -29,6 +28,18 @@ public class ShopSendedRedBagResponse {
         private long create_time;
         private double latitude;
         private double longitude;
+        private long is_time;
+
+        public long getIs_time() {
+            return is_time *1000;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        private String nickname;
+        private String avatar;
 
         public String getDistance() {
             return distance;
@@ -38,7 +49,8 @@ public class ShopSendedRedBagResponse {
             this.distance = distance;
         }
 
-        private String  distance;
+        private String distance;
+
         public double getLatitude() {
             return latitude;
         }
@@ -56,7 +68,7 @@ public class ShopSendedRedBagResponse {
         }
 
         public long getE_time() {
-            return e_time*1000;
+            return e_time * 1000;
         }
 
         public void setStatus(int status) {
@@ -73,6 +85,7 @@ public class ShopSendedRedBagResponse {
 
         /**
          * 0正常|1已下架|2已过期|3已领完
+         *
          * @return
          */
         public int getStatus() {
@@ -81,6 +94,7 @@ public class ShopSendedRedBagResponse {
 
         /**
          * 1满减，2无门槛，3叠加
+         *
          * @return
          */
         public String getType() {
@@ -120,7 +134,7 @@ public class ShopSendedRedBagResponse {
         }
 
         public long getCreate_time() {
-            return create_time*1000;
+            return create_time * 1000;
         }
 
         public String getBusinessname() {
@@ -131,6 +145,7 @@ public class ShopSendedRedBagResponse {
             return businessid;
         }
     }
+
     /*{
         "error":0,
             "message":"success",
@@ -157,7 +172,10 @@ public class ShopSendedRedBagResponse {
                 "userid":25752,
                 "nickname":"搞笑吧",
                 "businessid":1551,
-                "businessname":"嘟嘟嘟饿了"
+                "businessname":"嘟嘟嘟饿了"，
+                "is_time":1540294029，
+                "nickname":"江月何时初照人"
+                "avatar":"http:\/\/runmoney-1255484416.cos.ap-guangzhou.myqcloud.com\/9BFA16BA-349F-4FA2-956F-80B1C7B8E593.jpg"
         }
         ]
     }
@@ -186,6 +204,7 @@ public class ShopSendedRedBagResponse {
             return shopSendedRedBagResponse.getLatitude() - t1.getLatitude() < 0 ? -1 : 1;
         }
     }
+
     public static class LngComparator implements Comparator<ShopSendedRedBagBean> {
 
         @Override

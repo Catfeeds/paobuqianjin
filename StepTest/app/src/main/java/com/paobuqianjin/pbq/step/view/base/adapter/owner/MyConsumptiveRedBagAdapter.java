@@ -11,13 +11,17 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ShopSendedRedBagResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.view.activity.MyConsumptiveRedBagActivity;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
+import com.umeng.commonsdk.debug.D;
 import com.yanzhenjie.recyclerview.swipe.SwipeItemClickListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Administrator on 2018/7/17.
@@ -41,16 +45,21 @@ public class MyConsumptiveRedBagAdapter extends RecyclerView.Adapter<MyConsumpti
 
     @Override
     public MyConsumptiveRedBagHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyConsumptiveRedBagHolder(LayoutInflater.from(context).inflate(R.layout.item_my_consumptive_red_bag,null));
+        return new MyConsumptiveRedBagHolder(LayoutInflater.from(context).inflate(R.layout.item_my_consumptive_red_bag, null));
     }
 
     @Override
     public void onBindViewHolder(MyConsumptiveRedBagHolder holder, final int position) {
         ShopSendedRedBagResponse.ShopSendedRedBagBean itemBean = listData.get(position);
-        holder.tv_name.setText(context.getString(R.string.vip_name_x,itemBean.getBusinessname()));
+        holder.tv_name.setText(context.getString(R.string.vip_name_x, itemBean.getBusinessname()));
         holder.tv_enable_date.setText(context.getString(R.string.end_time_x, dateFormat.format(new Date(itemBean.getE_time()))));
         holder.tv_money.setText(itemBean.getMoney());
-        holder.tv_money_limit.setText(context.getString(R.string.use_by_x,itemBean.getCondition()));
+        holder.tv_money_limit.setText(context.getString(R.string.use_by_x, itemBean.getCondition()));
+        Presenter.getInstance(context).getPlaceErrorImage(holder.headIco, itemBean.getAvatar(),
+                R.drawable.default_head_ico, R.drawable.default_head_ico);
+        holder.time.setText(DateTimeUtil.formatDateTime(itemBean.getIs_time(), DateTimeUtil.DF_YYYY_MM_DD));
+        holder.name.setText(itemBean.getNickname());
+
         switch (itemBean.getStatus()) {//0正常|1已下架|2已过期|3已使用
             case 0:
                 holder.tv_status.setVisibility(View.VISIBLE);
@@ -58,7 +67,7 @@ public class MyConsumptiveRedBagAdapter extends RecyclerView.Adapter<MyConsumpti
                 holder.tv_status.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(myItemClickLis!= null) myItemClickLis.onItemClick(view, position);
+                        if (myItemClickLis != null) myItemClickLis.onItemClick(view, position);
                     }
                 });
                 break;
@@ -90,8 +99,10 @@ public class MyConsumptiveRedBagAdapter extends RecyclerView.Adapter<MyConsumpti
         return listData.size();
     }
 
-    class MyConsumptiveRedBagHolder extends RecyclerView.ViewHolder{
-
+    class MyConsumptiveRedBagHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        TextView time;
+        CircleImageView headIco;
         TextView tv_money;
         TextView tv_money_limit;
         TextView tv_name;
@@ -101,6 +112,9 @@ public class MyConsumptiveRedBagAdapter extends RecyclerView.Adapter<MyConsumpti
 
         public MyConsumptiveRedBagHolder(View itemView) {
             super(itemView);
+            name = (TextView) itemView.findViewById(R.id.name);
+            time = (TextView) itemView.findViewById(R.id.time_rec);
+            headIco = (CircleImageView) itemView.findViewById(R.id.head_ico);
             tv_money = itemView.findViewById(R.id.tv_money);
             tv_money_limit = itemView.findViewById(R.id.tv_money_limit);
             tv_name = itemView.findViewById(R.id.tv_name);
