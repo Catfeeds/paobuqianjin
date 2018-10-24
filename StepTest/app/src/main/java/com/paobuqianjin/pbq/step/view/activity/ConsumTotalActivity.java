@@ -247,7 +247,7 @@ public class ConsumTotalActivity extends BaseBarActivity implements TencentLocat
 
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=red_voucher";
+        String bannerUrl = NetApi.urlAd + "?position=red_voucher" + Presenter.getInstance(this).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
@@ -288,11 +288,10 @@ public class ConsumTotalActivity extends BaseBarActivity implements TencentLocat
                                         cmb.setPrimaryClip(textClipData);
                                         LocalLog.d(TAG, "  msg = " + cmb.getText());
                                         PaoToastUtils.showLongToast(ConsumTotalActivity.this, "微信号复制成功");
-                                    } else {
-                                        String targetUrl = adList.get(position).getTarget_url();
-                                        if (!TextUtils.isEmpty(targetUrl))
-                                            startActivity(new Intent(ConsumTotalActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
                                     }
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(ConsumTotalActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
 
                                 }
                             })
@@ -436,7 +435,7 @@ public class ConsumTotalActivity extends BaseBarActivity implements TencentLocat
                 break;
             case R.id.linear_history:
                 LocalLog.d(TAG, "查看历史记录");
-                startActivity(ConsumHsRedActivity.class,null);
+                startActivity(ConsumHsRedActivity.class, null);
                 break;
             case R.id.iv_send_red_bag:
                 LocalLog.d(TAG, "发消费红包");

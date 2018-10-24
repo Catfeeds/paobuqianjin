@@ -502,7 +502,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
 
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=voucher_create";
+        String bannerUrl = NetApi.urlAd + "?position=voucher_create"+ Presenter.getInstance(this).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(AddConsumptiveRedBagActivity.this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
@@ -675,7 +675,8 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
         switch (view.getId()) {
             case R.id.iv_delete:
                 sponorMsgDesDetail.setText(null);
-                ivDelete.setVisibility(View.GONE);
+                businessId = -1;
+                ivDelete.setVisibility(View.INVISIBLE);
                 break;
             case R.id.btn_prescan:
                 LocalLog.d(TAG, "预览");
@@ -775,8 +776,8 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
             PaoToastUtils.showShortToast(this, "请输入使用消费红包的数量");
             return false;
         }
-        if (businessId < 1) {
-            PaoToastUtils.showShortToast(this, "请选择您的商铺");
+        if (businessId < 1 && TextUtils.isEmpty(tvLink.getText().toString().trim())) {
+            PaoToastUtils.showShortToast(this, "请选择您的商铺或者商铺地址链接");
             return false;
         }
         if (!isVip) {

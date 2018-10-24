@@ -131,7 +131,7 @@ public class AddLittleConsumActivity extends BaseBarActivity implements BaseBarA
     }
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=voucher_create";
+        String bannerUrl = NetApi.urlAd + "?position=voucher_create" + Presenter.getInstance(this).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(AddLittleConsumActivity.this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
@@ -172,11 +172,10 @@ public class AddLittleConsumActivity extends BaseBarActivity implements BaseBarA
                                         cmb.setPrimaryClip(textClipData);
                                         LocalLog.d(TAG, "  msg = " + cmb.getText());
                                         PaoToastUtils.showLongToast(AddLittleConsumActivity.this, "微信号复制成功");
-                                    } else {
-                                        String targetUrl = adList.get(position).getTarget_url();
-                                        if (!TextUtils.isEmpty(targetUrl))
-                                            startActivity(new Intent(AddLittleConsumActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
                                     }
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(AddLittleConsumActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
 
                                 }
                             })

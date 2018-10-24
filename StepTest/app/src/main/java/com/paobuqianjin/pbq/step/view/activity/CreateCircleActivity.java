@@ -368,7 +368,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=circle_create";
+        String bannerUrl = NetApi.urlAd + "?position=circle_create" + Presenter.getInstance(this).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(CreateCircleActivity.this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
@@ -409,11 +409,10 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                                         cmb.setPrimaryClip(textClipData);
                                         LocalLog.d(TAG, "  msg = " + cmb.getText());
                                         PaoToastUtils.showLongToast(CreateCircleActivity.this, "微信号复制成功");
-                                    } else {
-                                        String targetUrl = adList.get(position).getTarget_url();
-                                        if (!TextUtils.isEmpty(targetUrl))
-                                            startActivity(new Intent(CreateCircleActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
                                     }
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(CreateCircleActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
 
                                 }
                             })

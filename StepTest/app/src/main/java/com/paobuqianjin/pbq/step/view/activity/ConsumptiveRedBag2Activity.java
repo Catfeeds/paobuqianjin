@@ -139,6 +139,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     private final static int AD_RED = 103;
     String vip_message = "";
     private boolean isVip;
+    private String current_rec_id = "";
 
     @Override
     protected String title() {
@@ -185,7 +186,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     }
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=red_map";
+        String bannerUrl = NetApi.urlAd + "?position=red_map" + Presenter.getInstance(this).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(ConsumptiveRedBag2Activity.this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
@@ -226,11 +227,11 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                                         cmb.setPrimaryClip(textClipData);
                                         LocalLog.d(TAG, "  msg = " + cmb.getText());
                                         PaoToastUtils.showLongToast(ConsumptiveRedBag2Activity.this, "微信号复制成功");
-                                    } else {
-                                        String targetUrl = adList.get(position).getTarget_url();
-                                        if (!TextUtils.isEmpty(targetUrl))
-                                            startActivity(new Intent(ConsumptiveRedBag2Activity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
                                     }
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(ConsumptiveRedBag2Activity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
+
 
                                 }
                             })
@@ -692,6 +693,13 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
             LocalLog.d(TAG, "红包在显示");
             return;
         }
+        if (!TextUtils.isEmpty(current_rec_id)) {
+            PaoToastUtils.showLongToast(this, "网络拥堵，请稍候再试！");
+            return;
+        } else {
+            if (listAroundRedBagBean.get(position) != null)
+                current_rec_id = listAroundRedBagBean.get(position).getRed_id();
+        }
         popRedPkgView = View.inflate(this, R.layout.round_pkg_pop_window, null);
         ImageView cancle = (ImageView) popRedPkgView.findViewById(R.id.cancel_red);
         cancle.setOnClickListener(new View.OnClickListener() {
@@ -759,6 +767,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         Presenter.getInstance(this).postPaoBuSimple(NetApi.receiveAroundRed, params, new PaoTipsCallBack() {
             @Override
             protected void onSuc(String s) {
+                current_rec_id = "";
                 PaoToastUtils.showShortToast(ConsumptiveRedBag2Activity.this, "领取成功");
                 // TODO: hqp 2018/8/16
                 String result = "";
@@ -792,6 +801,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
 
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                current_rec_id = "";
                 if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
                     popupRedPkgWindow.dismiss();
                 }

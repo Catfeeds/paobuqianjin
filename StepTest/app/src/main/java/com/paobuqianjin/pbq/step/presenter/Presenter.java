@@ -101,6 +101,10 @@ public final class Presenter {
             return mainHandler;
     }
 
+    public String getLocationStrFormat() {
+        return engine.getLocationStrFormat();
+    }
+
     public void stopService(Class<? extends Service> clazz) {
         engine.stopService(clazz);
     }

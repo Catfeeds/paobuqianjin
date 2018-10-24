@@ -199,7 +199,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
     };
 
     private void loadBanner() {
-        final String bannerUrl = NetApi.urlAd + "?position=task_list";
+        final String bannerUrl = NetApi.urlAd + "?position=task_list" + Presenter.getInstance(getContext()).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(getActivity()).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
@@ -240,12 +240,10 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
                                         cmb.setPrimaryClip(textClipData);
                                         LocalLog.d(TAG, "  msg = " + cmb.getText());
                                         PaoToastUtils.showLongToast(getActivity(), "微信号复制成功");
-                                    } else {
-                                        String targetUrl = adList.get(position).getTarget_url();
-                                        if (!TextUtils.isEmpty(targetUrl))
-                                            startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", targetUrl));
                                     }
-
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", targetUrl));
                                 }
                             })
                             .start();

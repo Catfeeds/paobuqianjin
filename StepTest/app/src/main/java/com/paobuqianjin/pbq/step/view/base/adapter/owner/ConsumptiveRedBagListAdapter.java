@@ -82,7 +82,8 @@ public class ConsumptiveRedBagListAdapter extends RecyclerView.Adapter<RecyclerV
                 if (distanceInt >= 0f) {
                     ((ShopSendedRedBagHolder) holder).im_loc.setVisibility(View.VISIBLE);
                     if (distanceInt > 1000) {
-                        showResult = String.valueOf(distanceInt / 1000f) + "km";
+                        String distance = String.format(context.getString(R.string.distance_format), distanceInt / 1000f);
+                        showResult = distance + "km";
                     } else {
                         showResult = String.valueOf(distanceInt) + "m";
                     }
@@ -102,8 +103,8 @@ public class ConsumptiveRedBagListAdapter extends RecyclerView.Adapter<RecyclerV
                         @Override
                         public void onClick(View view) {
                             if (myCustomClickLis != null)
-                                LocalLog.d(TAG,"立即领取");
-                                myCustomClickLis.onItemClick(view, position);
+                                LocalLog.d(TAG, "立即领取");
+                            myCustomClickLis.onItemClick(view, position);
                         }
                     });
                     break;

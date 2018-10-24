@@ -166,6 +166,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.MD5;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.SharedPreferencesUtil;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.OkHttp3Downloader;
@@ -383,6 +384,7 @@ public final class Engine {
     private double la = 0;
     private double lb = 0;
     private final static String START_STEP_ACTION = "com.paobuqianjin.step.START_STEP_ACTION";
+    BDLocation location;
 
     public NetworkPolicy getNetworkPolicy() {
         return networkPolicy;
@@ -415,6 +417,7 @@ public final class Engine {
             isSave = save;
             urlImage = url;
         }
+
         PiccsoTransformation(final ImageView view) {
             weakReference = new WeakReference<ImageView>(view);
         }
@@ -2930,8 +2933,8 @@ public final class Engine {
 
     public void postUserStatus(final Button button, int followid) {
         LocalLog.d(TAG, "followid =   " + followid);
-        if(followid == getId(mContext)){
-            PaoToastUtils.showLongToast(mContext,"不能自己关注自己");
+        if (followid == getId(mContext)) {
+            PaoToastUtils.showLongToast(mContext, "不能自己关注自己");
             return;
         }
         OkHttpUtils
@@ -3832,6 +3835,24 @@ public final class Engine {
         return laction;
     }
 
+    public String getLocationStrFormat() {
+        String result = "";
+        if (location != null) {
+            result = "&province=" + location.getProvince() + "&city=" + location.getCity() + "&district=" + location.getDistrict();
+        } else {
+            return (String) SharedPreferencesUtil.get("location_bd", "");
+        }
+        return result;
+    }
+
+    public void storgeLoationAd(BDLocation location) {
+        if (location != null) {
+            String result = "";
+            result = "&province=" + location.getProvince() + "&city=" + location.getCity() + "&district=" + location.getDistrict();
+            SharedPreferencesUtil.put("location_bd", result);
+        }
+    }
+
     //TODO 处理广播信息
     public void handBroadcast(Intent intent) {
         if (intent != null) {
@@ -3847,7 +3868,8 @@ public final class Engine {
                 String city = intent.getStringExtra("city");
                 double la = intent.getDoubleExtra("latitude", 0d);
                 double lb = intent.getDoubleExtra("longitude", 0d);
-                BDLocation location = (BDLocation) intent.getParcelableExtra("location");
+                location = (BDLocation) intent.getParcelableExtra("location");
+                storgeLoationAd(location);
                 FlagPreference.setLocation(mContext, String.valueOf(la), String.valueOf(lb));
                 this.la = la;
                 this.lb = lb;

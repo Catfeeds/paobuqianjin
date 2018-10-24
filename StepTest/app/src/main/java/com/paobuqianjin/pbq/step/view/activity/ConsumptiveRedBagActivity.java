@@ -211,7 +211,7 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
 
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=red_voucher";
+        String bannerUrl = NetApi.urlAd + "?position=red_voucher" + Presenter.getInstance(this).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(ConsumptiveRedBagActivity.this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
@@ -252,11 +252,10 @@ public class ConsumptiveRedBagActivity extends BaseBarActivity implements SwipeM
                                         cmb.setPrimaryClip(textClipData);
                                         LocalLog.d(TAG, "  msg = " + cmb.getText());
                                         PaoToastUtils.showLongToast(ConsumptiveRedBagActivity.this, "微信号复制成功");
-                                    } else {
-                                        String targetUrl = adList.get(position).getTarget_url();
-                                        if (!TextUtils.isEmpty(targetUrl))
-                                            startActivity(new Intent(ConsumptiveRedBagActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
                                     }
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(ConsumptiveRedBagActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
 
                                 }
                             })

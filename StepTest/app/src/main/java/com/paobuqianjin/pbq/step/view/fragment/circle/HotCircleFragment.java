@@ -201,8 +201,8 @@ public class HotCircleFragment extends BaseFragment {
     }
 
     public void popRedPkgButton() {
-        LocalLog.d(TAG, "popRedPkgButton() 弹出红包");
-        if (!isAdded() ||getActivity().isFinishing()) {
+        LocalLog.d(TAG, "创建圈子按钮");
+        if (!isAdded() || getActivity().isFinishing()) {
             return;
         }
         if (popOpWindowRedButtonHori != null && popOpWindowRedButtonHori.isShowing()) {
@@ -689,7 +689,7 @@ public class HotCircleFragment extends BaseFragment {
     };
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=circle_list";
+        String bannerUrl = NetApi.urlAd + "?position=circle_list" + Presenter.getInstance(getContext()).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(getActivity()).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
@@ -730,11 +730,11 @@ public class HotCircleFragment extends BaseFragment {
                                         cmb.setPrimaryClip(textClipData);
                                         LocalLog.d(TAG, "  msg = " + cmb.getText());
                                         PaoToastUtils.showLongToast(getActivity(), "微信号复制成功");
-                                    } else {
-                                        String targetUrl = adList.get(position).getTarget_url();
-                                        if (!TextUtils.isEmpty(targetUrl))
-                                            startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", targetUrl));
                                     }
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", targetUrl));
+
 
                                 }
                             })

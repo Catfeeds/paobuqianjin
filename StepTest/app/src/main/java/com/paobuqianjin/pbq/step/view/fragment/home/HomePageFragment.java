@@ -652,7 +652,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
     }
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=homepage";
+        String bannerUrl = NetApi.urlAd + "?position=homepage"+ Presenter.getInstance(getContext()).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(getContext()).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override

@@ -214,6 +214,7 @@ public class DispatchRecordFragment extends BaseFragment {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
                         if (pageIndex == 1 && redSendHisResponse.getData() != null) {
                             arrayList.clear();
                             if (redSendHisResponse.getData().getRedpacket_list() != null && redSendHisResponse.getData().getRedpacket_list().getData() != null) {
@@ -249,7 +250,11 @@ public class DispatchRecordFragment extends BaseFragment {
                     if (e != null) {
 
                     } else {
-
+                        if (errorBean != null && "Not Found Data".equals(errorBean.getMessage())) {
+                            hisPartA.setText("0");
+                            hisPartB.setText("0");
+                            hisPartC.setText("0");
+                        }
                     }
                 }
             }

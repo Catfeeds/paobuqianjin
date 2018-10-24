@@ -48,6 +48,8 @@
                     android:background="@color/color_8a8a8a" />
 
                 <TextView
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:id="@+id/cancel_quit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -60,6 +62,8 @@
                     android:textSize="17dp" />
 
                 <TextView
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:id="@+id/confirm_quit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

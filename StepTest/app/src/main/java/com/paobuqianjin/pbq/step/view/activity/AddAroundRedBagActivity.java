@@ -354,7 +354,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     }
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=redmap_create";
+        String bannerUrl = NetApi.urlAd + "?position=redmap_create" + Presenter.getInstance(this).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(AddAroundRedBagActivity.this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
@@ -395,11 +395,11 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                                         cmb.setPrimaryClip(textClipData);
                                         LocalLog.d(TAG, "  msg = " + cmb.getText());
                                         PaoToastUtils.showLongToast(AddAroundRedBagActivity.this, "微信号复制成功");
-                                    } else {
-                                        String targetUrl = adList.get(position).getTarget_url();
-                                        if (!TextUtils.isEmpty(targetUrl))
-                                            startActivity(new Intent(AddAroundRedBagActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
                                     }
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(AddAroundRedBagActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
+
 
                                 }
                             })

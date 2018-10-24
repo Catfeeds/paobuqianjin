@@ -281,7 +281,11 @@ public class DispatchConsumRecordFg extends BaseFragment {
                     if (e != null) {
 
                     } else {
-
+                        if (errorBean != null && "Not Found Data".equals(errorBean.getMessage())) {
+                            hisPartA.setText("0");
+                            hisPartB.setText("0");
+                            hisPartC.setText("0");
+                        }
                     }
                 }
             }

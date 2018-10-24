@@ -1,8 +1,8 @@
 package com.paobuqianjin.pbq.step.activity.sponsor;
 
 import android.content.Intent;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -71,6 +71,8 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
 
     LinearLayoutManager layoutManager;
     private final static int REQUEST_SPONSOR_INFO = 1;
+    @Bind(R.id.not_found_data)
+    TextView notFoundData;
     private List<GetUserBusinessResponse.DataBeanX.DataBean> data = new ArrayList<>();
     private SponsorAdapter adapter;
     public boolean isRefresh;
@@ -165,6 +167,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
             PaoToastUtils.showShortToast(this, ((ErrorCode) object).getMessage());
         } else if (object instanceof GetUserBusinessResponse) {
             if (((GetUserBusinessResponse) object).getError() == 0) {
+                notFoundData.setVisibility(View.GONE);
                 if (isRefresh) {
                     data.clear();
                     refreshLayout.setRefreshing(false);
@@ -199,6 +202,7 @@ public class SponsorManagerActivity extends BaseBarActivity implements InnerCall
                     default_sponsor.setVisibility(View.GONE);
                     line.setVisibility(View.INVISIBLE);
                     if (data.size() == 0 && pageNum == 1) {
+                        notFoundData.setVisibility(View.VISIBLE);
                         if (isFirstLoad) {
                             goToAdd();
                         } else {

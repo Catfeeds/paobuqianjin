@@ -151,6 +151,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
     List<Marker> listMark = new ArrayList<>();
     private PopupWindow popOpWindowRedButtonHori;
     private final static String SPOSNOR_ACTION = "com.paobuqianjin.person.SPONSOR_ACTION";
+    private String current_rec_id = "";
 
     @Override
     protected String title() {
@@ -314,7 +315,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
     }
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=red_near";
+        String bannerUrl = NetApi.urlAd + "?position=red_near" + Presenter.getInstance(this).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(SponsorRedDetailActivity.this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
@@ -355,11 +356,10 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
                                         cmb.setPrimaryClip(textClipData);
                                         LocalLog.d(TAG, "  msg = " + cmb.getText());
                                         PaoToastUtils.showLongToast(SponsorRedDetailActivity.this, "微信号复制成功");
-                                    } else {
-                                        String targetUrl = adList.get(position).getTarget_url();
-                                        if (!TextUtils.isEmpty(targetUrl))
-                                            startActivity(new Intent(SponsorRedDetailActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
                                     }
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    if (!TextUtils.isEmpty(targetUrl))
+                                        startActivity(new Intent(SponsorRedDetailActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
 
                                 }
                             })
@@ -453,6 +453,13 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
             LocalLog.d(TAG, "红包在显示");
             return;
         }
+        if (!TextUtils.isEmpty(current_rec_id)) {
+            PaoToastUtils.showLongToast(this, "网络拥堵，请稍后再试!");
+            return;
+        } else {
+            current_rec_id = String.valueOf(nearedpacketBean.getRed_id());
+        }
+
         /*popRedPkgView = null;*/
         popRedPkgView = View.inflate(this, R.layout.red_pkg_pop_window, null);
         totalRedPkg = (TextView) popRedPkgView.findViewById(R.id.total_red_pkg);
@@ -572,6 +579,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
                 Presenter.getInstance(getApplicationContext()).postPaoBuSimple(NetApi.urlNearByPkgRev, params, new PaoCallBack() {
                     @Override
                     protected void onSuc(String s) {
+                        current_rec_id = "";
                         openRedPkgView.clearAnimation();
                         String result = "";
                         try {
@@ -616,6 +624,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
                     @Override
                     protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                         LocalLog.d(TAG, "领取失败!");
+                        current_rec_id = "";
                         openRedPkgView.clearAnimation();
                         openRedPkgView.setVisibility(View.INVISIBLE);
                         errorTextView.setVisibility(View.VISIBLE);

@@ -160,9 +160,6 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.View
                     ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
                     localStatus = "领取红包";
                     ((SponsorRedViewHolder) holder).canRec.setText(localStatus);
-                    ((SponsorRedViewHolder) holder).canRec.setVisibility(View.VISIBLE);
-                    ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.GONE);
-                    ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
                 } else if (status == 1) {
                     if (((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getStastr() != null &&
                             ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getStastr().contains("步数")) {
@@ -196,6 +193,13 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.View
                     ((SponsorRedViewHolder) holder).canNoRec.setImageResource(R.drawable.have_rec);
                 }else if(status == 5){
                     //红包开放时间未到
+                    localStatus ="20:00 开抢";
+                    ((SponsorRedViewHolder) holder).canRec.setVisibility(View.VISIBLE);
+                    ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.GONE);
+                    ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
+
+                    ((SponsorRedViewHolder) holder).canRec.setText(localStatus);
+                    ((SponsorRedViewHolder) holder).canRec.setTextSize(12);
                 }
                 ((SponsorRedViewHolder) holder).statusStr = localStatus;
             }

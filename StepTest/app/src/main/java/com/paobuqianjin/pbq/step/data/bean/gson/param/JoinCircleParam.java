@@ -2,6 +2,8 @@ package com.paobuqianjin.pbq.step.data.bean.gson.param;
 
 import android.util.ArrayMap;
 
+import com.paobuqianjin.pbq.step.utils.LocalLog;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +63,7 @@ public class JoinCircleParam {
     public JoinCircleParam setCircleid(int circleid) {
         this.circleid = circleid;
         params.put("circleid", String.valueOf(circleid));
+        LocalLog.d("circleid",String.valueOf(circleid));
         return this;
     }
 
