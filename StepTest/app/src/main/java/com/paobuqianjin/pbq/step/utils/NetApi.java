@@ -375,4 +375,6 @@ public class NetApi {
     public final static String urlConSumInfo = url + "v1/Voucher/voucherReceiveInfo";
     //根据步数领取积分
     public final static String urlStepReWard = url + "v1/UserCredit/receiveByStep";
+    //获取我的邀请数据和我的邀请人列表(新+分页)
+    public final static String getUrlMyInviteMems = url + "v1/userinviter/getMyInviterNew";
 }

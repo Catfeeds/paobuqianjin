@@ -29,7 +29,6 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.lwkandroid.imagepicker.data.ImageDataModel;
@@ -42,35 +41,25 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
-import com.paobuqianjin.pbq.step.utils.BitmapUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
-import com.paobuqianjin.pbq.step.view.activity.DanActivity;
 import com.paobuqianjin.pbq.step.view.activity.GetMoreMoneyActivity;
 import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
-import com.paobuqianjin.pbq.step.view.activity.InviteActivity;
-import com.paobuqianjin.pbq.step.view.activity.MessageActivity;
-import com.paobuqianjin.pbq.step.view.activity.MyConsumptiveRedBagActivity;
+import com.paobuqianjin.pbq.step.view.activity.InviteDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyDynamicActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyFriendActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
-import com.paobuqianjin.pbq.step.view.activity.NearByActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeMakeActivity;
-import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.SettingActivity;
-import com.paobuqianjin.pbq.step.view.activity.ShopRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorCollectActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
 import com.paobuqianjin.pbq.step.view.activity.SuggestionActivity;
-import com.paobuqianjin.pbq.step.view.activity.TaskActivity;
 import com.paobuqianjin.pbq.step.view.activity.TransferActivity;
-import com.paobuqianjin.pbq.step.view.activity.UserCenterActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
 import com.paobuqianjin.pbq.step.view.activity.VipActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
-import com.paobuqianjin.pbq.step.view.fragment.circle.DynamicDetailFragment;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -146,54 +135,16 @@ public final class OwnerFragment extends BaseFragment {
     TextView vipDesc;
     @Bind(R.id.vip_span)
     LinearLayout vipSpan;
-    @Bind(R.id.step_dollar_icon)
-    ImageView stepDollarIcon;
     @Bind(R.id.step_dollar_desc)
     TextView stepDollarDesc;
     @Bind(R.id.step_dollar_span)
     LinearLayout stepDollarSpan;
-    @Bind(R.id.iv_consumptive_red_bag)
-    ImageView ivConsumptiveRedBag;
-    @Bind(R.id.tv_consumptive_red_bag)
-    TextView tvConsumptiveRedBag;
-    @Bind(R.id.linear_consumptive_red_bag)
-    LinearLayout linearConsumptiveRedBag;
     @Bind(R.id.wallet_dollor_span)
     LinearLayout walletDollorSpan;
     @Bind(R.id.gitf_span)
     ImageView gitfSpan;
-    @Bind(R.id.task_recv_icon)
-    ImageView taskRecvIcon;
-    @Bind(R.id.task_recv_desc)
-    TextView taskRecvDesc;
-    @Bind(R.id.task_recv)
-    LinearLayout taskRecv;
-    @Bind(R.id.task_release_icon)
-    ImageView taskReleaseIcon;
-    @Bind(R.id.task_release_desc)
-    TextView taskReleaseDesc;
-    @Bind(R.id.task_release_span)
-    LinearLayout taskReleaseSpan;
-    @Bind(R.id.iv_shop_red_bag)
-    ImageView ivShopRedBag;
-    @Bind(R.id.tv_shop_red_bag)
-    TextView tvShopRedBag;
-    @Bind(R.id.linear_shop_red_bag)
-    LinearLayout linearShopRedBag;
-    @Bind(R.id.dan_icon)
-    ImageView danIcon;
-    @Bind(R.id.dan_desc)
-    TextView danDesc;
     @Bind(R.id.dynamic_span)
     LinearLayout dynamicSpan;
-    @Bind(R.id.dynamic_icon)
-    ImageView dynamicIcon;
-    @Bind(R.id.dynamic_desc)
-    TextView dynamicDesc;
-    @Bind(R.id.dan_span)
-    LinearLayout danSpan;
-    @Bind(R.id.task_dan)
-    LinearLayout taskDan;
     @Bind(R.id.collect_icon)
     ImageView collectIcon;
     @Bind(R.id.collect_desc)
@@ -202,8 +153,6 @@ public final class OwnerFragment extends BaseFragment {
     LinearLayout collectSpan;
     @Bind(R.id.money_icon)
     ImageView moneyIcon;
-    @Bind(R.id.money_desc)
-    TextView moneyDesc;
     @Bind(R.id.money_span)
     LinearLayout moneySpan;
     @Bind(R.id.suggestion_icon)
@@ -220,6 +169,16 @@ public final class OwnerFragment extends BaseFragment {
     LinearLayout settingSpan;
     @Bind(R.id.collect_sponsor_span)
     LinearLayout collectSponsorSpan;
+    @Bind(R.id.step_dollar_number)
+    TextView stepDollarNumber;
+    @Bind(R.id.circle_other)
+    LinearLayout circleOther;
+    @Bind(R.id.dan_icon)
+    ImageView danIcon;
+    @Bind(R.id.dan_desc)
+    TextView danDesc;
+    @Bind(R.id.owner_page)
+    RelativeLayout ownerPage;
     private String userAvatar;
     TextView friends;
     private int vip = 0;
@@ -263,7 +222,6 @@ public final class OwnerFragment extends BaseFragment {
 
     @Override
     protected void initView(View viewRoot) {
-        LocalLog.d(TAG, "initView() enter");
         headIcon = (CircleImageView) viewRoot.findViewById(R.id.head_icon);
         userIcon = (RelativeLayout) viewRoot.findViewById(R.id.user_icon);
         userName = (TextView) viewRoot.findViewById(R.id.user_name);
@@ -273,15 +231,14 @@ public final class OwnerFragment extends BaseFragment {
         likeNum = (TextView) viewRoot.findViewById(R.id.like_num);
         walletSpan = (LinearLayout) viewRoot.findViewById(R.id.wallet_span);
         stepDollarSpan = (LinearLayout) viewRoot.findViewById(R.id.step_dollar_span);
-        gitfSpan = (ImageView) viewRoot.findViewById(R.id.gitf_span);
         dynamicSpan = (LinearLayout) viewRoot.findViewById(R.id.dynamic_span);
-        danSpan = (LinearLayout) viewRoot.findViewById(R.id.dan_span);
         suggestionSpan = (LinearLayout) viewRoot.findViewById(R.id.suggestion_span);
         goldenSponsor = (ImageView) viewRoot.findViewById(R.id.golden_sponsor);
         walletMoney = (TextView) viewRoot.findViewById(R.id.wallet_money);
         mScreenWidth = ImagePickerComUtils.getScreenWidth(getContext());
         mScreenHeight = ImagePickerComUtils.getScreenHeight(getContext());
         qrLinear = (RelativeLayout) viewRoot.findViewById(R.id.qr_linear);
+        stepDollarNumber = (TextView) viewRoot.findViewById(R.id.step_dollar_number);
     }
 
     @Override
@@ -292,9 +249,8 @@ public final class OwnerFragment extends BaseFragment {
         Presenter.getInstance(getContext()).dispatchUiInterface(ownerUiInterface);
     }
 
-    @OnClick({R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.linear_consumptive_red_bag, R.id.linear_shop_red_bag, R.id.gitf_span, R.id.dynamic_span,
-            R.id.dan_span, R.id.suggestion_span, R.id.like_span, R.id.circle_rel, R.id.task_release_span, R.id.task_recv, R.id.setting_span, R.id.vip_span,
-            R.id.collect_span, R.id.money_span, R.id.near_by_span, R.id.crash_button, R.id.wallet_detail_button, R.id.friend_span})
+    @OnClick({R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.dynamic_span, R.id.suggestion_span, R.id.like_span, R.id.circle_rel, R.id.setting_span, R.id.vip_span,
+            R.id.collect_span, R.id.money_span, R.id.crash_button, R.id.wallet_detail_button, R.id.friend_span})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -321,37 +277,14 @@ public final class OwnerFragment extends BaseFragment {
                 }
 
                 break;
-            case R.id.linear_consumptive_red_bag:
-                LocalLog.d(TAG, "消费红包");
-                if (this.userInfoResponse != null && this.userInfoResponse.getData() != null) {
-                    intent.putExtra("userinfo", this.userInfoResponse.getData());
-                    intent.setClass(getContext(), MyConsumptiveRedBagActivity.class);
-                    startActivity(intent);
-                }
-
-                break;
-            case R.id.linear_shop_red_bag:
-                LocalLog.d(TAG, "店铺红包");
-                if (this.userInfoResponse != null && this.userInfoResponse.getData() != null) {
-                    intent.putExtra("userinfo", this.userInfoResponse.getData());
-                    intent.setClass(getContext(), ShopRedBagActivity.class);
-                    startActivity(intent);
-                }
-                break;
-            case R.id.gitf_span:
-                LocalLog.d(TAG, "邀请有礼");
-                intent.setClass(getContext(), InviteActivity.class);
+            case R.id.invite_people_span:
+                LocalLog.d(TAG, "推荐人");
+                intent.setClass(getContext(), InviteDetailActivity.class);
                 startActivity(intent);
                 break;
             case R.id.dynamic_span:
                 LocalLog.d(TAG, "我的动态");
                 intent.setClass(getContext(), MyDynamicActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.dan_span:
-                LocalLog.d(TAG, "我的段位");
-                intent.putExtra("usericon", urlIcon);
-                intent.setClass(getContext(), DanActivity.class);
                 startActivity(intent);
                 break;
             case R.id.suggestion_span:
@@ -375,16 +308,6 @@ public final class OwnerFragment extends BaseFragment {
                 LocalLog.d(TAG, "圈子");
                 intent.setClass(getContext(), OwnerCircleActivity.class);
                 startActivity(intent);
-                break;
-            case R.id.task_release_span:
-                LocalLog.d(TAG, "我的发布");
-                /*startActivity(MyReleaseActivity.class, null);*/
-                /*delete my release ,go to ReleaseRecordActivity*/
-                startActivity(ReleaseRecordActivity.class, null);
-                break;
-            case R.id.task_recv:
-                LocalLog.d(TAG, "我的任务");
-                startActivity(TaskActivity.class, null);
                 break;
             case R.id.setting_span:
                 if (this.userInfoResponse != null && this.userInfoResponse.getData() != null) {
@@ -416,9 +339,6 @@ public final class OwnerFragment extends BaseFragment {
                 break;
             case R.id.wallet_detail_button:
                 startActivity(InoutcomDetailActivity.class, null);
-                break;
-            case R.id.near_by_span:
-                startActivity(NearByActivity.class, null);
                 break;
             default:
                 break;
@@ -608,7 +528,7 @@ public final class OwnerFragment extends BaseFragment {
                     LocalLog.d(TAG, "vvvvvvvv");
                     return;
                 }
-                Presenter.getInstance(getContext()).setMobile(getContext(),userInfoResponse.getData().getMobile());
+                Presenter.getInstance(getContext()).setMobile(getContext(), userInfoResponse.getData().getMobile());
                 Presenter.getInstance(getContext()).setCurrentUser(userInfoResponse.getData());
                 Presenter.getInstance(getContext()).setTarget(getContext(), userInfoResponse.getData().getTarget_step());
                 Presenter.getInstance(getContext()).setAvatar(getContext(), userAvatar);
@@ -625,7 +545,7 @@ public final class OwnerFragment extends BaseFragment {
                 vip = userInfoResponse.getData().getVip();
                 cVip = userInfoResponse.getData().getCusvip();
                 gVip = userInfoResponse.getData().getGvip();
-
+                stepDollarNumber.setText(String.valueOf(userInfoResponse.getData().getCredit()));
                 qrImage();
                 if (vip == 1 || cVip == 1 || gVip == 1) {
                     userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.golden_back));

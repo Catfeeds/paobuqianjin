@@ -5,7 +5,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -14,7 +13,6 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -36,7 +34,6 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.presenter.im.ConfirmResult;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
@@ -47,15 +44,12 @@ import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
-import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -106,8 +100,6 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
     EditText targetTaskDayNum;
     @Bind(R.id.day_task_span)
     RelativeLayout dayTaskSpan;
-    @Bind(R.id.line2)
-    ImageView line2;
     @Bind(R.id.task_recv_ico)
     ImageView taskRecvIco;
     @Bind(R.id.task_recv)
@@ -124,10 +116,8 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
     RecyclerView recvRecycler;
     @Bind(R.id.add_ico)
     ImageView addIco;
-    @Bind(R.id.attention)
-    TextView attention;
-    @Bind(R.id.tv_calculate)
-    TextView tvCalculate;
+    @Bind(R.id.target_people_money_num)
+    TextView targetPeopleMoneyNum;
     private TaskReleaseParam taskReleaseParam = new TaskReleaseParam();
     private String friends;
     LinearLayoutManager layoutManager;
@@ -247,7 +237,6 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
         recvRecycler.setLayoutManager(layoutManager);
 
         addFriendDes = (TextView) viewRoot.findViewById(R.id.add_friend_des);
-        tvCalculate = (TextView) viewRoot.findViewById(R.id.tv_calculate);
         recvRecycler.addItemDecoration(new LikeUserAdapter.SpaceItemDecoration(10));
         targetTaskDayNum.setSelection(targetTaskDayNum.getText().toString().length());
         targetTaskMoneyNum.setSelection(targetTaskMoneyNum.getText().toString().length());
@@ -255,7 +244,7 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
         targetTaskMoneyNum.addTextChangedListener(textWatcher);
         targetTaskDayNum.addTextChangedListener(textWatcher);
         targetTaskStepNum.setText(DEVALUE_STEP + "");
-        calculateResultMoney();
+        targetPeopleMoneyNum = (TextView) viewRoot.findViewById(R.id.target_people_money_num);
         Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlTarget, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
@@ -285,6 +274,7 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
 
             @Override
             public void clickRight() {
+                calculateResultMoney();
                 confirm();
             }
         });
@@ -420,6 +410,19 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
             Toast.makeText(getContext(), "请选择好友", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if (TextUtils.isEmpty(targetPeopleMoneyNum.getText().toString().toString())) {
+            return false;
+        }
+        float perMoney = Float.parseFloat(targetPeopleMoneyNum.getText().toString().toString());
+        if (perMoney < 1.00f) {
+            PaoToastUtils.showShortToast(getContext(), "单日单个人奖励不能低于1.00元");
+            return false;
+        }
+
+        if (perMoney > 200.00f) {
+            PaoToastUtils.showShortToast(getContext(), "单日单个人最高奖励不能高于200.00元");
+            return false;
+        }
         return true;
     }
 
@@ -451,7 +454,6 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
                     }
                     this.friends = friends;
                     LocalLog.d(TAG, friends);
-                    calculateResultMoney();
                 }
                 break;
             case REQUEST_PAY_FRIEND_PKG:
@@ -478,7 +480,10 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            calculateResultMoney();
+            if (!TextUtils.isEmpty(targetTaskMoneyNum.getText()) && !TextUtils.isEmpty(targetTaskDayNum.getText().toString())
+                    && dataBeans != null && dataBeans.size() > 0) {
+                calculateResultMoney();
+            }
         }
     };
 
@@ -489,8 +494,12 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
         int dayNum = 0;
         float taskTotalMoney = 0f;
         int friendsNum = 0;
+        if (TextUtils.isEmpty(targetTaskMoneyNum.getText()) || TextUtils.isEmpty(targetTaskDayNum.getText().toString())
+                || dataBeans == null || dataBeans.size() == 0) {
+            LocalLog.d(TAG, "不计算");
+            return;
+        }
         if (TextUtils.isEmpty(targetTaskMoneyNum.getText())) {
-//            Toast.makeText(getContext(), "请输入奖励金额", Toast.LENGTH_SHORT).show();
             taskTotalMoney = 0f;
         } else {
             try {
@@ -501,7 +510,6 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
         }
 
         if (TextUtils.isEmpty(targetTaskDayNum.getText())) {
-//            Toast.makeText(getContext(), "请输入任务天数", Toast.LENGTH_SHORT).show();
             dayNum = 0;
         } else {
             try {
@@ -526,19 +534,10 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
             perMoney = taskTotalMoney / (dayNum * friendsNum);
         }
         LocalLog.d(TAG, "per one per day money " + perMoney);
-        if (perMoney < 1.00f && dayNum >= 1 && friendsNum >= 1) {
-            PaoToastUtils.showShortToast(getContext(), "单日单个人奖励不能低于1.00元");
-            return;
-        }
-
-        if (perMoney > 200.00f && dayNum >= 1 && friendsNum >= 1) {
-            PaoToastUtils.showShortToast(getContext(), "单日单个人最高奖励不能高于200.00元");
-            return;
-        }
         String dailyMoneyStr = String.format("%.2f", taskTotalMoney);
         String dayNumStr = dayNum + "";
         String personNumStr = friendsNum + "";
         String allMoneyStr = String.format("%.2f", perMoney);
-        tvCalculate.setText(getString(R.string.calculate_person_send_rbag, allMoneyStr, dailyMoneyStr, dayNumStr, personNumStr));
+        targetPeopleMoneyNum.setText(allMoneyStr);
     }
 }

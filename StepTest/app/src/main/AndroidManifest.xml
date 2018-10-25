@@ -345,6 +345,7 @@
         <activity
             android:name=".view.activity.InviteActivity"
             android:theme="@style/ImageTranslucentTheme" />
+        <activity android:name=".view.activity.InviteDetailActivity" />
         <activity
             android:name=".view.activity.StepDollarActivity"
             android:theme="@style/ImageTranslucentTheme" />
