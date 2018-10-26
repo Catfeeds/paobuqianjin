@@ -141,16 +141,25 @@ public class InviteDetailActivity extends BaseBarActivity implements BaseBarActi
         @Override
         public void onResult(SHARE_MEDIA share_media) {
             PaoToastUtils.showLongToast(InviteDetailActivity.this, "分享成功");
+            if(popupCircleTypeWindow != null){
+                popupCircleTypeWindow.dismiss();
+            }
         }
 
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
             PaoToastUtils.showLongToast(InviteDetailActivity.this, "失败");
+            if(popupCircleTypeWindow != null){
+                popupCircleTypeWindow.dismiss();
+            }
         }
 
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
             PaoToastUtils.showLongToast(InviteDetailActivity.this, "取消分享");
+            if(popupCircleTypeWindow != null){
+                popupCircleTypeWindow.dismiss();
+            }
         }
     };
 

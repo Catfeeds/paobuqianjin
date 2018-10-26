@@ -75,8 +75,8 @@ public class NetApi {
     //TODO 用户收益类型相关接口，地址：http://api.runmoneyin.com/v1/incometype/?id=1
     public final static String urlIncomeType = url + "v1/incometype/?id=";
 
-    //TODO 获取用户积分详细信息
-    //TODO 获取用户积分详细信息，请求方式：get，地址：http://api.runmoneyin.com/v1/usercredit/?id=5
+    //TODO 获取用户步币详细信息
+    //TODO 获取用户步币详细信息，请求方式：get，地址：http://api.runmoneyin.com/v1/usercredit/?id=5
     public final static String urlCredit = url + "v1/usercredit";
 
     //TODO 添加用户提现记录，请求方式：post，地址：http://api.runmoneyin.com/v1/withdraw，参数：type提现类型、amount提现金额、userid用户id
@@ -373,7 +373,7 @@ public class NetApi {
     public final static String urlConSumStyle = url + "v1/Voucher/cateList";
     //消费红包的领取详细信息
     public final static String urlConSumInfo = url + "v1/Voucher/voucherReceiveInfo";
-    //根据步数领取积分
+    //根据步数领取步币
     public final static String urlStepReWard = url + "v1/UserCredit/receiveByStep";
     //获取我的邀请数据和我的邀请人列表(新+分页)
     public final static String getUrlMyInviteMems = url + "v1/userinviter/getMyInviterNew";

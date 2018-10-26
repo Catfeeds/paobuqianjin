@@ -63,11 +63,11 @@
     <string name="month_income">￥%.2f</string>
     <string name="pay_money">%.2f</string>
     <string name="user_target">%1d步</string>
-    <string name="step_dollar">%ld积分</string>
+    <string name="step_dollar">%ld步币</string>
     <string name="invite_code">我的邀请码:%ld</string>
-    <string name="invite_msg">成功邀请%d人，获得积分%d块</string>
+    <string name="invite_msg">成功邀请%d人，获得步币%d块</string>
     <string name="invite_dan_msg">邀请了%d个好友</string>
-    <string name="invite_red_pkg">获得积分%d个，人民币%.2f元</string>
+    <string name="invite_red_pkg">获得步币%d个，人民币%.2f元</string>
     <string name="invite_dan_rank">第%d名</string>
     <string name="task_days">任务天数: %d 天</string>
     <string name="target_money">奖励总金额: %.2f 元</string>
@@ -144,7 +144,7 @@
     <string name="money_delay">余额不足充值失败</string>
     <string name="invite_nums">成功邀请（人）</string>
     <string name="money_invite">人民币（元）</string>
-    <string name="invite_step_dollor">积分（个）</string>
+    <string name="invite_step_dollor">步币（个）</string>
     <string name="viewpager_indicator">%1$d/%2$d</string>
     <string name="useinfo_setting">快去完善个人资料吧,完善个人资料后可以免费抢更多商家任务红包,不容错过。</string>
     <string name="useinfo_setting_title">新加入的用户，您好</string>
@@ -202,7 +202,7 @@
     <string name="aply_to_free">申请免费试用</string>
     <string name="day_congratulate">恭喜您第%d天获得</string>
     <string name="day_reg_red_des">鼓励身边多走多动一起领红包\n邀请一个陆续会得到30元的奖励</string>
-    <string name="day_step_dollar">%d积分</string>
+    <string name="day_step_dollar">%d步币</string>
     <string name="golden_des_top">\u3000\u3000公司针对信誉好、店面大、品质优良的正规商家，</string>
     <string name="golden_des_top_part">发放少量金牌会员名额，一年只需365元，即可换取价值万元大礼包。</string>
     <string name="golden_gift_one">面向APP近百万用户展示广告，价值5000元。</string>

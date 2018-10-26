@@ -3,23 +3,17 @@ package com.paobuqianjin.pbq.step.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.ConSumSendHisResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ConsumRedInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.NearRedInfoResponse;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.RoundRedInfoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -36,13 +30,12 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by pbq on 2018/10/22.
  */
 
-public class ConsumRedInfoActivity extends BaseBarActivity {
+public class ConsumRedInfoActivity extends BaseBarActivity implements SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.time_wait)
@@ -56,6 +49,8 @@ public class ConsumRedInfoActivity extends BaseBarActivity {
     @Bind(R.id.rec_recycler)
     SwipeMenuRecyclerView recRecycler;
     private final static int PAGE_SIZE = 10;
+    @Bind(R.id.refresh_swipe)
+    SwipeRefreshLayout refreshSwipe;
     private int pageIndex = 1, pageCount = 0;
     private final static String TAG = ConsumRedInfoActivity.class.getSimpleName();
     LinearLayoutManager layoutManager;
@@ -86,7 +81,8 @@ public class ConsumRedInfoActivity extends BaseBarActivity {
         recRecycler.setLoadMoreListener(mLoadMoreListener); // 加载更多的监听。
         recRecycler.setHasFixedSize(true);
         recRecycler.setNestedScrollingEnabled(false);
-
+        refreshSwipe = (SwipeRefreshLayout)findViewById(R.id.refresh_swipe);
+        refreshSwipe.setOnRefreshListener(this);
         Intent intent = getIntent();
         if (intent != null) {
             vid = intent.getStringExtra(getPackageName() + "vid");
@@ -96,6 +92,15 @@ public class ConsumRedInfoActivity extends BaseBarActivity {
                 redRecListAdapter = new RedRecListAdapter(this, arrayList);
                 recRecycler.setAdapter(redRecListAdapter);
             }
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        pageIndex = 1;
+        pageCount = 0;
+        if (!TextUtils.isEmpty(vid)) {
+            redInfo(vid);
         }
     }
 
@@ -134,6 +139,7 @@ public class ConsumRedInfoActivity extends BaseBarActivity {
         Presenter.getInstance(this).postPaoBuSimple(NetApi.urlConSumInfo, param, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
+                refreshSwipe.setRefreshing(false);
                 try {
                     ConsumRedInfoResponse conSumSendHisResponse = new Gson().fromJson(s, ConsumRedInfoResponse.class);
                     pageCount = conSumSendHisResponse.getData().getPagenation().getTotalPage();
@@ -155,7 +161,7 @@ public class ConsumRedInfoActivity extends BaseBarActivity {
 
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-
+                refreshSwipe.setRefreshing(false);
             }
         });
     }

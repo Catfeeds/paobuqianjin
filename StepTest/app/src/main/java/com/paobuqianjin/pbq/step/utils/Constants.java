@@ -15,6 +15,6 @@ public class Constants {
 
     public static final String SP_TRANSPARENT_GUIDE = "SP_TRANSPARENT_GUIDE";
     public static final String CIRCLE_GUIDE = "CIRCLE_GUIDE";
-    public static final int PAGE_SIZE = 20;
+    public static final int PAGE_SIZE = 10;
 
 }

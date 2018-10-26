@@ -29,6 +29,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.j256.ormlite.stmt.query.In;
 import com.lljjcoder.style.citylist.Toast.ToastUtils;
 import com.lwkandroid.imagepicker.ImagePicker;
 import com.lwkandroid.imagepicker.data.ImageBean;
@@ -148,7 +149,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
     private boolean hasBusiness;
     //    private GetUserBusinessResponse.DataBeanX.DataBean shopBean;
     private int businessId = -1;
-    private boolean isVip;
+    /*    private boolean isVip;*/
     private LimitLengthFilter limitLengthFilter;
     SponsorDialog sponsorApplyDialog, sponsorDialogSuccess;
     private ArrayList<AdObject> adList;
@@ -165,6 +166,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
     private double[] location;
     private Map<String, String> styleS = new HashMap<>();
     ConSumSendHisResponse.DataBeanX.SendListBean.DataBean dataBean;
+    String hisImage = "";
 
     @Override
     protected String title() {
@@ -183,10 +185,10 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
 
 
     private void commit() {
-        if (!isVip) {
+/*        if (!isVip) {
             PaoToastUtils.showLongToast(this, "只有金牌会员才能发消费红包");
             return;
-        }
+        }*/
         if (fillter()) {
             Map<String, String> params = new HashMap<>();
             params.put("busid", businessId + "");
@@ -238,10 +240,10 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
 
 
     private void preScan() {
-        if (!isVip) {
+       /* if (!isVip) {
             PaoToastUtils.showLongToast(this, "只有金牌会员才能发消费红包");
             return;
-        }
+        }*/
         if (fillter()) {
             Map<String, String> params = new HashMap<>();
             params.put("busid", businessId + "");
@@ -323,7 +325,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
         loadBanner();
         initAdapter();
         //获取金牌会员状态
-        getVipStatus();
+        //getVipStatus();
         getConSumRedStyle();
         Intent intent = getIntent();
         if (intent != null) {
@@ -337,6 +339,24 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
                 etNum.setText(String.valueOf(dataBean.getAmount()));
                 tvStep.setText(String.valueOf(dataBean.getStep()));
                 tvLink.setText(dataBean.getTarget_url());
+
+                if (dataBean.getVimg_arr() != null) {
+                    int size = dataBean.getVimg_arr().size();
+                    List<SelectPicBean> selectPicBeans = new ArrayList<>();
+
+                    for (int i = 0; i < size; i++) {
+                        SelectPicBean selectPicBean = new SelectPicBean();
+                        selectPicBean.setImageUrl(dataBean.getVimg_arr().get(i));
+                        selectPicBeans.add(selectPicBean);
+                    }
+                    adapter.setDatas(selectPicBeans);
+                    for (SelectPicBean bean : adapter.getData()) {
+                        if (!TextUtils.isEmpty(hisImage)) {
+                            hisImage += ",";
+                        }
+                        hisImage += bean.getImageUrl();
+                    }
+                }
                 if (dataBean.getBusinessid() > 0) {
                     ivDelete.setVisibility(View.VISIBLE);
                     sponorMsgDesDetail.setText(dataBean.getBusinessname());
@@ -502,7 +522,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
 
 
     private void loadBanner() {
-        String bannerUrl = NetApi.urlAd + "?position=voucher_create"+ Presenter.getInstance(this).getLocationStrFormat();
+        String bannerUrl = NetApi.urlAd + "?position=voucher_create" + Presenter.getInstance(this).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(AddConsumptiveRedBagActivity.this).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
             @Override
@@ -591,7 +611,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
         super.onResume();
     }
 
-    private void getVipStatus() {
+/*    private void getVipStatus() {
         Presenter.getInstance(this).getPaoBuSimple(NetApi.urlUser + FlagPreference.getUid(this), null, new PaoTipsCallBack() {
             @Override
             protected void onSuc(String s) {
@@ -605,9 +625,9 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
             }
 
         });
-    }
+    }*/
 
-    private void applyGolden() {
+ /*   private void applyGolden() {
         Presenter.getInstance(this).postPaoBuSimple(NetApi.urlTryGvip, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
@@ -641,8 +661,9 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
 
             }
         });
-    }
+    }*/
 
+/*
     private void goldenFreeApply() {
         if (sponsorApplyDialog == null) {
             sponsorApplyDialog = new SponsorDialog(this);
@@ -668,6 +689,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
         if (!sponsorApplyDialog.isShowing())
             sponsorApplyDialog.show();
     }
+*/
 
     @OnClick({R.id.stand_circle_pan, R.id.sponor_msg_span, R.id.linear_open_vip, R.id.select_historty, R.id.sponsor_style_span, R.id.btn_confirm
             , R.id.btn_prescan, R.id.iv_delete})
@@ -768,6 +790,15 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
             PaoToastUtils.showShortToast(this, "请输入使用消费红包的最低金额");
             return false;
         }
+        try {
+            if (Integer.parseInt(etLimiteMoney.getText().toString()) <= Integer.parseInt(etMoney.getText().toString())) {
+                PaoToastUtils.showShortToast(this, "优惠金额不能超过消费金额");
+                return false;
+            }
+        } catch (Exception e) {
+            PaoToastUtils.showShortToast(this, "参数错误");
+            return false;
+        }
         if (TextUtils.isEmpty(etDayNum.getText().toString())) {
             PaoToastUtils.showShortToast(this, "请输入有效天数");
             return false;
@@ -780,7 +811,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
             PaoToastUtils.showShortToast(this, "请选择您的商铺或者商铺地址链接");
             return false;
         }
-        if (!isVip) {
+/*        if (!isVip) {
             final NormalDialog dialog = new NormalDialog(this);
             dialog.setMessage("创建消费红包失败,账户还未开通金牌商家会员,是否要开通商家金牌会员?");
             dialog.setYesOnclickListener("去申请", new NormalDialog.onYesOnclickListener() {
@@ -798,7 +829,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
             });
             dialog.show();
             return false;
-        }
+        }*/
         return true;
     }
 
@@ -898,7 +929,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
                 }
             }
         } else if (requestCode == VIP_REQUEST) {
-            getVipStatus();
+            /*getVipStatus();*/
         } else if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             SocializeUtils.safeShowDialog(dialog);
             resultList = data.getParcelableArrayListExtra(ImagePicker.INTENT_RESULT_DATA);

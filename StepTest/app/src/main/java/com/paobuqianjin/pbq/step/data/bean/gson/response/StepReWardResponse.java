@@ -3,13 +3,13 @@ package com.paobuqianjin.pbq.step.data.bean.gson.response;
 @className :StepReWardResponse
 *@date 2018/10/23
 *@author
-*@description 领取步数积分奖励
+*@description 领取步数步币奖励
 */
 public class StepReWardResponse {
     /**
      * error : 0
      * message : success
-     * data : {"is_existe":0,"type":8,"credit":100}
+     * data : {"is_existe":0,"type":8,"credit":100,"source_tip":"开机"}
      */
 
     private int error;
@@ -45,12 +45,22 @@ public class StepReWardResponse {
          * is_existe : 0
          * type : 8
          * credit : 100
+         * source_tip: **
          */
 
         private int is_existe;
         private int type;
         private int credit;
 
+        public String getSource_tip() {
+            return source_tip;
+        }
+
+        public void setSource_tip(String source_tip) {
+            this.source_tip = source_tip;
+        }
+
+        private String source_tip;
         public int getIs_existe() {
             return is_existe;
         }

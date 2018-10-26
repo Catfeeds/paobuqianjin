@@ -356,7 +356,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         });
     }
 
-    /*运动积分奖励*/
+    /*运动步币奖励*/
     private void logAndStepReward(final int type) {
         if (!isAdded()) {
             return;
@@ -375,7 +375,10 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 popupRedPkgWindow = null;
             }
         });
-
+        TextView title = (TextView) popRedPkgView.findViewById(R.id.des_title);
+        TextView des = (TextView)popRedPkgView.findViewById(R.id.reg_pkg_des);
+        des.setVisibility(View.INVISIBLE);
+        title.setText("亲，您有奖励可以领取哦！");
         final RelativeLayout unOpenRkg = (RelativeLayout) popRedPkgView.findViewById(R.id.start_red_kg);
         popupRedPkgWindow.setFocusable(true);
         popupRedPkgWindow.setOutsideTouchable(true);
@@ -401,7 +404,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         openRedPkgView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                LocalLog.d(TAG, "领取积分奖励");
+                LocalLog.d(TAG, "领取步币奖励");
                 final Rotate3dAnimation animation = new Rotate3dAnimation(0, 359, view.getWidth() / 2f, view.getHeight() / 2f, 30, true);
                 animation.setDuration(500);
                 animation.setRepeatCount(Animation.INFINITE);
@@ -429,7 +432,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                         try {
                             StepReWardResponse stepReWardResponse = new Gson().fromJson(s, StepReWardResponse.class);
                             RelativeLayout resultShow = (RelativeLayout) popRedPkgView.findViewById(R.id.red_result);
-
+                            TextView dayReward = (TextView) popRedPkgView.findViewById(R.id.day_reward);
+                            dayReward.setText("恭喜您获得" + stepReWardResponse.getData().getSource_tip() + "奖励");
                             String dayStepDollar = String.format(getString(R.string.day_step_dollar), stepReWardResponse.getData().getCredit());
                             TextView dayStepTv = (TextView) popRedPkgView.findViewById(R.id.step_dollar);
                             dayStepTv.setText("+" + dayStepDollar);
@@ -647,7 +651,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         personTaskPkg = (RelativeLayout) viewRoot.findViewById(R.id.person_task_pkg);
         personTaskPkg.setOnClickListener(onClickListener);
         taskNum = (TextView) viewRoot.findViewById(R.id.task_num);
-        checkTwentyOne();
         Presenter.getInstance(getContext()).getWeather(-1d, -1d);
         loadBanner();
     }

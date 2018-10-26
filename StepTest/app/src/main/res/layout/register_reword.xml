@@ -24,6 +24,7 @@
             android:src="@drawable/reg_red_unopne" />
 
         <TextView
+            android:id="@+id/des_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"

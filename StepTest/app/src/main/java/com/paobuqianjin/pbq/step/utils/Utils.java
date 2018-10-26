@@ -13,12 +13,12 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -37,6 +37,11 @@ public class Utils {
         return context.getApplicationContext();
     }
 
+
+    /*EditText 动态限制字符*/
+    public static void setEditTextLengthLimit(EditText editText, int length) {
+        editText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(length)});
+    }
 
     //dp转px
     public static int dip2px(Context context, float dpValue) {

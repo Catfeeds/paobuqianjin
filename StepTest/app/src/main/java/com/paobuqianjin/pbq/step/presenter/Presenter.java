@@ -819,7 +819,7 @@ public final class Presenter {
         engine.postInviteCode(postInviteCodeParam);
     }
 
-    //TODO 获取积分明细
+    //TODO 获取步币明细
     public void getUserCredit(int page, int pagesize) {
         engine.getUserCredit(page, pagesize);
     }

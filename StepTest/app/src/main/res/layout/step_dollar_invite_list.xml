@@ -37,7 +37,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="14dp"
-        android:text="5积分"
+        android:text="5步币"
         android:textColor="@color/color_ffc14c"
         android:textSize="15dp" />
 

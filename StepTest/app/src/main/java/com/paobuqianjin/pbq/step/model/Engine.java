@@ -2706,7 +2706,7 @@ public final class Engine {
                 .execute(new NetStringCallBack(null, -1));
     }
 
-    //TODO 获取用户积分详细信息，请求方式：get，地址：http://119.29.10.64/v1/usercredit?userid=1
+    //TODO 获取用户步币详细信息，请求方式：get，地址：http://119.29.10.64/v1/usercredit?userid=1
     public void getUserCredit(int page, int pagesize) {
         String url = NetApi.urlCredit + "?userid=" + String.valueOf(getId(mContext)) + "&page=" + String.valueOf(page)
                 + "&pagesize=" + String.valueOf(pagesize);

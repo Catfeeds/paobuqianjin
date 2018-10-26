@@ -250,7 +250,7 @@ public final class OwnerFragment extends BaseFragment {
     }
 
     @OnClick({R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.dynamic_span, R.id.suggestion_span, R.id.like_span, R.id.circle_rel, R.id.setting_span, R.id.vip_span,
-            R.id.collect_span, R.id.money_span, R.id.crash_button, R.id.wallet_detail_button, R.id.friend_span})
+            R.id.collect_span, R.id.money_span, R.id.crash_button, R.id.wallet_detail_button, R.id.friend_span,R.id.invite_people_span})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -269,7 +269,7 @@ public final class OwnerFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.step_dollar_span:
-                LocalLog.d(TAG, "积分");
+                LocalLog.d(TAG, "步币");
                 if (this.userInfoResponse != null && this.userInfoResponse.getData() != null) {
                     intent.putExtra("userinfo", this.userInfoResponse.getData());
                     intent.setClass(getContext(), StepDollarActivity.class);

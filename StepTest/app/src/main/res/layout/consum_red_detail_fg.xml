@@ -390,13 +390,13 @@
                     android:layout_marginRight="14dp">
 
                     <ImageView
-                        android:src="@mipmap/red_logo"
                         android:id="@+id/iv_icon"
                         android:layout_width="86dp"
                         android:layout_height="86dp"
                         android:layout_marginBottom="10dp"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="10dp" />
+                        android:layout_marginTop="10dp"
+                        android:src="@mipmap/red_logo" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -411,7 +411,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:maxEms="16"
+                            android:maxEms="8"
                             android:maxLines="1"
                             android:text=""
                             android:textColor="#FEF102"
@@ -437,17 +437,16 @@
                                 android:textSize="12sp" />
 
                             <ImageView
-                                android:visibility="gone"
                                 android:id="@+id/im_loc"
                                 android:layout_width="10dp"
                                 android:layout_height="14dp"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="14dp"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/consu_loc" />
+                                android:src="@drawable/consu_loc"
+                                android:visibility="gone" />
 
                             <TextView
-                                android:visibility="gone"
                                 android:id="@+id/tv_distance"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -459,7 +458,8 @@
                                 android:maxLines="1"
                                 android:text=""
                                 android:textColor="#F8DC5E"
-                                android:textSize="12sp" />
+                                android:textSize="12sp"
+                                android:visibility="gone" />
                         </LinearLayout>
 
                         <TextView
@@ -588,14 +588,14 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:id="@+id/collect_sponsor"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/kepp_sponsor_icon"

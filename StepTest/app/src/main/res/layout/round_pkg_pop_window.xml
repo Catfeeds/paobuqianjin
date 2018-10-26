@@ -55,7 +55,7 @@
         android:layout_below="@+id/des_a"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"
-        android:text="600万人都在用的精准引流神器"
+        android:text="800万人都在用的精准引流神器"
         android:textColor="#F4CE57"
         android:textSize="15dp" />
 

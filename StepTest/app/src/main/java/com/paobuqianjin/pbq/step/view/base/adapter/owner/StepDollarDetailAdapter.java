@@ -27,7 +27,7 @@ public class StepDollarDetailAdapter extends RecyclerView.Adapter<StepDollarDeta
     private Context context;
     private final static int defaultCount = 7;
 
-    public StepDollarDetailAdapter(Context context, List<StepDollarDetailResponse.DataBeanX.DataBean> data) {
+    public StepDollarDetailAdapter(Context context, List<?> data) {
         super();
         this.context = context;
         mData = data;
