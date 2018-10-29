@@ -20,9 +20,14 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.BindAccountResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.SignCodeInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.MD5;
+import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
@@ -134,12 +139,41 @@ public class BindSignCodeFragment extends BaseBarStyleTextViewFragment implement
         LocalLog.d(TAG, "BindAccountResponse() enter");
     }
 
+    private String keyStr(String phone) {
+        String timeStemp = String.valueOf(System.currentTimeMillis() / 1000);
+        return "&term=app&app_sign=" + MD5.md5Slat(Utils.KEY_SIGN + phone + timeStemp) + "&timestamp=" + timeStemp;
+    }
+
+    private void getSignCode(String phone) {
+        if (!Utils.isMobile(phone)) {
+            Toast.makeText(getContext(), "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String url = NetApi.urlSendMsg + phone + keyStr(phone);
+        Presenter.getInstance(getActivity()).getPaoBuSimple(url, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                PaoToastUtils.showLongToast(getActivity(), "验证码发送成功");
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null) {
+                    PaoToastUtils.showLongToast(getActivity(), errorBean.getMessage());
+                }else{
+                    PaoToastUtils.showLongToast(getActivity(), "开小差了，请稍后再试");
+                }
+            }
+        });
+    }
+
     @OnClick({R.id.sign_code_get, R.id.btn_confirm})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sign_code_get:
                 LocalLog.d(TAG, "获取验证码");
-                Presenter.getInstance(getContext()).getSignCode(Presenter.getInstance(getContext()).getMobile(getContext()));
+                getSignCode(Presenter.getInstance(getContext()).getMobile(getContext()));
+                /*Presenter.getInstance(getContext()).getSignCode(Presenter.getInstance(getContext()).getMobile(getContext()));*/
                 break;
             case R.id.btn_confirm:
                 LocalLog.d(TAG, "下一步");

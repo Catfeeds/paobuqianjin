@@ -32,6 +32,7 @@ import java.util.ArrayList;
 public class Utils {
     private final static String TAG = Utils.class.getSimpleName();
     public final static int PAGE_SIZE_DEFAULT = 20;
+    public final static String KEY_SIGN = "paobuqianjinzhf..20181029";
 
     public static Context getApplicationContext(Context context) {
         return context.getApplicationContext();

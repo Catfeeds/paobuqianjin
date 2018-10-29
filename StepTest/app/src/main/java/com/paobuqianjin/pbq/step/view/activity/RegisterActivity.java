@@ -29,11 +29,15 @@ import android.widget.ToggleButton;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SignUserResponse;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.InnerCallBack;
 import com.paobuqianjin.pbq.step.presenter.im.PhoneSignInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.MD5;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 
 import butterknife.Bind;
@@ -163,6 +167,35 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
         }
     }
 
+    private String keyStr(String phone) {
+        String timeStemp = String.valueOf(System.currentTimeMillis() / 1000);
+        return "&term=app&app_sign=" + MD5.md5Slat(Utils.KEY_SIGN + phone + timeStemp) + "&timestamp=" + timeStemp;
+    }
+
+    private boolean getSignCode(String phone) {
+        if (!Utils.isMobile(phone)) {
+            Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        String url = NetApi.urlSendMsg + phone + keyStr(phone);
+        Presenter.getInstance(this).getPaoBuSimple(url, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                PaoToastUtils.showLongToast(RegisterActivity.this, "验证码发送成功");
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null) {
+                    PaoToastUtils.showLongToast(RegisterActivity.this, errorBean.getMessage());
+                } else {
+                    PaoToastUtils.showLongToast(RegisterActivity.this, "开小差了，请稍后再试");
+                }
+            }
+        });
+        return true;
+    }
+
     @OnClick({R.id.register_img_back, R.id.indntifying_code, R.id.read_xieyi, R.id.get_code, R.id.register_eyes, R.id.new_btn_register, R.id.user_read_choose})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -171,7 +204,7 @@ public class RegisterActivity extends BaseActivity implements PhoneSignInterface
                 break;
             case R.id.get_code:
                 collectSignUserInfo();
-                if (Presenter.getInstance(this).getMsg(userInfo[0])) {
+                if (getSignCode(userInfo[0])) {
                     if (thread != null && thread.isAlive()) {
                         return;
                     } else {

@@ -79,8 +79,6 @@ public final class OwnerFragment extends BaseFragment {
     String urlIcon = "";
     @Bind(R.id.user_back)
     ImageView userBack;
-    @Bind(R.id.own_title)
-    TextView ownTitle;
     @Bind(R.id.head_icon)
     CircleImageView headIcon;
     @Bind(R.id.sex)
@@ -250,7 +248,7 @@ public final class OwnerFragment extends BaseFragment {
     }
 
     @OnClick({R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.dynamic_span, R.id.suggestion_span, R.id.like_span, R.id.circle_rel, R.id.setting_span, R.id.vip_span,
-            R.id.collect_span, R.id.money_span, R.id.crash_button, R.id.wallet_detail_button, R.id.friend_span,R.id.invite_people_span})
+            R.id.collect_span, R.id.money_span, R.id.crash_button, R.id.wallet_detail_button, R.id.friend_span, R.id.invite_people_span, R.id.gitf_span})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -276,6 +274,11 @@ public final class OwnerFragment extends BaseFragment {
                     startActivity(intent);
                 }
 
+                break;
+            case R.id.gitf_span:
+                LocalLog.d(TAG, "推荐人");
+                intent.setClass(getContext(), InviteDetailActivity.class);
+                startActivity(intent);
                 break;
             case R.id.invite_people_span:
                 LocalLog.d(TAG, "推荐人");

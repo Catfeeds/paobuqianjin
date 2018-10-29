@@ -22,6 +22,7 @@ import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.MD5;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
@@ -223,6 +224,12 @@ public class RePwdPhoneActivity extends BaseBarActivity {
         }
     }
 
+    private String keyStr(String phone) {
+        String timeStemp = String.valueOf(System.currentTimeMillis() / 1000);
+        return "&term=app&app_sign=" + MD5.md5Slat(Utils.KEY_SIGN + phone + timeStemp) + "&timestamp=" + timeStemp;
+    }
+
+
     @OnClick(R.id.btn_code)
     public void onClick() {
         LocalLog.d(TAG, "获取验证码");
@@ -230,7 +237,8 @@ public class RePwdPhoneActivity extends BaseBarActivity {
         if (userInfoResponse == null || TextUtils.isEmpty(userInfoResponse.getMobile())) {
             return;
         }
-        Presenter.getInstance(this).getPaoBuSimple(NetApi.urlSignCode + "/?mobile=" + userInfoResponse.getMobile(), null, new PaoCallBack() {
+        String url = NetApi.urlSendMsg + userInfoResponse.getMobile() + keyStr(userInfoResponse.getMobile());
+        Presenter.getInstance(this).getPaoBuSimple(url, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 PaoToastUtils.showLongToast(RePwdPhoneActivity.this, "验证码发送成功");
@@ -242,8 +250,12 @@ public class RePwdPhoneActivity extends BaseBarActivity {
                     if (errorStr.contains("账户") || errorStr.contains("余额")) {
                         PaoToastUtils.showLongToast(RePwdPhoneActivity.this, "获取验证码失败，请稍候再试！");
                     } else {
-                        PaoToastUtils.showLongToast(RePwdPhoneActivity.this, errorStr);
+                        if (errorBean != null) {
+                            PaoToastUtils.showLongToast(RePwdPhoneActivity.this, errorBean.getMessage());
+                        }
                     }
+                } else {
+                    PaoToastUtils.showLongToast(RePwdPhoneActivity.this, "开小差了，请稍后再试");
                 }
             }
         });

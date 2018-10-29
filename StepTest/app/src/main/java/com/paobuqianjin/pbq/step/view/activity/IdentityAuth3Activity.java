@@ -9,14 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.MD5;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
 import org.json.JSONException;
@@ -90,26 +93,40 @@ public class IdentityAuth3Activity extends BaseBarActivity {
         }
 
         tvTargetPhone.setText(getString(R.string.title_code_already_send) + phoneNum.substring(0, 3) + "****" + phoneNum.substring(7));
-        getVCode(phoneNum);
+        getSignCode(phoneNum);
     }
 
-    private void getVCode(String phoneNum) {
-        Presenter.getInstance(this).getPaoBuSimple(NetApi.urlSendMsg + phoneNum, null, new PaoCallBack() {
+    private String keyStr(String phone) {
+        String timeStemp = String.valueOf(System.currentTimeMillis() / 1000);
+        return "&term=app&app_sign=" + MD5.md5Slat(Utils.KEY_SIGN + phone + timeStemp) + "&timestamp=" + timeStemp;
+    }
+
+    private void getSignCode(String phone) {
+        if (!Utils.isMobile(phone)) {
+            Toast.makeText(this, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String url = NetApi.urlSendMsg + phone + keyStr(phone);
+        Presenter.getInstance(this).getPaoBuSimple(url, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
-                PaoToastUtils.showShortToast(IdentityAuth3Activity.this, "获取验证码成功");
+                PaoToastUtils.showLongToast(IdentityAuth3Activity.this, "获取验证码成功");
                 startCutdownTime();
             }
 
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                if (errorBean != null)
-                    PaoToastUtils.showShortToast(IdentityAuth3Activity.this, errorBean.getMessage());
+                if (errorBean != null) {
+                    PaoToastUtils.showLongToast(IdentityAuth3Activity.this, errorBean.getMessage());
+                }else{
+                    PaoToastUtils.showLongToast(IdentityAuth3Activity.this, "开小差了，请稍后再试");
+                }
                 tvGetVcode.setEnabled(true);
                 tvGetVcode.setText("重新获取");
             }
         });
     }
+
 
     private long currentSeconds;
     private Runnable dountDownRunnable = new Runnable() {
@@ -184,7 +201,7 @@ public class IdentityAuth3Activity extends BaseBarActivity {
         switch (view.getId()) {
             case R.id.tv_get_vcode:
                 tvGetVcode.setEnabled(false);
-                getVCode(phoneNum);
+                getSignCode(phoneNum);
                 break;
             case R.id.btn_next:
                 if (isFinishiAllInfo()) {

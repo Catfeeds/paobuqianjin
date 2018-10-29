@@ -21,8 +21,10 @@ import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.MD5;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.fragment.login.BindPhoneFragment;
 
@@ -211,6 +213,11 @@ public class IdentifedSetPassActivity extends BaseBarActivity {
         }
     }
 
+    private String keyStr(String phone) {
+        String timeStemp = String.valueOf(System.currentTimeMillis() / 1000);
+        return "&term=app&app_sign=" + MD5.md5Slat(Utils.KEY_SIGN + phone + timeStemp) + "&timestamp=" + timeStemp;
+    }
+
     @OnClick(R.id.btn_code)
     public void onClick() {
         LocalLog.d(TAG, "获取验证码");
@@ -218,7 +225,8 @@ public class IdentifedSetPassActivity extends BaseBarActivity {
         if (userInfoResponse == null || TextUtils.isEmpty(userInfoResponse.getMobile())) {
             return;
         }
-        Presenter.getInstance(this).getPaoBuSimple(NetApi.urlSignCode + "/?mobile=" + userInfoResponse.getMobile(), null, new PaoCallBack() {
+        String url = NetApi.urlSendMsg + userInfoResponse.getMobile() + keyStr(userInfoResponse.getMobile());
+        Presenter.getInstance(this).getPaoBuSimple(url, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 PaoToastUtils.showLongToast(IdentifedSetPassActivity.this, "验证码发送成功");
@@ -226,10 +234,10 @@ public class IdentifedSetPassActivity extends BaseBarActivity {
 
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                if (errorStr != null) {
-                    if (errorBean != null) {
-                        PaoToastUtils.showLongToast(IdentifedSetPassActivity.this, errorBean.getMessage());
-                    }
+                if (errorBean != null) {
+                    PaoToastUtils.showLongToast(IdentifedSetPassActivity.this, errorBean.getMessage());
+                } else {
+                    PaoToastUtils.showLongToast(IdentifedSetPassActivity.this, "开小差了，请稍后再试");
                 }
             }
         });

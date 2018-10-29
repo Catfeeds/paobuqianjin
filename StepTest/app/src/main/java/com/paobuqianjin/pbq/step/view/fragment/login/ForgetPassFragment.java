@@ -27,10 +27,14 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PassWordResponse;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.ForgetPassWordInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.MD5;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.ForgotPasswordActivity;
 import com.paobuqianjin.pbq.step.view.activity.LoginActivity;
 import com.paobuqianjin.pbq.step.view.activity.RegisterActivity;
@@ -169,12 +173,16 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
 
     @Override
     public void response(GetSignCodeResponse getSignCodeResponse) {
-        LocalLog.d(TAG, "GetSignCodeResponse() enter " + getSignCodeResponse.toString());
+        if (!isAdded()) {
+            return;
+        }
         if (getSignCodeResponse.getError() == 0) {
-            Toast.makeText(getContext(), "验证码发送成功", Toast.LENGTH_SHORT).show();
+            PaoToastUtils.showLongToast(getContext(), "验证码发送成功");
         } else if (getSignCodeResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
+        } else {
+            PaoToastUtils.showLongToast(getContext(), getSignCodeResponse.getMessage());
         }
     }
 
@@ -192,6 +200,35 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
         }
     }
 
+    private String keyStr(String phone) {
+        String timeStemp = String.valueOf(System.currentTimeMillis() / 1000);
+        return "&term=app&app_sign=" + MD5.md5Slat(Utils.KEY_SIGN + phone + timeStemp) + "&timestamp=" + timeStemp;
+    }
+
+    private boolean getSignCode(String phone) {
+        if (!Utils.isMobile(phone)) {
+            Toast.makeText(getContext(), "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        String url = NetApi.urlSendMsg + phone + keyStr(phone);
+        Presenter.getInstance(getActivity()).getPaoBuSimple(url, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                PaoToastUtils.showLongToast(getActivity(), "验证码发送成功");
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null) {
+                    PaoToastUtils.showLongToast(getActivity(), errorBean.getMessage());
+                } else {
+                    PaoToastUtils.showLongToast(getActivity(), "开小差了，请稍后再试");
+                }
+            }
+        });
+
+        return true;
+    }
 
     @OnClick({R.id.img_back, R.id.forgotpwd_getCode, R.id.forgotPwd_eyes, R.id.forgotpwd_ok})
     public void onClickTab(View view) {
@@ -202,7 +239,7 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
                     break;
                 case R.id.forgotpwd_getCode:
 
-                    if (Presenter.getInstance(getContext()).getSignCodePassWord(forgotpwdAccount.getText().toString())) {
+                    if (getSignCode(forgotpwdAccount.getText().toString())) {
                         if (thread != null && thread.isAlive()) {
                             return;
                         } else {

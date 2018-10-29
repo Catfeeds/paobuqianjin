@@ -162,6 +162,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.presenter.im.UserInfoLoginSetInterface;
 import com.paobuqianjin.pbq.step.presenter.im.WxPayResultQueryInterface;
 import com.paobuqianjin.pbq.step.utils.Constants;
+import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.MD5;
 import com.paobuqianjin.pbq.step.utils.NetApi;
@@ -916,7 +917,7 @@ public final class Engine {
 
     //TODO 获取验证码 http://119.29.10.64/v1/ThirdParty/sendMsg/?mobile=13424156029
     public void getSignCode(String phone) {
-        String url = NetApi.urlSignCode + "/?mobile=" + phone;
+        String url = NetApi.urlSendMsg + phone + keyStr(phone);
         LocalLog.d(TAG, "getSignCode() enter url  = " + url);
         OkHttpUtils
                 .get()
@@ -927,9 +928,7 @@ public final class Engine {
     }
 
     public boolean getSignCodeLoginBind(String phone) {
-        String url = NetApi.urlSignCode + "/?mobile=" + phone;
-        LocalLog.d(TAG, "getSignCode() enter url  = " + url);
-        LocalLog.d(TAG, "getMsg() enter phone =" + phone);
+        String url = NetApi.urlSendMsg + phone + keyStr(phone);
         if (!isPhone(phone)) {
             Toast.makeText(mContext, "请输入一个手机号码:", Toast.LENGTH_SHORT).show();
             return false;
@@ -950,7 +949,7 @@ public final class Engine {
             return false;
 
         }
-        String url = NetApi.urlSignCode + "/?mobile=" + phone;
+        String url = NetApi.urlSignCode + "/?mobile=" + phone + keyStr(phone);
         LocalLog.d(TAG, "getSignCode() enter url  = " + url);
         OkHttpUtils
                 .get()
@@ -1065,6 +1064,12 @@ public final class Engine {
                 .execute(new NetStringCallBack(rechargeDetailInterface, COMMAND_RECHARGE_RECORD));
     }
 
+
+    private String keyStr(String phone) {
+        String timeStemp = String.valueOf(System.currentTimeMillis() / 1000);
+        return "&term=app&app_sign=" + MD5.md5Slat(Utils.KEY_SIGN + phone + timeStemp) + "&timestamp=" + timeStemp;
+    }
+
     //获取验证码
     public boolean getMsg(String phone) {
         LocalLog.d(TAG, "getMsg() enter phone =" + phone);
@@ -1073,7 +1078,7 @@ public final class Engine {
             return false;
 
         }
-        String url = NetApi.urlSendMsg + phone;
+        String url = NetApi.urlSendMsg + phone + keyStr(phone);
         OkHttpUtils
                 .get()
                 .addHeader("headtoken", getToken(mContext))

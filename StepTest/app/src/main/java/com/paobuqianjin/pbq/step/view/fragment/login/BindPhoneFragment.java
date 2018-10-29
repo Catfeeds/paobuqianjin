@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.PostWxQqBindPhoneParam;
@@ -24,10 +25,14 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CheckSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.GetSignCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.LogBindPhoneResponse;
+import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.LoginBindPhoneInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.MD5;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
 import butterknife.Bind;
@@ -226,6 +231,37 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
         }
     }
 
+
+    private String keyStr(String phone) {
+        String timeStemp = String.valueOf(System.currentTimeMillis() / 1000);
+        return "&term=app&app_sign=" + MD5.md5Slat(Utils.KEY_SIGN + phone + timeStemp) + "&timestamp=" + timeStemp;
+    }
+
+    private boolean getSignCode(String phone) {
+        if (!Utils.isMobile(phone)) {
+            Toast.makeText(getContext(), "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        String url = NetApi.urlSendMsg + phone + keyStr(phone);
+        Presenter.getInstance(getActivity()).getPaoBuSimple(url, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                PaoToastUtils.showLongToast(getActivity(), "验证码发送成功");
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null) {
+                    PaoToastUtils.showLongToast(getActivity(), errorBean.getMessage());
+                } else {
+                    PaoToastUtils.showLongToast(getActivity(), "开小差了，请稍后再试");
+                }
+            }
+        });
+
+        return true;
+    }
+
     @OnClick({R.id.pass_y, R.id.btn_confirm, R.id.forgotpwd_getCode})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -264,7 +300,7 @@ public class BindPhoneFragment extends BaseBarStyleTextViewFragment implements L
                 break;
             case R.id.forgotpwd_getCode:
                 LocalLog.d(TAG, "获取验证码");
-                if (Presenter.getInstance(getContext()).getSignCodeLoginBind(phoneEdit.getText().toString())) {
+                if (getSignCode(phoneEdit.getText().toString())) {
                     if (thread != null && thread.isAlive()) {
                         return;
                     } else {
