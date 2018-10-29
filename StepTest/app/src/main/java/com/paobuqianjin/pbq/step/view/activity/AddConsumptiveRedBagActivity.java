@@ -331,7 +331,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
         if (intent != null) {
             dataBean = (ConSumSendHisResponse.DataBeanX.SendListBean.DataBean) intent.getSerializableExtra("tick_info");
             if (dataBean != null) {
-                etInformation.setText(dataBean.getVcontent());
+                etInformation.setText(dataBean.getContent());
                 etRedBagName.setText(dataBean.getVname());
                 etMoney.setText(dataBean.getMoney());
                 etLimiteMoney.setText(dataBean.getCondition());

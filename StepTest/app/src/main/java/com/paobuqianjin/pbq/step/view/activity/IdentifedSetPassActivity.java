@@ -227,7 +227,9 @@ public class IdentifedSetPassActivity extends BaseBarActivity {
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                 if (errorStr != null) {
-                    PaoToastUtils.showLongToast(IdentifedSetPassActivity.this, errorStr);
+                    if (errorBean != null) {
+                        PaoToastUtils.showLongToast(IdentifedSetPassActivity.this, errorBean.getMessage());
+                    }
                 }
             }
         });

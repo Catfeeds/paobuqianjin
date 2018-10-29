@@ -292,7 +292,8 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
             protected void onSuc(String s) {
                 try {
                     UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
-                    isVip = userInfoResponse.getData().getGvip() == 1;
+                    /*isVip = userInfoResponse.getData().getGvip() == 1;*/
+                    isVip = true;
                     attion.setVisibility(isVip ? View.GONE : View.VISIBLE);
                 } catch (Exception j) {
                     j.printStackTrace();
@@ -545,9 +546,9 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                     hisImage += ",";
                 }
                 hisImage += bean.getImageUrl();
-                LocalLog.d(TAG, "hisImage = " + hisImage);
             }
         }
+        LocalLog.d(TAG, "hisImage = " + hisImage);
         if (!TextUtils.isEmpty(dataBean.getRed_content())) {
             etInformation.setText(dataBean.getRed_content());
         }
@@ -609,9 +610,11 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                             lowDialog.show();
                     }
                 });
+            } else {
+                consumRedMsgSpan.setEnabled(false);
             }
         } else {
-            if (dataBean.getVoucherid() > 0) {
+            if (dataBean.getVoucherid() > 0 && dataBean.getLower_id() == 0) {
                 tickDataValue = new TickDataValue();
                 tickDataValue.setDeduction_money(dataBean.getVmoney());
                 tickDataValue.setValid_day(String.valueOf(dataBean.getVday()));
@@ -1018,15 +1021,15 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                     param.put("red_name", targetTaskStepNumStr);
                 }
 
-                if (businessId < 1) {
-                    param.put("businessid", "");
+                if (businessId < 1 && dataBean.getBusinessid() > 0) {
+                    param.put("businessid", "0");
                 }
                 if (businessId > 0 && dataBean.getBusinessid() != businessId) {
                     param.put("businessid", String.valueOf(businessId));
                 }
 
-                if (TextUtils.isEmpty(circleId) && !TextUtils.isEmpty(dataBean.getCircleid())) {
-                    param.put("circleid", "");
+                if (TextUtils.isEmpty(circleId) && !TextUtils.isEmpty(dataBean.getCircleid()) && !"0".equals(dataBean.getCircleid())) {
+                    param.put("circleid", "0");
                     if (!TextUtils.isEmpty(dataBean.getCircle_pwd())) {
                         param.put("circle_pwd", "");
                     }
@@ -1055,7 +1058,7 @@ public class ReleaseTaskSponsorFragment extends BaseBarStyleTextViewFragment imp
                         && !etInformation.getText().toString().trim().equals(dataBean.getRed_content())) {
                     param.put("red_content", etInformation.getText().toString().trim());
                 }
-                String images = "";
+                String images = null;
                 for (SelectPicBean bean : adapter.getData()) {
                     if (!TextUtils.isEmpty(images)) {
                         images += ",";

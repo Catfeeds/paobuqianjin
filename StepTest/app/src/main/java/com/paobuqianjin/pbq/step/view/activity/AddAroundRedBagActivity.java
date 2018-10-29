@@ -192,7 +192,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                         intent.getSerializableExtra("around");
                 currentAction = SEND_ACTION;
                 if (dataBean != null) {
-                    if (dataBean.getLower_id() == 0) {
+                    if (dataBean.getLower_id() == 0 && dataBean.getVoucherid() >0) {
                         tickDataValue = new TickDataValue();
                         tickDataValue.setVoucher_name(dataBean.getVname());
                         tickDataValue.setVoucher_number(dataBean.getNumber());
@@ -223,6 +223,8 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                         } else {
                             checkConsumRedBack(true);
                         }
+                    } else {
+                        linearConsumRed.setEnabled(false);
                     }
                     initEdit(dataBean, false);
                 } else {
@@ -598,7 +600,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         }
 
         if (TextUtils.isEmpty(circleId) && !TextUtils.isEmpty(dataBean.getCircleid()) && Integer.parseInt(dataBean.getCircleid()) > 0) {
-            params.put("circleid", "");
+            params.put("circleid", "0");
         }
 
         if (!TextUtils.isEmpty(circleId) && !circleId.equals(dataBean.getCircleid())) {
@@ -816,7 +818,8 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
             protected void onSuc(String s) {
                 try {
                     UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
-                    isVip = userInfoResponse.getData().getGvip() == 1;
+                    /*isVip = userInfoResponse.getData().getGvip() == 1;*/
+                    isVip = true;
                     attion.setVisibility(isVip ? View.GONE : View.VISIBLE);
                 } catch (Exception j) {
                     j.printStackTrace();
@@ -938,6 +941,10 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                             PaoToastUtils.showLongToast(this, "有优惠券时店铺或者网店链接必填一项");
                             return;
                         }
+                    }
+                    if (params.keySet().size() <= 0) {
+                        PaoToastUtils.showLongToast(AddAroundRedBagActivity.this, "参数为空");
+                        return;
                     }
                     Presenter.getInstance(this).postPaoBuSimple(NetApi.urlRedpacketMap, params, new PaoTipsCallBack() {
                         @Override
