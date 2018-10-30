@@ -85,12 +85,12 @@ public class OwnerCreateJoinFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected String title() {
-        return "我的圈子";
+        return "我的社群";
     }
 
     @Override
     public Object right() {
-        return "创建圈子";
+        return "创建社群";
     }
 
     @Override

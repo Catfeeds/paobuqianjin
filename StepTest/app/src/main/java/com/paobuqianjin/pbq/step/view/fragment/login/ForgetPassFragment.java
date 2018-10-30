@@ -305,7 +305,7 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
                     @Override
                     public void run() {
                         if (forgotpwdPwd != null) {
-                            forgotpwdGetCode.setClickable(false);
+                            forgotpwdGetCode.setEnabled(false);
                             forgotpwdGetCode.setText(T + "秒");
                         }
                     }
@@ -322,7 +322,7 @@ public class ForgetPassFragment extends BaseFragment implements ForgetPassWordIn
                 @Override
                 public void run() {
                     if (forgotpwdGetCode != null) {
-                        forgotpwdGetCode.setClickable(true);
+                        forgotpwdGetCode.setEnabled(true);
                         forgotpwdGetCode.setText("获取验证码");
                     }
                 }

@@ -657,7 +657,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                                             });
                                             TextView pswTv = (TextView) view.findViewById(R.id.circle_pwd);
                                             if (!TextUtils.isEmpty(dataBean.getCircle_pwd())) {
-                                                pswTv.setText("圈子密码：" + dataBean.getCircle_pwd());
+                                                pswTv.setText("社群密码：" + dataBean.getCircle_pwd());
                                                 pswTv.setVisibility(View.VISIBLE);
                                             } else {
                                                 pswTv.setVisibility(View.GONE);

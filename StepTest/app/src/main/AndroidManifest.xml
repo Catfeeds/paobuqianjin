@@ -109,6 +109,7 @@
             android:name=".view.activity.MainActivity"
             android:label="跑步钱进"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
 
             <!--
@@ -131,6 +132,7 @@
         <activity
             android:name=".view.activity.LoginActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
@@ -140,6 +142,7 @@
         </activity>
         <activity
             android:name=".view.activity.UserFitActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.USER_FIT_ACTION_BIND" />
@@ -158,9 +161,11 @@
         -->
         <activity
             android:name=".view.activity.SearchCircleActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.MemberManagerActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAMBER_MANAGER_ACTION" />
@@ -168,6 +173,7 @@
         </activity>
         <activity
             android:name=".view.activity.OwnerCircleActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.SELECT_ACTION" />
@@ -177,6 +183,7 @@
         </activity>
         <activity
             android:name=".view.activity.LoveRankActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.RED_RECORD_ACTION" />
@@ -186,17 +193,21 @@
         </activity>
         <activity
             android:name=".view.activity.DynamicActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".view.activity.LikeSupportActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.QrCodeMakeActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <activity android:name=".view.activity.QrCodeScanActivity" />
         <activity
             android:name=".view.activity.CirCleDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.SCAN_ACTION" />
@@ -205,15 +216,19 @@
         </activity>
         <activity
             android:name=".view.activity.UserCenterActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.CirCleTagActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.CreateDynamicActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.PaoBuPayActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="android.intent.action.PAY_EDIT" />
@@ -230,20 +245,25 @@
         <activity
             android:name=".view.activity.PayResultActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="android.intent.action.paobuqianjin.PAY_RESULT" />
             </intent-filter>
         </activity>
         <!-- 忘记密码 -->
-        <activity android:name=".view.activity.LoginForgetPassActivity" />
+        <activity
+            android:name=".view.activity.LoginForgetPassActivity"
+            android:screenOrientation="portrait" />
         <!-- 选择提现账号 -->
         <activity
             android:name=".view.activity.UserBindBankListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 提现绑定微信 -->
         <activity
             android:name=".view.activity.BindWeChatActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.step.BIND_WECHAT" />
@@ -253,6 +273,7 @@
         <!-- 任务发布 -->
         <activity
             android:name=".view.activity.TaskReleaseActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -263,6 +284,7 @@
         <!-- 选择任务发布对象 -->
         <activity
             android:name=".view.activity.SelectFriendActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.ACTION_TASK" />
@@ -273,6 +295,7 @@
         <!-- 任务详情 -->
         <activity
             android:name=".view.activity.TaskDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 我的发布 -->
         <activity
@@ -286,10 +309,12 @@
         </activity>
         <activity
             android:name=".view.fragment.owner.ReleaseRecordActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 个人榜单 -->
         <activity
             android:name=".view.activity.FriendStepDanActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.ACTION_FRIEND_HONOR" />
@@ -300,18 +325,22 @@
         <activity
             android:name=".view.activity.MyWalletActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 商家详情 -->
         <activity
             android:name=".view.activity.SponsorDetailActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".view.activity.DearNameModifyActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 商品图片详情 -->
         <activity
             android:name=".view.activity.SponsorGoodsPicLookActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.SHOW_PIC_ACTION" />
@@ -322,10 +351,12 @@
         </activity>
         <activity
             android:name=".view.activity.SponsorTimeSelectActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 查看评论 -->
         <activity
             android:name=".view.activity.UserCenterContentActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.LIKE_MESSAGE_ACTION" />
@@ -336,6 +367,7 @@
         <!-- 提现 -->
         <activity
             android:name=".view.activity.CrashActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.step.CRASH_ACTION" />
@@ -344,20 +376,24 @@
         <!-- 邀请有礼 -->
         <activity
             android:name=".view.activity.InviteActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <activity android:name=".view.activity.InviteDetailActivity" />
         <activity
             android:name=".view.activity.StepDollarActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 充值到钱包 -->
         <activity
             android:name=".view.activity.InoutcomDetailActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 我的好友 -->
         <activity
             android:name=".view.activity.MyFriendActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjn.step.FRIEND_ACTION" />
@@ -368,49 +404,62 @@
         <activity
             android:name=".view.activity.FriendAddressActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 添加好友 -->
         <activity
             android:name=".view.activity.AddFriendAddressActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <activity android:name=".view.activity.SearchResultActivity" />
         <!-- 编辑圈子 -->
         <activity
             android:name=".view.activity.EditCircleActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 修改资料 -->
         <activity
             android:name=".view.activity.UserInfoSettingActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.SettingActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 我的动态 -->
         <activity
             android:name=".view.activity.MyDynamicActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 我的关注 -->
         <activity
             android:name=".view.activity.MyLikeFriendActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 消息 -->
         <activity
             android:name=".view.activity.MessageActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 意见反馈 -->
         <activity
             android:name=".view.activity.SuggestionActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 常见问题 -->
-        <activity android:name=".activity.question.QuestionActivity" />
-        <activity android:name=".activity.question.QuestionDetailActivity">
+        <activity
+            android:name=".activity.question.QuestionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.question.QuestionDetailActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.STEP_HELP" />
                 <action android:name="com.paobuqianjin.pbq.step.FRIEND_HELP" />
@@ -422,11 +471,13 @@
         <activity
             android:name=".view.activity.AboutActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!--  -->
         <activity
             android:name=".view.activity.AgreementActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.TICK_RED_RULE"></action>
@@ -441,6 +492,7 @@
         <activity
             android:name=".view.activity.DanActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 微信回调 -->
         <activity
@@ -479,15 +531,18 @@
         <activity
             android:name=".view.activity.FillInviteCodeActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name=".view.activity.AccoutManagerActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
         <activity
             android:name="com.umeng.qq.tencent.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -505,6 +560,7 @@
         <activity
             android:name=".view.activity.OlderPassChangeActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/ImageTranslucentTheme" />
 
         <!-- 声明service组件 -->
@@ -523,35 +579,63 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".view.activity.RegisterActivity" />
-        <activity android:name=".view.activity.ForgotPasswordActivity" />
-        <activity android:name=".view.activity.BindPhoneNumActivity" />
-        <activity android:name=".view.activity.VipActivity" />
-        <activity android:name=".view.activity.SponsorSelectActivity">
+        <activity
+            android:name=".view.activity.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ForgotPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.BindPhoneNumActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.VipActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.SponsorSelectActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.TARGET_ACTION" />
                 <action android:name="com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.SponsorInfoCollectActivity">
+        <activity
+            android:name=".view.activity.SponsorInfoCollectActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.SPONSOR_INFO_ACTION" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.sponsor.SponsorTimeActivity" />
+        <activity
+            android:name=".activity.sponsor.SponsorTimeActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.sponsor.SponsorDateActivity"
             android:label="@string/title_activity_sponsor_date"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.sponsor.SponsorManagerActivity" />
+        <activity
+            android:name=".activity.sponsor.SponsorManagerActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.sponsor.SponsorInfoActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
-        <activity android:name=".activity.sponsor.SponsorRedLocationActivity" />
-        <activity android:name=".activity.sponsor.TargetPeopleActivity" />
-        <activity android:name=".activity.sponsor.SponsorSelectPicActivity" />
-        <activity android:name=".view.activity.LiveListActivity" />
-        <activity android:name=".view.activity.LiveDetailActivity" />
+        <activity
+            android:name=".activity.sponsor.SponsorRedLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.sponsor.TargetPeopleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.sponsor.SponsorSelectPicActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.LiveListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.LiveDetailActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.sponsor.SponsorTMapActivity"
             android:label="@string/title_activity_sponsor_tmap"
@@ -559,44 +643,78 @@
             android:windowContentTransitions="true" />
         <activity
             android:name=".activity.sponsor.SponsorSearchPositionActivity"
+            android:screenOrientation="portrait"
             android:windowContentTransitions="true" />
-        <activity android:name=".activity.base.GalleryActivity" />
-        <activity android:name=".view.activity.IdentityAuth1Activity" />
-        <activity android:name=".view.activity.IdentityAuth2Activity">
+        <activity
+            android:name=".activity.base.GalleryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.IdentityAuth1Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.IdentityAuth2Activity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.setp.ACTION_AUTH1" />
                 <action android:name="com.paobuqianjin.pbq.setp.ACTION_FORGET_PSW" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.IdentityAuth3Activity">
+        <activity
+            android:name=".view.activity.IdentityAuth3Activity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.ACTION_ADD_CARD" />
                 <action android:name="com.paobuqianjin.pbq.step.ACTION_FIRSTSET" />
                 <action android:name="com.paobuqianjin.pbq.setp.ACTION_FORGET_RESET" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.TransferActivity" />
-        <activity android:name=".view.activity.TransferCardActivity" />
-        <activity android:name=".view.activity.BindCardActivity" />
-        <activity android:name=".view.activity.InputCardInfoActivity" />
-        <activity android:name=".view.activity.MyBankCardActivity" />
-        <activity android:name=".view.activity.ConsumHsRedActivity" />
+        <activity
+            android:name=".view.activity.TransferActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.TransferCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.BindCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.InputCardInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.MyBankCardActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ConsumHsRedActivity"
+            android:screenOrientation="portrait" />
         <!-- 密码管理 -->
-        <activity android:name=".view.activity.PayManagerActivity" />
-        <activity android:name=".view.activity.ForgetPayWordActivity" />
-        <activity android:name=".view.activity.RePwdPhoneActivity" />
-        <activity android:name=".view.activity.PayPassWordActivity">
+        <activity
+            android:name=".view.activity.PayManagerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ForgetPayWordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.RePwdPhoneActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.PayPassWordActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.ACTION_FIRST_CARD" />
                 <action android:name="com.paobuqianjin.pbq.step.ACTION_RESET" />
                 <action android:name="com.paobuqianjin.pbq.step.ACTION_RESET_BANK" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.IdentifedSetPassActivity" />
+        <activity
+            android:name=".view.activity.IdentifedSetPassActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.SponsorRedDetailActivity"
-            android:launchMode="singleTask" />
-        <activity android:name=".view.activity.GoldenSponsoractivity" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.GoldenSponsoractivity"
+            android:screenOrientation="portrait" />
         <!-- 合利宝 -->
         <uses-library
             android:name="org.simalliance.openmobileapi"
@@ -614,7 +732,9 @@
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".view.activity.TransferResultActivity" />
+        <activity
+            android:name=".view.activity.TransferResultActivity"
+            android:screenOrientation="portrait" />
         <!-- 魅族push应用定义消息receiver声明 -->
         <receiver android:name=".model.broadcast.MeizuTestReceiver">
             <intent-filter>
@@ -845,43 +965,77 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.TransparentGuideActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".view.activity.ConsumptiveRedBagActivity" />
-        <activity android:name=".view.activity.ConsumTotalActivity"></activity>
+        <activity
+            android:name=".view.activity.ConsumptiveRedBagActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ConsumTotalActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".view.activity.AddConsumptiveRedBagActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".view.activity.AddLittleConsumActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".view.activity.ShopRedBagActivity" />
-        <activity android:name=".view.activity.GetConsumptiveRedBagHisActivity" />
-        <activity android:name=".view.activity.MyConsumptiveRedBagActivity" />
+        <activity
+            android:name=".view.activity.ShopRedBagActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.GetConsumptiveRedBagHisActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.MyConsumptiveRedBagActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.GetConsumptiveRBResultActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
-        <activity android:name=".CircleTypeActivity" />
-        <activity android:name=".view.activity.GetMoreMoneyActivity" />
-        <activity android:name=".view.activity.ChangeAccountActivity" />
-        <activity android:name=".view.activity.MultAccManangerActivity" />
-        <activity android:name=".view.activity.NearByActivity" />
+        <activity
+            android:name=".CircleTypeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.GetMoreMoneyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ChangeAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.MultAccManangerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.NearByActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".view.activity.SponsorCollectActivity" />
         <activity android:name=".view.activity.FriendDetailActivity" />
         <activity
             android:name=".view.activity.CircleGuideActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".view.activity.SetRemarkNameActivity" />
-        <activity android:name=".view.activity.ConsumptiveRedBag2Activity" />
+        <activity
+            android:name=".view.activity.SetRemarkNameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.ConsumptiveRedBag2Activity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.AddAroundRedBagActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.step.EDIT"></action>
                 <action android:name="com.paobuqianin.pbq.step.SEND"></action>
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.SingleWebViewActivity"></activity>
-        <activity android:name=".view.activity.RedHsRecordActivity">
+        <activity
+            android:name=".view.activity.SingleWebViewActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".view.activity.RedHsRecordActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.SELECT_HIS_TICK_ACTION" />
                 <action android:name="com.paobuqianjin.pbq.SELECT_HIS_NEAR_ACTION" />
@@ -892,18 +1046,26 @@
         </activity>
         <activity
             android:name=".view.activity.RoundRedDetailActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".view.activity.RedInfoActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="com.paobuqianjin.pbq.ROUND_RED"></action>
                 <action android:name="com.paobuqianjin.pbq.NEAR_READ"></action>
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.RoundRedRelActivity" />
-        <activity android:name=".view.activity.CrashDetailActivity"></activity>
-        <activity android:name=".view.activity.ConsumRedInfoActivity" />
+        <activity
+            android:name=".view.activity.RoundRedRelActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.CrashDetailActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".view.activity.ConsumRedInfoActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

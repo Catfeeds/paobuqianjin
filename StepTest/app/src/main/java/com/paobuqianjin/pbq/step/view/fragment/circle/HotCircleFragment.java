@@ -294,7 +294,7 @@ public class HotCircleFragment extends BaseFragment {
         Presenter.getInstance(mContext).attachUiInterface(queryRedPkgInterface);
         loadBanner();
         searchEdit = (EditText) rootView.findViewById(R.id.search_pan).findViewById(R.id.search_circle_text);
-        searchEdit.setHint("请输入圈子名称/ID");
+        searchEdit.setHint("请输入社群名称/ID");
         //((BaseActivity) getActivity()).showLoadingBar();
     }
 
@@ -756,14 +756,14 @@ public class HotCircleFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SEARCH_ADD) {
             LocalLog.d(TAG, "SEARCH_ADD ++++");
-            LocalLog.d(TAG, "进行过加入圈子的操作");
+            LocalLog.d(TAG, "进行过加入社群的操作");
             if (circleIdA == -1 || circleIdB == -1) {
                 updateMyHotCircle();
             }
         }
         if (data != null) {
             if (DELETE_ACTION.equals(data.getAction()) || QUIT_ACTION.equals(data.getAction())) {
-                LocalLog.d(TAG, "删除或者退出圈子");
+                LocalLog.d(TAG, "删除或者退出社群");
                 updateMyHotCircle();
             }
         }

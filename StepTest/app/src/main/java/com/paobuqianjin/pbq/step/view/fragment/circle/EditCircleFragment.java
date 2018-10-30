@@ -220,7 +220,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
 
     @Override
     protected String title() {
-        return "编辑圈子";
+        return "编辑社群";
     }
 
     @Override
@@ -744,7 +744,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         //createCircleBodyParam.setCity("深圳福田");
         createCircleBodyParam.setName(cirNameDesc.getText().toString());
         if (cirNameDesc.getText() == null || cirNameDesc.getText().toString().equals("")) {
-            Toast.makeText(getContext(), "请输入圈子名称", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "请输入社群名称", Toast.LENGTH_SHORT).show();
             return false;
         }
         createCircleBodyParam.setMobile(circlePhoneNumEditor.getText().toString());
@@ -796,7 +796,7 @@ public class EditCircleFragment extends BaseBarStyleTextViewFragment implements 
         }
 
         if (circleDescOfYour.getText() == null || circleDescOfYour.getText().toString().equals("")) {
-            Toast.makeText(getContext(), "圈子描述至少填写一个字符", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "社群描述至少填写一个字符", Toast.LENGTH_SHORT).show();
         }
         createCircleBodyParam.setDescription(circleDescOfYour.getText().toString());
 

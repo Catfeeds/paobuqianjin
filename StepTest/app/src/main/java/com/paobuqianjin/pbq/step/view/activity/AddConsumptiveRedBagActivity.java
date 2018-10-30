@@ -913,6 +913,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
             LocalLog.d(TAG, "resultCode == " + resultCode);
             if (resultCode == ReleaseTaskSponsorFragment.RESULT_SPONSOR_MSG) {
                 businessId = data.getIntExtra("businessId", -1);
+                ivDelete.setVisibility(View.VISIBLE);
                 if (businessId != -1) {
                     sponorMsgDesDetail.setText(data.getStringExtra("name"));
                 }
@@ -925,6 +926,7 @@ public class AddConsumptiveRedBagActivity extends BaseBarActivity implements Bas
                 if (businessId != -1) {
                     hasBusiness = true;
                     this.businessId = businessId;
+                    ivDelete.setVisibility(View.VISIBLE);
                     sponorMsgDesDetail.setText(data.getStringExtra("name"));
                 }
             }

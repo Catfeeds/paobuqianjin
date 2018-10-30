@@ -161,7 +161,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
         Presenter.getInstance(getContext()).attachUiInterface(this);
         searchIcon = (RelativeLayout) viewRoot.findViewById(R.id.search_icon);
         searchCircleText = (EditText) viewRoot.findViewById(R.id.search_circle_text);
-        searchCircleText.setHint("请输入圈子名称/ID");
+        searchCircleText.setHint("请输入社群名称/ID");
         searchCircleText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -500,7 +500,7 @@ public class SearchCircleStyleTextViewFragment extends BaseBarStyleTextViewFragm
 
     @Override
     protected String title() {
-        return getActivity().getIntent().getBooleanExtra("isInitData",true) ? "精选圈子" : getString(R.string.search_circle);
+        return getActivity().getIntent().getBooleanExtra("isInitData",true) ? "精选社群" : getString(R.string.search_circle);
     }
 
     @Override

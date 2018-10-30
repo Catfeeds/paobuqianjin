@@ -38,7 +38,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/search_pan"
         android:gravity="center"
-        android:text="没有找到你要的圈子"
+        android:text="没有找到你要的社群"
         android:textSize="15dp"
         android:visibility="gone" />
 </RelativeLayout>

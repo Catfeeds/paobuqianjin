@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="-20dp"
-                android:text="创建圈子移到了这里"
+                android:text="创建社群移到了这里"
                 android:textColor="@color/color_f8"
                 android:textSize="16dp" />
 

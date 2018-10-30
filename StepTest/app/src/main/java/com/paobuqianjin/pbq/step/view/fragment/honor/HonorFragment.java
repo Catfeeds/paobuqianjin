@@ -59,7 +59,7 @@ public final class HonorFragment extends BaseFragment {
         CircleHonorIndexFragment circleHonorIndexFragment = new CircleHonorIndexFragment();
         NearByFragment nearByFragment = new NearByFragment();
 
-        String[] titles = {"个人", "圈子", "附近"};
+        String[] titles = {"个人", "社群", "附近"};
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(personHonorFragment);
         fragments.add(circleHonorIndexFragment);

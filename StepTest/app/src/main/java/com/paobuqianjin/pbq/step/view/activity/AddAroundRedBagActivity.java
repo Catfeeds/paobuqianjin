@@ -290,7 +290,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                 }
 
             } catch (Exception e) {
-                PaoToastUtils.showLongToast(this, "圈子信息有误");
+                PaoToastUtils.showLongToast(this, "社群信息有误");
             }
 
         }

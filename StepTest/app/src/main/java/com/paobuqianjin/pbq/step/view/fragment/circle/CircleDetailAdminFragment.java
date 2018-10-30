@@ -392,7 +392,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                     break;
                 case 4:
                     pop_message_red_a.setVisibility(View.INVISIBLE);
-                    pop_message_red_b.setText("圈子余额不足");
+                    pop_message_red_b.setText("社群余额不足");
                     break;
             }
         }
@@ -714,7 +714,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 case R.id.re_charge_bt:
                     LocalLog.d(TAG, "创建成功,跳转支付");
                     if (circleDetailResponse != null && circleDetailResponse.getData().getIs_join() == 0) {
-                        ToastUtils.showShortToast(getActivity(),"请先加入圈子");
+                        ToastUtils.showShortToast(getActivity(),"请先加入社群");
                         return;
                     }
                     if (circleId != -1) {
@@ -951,7 +951,7 @@ public class CircleDetailAdminFragment extends BaseBarImageViewFragment implemen
                 });
                 normalDialog.setBackpressDismiss(false);
                 normalDialog.setSingleBtn(true);
-                normalDialog.setMessage("该圈子已被解散");
+                normalDialog.setMessage("该社群已被解散");
                 normalDialog.show();
                 return;
             }

@@ -64,7 +64,7 @@ public class LiveFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected String title() {
-        return "圈子活动";
+        return "社群活动";
     }
 
     @Override

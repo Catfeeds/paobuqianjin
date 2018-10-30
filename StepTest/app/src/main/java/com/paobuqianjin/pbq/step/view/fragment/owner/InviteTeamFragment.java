@@ -157,6 +157,8 @@ public class InviteTeamFragment extends BaseFragment implements SwipeMenuRecycle
                 }
                 try {
                     InviteTopResponse inviteTopResponse = new Gson().fromJson(s, InviteTopResponse.class);
+                    ((InviteDetailActivity) getActivity()).updateInviteMsg(inviteTopResponse.getData().getInumber(), inviteTopResponse.getData().getInumber()
+                            , inviteTopResponse.getData().getIcredit());
                     if (Integer.parseInt(inviteTopResponse.getData().getInumber()) == 0) {
                         refreshLayout.setRefreshing(false);
                         linearEmpty.setVisibility(View.VISIBLE);
@@ -181,8 +183,6 @@ public class InviteTeamFragment extends BaseFragment implements SwipeMenuRecycle
                         adapter.notifyDataSetChanged();
                         rvCoupon.loadMoreFinish(false, false);
                     }
-                    ((InviteDetailActivity) getActivity()).updateInviteMsg(inviteTopResponse.getData().getInumber(), inviteTopResponse.getData().getInumber()
-                            , inviteTopResponse.getData().getIcredit());
 
                 } catch (Exception e) {
                     e.printStackTrace();

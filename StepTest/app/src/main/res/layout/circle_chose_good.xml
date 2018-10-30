@@ -19,7 +19,7 @@
         android:gravity="left"
         android:layout_marginLeft="14dp"
         android:includeFontPadding="false"
-        android:text="精选圈子"
+        android:text="精选社群"
         android:textColor="@color/color_161727"
         android:textSize="14dp" />
 

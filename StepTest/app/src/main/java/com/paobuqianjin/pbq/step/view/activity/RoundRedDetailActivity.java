@@ -519,7 +519,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                                     encodeBitmap(qrcode, circleUlr, 1, 1);
                                     TextView pswTv = (TextView) qrLinear.findViewById(R.id.circle_pwd);
                                     if (!TextUtils.isEmpty(roundDetailStyleResponse.getData().getCircle_pwd())) {
-                                        pswTv.setText("圈子密码：" + roundDetailStyleResponse.getData().getCircle_pwd());
+                                        pswTv.setText("社群密码：" + roundDetailStyleResponse.getData().getCircle_pwd());
                                         pswTv.setVisibility(View.VISIBLE);
                                     } else {
                                         pswTv.setVisibility(View.GONE);

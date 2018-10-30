@@ -21,7 +21,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="14dp"
-            android:text="请输入6位圈子密码"
+            android:text="请输入6位社群密码"
             android:textColor="@color/color_161727"
             android:textSize="17dp"
             android:textStyle="bold" />
@@ -42,7 +42,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:background="@android:drawable/editbox_background_normal"
-            android:hint="输入6位圈子密码"
+            android:hint="输入6位社群密码"
             android:inputType="textPassword"
             android:maxLength="6"
             android:maxLines="1"

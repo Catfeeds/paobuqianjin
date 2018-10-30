@@ -128,7 +128,7 @@ public class ConsumRedFragment extends BaseFragment implements SwipeMenuRecycler
             @Override
             public void onItemClick(View itemView, final int position) {
                 String bId = listData.get(position).getBusinessid();
-                if (!TextUtils.isEmpty(bId)) {
+                if (!TextUtils.isEmpty(bId) && !"0".equals(bId)) {
                     LocalLog.d(TAG, "businessid =" + bId);
                     Intent intent = new Intent();
                     intent.putExtra(getContext().getPackageName() + "businessid", Integer.parseInt(bId));

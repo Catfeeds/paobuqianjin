@@ -109,7 +109,7 @@ public class MyQrCodeFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected String title() {
-        return "圈子二维码";
+        return "社群二维码";
     }
 
     @Override
@@ -142,7 +142,7 @@ public class MyQrCodeFragment extends BaseBarStyleTextViewFragment {
         String codeInfo = "";
         if (id != null && !id.equals("")) {
             codeInfo = NetApi.urlShareCd + id;
-            title = "圈子二维码";
+            title = "社群二维码";
         } else {
             userid = Presenter.getInstance(getContext()).getNo();
             codeInfo = NetApi.urlShareIc + userid;

@@ -21,7 +21,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="30dp"
-        android:text="你还没有任何圈子哦"
+        android:text="你还没有任何社群哦"
         android:textColor="@color/color_33333"
         android:textSize="14dp" />
     <Button
@@ -29,7 +29,7 @@
         android:layout_below="@+id/add_circle_attention"
         android:layout_marginTop="60dp"
         android:background="@drawable/rect_angle_background"
-        android:text="加入圈子"
+        android:text="加入社群"
         android:textColor="@color/color_f8"
         android:textSize="18dp"
         android:gravity="center"

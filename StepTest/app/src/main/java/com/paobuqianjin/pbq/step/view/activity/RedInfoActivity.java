@@ -547,7 +547,7 @@ public class RedInfoActivity extends BaseBarActivity {
                                 encodeBitmap(qrcode, circleUlr, 1, 1);
                                 TextView pswTv = (TextView) circleQr.findViewById(R.id.circle_pwd);
                                 if (!TextUtils.isEmpty(roundHisResponse.getData().getCircle_pwd())) {
-                                    pswTv.setText("圈子密码：" + roundHisResponse.getData().getCircle_pwd());
+                                    pswTv.setText("社群密码：" + roundHisResponse.getData().getCircle_pwd());
                                     pswTv.setVisibility(View.VISIBLE);
                                 } else {
                                     pswTv.setVisibility(View.GONE);

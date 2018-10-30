@@ -32,7 +32,7 @@
                     android:layout_marginTop="20dp"
                     android:gravity="left"
                     android:includeFontPadding="false"
-                    android:text="我的圈子"
+                    android:text="我的社群"
                     android:visibility="gone"
                     android:textColor="@color/color_161727"
                     android:textSize="14dp" />
@@ -80,7 +80,7 @@
                             android:layout_marginTop="5dp"
                             android:gravity="center"
                             android:includeFontPadding="true"
-                            android:text="创建圈子"
+                            android:text="创建社群"
                             android:textColor="@color/color_161727"
                             android:textSize="12dp" />
                     </RelativeLayout>

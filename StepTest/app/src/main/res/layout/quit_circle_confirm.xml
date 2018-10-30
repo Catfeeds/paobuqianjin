@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="15dp"
-                android:text="是否退出此圈子"
+                android:text="是否退出此社群"
                 android:textColor="@color/color_161727"
                 android:textSize="17dp" />
 

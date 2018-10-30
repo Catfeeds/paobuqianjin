@@ -101,7 +101,7 @@ public class ConversationActivity extends BaseBarActivity implements BaseBarActi
 
     private void initGroupView() {
         findViewById(R.id.circle_message).setVisibility(View.VISIBLE);
-        setRightValue(R.id.bar_tv_right, "进入圈子");
+        setRightValue(R.id.bar_tv_right, "进入社群");
         final ImageView iv_banner = findViewById(R.id.iv_banner);
         Map<String, String> params = new HashMap<>();
         params.put("site", "banner");
@@ -118,7 +118,7 @@ public class ConversationActivity extends BaseBarActivity implements BaseBarActi
 
                 if (isOutOfCircle) {
                     final NormalDialog normalDialog = new NormalDialog(ConversationActivity.this);
-                    normalDialog.setMessage("该圈子已被解散");
+                    normalDialog.setMessage("该社群已被解散");
                     normalDialog.setSingleBtn(true);
                     normalDialog.setYesOnclickListener("知道了", new NormalDialog.onYesOnclickListener() {
                         @Override

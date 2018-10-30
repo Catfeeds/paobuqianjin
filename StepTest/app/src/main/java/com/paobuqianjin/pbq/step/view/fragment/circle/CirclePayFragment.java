@@ -244,7 +244,7 @@ public class CirclePayFragment extends BaseBarStyleTextViewFragment implements P
                                 normalDialog.setMessage("确定取消充值到钱包");
                                 break;
                             case "circle":
-                                normalDialog.setMessage("确定取消充值到圈子");
+                                normalDialog.setMessage("确定取消充值到社群");
                                 break;
                             case "redpacket":
                                 normalDialog.setMessage("是否取消商家红包的发布");

@@ -267,7 +267,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
     @Override
     protected String title() {
-        return "创建圈子";
+        return "创建社群";
     }
 
     @Override
@@ -939,7 +939,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         if (TextUtils.isEmpty(targetTaskStepNumStr.trim()) || filter.calculateLength(targetTaskStepNumStr) < 4
                 || filter.calculateLength(targetTaskStepNumStr) > 32) {
             final NormalDialog normalDialog = new NormalDialog(this);
-            normalDialog.setMessage("请输入4-16位圈子名称");
+            normalDialog.setMessage("请输入4-16位社群名称");
             normalDialog.setSingleBtn(true);
             normalDialog.setYesOnclickListener("确定", new NormalDialog.onYesOnclickListener() {
                 @Override
@@ -995,7 +995,7 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
 
         }
         if (TextUtils.isEmpty(localAvatar)) {
-            Toast.makeText(this, "请选择圈子logo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "请选择社群logo", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -1010,12 +1010,12 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
         }
 
         if (circleDescOfYour.getText() == null || circleDescOfYour.getText().toString().equals("")) {
-            Toast.makeText(this, "圈子描述至少填写一个字符", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "社群描述至少填写一个字符", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (circleDescOfYour.length() > 400) {
-            Toast.makeText(this, "请输入400字以内的圈子描述", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "请输入400字以内的社群描述", Toast.LENGTH_SHORT).show();
             return false;
         }
 

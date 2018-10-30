@@ -91,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="长按二维码进商家圈子"
+                    android:text="长按二维码进商家社群"
                     android:textColor="@color/color_161727"
                     android:textSize="12dp" />
 

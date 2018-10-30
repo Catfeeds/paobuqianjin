@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="22dp"
             android:layout_marginTop="10dp"
-            android:text="圈子排行榜"
+            android:text="社群排行榜"
             android:textColor="@color/color_f8"
             android:textSize="14dp" />
 

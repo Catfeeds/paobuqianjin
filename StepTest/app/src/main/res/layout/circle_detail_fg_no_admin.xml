@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@+id/circle_obj_des"
                     android:layout_below="@+id/desc"
-                    android:text="圈子余额:__元"
+                    android:text="社群余额:__元"
                     android:textColor="@color/color_ecf0f3"
                     android:textSize="12dp" />
 
