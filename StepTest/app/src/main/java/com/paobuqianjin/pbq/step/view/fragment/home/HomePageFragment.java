@@ -377,8 +377,6 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
         });
         TextView title = (TextView) popRedPkgView.findViewById(R.id.des_title);
         TextView des = (TextView)popRedPkgView.findViewById(R.id.reg_pkg_des);
-        des.setVisibility(View.INVISIBLE);
-        title.setText("亲，您有奖励可以领取哦！");
         final RelativeLayout unOpenRkg = (RelativeLayout) popRedPkgView.findViewById(R.id.start_red_kg);
         popupRedPkgWindow.setFocusable(true);
         popupRedPkgWindow.setOutsideTouchable(true);

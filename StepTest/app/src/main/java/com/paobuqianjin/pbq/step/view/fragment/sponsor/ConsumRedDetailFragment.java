@@ -333,7 +333,7 @@ public class ConsumRedDetailFragment extends BaseBarStyleTextViewFragment {
                 LocalLog.d(TAG, "查看更多");
                 Intent intent = new Intent();
                 intent.setAction(SHOW_SPONSOR_PICS_ACTION);
-                if (goodsImgsBeans.size() < 0) {
+                if (goodsImgsBeans.size() <= 0) {
                     return;
                 }
                 GoodImageData goodImageData = new GoodImageData(goodsImgsBeans);

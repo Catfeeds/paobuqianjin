@@ -397,6 +397,10 @@ public final class Engine {
 
     private NetworkPolicy networkPolicy = NetworkPolicy.NO_STORE;
 
+    public BDLocation getBdLocation() {
+        return location;
+    }
+
     private Engine() {
         if (picasso == null) {
             picasso = new Picasso.Builder(mContext)

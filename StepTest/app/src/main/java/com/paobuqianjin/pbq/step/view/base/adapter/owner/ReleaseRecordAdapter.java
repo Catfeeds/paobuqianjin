@@ -310,23 +310,25 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.View
                     if (mData.get(getAdapterPosition()) instanceof NearBySponsorResponse.DataBean.NearedpacketBean) {
                         int businessid = -1;
                         businessid = ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(getAdapterPosition())).getBusinessid();
+                        Intent intent = new Intent();
                         if (businessid != -1) {
                             LocalLog.d(TAG, "bunessid = " + businessid);
-                            Intent intent = new Intent();
                             intent.putExtra(context.getPackageName() + "businessid", businessid);
                             intent.setClass(context, SponsorDetailActivity.class);
-                            context.startActivity(intent);
                         }
+                        intent.putExtra(context.getPackageName() + "red_id", ((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(getAdapterPosition())).getRed_id());
+                        context.startActivity(intent);
                     } else if (mData.get(getAdapterPosition()) instanceof NearBySponsorResponse.DataBean.Ledredpacket) {
                         int businessid = -1;
                         businessid = ((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(getAdapterPosition())).getBusinessid();
+                        Intent intent = new Intent();
                         if (businessid != -1) {
                             LocalLog.d(TAG, "bunessid = " + businessid);
-                            Intent intent = new Intent();
                             intent.putExtra(context.getPackageName() + "businessid", businessid);
                             intent.setClass(context, SponsorDetailActivity.class);
-                            context.startActivity(intent);
                         }
+                        intent.putExtra(context.getPackageName() + "red_id", ((NearBySponsorResponse.DataBean.Ledredpacket) mData.get(getAdapterPosition())).getRed_id());
+                        context.startActivity(intent);
                     }
                 }
             });

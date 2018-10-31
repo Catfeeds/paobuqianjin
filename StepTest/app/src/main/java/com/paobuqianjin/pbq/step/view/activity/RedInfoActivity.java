@@ -675,7 +675,7 @@ public class RedInfoActivity extends BaseBarActivity {
                                     if (sizeImag > 0) {
                                         Intent intent = new Intent();
                                         intent.setAction(SHOW_SPONSOR_PICS_ACTION);
-                                        if (goodsImgsBeans.size() < 0) {
+                                        if (goodsImgsBeans.size() <= 0) {
                                             return;
                                         }
                                         GoodImageData goodImageData = new GoodImageData(goodsImgsBeans);

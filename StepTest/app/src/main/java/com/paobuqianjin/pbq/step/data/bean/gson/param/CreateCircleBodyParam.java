@@ -1,5 +1,8 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.param;
 
+import android.text.TextUtils;
+import android.widget.TextView;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -76,7 +79,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setName(String name) {
         this.name = name;
-        params.put("name", name);
+        if (!TextUtils.isEmpty(name))
+            params.put("name", name);
         return this;
     }
 
@@ -86,7 +90,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setTargetid(int targetid) {
         this.targetid = targetid;
-        params.put("targetid", String.valueOf(targetid));
+        if (!TextUtils.isEmpty(String.valueOf(targetid)))
+            params.put("targetid", String.valueOf(targetid));
         return this;
     }
 
@@ -96,7 +101,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setMobile(String mobile) {
         this.mobile = mobile;
-        params.put("mobile", mobile);
+        if (!TextUtils.isEmpty(mobile))
+            params.put("mobile", mobile);
         return this;
     }
 
@@ -106,7 +112,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setIs_recharge(int is_recharge) {
         this.is_recharge = is_recharge;
-        params.put("is_recharge", String.valueOf(is_recharge));
+        if (!TextUtils.isEmpty(String.valueOf(is_recharge)))
+            params.put("is_recharge", String.valueOf(is_recharge));
         return this;
     }
 
@@ -116,7 +123,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setRed_packet_amount(float red_packet_amount) {
         this.red_packet_amount = red_packet_amount;
-        params.put("red_packet_amount", String.valueOf(red_packet_amount));
+        if (!TextUtils.isEmpty(String.valueOf(red_packet_amount)))
+            params.put("red_packet_amount", String.valueOf(red_packet_amount));
         return this;
     }
 
@@ -126,7 +134,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setRed_packet(int red_packet) {
         this.red_packet = red_packet;
-        params.put("red_packet", String.valueOf(red_packet));
+        if (!TextUtils.isEmpty(String.valueOf(red_packet)))
+            params.put("red_packet", String.valueOf(red_packet));
         return this;
     }
 
@@ -136,7 +145,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setLogo(String logo) {
         this.logo = logo;
-        params.put("logo", logo);
+        if (!TextUtils.isEmpty(logo))
+            params.put("logo", logo);
         return this;
     }
 
@@ -146,7 +156,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setCoverid(int coverid) {
         this.coverid = coverid;
-        params.put("coverid", String.valueOf(coverid));
+        if (!TextUtils.isEmpty(String.valueOf(coverid)))
+            params.put("coverid", String.valueOf(coverid));
         return this;
     }
 
@@ -156,7 +167,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setIs_pwd(int is_pwd) {
         this.is_pwd = is_pwd;
-        params.put("is_pwd", String.valueOf(is_pwd));
+        if (!TextUtils.isEmpty(String.valueOf(is_pwd)))
+            params.put("is_pwd", String.valueOf(is_pwd));
         return this;
     }
 
@@ -179,7 +191,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setDescription(String description) {
         this.description = description;
-        params.put("description", description);
+        if (!TextUtils.isEmpty(description))
+            params.put("description", description);
         return this;
     }
 
@@ -189,7 +202,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setCity(String city) {
         this.city = city;
-        params.put("city", city);
+        if (!TextUtils.isEmpty(city))
+            params.put("city", city);
         return this;
     }
 
@@ -199,7 +213,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setLongitude(float longitude) {
         this.longitude = longitude;
-        params.put("longitude", String.valueOf(longitude));
+        if (!TextUtils.isEmpty(String.valueOf(longitude)))
+            params.put("longitude", String.valueOf(longitude));
         return this;
     }
 
@@ -209,7 +224,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setLatitude(float latitude) {
         this.latitude = latitude;
-        params.put("latitude", String.valueOf(latitude));
+        if (!TextUtils.isEmpty(String.valueOf(latitude)))
+            params.put("latitude", String.valueOf(latitude));
         return this;
     }
 
@@ -240,7 +256,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setUserid(int userid) {
         this.userid = userid;
-        params.put("userid", String.valueOf(userid));
+        if (!TextUtils.isEmpty(String.valueOf(userid)))
+            params.put("userid", String.valueOf(userid));
         return this;
     }
 
@@ -266,7 +283,8 @@ public class CreateCircleBodyParam {
 
     public CreateCircleBodyParam setTagid(String typeId) {
         this.tagid = typeId;
-        params.put("tagid", String.valueOf(userid));
+        if (!TextUtils.isEmpty(typeId))
+            params.put("tagid", String.valueOf(typeId));
         return this;
     }
 

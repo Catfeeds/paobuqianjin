@@ -221,32 +221,43 @@ public class Utils {
 
             switch (brand.toLowerCase()) {
                 case "samsung":
-                    componentName = new ComponentName("com.samsung.android.sm",
-                            "com.samsung.android.sm.app.dashboard.SmartManagerDashBoardActivity");
+                    componentName = new ComponentName("com.samsung.android.sm_sn",
+                            "com.samsung.android.sm.ui.ram.AutoRunActivity");
                     break;
                 case "huawei":
-                    componentName = new ComponentName("com.huawei.systemmanager",
-                            "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity");
+                case "honor":
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        componentName = new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.appcontrol.activity.StartupAppControlActivity");
+                    } else if (Build.VERSION.SDK_INT < 26 && Build.VERSION.SDK_INT >= 23) {
+                        componentName = new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity");
+                    } else {
+                        componentName = new ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.com.huawei.permissionmanager.ui.MainActivity");
+                    }
                     break;
                 case "xiaomi":
                     componentName = new ComponentName("com.miui.securitycenter",
                             "com.miui.permcenter.autostart.AutoStartManagementActivity");
                     break;
                 case "vivo":
-                    componentName = new ComponentName("com.iqoo.secure",
-                            "com.iqoo.secure.ui.phoneoptimize.AddWhiteListActivity");
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        componentName = new ComponentName("com.vivo.permissionmanager", "com.vivo.permissionmanager.activity.PurviewTabActivity");
+                    } else {
+                        componentName = new ComponentName("com.iqoo.secure", "com.iqoo.secure.ui.phoneoptimize.SoftwareManagerActivity");
+                    }
                     break;
                 case "oppo":
-                    componentName = new ComponentName("com.coloros.oppoguardelf",
-                            "com.coloros.powermanager.fuelgaue.PowerUsageModelActivity");
+                    if (Build.VERSION.SDK_INT >= 26) {
+                        componentName = new ComponentName("com.coloros.safecenter", "com.coloros.safecenter.startupapp.StartupAppListActivity");
+                    } else {
+                        componentName = new ComponentName("com.color.safecenter", "com.color.safecenter.permission.startup.StartupAppListActivity");
+                    }
                     break;
                 case "360":
                     componentName = new ComponentName("com.yulong.android.coolsafe",
                             "com.yulong.android.coolsafe.ui.activity.autorun.AutoRunListActivity");
                     break;
                 case "meizu":
-                    componentName = new ComponentName("com.meizu.safe",
-                            "com.meizu.safe.permission.SmartBGActivity");
+                    componentName = ComponentName.unflattenFromString("com.meizu.safe/.permission.PermissionMainActivity");
                     break;
                 case "oneplus":
                     componentName = new ComponentName("com.oneplus.security",

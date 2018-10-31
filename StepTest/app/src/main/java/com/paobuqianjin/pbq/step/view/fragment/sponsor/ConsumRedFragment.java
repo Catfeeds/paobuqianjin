@@ -25,6 +25,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.AddConsumptiveRedBagActivity;
+import com.paobuqianjin.pbq.step.view.activity.ConsumRedInfoActivity;
 import com.paobuqianjin.pbq.step.view.activity.GetConsumptiveRBResultActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorDetailActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.ConsumptiveRedBagListAdapter;
@@ -127,15 +128,11 @@ public class ConsumRedFragment extends BaseFragment implements SwipeMenuRecycler
         rvCoupon.setSwipeItemClickListener(new SwipeItemClickListener() {
             @Override
             public void onItemClick(View itemView, final int position) {
-                String bId = listData.get(position).getBusinessid();
-                if (!TextUtils.isEmpty(bId) && !"0".equals(bId)) {
-                    LocalLog.d(TAG, "businessid =" + bId);
-                    Intent intent = new Intent();
-                    intent.putExtra(getContext().getPackageName() + "businessid", Integer.parseInt(bId));
-                    intent.setClass(getActivity(), SponsorDetailActivity.class);
-                    startActivity(intent);
-                } else {
-                    startActivity(new Intent().setClass(getActivity(), AddConsumptiveRedBagActivity.class));
+                if (position < listData.size()) {
+                    Intent intent = new Intent(getActivity(), GetConsumptiveRBResultActivity.class);
+                    intent.putExtra(getContext().getPackageName() + "red_id", Integer.parseInt(listData.get(position).getVoucherid()));
+                    intent.putExtra(getContext().getPackageName() + "businessid", Integer.parseInt(listData.get(position).getBusinessid()));
+                    startActivityForResult(intent, 1);
                 }
             }
         });

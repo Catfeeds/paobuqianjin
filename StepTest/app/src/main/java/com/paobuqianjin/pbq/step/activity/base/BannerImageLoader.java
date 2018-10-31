@@ -1,19 +1,12 @@
 package com.paobuqianjin.pbq.step.activity.base;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
-import android.text.TextUtils;
-import android.view.View;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
-import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.youth.banner.loader.ImageLoader;
 
 /**

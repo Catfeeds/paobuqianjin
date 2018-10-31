@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.AddBusinessParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.BindCardPostParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CheckSignCodeParam;
@@ -844,6 +845,10 @@ public final class Presenter {
 
     public void postBindWq(PostBindUnBindWqParam postBindUnBindWqParam) {
         engine.postBindWq(postBindUnBindWqParam);
+    }
+
+    public BDLocation getBdLocation() {
+        return engine.getBdLocation();
     }
 
     public void postUnBind(String action, TextView view) {

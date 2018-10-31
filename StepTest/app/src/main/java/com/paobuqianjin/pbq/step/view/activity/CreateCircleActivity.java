@@ -42,6 +42,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.lwkandroid.imagepicker.ImagePicker;
@@ -929,7 +930,14 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
     public boolean checkcreateCircleBodyParam() {
         createCircleBodyParam.setUserid(Presenter.getInstance(this).getId());
         //createCircleBodyParam.setCity("深圳福田");
-
+        if (TextUtils.isEmpty(createCircleBodyParam.getCity())) {
+            BDLocation bdLocation = Presenter.getInstance(this).getBdLocation();
+            if (bdLocation != null) {
+                createCircleBodyParam.setCity(bdLocation.getCity());
+                createCircleBodyParam.setLatitude((float) bdLocation.getLatitude());
+                createCircleBodyParam.setLongitude((float) bdLocation.getLongitude());
+            }
+        }
         createCircleBodyParam.setName(cirNameDesc.getText().toString());
       /*  if (cirNameDesc.getText() == null || cirNameDesc.getText().toString().equals("")) {
             Toast.makeText(this, "请输入圈子名称", Toast.LENGTH_SHORT).show();
