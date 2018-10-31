@@ -157,7 +157,7 @@ public class InviteTeamFragment extends BaseFragment implements SwipeMenuRecycle
                 }
                 try {
                     InviteTopResponse inviteTopResponse = new Gson().fromJson(s, InviteTopResponse.class);
-                    ((InviteDetailActivity) getActivity()).updateInviteMsg(inviteTopResponse.getData().getInumber(), inviteTopResponse.getData().getInumber()
+                    ((InviteDetailActivity) getActivity()).updateInviteMsg(inviteTopResponse.getData().getInumber(), inviteTopResponse.getData().getImoney()
                             , inviteTopResponse.getData().getIcredit());
                     if (Integer.parseInt(inviteTopResponse.getData().getInumber()) == 0) {
                         refreshLayout.setRefreshing(false);
