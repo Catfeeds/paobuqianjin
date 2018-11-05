@@ -454,7 +454,7 @@
                         android:layout_gravity="center_horizontal"
                         android:gravity="bottom"
                         android:paddingBottom="8dp"
-                        android:text="商家金牌会员"
+                        android:text="步币商城"
                         android:textColor="@color/color_f8"
                         android:textSize="14dp" />
                 </FrameLayout>

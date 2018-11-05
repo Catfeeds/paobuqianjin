@@ -387,7 +387,7 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
 // 小程序消息封面图片
         umMin.setTitle("跑步钱进");
 // 小程序消息title
-        umMin.setDescription("大道之行，跑步钱进");
+        umMin.setDescription("走路就能领红包的APP");
 // 小程序消息描述
         umMin.setPath("pages/home/home");
 //小程序页面路径

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/circle_detail_fg"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title_bar"
+        layout="@layout/bar_return_b_style"></include>
+
+        <RelativeLayout
+            android:layout_above="@+id/frame_bottom"
+            android:layout_below="@+id/title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/circle_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <ImageView
+                    android:id="@+id/circle_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/bitmap_null" />
+
+                <TextView
+                    android:id="@+id/circle_obj_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginTop="30dp"
+                    android:textColor="@color/color_ecf0f3"
+                    android:textSize="19dp" />
+
+                <TextView
+                    android:id="@+id/desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/circle_obj_des"
+                    android:layout_below="@+id/circle_obj_des"
+                    android:text="达标即可获取红包奖励"
+                    android:textColor="@color/color_ecf0f3"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/money_ret"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/circle_obj_des"
+                    android:layout_below="@+id/desc"
+                    android:text="社群余额:__元"
+                    android:textColor="@color/color_ecf0f3"
+                    android:textSize="12dp" />
+
+                <TextView
+                    android:id="@+id/tv_red_tips_money"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/circle_cover"
+                    android:background="@color/color_f6f6f6"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="14dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/circle_have_enouth_money"
+                    android:textColor="@color/color_e4393c"
+                    android:textSize="10sp"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/rank_money"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/circle_message"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="10dp">
+
+                <RelativeLayout
+                    android:id="@+id/love_money_list_rel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/love_money_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="本圈爱心排行榜"
+                        android:textColor="@color/color_161727"
+                        android:textSize="15dp" />
+
+                    <RelativeLayout
+                        android:id="@+id/image_button"
+                        android:layout_width="30dp"
+                        android:layout_height="15dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true">
+
+                        <ImageView
+                            android:id="@+id/go_to_recharge_rank"
+                            android:layout_width="7dp"
+                            android:layout_height="13dp"
+                            android:layout_alignParentEnd="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/go_to" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rank_recycler"
+                    android:layout_width="wrap_content"
+                    android:layout_height="75dp"
+                    android:layout_below="@+id/love_money_list_rel"
+                    android:layout_marginTop="20dp"
+                    android:nestedScrollingEnabled="false">
+
+                </android.support.v7.widget.RecyclerView>
+
+                <Button
+                    android:id="@+id/re_charge_bt"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@+id/rank_recycler"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/rectangle_four_dp"
+                    android:stateListAnimator="@null"
+                    android:text="充值" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/step_rank"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rank_money">
+
+                <ImageView
+                    android:id="@+id/line_rank_step"
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@color/color_ebebed" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/line_rank_step"
+                    android:layout_marginLeft="14dp"
+                    android:text="步数排行榜"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/scan_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/line_rank_step"
+                    android:layout_marginRight="14dp"
+                    android:text="查看更多"
+                    android:textColor="@color/color_8a8a8a"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/member_num_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/textView"
+                    android:layout_alignBottom="@+id/textView"
+                    android:layout_marginStart="10dp"
+                    android:layout_toEndOf="@+id/textView"
+                    android:text="共__人"
+                    android:textColor="@color/color_161727"
+                    android:textSize="12dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView"
+                    android:layout_below="@+id/textView">
+
+                    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+                        android:id="@+id/step_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"></com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/frame_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/join_in"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/color_6c71c4"
+            android:gravity="center"
+            android:stateListAnimator="@null"
+            android:text="申请加入"
+            android:textColor="@color/color_f8"
+            android:textSize="18dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btn_chat"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="@color/color_6c71c4"
+            android:gravity="center"
+            android:stateListAnimator="@null"
+            android:text="进入聊天"
+            android:textColor="@color/color_f8"
+            android:textSize="18dp"
+            android:visibility="gone" />
+    </FrameLayout>
+</RelativeLayout>

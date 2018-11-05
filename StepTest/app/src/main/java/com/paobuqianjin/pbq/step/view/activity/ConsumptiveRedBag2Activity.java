@@ -694,7 +694,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
             return;
         }
         if (!TextUtils.isEmpty(current_rec_id)) {
-            PaoToastUtils.showLongToast(this, "网络拥堵，请稍候再试！");
+            PaoToastUtils.showLongToast(this, "网络拥堵，请稍候...！");
             return;
         } else {
             if (listAroundRedBagBean.get(position) != null)

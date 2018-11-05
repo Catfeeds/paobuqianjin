@@ -276,7 +276,7 @@ public class ConsumRedDetailFragment extends BaseBarStyleTextViewFragment {
     Thread thread;
     @Bind(R.id.time_wait)
     TextView timeWait;
-
+    private boolean button_show = true;
     public int T = 4; //倒计时时长
     private Handler mHandler = new Handler();
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -348,6 +348,8 @@ public class ConsumRedDetailFragment extends BaseBarStyleTextViewFragment {
             int businessid = intent.getIntExtra(getContext().getPackageName() + "businessid", -1);
             int red_id = intent.getIntExtra(getContext().getPackageName() + "red_id", -1);
             LocalLog.d(TAG, "businessid =  " + businessid + "red_id = " + red_id);
+            button_show = intent.getBooleanExtra(getContext().getPackageName() + "is_show", true);
+            LocalLog.d(TAG, "button_show = " + button_show);
             if (businessid != -1) {
                 this.bussinessId = businessid;
                 if (red_id != -1) {
@@ -641,6 +643,9 @@ public class ConsumRedDetailFragment extends BaseBarStyleTextViewFragment {
                                 moneyStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                         tvMoney.setText(spannableString);
                         tvLimiteMoney.setText(getString(R.string.use_by_x, dataBean.getCondition()));
+                        if (!button_show) {
+                            tvStatus.setVisibility(View.GONE);
+                        }
                         switch (dataBean.getStatus()) {//0可领取|1条件不符|2已领过|3已领完
                             case 0:
                                 tvStatus.setText(R.string.pull_down_now);

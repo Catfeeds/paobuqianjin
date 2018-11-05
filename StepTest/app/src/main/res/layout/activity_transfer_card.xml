@@ -23,47 +23,40 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/crash_span"
+            <TextView
+                android:id="@+id/wallet_money"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@color/color_f8"
-                android:paddingBottom="25dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:paddingTop="25dp">
+                android:layout_centerVertical="true"
+                android:paddingLeft="14dp"
+                android:paddingTop="14dp"
+                android:text="钱包余额"
+                android:textColor="@color/red0" />
 
-                <ImageView
-                    android:id="@+id/money_ico"
-                    android:layout_width="17dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/crash_to" />
+            <TextView
+                android:id="@+id/crash_des"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="14dp"
+                android:text="提现金额"
+                android:textColor="#8A8A8A"
+                android:textSize="15dp" />
 
-                <EditText
-                    android:id="@+id/et_can_transfer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/tv_transfer_all"
-                    android:layout_toRightOf="@+id/money_ico"
-                    android:background="@null"
-                    android:hint="提现金额10～30元"
-                    android:inputType="numberDecimal"
-                    android:paddingLeft="20dp"
-                    android:textColorHint="@color/color_cbcacf"
-                    android:textSize="17dp" />
-
-                <TextView
-                    android:id="@+id/tv_transfer_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:text="全部提现"
-                    android:textColor="@color/color_6d72c4"
-                    android:textSize="15sp"
-                    android:visibility="gone" />
-            </RelativeLayout>
+            <io.rong.imkit.model.RongGridView
+                android:id="@+id/grid_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:horizontalSpacing="8dp"
+                android:numColumns="3"
+                android:scrollbars="none"
+                android:verticalSpacing="17dp" />
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
@@ -144,7 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="我已认真阅读"
-                    android:textSize="12sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_protocol"
@@ -154,7 +147,7 @@
                     android:paddingRight="10dp"
                     android:text="@string/transfer_protcol"
                     android:textColor="@color/color_007aff"
-                    android:textSize="12sp" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 

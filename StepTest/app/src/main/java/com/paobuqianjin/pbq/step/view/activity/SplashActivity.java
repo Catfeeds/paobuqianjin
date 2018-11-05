@@ -130,6 +130,10 @@ public class SplashActivity extends UmengNotifyClickActivity {
                                                 timer.cancel();
                                                 enterMainActivityOrLogin();
                                             }
+                                            if (currentTimes < 0) {
+                                                timer.cancel();
+                                                enterMainActivityOrLogin();
+                                            }
                                         }
                                     });
                                 }

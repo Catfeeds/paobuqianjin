@@ -169,7 +169,7 @@ public class InviteFragment extends BaseBarStyleTextViewFragment implements Invi
         UserInfoResponse.DataBean userInfo = Presenter.getInstance(getContext()).getCurrentUser();
         if (userInfo != null) {
             web = new UMWeb(NetApi.urlShareIc + userInfo.getNo());
-            web.setTitle("大道之行,跑步钱进");
+            web.setTitle("走路就能领红包的APP");
             web.setThumb(new UMImage(getContext(), R.mipmap.app_icon));
             web.setDescription("邀请好友成功注册,陆续将获得三十元奖励");
         }

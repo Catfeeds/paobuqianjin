@@ -12,8 +12,9 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,22 +28,20 @@ import com.paobuqianjin.pbq.step.customview.WalletPassDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.param.CrashToParam;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BindCardListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CrashResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DrawMoneyListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.CrashInterface;
-import com.paobuqianjin.pbq.step.presenter.im.OnIdentifyLis;
 import com.paobuqianjin.pbq.step.utils.Base64Util;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
-import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.activity.CrashActivity;
 import com.paobuqianjin.pbq.step.view.activity.ForgetPayWordActivity;
 import com.paobuqianjin.pbq.step.view.activity.IdentifedSetPassActivity;
-import com.paobuqianjin.pbq.step.view.activity.IdentityAuth1Activity;
-import com.paobuqianjin.pbq.step.view.activity.TransferCardActivity;
+import com.paobuqianjin.pbq.step.view.base.adapter.GridMoneyAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -52,12 +51,15 @@ import com.umeng.socialize.utils.SocializeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.rong.imkit.model.RongGridView;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -75,8 +77,6 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     TextView barTvRight;
-    @Bind(R.id.crash_style)
-    TextView crashStyle;
     @Bind(R.id.wechat_pay_icon)
     ImageView wechatPayIcon;
     @Bind(R.id.wx_dear_name)
@@ -85,22 +85,20 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     ImageView goToWx;
     @Bind(R.id.wechat_pay)
     RelativeLayout wechatPay;
-    @Bind(R.id.money_ico)
-    ImageView moneyIco;
-    @Bind(R.id.crash_span)
-    RelativeLayout crashSpan;
     @Bind(R.id.protocl_text)
     TextView protoclText;
     @Bind(R.id.protocl_pay)
     RelativeLayout protoclPay;
     @Bind(R.id.confirm_crash)
     Button confirmCrash;
-    @Bind(R.id.can_crash)
-    EditText canCrash;
     @Bind(R.id.select_icon)
     ImageView selectIcon;
-    @Bind(R.id.crash_all)
-    TextView crashAll;
+    @Bind(R.id.wallet_money)
+    TextView walletMoney;
+    @Bind(R.id.crash_des)
+    TextView crashDes;
+    @Bind(R.id.grid_view)
+    RongGridView gridView;
     private float canCrashNum;
     private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
     private final static int CRASH_PROTOCAL = 206;
@@ -110,6 +108,9 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     CrashToParam crashToParam;
     private NormalDialog passWordSetDialog;
     private WalletPassDialog walletPassDialog;
+    GridMoneyAdapter gridMoneyAdapter;
+    List<DrawMoneyListResponse.DataBean> listData = new ArrayList<>();
+    private String crashMoney;//选择提现的金额
 
     @Override
     protected String title() {
@@ -137,16 +138,17 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
 
     @Override
     protected void initView(View viewRoot) {
-        canCrash = (EditText) viewRoot.findViewById(R.id.can_crash);
         protoclText = (TextView) viewRoot.findViewById(R.id.protocl_text);
         confirmCrash = (Button) viewRoot.findViewById(R.id.confirm_crash);
         selectIcon = (ImageView) viewRoot.findViewById(R.id.select_icon);
         dialog = new ProgressDialog(getContext());
         wxDearName = (TextView) viewRoot.findViewById(R.id.wx_dear_name);
+        walletMoney = (TextView) viewRoot.findViewById(R.id.wallet_money);
+        gridView = (RongGridView) viewRoot.findViewById(R.id.grid_view);
         if (!Presenter.getInstance(getActivity()).getReadCrashProtocol(getActivity())) {
             LocalLog.d(TAG, "未阅读过提现协议");
             confirmCrash.setEnabled(false);
-            confirmCrash.setBackgroundColor(getResources().getColor(R.color.color_8a8a8a));
+            confirmCrash.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.rect_out_gray_shape));
             selectIcon.setImageDrawable(null);
         } else {
             LocalLog.d(TAG, "已阅读");
@@ -156,14 +158,14 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         Intent intent = getActivity().getIntent();
         if (intent != null) {
             canCrashNum = intent.getFloatExtra("total", 0.0f);
-/*            String canCrashStrFormat = getActivity().getString(R.string.can_crash);
+            String canCrashStrFormat = getActivity().getString(R.string.can_crash);
             String canCrashStr = String.format(canCrashStrFormat, canCrashNum);
-            canCrash.setHint(canCrashStr);*/
+            walletMoney.setText(canCrashStr);
         }
         String part1 = "我已认真阅读", part2 = "《提现协议》";
         String protoclStr = part1 + part2;
         SpannableString spannableString = new SpannableString(protoclStr);
-        ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.color_6c71c4));
+        ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(getActivity(), R.color.color_007aff));
         spannableString.setSpan(colorSpan, part1.length(), protoclStr.length()
                 , Spanned.SPAN_INCLUSIVE_INCLUSIVE);
         protoclText.setText(spannableString);
@@ -172,6 +174,69 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         if (isauthWx) {
             UMShareAPI.get(getContext()).getPlatformInfo(getActivity(), SHARE_MEDIA.WEIXIN, authListener);
         }
+        initGrid();
+    }
+
+    private void initGrid() {
+        Map<String, String> param = new HashMap<>();
+        param.put("userid", String.valueOf(Presenter.getInstance(getActivity()).getId()));
+        Presenter.getInstance(getActivity()).getPaoBuSimple(NetApi.urlWithDrawList, param, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                if (!isAdded()) return;
+                try {
+                    DrawMoneyListResponse drawMoneyListResponse = new Gson().fromJson(s, DrawMoneyListResponse.class);
+                    if (drawMoneyListResponse.getData() != null && drawMoneyListResponse.getData().size() > 0) {
+                        for (int i = 0; i < drawMoneyListResponse.getData().size(); i++) {
+                            if (drawMoneyListResponse.getData().get(i).getIs_disable() == 0) {
+                                crashMoney = drawMoneyListResponse.getData().get(i).getMoney();
+                                drawMoneyListResponse.getData().get(i).setIs_select(true);
+                                break;
+                            }
+                        }
+                        listData.addAll(drawMoneyListResponse.getData());
+                        gridMoneyAdapter = new GridMoneyAdapter(getActivity(), listData);
+                        gridView.setAdapter(gridMoneyAdapter);
+                        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if (!isAdded()) return;
+                                if (position >= listData.size()) {
+                                    return;
+                                }
+                                if (listData.get(position).getIs_disable() == 1) {
+                                    LocalLog.d(TAG, "不可选中");
+                                    return;
+                                }
+                                if (listData.get(position).isIs_select()) {
+                                    listData.get(position).setIs_select(false);
+                                    crashMoney = null;
+                                    gridMoneyAdapter.notifyDataSetChanged();
+                                } else {
+                                    listData.get(position).setIs_select(true);
+                                    crashMoney = listData.get(position).getMoney();
+                                    for (int j = 0; j < listData.size(); j++) {
+                                        if (j != position && listData.get(j).isIs_select()) {
+                                            listData.get(j).setIs_select(false);
+                                        }
+                                    }
+                                    gridMoneyAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null) {
+                    PaoToastUtils.showLongToast(getActivity(), errorBean.getMessage());
+                }
+            }
+        });
     }
 
     @Override
@@ -232,15 +297,9 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         }
     }
 
-    @OnClick({R.id.wechat_pay, R.id.confirm_crash, R.id.protocl_pay, R.id.select_icon, R.id.crash_all})
+    @OnClick({R.id.wechat_pay, R.id.confirm_crash, R.id.protocl_pay, R.id.select_icon})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.crash_all:
-                LocalLog.d(TAG, "全部提现");
-                if (canCrashNum > 0.0f) {
-                    canCrash.setText(String.valueOf(canCrashNum));
-                }
-                break;
             case R.id.wechat_pay:
                 LocalLog.d(TAG, "绑定微信或者更换绑定的微信");
                 if (!isauthWx) {
@@ -250,14 +309,6 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                 break;
             case R.id.confirm_crash:
                 LocalLog.d(TAG, "确认转出");
-                if (TextUtils.isEmpty(canCrash.getText().toString())) {
-                    LocalLog.e(TAG, "填入提现金额");
-                    return;
-                }
-                if (Float.parseFloat(canCrash.getText().toString()) > canCrashNum) {
-                    PaoToastUtils.showLongToast(getActivity(), "可用余额不足");
-                    return;
-                }
                 action = "wx";
                 if ("wx".equals(action)) {
                     if (crashToParam == null || TextUtils.isEmpty(crashToParam.getWx_openid())) {
@@ -265,7 +316,19 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                         return;
                     }
                 }
-                crashToParam.setAmount((canCrash.getText().toString().trim()));
+                if (TextUtils.isEmpty(crashMoney)) {
+                    LocalLog.d(TAG, "请选择提现金额!");
+                    return;
+                }
+                try {
+                    if (Float.parseFloat(crashMoney) > canCrashNum) {
+                        PaoToastUtils.showLongToast(getActivity(), "余额不足！");
+                        return;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                crashToParam.setAmount(crashMoney);
                 //TODO 判断是否设置过密码
                 Presenter.getInstance(getActivity()).getPaoBuSimple(NetApi.urlPassCheck, null, new PaoCallBack() {
                     @Override
@@ -325,12 +388,12 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                 if (!isCurrentProtocalPayState) {
 //                    LocalLog.d(TAG, "未阅读过提现协议");
                     confirmCrash.setEnabled(false);
-                    confirmCrash.setBackgroundColor(getResources().getColor(R.color.color_8a8a8a));
+                    confirmCrash.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.rect_out_gray_shape));
                     selectIcon.setImageDrawable(null);
                 } else {
 //                    LocalLog.d(TAG, "已阅读");
                     confirmCrash.setEnabled(true);
-                    confirmCrash.setBackgroundColor(getResources().getColor(R.color.color_6c71c4));
+                    confirmCrash.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.rect_out_blue_shape));
                     selectIcon.setImageResource(R.drawable.selected_icon);
                 }
                 break;

@@ -376,7 +376,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
             }
         });
         TextView title = (TextView) popRedPkgView.findViewById(R.id.des_title);
-        TextView des = (TextView)popRedPkgView.findViewById(R.id.reg_pkg_des);
+        TextView des = (TextView) popRedPkgView.findViewById(R.id.reg_pkg_des);
         final RelativeLayout unOpenRkg = (RelativeLayout) popRedPkgView.findViewById(R.id.start_red_kg);
         popupRedPkgWindow.setFocusable(true);
         popupRedPkgWindow.setOutsideTouchable(true);
@@ -1138,7 +1138,8 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     break;
                 case R.id.add_friend_image:
                     LocalLog.d(TAG, "商家金牌会员");
-                    startActivity(GoldenSponsoractivity.class, null);
+                    /*startActivity(GoldenSponsoractivity.class, null);*/
+                    PaoToastUtils.showLongToast(getContext(), "尽请期待");
                     break;
                 case R.id.scan_img:
                     requestPermissionScan(Permission.Group.CAMERA);

@@ -3,21 +3,16 @@ package com.paobuqianjin.pbq.step.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.TypefaceSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +22,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.customview.WalletPassDialog;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.BankListResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.DrawMoneyListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
@@ -36,6 +32,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
+import com.paobuqianjin.pbq.step.view.base.adapter.GridMoneyAdapter;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 
 import org.json.JSONException;
@@ -49,28 +46,32 @@ import java.util.Map;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.rong.imkit.model.RongGridView;
 
 public class TransferCardActivity extends BaseBarActivity {
     private final static String TAG = TransferCardActivity.class.getSimpleName();
     private static final int REQ_ADD_CARD = 1;
-    @Bind(R.id.tv_transfer_all)
-    TextView tvTransferAll;
     @Bind(R.id.rv_bank)
     RecyclerView rvBank;
     @Bind(R.id.btn_transfer)
     Button btnTransfer;
     @Bind(R.id.cb_agree)
     CheckBox cbAgree;
-    @Bind(R.id.et_can_transfer)
-    EditText etCanTransfer;
     @Bind(R.id.transfer_limit)
     TextView transferLimit;
+    @Bind(R.id.grid_view)
+    RongGridView gridView;
+    @Bind(R.id.wallet_money)
+    TextView walletMoney;
     private List<BankListResponse.CardBean> listData = new ArrayList<>();
     private BankSelectAdapter adapter;
     private float canCrashNum;
     private BankListResponse.CardBean selectBean;
     private WalletPassDialog walletPassDialog;
     private NormalDialog passWordSetDialog;
+    List<DrawMoneyListResponse.DataBean> crashData = new ArrayList<>();
+    private String crashMoney;//选择提现的金额
+    GridMoneyAdapter gridMoneyAdapter;
 
     @Override
     protected String title() {
@@ -86,9 +87,9 @@ public class TransferCardActivity extends BaseBarActivity {
         Intent intent = getIntent();
         if (intent != null) {
             canCrashNum = intent.getFloatExtra("total", 0.0f);
-/*            String canCrashStrFormat = getString(R.string.can_crash);
+            String canCrashStrFormat = getString(R.string.can_crash);
             String canCrashStr = String.format(canCrashStrFormat, canCrashNum);
-            etCanTransfer.setHint(canCrashStr);*/
+            walletMoney.setText(canCrashStr);
         }
 
         rvBank.setLayoutManager(new LinearLayoutManager(this));
@@ -118,14 +119,69 @@ public class TransferCardActivity extends BaseBarActivity {
 //        rvBank.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         cbAgree.setChecked(Presenter.getInstance(this).getReadCrashProtocol(this));
-        String partA = getString(R.string.transfer_limite_tips);
-        String partB = getString(R.string.transfer_limite_tip_part2);
-        SpannableString spannableString = new SpannableString(partA + partB);
-        spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(this, R.color.color_161727)),
-                partA.length(), (partA + partB).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        spannableString.setSpan(new TypefaceSpan("bold"), partA.length(), (partA + partB).length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        transferLimit.setText(spannableString);
+        transferLimit.setText(R.string.transfer_limite_tips);
+        initGrid();
         initData();
+    }
+
+    private void initGrid() {
+        Map<String, String> param = new HashMap<>();
+        param.put("userid", String.valueOf(Presenter.getInstance(this).getId()));
+        Presenter.getInstance(this).getPaoBuSimple(NetApi.urlWithDrawList, param, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    DrawMoneyListResponse drawMoneyListResponse = new Gson().fromJson(s, DrawMoneyListResponse.class);
+                    if (drawMoneyListResponse.getData() != null && drawMoneyListResponse.getData().size() > 0) {
+                        for (int i = 0; i < drawMoneyListResponse.getData().size(); i++) {
+                            if (drawMoneyListResponse.getData().get(i).getIs_disable() == 0) {
+                                crashMoney = drawMoneyListResponse.getData().get(i).getMoney();
+                                drawMoneyListResponse.getData().get(i).setIs_select(true);
+                                break;
+                            }
+                        }
+                        crashData.addAll(drawMoneyListResponse.getData());
+                        gridMoneyAdapter = new GridMoneyAdapter(TransferCardActivity.this, crashData);
+                        gridView.setAdapter(gridMoneyAdapter);
+                        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if (position >= crashData.size()) {
+                                    return;
+                                }
+                                if (crashData.get(position).getIs_disable() == 1) {
+                                    LocalLog.d(TAG, "不可选中");
+                                    return;
+                                }
+                                if (crashData.get(position).isIs_select()) {
+                                    crashData.get(position).setIs_select(false);
+                                    crashMoney = null;
+                                    gridMoneyAdapter.notifyDataSetChanged();
+                                } else {
+                                    crashData.get(position).setIs_select(true);
+                                    crashMoney = crashData.get(position).getMoney();
+                                    for (int j = 0; j < crashData.size(); j++) {
+                                        if (j != position && crashData.get(j).isIs_select()) {
+                                            crashData.get(j).setIs_select(false);
+                                        }
+                                    }
+                                    gridMoneyAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        });
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                if (errorBean != null) {
+                    PaoToastUtils.showLongToast(TransferCardActivity.this, errorBean.getMessage());
+                }
+            }
+        });
     }
 
     private void initData() {
@@ -149,13 +205,13 @@ public class TransferCardActivity extends BaseBarActivity {
         });
     }
 
-    @OnClick({R.id.btn_transfer, R.id.tv_protocol, R.id.linear_item_more, R.id.tv_transfer_all})
+    @OnClick({R.id.btn_transfer, R.id.tv_protocol, R.id.linear_item_more})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_transfer:
-                String transferMoneyStr = etCanTransfer.getText().toString();
+                String transferMoneyStr = crashMoney;
                 if (TextUtils.isEmpty(transferMoneyStr)) {
-                    PaoToastUtils.showShortToast(this, "请输入需要提现的金额");
+                    PaoToastUtils.showShortToast(this, "请选择需要提现的金额");
                     return;
                 }
                 if (selectBean == null) {
@@ -225,14 +281,11 @@ public class TransferCardActivity extends BaseBarActivity {
                 }
                 startActivityForResult(intent, REQ_ADD_CARD);
                 break;
-            case R.id.tv_transfer_all:
-                etCanTransfer.setText(canCrashNum + "");
-                break;
         }
     }
 
     private void crash() {
-        String transferMoneyStr = etCanTransfer.getText().toString();
+        String transferMoneyStr = crashMoney;
         Map<String, String> params = new HashMap<>();
         params.put("cardid", selectBean.getCardid());
         params.put("amount", transferMoneyStr);

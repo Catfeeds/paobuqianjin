@@ -453,15 +453,15 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
             LocalLog.d(TAG, "红包在显示");
             return;
         }
+
+        /*popRedPkgView = null;*/
+        popRedPkgView = View.inflate(this, R.layout.red_pkg_pop_window, null);
         if (!TextUtils.isEmpty(current_rec_id)) {
-            PaoToastUtils.showLongToast(this, "网络拥堵，请稍后再试!");
+            PaoToastUtils.showLongToast(this, "网络拥堵，请稍候...!");
             return;
         } else {
             current_rec_id = String.valueOf(nearedpacketBean.getRed_id());
         }
-
-        /*popRedPkgView = null;*/
-        popRedPkgView = View.inflate(this, R.layout.red_pkg_pop_window, null);
         totalRedPkg = (TextView) popRedPkgView.findViewById(R.id.total_red_pkg);
         redRevTv = (TextView) popRedPkgView.findViewById(R.id.concla_id);
         openRedPkgView = (ImageView) popRedPkgView.findViewById(R.id.open_red_pkg);

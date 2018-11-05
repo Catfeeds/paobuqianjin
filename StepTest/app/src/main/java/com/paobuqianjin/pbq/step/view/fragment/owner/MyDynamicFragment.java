@@ -39,6 +39,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.MyDynamicInterface;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.DynamicActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.AttentionCircleAdapter;
@@ -336,8 +337,10 @@ public class MyDynamicFragment extends BaseBarStyleTextViewFragment implements M
                             if (getContext() == null) {
                                 return;
                             }
-                            /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
+                            PaoToastUtils.showLongToast(getContext(), "没有更多");
                             myDynamicRecycler.loadMoreFinish(false, true);
+                            myDynamicRecycler.setLoadMoreView(null); // 设置LoadMoreView更新监听。
+                            myDynamicRecycler.setLoadMoreListener(null); // 加载更多的监听。
                             return;
                         }
                     }

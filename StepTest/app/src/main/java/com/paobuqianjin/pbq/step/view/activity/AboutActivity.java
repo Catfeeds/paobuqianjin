@@ -7,6 +7,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.SystemUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
@@ -20,6 +22,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class AboutActivity extends BaseBarActivity {
+    private final static String TAG = AboutActivity.class.getSimpleName();
     private final static String USER_SERVICE_AGREEMENT_ACTION = "com.paobuqianjin.pbq.step.SERVICE_ACTION";
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -69,6 +72,7 @@ public class AboutActivity extends BaseBarActivity {
         super.initView();
         version = (TextView) findViewById(R.id.version);
         version.setText("当前版本 " + Utils.getVerName(this));
+/*        LocalLog.d(TAG, SystemUtils.getDeviceInfo());*/
     }
 
     @OnClick(R.id.introduce_span)
