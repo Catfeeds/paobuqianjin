@@ -9,8 +9,7 @@ import android.view.ViewGroup;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
-import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.fragment.circle.CircleMemberManagerFragment;
+import com.paobuqianjin.pbq.step.view.fragment.circle.CircleMemberFragment;
 
 import java.util.ArrayList;
 
@@ -39,7 +38,7 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<MemberManagerAdap
     private final static int TYPE_NORMAL_MEM_DEFAULT = 3;
 
     private ArrayList<CircleMemberResponse.DataBeanX.DataBean> mData;
-    private CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface;
+    private CircleMemberFragment.OpCallBackInterface opCallBackInterface;
 
     public static ArrayList toOneList(ArrayList mainAdmin, ArrayList admin) {
         ArrayList adminList = new ArrayList();
@@ -56,13 +55,13 @@ public class MemberManagerAdapter extends RecyclerView.Adapter<MemberManagerAdap
         return adminList;
     }
 
-    public MemberManagerAdapter(Context context, ArrayList mainAdmin, ArrayList admin, CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
+    public MemberManagerAdapter(Context context, ArrayList mainAdmin, ArrayList admin, CircleMemberFragment.OpCallBackInterface opCallBackInterface) {
         mContext = context;
         mData = mainAdmin;
         this.opCallBackInterface = opCallBackInterface;
     }
 
-    public MemberManagerAdapter(Context context, ArrayList memberNormal, CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
+    public MemberManagerAdapter(Context context, ArrayList memberNormal, CircleMemberFragment.OpCallBackInterface opCallBackInterface) {
         mContext = context;
         mData = memberNormal;
         this.opCallBackInterface = opCallBackInterface;

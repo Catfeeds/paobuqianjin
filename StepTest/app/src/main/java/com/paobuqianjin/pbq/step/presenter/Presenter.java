@@ -931,4 +931,7 @@ public final class Presenter {
     public void putPaoBuSimple(String url, Map<String, String> params, PaoCallBack callBack) {
         engine.put(url, params, callBack);
     }
+    public String shop(){
+        return  engine.shop();
+    }
 }

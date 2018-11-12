@@ -16,7 +16,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleMemberResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.fragment.circle.CircleMemberManagerFragment;
+import com.paobuqianjin.pbq.step.view.fragment.circle.CircleMemberFragment;
 
 import butterknife.Bind;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -31,11 +31,11 @@ public class CircleMemberBarAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private int DEFAULT_COUNT = 2;
     private CircleMemberResponse.DataBeanX.DataBean mData;
     private Context context;
-    private CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface;
+    private CircleMemberFragment.OpCallBackInterface opCallBackInterface;
     private CircleMemberViewHolder circleMemberViewHolder;
     private CircleMemberRightViewHolder circleMemberRightViewHolder;
 
-    public CircleMemberBarAdapter(Context context, CircleMemberResponse.DataBeanX.DataBean data, CircleMemberManagerFragment.OpCallBackInterface opCallBackInterface) {
+    public CircleMemberBarAdapter(Context context, CircleMemberResponse.DataBeanX.DataBean data, CircleMemberFragment.OpCallBackInterface opCallBackInterface) {
         mData = data;
         this.context = context;
         this.opCallBackInterface = opCallBackInterface;

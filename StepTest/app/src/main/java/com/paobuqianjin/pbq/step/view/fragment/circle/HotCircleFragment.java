@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
@@ -55,6 +56,8 @@ import com.paobuqianjin.pbq.step.presenter.im.UiHotCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.ShopToolUtil;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.CirCleDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.CreateCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.LiveDetailActivity;
@@ -160,6 +163,9 @@ public class HotCircleFragment extends BaseFragment {
         super.onDestroyView();
         Presenter.getInstance(mContext).dispatchUiInterface(uiHotCircleInterface);
         Presenter.getInstance(mContext).dispatchUiInterface(queryRedPkgInterface);
+        if (popOpWindowRedButtonHori != null && popOpWindowRedButtonHori.isShowing()) {
+            popOpWindowRedButtonHori.dismiss();
+        }
     }
 
     @Override
@@ -236,10 +242,10 @@ public class HotCircleFragment extends BaseFragment {
         animationCircleTypeHori.setInterpolator(new AccelerateInterpolator());
         animationCircleTypeHori.setDuration(200);
 
-
         popOpWindowRedButtonHori.showAtLocation(getView().findViewById(R.id.hot_circle), Gravity.BOTTOM | Gravity.RIGHT, 0, 400);
         popCircleOpBarHori.startAnimation(animationCircleTypeHori);
     }
+
 
     @Override
     protected void initView(View rootView) {
@@ -732,10 +738,17 @@ public class HotCircleFragment extends BaseFragment {
                                         PaoToastUtils.showLongToast(getActivity(), "微信号复制成功");
                                     }
                                     String targetUrl = adList.get(position).getTarget_url();
-                                    if (!TextUtils.isEmpty(targetUrl))
-                                        startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", targetUrl));
-
-
+                                    String result = ShopToolUtil.taoBaoString(targetUrl);
+                                    if (!TextUtils.isEmpty(result)) {
+                                        if (result.startsWith(ShopToolUtil.TaoBaoSchema)
+                                                && Utils.checkPackage(getContext(), ShopToolUtil.TaoBao)) {
+                                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                        } else {
+                                            startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                        }
+                                    }
                                 }
                             })
                             .start();

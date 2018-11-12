@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <include
+        android:id="@+id/title_bar"
+        layout="@layout/bar_return_b_style"></include>
+
+    <include
+        android:id="@+id/search_mem_bar"
+        layout="@layout/serch_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/title_bar"></include>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_mem_bar"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:id="@+id/admin_title_line"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/color_f6f6f6"
+            android:gravity="center|left"
+            android:paddingLeft="14dp"
+            android:text="主管理员、管理员"
+            android:textColor="@color/color_8a8a8a" />
+
+
+            <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+                android:layout_below="@+id/admin_title_line"
+                android:id="@+id/circle_admin_span"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+
+
+
+        <ImageView
+            android:id="@+id/admin_line"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/circle_admin_span"
+            android:background="@color/color_ebebed" />
+
+        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+            android:id="@+id/all_member_span"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/admin_line">
+
+        </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/delete_member_confim"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/create_button"
+        android:stateListAnimator="@null"
+        android:text="删除"
+        android:textColor="@color/color_fefefe"
+        android:textSize="16dp"
+        android:visibility="gone" />
+</RelativeLayout>

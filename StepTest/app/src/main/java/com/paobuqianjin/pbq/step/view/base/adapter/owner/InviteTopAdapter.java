@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
@@ -40,6 +41,17 @@ public class InviteTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             if (((InviteTopResponse.DataBeanX.IlistBean.DataBean) data.get(position)).getSub_inviter_count() > 0) {
                 ((InviteViewHolder) holder).inviteNum.setText("+" + String.valueOf(((InviteTopResponse.DataBeanX.IlistBean.DataBean) data.get(position)).getSub_inviter_count()) + "人");
             }
+            if (((InviteTopResponse.DataBeanX.IlistBean.DataBean) data.get(position)).getGvip() == 1
+                    || ((InviteTopResponse.DataBeanX.IlistBean.DataBean) data.get(position)).getVip() == 1) {
+                if (((InviteTopResponse.DataBeanX.IlistBean.DataBean) data.get(position)).getGvip() == 1) {
+                    ((InviteViewHolder) holder).vipImg.setImageResource(R.drawable.golden_little);
+                } else {
+                    ((InviteViewHolder) holder).vipImg.setImageResource(R.drawable.vip_flg);
+                }
+                ((InviteViewHolder) holder).vipImg.setVisibility(View.VISIBLE);
+            } else {
+                ((InviteViewHolder) holder).vipImg.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -58,6 +70,7 @@ public class InviteTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView dearName;
         TextView creatTime;
         TextView inviteNum;
+        ImageView vipImg;
 
         public InviteViewHolder(View itemView) {
             super(itemView);
@@ -69,6 +82,7 @@ public class InviteTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             dearName = (TextView) itemView.findViewById(R.id.dear_name);
             creatTime = (TextView) itemView.findViewById(R.id.creat_time);
             inviteNum = (TextView) itemView.findViewById(R.id.invite_num);
+            vipImg = (ImageView) itemView.findViewById(R.id.vip_fg);
         }
     }
 }

@@ -72,6 +72,7 @@ import com.paobuqianjin.pbq.step.presenter.im.UiCreateCircleInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.ShopToolUtil;
 import com.paobuqianjin.pbq.step.utils.SoftKeyboardStateHelper;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
@@ -412,9 +413,17 @@ public class CreateCircleActivity extends BaseBarActivity implements SoftKeyboar
                                         PaoToastUtils.showLongToast(CreateCircleActivity.this, "微信号复制成功");
                                     }
                                     String targetUrl = adList.get(position).getTarget_url();
-                                    if (!TextUtils.isEmpty(targetUrl))
-                                        startActivity(new Intent(CreateCircleActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
-
+                                    String result = ShopToolUtil.taoBaoString(targetUrl);
+                                    if (!TextUtils.isEmpty(result)) {
+                                        if (result.startsWith(ShopToolUtil.TaoBaoSchema)
+                                                && Utils.checkPackage(getApplicationContext(), ShopToolUtil.TaoBao)) {
+                                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                        } else {
+                                            startActivity(new Intent(CreateCircleActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                        }
+                                    }
                                 }
                             })
                             .start();

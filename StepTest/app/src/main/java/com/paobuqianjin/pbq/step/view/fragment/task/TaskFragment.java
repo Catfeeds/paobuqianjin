@@ -7,6 +7,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -37,6 +38,8 @@ import com.paobuqianjin.pbq.step.presenter.im.TaskMyRecInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.ShopToolUtil;
+import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.AgreementActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
@@ -242,8 +245,17 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
                                         PaoToastUtils.showLongToast(getActivity(), "微信号复制成功");
                                     }
                                     String targetUrl = adList.get(position).getTarget_url();
-                                    if (!TextUtils.isEmpty(targetUrl))
-                                        startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                    String result = ShopToolUtil.taoBaoString(targetUrl);
+                                    if (!TextUtils.isEmpty(result)) {
+                                        if (result.startsWith(ShopToolUtil.TaoBaoSchema)
+                                                && Utils.checkPackage(getContext(), ShopToolUtil.TaoBao)) {
+                                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                        } else {
+                                            startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                        }
+                                    }
                                 }
                             })
                             .start();

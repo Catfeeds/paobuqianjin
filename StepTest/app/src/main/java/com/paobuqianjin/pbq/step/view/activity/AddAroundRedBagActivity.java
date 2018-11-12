@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -61,6 +62,7 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.ShopToolUtil;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.fragment.task.ReleaseTaskSponsorFragment;
@@ -192,7 +194,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                         intent.getSerializableExtra("around");
                 currentAction = SEND_ACTION;
                 if (dataBean != null) {
-                    if (dataBean.getLower_id() == 0 && dataBean.getVoucherid() >0) {
+                    if (dataBean.getLower_id() == 0 && dataBean.getVoucherid() > 0) {
                         tickDataValue = new TickDataValue();
                         tickDataValue.setVoucher_name(dataBean.getVname());
                         tickDataValue.setVoucher_number(dataBean.getNumber());
@@ -399,10 +401,17 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                                         PaoToastUtils.showLongToast(AddAroundRedBagActivity.this, "微信号复制成功");
                                     }
                                     String targetUrl = adList.get(position).getTarget_url();
-                                    if (!TextUtils.isEmpty(targetUrl))
-                                        startActivity(new Intent(AddAroundRedBagActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
-
-
+                                    String result = ShopToolUtil.taoBaoString(targetUrl);
+                                    if (!TextUtils.isEmpty(result)) {
+                                        if (result.startsWith(ShopToolUtil.TaoBaoSchema)
+                                                && Utils.checkPackage(getApplicationContext(), ShopToolUtil.TaoBao)) {
+                                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                        } else {
+                                            startActivity(new Intent(AddAroundRedBagActivity.this, SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                        }
+                                    }
                                 }
                             })
                             .start();
@@ -916,7 +925,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                         params.put("number", etRedBagNum.getText().toString());
                     if (!TextUtils.isEmpty(etRedBagTotalMoney.getText().toString()))
                         params.put("money", etRedBagTotalMoney.getText().toString());
-                    if (businessId > 0 && !TextUtils.isEmpty(sponorCircleDetail.getText().toString().trim()))
+                    if (businessId > 0 && !TextUtils.isEmpty(sponorMsgDesDetail.getText().toString().trim()))
                         params.put("businessid", businessId + "");
                     if (!TextUtils.isEmpty(etInformation.getText().toString()))
                         params.put("content", etInformation.getText().toString());

@@ -157,10 +157,10 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         }
         Intent intent = getActivity().getIntent();
         if (intent != null) {
-            canCrashNum = intent.getFloatExtra("total", 0.0f);
-            String canCrashStrFormat = getActivity().getString(R.string.can_crash);
-            String canCrashStr = String.format(canCrashStrFormat, canCrashNum);
-            walletMoney.setText(canCrashStr);
+            canCrashNum = Float.parseFloat(intent.getStringExtra("total"));
+/*            String canCrashStrFormat = getActivity().getString(R.string.can_crash);
+            String canCrashStr = String.format(canCrashStrFormat, canCrashNum);*/
+            walletMoney.setText("钱包余额: "+ String.valueOf(canCrashNum));
         }
         String part1 = "我已认真阅读", part2 = "《提现协议》";
         String protoclStr = part1 + part2;

@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -599,7 +600,7 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
             protected void onSuc(String s) {
                 try {
                     DeleteCircleResponse deleteCircleResponse = new Gson().fromJson(s, DeleteCircleResponse.class);
-                    PaoToastUtils.showLongToast(getActivity(), deleteCircleResponse.getMessage());
+                    PaoToastUtils.showLongToast(getActivity(), "解散成功");
                     Intent intent = new Intent();
                     intent.setAction(DELETE_ACTION);
                     if (position != -1) {
@@ -1117,7 +1118,46 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
 //                popOpWindowRedButton = null;
                 }
             });
+/*            popOpWindowRedButtonHori.setTouchInterceptor(new View.OnTouchListener() {
 
+                int orgX, orgY;
+                int offsetX, offsetY;
+
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    LocalLog.d(TAG, "onTouch() enter");
+                    boolean response = false;
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            LocalLog.d(TAG, "ACTION_DOWN");
+                            orgX = (int) event.getRawX();
+                            orgY = (int) event.getRawX();
+                            LocalLog.d(TAG, "org(" + orgX + "," + offsetY + ")");
+                            response = false;
+                            break;
+                        case MotionEvent.ACTION_MOVE:
+                            LocalLog.d(TAG, "ACTION_MOVE");
+                            offsetX = (int) event.getRawX();
+                            offsetY = (int) event.getRawY();
+                            LocalLog.d(TAG, "offset(" + offsetX + "," + offsetY + ")");
+                            if (Math.abs(offsetX - orgX) > 20 && Math.abs(offsetY - orgY) > 20) {
+                                popOpWindowRedButtonHori.update(offsetX, offsetY, -1, -1, true);
+                            }
+                            response = true;
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            LocalLog.d(TAG, "ACTION_UP");
+                            if (Math.abs(offsetX) > 20 && Math.abs(offsetY) > 20) {
+                                response = true;
+                            } else {
+                                response = false;
+                            }
+                            break;
+                    }
+                    return response;
+
+                }
+            });*/
 //        popOpWindowRedButton.setFocusable(true);
 //        popOpWindowRedButton.setOutsideTouchable(true);
             popOpWindowRedButtonHori.setBackgroundDrawable(new BitmapDrawable());
@@ -1127,8 +1167,8 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
             animationCircleTypeHori.setInterpolator(new AccelerateInterpolator());
             animationCircleTypeHori.setDuration(200);
 
-
-            popOpWindowRedButtonHori.showAtLocation(getActivity().findViewById(R.id.circle_detail_fg), Gravity.BOTTOM | Gravity.RIGHT, 0, 400);
+            popOpWindowRedButtonHori.showAsDropDown(scanMore, 0, 40);
+/*            popOpWindowRedButtonHori.showAtLocation(getActivity().findViewById(R.id.circle_detail_fg), Gravity.BOTTOM | Gravity.RIGHT, 0, 400);*/
             popCircleOpBarHori.startAnimation(animationCircleTypeHori);
         }
     }

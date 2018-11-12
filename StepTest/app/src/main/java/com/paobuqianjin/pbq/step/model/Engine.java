@@ -4243,4 +4243,13 @@ public final class Engine {
         LocalLog.d(TAG, url + "返回数据：" + reusltStr);
         return reusltStr;
     }
+
+
+    public String shop() {
+        if (!TextUtils.isEmpty(getToken(mContext))) {
+            return NetApi.urlShop + "?headtoken=" + getToken(mContext) + "&app_sign=" + Utils.appSignShop(getToken(mContext));
+        } else {
+            return null;
+        }
+    }
 }

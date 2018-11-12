@@ -86,10 +86,13 @@ public class TransferCardActivity extends BaseBarActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            canCrashNum = intent.getFloatExtra("total", 0.0f);
-            String canCrashStrFormat = getString(R.string.can_crash);
+            canCrashNum = Float.parseFloat(intent.getStringExtra("total"));
+/*            String canCrashStrFormat = getString(R.string.can_crash);
             String canCrashStr = String.format(canCrashStrFormat, canCrashNum);
-            walletMoney.setText(canCrashStr);
+            walletMoney.setText(canCrashStr);*/
+/*            String canCrashStrFormat = getActivity().getString(R.string.can_crash);
+            String canCrashStr = String.format(canCrashStrFormat, canCrashNum);*/
+            walletMoney.setText("钱包余额: " + String.valueOf(canCrashNum));
         }
 
         rvBank.setLayoutManager(new LinearLayoutManager(this));

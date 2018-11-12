@@ -223,6 +223,9 @@ public class IdentifedSetPassActivity extends BaseBarActivity {
         LocalLog.d(TAG, "获取验证码");
         UserInfoResponse.DataBean userInfoResponse = Presenter.getInstance(this).getCurrentUser();
         if (userInfoResponse == null || TextUtils.isEmpty(userInfoResponse.getMobile())) {
+            if (TextUtils.isEmpty(userInfoResponse.getMobile())) {
+                PaoToastUtils.showLongToast(this, "账号绑定手机号异常，请联系客服!");
+            }
             return;
         }
         String url = NetApi.urlSendMsg + userInfoResponse.getMobile() + keyStr(userInfoResponse.getMobile());

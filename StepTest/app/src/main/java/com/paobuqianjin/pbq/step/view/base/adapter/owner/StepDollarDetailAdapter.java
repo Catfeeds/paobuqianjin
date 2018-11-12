@@ -53,7 +53,7 @@ public class StepDollarDetailAdapter extends RecyclerView.Adapter<StepDollarDeta
             String dateStr = DateTimeUtil.formatDateTime(createTime * 1000, DateTimeUtil.DF_YYYY_MM_DD);
             LocalLog.d(TAG, "dateStr = " + dateStr);
             holder.inviteTime.setText(dateStr);
-            holder.stepDollarIncome.setText("+" + ((StepDollarDetailResponse.DataBeanX.DataBean) mData.get(position)).getCredit());
+            holder.stepDollarIncome.setText("" + ((StepDollarDetailResponse.DataBeanX.DataBean) mData.get(position)).getCredit());
         }
     }
 

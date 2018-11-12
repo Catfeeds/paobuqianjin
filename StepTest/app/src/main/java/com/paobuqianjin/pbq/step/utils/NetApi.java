@@ -379,4 +379,7 @@ public class NetApi {
     public final static String getUrlMyInviteMems = url + "v1/userinviter/getMyInviterNew";
     //获取提现金额列表
     public final static String urlWithDrawList = url + "v1/withdraw/withdrawMoneyList";
+    //商城
+    public final static String urlShop = "http://www.runmoney.shop";
+
 }

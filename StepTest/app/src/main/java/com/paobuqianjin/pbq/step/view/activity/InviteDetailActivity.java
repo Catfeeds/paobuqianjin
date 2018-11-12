@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.customview.SlidingTabLayout;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.InviteCodeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
@@ -27,6 +30,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
+import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.fragment.owner.InviteTeamFragment;
@@ -41,6 +45,7 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -66,7 +71,10 @@ public class InviteDetailActivity extends BaseBarActivity implements BaseBarActi
     TextView inviteStepTotal;
     @Bind(R.id.invite_code)
     TextView inviteCode;
-    private InviteTeamFragment teamFragment = new InviteTeamFragment();
+    @Bind(R.id.tablayout)
+    SlidingTabLayout tablayout;
+    @Bind(R.id.viewpager)
+    ViewPager viewpager;
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
     private TranslateAnimation animationCircleType;
@@ -75,6 +83,8 @@ public class InviteDetailActivity extends BaseBarActivity implements BaseBarActi
     private UMWeb web;
     private Rationale mRationale;
     private PermissionSetting mSetting;
+    private List<String> strings = new ArrayList<String>();
+    private List<Fragment> fragments = new ArrayList<>();
 
     @Override
     protected String title() {
@@ -113,6 +123,12 @@ public class InviteDetailActivity extends BaseBarActivity implements BaseBarActi
     @Override
     protected void initView() {
         setToolBarListener(this);
+        strings.add("普通用户");
+        strings.add("金牌会员");
+        strings.add("联盟商家");
+        strings.add("优选商家");
+        viewpager = (ViewPager)findViewById(R.id.viewpager);
+        tablayout = (SlidingTabLayout)findViewById(R.id.tablayout);
         dialog = new ProgressDialog(this);
         UserInfoResponse.DataBean userInfo = Presenter.getInstance(this).getCurrentUser();
         if (userInfo != null) {
@@ -123,11 +139,12 @@ public class InviteDetailActivity extends BaseBarActivity implements BaseBarActi
         }
         mRationale = new DefaultRationale();
         mSetting = new PermissionSetting(this);
-
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.container, teamFragment)
-                .show(teamFragment)
-                .commit();
+        for (int i = 0; i < strings.size(); i++) {
+            InviteTeamFragment teamFragment = new InviteTeamFragment();
+            fragments.add(teamFragment);
+        }
+        viewpager.setAdapter(new TabAdapter(InviteDetailActivity.this, getSupportFragmentManager(), fragments, strings.toArray()));
+        tablayout.setupWithViewPager(viewpager);
         getMyCode();
 
     }
@@ -141,7 +158,7 @@ public class InviteDetailActivity extends BaseBarActivity implements BaseBarActi
         @Override
         public void onResult(SHARE_MEDIA share_media) {
             PaoToastUtils.showLongToast(InviteDetailActivity.this, "分享成功");
-            if(popupCircleTypeWindow != null){
+            if (popupCircleTypeWindow != null) {
                 popupCircleTypeWindow.dismiss();
             }
         }
@@ -149,7 +166,7 @@ public class InviteDetailActivity extends BaseBarActivity implements BaseBarActi
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
             PaoToastUtils.showLongToast(InviteDetailActivity.this, "失败");
-            if(popupCircleTypeWindow != null){
+            if (popupCircleTypeWindow != null) {
                 popupCircleTypeWindow.dismiss();
             }
         }
@@ -157,7 +174,7 @@ public class InviteDetailActivity extends BaseBarActivity implements BaseBarActi
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
             PaoToastUtils.showLongToast(InviteDetailActivity.this, "取消分享");
-            if(popupCircleTypeWindow != null){
+            if (popupCircleTypeWindow != null) {
                 popupCircleTypeWindow.dismiss();
             }
         }

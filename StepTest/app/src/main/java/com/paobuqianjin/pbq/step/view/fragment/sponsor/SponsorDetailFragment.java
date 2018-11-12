@@ -49,7 +49,9 @@ import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.ShopToolUtil;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.RedInfoActivity;
 import com.paobuqianjin.pbq.step.view.activity.RoundRedRelActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
@@ -545,6 +547,17 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
                                     @Override
                                     public void onClick(View v) {
                                         if (!TextUtils.isEmpty(tarUrl)) {
+                                            String result = ShopToolUtil.taoBaoString(tarUrl);
+                                            if (!TextUtils.isEmpty(result)) {
+                                                if (result.startsWith(ShopToolUtil.TaoBaoSchema)
+                                                        && Utils.checkPackage(getContext(), ShopToolUtil.TaoBao)) {
+                                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    startActivity(intent);
+                                                } else {
+                                                    startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", tarUrl));
+                                                }
+                                            }
                                             startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", tarUrl));
                                         } else {
                                             LocalLog.d(TAG, "查看大图 currentImage = " + currentImage);

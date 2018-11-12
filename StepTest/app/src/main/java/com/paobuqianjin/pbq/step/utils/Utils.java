@@ -33,11 +33,15 @@ public class Utils {
     private final static String TAG = Utils.class.getSimpleName();
     public final static int PAGE_SIZE_DEFAULT = 20;
     public final static String KEY_SIGN = "paobuqianjinzhf..20181029";
+    public final static String KEY_SIGN_SHOP = "paobuqianjinzhf..20181102";
 
     public static Context getApplicationContext(Context context) {
         return context.getApplicationContext();
     }
 
+    public static String appSignShop(String tokenShop) {
+        return MD5.md5Slat(tokenShop + Utils.KEY_SIGN_SHOP);
+    }
 
     /*EditText 动态限制字符*/
     public static void setEditTextLengthLimit(EditText editText, int length) {

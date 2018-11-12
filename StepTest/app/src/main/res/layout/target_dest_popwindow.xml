@@ -61,6 +61,7 @@
                         android:visibility="gone" />
 
                     <ImageView
+                        android:id="@+id/center_line"
                         android:visibility="gone"
                         android:layout_width="1dp"
                         android:layout_height="match_parent"

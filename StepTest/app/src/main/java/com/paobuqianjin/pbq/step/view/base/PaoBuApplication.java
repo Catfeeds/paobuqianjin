@@ -161,7 +161,7 @@ public class PaoBuApplication extends MultiDexApplication {
             }
         });
 
-        LQREmotionKit.init(this,new IImageLoader() {
+        LQREmotionKit.init(this, new IImageLoader() {
             @Override
             public void displayImage(Context context, String path, ImageView imageView) {
                 Glide.with(context).load(path).into(imageView);
@@ -171,26 +171,26 @@ public class PaoBuApplication extends MultiDexApplication {
 
     private void initData() {
         try {
-            if(NetApi.url.equals(NetApi.url_online)){//正式环境
+            if (NetApi.url.equals(NetApi.url_online)) {//正式环境
                 String onlineAppId = "8luwapkv8jy1l";
                 ApplicationInfo appInfo = null;
                 appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
                 String msg = appInfo.metaData.getString("RONG_CLOUD_APP_KEY");
 
-                if(msg.equals(onlineAppId)) return;
+                if (msg.equals(onlineAppId)) return;
                 Log.e(TAG, "before: " + msg);
                 appInfo.metaData.putString("RONG_CLOUD_APP_KEY", onlineAppId);
                 msg = appInfo.metaData.getString("RONG_CLOUD_APP_KEY");
                 Log.e(TAG, "after: " + msg);
 
 
-            }else{
+            } else {
                 String debugAppId = "uwd1c0sxup861";
                 ApplicationInfo appInfo = null;
                 appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
                 String msg = appInfo.metaData.getString("RONG_CLOUD_APP_KEY");
 
-                if(msg.equals(debugAppId)) return;
+                if (msg.equals(debugAppId)) return;
                 Log.e(TAG, "before: " + msg);
                 appInfo.metaData.putString("RONG_CLOUD_APP_KEY", debugAppId);
                 msg = appInfo.metaData.getString("RONG_CLOUD_APP_KEY");
@@ -217,7 +217,7 @@ public class PaoBuApplication extends MultiDexApplication {
             @Override
             public void onChanged(RongIMClient.ConnectionStatusListener.ConnectionStatus status) {
                 LocalLog.d(TAG, "ConnectionStatusListener onChanged: " + status);
-                switch (status){
+                switch (status) {
                     case CONNECTED://连接成功。
 
                         break;
@@ -251,6 +251,7 @@ public class PaoBuApplication extends MultiDexApplication {
                 //注册成功会返回device token
                 LocalLog.d(TAG, "IUmengRegisterCallback.onSuccess() deviceToken : " + deviceToken);
             }
+
             @Override
             public void onFailure(String s, String s1) {
                 LocalLog.d(TAG, "IUmengRegisterCallback.onFailure() s : " + s + "   ;s1:" + s1);
@@ -258,10 +259,10 @@ public class PaoBuApplication extends MultiDexApplication {
         });
 
 
-        UmengMessageHandler messageHandler = new UmengMessageHandler(){
+        UmengMessageHandler messageHandler = new UmengMessageHandler() {
             @Override
             public void dealWithCustomMessage(final Context context, final UMessage msg) {
-                LocalLog.d(TAG,new Gson().toJson(msg));
+                LocalLog.d(TAG, new Gson().toJson(msg));
                 new Handler(getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
@@ -284,7 +285,7 @@ public class PaoBuApplication extends MultiDexApplication {
                                 if (is_pull_step_service != null) {
                                     switch (is_pull_step_service) {
                                         case "step":
-                                            if (!Utils.isServiceRunning(PaoBuApplication.getApplication(),TodayStepService.class.getName())) {
+                                            if (!Utils.isServiceRunning(PaoBuApplication.getApplication(), TodayStepService.class.getName())) {
                                                 Intent intent = new Intent();
                                                 intent.setAction(START_STEP_ACTION);
                                                 intent.setClass(getApplicationContext(), TodayStepService.class);
@@ -293,13 +294,14 @@ public class PaoBuApplication extends MultiDexApplication {
                                             break;
 
                                         case "login":
-                                            if(exitDialog!=null && exitDialog.isShowing()) exitDialog.dismiss();
+                                            if (exitDialog != null && exitDialog.isShowing())
+                                                exitDialog.dismiss();
 
                                             String tipsMsg = jsonObject.getString("msg");
                                             if (TextUtils.isEmpty(tipsMsg)) {
                                                 tipsMsg = "登录过期，点击确定重新登录";
                                             }
-                                            if(currentActivity == null) return;
+                                            if (currentActivity == null) return;
                                             exitDialog = new NormalDialog(currentActivity);
                                             exitDialog.setMessage(tipsMsg);
                                             exitDialog.setSingleBtn(true);
@@ -327,6 +329,8 @@ public class PaoBuApplication extends MultiDexApplication {
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         }
                     }
@@ -345,7 +349,7 @@ public class PaoBuApplication extends MultiDexApplication {
 //            }
         };
         mPushAgent.setMessageHandler(messageHandler);
-        MiPushRegistar.register(this,XIAOMI_ID, XIAOMI_KEY);
+        MiPushRegistar.register(this, XIAOMI_ID, XIAOMI_KEY);
         HuaWeiRegister.register(this);
         MeizuRegister.register(this, MEIZU_ID, MEIZU_KEY);
 

@@ -58,6 +58,7 @@ import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.ShopToolUtil;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
@@ -589,7 +590,17 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                                     @Override
                                     public void onClick(View v) {
                                         if (!TextUtils.isEmpty(tarUrl)) {
-                                            startActivity(new Intent(RoundRedDetailActivity.this, SingleWebViewActivity.class).putExtra("url", tarUrl));
+                                            String result = ShopToolUtil.taoBaoString(tarUrl);
+                                            if (!TextUtils.isEmpty(result)) {
+                                                if (result.startsWith(ShopToolUtil.TaoBaoSchema)
+                                                        && Utils.checkPackage(getApplicationContext(), ShopToolUtil.TaoBao)) {
+                                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                    startActivity(intent);
+                                                } else {
+                                                    startActivity(new Intent(RoundRedDetailActivity.this, SingleWebViewActivity.class).putExtra("url", tarUrl));
+                                                }
+                                            }
                                         } else {
                                             LocalLog.d(TAG, "查看大图 currentImage = " + currentImage);
                                             if (popBigImageInterface != null && urlImage.size() >= 1) {

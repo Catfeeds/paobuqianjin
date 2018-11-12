@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.j256.ormlite.stmt.query.In;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoTipsCallBack;
@@ -40,11 +42,12 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class SingleWebViewActivity extends BaseBarActivity {
+public class SingleWebViewActivity extends BaseBarActivity implements BaseBarActivity.ToolBarListener {
 
     private static final String TAG = SingleWebViewActivity.class.getSimpleName();
     @Bind(R.id.webview)
@@ -67,6 +70,18 @@ public class SingleWebViewActivity extends BaseBarActivity {
     protected String title() {
         String title = getIntent().getStringExtra("title");
         return TextUtils.isEmpty("title") ? "" : title;
+    }
+
+    @Override
+    public void clickRight() {
+
+    }
+
+    @Override
+    public void clickLeft() {
+        if (webview != null) {
+            webview.goBack();
+        }
     }
 
     public void popRoundRedPkg(final String redid) {
@@ -205,6 +220,7 @@ public class SingleWebViewActivity extends BaseBarActivity {
             popupRedPkgWindow.dismiss();
             popupRedPkgWindow = null;
         }
+
     }
 
     @Override
@@ -212,6 +228,7 @@ public class SingleWebViewActivity extends BaseBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_web_view);
         ButterKnife.bind(this);
+        setToolBarListener(this);
         urlStr = getIntent().getStringExtra("url");
         red_id = getIntent().getStringExtra("red_id");
         LocalLog.d(TAG, "urlStr: " + urlStr + "red_id =" + red_id);
@@ -254,6 +271,18 @@ public class SingleWebViewActivity extends BaseBarActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 LocalLog.d(TAG, "url = " + url);
+                if (url.startsWith("weixin://") || url.startsWith("alipays://")) {
+                    try {
+                        LocalLog.d(TAG, "APP");
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                        return true;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        LocalLog.d(TAG, "APP EXCEPTION");
+                        return super.shouldOverrideUrlLoading(view, url);
+                    }
+                }
                 if (!TextUtils.isEmpty(url) && url.startsWith("https://www.bianxianguanjia.com") && !urlStr.equals(url)) {
                     LocalLog.d(TAG, "非转盘广告，不能抽红包");
                     attMoney.setVisibility(View.GONE);

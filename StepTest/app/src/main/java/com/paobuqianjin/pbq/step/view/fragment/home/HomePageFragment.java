@@ -61,6 +61,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.AddAroundRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.ConsumTotalActivity;
 import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBag2Activity;
 import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBagActivity;
@@ -1139,7 +1140,12 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                 case R.id.add_friend_image:
                     LocalLog.d(TAG, "商家金牌会员");
                     /*startActivity(GoldenSponsoractivity.class, null);*/
-                    PaoToastUtils.showLongToast(getContext(), "尽请期待");
+             /*       PaoToastUtils.showLongToast(getContext(), "敬请期待");
+                    */
+                    String shopUrl = Presenter.getInstance(getContext()).shop();
+                    ;
+                    if (!TextUtils.isEmpty(shopUrl))
+                        startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", shopUrl));
                     break;
                 case R.id.scan_img:
                     requestPermissionScan(Permission.Group.CAMERA);

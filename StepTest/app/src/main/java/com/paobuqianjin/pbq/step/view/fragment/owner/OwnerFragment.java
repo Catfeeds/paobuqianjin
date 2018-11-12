@@ -334,7 +334,7 @@ public final class OwnerFragment extends BaseFragment {
                 break;
             case R.id.crash_button:
                 if (!TextUtils.isEmpty(walletMoney.getText().toString().trim())) {
-                    intent.putExtra("total", Float.parseFloat(walletMoney.getText().toString().trim()));
+                    intent.putExtra("total", walletMoney.getText().toString().trim());
                     intent.setAction(CRASH_ACTION);
                     intent.setClass(getContext(), TransferActivity.class);
                     startActivity(intent);

@@ -133,7 +133,6 @@ public class InviteTeamFragment extends BaseFragment implements SwipeMenuRecycle
         rvCoupon.setNestedScrollingEnabled(false);
         refreshLayout.setOnRefreshListener(this);
         rvCoupon.setAdapter(adapter);
-        ((BaseBarActivity) getActivity()).showLoadingBar();
         getPageData(1);
     }
 
@@ -151,7 +150,6 @@ public class InviteTeamFragment extends BaseFragment implements SwipeMenuRecycle
             @Override
             protected void onSuc(String s) {
                 if (page == 1) {
-                    ((BaseBarActivity) getActivity()).hideLoadingBar();
                     listData.clear();
                     rvCoupon.loadMoreFinish(false, true);
                 }

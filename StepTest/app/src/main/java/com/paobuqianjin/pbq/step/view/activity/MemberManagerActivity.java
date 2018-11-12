@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
-import com.paobuqianjin.pbq.step.view.fragment.circle.CircleMemberManagerFragment;
+import com.paobuqianjin.pbq.step.view.fragment.circle.CircleMemberFragment;
 
 /**
  * Created by pbq on 2017/12/18.
@@ -13,7 +13,7 @@ import com.paobuqianjin.pbq.step.view.fragment.circle.CircleMemberManagerFragmen
 
 public class MemberManagerActivity extends BaseActivity {
     private final static String TAG = MemberManagerActivity.class.getSimpleName();
-    private CircleMemberManagerFragment circleMemberManagerFragment = new CircleMemberManagerFragment();
+    private CircleMemberFragment circleMemberManagerFragment = new CircleMemberFragment();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

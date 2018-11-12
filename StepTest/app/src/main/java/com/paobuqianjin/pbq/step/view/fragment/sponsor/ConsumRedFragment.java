@@ -128,7 +128,7 @@ public class ConsumRedFragment extends BaseFragment implements SwipeMenuRecycler
         rvCoupon.setSwipeItemClickListener(new SwipeItemClickListener() {
             @Override
             public void onItemClick(View itemView, final int position) {
-                if (position < listData.size()) {
+                if (position < listData.size() && !TextUtils.isEmpty(listData.get(position).getVoucherid())) {
                     Intent intent = new Intent(getActivity(), GetConsumptiveRBResultActivity.class);
                     intent.putExtra(getContext().getPackageName() + "red_id", Integer.parseInt(listData.get(position).getVoucherid()));
                     intent.putExtra(getContext().getPackageName() + "businessid", Integer.parseInt(listData.get(position).getBusinessid()));
