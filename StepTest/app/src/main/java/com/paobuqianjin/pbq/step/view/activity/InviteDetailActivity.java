@@ -124,9 +124,9 @@ public class InviteDetailActivity extends BaseBarActivity implements BaseBarActi
     protected void initView() {
         setToolBarListener(this);
         strings.add("普通用户");
-        strings.add("金牌会员");
+/*        strings.add("金牌会员");
         strings.add("联盟商家");
-        strings.add("优选商家");
+        strings.add("优选商家");*/
         viewpager = (ViewPager)findViewById(R.id.viewpager);
         tablayout = (SlidingTabLayout)findViewById(R.id.tablayout);
         dialog = new ProgressDialog(this);

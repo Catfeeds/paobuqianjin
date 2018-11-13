@@ -1031,6 +1031,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".view.activity.ShopWebViewActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".view.activity.SingleWebViewActivity"
             android:screenOrientation="portrait"></activity>
         <activity

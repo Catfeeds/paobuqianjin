@@ -67,6 +67,7 @@ import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBag2Activity;
 import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
+import com.paobuqianjin.pbq.step.view.activity.ShopWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorRedDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskActivity;
@@ -1145,7 +1146,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     String shopUrl = Presenter.getInstance(getContext()).shop();
                     ;
                     if (!TextUtils.isEmpty(shopUrl))
-                        startActivity(new Intent(getActivity(), SingleWebViewActivity.class).putExtra("url", shopUrl));
+                        startActivity(new Intent(getActivity(), ShopWebViewActivity.class).putExtra("url", shopUrl));
                     break;
                 case R.id.scan_img:
                     requestPermissionScan(Permission.Group.CAMERA);
