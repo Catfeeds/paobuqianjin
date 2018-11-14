@@ -28,6 +28,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.fragment.home.HomeFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.HomePageFragment;
 
 import org.greenrobot.eventbus.EventBus;
@@ -103,7 +104,7 @@ public class LiveDetailFragment extends BaseBarStyleTextViewFragment {
                     break;
                 case 1:
                     btnStatus.setText("进行中");
-                    if (HomePageFragment.lastStep >= target) {
+                    if (HomeFragment.lastStep >= target) {
                         if (is_receive == 0) {
                             btnStatus.setText("领取奖励");
                             btnStatus.setEnabled(true);

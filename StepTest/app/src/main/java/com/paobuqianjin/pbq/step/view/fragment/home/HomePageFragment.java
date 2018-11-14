@@ -71,7 +71,6 @@ import com.paobuqianjin.pbq.step.view.activity.ShopWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorRedDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskActivity;
-import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserFitActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorRedPakAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
@@ -1143,8 +1142,7 @@ public final class HomePageFragment extends BaseFragment implements HomePageInte
                     /*startActivity(GoldenSponsoractivity.class, null);*/
              /*       PaoToastUtils.showLongToast(getContext(), "敬请期待");
                     */
-                    String shopUrl = Presenter.getInstance(getContext()).shop();
-                    ;
+                    String shopUrl = Presenter.getInstance(getContext()).shop();;
                     if (!TextUtils.isEmpty(shopUrl))
                         startActivity(new Intent(getActivity(), ShopWebViewActivity.class).putExtra("url", shopUrl));
                     break;

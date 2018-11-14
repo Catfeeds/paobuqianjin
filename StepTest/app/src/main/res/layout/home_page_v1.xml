@@ -1,0 +1,590 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/home_page_v1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:id="@+id/home_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="265dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/home_bg" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="64dp"
+                    android:gravity="center">
+
+                    <FrameLayout
+                        android:id="@+id/process_step"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="13dp">
+
+                        <ImageView
+                            android:id="@+id/target_step_circle"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/home_page_step_total" />
+
+                        <ImageView
+                            android:id="@+id/process_step_now"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:padding="10dp"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/home_page_log" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_gravity="center">
+
+                                <RelativeLayout
+                                    android:id="@+id/toay_step_span"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true">
+
+                                    <TextView
+                                        android:id="@+id/toay_step"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:includeFontPadding="false"
+                                        android:text=""
+                                        android:textColor="@color/color_ffc14c"
+                                        android:textSize="14dp"
+                                        android:textStyle="bold" />
+
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignBottom="@+id/toay_step"
+                                        android:layout_alignTop="@+id/toay_step"
+                                        android:layout_toEndOf="@+id/toay_step"
+                                        android:gravity="center"
+                                        android:includeFontPadding="false"
+                                        android:text="步"
+                                        android:textColor="@color/color_ffc14c"
+                                        android:textSize="12dp" />
+                                </RelativeLayout>
+
+
+                                <RelativeLayout
+                                    android:id="@+id/target_steps_span"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/toay_step_span">
+
+                                    <TextView
+                                        android:id="@+id/mu_biao_text"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="0dp"
+                                        android:includeFontPadding="false"
+                                        android:text="@string/mu_biao"
+                                        android:textColor="@color/color_ffc14c"
+                                        android:textSize="14dp" />
+
+                                    <TextView
+                                        android:id="@+id/target_steps"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignBaseline="@+id/mu_biao_text"
+                                        android:layout_alignBottom="@+id/mu_biao_text"
+                                        android:layout_alignTop="@+id/mu_biao_text"
+                                        android:layout_toEndOf="@+id/mu_biao_text"
+                                        android:gravity="center"
+                                        android:includeFontPadding="false"
+                                        android:text="步"
+                                        android:textColor="@color/color_ffc14c"
+                                        android:textSize="12dp" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/step_desc_span"
+                                    android:layout_width="48dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/target_steps_span"
+                                    android:layout_centerHorizontal="true">
+
+                                    <ImageView
+                                        android:id="@+id/step_desc"
+                                        android:layout_width="22dp"
+                                        android:layout_height="22dp"
+                                        android:layout_centerHorizontal="true"
+                                        android:layout_marginTop="5dp"
+                                        android:scaleType="centerCrop"
+                                        android:src="@drawable/step_des" />
+                                </RelativeLayout>
+                            </RelativeLayout>
+
+                        </RelativeLayout>
+
+                    </FrameLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/income_out_look"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:paddingBottom="5dp">
+
+                    <RelativeLayout
+                        android:id="@+id/today_income_span"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="60dp">
+
+                        <TextView
+                            android:id="@+id/today_income_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:text="￥0.00"
+                            android:textColor="#FFC14C"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/income_today"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/today_income_num"
+                            android:layout_centerHorizontal="true"
+                            android:text="当天钱进"
+                            android:textColor="@color/color_f8"
+                            android:textSize="18dp" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/month_income_span"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="59dp">
+
+                        <TextView
+                            android:id="@+id/month_income_home"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:text="￥0.00"
+                            android:textColor="#FFC14C"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/income_month"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/month_income_home"
+                            android:layout_centerHorizontal="true"
+                            android:text="累计钱进"
+                            android:textColor="@color/color_f8"
+                            android:textSize="18dp" />
+
+                    </RelativeLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/home_ad"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/new_s"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="14dp"
+                    android:background="@drawable/rect_angle"
+                    android:text="最新"
+                    android:textColor="@color/color_e4393c"
+                    android:textSize="12dp" />
+
+                <com.paobuqianjin.pbq.step.customview.LooperTextView
+                    android:id="@+id/home_ad_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_d9d9d9" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/parent_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="11dp"
+                    android:paddingTop="11dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/parent_red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:text="父母专享"
+                        android:textColor="#818181"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/baby_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="11dp"
+                    android:paddingTop="11dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/baby_red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:text="孩子专享"
+                        android:textColor="#818181"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/love_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="11dp"
+                    android:paddingTop="11dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/love_red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:text="夫妻专享"
+                        android:textColor="#818181"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/older_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="11dp"
+                    android:paddingTop="11dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/older_red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:text="长辈专享"
+                        android:textColor="#818181"
+                        android:textSize="12dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/friend_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="11dp"
+                    android:paddingTop="11dp">
+
+                    <ImageView
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="center_horizontal"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/friend_red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="8dp"
+                        android:text="朋友专享"
+                        android:textColor="#818181"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@color/color_f6f6f6"
+                android:orientation="horizontal"
+                android:paddingBottom="11dp"
+                android:paddingTop="11dp">
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/round_red_image"
+                        android:layout_width="110dp"
+                        android:layout_height="65dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/heme_page_selector" />
+
+                    <TextView
+                        android:id="@+id/out_red_package"
+                        android:layout_width="wrap_content"
+                        android:layout_height="65dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:gravity="bottom"
+                        android:paddingBottom="8dp"
+                        android:text="遍地红包"
+                        android:textColor="@color/color_f8"
+                        android:textSize="14dp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/position_red_image"
+                        android:layout_width="110dp"
+                        android:layout_height="65dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/heme_page_selector"
+                        android:scaleType="centerCrop" />
+
+                    <TextView
+                        android:id="@+id/position_red_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="65dp"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:gravity="bottom"
+                        android:paddingBottom="8dp"
+                        android:text="精准红包"
+                        android:textColor="@color/color_f8"
+                        android:textSize="14dp" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/consum_rpg"
+                        android:layout_width="110dp"
+                        android:layout_height="65dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/recive_red_package_selector"
+                        android:scaleType="centerCrop" />
+
+                    <TextView
+                        android:id="@+id/income_red_package"
+                        android:layout_width="wrap_content"
+                        android:layout_height="65dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:gravity="bottom"
+                        android:paddingBottom="8dp"
+                        android:text="消费红包"
+                        android:textColor="@color/color_f8"
+                        android:textSize="14dp" />
+
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/step_dollar_shop"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:orientation="vertical"
+                android:paddingBottom="12dp"
+                android:paddingTop="14dp">
+
+                <LinearLayout
+                    android:id="@+id/linear_shop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="8dp"
+                        android:layout_gravity="center_vertical"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/step_left" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
+                        android:text="步币商城"
+                        android:textColor="#FFA202"
+                        android:textSize="16dp" />
+
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="8dp"
+                        android:layout_gravity="center_vertical"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/step_right" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="走路都能领红包  步数都能换商品"
+                    android:textColor="@color/color_161727"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+            <io.rong.imkit.model.RongGridView
+                android:id="@+id/good_grid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:horizontalSpacing="7dp"
+                android:numColumns="auto_fit"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:scrollbars="none"
+                android:stretchMode="columnWidth"
+                android:verticalSpacing="8dp">
+
+            </io.rong.imkit.model.RongGridView>
+        </LinearLayout>
+
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+    <LinearLayout
+        android:id="@+id/bar_home"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:id="@+id/city_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="14dp"
+            android:text="深圳市"
+            android:textColor="@color/color_f8"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/home_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="跑步钱进"
+            android:textColor="@color/color_d6d6d6"
+            android:textSize="18dp" />
+
+        <ImageView
+            android:id="@+id/scan_mark_home"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="14dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/scan" />
+    </LinearLayout>
+
+</RelativeLayout>

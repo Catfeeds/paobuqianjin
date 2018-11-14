@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="210dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/good_pic"
+        android:layout_width="match_parent"
+        android:layout_height="134dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/bitmap_null" />
+
+    <TextView
+        android:id="@+id/goods_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:enabled="true"
+        android:maxEms="12"
+        android:maxLength="12"
+        android:maxLines="1"
+        android:text="王老吉凉茶"
+        android:textColor="@color/color_161727"
+        android:textSize="14dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/point_exchange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="500 步币"
+            android:textColor="#FFA202"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="原价75元"
+            android:textColor="#B4B4B4"
+            android:textSize="12dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/promotion_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="+68 元"
+            android:textColor="#FF6F54"
+            android:textSize="12dp" />
+
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|right"
+            android:background="@drawable/good_button_a"
+            android:text="半额兑换"
+            android:textColor="@color/color_f8"
+            android:textSize="10dp"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

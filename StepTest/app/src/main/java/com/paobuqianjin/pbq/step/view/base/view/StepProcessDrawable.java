@@ -56,7 +56,7 @@ public class StepProcessDrawable extends Drawable {
     }
 
     private float mAngle = 0.0f;
-    private float widthStrokeWidth = 20.0f;
+    private float widthStrokeWidth = 10.0f;
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -84,7 +84,7 @@ public class StepProcessDrawable extends Drawable {
                     }
                     break;
                 case ADD_STEP_MSG:
-                    LocalLog.d(TAG,"ADD_STEP_MSG ...");
+                    LocalLog.d(TAG, "ADD_STEP_MSG ...");
                     mCurrentAngle += addAngle;
                     StepProcessDrawable.this.invalidateSelf();
                     removeMessages(ADD_STEP_MSG);
@@ -112,10 +112,10 @@ public class StepProcessDrawable extends Drawable {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = false;
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.foot_ico, options);
-        footWidth = Utils.dip2px(context, 20);
+        footWidth = Utils.dip2px(context, 18);
         LocalLog.d(TAG, "width = " + bitmap.getWidth() + ", height = " + bitmap.getHeight());
         options.inSampleSize = bitmap.getWidth() / footWidth;
-        widthStrokeWidth = Utils.dip2px(context, 10);
+        widthStrokeWidth = Utils.dip2px(context, 5);
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.foot_ico, options);
         LocalLog.d(TAG, "width = " + bitmap.getWidth() + ", height = " + bitmap.getHeight());
         oval = new RectF((width - parentWidth) / 2 + widthStrokeWidth / 2, (height - parentHeight) / 2 + widthStrokeWidth / 2,
@@ -135,7 +135,7 @@ public class StepProcessDrawable extends Drawable {
         }
         canvas.save();
         canvas.rotate(mCurrentAngle, viewParentHeight / 2, viewParentHeight / 2);
-        canvas.drawBitmap(bitmap, (viewParentWidth - bitmap.getWidth()) / 2, viewParentHeight - bitmap.getHeight() - widthStrokeWidth / 2, null);
+        canvas.drawBitmap(bitmap, (viewParentWidth - bitmap.getWidth()) / 2, viewParentHeight - bitmap.getHeight() + widthStrokeWidth / 2, mPaint);
         canvas.restore();
     }
 

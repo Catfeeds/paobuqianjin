@@ -27,6 +27,7 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.base.view.DragPointView;
 import com.paobuqianjin.pbq.step.view.fragment.chat.MyConversationListFragment;
 import com.paobuqianjin.pbq.step.view.fragment.circle.FriendCircleFragment;
+import com.paobuqianjin.pbq.step.view.fragment.home.HomeFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.HomePageFragment;
 import com.paobuqianjin.pbq.step.view.fragment.honor.HonorFragment;
 import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerFragment;
@@ -46,7 +47,7 @@ import io.rong.imlib.model.Conversation;
 public class MainActivity extends BaseActivity implements IUnReadMessageObserver, DragPointView.OnDragListencer {
     private final static String TAG = MainActivity.class.getSimpleName();
     //Fragment页面索引
-    private HomePageFragment mHomePageFragment;
+    private HomeFragment mHomePageFragment;
     //private HonorFragment mHonorFragment;
     private FriendCircleFragment mFriendCircleFragment;
     private OwnerFragment mOwnerFragment;
@@ -137,7 +138,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
 
     private void initFragment() {
 
-        mHomePageFragment = new HomePageFragment();
+        mHomePageFragment = new HomeFragment();
         mFriendCircleFragment = new FriendCircleFragment();
 //        mConversationListFragment = new MyConversationListFragment();
         initConversationList();

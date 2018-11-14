@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
 import butterknife.Bind;
@@ -43,7 +45,6 @@ public class ShopWebViewActivity extends BaseBarActivity implements BaseBarActiv
     TextView barTitle;
     @Bind(R.id.att_money)
     LinearLayout attMoney;
-
     private String urlStr;
 
     @Override
@@ -59,11 +60,12 @@ public class ShopWebViewActivity extends BaseBarActivity implements BaseBarActiv
 
     @Override
     public void clickLeft() {
-        if (webview != null) {
+        if (webview != null && webview.canGoBack()) {
             webview.goBack();
+        } else {
+            onBackPressed();
         }
     }
-
 
     @Override
     protected void onDestroy() {
@@ -145,4 +147,5 @@ public class ShopWebViewActivity extends BaseBarActivity implements BaseBarActiv
         });
         webview.loadUrl(urlStr);
     }
+    
 }
