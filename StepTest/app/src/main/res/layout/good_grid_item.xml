@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="210dp"
+    android:layout_height="220dp"
     android:orientation="vertical">
 
     <ImageView
@@ -15,10 +15,8 @@
         android:id="@+id/goods_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="8dp"
         android:enabled="true"
-        android:maxEms="12"
         android:maxLength="12"
         android:maxLines="1"
         android:text="王老吉凉茶"
@@ -28,31 +26,49 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/point_exchange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="500 步币"
+            android:background="@drawable/shop_money_rect_bg"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text=""
             android:textColor="#FFA202"
-            android:textSize="15dp" />
+            android:textSize="12dp"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"></View>
 
         <TextView
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:text="原价75元"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/shop_money_rect_bg"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text=""
             android:textColor="#B4B4B4"
-            android:textSize="12dp" />
+            android:textSize="12dp"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="1"
         android:orientation="horizontal">
 
@@ -61,21 +77,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="top|left"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
+            android:background="@drawable/shop_money_rect_bg"
             android:gravity="center_vertical"
-            android:text="+68 元"
-            android:textColor="#FF6F54"
-            android:textSize="12dp" />
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text=""
+            android:textColor="#FFA202"
+            android:textSize="12dp"
+            android:visibility="gone" />
 
-        <Button
-            android:layout_width="55dp"
-            android:layout_height="20dp"
-            android:layout_gravity="bottom|right"
-            android:background="@drawable/good_button_a"
-            android:text="半额兑换"
-            android:textColor="@color/color_f8"
-            android:textSize="10dp"
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/all_bubi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/shop_money_rect_bg"
+            android:gravity="center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textColor="#FFA202"
+            android:textSize="12dp"
             android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

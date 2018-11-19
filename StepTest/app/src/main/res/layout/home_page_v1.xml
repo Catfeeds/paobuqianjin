@@ -171,7 +171,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="60dp">
+                        android:layout_marginLeft="85dp">
 
                         <TextView
                             android:id="@+id/today_income_num"
@@ -180,7 +180,8 @@
                             android:layout_centerHorizontal="true"
                             android:text="￥0.00"
                             android:textColor="#FFC14C"
-                            android:textSize="16dp" />
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/income_today"
@@ -190,7 +191,7 @@
                             android:layout_centerHorizontal="true"
                             android:text="当天钱进"
                             android:textColor="@color/color_f8"
-                            android:textSize="18dp" />
+                            android:textSize="12dp" />
 
                     </RelativeLayout>
 
@@ -199,7 +200,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="59dp">
+                        android:layout_marginRight="85dp">
 
                         <TextView
                             android:id="@+id/month_income_home"
@@ -208,7 +209,8 @@
                             android:layout_centerHorizontal="true"
                             android:text="￥0.00"
                             android:textColor="#FFC14C"
-                            android:textSize="16dp" />
+                            android:textSize="12dp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/income_month"
@@ -218,7 +220,7 @@
                             android:layout_centerHorizontal="true"
                             android:text="累计钱进"
                             android:textColor="@color/color_f8"
-                            android:textSize="18dp" />
+                            android:textSize="12dp" />
 
                     </RelativeLayout>
                 </RelativeLayout>
@@ -474,7 +476,7 @@
                         android:layout_gravity="bottom|center_horizontal"
                         android:gravity="bottom"
                         android:paddingBottom="8dp"
-                        android:text="消费红包"
+                        android:text="购物省钱"
                         android:textColor="@color/color_f8"
                         android:textSize="14dp" />
 
@@ -545,6 +547,17 @@
                 android:verticalSpacing="8dp">
 
             </io.rong.imkit.model.RongGridView>
+
+            <TextView
+                android:id="@+id/go_shoping_tv"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/color_f6f6f6"
+                android:gravity="center"
+                android:textColor="@color/color_161727"
+                android:textSize="14dp" />
+
         </LinearLayout>
 
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
@@ -587,4 +600,15 @@
             android:src="@drawable/scan" />
     </LinearLayout>
 
+
+    <ImageView
+        android:id="@+id/shop_ping"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/center_line"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="468dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/shop_ing" />
 </RelativeLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +18,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.TypefaceSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +63,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.activity.AddConsumptiveRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.ConsumTotalActivity;
 import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBag2Activity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
@@ -176,6 +179,10 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     LinearLayout linearShop;
     @Bind(R.id.home_page_v1)
     RelativeLayout homePageV1;
+    @Bind(R.id.shop_ping)
+    ImageView shopPing;
+    @Bind(R.id.go_shoping_tv)
+    TextView goShopingTv;
 
     private View popTargetView;
     private PopupWindow popupRedPkgWindow;
@@ -209,6 +216,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private boolean isBind = false;
     private LinearLayout barHome;
     private GridGoodAdpter gridGoodAdpter;
+    private String shopUrl = null;
 
     static {
         weatherMap.put("0", R.drawable.weather_0);
@@ -331,7 +339,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position < gridGoodAdpter.getData().size()) {
                     if (!TextUtils.isEmpty(gridGoodAdpter.getData().get(position).getTarget_url())) {
-                        String goodUrl = gridGoodAdpter.getData().get(position).getTarget_url() + Presenter.getInstance(getContext()).getShopEnd();
+                        String goodUrl = gridGoodAdpter.getData().get(position).getTarget_url() + "&" + Presenter.getInstance(getContext()).getShopEnd();
                         startActivity(new Intent(getActivity(), ShopWebViewActivity.class).putExtra("url",
                                 goodUrl));
                     }
@@ -351,6 +359,61 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         });
         loadBanner();
         initGridGood();
+        shopPing = (ImageView) viewRoot.findViewById(R.id.shop_ping);
+        /*shopPing.setOnTouchListener(new View.OnTouchListener() {
+            private int x, y;
+            private int xWindow, yWindow;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                x = (int) event.getX();
+                y = (int) event.getY();
+                boolean clickEffect = false;
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        xWindow = (int) event.getRawX();
+                        yWindow = (int) event.getRawY();
+                        AnimatorSet setDown = new AnimatorSet();
+                        setDown.playTogether(
+                                ObjectAnimator.ofFloat(this, "scaleX", 1f, 1.5f),
+                                ObjectAnimator.ofFloat(this, "scaleY", 1f, 1.5f),
+                                ObjectAnimator.ofFloat(this, "alpha", 1f, 0.5f)
+                        );
+                        setDown.start();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        //个人感觉跟手时，指尖在控件的中间比较好，所以减去宽高的一半
+                        getContext().getResources().getDisplayMetrics();
+                        v.setX(x + v.getLeft() + v.getTranslationX() - v.getWidth() / 2);
+                        v.setY(y + v.getTop() + v.getTranslationY() - v.getHeight() / 2);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        int upWindowX = (int) event.getRawX();
+                        int upWindowY = (int) event.getRawY();
+                        if (Math.abs(upWindowX - xWindow) < v.getWidth() && Math.abs(upWindowY - yWindow) < v.getHeight()) {
+                            LocalLog.d(TAG, "移动距离过小，判断为点击事件");
+                            clickEffect = false;
+                        } else {
+                            AnimatorSet setUp = new AnimatorSet();
+                            setUp.playTogether(
+                                    ObjectAnimator.ofFloat(this, "scaleX", 1.5f, 1f),
+                                    ObjectAnimator.ofFloat(this, "scaleY", 1.5f, 1f),
+                                    ObjectAnimator.ofFloat(this, "alpha", 0.5f, 1f)
+                            );
+                            setUp.start();
+                            clickEffect = true;
+                        }
+
+                        break;
+                }
+                return clickEffect;
+            }
+        });*/
+        goShopingTv = (TextView) viewRoot.findViewById(R.id.go_shoping_tv);
+        SpannableString spannableString = new SpannableString("去商城逛逛 查看更多");
+        spannableString.setSpan(new TypefaceSpan("default-bold"), 1, 3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(0xFFFFA202), 1, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        goShopingTv.setText(spannableString);
     }
 
     private void initGridGood() {
@@ -362,6 +425,9 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                     return;
                 try {
                     HomeGoodResponse homeGoodResponse = new Gson().fromJson(s, HomeGoodResponse.class);
+                    if (!TextUtils.isEmpty(homeGoodResponse.getData().getShop_url())) {
+                        shopUrl = homeGoodResponse.getData().getShop_url() + Presenter.getInstance(getContext()).getShopEnd();
+                    }
                     gridGoodAdpter.setDatas(homeGoodResponse.getData().getGoods_list());
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -841,11 +907,14 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         });
     }
 
-    @OnClick({R.id.linear_shop, R.id.parent_red, R.id.baby_red, R.id.love_red, R.id.older_red, R.id.friend_red, R.id.round_red_image, R.id.position_red_image, R.id.consum_rpg, R.id.scan_mark_home, R.id.step_desc_span})
+    @OnClick({R.id.go_shoping_tv, R.id.shop_ping, R.id.parent_red, R.id.baby_red, R.id.love_red, R.id.older_red, R.id.friend_red, R.id.round_red_image, R.id.position_red_image, R.id.consum_rpg, R.id.scan_mark_home, R.id.step_desc_span})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.linear_shop:
-                String shopUrl = Presenter.getInstance(getContext()).shop();
+            case R.id.go_shoping_tv:
+                if (!TextUtils.isEmpty(shopUrl))
+                    startActivity(new Intent(getActivity(), ShopWebViewActivity.class).putExtra("url", shopUrl));
+                break;
+            case R.id.shop_ping:
                 if (!TextUtils.isEmpty(shopUrl))
                     startActivity(new Intent(getActivity(), ShopWebViewActivity.class).putExtra("url", shopUrl));
                 break;
@@ -871,7 +940,8 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 startActivity(SponsorRedDetailActivity.class, null);
                 break;
             case R.id.consum_rpg:
-                startActivity(ConsumTotalActivity.class, null);
+                /*修改为购物省钱*/
+                startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", NetApi.tickXiXiUrl));
                 break;
             case R.id.scan_mark_home:
                 requestPermissionScan(Permission.Group.CAMERA);

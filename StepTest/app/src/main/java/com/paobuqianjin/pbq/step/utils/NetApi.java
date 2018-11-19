@@ -6,16 +6,8 @@ package com.paobuqianjin.pbq.step.utils;
 
 public class NetApi {
     //TODO 圈子接口
-    /*TODO 获取我的圈子--地址：http://119.29.10.64/v1/Circle/?action=my&userid=1（userid用户真实id）
-    获取精选圈子--地址：http://119.29.10.64/v1/Circle/?action=choice&userid=1
-    获取我加入的圈子--地址：http://119.29.10.64/v1/Circle/?action=join&userid=1
-    获取我创建的圈子--地址：http://119.29.10.64/v1/Circle/?action=create&userid=1*/
-/*    public final static String url = "https://api.runmoneyin.com/";*/
-    public final static String url = "http://api-test1.runmoneyin.com/";
-    //        public final static String url = "http://api-test.runmoneyin.com/";
-    /*public final static String url = "http://119.29.10.64/";*/
-    public static String urlShareHead = "http://share.runmoneyin.com/";
-    public final static String url_online = "https://api.runmoneyin.com/";
+
+
 
     static {
         if (!url.equals(url_online)) {
@@ -383,4 +375,6 @@ public class NetApi {
     public final static String urlShop = "http://www.runmoney.shop";
     //商城特推商品列表
     public final static String urlShopHome = url + "v1/Zcomposite/recommendGoods";
+    //券多多
+    public final static String tickXiXiUrl = "https://mobile.yangkeduo.com/duo_cms_mall.html?pid=7320636_40070876&cpsSign=CM7320636_40070876_c93ba20c9497f2a9a6e7924099a2cef4&duoduo_type=2";
 }

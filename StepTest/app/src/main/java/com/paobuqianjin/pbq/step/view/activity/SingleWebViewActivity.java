@@ -79,8 +79,10 @@ public class SingleWebViewActivity extends BaseBarActivity implements BaseBarAct
 
     @Override
     public void clickLeft() {
-        if (webview != null) {
+        if (webview != null && webview.canGoBack()) {
             webview.goBack();
+        } else {
+            onBackPressed();
         }
     }
 

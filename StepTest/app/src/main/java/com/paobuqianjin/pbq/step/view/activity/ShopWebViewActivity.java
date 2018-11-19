@@ -104,7 +104,7 @@ public class ShopWebViewActivity extends BaseBarActivity implements BaseBarActiv
                 if (!TextUtils.isEmpty(url) && (url.contains("www.runmoney.shop") || url.contains("shop.runmoneyin.com")
                         || url.contains("pbqj") || url.contains("qq.com") || url.contains("wx.qq")
                         || url.contains("weixin") || url.contains("ali")) || url.contains("static.gtimg.com")
-                        || url.contains("b.yzcdn.cn") || url.contains("tencent") || url.contains("taobao")) {
+                        || url.contains("b.yzcdn.cn") || url.contains("tencent") || url.contains("taobao")||url.contains("rumcdn")) {
                     return super.shouldInterceptRequest(view, request);
                 } else {
                     LocalLog.d(TAG, "拦截非法请求!");
