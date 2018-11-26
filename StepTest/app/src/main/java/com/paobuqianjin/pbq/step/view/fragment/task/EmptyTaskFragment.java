@@ -3,6 +3,8 @@ package com.paobuqianjin.pbq.step.view.fragment.task;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ public class EmptyTaskFragment extends BaseFragment {
     @Bind(R.id.go_to_release)
     TextView goToRelease;
     private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
+    private int style = -1;
 
     @Override
     protected int getLayoutResId() {
@@ -44,7 +47,10 @@ public class EmptyTaskFragment extends BaseFragment {
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
+        noTask = (TextView) viewRoot.findViewById(R.id.no_task);
+        if (style != -1) {
+            loadingDes(style);
+        }
     }
 
     @Override
@@ -53,6 +59,32 @@ public class EmptyTaskFragment extends BaseFragment {
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
         return rootView;
+    }
+
+    public void setStyle(int style) {
+        this.style = style;
+    }
+
+    private void loadingDes(int style) {
+        String des = "";
+        switch (style) {
+            case 0:
+                des = getString(R.string.parent_red_des);
+                break;
+            case 1:
+                des = getString(R.string.child_red_des);
+                break;
+            case 2:
+                des = getString(R.string.dear_red_des);
+                break;
+            case 3:
+                des = getString(R.string.dear_red_des);
+                break;
+            case 4:
+                des = getString(R.string.friend_red_des);
+                break;
+        }
+        noTask.setText(des);
     }
 
     @Override

@@ -278,6 +278,7 @@
     <string name="red_bag_num">红包个数</string>
     <string name="out_link">外部链接</string>
     <string name="total_red_bag_money">红包总金额</string>
+    <string name="step_dollar_total">步币总个数</string>
     <string name="red_his_reca">收到总金额</string>
     <string name="red_his_recb">收到总个数</string>
     <string name="red_his_recc">最佳手气</string>
@@ -296,4 +297,10 @@
     <string name="pick_ad_to">"消费红包的功能是商家向50km内的客户推送消费劵，增加你的客流量，扩展你的产品知名度。点击发红包 >"</string>
     <string name="wx_code">runmanQin</string>
     <string name="consum_red_rule">温馨提示：您所发的消费红包优惠券必须是可以兑现的。客户领取后到店消费时，满足您的消费红包使用条件可则可享受相应的优惠，否则您将造成虚假宣传，欺骗消费者行为，跑步钱进有权采取包括但不限于取消您的金牌会员权益。</string>
+    <string name="parent_red_des">给父母发个跑步红包吧！\n让他天天健康起来</string>
+    <string name="older_red_des">给长辈发个跑步红包吧！\n让他天天健康起来</string>
+    <string name="child_red_des">给孩子发个跑步红包吧！\n让他天天健康起来</string>
+    <string name="friend_red_des">给父母发个跑步红包吧！\n让他天天健康起来</string>
+    <string name="dear_red_des">给爱人发个跑步红包吧！\n让他天天健康起来</string>
+    <string name="new_s">最新\n资讯</string>
 </resources>

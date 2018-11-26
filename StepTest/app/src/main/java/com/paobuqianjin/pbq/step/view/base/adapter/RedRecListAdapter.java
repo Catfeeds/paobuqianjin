@@ -62,7 +62,11 @@ public class RedRecListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             long time = ((RoundRedInfoResponse.DataBeanX.ReceiveListBean.DataBean) mData.get(position)).getReceive_time();
             String timeStr = DateTimeUtil.formatDateTime(time * 1000, DateTimeUtil.DF_YYYY_MM_DD_HH_MM_SS);
             ((RedRecViewHolder) holder).time.setText(timeStr);
-            ((RedRecViewHolder) holder).money.setText("***元");
+            if (((RoundRedInfoResponse.DataBeanX.ReceiveListBean.DataBean) mData.get(position)).getType() == 1) {
+                ((RedRecViewHolder) holder).money.setText("***元");
+            } else if (((RoundRedInfoResponse.DataBeanX.ReceiveListBean.DataBean) mData.get(position)).getType() == 2) {
+                ((RedRecViewHolder) holder).money.setText("***步币");
+            }
             ((RedRecViewHolder) holder).userId = ((RoundRedInfoResponse.DataBeanX.ReceiveListBean.DataBean) mData.get(position)).getReceive_uid();
         } else if (mData.get(position) instanceof NearRedInfoResponse.DataBeanX.ReceiveListBean.DataBean) {
             Presenter.getInstance(context).getPlaceErrorImage(((RedRecViewHolder) holder).headIcon, ((NearRedInfoResponse.DataBeanX.ReceiveListBean.DataBean) mData.get(position)).getAvatar(),

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -94,6 +95,9 @@ public class ShopWebViewActivity extends BaseBarActivity implements BaseBarActiv
         // 设置允许JS弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
         webSettings.setGeolocationEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webview.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         webview.setWebViewClient(new WebViewClient() {
             @TargetApi(21)
             @Override
@@ -104,7 +108,7 @@ public class ShopWebViewActivity extends BaseBarActivity implements BaseBarActiv
                 if (!TextUtils.isEmpty(url) && (url.contains("www.runmoney.shop") || url.contains("shop.runmoneyin.com")
                         || url.contains("pbqj") || url.contains("qq.com") || url.contains("wx.qq")
                         || url.contains("weixin") || url.contains("ali")) || url.contains("static.gtimg.com")
-                        || url.contains("b.yzcdn.cn") || url.contains("tencent") || url.contains("taobao")||url.contains("rumcdn")) {
+                        || url.contains("b.yzcdn.cn") || url.contains("tencent") || url.contains("taobao") || url.contains("rumcdn")) {
                     return super.shouldInterceptRequest(view, request);
                 } else {
                     LocalLog.d(TAG, "拦截非法请求!");
@@ -147,5 +151,5 @@ public class ShopWebViewActivity extends BaseBarActivity implements BaseBarActiv
         });
         webview.loadUrl(urlStr);
     }
-    
+
 }

@@ -537,6 +537,7 @@ public class SponsorRedDetailActivity extends BaseBarActivity implements Tencent
             @Override
             public void onDismiss() {
                 popupRedPkgWindow = null;
+                current_rec_id = "";
             }
         });
         popupRedPkgWindow.setFocusable(true);

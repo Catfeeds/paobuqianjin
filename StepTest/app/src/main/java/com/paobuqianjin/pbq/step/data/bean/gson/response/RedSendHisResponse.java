@@ -176,6 +176,14 @@ public class RedSendHisResponse {
             }
 
             public static class DataBean implements Serializable {
+                public int getPay_credit() {
+                    return pay_credit;
+                }
+
+                public void setPay_credit(int pay_credit) {
+                    this.pay_credit = pay_credit;
+                }
+
                 /**
                  * money : 100.00
                  * voucherid:242
@@ -196,6 +204,8 @@ public class RedSendHisResponse {
                  * vnumber:10
                  * vday:1
                  * vmoney:30.00
+                 * "type":2,
+                 * "pay_credit":21
                  * vcondition:300.00
                  * lower_id:0 (0正常，大于0表示已经上架)
                  * map_img_arr : ["http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg","http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg"]
@@ -204,6 +214,17 @@ public class RedSendHisResponse {
                  * comment_count : 0
                  */
 
+                private int pay_credit;
+
+                public int getType() {
+                    return type;
+                }
+
+                public void setType(int type) {
+                    this.type = type;
+                }
+
+                private int type;
                 private int lower_id;
                 private String vname;
                 private int vday;
@@ -425,7 +446,9 @@ public class RedSendHisResponse {
                 @Override
                 public String toString() {
                     return "DataBean{" +
-                            "lower_id=" + lower_id +
+                            "pay_credit=" + pay_credit +
+                            ", type=" + type +
+                            ", lower_id=" + lower_id +
                             ", vname='" + vname + '\'' +
                             ", vday=" + vday +
                             ", vcondition='" + vcondition + '\'' +

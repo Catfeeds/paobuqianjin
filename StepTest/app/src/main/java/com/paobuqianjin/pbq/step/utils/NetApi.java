@@ -377,4 +377,6 @@ public class NetApi {
     public final static String urlShopHome = url + "v1/Zcomposite/recommendGoods";
     //券多多
     public final static String tickXiXiUrl = "https://mobile.yangkeduo.com/duo_cms_mall.html?pid=7320636_40070876&cpsSign=CM7320636_40070876_c93ba20c9497f2a9a6e7924099a2cef4&duoduo_type=2";
+    //蘑菇街
+    public final static String urlMoguUrl ="https://act.mogujie.com/cps/lqx?userid=1cqywgg&gid=0";
 }

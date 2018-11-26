@@ -107,6 +107,8 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     @Bind(R.id.red_rule)
     LinearLayout redRule;
     private int currentPage = 1;
+    //发完红包之后立即刷新一次
+    boolean isRefreshOne = false;
     private List<ShopSendedRedBagResponse.ShopSendedRedBagBean> listData = new ArrayList<>();
     private List<AroundRedBagResponse.AroundRedBagBean> listAroundRedBagBean = new ArrayList<>();
     private TencentLocationManager locationManager;
@@ -725,6 +727,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
             @Override
             public void onDismiss() {
                 popupRedPkgWindow = null;
+                current_rec_id = "";
             }
         });
         popupRedPkgWindow.setFocusable(true);
@@ -781,10 +784,13 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                 PaoToastUtils.showShortToast(ConsumptiveRedBag2Activity.this, "领取成功");
                 // TODO: hqp 2018/8/16
                 String result = "";
+                int type = -1;
                 try {
                     JSONObject jsonObj = new JSONObject(s);
                     jsonObj = jsonObj.getJSONObject("data");
                     String allmoney = jsonObj.getString("amount");
+                    type = jsonObj.getInt("type");
+                    LocalLog.d(TAG, "type = " + type);
                     float redMoney = Float.parseFloat(allmoney);
                     if (redMoney > 0.0f) {
                         result = allmoney;
@@ -803,6 +809,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                 intent.setClass(ConsumptiveRedBag2Activity.this, RoundRedDetailActivity.class);
                 intent.putExtra(getPackageName() + "red_id", listAroundRedBagBean.get(position).getRed_id());
                 intent.putExtra(getPackageName() + "red_result", result);
+                intent.putExtra(getPackageName() + "type", type);
                 startActivity(intent);
                 listAroundRedBagBean.remove(position);
                 aourndRBMarkerList.get(position).remove();
@@ -924,7 +931,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                 } else {
                     tvCutdownTime.setVisibility(View.GONE);
                 }*/
-                if (cameraLocation[0] != 0) {
+                if (cameraLocation[0] != 0 && !isRefreshOne) {
                     LocalLog.d(TAG, "followCameraRed() enter");
                     followCameraRed(cameraLocation[0], cameraLocation[1]);
                 } else {
@@ -933,6 +940,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                     if (tencentMap != null) {
                         tencentMap.setOnMapCameraChangeListener(onMapCameraChangeListener);
                     }
+                    isRefreshOne = false;
                 }
                 addMyLocation();
             }
@@ -1167,6 +1175,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         if (requestCode == REQUEST_AROUND || requestCode == REQUEST_VIP || requestCode == AD_RED) {
             LocalLog.d(TAG, "刷新红包列表");
             getAroundRedBag();
+            isRefreshOne = true;
         }
     }
 

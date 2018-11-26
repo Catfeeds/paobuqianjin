@@ -512,14 +512,23 @@ public class RedInfoActivity extends BaseBarActivity {
                     final RoundHisResponse roundHisResponse = new Gson().fromJson(s, RoundHisResponse.class);
                     LocalLog.d(TAG, "当前为领红包详情");
 
-                    if (TextUtils.isEmpty(result_str) && Double.parseDouble(roundHisResponse.getData().getIncome_money()) > 0.0d) {
-                        String showResult = "￥" + roundHisResponse.getData().getIncome_money() + "元";
+                    if (TextUtils.isEmpty(result_str) && (Double.parseDouble(roundHisResponse.getData().getIncome_money()) > 0.0d
+                            || roundHisResponse.getData().getCredit() > 0)) {
                         redSuccess.setText("你已经领取过");
                         redSuccess.setVisibility(View.VISIBLE);
-                        SpannableString spannableString = new SpannableString(showResult);
-                        spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("￥" + roundHisResponse.getData().getIncome_money()).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                        redResult.setText(spannableString);
-                        intoWallet.setVisibility(View.VISIBLE);
+                        if (roundHisResponse.getData().getType() == 1) {
+                            String showResult = "￥" + roundHisResponse.getData().getIncome_money() + "元";
+                            SpannableString spannableString = new SpannableString(showResult);
+                            spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("￥" + roundHisResponse.getData().getIncome_money()).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                            redResult.setText(spannableString);
+                            intoWallet.setVisibility(View.VISIBLE);
+                        } else if (roundHisResponse.getData().getType() == 2) {
+                            String showResult = roundHisResponse.getData().getCredit() + "步币";
+                            SpannableString spannableString = new SpannableString(showResult);
+                            spannableString.setSpan(new AbsoluteSizeSpan(14, true), (String.valueOf(roundHisResponse.getData().getCredit())).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                            redResult.setText(spannableString);
+                        }
+
                     } else {
                         if (Double.parseDouble(roundHisResponse.getData().getIncome_money()) <= 0.0d) {
                             redSuccess.setText("还未领取过该红包");

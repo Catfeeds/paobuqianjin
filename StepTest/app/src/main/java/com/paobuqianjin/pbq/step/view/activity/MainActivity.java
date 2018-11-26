@@ -28,13 +28,10 @@ import com.paobuqianjin.pbq.step.view.base.view.DragPointView;
 import com.paobuqianjin.pbq.step.view.fragment.chat.MyConversationListFragment;
 import com.paobuqianjin.pbq.step.view.fragment.circle.FriendCircleFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.HomeFragment;
-import com.paobuqianjin.pbq.step.view.fragment.home.HomePageFragment;
-import com.paobuqianjin.pbq.step.view.fragment.honor.HonorFragment;
 import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerFragment;
 
 import org.json.JSONObject;
 
-import java.text.Format;
 import java.util.List;
 
 import io.rong.imkit.RongContext;

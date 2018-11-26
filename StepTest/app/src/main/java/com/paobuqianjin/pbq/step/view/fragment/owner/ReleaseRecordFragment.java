@@ -56,6 +56,7 @@ public class ReleaseRecordFragment extends BaseFragment implements ReleaseRecord
     private final static int RELEASE_PERSON_TASK = 1;
     private ArrayList<ReleaseRecordResponse.DataBeanX.DataBean> myReleaseData = new ArrayList<>();
     private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
+    private int style = -1;
 
     @Override
     protected int getLayoutResId() {
@@ -83,7 +84,7 @@ public class ReleaseRecordFragment extends BaseFragment implements ReleaseRecord
         layoutManager = new LinearLayoutManager(getContext());
         releaseRecord = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.release_record);
         releaseRecord.setLayoutManager(layoutManager);
-
+        noTask = (TextView) viewRoot.findViewById(R.id.no_task);
         DefineLoadMoreView loadMoreView = new DefineLoadMoreView(getContext());
         releaseRecord.addFooterView(loadMoreView); // 添加为Footer。
         releaseRecord.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
@@ -93,8 +94,37 @@ public class ReleaseRecordFragment extends BaseFragment implements ReleaseRecord
 
         releaseRefresh.setOnRefreshListener(mRefreshListener);
         loadData(myReleaseData);
+        if (style > -1) {
+            loadingDes(style);
+        }
         emptyRecordSpan = (RelativeLayout) viewRoot.findViewById(R.id.empty_record_span);
         Presenter.getInstance(getContext()).getReleaseRecord(pageIndex, PAGE_SIZE);
+    }
+
+    public void setStyle(int style) {
+        this.style = style;
+    }
+
+    private void loadingDes(int style) {
+        String des = "";
+        switch (style) {
+            case 0:
+                des = getString(R.string.parent_red_des);
+                break;
+            case 1:
+                des = getString(R.string.child_red_des);
+                break;
+            case 2:
+                des = getString(R.string.dear_red_des);
+                break;
+            case 3:
+                des = getString(R.string.dear_red_des);
+                break;
+            case 4:
+                des = getString(R.string.friend_red_des);
+                break;
+        }
+        noTask.setText(des);
     }
 
     /**

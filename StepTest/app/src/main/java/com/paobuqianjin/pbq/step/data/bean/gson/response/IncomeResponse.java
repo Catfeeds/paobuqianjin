@@ -57,14 +57,24 @@ public class IncomeResponse {
     }
 
     public static class DataBeanX {
+        public int getCurr_credit() {
+            return curr_credit;
+        }
+
+        public void setCurr_credit(int curr_credit) {
+            this.curr_credit = curr_credit;
+        }
+
         /**
          * pagenation : {"page":1,"pageSize":10,"totalPage":1,"totalCount":2}
          * data : [{"id":237,"amount":"0.16","name":"圈子红包","create_time":1522811299,"typeid":1,"source_id":100360,"circleid":100360,"circlename":"一样一样咿呀咿呀哟以后呀呀呀"},{"id":236,"amount":"1.00","name":"圈子红包","create_time":1522810702,"typeid":1,"source_id":100361,"circleid":100361,"circlename":"一样一样咿呀咿呀哟以后呀呀呀前"}]
          * total_amount : 1.16
+         * curr_credit:20
          */
-
+        private int curr_credit;
         private PagenationBean pagenation;
         private double total_amount;
+
         private List<DataBean> data;
 
         public PagenationBean getPagenation() {
@@ -177,6 +187,16 @@ public class IncomeResponse {
             private int source_id;
             private int circleid;
             private String circlename;
+
+            public int getCurr_credit() {
+                return curr_credit;
+            }
+
+            public void setCurr_credit(int curr_credit) {
+                this.curr_credit = curr_credit;
+            }
+
+            private int curr_credit;
 
             public String getBusinessid() {
                 return businessid;

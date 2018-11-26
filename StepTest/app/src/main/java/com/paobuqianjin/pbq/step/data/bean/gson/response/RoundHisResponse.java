@@ -42,6 +42,22 @@ public class RoundHisResponse {
     }
 
     public static class DataBean {
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public int getCredit() {
+            return credit;
+        }
+
+        public void setCredit(int credit) {
+            this.credit = credit;
+        }
+
         /**
          * red_id : 690
          * voucherid : 238
@@ -65,6 +81,8 @@ public class RoundHisResponse {
          * s_do_time :
          * e_do_time :
          * scope :
+         * type:2
+         * credit:1
          * longitude : 113.933487
          * latitude : 22.552158
          * avatar : http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/24/35822201808241502229844.jpg
@@ -81,6 +99,8 @@ public class RoundHisResponse {
          * voucher : {"vid":238,"vname":"咸鱼优惠","money":"100.00","condition":"1500.00","e_time":1542124799,"status":0}
          */
 
+        private int type;
+        private int credit;
         private int red_id;
         private int voucherid;
         private int userid;

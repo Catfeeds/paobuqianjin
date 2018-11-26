@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -136,6 +137,18 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     LinearLayout linearConsumRed;
     @Bind(R.id.linear_shop)
     LinearLayout linearShop;
+    @Bind(R.id.switch_doll)
+    ImageView switchDoll;
+    @Bind(R.id.crash_money)
+    TextView crashMoney;
+    @Bind(R.id.step_dolls)
+    TextView stepDolls;
+    @Bind(R.id.crash_span)
+    LinearLayout crashSpan;
+    @Bind(R.id.step_dollor)
+    EditText stepDollor;
+    @Bind(R.id.step_span)
+    LinearLayout stepSpan;
     private GridAddPic2Adapter adapter;
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
@@ -168,6 +181,8 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     TickDataValue tickDataValue;
     private int is_lower = 0;//消费红包是否下架
     private String currentAction;
+    //是否选择步币
+    private boolean boolStepDoll = false;
 
     @Override
     protected String title() {
@@ -269,12 +284,21 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
 
         if (!canEditable) {
             etRedBagTotalMoney.setEnabled(false);
+            stepDollor.setEnabled(false);
+            switchDoll.setEnabled(false);
         }
-        if (!TextUtils.isEmpty(dataBean.getMoney())) {
+        if (!TextUtils.isEmpty(dataBean.getMoney()) && dataBean.getType() == 1) {
             etRedBagTotalMoney.setText(dataBean.getMoney());
         }
         if (!TextUtils.isEmpty(dataBean.getTarget_url())) {
             tvLink.setText(dataBean.getTarget_url());
+        }
+        if (dataBean.getType() == 1) {
+            boolStepDoll = false;
+            init_switch(dataBean.getMoney());
+        } else if (dataBean.getType() == 2) {
+            boolStepDoll = true;
+            init_switch(String.valueOf(dataBean.getPay_credit()));
         }
         if (!TextUtils.isEmpty(dataBean.getCircleid())) {
             try {
@@ -744,8 +768,16 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
             Map<String, String> params = new HashMap<>();
             if (!TextUtils.isEmpty(etRedBagNum.getText().toString()))
                 params.put("number", etRedBagNum.getText().toString());
-            if (!TextUtils.isEmpty(etRedBagTotalMoney.getText().toString()))
+            if (!boolStepDoll && !TextUtils.isEmpty(etRedBagTotalMoney.getText().toString())) {
                 params.put("money", etRedBagTotalMoney.getText().toString());
+                //type =1 表示使用现金
+                params.put("type", "1");
+            }
+            if (boolStepDoll && !TextUtils.isEmpty(stepDollor.getText().toString().trim())) {
+                params.put("credit", stepDollor.getText().toString());
+                //type =2 表示使用步币
+                params.put("type", "2");
+            }
             if (businessId > 0 && !TextUtils.isEmpty(sponorMsgDesDetail.getText().toString().trim()))
                 params.put("businessid", businessId + "");
             if (!TextUtils.isEmpty(etInformation.getText().toString()))
@@ -774,6 +806,10 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                     return;
                 }
             }
+
+
+            //1表示预览
+            params.put("is_preview", "1");
             Presenter.getInstance(this).postPaoBuSimple(NetApi.urlRedpacketMap, params, new PaoTipsCallBack() {
                 @Override
                 protected void onSuc(String s) {
@@ -838,10 +874,58 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         });
     }
 
-    @OnClick({R.id.linear_shop, R.id.btn_confirm, R.id.attion, R.id.select_circle, R.id.iv_delete, R.id.btn_prescan, R.id.select_historty,
+
+    private void init_switch(String data) {
+        LocalLog.d(TAG, "init_switch() enter");
+        if (boolStepDoll) {
+            switchDoll.setImageResource(R.drawable.sdoar_switch_a);
+            LocalLog.d(TAG, "选择步币");
+            stepDollor.setText(data);
+            crashSpan.setVisibility(View.GONE);
+            stepSpan.setVisibility(View.VISIBLE);
+            crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_A6A9D9));
+            stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_6c71c4));
+        } else {
+            LocalLog.d(TAG, "选择现金");
+            switchDoll.setImageResource(R.drawable.sdoar_switch_b);
+            crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_6c71c4));
+            stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_A6A9D9));
+            crashSpan.setVisibility(View.VISIBLE);
+            stepSpan.setVisibility(View.GONE);
+            etRedBagTotalMoney.setText(data);
+        }
+    }
+
+    private void check_swicth(String data) {
+        if (!boolStepDoll) {
+            switchDoll.setImageResource(R.drawable.sdoar_switch_a);
+            LocalLog.d(TAG, "选择步币");
+            etRedBagTotalMoney.setText(data);
+            crashSpan.setVisibility(View.GONE);
+            stepSpan.setVisibility(View.VISIBLE);
+            boolStepDoll = !boolStepDoll;
+            crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_A6A9D9));
+            stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_6c71c4));
+        } else {
+            LocalLog.d(TAG, "选择现金");
+            switchDoll.setImageResource(R.drawable.sdoar_switch_b);
+            crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_6c71c4));
+            stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_A6A9D9));
+            stepDollor.setText(data);
+            crashSpan.setVisibility(View.VISIBLE);
+            stepSpan.setVisibility(View.GONE);
+            boolStepDoll = !boolStepDoll;
+        }
+    }
+
+    @OnClick({R.id.switch_doll, R.id.linear_shop, R.id.btn_confirm, R.id.attion, R.id.select_circle, R.id.iv_delete, R.id.btn_prescan, R.id.select_historty,
             R.id.circle_delete, R.id.red_rule, R.id.iv_delete_consum, R.id.linear_consum_red})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.switch_doll:
+                etInformation.setFocusable(false);
+                check_swicth(null);
+                break;
             case R.id.red_rule:
                 LocalLog.d(TAG, "查看红包规则");
                 startActivity(AgreementActivity.class, null, false, ROUND_RED_RULE);
@@ -923,8 +1007,16 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                     Map<String, String> params = new HashMap<>();
                     if (!TextUtils.isEmpty(etRedBagNum.getText().toString()))
                         params.put("number", etRedBagNum.getText().toString());
-                    if (!TextUtils.isEmpty(etRedBagTotalMoney.getText().toString()))
+                    if (!boolStepDoll && !TextUtils.isEmpty(etRedBagTotalMoney.getText().toString())) {
                         params.put("money", etRedBagTotalMoney.getText().toString());
+                        //type =1 表示使用现金
+                        params.put("type", "1");
+                    }
+                    if (boolStepDoll && !TextUtils.isEmpty(stepDollor.getText().toString().trim())) {
+                        params.put("credit", stepDollor.getText().toString());
+                        //type =2 表示使用步币
+                        params.put("type", "2");
+                    }
                     if (businessId > 0 && !TextUtils.isEmpty(sponorMsgDesDetail.getText().toString().trim()))
                         params.put("businessid", businessId + "");
                     if (!TextUtils.isEmpty(etInformation.getText().toString()))
@@ -955,21 +1047,29 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                         PaoToastUtils.showLongToast(AddAroundRedBagActivity.this, "参数为空");
                         return;
                     }
+                    //0表示添加
+                    params.put("is_preview", "0");
                     Presenter.getInstance(this).postPaoBuSimple(NetApi.urlRedpacketMap, params, new PaoTipsCallBack() {
                         @Override
                         protected void onSuc(String s) {
                             try {
-                                JSONObject jsonObject = new JSONObject(s);
-                                String red_map_id = jsonObject.getJSONObject("data").getString("red_map_id");
-                                Bundle bundle = new Bundle();
-                                bundle.putString(CIRCLE_ID, red_map_id);
-                                bundle.putString(PAY_FOR_STYLE, "red_map");
-                                bundle.putString(CIRCLE_RECHARGE, etRedBagTotalMoney.getText().toString());
-                                Intent intent = new Intent();
-                                intent.setClass(AddAroundRedBagActivity.this, PaoBuPayActivity.class);
-                                intent.putExtra(AddAroundRedBagActivity.this.getPackageName(), bundle);
-                                intent.setAction(PAY_ACTION);
-                                startActivityForResult(intent, MAP_RED_PAY);
+                                if (!boolStepDoll) {
+                                    JSONObject jsonObject = new JSONObject(s);
+                                    String red_map_id = jsonObject.getJSONObject("data").getString("red_map_id");
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString(CIRCLE_ID, red_map_id);
+                                    bundle.putString(PAY_FOR_STYLE, "red_map");
+                                    bundle.putString(CIRCLE_RECHARGE, etRedBagTotalMoney.getText().toString());
+                                    Intent intent = new Intent();
+                                    intent.setClass(AddAroundRedBagActivity.this, PaoBuPayActivity.class);
+                                    intent.putExtra(AddAroundRedBagActivity.this.getPackageName(), bundle);
+                                    intent.setAction(PAY_ACTION);
+                                    startActivityForResult(intent, MAP_RED_PAY);
+                                } else {
+                                    LocalLog.d(TAG, "发步币！成功");
+                                    setResult(Activity.RESULT_OK);
+                                    finish();
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -1034,10 +1134,24 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
             return false;
         }
 
-        if (TextUtils.isEmpty(etRedBagTotalMoney.getText().toString().trim())) {
+        if (!boolStepDoll && TextUtils.isEmpty(etRedBagTotalMoney.getText().toString().trim())) {
             PaoToastUtils.showShortToast(this, "请输入红包总金额");
             return false;
         }
+
+        if (boolStepDoll && TextUtils.isEmpty(stepDollor.getText().toString().trim())) {
+            PaoToastUtils.showShortToast(this, "请输入步币个数");
+            return false;
+        }
+
+        UserInfoResponse.DataBean userInfoResponse = Presenter.getInstance(this).getCurrentUser();
+        if (boolStepDoll) {
+            if (Integer.parseInt(stepDollor.getText().toString().trim()) > userInfoResponse.getCredit()) {
+                PaoToastUtils.showShortToast(this, "请输入步币不足");
+                return false;
+            }
+        }
+
 /*        if (businessId < 1) {
             PaoToastUtils.showShortToast(this, "请选择您的商铺");
             return false;

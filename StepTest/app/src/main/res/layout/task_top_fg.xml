@@ -8,14 +8,21 @@
         android:id="@+id/task_bar"
         layout="@layout/bar_return_a_style"></include>
 
-    <com.youth.banner.Banner
+    <!--    <com.youth.banner.Banner
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_below="@+id/task_bar"
+            android:paddingBottom="5dp">
+        </com.youth.banner.Banner>-->
+    <ImageView
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:layout_below="@+id/task_bar"
-        android:paddingBottom="5dp">
-
-    </com.youth.banner.Banner>
+        android:paddingBottom="5dp"
+        android:background="@color/color_f6f6f6"
+        android:scaleType="centerCrop" />
 
     <LinearLayout
         android:id="@+id/bar"
@@ -74,7 +81,7 @@
         android:layout_width="match_parent"
         android:layout_height="8dp"
         android:layout_below="@+id/line"
-        android:background="@color/color_d9d9d9" />
+        android:background="@color/color_f6f6f6" />
 
     <RelativeLayout
         android:id="@+id/container_task"

@@ -25,6 +25,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/color_f6f6f6"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -87,7 +88,7 @@
                 android:id="@+id/et_information"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
+                android:background="@color/white"
                 android:backgroundTint="@color/white"
                 android:gravity="left"
                 android:hint="(必填) 请输入您的推广信息"
@@ -104,6 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/et_information"
                 android:layout_gravity="center_horizontal"
+                android:background="@color/white"
                 android:backgroundTint="@color/white"
                 android:gravity="center"
                 android:numColumns="3"
@@ -113,24 +115,76 @@
                 tools:listitem="@layout/item_add_pic_grid2" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:background="@color/white"
                 android:hint="必填一张图片"
                 android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
                 android:textSize="12dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="right">
+
+
+                <ImageView
+                    android:id="@+id/switch_doll"
+                    android:layout_width="85dp"
+                    android:layout_height="31dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/sdoar_switch_b" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/switch_doll"
+                    android:layout_alignLeft="@+id/switch_doll"
+                    android:layout_alignRight="@+id/switch_doll"
+                    android:layout_alignTop="@+id/switch_doll"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:textColor="@color/color_6c71c4"
+                        android:id="@+id/crash_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="现金"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:textColor="@color/color_A6A9D9"
+                        android:id="@+id/step_dolls"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="步币"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/color_f8"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@drawable/rect_out_white_shape"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
                     android:text="@string/red_bag_num"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
@@ -164,16 +218,19 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/crash_span"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/color_f8"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rect_out_white_shape"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
                     android:text="@string/total_red_bag_money"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
@@ -207,16 +264,65 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/step_span"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/color_f8"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rect_out_white_shape"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/step_dollar_total"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/step_dollor"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/pack_day_des"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="right"
+                    android:hint="步币总个数"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:paddingRight="39dp"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:text="个"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rect_out_white_shape"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
                     android:text="@string/out_link"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
@@ -255,8 +361,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/color_f8"
+                android:background="@drawable/rect_out_white_shape"
                 android:gravity="center_vertical">
 
                 <TextView
@@ -304,8 +412,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/color_f8"
+                android:background="@drawable/rect_out_white_shape"
                 android:gravity="center_vertical"
                 android:visibility="gone">
 
@@ -313,7 +423,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
                     android:text="社群密码"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
@@ -339,15 +448,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/color_f8"
+                android:background="@drawable/rect_out_white_shape"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
                     android:text="商铺信息"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
@@ -389,15 +499,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="10dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/color_f8"
+                android:background="@drawable/rect_out_white_shape"
                 android:gravity="center_vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
                     android:text="消费红包"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
@@ -439,7 +550,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
-                android:background="@color/color_f6f6f6"
+                android:background="@drawable/rect_out_white_shape"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 

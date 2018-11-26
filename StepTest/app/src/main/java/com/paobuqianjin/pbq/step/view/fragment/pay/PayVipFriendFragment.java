@@ -180,7 +180,7 @@ public class PayVipFriendFragment extends BaseBarStyleTextViewFragment implement
     private IWXAPI msgApi;
     private PayStyles payStyles = PayStyles.WxPay;
     private float payFloat = 0;
-    private final static float VIP_FLOAT = 3.00f;
+    private final static float VIP_FLOAT = 19.9f;
     private final static float VIP_SPONSOR_FLOAT = 25.00f;
     private PayReq req;
     private VipPostParam vipPostParam = new VipPostParam();

@@ -29,16 +29,17 @@
             android:layout_below="@+id/bar_empty"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="96dp"
-            android:src="@drawable/task_norecord" />
+            android:src="@drawable/running_go" />
 
         <TextView
+            android:gravity="center"
             android:id="@+id/no_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/no_record"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="27dp"
-            android:text="暂时没有任务奖励哦！要不给好友派发一个任务吧！"
+            android:layout_marginTop="16dp"
+            android:text=""
             android:textColor="@color/color_9999"
             android:textSize="14dp" />
 

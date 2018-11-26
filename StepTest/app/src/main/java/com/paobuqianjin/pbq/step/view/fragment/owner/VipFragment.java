@@ -46,7 +46,7 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
     TabLayout vipTabBar;
     @Bind(R.id.vip_viewpager)
     ViewPager vipViewpager;
-    String[] titles = {"普通会员", "金牌会员"};
+    String[] titles = {"个人会员", "金牌会员"};
     private int selectPage = 0;
 
     @Override

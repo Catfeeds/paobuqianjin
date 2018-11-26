@@ -42,17 +42,37 @@ public class RoundRedInfoResponse {
     }
 
     public static class DataBeanX {
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public int getIncome_credit() {
+            return income_credit;
+        }
+
+        public void setIncome_credit(int income_credit) {
+            this.income_credit = income_credit;
+        }
+
         /**
          * avatar : http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg
          * is_me : 0
          * money : 30
          * receive_num : 3
          * income_money : 2.49
+         * type:2
+         * income_credit:1
          * receive_total_money : 9.43
          * redpacket_num:3000
          * receive_list : {"pagenation":{"page":1,"pageSize":10,"totalPage":1,"totalCount":3},"data":[{"red_id":109,"from_uid":35835,"money":"3.63000","receive_uid":35882,"receive_time":1534764369,"nickname":"rm_13148896029","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/20/35882201808201416921087.jpg"},{"red_id":109,"from_uid":35835,"money":"2.49000","receive_uid":35822,"receive_time":1534749927,"nickname":"rm_13424156029","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg"},{"red_id":109,"from_uid":35835,"money":"3.31000","receive_uid":35821,"receive_time":1534754500,"nickname":"哥哥你是怎么回事！你说你","avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/15/35821201808151933186689.jpg"}]}
          */
 
+        private int type;
+        private int income_credit;
         private String avatar;
         private int is_me;
         private String money;
@@ -199,6 +219,22 @@ public class RoundRedInfoResponse {
             }
 
             public static class DataBean {
+                public int getType() {
+                    return type;
+                }
+
+                public void setType(int type) {
+                    this.type = type;
+                }
+
+                public int getCredit() {
+                    return credit;
+                }
+
+                public void setCredit(int credit) {
+                    this.credit = credit;
+                }
+
                 /**
                  * red_id : 109
                  * from_uid : 35835
@@ -206,9 +242,12 @@ public class RoundRedInfoResponse {
                  * receive_uid : 35882
                  * receive_time : 1534764369
                  * nickname : rm_13148896029
+                 * credit:1
+                 * type:2
                  * avatar : http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/20/35882201808201416921087.jpg
                  */
-
+                private int type;
+                private int credit;
                 private int red_id;
                 private int from_uid;
                 private String money;

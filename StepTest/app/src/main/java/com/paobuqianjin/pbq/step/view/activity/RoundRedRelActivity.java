@@ -71,6 +71,7 @@ public class RoundRedRelActivity extends BaseBarActivity {
     ArrayList<RoundRedInfoResponse.DataBeanX.ReceiveListBean.DataBean> arrayList = new ArrayList<>();
     ArrayList<NearRedInfoResponse.DataBeanX.ReceiveListBean.DataBean> beanArrayList = new ArrayList<>();
     private String info;
+    private int type = -1;
 
     @Override
 
@@ -219,20 +220,31 @@ public class RoundRedRelActivity extends BaseBarActivity {
                     Presenter.getInstance(RoundRedRelActivity.this).getPlaceErrorImage(userHead,
                             redInfoResponse.getData().getAvatar(), R.drawable.default_head_ico,
                             R.drawable.default_head_ico);
-
-                    if ("0".equals(redInfoResponse.getData().getIncome_money())) {
+                    type = redInfoResponse.getData().getType();
+                    if ("0".equals(redInfoResponse.getData().getIncome_money()) && redInfoResponse.getData().getIncome_credit() <= 0) {
                         pkgMoney.setText("还未领取该红包");
                         opDes.setVisibility(View.GONE);
                     } else {
-                        String income = redInfoResponse.getData().getIncome_money() + "元";
-                        SpannableString spannableString = new SpannableString(income);
-                        spannableString.setSpan(new AbsoluteSizeSpan(14, true), redInfoResponse.getData().getIncome_money().length(), income.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                        pkgMoney.setText(spannableString);
+                        if (type == 1) {
+                            String income = redInfoResponse.getData().getIncome_money() + "元";
+                            SpannableString spannableString = new SpannableString(income);
+                            spannableString.setSpan(new AbsoluteSizeSpan(14, true), redInfoResponse.getData().getIncome_money().length(), income.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                            pkgMoney.setText(spannableString);
+                        } else if (type == 2) {
+                            opDes.setVisibility(View.GONE);
+                            String income = redInfoResponse.getData().getIncome_credit() + "步币";
+                            SpannableString spannableString = new SpannableString(income);
+                            spannableString.setSpan(new AbsoluteSizeSpan(14, true), redInfoResponse.getData().getIncome_money().length(), income.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                            pkgMoney.setText(spannableString);
+                        }
                     }
 
 
                     redDes.setText("已领取" + redInfoResponse.getData().getReceive_num() + "个" + "，共"
                             + redInfoResponse.getData().getRedpacket_num() + "个");
+                    for (int i = 0; i < redInfoResponse.getData().getReceive_list().getData().size(); i++) {
+                        redInfoResponse.getData().getReceive_list().getData().get(i).setType(type);
+                    }
                     if (pageIndex == 1) {
                         arrayList.clear();
                         arrayList.addAll(redInfoResponse.getData().getReceive_list().getData());

@@ -82,6 +82,22 @@ public class RoundDetailStyleResponse {
             this.circle_pwd = circle_pwd;
         }
 
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
+        public String getCredit() {
+            return credit;
+        }
+
+        public void setCredit(String credit) {
+            this.credit = credit;
+        }
+
         /**
          * red_id : 58
          * userid : 35822
@@ -101,8 +117,10 @@ public class RoundDetailStyleResponse {
          * address : 腾讯大厦
          * red_img : [{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139368775.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139465634.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139994669.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139223395.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139556606.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139878923.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139636960.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139726594.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/17/35822201808171139662217.jpg"}]
          * business_img : [{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007600980.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007691959.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007680156.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007604802.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007672293.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007105623.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007691959.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007680156.jpg"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007604802.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007672293.png"},{"url":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/13/35822201808131007105623.jpg"}]
-         * receiver_list : [{"money":"11.16000","receive_uid":35819,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/7/27/35819201807271443174876.jpg"},{"money":"9.00000","receive_uid":35882,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png"}]
+         * receiver_list : [{"money":"11.16000","receive_uid":35819,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/7/27/35819201807271443174876.jpg","type":1,"credit":0},{"money":"9.00000","receive_uid":35882,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png","type":1,"credit":0}]
          * income_money : 9.00000
+         * credit:0
+         * type:1
          * comment_count : 10
          * comment_list : [{"eid":260,"userid":35882,"grade":0,"fatherid":0,"score":"0.0","content":"收藏了","businessid":1636,"create_time":1534486883,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png","nickname":"rm_13148896029","father_avatar":null,"father_nickname":null,"user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":259,"userid":35882,"grade":0,"fatherid":0,"score":"0.0","content":"","businessid":1636,"create_time":1534486864,"avatar":"https://rumcdn-1255484416.cos.ap-chengdu.myqcloud.com/img/d_h.png","nickname":"rm_13148896029","father_avatar":null,"father_nickname":null,"user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":85,"userid":35822,"grade":0,"fatherid":0,"score":"0.0","content":"干活哈哈","businessid":1636,"create_time":1534218100,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","nickname":"rm_13424156029","father_avatar":null,"father_nickname":null,"user_is_vip":1,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":84,"userid":35822,"grade":0,"fatherid":0,"score":"0.0","content":"发广告","businessid":1636,"create_time":1534218092,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","nickname":"rm_13424156029","father_avatar":null,"father_nickname":null,"user_is_vip":1,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":83,"userid":35822,"grade":0,"fatherid":0,"score":"0.0","content":"就看看","businessid":1636,"create_time":1534217636,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","nickname":"rm_13424156029","father_avatar":null,"father_nickname":null,"user_is_vip":1,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":76,"userid":35845,"grade":1,"fatherid":71,"score":"0.0","content":"0000","businessid":1636,"create_time":1534162547,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","father_nickname":"rm_13424156029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":1,"father_is_cusvip":0,"father_is_gvip":0},{"eid":75,"userid":35845,"grade":1,"fatherid":74,"score":"0.0","content":"狗狗喝够了","businessid":1636,"create_time":1534162474,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","father_nickname":"rm_13148896029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":0,"father_is_cusvip":0,"father_is_gvip":0},{"eid":74,"userid":35845,"grade":0,"fatherid":0,"score":"0.0","content":"第二","businessid":1636,"create_time":1534162413,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":null,"father_nickname":null,"user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":null,"father_is_cusvip":null,"father_is_gvip":null},{"eid":73,"userid":35845,"grade":1,"fatherid":71,"score":"0.0","content":"XXX","businessid":1636,"create_time":1534162206,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","father_nickname":"rm_13424156029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":1,"father_is_cusvip":0,"father_is_gvip":0},{"eid":72,"userid":35845,"grade":1,"fatherid":68,"score":"0.0","content":"ooo","businessid":1636,"create_time":1534162195,"avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/3/35845201808030952592987.jpg","nickname":"rm_13148896029","father_avatar":"http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/7/35822201808071121231227.jpg","father_nickname":"rm_13424156029","user_is_vip":0,"user_is_cusvip":0,"user_is_gvip":0,"father_is_vip":1,"father_is_cusvip":0,"father_is_gvip":0}]
          * is_zan: 0,
@@ -116,6 +134,8 @@ public class RoundDetailStyleResponse {
          * "circle_pwd":""
          * voucher : {"vid":238,"vname":"咸鱼优惠","money":"100.00","condition":"1500.00","e_time":1542124799,"status":0}
          */
+        private int type;
+        private String credit;
         private String circleid;
         private String circle_pwd;
         private String do_day;
@@ -479,12 +499,32 @@ public class RoundDetailStyleResponse {
         }
 
         public static class ReceiverListBean {
+            public String getCredit() {
+                return credit;
+            }
+
+            public void setCredit(String credit) {
+                this.credit = credit;
+            }
+
+            public int getType() {
+                return type;
+            }
+
+            public void setType(int type) {
+                this.type = type;
+            }
+
             /**
              * money : 11.16000
              * receive_uid : 35819
              * avatar : http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/7/27/35819201807271443174876.jpg
+             * type:1
+             * credit:0
              */
 
+            private String credit;
+            private int type;
             private String money;
             private int receive_uid;
             private String avatar;

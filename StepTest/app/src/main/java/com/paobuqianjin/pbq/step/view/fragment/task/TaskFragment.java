@@ -86,7 +86,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
     @Bind(R.id.button_return_bar)
     RelativeLayout buttonReturnBar;
     @Bind(R.id.banner)
-    Banner banner;
+    ImageView banner;
     @Bind(R.id.red_rule)
     LinearLayout redRule;
     @Bind(R.id.iv_send_red_bag)
@@ -105,6 +105,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
     private final static int PAGESIZE = 50;
     private boolean isReloading = false;
     private final static String PERSON_RED_RULE = "com.paobuqianjin.pbq.step.PERSON_RED_RULE";
+    private int style = -1;
 
     @Override
 
@@ -115,6 +116,10 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
     @Override
     protected String title() {
         return "";
+    }
+
+    public void setStyle(int style) {
+        this.style = style;
     }
 
     @Override
@@ -148,16 +153,25 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
 
     @Override
     protected void initView(View viewRoot) {
+        Bundle bundle = getActivity().getIntent().getBundleExtra(getActivity().getPackageName());
         allTaskFragment = new AllTaskFragment();
         finishedTaskFragment = new FinishedTaskFragment();
         emptyTaskFragment = new EmptyTaskFragment();
         releaseRecordFragment = new ReleaseRecordFragment();
+        banner = (ImageView) viewRoot.findViewById(R.id.banner);
+        if (bundle != null) {
+            int style = bundle.getInt("style", -1);
+            if (style > -1) {
+                emptyTaskFragment.setStyle(style);
+                releaseRecordFragment.setStyle(style);
+                loadBanner(style);
+            }
+        }
         allTaskFragment.setReloadDataInterface(reloadDataInterface);
         finishedTaskFragment.setReloadDataInterface(reloadDataInterface);
         barTitle = (TextView) viewRoot.findViewById(R.id.bar_title);
         barTvRight = (TextView) viewRoot.findViewById(R.id.bar_tv_right);
         barTitle.setText("专享红包");
-        banner = (Banner) viewRoot.findViewById(R.id.banner);
         mFragments = new Fragment[]{allTaskFragment, finishedTaskFragment, releaseRecordFragment};
         getActivity().getSupportFragmentManager().beginTransaction()
                 .add(R.id.container_task, allTaskFragment)
@@ -177,7 +191,6 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
         localReceiver = new LocalReceiver();
         localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
         localBroadcastManager.registerReceiver(localReceiver, intentFilter);
-        loadBanner();
         redRule = (LinearLayout) viewRoot.findViewById(R.id.red_rule);
         redRule.setOnClickListener(onClickListener);
         ivSendRedBag = (TextView) viewRoot.findViewById(R.id.iv_send_red_bag);
@@ -201,7 +214,31 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
         }
     };
 
-    private void loadBanner() {
+    private void loadBanner(int style) {
+        int resId = 0;
+        switch (style) {
+            case 0:
+                resId = R.drawable.f_banner;
+                break;
+            case 1:
+                resId = R.drawable.child_s;
+                break;
+            case 2:
+                resId = R.drawable.dear;
+                break;
+            case 3:
+                resId = R.drawable.older_banner;
+                break;
+            case 4:
+                resId = R.drawable.friend_s;
+                break;
+            default:
+                resId = R.drawable.friend_s;
+                break;
+        }
+        banner.setImageResource(resId);
+    }
+/*    private void loadBanner() {
         final String bannerUrl = NetApi.urlAd + "?position=task_list" + Presenter.getInstance(getContext()).getLocationStrFormat();
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(getActivity()).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
@@ -269,7 +306,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
                 LocalLog.d(TAG, "获取失败!");
             }
         });
-    }
+    }*/
 
     @Override
     public void onDestroyView() {

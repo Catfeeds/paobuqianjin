@@ -4246,12 +4246,12 @@ public final class Engine {
 
 
     public String getShopEnd() {
-        return "?headtoken=" + getToken(mContext) + "&app_sign=" + Utils.appSignShop(getToken(mContext));
+        return "headtoken=" + getToken(mContext) + "&app_sign=" + Utils.appSignShop(getToken(mContext));
     }
 
     public String shop() {
         if (!TextUtils.isEmpty(getToken(mContext))) {
-            return NetApi.urlShop + "?headtoken=" + getToken(mContext) + "&app_sign=" + Utils.appSignShop(getToken(mContext));
+            return NetApi.urlShop + "headtoken=" + getToken(mContext) + "&app_sign=" + Utils.appSignShop(getToken(mContext));
         } else {
             return null;
         }
