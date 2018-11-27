@@ -717,8 +717,8 @@ public final class Presenter {
         engine.taskMyRelease(page, pagesize);
     }
 
-    public void getReleaseRecord(int page, int pagesize) {
-        engine.getReleaseRecord(page, pagesize);
+    public void getReleaseRecord(int style,int page, int pagesize) {
+        engine.getReleaseRecord(style,page, pagesize);
     }
 
     public void getTaskDetail(int taskId) {
@@ -733,8 +733,8 @@ public final class Presenter {
         engine.putTask(action, taskId, innerCallBack);
     }
 
-    public void getAllMyRecTask(int pageIndex, int pagesize) {
-        engine.getAllMyRecTask(pageIndex, pagesize);
+    public void getAllMyRecTask(int style,int pageIndex, int pagesize) {
+        engine.getAllMyRecTask(style,pageIndex, pagesize);
     }
 
     //TODO 用户段位

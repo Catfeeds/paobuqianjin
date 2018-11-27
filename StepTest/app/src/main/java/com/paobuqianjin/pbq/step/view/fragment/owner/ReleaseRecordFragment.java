@@ -98,7 +98,7 @@ public class ReleaseRecordFragment extends BaseFragment implements ReleaseRecord
             loadingDes(style);
         }
         emptyRecordSpan = (RelativeLayout) viewRoot.findViewById(R.id.empty_record_span);
-        Presenter.getInstance(getContext()).getReleaseRecord(pageIndex, PAGE_SIZE);
+        Presenter.getInstance(getContext()).getReleaseRecord(style, pageIndex, PAGE_SIZE);
     }
 
     public void setStyle(int style) {
@@ -108,19 +108,19 @@ public class ReleaseRecordFragment extends BaseFragment implements ReleaseRecord
     private void loadingDes(int style) {
         String des = "";
         switch (style) {
-            case 0:
+            case 5:
                 des = getString(R.string.parent_red_des);
                 break;
-            case 1:
+            case 4:
                 des = getString(R.string.child_red_des);
-                break;
-            case 2:
-                des = getString(R.string.dear_red_des);
                 break;
             case 3:
                 des = getString(R.string.dear_red_des);
                 break;
-            case 4:
+            case 2:
+                des = getString(R.string.older_red_des);
+                break;
+            case 1:
                 des = getString(R.string.friend_red_des);
                 break;
         }
@@ -154,7 +154,7 @@ public class ReleaseRecordFragment extends BaseFragment implements ReleaseRecord
                     if (getContext() == null) {
                         return;
                     }
-                    Presenter.getInstance(getContext()).getReleaseRecord(pageIndex, PAGE_SIZE);
+                    Presenter.getInstance(getContext()).getReleaseRecord(style, pageIndex, PAGE_SIZE);
                 }
             }, 1000);
         }
@@ -278,16 +278,17 @@ public class ReleaseRecordFragment extends BaseFragment implements ReleaseRecord
 
     @OnClick(R.id.go_to_release)
     public void onClick() {
-
-        startActivityForResult(new Intent(getContext(), TaskReleaseActivity.class).setAction(PKG_ACTION), RELEASE_PERSON_TASK);
+        Intent intent = new Intent();
+        intent.setAction(PKG_ACTION);
+        intent.putExtra(getContext().getPackageName() + "style", style);
+        intent.setClass(getContext(), TaskReleaseActivity.class);
+        startActivity(intent);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RELEASE_PERSON_TASK) {
-            pageIndex = 1;
-            Presenter.getInstance(getContext()).getReleaseRecord(pageIndex, PAGE_SIZE);
-        }
+        pageIndex = 1;
+        Presenter.getInstance(getContext()).getReleaseRecord(style, pageIndex, PAGE_SIZE);
     }
 }

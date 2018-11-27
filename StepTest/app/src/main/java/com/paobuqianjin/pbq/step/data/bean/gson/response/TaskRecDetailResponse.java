@@ -78,10 +78,21 @@ public class TaskRecDetailResponse {
          * is_receive : 1
          * user_step : 3086
          * is_finished : 0
+         * "trade_way":2,"credits":5
          */
 
         private int id;
 
+        public int getTrade_way() {
+            return trade_way;
+        }
+
+        public int getCredits() {
+            return credits;
+        }
+
+        private int trade_way;
+        private int credits;
 
         public String getUserno() {
             return userno;

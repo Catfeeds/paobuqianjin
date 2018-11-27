@@ -775,6 +775,23 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     }
 
 
+    private void getTaskNum() {
+        Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlTaskNum, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
+    }
     @Override
     public void recRedPkg(String redId) {
         LocalLog.d(TAG, "领红包 " + redId);
@@ -1023,23 +1040,23 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                     startActivity(new Intent(getActivity(), ShopWebViewActivity.class).putExtra("url", shopUrl));
                 break;
             case R.id.parent_red:
-                bundle.putInt("style", 0);
+                bundle.putInt("style", 5);
                 startActivity(TaskActivity.class, bundle);
                 break;
             case R.id.baby_red:
-                bundle.putInt("style", 1);
+                bundle.putInt("style", 4);
                 startActivity(TaskActivity.class, bundle);
                 break;
             case R.id.love_red:
-                bundle.putInt("style", 2);
-                startActivity(TaskActivity.class, bundle);
-                break;
-            case R.id.older_red:
                 bundle.putInt("style", 3);
                 startActivity(TaskActivity.class, bundle);
                 break;
+            case R.id.older_red:
+                bundle.putInt("style", 2);
+                startActivity(TaskActivity.class, bundle);
+                break;
             case R.id.friend_red:
-                bundle.putInt("style", 4);
+                bundle.putInt("style", 1);
                 startActivity(TaskActivity.class, bundle);
                 break;
             case R.id.tianmao:

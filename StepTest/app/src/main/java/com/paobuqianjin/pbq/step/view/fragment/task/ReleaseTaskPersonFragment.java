@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -33,6 +34,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.CircleTargetResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskReleaseResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFriendResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.TaskReleaseInterface;
@@ -121,6 +123,20 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
     ImageView addIco;
     @Bind(R.id.target_people_money_num)
     TextView targetPeopleMoneyNum;
+    @Bind(R.id.switch_doll)
+    ImageView switchDoll;
+    @Bind(R.id.crash_money)
+    TextView crashMoney;
+    @Bind(R.id.step_dolls)
+    TextView stepDolls;
+    @Bind(R.id.target_step_dollar_num)
+    EditText targetStepDollarNum;
+    @Bind(R.id.step_dollar_task_span)
+    RelativeLayout stepDollarTaskSpan;
+    @Bind(R.id.people_pay)
+    TextView peoplePay;
+    @Bind(R.id.people_money_des)
+    TextView peopleMoneyDes;
     private TaskReleaseParam taskReleaseParam = new TaskReleaseParam();
     private String friends;
     LinearLayoutManager layoutManager;
@@ -132,10 +148,17 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
     /* private String[] targetStepArr = null*//*{"3000", "4000", "5000", "6000", "7000", "8000", "9000", "10000"}*//*;*/
     private ArrayList<String> targetStepArr = new ArrayList<>();
     Banner banner;
+    private int style = -1;
+    //是否选择步币
+    private boolean boolStepDoll = false;
 
     @Override
     protected int getLayoutResId() {
         return R.layout.task_release_fg;
+    }
+
+    public void setStyle(int style) {
+        this.style = style;
     }
 
     @Override
@@ -247,16 +270,22 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
         recvRecycler.setNestedScrollingEnabled(false);
         recvRecycler.setHasFixedSize(true);
         recvRecycler.setLayoutManager(layoutManager);
-
+        moneyTaskSpan = (RelativeLayout) viewRoot.findViewById(R.id.money_task_span);
+        targetStepDollarNum = (EditText) viewRoot.findViewById(R.id.target_step_dollar_num);
+        stepDollarTaskSpan = (RelativeLayout) viewRoot.findViewById(R.id.step_dollar_task_span);
         addFriendDes = (TextView) viewRoot.findViewById(R.id.add_friend_des);
+        targetPeopleMoneyNum = (TextView) viewRoot.findViewById(R.id.target_people_money_num);
         recvRecycler.addItemDecoration(new LikeUserAdapter.SpaceItemDecoration(10));
         targetTaskDayNum.setSelection(targetTaskDayNum.getText().toString().length());
         targetTaskMoneyNum.setSelection(targetTaskMoneyNum.getText().toString().length());
         targetTaskStepNum.setSelection(targetTaskStepNum.getText().toString().length());
         targetTaskMoneyNum.addTextChangedListener(textWatcher);
         targetTaskDayNum.addTextChangedListener(textWatcher);
+        targetStepDollarNum.addTextChangedListener(textWatcher);
         targetTaskStepNum.setText(DEVALUE_STEP + "");
-        targetPeopleMoneyNum = (TextView) viewRoot.findViewById(R.id.target_people_money_num);
+        peoplePay = (TextView) viewRoot.findViewById(R.id.people_pay);
+        peopleMoneyDes = (TextView) viewRoot.findViewById(R.id.people_money_des);
+
         Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlTarget, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
@@ -301,13 +330,27 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
     private void confirm() {
         if (isAdded()) {
             if (checkReleaseParams()) {
-                taskReleaseParam
-                        .setTask_days(Integer.parseInt(targetTaskDayNum.getText().toString()))
-                        .setReward_amount(Float.parseFloat(targetTaskMoneyNum.getText().toString()))
-                        .setTarget_step(Integer.parseInt(targetTaskStepNum.getText().toString()))
-                        .setTo_userid(friends)
-                        .setUserid(Presenter.getInstance(getContext()).getId());
-                Presenter.getInstance(getContext()).taskRelease(taskReleaseParam);
+                if (!boolStepDoll) {
+                    taskReleaseParam
+                            .setTask_days(Integer.parseInt(targetTaskDayNum.getText().toString()))
+                            .setReward_amount(Float.parseFloat(targetTaskMoneyNum.getText().toString()))
+                            .setTarget_step(Integer.parseInt(targetTaskStepNum.getText().toString()))
+                            .setType(style)
+                            .setTrade_way(1)
+                            .setTo_userid(friends)
+                            .setUserid(Presenter.getInstance(getContext()).getId());
+                    Presenter.getInstance(getContext()).taskRelease(taskReleaseParam);
+                } else {
+                    taskReleaseParam
+                            .setTask_days(Integer.parseInt(targetTaskDayNum.getText().toString()))
+                            .setCredit(Integer.parseInt(targetStepDollarNum.getText().toString().trim()))
+                            .setTarget_step(Integer.parseInt(targetTaskStepNum.getText().toString()))
+                            .setType(style)
+                            .setTrade_way(2)
+                            .setTo_userid(friends)
+                            .setUserid(Presenter.getInstance(getContext()).getId());
+                    Presenter.getInstance(getContext()).taskRelease(taskReleaseParam);
+                }
             }
         }
     }
@@ -321,16 +364,20 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
             }
             if (taskReleaseResponse.getError() == 0) {
                 LocalLog.d(TAG, "任务生成，去充值");
-                //getActivity().finish();
-                Bundle bundle = new Bundle();
-                bundle.putString(PAY_FOR_STYLE, "task");
-                bundle.putString(TASK_NO, taskReleaseResponse.getData().getTask_no());
-                bundle.putString(CIRCLE_RECHARGE, String.format("%.2f", totalMoney));
-                Intent intent = new Intent();
-                intent.setClass(getContext(), PaoBuPayActivity.class);
-                intent.putExtra(getActivity().getPackageName(), bundle);
-                intent.setAction(PAY_ACTION);
-                startActivityForResult(intent, REQUEST_PAY_FRIEND_PKG);
+                if (!boolStepDoll) {
+                    //getActivity().finish();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(PAY_FOR_STYLE, "task");
+                    bundle.putString(TASK_NO, taskReleaseResponse.getData().getTask_no());
+                    bundle.putString(CIRCLE_RECHARGE, String.format("%.2f", totalMoney));
+                    Intent intent = new Intent();
+                    intent.setClass(getContext(), PaoBuPayActivity.class);
+                    intent.putExtra(getActivity().getPackageName(), bundle);
+                    intent.setAction(PAY_ACTION);
+                    startActivityForResult(intent, REQUEST_PAY_FRIEND_PKG);
+                } else {
+                    getActivity().finish();
+                }
             } else if (taskReleaseResponse.getError() == -100) {
                 LocalLog.d(TAG, "Token 过期!");
                 exitTokenUnfect();
@@ -354,10 +401,37 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
         }
     };
 
-    @OnClick({R.id.target_task_span, R.id.target_task_step_num, R.id.add_task_friend, R.id.add_ico})
+    private void check_swicth(String data) {
+        if (!boolStepDoll) {
+            switchDoll.setImageResource(R.drawable.sdoar_switch_a);
+            LocalLog.d(TAG, "选择步币");
+            targetTaskMoneyNum.setText(data);
+            moneyTaskSpan.setVisibility(View.GONE);
+            stepDollarTaskSpan.setVisibility(View.VISIBLE);
+            boolStepDoll = !boolStepDoll;
+            crashMoney.setTextColor(ContextCompat.getColor(getContext(), R.color.color_A6A9D9));
+            stepDolls.setTextColor(ContextCompat.getColor(getContext(), R.color.color_6c71c4));
+            peoplePay.setText("步币");
+        } else {
+            LocalLog.d(TAG, "选择现金");
+            switchDoll.setImageResource(R.drawable.sdoar_switch_b);
+            crashMoney.setTextColor(ContextCompat.getColor(getContext(), R.color.color_6c71c4));
+            stepDolls.setTextColor(ContextCompat.getColor(getContext(), R.color.color_A6A9D9));
+            targetStepDollarNum.setText(data);
+            moneyTaskSpan.setVisibility(View.VISIBLE);
+            stepDollarTaskSpan.setVisibility(View.GONE);
+            boolStepDoll = !boolStepDoll;
+            peoplePay.setText("元");
+        }
+    }
+
+    @OnClick({R.id.switch_doll, R.id.target_task_span, R.id.target_task_step_num, R.id.add_task_friend, R.id.add_ico})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
+            case R.id.switch_doll:
+                check_swicth(null);
+                break;
             case R.id.target_task_span:
             case R.id.target_task_step_num:
                 LocalLog.d(TAG, "设置任务目标步数");
@@ -404,36 +478,60 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
             return false;
         }
 
-        if (targetTaskMoneyNum.getText() == null || targetTaskMoneyNum.getText().toString().equals("")) {
-            Toast.makeText(getContext(), "请输入奖励金额", Toast.LENGTH_SHORT).show();
-            return false;
+        if (!boolStepDoll) {
+            LocalLog.d(TAG, "现金");
+            if (TextUtils.isEmpty(targetTaskMoneyNum.getText().toString().trim())) {
+                PaoToastUtils.showLongToast(getContext(), "请输入奖励金额");
+                return false;
+            }
+
+        } else {
+            LocalLog.d(TAG, "步币");
+            if (TextUtils.isEmpty(targetStepDollarNum.getText().toString().trim())) {
+                PaoToastUtils.showLongToast(getContext(), "请输入奖励步币数");
+                return false;
+            }
+            UserInfoResponse.DataBean userInfoResponse = Presenter.getInstance(getContext()).getCurrentUser();
+            try {
+                if (Integer.parseInt(targetStepDollarNum.getText().toString().trim()) > userInfoResponse.getCredit()) {
+                    PaoToastUtils.showLongToast(getContext(), "步币数量不足");
+                    return false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
+
         if (targetTaskDayNum.getText() == null || targetTaskDayNum.getText().toString().equals("")) {
-            Toast.makeText(getContext(), "请输入任务天数", Toast.LENGTH_SHORT).show();
+            PaoToastUtils.showLongToast(getContext(), "请输入任务天数");
             return false;
         }
 
         if (targetTaskDayNum.getText().toString().equals("0")) {
-            Toast.makeText(getContext(), "任务天数不能为0", Toast.LENGTH_SHORT).show();
+            PaoToastUtils.showLongToast(getContext(), "任务天数不能为0");
             return false;
         }
         if (TextUtils.isEmpty(friends)) {
-            Toast.makeText(getContext(), "请选择好友", Toast.LENGTH_SHORT).show();
+            PaoToastUtils.showLongToast(getContext(), "请选择好友");
             return false;
         }
         if (TextUtils.isEmpty(targetPeopleMoneyNum.getText().toString().toString())) {
             return false;
         }
-        float perMoney = Float.parseFloat(targetPeopleMoneyNum.getText().toString().toString());
-        if (perMoney < 1.00f) {
-            PaoToastUtils.showShortToast(getContext(), "单日单个人奖励不能低于1.00元");
-            return false;
-        }
+        if (!boolStepDoll) {
+            float perMoney = Float.parseFloat(targetPeopleMoneyNum.getText().toString().toString());
+            if (perMoney < 1.00f) {
+                PaoToastUtils.showShortToast(getContext(), "单日单个人奖励不能低于1.00元");
+                return false;
+            }
 
-        if (perMoney > 200.00f) {
-            PaoToastUtils.showShortToast(getContext(), "单日单个人最高奖励不能高于200.00元");
-            return false;
+            if (perMoney > 200.00f) {
+                PaoToastUtils.showShortToast(getContext(), "单日单个人最高奖励不能高于200.00元");
+                return false;
+            }
+        } else {
+
         }
         return true;
     }
@@ -466,6 +564,17 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
                     }
                     this.friends = friends;
                     LocalLog.d(TAG, friends);
+                    if (!boolStepDoll) {
+                        if (!TextUtils.isEmpty(targetTaskMoneyNum.getText()) && !TextUtils.isEmpty(targetTaskDayNum.getText().toString())
+                                && dataBeans != null && dataBeans.size() > 0) {
+                            calculateResultMoney();
+                        }
+                    } else {
+                        if (!TextUtils.isEmpty(targetStepDollarNum.getText()) && !TextUtils.isEmpty(targetTaskDayNum.getText().toString())
+                                && dataBeans != null && dataBeans.size() > 0) {
+                            calculateResultMoney();
+                        }
+                    }
                 }
                 break;
             case REQUEST_PAY_FRIEND_PKG:
@@ -492,9 +601,16 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (!TextUtils.isEmpty(targetTaskMoneyNum.getText()) && !TextUtils.isEmpty(targetTaskDayNum.getText().toString())
-                    && dataBeans != null && dataBeans.size() > 0) {
-                calculateResultMoney();
+            if (!boolStepDoll) {
+                if (!TextUtils.isEmpty(targetTaskMoneyNum.getText()) && !TextUtils.isEmpty(targetTaskDayNum.getText().toString())
+                        && dataBeans != null && dataBeans.size() > 0) {
+                    calculateResultMoney();
+                }
+            } else {
+                if (!TextUtils.isEmpty(targetStepDollarNum.getText()) && !TextUtils.isEmpty(targetTaskDayNum.getText().toString())
+                        && dataBeans != null && dataBeans.size() > 0) {
+                    calculateResultMoney();
+                }
             }
         }
     };
@@ -503,53 +619,80 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
      * 计算红包总额
      */
     private void calculateResultMoney() {
-        int dayNum = 0;
-        float taskTotalMoney = 0f;
-        int friendsNum = 0;
-        if (TextUtils.isEmpty(targetTaskMoneyNum.getText()) || TextUtils.isEmpty(targetTaskDayNum.getText().toString())
-                || dataBeans == null || dataBeans.size() == 0) {
-            LocalLog.d(TAG, "不计算");
-            return;
-        }
-        if (TextUtils.isEmpty(targetTaskMoneyNum.getText())) {
-            taskTotalMoney = 0f;
-        } else {
-            try {
-                taskTotalMoney = Float.parseFloat(targetTaskMoneyNum.getText().toString());
-            } catch (NumberFormatException e) {
+        if (!boolStepDoll) {
+            int dayNum = 0;
+            float taskTotalMoney = 0f;
+            int friendsNum = 0;
+            if (TextUtils.isEmpty(targetTaskMoneyNum.getText()) || TextUtils.isEmpty(targetTaskDayNum.getText().toString())
+                    || dataBeans == null || dataBeans.size() == 0) {
+                LocalLog.d(TAG, "不计算");
+                return;
+            }
+            if (TextUtils.isEmpty(targetTaskMoneyNum.getText())) {
                 taskTotalMoney = 0f;
+            } else {
+                try {
+                    taskTotalMoney = Float.parseFloat(targetTaskMoneyNum.getText().toString());
+                } catch (NumberFormatException e) {
+                    taskTotalMoney = 0f;
+                }
             }
-        }
 
-        if (TextUtils.isEmpty(targetTaskDayNum.getText())) {
-            dayNum = 0;
-        } else {
-            try {
-                dayNum = Integer.parseInt(targetTaskDayNum.getText().toString());
-            } catch (NumberFormatException e) {
+            if (TextUtils.isEmpty(targetTaskDayNum.getText())) {
                 dayNum = 0;
+            } else {
+                try {
+                    dayNum = Integer.parseInt(targetTaskDayNum.getText().toString());
+                } catch (NumberFormatException e) {
+                    dayNum = 0;
+                }
             }
-        }
 
-        if (TextUtils.isEmpty(friends) && dataBeans == null || dataBeans.size() == 0) {
+            if (TextUtils.isEmpty(friends) && dataBeans == null || dataBeans.size() == 0) {
 //            Toast.makeText(getContext(), "请选择好友", Toast.LENGTH_SHORT).show();
-            friendsNum = 0;
-        } else {
-            friendsNum = dataBeans.size();
-        }
+                friendsNum = 0;
+            } else {
+                friendsNum = dataBeans.size();
+            }
 
-        totalMoney = taskTotalMoney;
-        float perMoney = 0.0f;
-        if (dayNum == 0 || friendsNum == 0) {
-            perMoney = taskTotalMoney;
+            totalMoney = taskTotalMoney;
+            float perMoney = 0.0f;
+            if (dayNum == 0 || friendsNum == 0) {
+                perMoney = taskTotalMoney;
+            } else {
+                perMoney = taskTotalMoney / (dayNum * friendsNum);
+            }
+            LocalLog.d(TAG, "per one per day money " + perMoney);
+            String dailyMoneyStr = String.format("%.2f", taskTotalMoney);
+            String dayNumStr = dayNum + "";
+            String personNumStr = friendsNum + "";
+            String allMoneyStr = String.format("%.2f", perMoney);
+            targetPeopleMoneyNum.setText(allMoneyStr);
         } else {
-            perMoney = taskTotalMoney / (dayNum * friendsNum);
+            int friendsNum;
+            int dayNum = 0;
+            if (TextUtils.isEmpty(friends) && dataBeans == null || dataBeans.size() == 0) {
+                friendsNum = 0;
+            } else {
+                friendsNum = dataBeans.size();
+            }
+
+            if (TextUtils.isEmpty(targetTaskDayNum.getText())) {
+                dayNum = 0;
+            } else {
+                try {
+                    dayNum = Integer.parseInt(targetTaskDayNum.getText().toString());
+                } catch (NumberFormatException e) {
+                    dayNum = 0;
+                }
+            }
+            int perStepDoll;
+            if (dayNum == 0 || friendsNum == 0) {
+                perStepDoll = Integer.parseInt(targetStepDollarNum.getText().toString().trim());
+            } else {
+                perStepDoll = Integer.parseInt(targetStepDollarNum.getText().toString().trim()) / (dayNum * friendsNum);
+            }
+            targetPeopleMoneyNum.setText(String.valueOf(perStepDoll));
         }
-        LocalLog.d(TAG, "per one per day money " + perMoney);
-        String dailyMoneyStr = String.format("%.2f", taskTotalMoney);
-        String dayNumStr = dayNum + "";
-        String personNumStr = friendsNum + "";
-        String allMoneyStr = String.format("%.2f", perMoney);
-        targetPeopleMoneyNum.setText(allMoneyStr);
     }
 }

@@ -6,8 +6,16 @@ package com.paobuqianjin.pbq.step.utils;
 
 public class NetApi {
     //TODO 圈子接口
-
-
+    /*TODO 获取我的圈子--地址：http://119.29.10.64/v1/Circle/?action=my&userid=1（userid用户真实id）
+    获取精选圈子--地址：http://119.29.10.64/v1/Circle/?action=choice&userid=1
+    获取我加入的圈子--地址：http://119.29.10.64/v1/Circle/?action=join&userid=1
+    获取我创建的圈子--地址：http://119.29.10.64/v1/Circle/?action=create&userid=1*/
+/*    public final static String url = "https://api.runmoneyin.com/";*/
+    public final static String url = "http://api-test1.runmoneyin.com/";
+    //        public final static String url = "http://api-test.runmoneyin.com/";
+    /*public final static String url = "http://119.29.10.64/";*/
+    public static String urlShareHead = "http://share.runmoneyin.com/";
+    public final static String url_online = "https://api.runmoneyin.com/";
 
     static {
         if (!url.equals(url_online)) {

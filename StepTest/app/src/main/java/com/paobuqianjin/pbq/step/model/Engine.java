@@ -3499,9 +3499,9 @@ public final class Engine {
                 .execute(new NetStringCallBack(myReleaseTaskInterface, COMMAND_GET_MY_RELEASE_TASK));
     }
 
-    public void getReleaseRecord(int page, int pagesize) {
-        String url = NetApi.urlPersonRelease + "page=" + String.valueOf(page) + "&pagesize="
-                + String.valueOf(pagesize);
+    public void getReleaseRecord(int style, int page, int pagesize) {
+        String url = NetApi.urlTaskRecord + "?action=send&userid=" + String.valueOf(getId(mContext)) + "&page=" + String.valueOf(page)
+                + "&pagesize" + String.valueOf(pagesize) + "&type=" + String.valueOf(style);
         LocalLog.d(TAG, "getReleaseRecord() enter url = " + url);
         OkHttpUtils
                 .get()
@@ -3633,9 +3633,9 @@ public final class Engine {
     }
 
     //TODO 获取的我领取任务 http://119.29.10.64/v1/TaskRecord?action=all&userid=1
-    public void getAllMyRecTask(int pageIndex, int pagesize) {
+    public void getAllMyRecTask(int style, int pageIndex, int pagesize) {
         String url = NetApi.urlTaskRecord + "?action=all&userid=" + String.valueOf(getId(mContext)) + "&page=" + String.valueOf(pageIndex)
-                + "&pagesize" + String.valueOf(pagesize);
+                + "&pagesize" + String.valueOf(pagesize) + "&type=" + String.valueOf(style);
         LocalLog.d(TAG, "url  =  " + url);
         OkHttpUtils
                 .get()

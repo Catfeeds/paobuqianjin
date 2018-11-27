@@ -133,7 +133,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
         // TODO: inflate a fragment view
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, rootView);
-        Presenter.getInstance(getContext()).getAllMyRecTask(pageIndex, PAGESIZE);
+        Presenter.getInstance(getContext()).getAllMyRecTask(style, pageIndex, PAGESIZE);
         return rootView;
     }
 
@@ -161,6 +161,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
         banner = (ImageView) viewRoot.findViewById(R.id.banner);
         if (bundle != null) {
             int style = bundle.getInt("style", -1);
+            this.style = style;
             if (style > -1) {
                 emptyTaskFragment.setStyle(style);
                 releaseRecordFragment.setStyle(style);
@@ -207,6 +208,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
                 case R.id.iv_send_red_bag:
                     Intent intent = new Intent();
                     intent.setAction(PKG_ACTION);
+                    intent.putExtra(getContext().getPackageName() + "style", style);
                     intent.setClass(getContext(), TaskReleaseActivity.class);
                     startActivity(intent);
                     break;
@@ -217,22 +219,19 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
     private void loadBanner(int style) {
         int resId = 0;
         switch (style) {
-            case 0:
+            case 5:
                 resId = R.drawable.f_banner;
                 break;
-            case 1:
+            case 4:
                 resId = R.drawable.child_s;
                 break;
-            case 2:
+            case 3:
                 resId = R.drawable.dear;
                 break;
-            case 3:
+            case 2:
                 resId = R.drawable.older_banner;
                 break;
-            case 4:
-                resId = R.drawable.friend_s;
-                break;
-            default:
+            case 1:
                 resId = R.drawable.friend_s;
                 break;
         }
@@ -463,7 +462,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
         finishTaskList = null;
         allTaskFragment.setData(null);
         finishedTaskFragment.setData(null);
-        Presenter.getInstance(getContext()).getAllMyRecTask(pageIndex, PAGESIZE);
+        Presenter.getInstance(getContext()).getAllMyRecTask(style, pageIndex, PAGESIZE);
     }
 
     @Override
@@ -502,7 +501,7 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
 
             if (pageIndex < pageCount) {
                 LocalLog.d(TAG, "加载更多");
-                Presenter.getInstance(getContext()).getAllMyRecTask(pageIndex, PAGESIZE);
+                Presenter.getInstance(getContext()).getAllMyRecTask(style, pageIndex, PAGESIZE);
                 pageIndex++;
             }
         } else if (myRecvTaskRecordResponse.getError() == 1) {

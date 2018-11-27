@@ -26,6 +26,28 @@ task_days	任务天数	true	int
     private float reward_amount;
     private int task_days;
     private int totalMoney;
+    private int type;
+
+    public TaskReleaseParam setType(int type) {
+        this.type = type;
+        params.put("type", String.valueOf(type));
+        return this;
+    }
+
+    public TaskReleaseParam setTrade_way(int trade_way) {
+        this.trade_way = trade_way;
+        params.put("trade_way", String.valueOf(trade_way));
+        return this;
+    }
+
+    public TaskReleaseParam setCredit(int credit) {
+        this.credit = credit;
+        params.put("credit", String.valueOf(credit));
+        return this;
+    }
+
+    private int trade_way;
+    private int credit;
 
     public Map<String, String> getParams() {
         return params;

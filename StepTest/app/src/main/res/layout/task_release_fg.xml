@@ -25,11 +25,62 @@
             android:layout_height="match_parent"
             android:background="@color/color_f6f6f6">
 
+            <RelativeLayout
+                android:id="@+id/switch_span"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="right">
+
+
+                <ImageView
+                    android:id="@+id/switch_doll"
+                    android:layout_width="85dp"
+                    android:layout_height="31dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/sdoar_switch_b" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/switch_doll"
+                    android:layout_alignLeft="@+id/switch_doll"
+                    android:layout_alignRight="@+id/switch_doll"
+                    android:layout_alignTop="@+id/switch_doll"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/crash_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="现金"
+                        android:textColor="@color/color_6c71c4"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/step_dolls"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="步币"
+                        android:textColor="@color/color_A6A9D9"
+                        android:textSize="12dp" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/target_task_span"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_below="@+id/switch_span"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
                 android:layout_marginTop="10dp"
@@ -140,12 +191,120 @@
                     android:textSize="15dp" />
             </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/money_task_span"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/day_task_span"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect_out_white_shape">
+
+                <TextView
+                    android:id="@+id/target_money_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="任务总金额"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/task_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginTop="10dp"
+                    android:text="元"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/target_task_money_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_toLeftOf="@+id/task_pay"
+                    android:layout_toRightOf="@id/target_money_des"
+                    android:background="@null"
+                    android:cursorVisible="true"
+                    android:focusable="true"
+                    android:gravity="right"
+                    android:hint="奖励总金额"
+                    android:inputType="numberDecimal"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:textColor="@color/color_161727"
+                    android:textCursorDrawable="@null"
+                    android:textSize="15dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/step_dollar_task_span"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/money_task_span"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rect_out_white_shape"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/target_step_dollar_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="奖励步币"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/step_dollar_pay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="14dp"
+                    android:layout_marginTop="10dp"
+                    android:text="个"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15dp" />
+
+                <EditText
+                    android:id="@+id/target_step_dollar_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_toLeftOf="@+id/step_dollar_pay"
+                    android:layout_toRightOf="@id/target_step_dollar_des"
+                    android:background="@null"
+                    android:cursorVisible="true"
+                    android:focusable="true"
+                    android:gravity="right"
+                    android:hint="输入总步币"
+                    android:inputType="numberDecimal"
+                    android:maxLength="6"
+                    android:maxLines="1"
+                    android:textColor="@color/color_161727"
+                    android:textCursorDrawable="@null"
+                    android:textSize="15dp" />
+
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/friend_select"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/day_task_span"
+                android:layout_below="@+id/step_dollar_task_span"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
                 android:layout_marginTop="10dp"
@@ -237,65 +396,12 @@
                     android:src="@drawable/add_more_recv" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/money_task_span"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@+id/friend_select"
-                android:layout_marginLeft="14dp"
-                android:layout_marginRight="14dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/rect_out_white_shape">
-
-                <TextView
-                    android:id="@+id/target_money_des"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="14dp"
-                    android:text="任务总金额"
-                    android:textColor="@color/color_161727"
-                    android:textSize="15dp" />
-
-                <TextView
-                    android:id="@+id/task_pay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="14dp"
-                    android:layout_marginTop="10dp"
-                    android:text="元"
-                    android:textColor="@color/color_161727"
-                    android:textSize="15dp" />
-
-                <EditText
-                    android:id="@+id/target_task_money_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="6dp"
-                    android:layout_toLeftOf="@+id/task_pay"
-                    android:layout_toRightOf="@id/target_money_des"
-                    android:background="@null"
-                    android:cursorVisible="true"
-                    android:focusable="true"
-                    android:gravity="right"
-                    android:hint="奖励总金额"
-                    android:inputType="numberDecimal"
-                    android:maxLength="6"
-                    android:maxLines="1"
-                    android:textColor="@color/color_161727"
-                    android:textCursorDrawable="@null"
-                    android:textSize="15dp" />
-
-            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/money_people_span"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@+id/money_task_span"
+                android:layout_below="@+id/friend_select"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
                 android:layout_marginTop="10dp"
@@ -307,7 +413,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="14dp"
-                    android:text="每人每日可领"
+                    android:text="每人每日至少可领"
                     android:textColor="@color/color_161727"
                     android:textSize="15dp" />
 

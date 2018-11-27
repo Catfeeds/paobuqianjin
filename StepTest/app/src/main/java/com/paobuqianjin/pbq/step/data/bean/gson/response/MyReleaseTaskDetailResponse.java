@@ -67,6 +67,14 @@ public class MyReleaseTaskDetailResponse {
         }
 
         public static class TaskBean {
+            public int getCredit() {
+                return credit;
+            }
+
+            public int getTrade_way() {
+                return trade_way;
+            }
+
             /**
              * id : 1094
              * task_no : 201806290929335819
@@ -106,8 +114,11 @@ public class MyReleaseTaskDetailResponse {
 
              * create_time : 1530235773
              * end_time : 1530288000
+             * "trade_way":2,
+             * "credit":10
              */
-
+            private int credit;
+            private int trade_way;
             private int id;
             private String task_no;
             private String task_name;

@@ -71,6 +71,7 @@
     <string name="invite_dan_rank">第%d名</string>
     <string name="task_days">任务天数: %d 天</string>
     <string name="target_money">奖励总金额: %.2f 元</string>
+    <string name="target_step_dollor">奖励总步币:%d</string>
     <string name="task_step_release">目标步数: %d 步</string>
     <string name="task_finish_days">达标天数: %d天</string>
     <string name="total_step_dan">当前累计步数%d步</string>

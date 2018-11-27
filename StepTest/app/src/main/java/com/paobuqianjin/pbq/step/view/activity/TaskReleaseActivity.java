@@ -35,7 +35,9 @@ public class TaskReleaseActivity extends BaseActivity {
             return;
         }
         if (PKG_ACTION.equals(intent.getAction())) {
+            int style = intent.getIntExtra(getPackageName() + "style", -1);
             releaseTaskPersonFragment = new ReleaseTaskPersonFragment();
+            releaseTaskPersonFragment.setStyle(style);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.task_release_container, releaseTaskPersonFragment)
                     .show(releaseTaskPersonFragment)

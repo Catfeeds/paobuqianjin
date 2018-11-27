@@ -154,12 +154,12 @@
                     android:layout_toStartOf="@+id/push_rec">
 
                     <ImageView
-                        android:visibility="gone"
                         android:id="@+id/dibiao"
                         android:layout_width="26dp"
                         android:layout_height="21dp"
                         android:scaleType="centerInside"
-                        android:src="@drawable/home_red" />
+                        android:src="@drawable/home_red"
+                        android:visibility="gone" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -480,14 +480,12 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_height="45dp"
+                    android:background="@drawable/home_banner"
                     android:gravity="center"
-                    android:text="直通各大平台  立省30%以上  再送1:1步币"
-                    android:textColor="#939393"
-                    android:textSize="12dp" />
+                    android:text="在京东、淘宝、天猫、拼多多网购最多省80%"
+                    android:textColor="@color/color_f8"
+                    android:textSize="13dp"></TextView>
             </LinearLayout>
 
             <io.rong.imkit.model.RongGridView

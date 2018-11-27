@@ -99,7 +99,11 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private void updateListItem(RecyclerView.ViewHolder holder, int position) {
         if (mData.get(position) instanceof ReleaseRecordResponse.DataBeanX.DataBean) {
-            ((ReleaseRecordViewHolder) holder).moneyTv.setText("￥" + ((ReleaseRecordResponse.DataBeanX.DataBean) mData.get(position)).getReward_amount() + "元");
+            if (((ReleaseRecordResponse.DataBeanX.DataBean) mData.get(position)).getTrade_way() == 1) {
+                ((ReleaseRecordViewHolder) holder).moneyTv.setText("￥" + ((ReleaseRecordResponse.DataBeanX.DataBean) mData.get(position)).getReward_amount() + "元");
+            } else if (((ReleaseRecordResponse.DataBeanX.DataBean) mData.get(position)).getTrade_way() == 2) {
+                ((ReleaseRecordViewHolder) holder).moneyTv.setText(((ReleaseRecordResponse.DataBeanX.DataBean) mData.get(position)).getCredit() + "步币");
+            }
             ((ReleaseRecordViewHolder) holder).releaseName.setText(((ReleaseRecordResponse.DataBeanX.DataBean) mData.get(position)).getTask_name());
             ((ReleaseRecordViewHolder) holder).releaseFriend.setText("领取人: " + ((ReleaseRecordResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
             String daysFormat = context.getString(R.string.task_days);
@@ -185,15 +189,15 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.View
                     ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.VISIBLE);
                     ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
                     ((SponsorRedViewHolder) holder).canNoRec.setImageResource(R.drawable.rec_finish);
-                } else if(status == 3){
-                    localStatus ="已领取";
+                } else if (status == 3) {
+                    localStatus = "已领取";
                     ((SponsorRedViewHolder) holder).canRec.setVisibility(View.GONE);
                     ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.VISIBLE);
                     ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);
                     ((SponsorRedViewHolder) holder).canNoRec.setImageResource(R.drawable.have_rec);
-                }else if(status == 5){
+                } else if (status == 5) {
                     //红包开放时间未到
-                    localStatus ="20:00 开抢";
+                    localStatus = "20:00 开抢";
                     ((SponsorRedViewHolder) holder).canRec.setVisibility(View.VISIBLE);
                     ((SponsorRedViewHolder) holder).canNoRec.setVisibility(View.GONE);
                     ((SponsorRedViewHolder) holder).process.setVisibility(View.GONE);

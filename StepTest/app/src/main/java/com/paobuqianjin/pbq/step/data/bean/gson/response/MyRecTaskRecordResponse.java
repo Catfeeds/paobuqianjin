@@ -155,6 +155,8 @@ public class MyRecTaskRecordResponse {
              * task_days : 10
              * is_receive : 0
              * is_finished : 0
+             * trade_way:2,
+             * credits:5
              */
 
             private int id;
@@ -167,6 +169,25 @@ public class MyRecTaskRecordResponse {
             private int task_days;
             private int is_receive;
             private int is_finished;
+
+            public void setTrade_way(int trade_way) {
+                this.trade_way = trade_way;
+            }
+
+            public void setCredits(int credits) {
+                this.credits = credits;
+            }
+
+            public int getTrade_way() {
+                return trade_way;
+            }
+
+            public int getCredits() {
+                return credits;
+            }
+
+            private int trade_way;
+            private int credits;
 
             public int getVip() {
                 return vip;

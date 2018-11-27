@@ -213,16 +213,24 @@ public class MyReleaseDetailFragment extends BaseBarStyleTextViewFragment implem
         if (myReleaseTaskDetailResponse.getError() == 0) {
             LocalLog.d(TAG, "MyReleaseTaskDetailResponse() enter " + myReleaseTaskDetailResponse.toString());
             targetName.setText(myReleaseTaskDetailResponse.getData().getTask().getTask_name());
-            String targetMoneyStrFormat = getString(R.string.target_money);
-            String targetMoneyStr = String.format(targetMoneyStrFormat, myReleaseTaskDetailResponse.getData().getTask().getReward_amount());
-            targetMoney.setText(targetMoneyStr);
+            if (myReleaseTaskDetailResponse.getData().getTask().getTrade_way() == 1) {
+                String targetMoneyStrFormat = getString(R.string.target_money);
+                String targetMoneyStr = String.format(targetMoneyStrFormat, myReleaseTaskDetailResponse.getData().getTask().getReward_amount());
+                targetMoney.setText(targetMoneyStr);
+                giftMoney.setText("奖励总金额:" + myReleaseTaskDetailResponse.getData().getTask().getAvgmoney() + "元");
+            } else {
+                String targetMoneyStrFormat = getString(R.string.target_step_dollor);
+                String targetMoneyStr = String.format(targetMoneyStrFormat, myReleaseTaskDetailResponse.getData().getTask().getCredit());
+                targetMoney.setText(targetMoneyStr);
+                giftMoney.setText("奖励总步币:" + myReleaseTaskDetailResponse.getData().getTask().getCredit());
+            }
             String targetDayStrFormat = getString(R.string.task_days);
             String targetDayStr = String.format(targetDayStrFormat, myReleaseTaskDetailResponse.getData().getTask().getTask_days());
             taskAllDays.setText(targetDayStr);
             String releaseTargetFormat = getString(R.string.task_step_release);
             String releaseTargetStr = String.format(releaseTargetFormat, myReleaseTaskDetailResponse.getData().getTask().getTarget_step());
             targetStepDes.setText(releaseTargetStr);
-            giftMoney.setText("奖励总金额:" + myReleaseTaskDetailResponse.getData().getTask().getAvgmoney() + "元");
+
             long startT = myReleaseTaskDetailResponse.getData().getTask().getCreate_time();
             String start_timeStr = DateTimeUtil.formatDateTime(startT * 1000);
 

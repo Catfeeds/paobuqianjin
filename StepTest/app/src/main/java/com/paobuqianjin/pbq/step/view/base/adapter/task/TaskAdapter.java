@@ -89,12 +89,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             holder.taskDesc.setText(((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getTask_name());
             holder.taskInvite.setText("派发人: " + ((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getNickname());
 
-            String giftStr = "奖金:" + String.valueOf(((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getAvgmoney()) + "元";
-            SpannableString spannableString = new SpannableString(giftStr);
-            ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(context, R.color.color_e4393c));
-            spannableString.setSpan(colorSpan, "奖金:".length(), giftStr.length()
-                    , Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            holder.taskGift.setText(spannableString);
+            if (mData.get(position).getTrade_way() == 1) {
+                String giftStr = "奖金:" + String.valueOf(((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getAvgmoney()) + "元";
+                SpannableString spannableString = new SpannableString(giftStr);
+                ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(context, R.color.color_e4393c));
+                spannableString.setSpan(colorSpan, "奖金:".length(), giftStr.length()
+                        , Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                holder.taskGift.setText(spannableString);
+            } else if (mData.get(position).getTrade_way() == 2) {
+                String giftStr = "奖金:" + String.valueOf(((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getCredits()) + "步币";
+                SpannableString spannableString = new SpannableString(giftStr);
+                ForegroundColorSpan colorSpan = new ForegroundColorSpan(ContextCompat.getColor(context, R.color.color_e4393c));
+                spannableString.setSpan(colorSpan, "奖金:".length(), giftStr.length()
+                        , Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+                holder.taskGift.setText(spannableString);
+            }
+
             if (((MyRecTaskRecordResponse.DataBeanX.DataBean) mData.get(position)).getIs_receive() == 0) {
                 holder.releaseDetails.setText("领取任务");
                 holder.releaseDetails.setTextColor(ContextCompat.getColor(context, R.color.color_6c71c4));

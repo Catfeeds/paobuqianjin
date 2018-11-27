@@ -119,6 +119,14 @@ public class ReleaseRecordResponse {
         }
 
         public static class DataBean {
+            public int getTrade_way() {
+                return trade_way;
+            }
+
+            public int getCredit() {
+                return credit;
+            }
+
             /**
              * id : 1083
              * task_no : 201806281437349481
@@ -131,8 +139,11 @@ public class ReleaseRecordResponse {
              * create_time : 1530167854
              * end_time : 1530201600
              * status : 1
+             * "trade_way":2,
+             * "credit":10
              */
-
+            private int trade_way;
+            private int credit;
             private int id;
             private String task_no;
             private String task_name;

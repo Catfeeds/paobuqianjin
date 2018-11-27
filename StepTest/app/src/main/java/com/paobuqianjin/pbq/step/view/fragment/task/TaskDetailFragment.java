@@ -125,7 +125,6 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
         localBroadcastManager = LocalBroadcastManager.getInstance(getContext());
 
         Intent intent = getActivity().getIntent();
@@ -188,7 +187,11 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
                 buttonAction.setEnabled(true);
             }
             targetStep.setText(taskRecDetailResponse.getData().getTask_name());
-            targetMoney.setText("奖励金额: " + String.valueOf(taskRecDetailResponse.getData().getAvgmoney()));
+            if (taskRecDetailResponse.getData().getTrade_way() == 1) {
+                targetMoney.setText("奖励金额: " + String.valueOf(taskRecDetailResponse.getData().getAvgmoney()));
+            } else {
+                targetMoney.setText("奖励步币: " + String.valueOf(taskRecDetailResponse.getData().getCredits()));
+            }
             Presenter.getInstance(getContext()).getPlaceErrorImage(releaseUseIco, taskRecDetailResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
             dearName.setText(taskRecDetailResponse.getData().getNickname());
             dearId.setText("跑步钱进号:" + taskRecDetailResponse.getData().getUserno());
@@ -206,7 +209,11 @@ public class TaskDetailFragment extends BaseBarStyleTextViewFragment implements 
             stepTarget.setText("开始时间: " + dateStartStr);
             targetMoneys.setText("结束时间:" + dateEndStr);
             tryDaysDes.setText("目标步数: " + taskRecDetailResponse.getData().getTarget_step() + " 步");
-            tryTarget.setText("奖励金额: " + taskRecDetailResponse.getData().getAvgmoney() + "元");
+            if (taskRecDetailResponse.getData().getTrade_way() == 1) {
+                tryTarget.setText("奖励金额: " + taskRecDetailResponse.getData().getAvgmoney() + "元");
+            } else {
+                tryTarget.setText("奖励步币: " + taskRecDetailResponse.getData().getCredits());
+            }
             taskRulsDetail.setText(Html.fromHtml(taskRecDetailResponse.getData().getTask_desc()));
 
             buttonAction.setOnClickListener(onClickListener);

@@ -68,19 +68,19 @@ public class EmptyTaskFragment extends BaseFragment {
     private void loadingDes(int style) {
         String des = "";
         switch (style) {
-            case 0:
+            case 5:
                 des = getString(R.string.parent_red_des);
                 break;
-            case 1:
+            case 4:
                 des = getString(R.string.child_red_des);
-                break;
-            case 2:
-                des = getString(R.string.dear_red_des);
                 break;
             case 3:
                 des = getString(R.string.dear_red_des);
                 break;
-            case 4:
+            case 2:
+                des = getString(R.string.older_red_des);
+                break;
+            case 1:
                 des = getString(R.string.friend_red_des);
                 break;
         }
@@ -98,6 +98,7 @@ public class EmptyTaskFragment extends BaseFragment {
         LocalLog.d(TAG, "去发布任务");
         Intent intent = new Intent();
         intent.setAction(PKG_ACTION);
+        intent.putExtra(getContext().getPackageName() + "style", style);
         intent.setClass(getContext(), TaskReleaseActivity.class);
         startActivity(intent);
     }

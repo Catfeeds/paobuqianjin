@@ -32,13 +32,13 @@
             android:src="@drawable/running_go" />
 
         <TextView
-            android:gravity="center"
             android:id="@+id/no_task"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/no_record"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
+            android:gravity="center"
             android:text=""
             android:textColor="@color/color_9999"
             android:textSize="14dp" />
@@ -55,7 +55,8 @@
             android:gravity="center"
             android:text="发布任务"
             android:textColor="@color/color_f8"
-            android:textSize="18dp" />
+            android:textSize="18dp"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </RelativeLayout>
