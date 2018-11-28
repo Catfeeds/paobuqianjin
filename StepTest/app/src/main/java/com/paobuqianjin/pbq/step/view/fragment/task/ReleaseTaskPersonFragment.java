@@ -376,6 +376,7 @@ public class ReleaseTaskPersonFragment extends BaseBarStyleTextViewFragment {
                     intent.setAction(PAY_ACTION);
                     startActivityForResult(intent, REQUEST_PAY_FRIEND_PKG);
                 } else {
+                    PaoToastUtils.showLongToast(getContext(),"发布成功");
                     getActivity().finish();
                 }
             } else if (taskReleaseResponse.getError() == -100) {

@@ -375,6 +375,16 @@ public final class DateTimeUtil {
         return format.format(Calendar.getInstance().getTime());
     }
 
+
+    /**
+     * 当前时间 如: 10:37
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static String getCurrentDateHH() {
+        format = new SimpleDateFormat("HH");
+        return format.format(Calendar.getInstance().getTime());
+    }
+
     /**
      * 当前时间 如: 10:37
      *

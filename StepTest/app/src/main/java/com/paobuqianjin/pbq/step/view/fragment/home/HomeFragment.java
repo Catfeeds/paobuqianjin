@@ -49,6 +49,7 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepReWardResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.TaskNumResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.WeatherResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoTipsCallBack;
@@ -64,8 +65,6 @@ import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.AddAroundRedBagActivity;
-import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBag2Activity;
-import com.paobuqianjin.pbq.step.view.activity.LoginActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.RedHsRecordActivity;
 import com.paobuqianjin.pbq.step.view.activity.RoundRedDetailActivity;
@@ -164,6 +163,18 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     ImageView pingduoduo;
     @Bind(R.id.mogu)
     ImageView mogu;
+    @Bind(R.id.older_task_num)
+    TextView olderTaskNum;
+    @Bind(R.id.parent_task_num)
+    TextView parentTaskNum;
+    @Bind(R.id.love_task_num)
+    TextView loveTaskNum;
+    @Bind(R.id.baby_task_num)
+    TextView babyTaskNum;
+    @Bind(R.id.fiend_task_num)
+    TextView fiendTaskNum;
+    @Bind(R.id.banner_tv)
+    TextView bannerTv;
 
     private PopupWindow popupRedPkgWindow;
     private TranslateAnimation animationCircleType;
@@ -197,53 +208,10 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private GridGoodAdpter gridGoodAdpter;
     private String shopUrl = null;
     RelativeLayout redLayout;
+    private final static String bannerStr = "在京东、淘宝、天猫、拼多多网购最多省80%";
     ArrayList<RedDataBean> redArray = new ArrayList<>();
-
-    static {
-        weatherMap.put("0", R.drawable.weather_0);
-        weatherMap.put("1", R.drawable.weather_1);
-        weatherMap.put("2", R.drawable.weather_2);
-        weatherMap.put("3", R.drawable.weather_3);
-        weatherMap.put("4", R.drawable.weather_4);
-        weatherMap.put("5", R.drawable.weather_5);
-        weatherMap.put("6", R.drawable.weather_6);
-        weatherMap.put("7", R.drawable.weather_7);
-        weatherMap.put("8", R.drawable.weather_8);
-        weatherMap.put("9", R.drawable.weather_9);
-        weatherMap.put("10", R.drawable.weather_10);
-        weatherMap.put("11", R.drawable.weather_11);
-        weatherMap.put("12", R.drawable.weather_12);
-        weatherMap.put("13", R.drawable.weather_13);
-        weatherMap.put("14", R.drawable.weather_14);
-        weatherMap.put("15", R.drawable.weather_15);
-        weatherMap.put("16", R.drawable.weather_17);
-        weatherMap.put("18", R.drawable.weather_18);
-        weatherMap.put("19", R.drawable.weather_19);
-        weatherMap.put("20", R.drawable.weather_20);
-        weatherMap.put("21", R.drawable.weather_21);
-        weatherMap.put("22", R.drawable.weather_22);
-        weatherMap.put("23", R.drawable.weather_23);
-        weatherMap.put("24", R.drawable.weather_24);
-        weatherMap.put("25", R.drawable.weather_25);
-        weatherMap.put("26", R.drawable.weather_26);
-        weatherMap.put("27", R.drawable.weather_27);
-        weatherMap.put("28", R.drawable.weather_28);
-        weatherMap.put("29", R.drawable.weather_29);
-        weatherMap.put("30", R.drawable.weather_30);
-        weatherMap.put("31", R.drawable.weather_31);
-        weatherMap.put("32", R.drawable.weather_32);
-        weatherMap.put("49", R.drawable.weather_49);
-        weatherMap.put("53", R.drawable.weather_53);
-        weatherMap.put("54", R.drawable.weather_54);
-        weatherMap.put("55", R.drawable.weather_55);
-        weatherMap.put("56", R.drawable.weather_56);
-        weatherMap.put("57", R.drawable.weather_57);
-        weatherMap.put("58", R.drawable.weather_58);
-        weatherMap.put("99", R.drawable.weather_99);
-        weatherMap.put("301", R.drawable.weather_301);
-        weatherMap.put("302", R.drawable.weather_302);
-
-    }
+    //1.朋友专享 2.长辈专享 3.夫妻专享 4.孩子专享 5.父母专享
+    private ArrayList<TaskNumResponse.DataBean> arrayList = new ArrayList<>();
 
 
     @Override
@@ -290,6 +258,8 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         Presenter.getInstance(getContext()).refreshStep();
         updateIncome();
         getAroundRedBag();
+        getTaskNum();
+        updateUiTime();
     }
 
     @Override
@@ -298,13 +268,32 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         toayStep = (TextView) viewRoot.findViewById(R.id.toay_step);
         todayIncomeNum = (TextView) viewRoot.findViewById(R.id.today_income_num);
+        pushRedPkg = (TextView) viewRoot.findViewById(R.id.push_red_pkg);
+        historyRecord = (TextView) viewRoot.findViewById(R.id.history_record);
         isBind = Presenter.getInstance(getContext()).bindService(null, TodayStepService.class);
         homeScroll = (BounceScrollView) viewRoot.findViewById(R.id.home_scroll);
         barHome = (LinearLayout) viewRoot.findViewById(R.id.bar_home);
         toayStepDollor = (TextView) viewRoot.findViewById(R.id.toay_step_dollor);
+        olderTaskNum = (TextView) viewRoot.findViewById(R.id.older_task_num);
+        parentTaskNum = (TextView) viewRoot.findViewById(R.id.parent_task_num);
+        fiendTaskNum = (TextView) viewRoot.findViewById(R.id.fiend_task_num);
+        babyTaskNum = (TextView) viewRoot.findViewById(R.id.baby_task_num);
+        loveTaskNum = (TextView) viewRoot.findViewById(R.id.love_task_num);
         gridGoodAdpter = new GridGoodAdpter(getContext(), 12);
         goodGrid = (RongGridView) viewRoot.findViewById(R.id.good_grid);
+        bannerTv = (TextView) viewRoot.findViewById(R.id.banner_tv);
+        SpannableString banSpanning = new SpannableString(bannerStr);
+        banSpanning.setSpan(new AbsoluteSizeSpan(20, true), bannerStr.length() - 3, banSpanning.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        
+        bannerTv.setText(banSpanning);
+        for (int i = 1; i <= 5; i++) {
+            TaskNumResponse.DataBean dataBean = new TaskNumResponse.DataBean();
+            dataBean.setType(i);
+            dataBean.setCount(0);
+            arrayList.add(dataBean);
+        }
         goodGrid.setAdapter(gridGoodAdpter);
+        moonWhiteBg = (ImageView) viewRoot.findViewById(R.id.moon_white_bg);
         redLayout = (RelativeLayout) viewRoot.findViewById(R.id.red_pkg_sq);
         goodGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -337,6 +326,38 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         spannableString.setSpan(new TypefaceSpan("default-bold"), 1, 3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(0xFFFFA202), 1, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         goShopingTv.setText(spannableString);
+        updateUiTime();
+
+    }
+
+    private void updateUiTime() {
+        if (isWhite()) {
+            LocalLog.d(TAG, "白天");
+            moonWhiteBg.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.white_day));
+            todayIncomeNum.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_withe));
+            todayIncomeNum.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_white));
+            toayStep.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_withe));
+            toayStep.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_white));
+            toayStepDollor.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_withe));
+            toayStepDollor.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_white));
+            pushRedPkg.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_withe));
+            pushRedPkg.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_white));
+            historyRecord.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_withe));
+            historyRecord.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_white));
+        } else {
+            LocalLog.d(TAG, "黑夜");
+            moonWhiteBg.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.moon_day));
+            todayIncomeNum.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_moon));
+            todayIncomeNum.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_bg_moon));
+            toayStep.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_moon));
+            toayStep.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_bg_moon));
+            toayStepDollor.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_moon));
+            toayStepDollor.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_bg_moon));
+            pushRedPkg.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_moon));
+            pushRedPkg.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_bg_moon));
+            historyRecord.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_moon));
+            historyRecord.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_bg_moon));
+        }
     }
 
     private void initGridGood() {
@@ -775,12 +796,72 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     }
 
 
+    private void taskNumUI() {
+        for (int i = 0; i < 5; i++) {
+            if (arrayList.get(i).getType() == 1) {
+                if (arrayList.get(i).getCount() > 0) {
+                    fiendTaskNum.setText(String.valueOf((arrayList.get(i).getCount())));
+                    fiendTaskNum.setVisibility(View.VISIBLE);
+                } else {
+                    fiendTaskNum.setVisibility(View.GONE);
+                }
+            } else if (arrayList.get(i).getType() == 2) {
+                if (arrayList.get(i).getCount() > 0) {
+                    olderTaskNum.setText(String.valueOf((arrayList.get(i).getCount())));
+                    olderTaskNum.setVisibility(View.VISIBLE);
+                } else {
+                    olderTaskNum.setVisibility(View.GONE);
+                }
+            } else if (arrayList.get(i).getType() == 3) {
+                if (arrayList.get(i).getCount() > 0) {
+                    loveTaskNum.setText(String.valueOf((arrayList.get(i).getCount())));
+                    loveTaskNum.setVisibility(View.VISIBLE);
+                } else {
+                    loveTaskNum.setVisibility(View.GONE);
+                }
+            } else if (arrayList.get(i).getType() == 4) {
+                if (arrayList.get(i).getCount() > 0) {
+                    babyTaskNum.setText(String.valueOf((arrayList.get(i).getCount())));
+                    babyTaskNum.setVisibility(View.VISIBLE);
+                } else {
+                    babyTaskNum.setVisibility(View.GONE);
+                }
+            } else if (arrayList.get(i).getType() == 5) {
+                if (arrayList.get(i).getCount() > 0) {
+                    parentTaskNum.setText(String.valueOf((arrayList.get(i).getCount())));
+                    parentTaskNum.setVisibility(View.VISIBLE);
+                } else {
+                    parentTaskNum.setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+
+    private void cleanTaskData() {
+        for (int i = 0; i < arrayList.size(); i++) {
+            arrayList.get(i).setCount(0);
+        }
+    }
+
     private void getTaskNum() {
         Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlTaskNum, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 try {
-
+                    cleanTaskData();
+                    TaskNumResponse taskNumResponse = new Gson().fromJson(s, TaskNumResponse.class);
+                    if (taskNumResponse.getData() != null) {
+                        int size = taskNumResponse.getData().size();
+                        for (int i = 0; i < size; i++) {
+                            for (int j = 0; j < 5; j++) {
+                                if (taskNumResponse.getData().get(i).getType() == arrayList.get(j).getType()) {
+                                    arrayList.get(j).setCount(taskNumResponse.getData().get(i).getCount());
+                                }
+                            }
+                        }
+                    }
+                    taskNumUI();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -792,6 +873,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             }
         });
     }
+
     @Override
     public void recRedPkg(String redId) {
         LocalLog.d(TAG, "领红包 " + redId);
@@ -1015,6 +1097,19 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         System.gc();
     }
 
+    private boolean isWhite() {
+        String timeStr = DateTimeUtil.getCurrentDateHH();
+        try {
+            if (6 < Integer.parseInt(timeStr) && Integer.parseInt(timeStr) < 18) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
     @OnClick({R.id.go_shoping_tv, R.id.shop_ping, R.id.parent_red, R.id.baby_red, R.id.love_red, R.id.older_red, R.id.friend_red, R.id.tianmao,
             R.id.jingdong, R.id.weipinghui, R.id.pingduoduo, R.id.mogu, R.id.scan_mark_home, R.id.push_red_pkg, R.id.history_record})
     public void onClick(View view) {
@@ -1060,6 +1155,13 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 startActivity(TaskActivity.class, bundle);
                 break;
             case R.id.tianmao:
+                startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", NetApi.urlTianMao));
+                break;
+            case R.id.jingdong:
+                startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", NetApi.urlJd));
+                break;
+            case R.id.weipinghui:
+                PaoToastUtils.showLongToast(getContext(), "敬请期待");
                 break;
             case R.id.pingduoduo:
                 LocalLog.d(TAG, "拼多多");

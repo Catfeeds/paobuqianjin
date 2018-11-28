@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +32,9 @@ import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.UserIncomInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
-import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyBankCardActivity;
 import com.paobuqianjin.pbq.step.view.activity.PaoBuPayActivity;
 import com.paobuqianjin.pbq.step.view.activity.PayManagerActivity;
-import com.paobuqianjin.pbq.step.view.activity.TransferActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.WalletRedPkgIncomeAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
@@ -53,7 +54,6 @@ import static com.paobuqianjin.pbq.step.utils.Utils.PAGE_SIZE_DEFAULT;
 
 public class MyWalletFragment extends BaseBarImageViewFragment implements UserIncomInterface {
     private final static String TAG = MyWalletFragment.class.getSimpleName();
-
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -62,50 +62,31 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
     ImageView barTvRight;
-    @Bind(R.id.all_income)
-    TextView allIncome;
-    @Bind(R.id.income_des)
-    TextView incomeDes;
-    @Bind(R.id.income_money)
-    TextView incomeMoney;
-    @Bind(R.id.month_income_des)
-    TextView monthIncomeDes;
-    @Bind(R.id.month_income_num)
-    TextView monthIncomeNum;
-    @Bind(R.id.month_span)
-    RelativeLayout monthSpan;
-    @Bind(R.id.yesterday_income_des)
-    TextView yesterdayIncomeDes;
-    @Bind(R.id.yesterday_income_num)
-    TextView yesterdayIncomeNum;
-    @Bind(R.id.yesterday_span)
-    RelativeLayout yesterdaySpan;
+    @Bind(R.id.income_rel)
+    RelativeLayout incomeRel;
     @Bind(R.id.total_income_des)
     TextView totalIncomeDes;
     @Bind(R.id.total_income_num)
     TextView totalIncomeNum;
-    @Bind(R.id.total_span)
-    RelativeLayout totalSpan;
-    @Bind(R.id.income_outline)
-    LinearLayout incomeOutline;
-    @Bind(R.id.income_rel)
-    RelativeLayout incomeRel;
-    @Bind(R.id.charge_bar)
-    Button chargeBar;
-    @Bind(R.id.crash)
-    Button crash;
-    @Bind(R.id.income_container)
-    RelativeLayout incomeContainer;
-    /*    @Bind(R.id.scroll_view_income)
-        BounceScrollView scrollViewIncome;*/
-    @Bind(R.id.line_current)
-    ImageView lineCurrent;
-    @Bind(R.id.line_month)
-    ImageView lineMonth;
     @Bind(R.id.line_total)
     ImageView lineTotal;
-    @Bind(R.id.wallet_refresh)
-    SwipeRefreshLayout walletRefresh;
+    @Bind(R.id.total_span)
+    RelativeLayout totalSpan;
+    @Bind(R.id.step_dollor_num_des)
+    TextView stepDollorNumDes;
+    @Bind(R.id.step_dollor_num)
+    TextView stepDollorNum;
+    @Bind(R.id.line_current)
+    ImageView lineCurrent;
+    @Bind(R.id.step_dollor_span)
+    RelativeLayout yesterdaySpan;
+    @Bind(R.id.income_outline)
+    LinearLayout incomeOutline;
+    @Bind(R.id.income_container)
+    RelativeLayout incomeContainer;
+    @Bind(R.id.charge_bar)
+    Button chargeBar;
+
     private View popWalletBar;
     private PopupWindow popupWalletWindow;
     private TranslateAnimation animationCircleType;
@@ -113,18 +94,17 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
     private Fragment[] fragments;
     private ImageView[] lines;
     private int mCurrentIndex = 0;
-    private ToDayIncomeFragment yesterDayIncomeFragment = new ToDayIncomeFragment();
-    private MonthIncomeFragment monthIncomeFragment = new MonthIncomeFragment();
     private AllIncomeFragment allIncomeFragment = new AllIncomeFragment();
-    WalletRedPkgIncomeAdapter yesterDayAdapter, monthAdapter, allAdapter;
+    private StepDollarDetailFragment stepDollarDetailFragment = new StepDollarDetailFragment();
+    WalletRedPkgIncomeAdapter allAdapter;
     ArrayList<IncomeResponse.DataBeanX.DataBean> yesterData = new ArrayList<>();
     ArrayList<IncomeResponse.DataBeanX.DataBean> monthData = new ArrayList<>();
     ArrayList<AllIncomeResponse.DataBeanX.DataBean> allData = new ArrayList<>();
     private final static String PAY_FOR_STYLE = "pay_for_style";
     private final static String PAY_RECHARGE = "com.paobuqian.pbq.step.PAY_RECHARGE.ACTION";
     /*    private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";*/
-    private int pageIndexYD = 1, pageIndexMonth = 1, pageIndexAll = 1;
-    private int pageYDCount = 0, pageMonthCount = 0, pageAllCount = 0;
+    private int pageIndexAll = 1;
+    private int pageAllCount = 0;
     public final static int REQUEST_CRASH = 231;
     private float totalMoney = 0.0f;
     private final int REQUEST_RECHARGE = 223;
@@ -159,7 +139,7 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
         return rootView;
     }
 
-    private BaseBarImageViewFragment.ToolBarListener toolBarListener = new BaseBarImageViewFragment.ToolBarListener() {
+    private ToolBarListener toolBarListener = new ToolBarListener() {
         @Override
         public void clickLeft() {
             getActivity().onBackPressed();
@@ -224,39 +204,24 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
     @Override
     protected void initView(View viewRoot) {
         incomeRel = (RelativeLayout) viewRoot.findViewById(R.id.income_rel);
-        incomeRel.setBackground(getDrawableResource(R.drawable.wallet_bg));
         setToolBarListener(toolBarListener);
-        crash = (Button) viewRoot.findViewById(R.id.crash);
-        fragments = new Fragment[]{yesterDayIncomeFragment, monthIncomeFragment, allIncomeFragment};
+        fragments = new Fragment[]{allIncomeFragment, stepDollarDetailFragment};
         getActivity().getSupportFragmentManager().beginTransaction()
-                .add(R.id.income_container, yesterDayIncomeFragment)
-                .add(R.id.income_container, monthIncomeFragment)
-                .hide(monthIncomeFragment)
                 .add(R.id.income_container, allIncomeFragment)
-                .hide(allIncomeFragment)
-                .show(yesterDayIncomeFragment)
+                .add(R.id.income_container, stepDollarDetailFragment)
+                .hide(stepDollarDetailFragment)
+                .show(allIncomeFragment)
                 .commit();
 
-        walletRefresh = (SwipeRefreshLayout) viewRoot.findViewById(R.id.wallet_refresh);
-        yesterDayAdapter = new WalletRedPkgIncomeAdapter(getContext(), null);
-        monthAdapter = new WalletRedPkgIncomeAdapter(getContext(), null);
         allAdapter = new WalletRedPkgIncomeAdapter(getContext(), null);
-        yesterDayIncomeFragment.setAdapter(yesterDayAdapter);
-        yesterDayIncomeFragment.listen(mLoadMoreListener);
+        totalIncomeNum = (TextView) viewRoot.findViewById(R.id.total_income_num);
+        stepDollorNum = (TextView) viewRoot.findViewById(R.id.step_dollor_num);
         allIncomeFragment.setAdapter(allAdapter);
         allIncomeFragment.listen(mLoadMoreListener);
-        monthIncomeFragment.setAdapter(monthAdapter);
-        monthIncomeFragment.listen(mLoadMoreListener);
         lineCurrent = (ImageView) viewRoot.findViewById(R.id.line_current);
-        lineMonth = (ImageView) viewRoot.findViewById(R.id.line_month);
         lineTotal = (ImageView) viewRoot.findViewById(R.id.line_total);
-        lines = new ImageView[]{lineCurrent, lineMonth, lineTotal};
-        loadYesterData(yesterData);
-        loadMonthData(monthData);
+        lines = new ImageView[]{lineTotal, lineCurrent};
         loadAllData(allData);
-        walletRefresh.setOnRefreshListener(mRefreshListener);
-        Presenter.getInstance(getContext()).getIncome("today", pageIndexYD, PAGE_SIZE_DEFAULT);
-        Presenter.getInstance(getContext()).getIncome("month", pageIndexMonth, PAGE_SIZE_DEFAULT);
         Presenter.getInstance(getContext()).getIncome("all", pageIndexAll, PAGE_SIZE_DEFAULT);
         mIndex = 0;
         mCurrentIndex = 0;
@@ -269,7 +234,7 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
-    @OnClick({R.id.charge_bar, R.id.crash, R.id.yesterday_span, R.id.month_span, R.id.total_span})
+    @OnClick({R.id.charge_bar, R.id.total_span, R.id.step_dollor_span, R.id.step_span, R.id.money_span})
     public void onClick(View view) {
         Intent intent = new Intent();
         switch (view.getId()) {
@@ -282,30 +247,15 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
                 intent.setAction(PAY_RECHARGE);
                 startActivityForResult(intent, REQUEST_RECHARGE);
                 break;
-            /*case R.id.crash:
-                LocalLog.d(TAG, "提现");
-                  *//*  intent.setAction(CRASH_ACTION);
-                    intent.putExtra("total", totalMoney);
-                    intent.setClass(getContext(), CrashActivity.class);
-                    startActivityForResult(intent, REQUEST_CRASH);*//*
-                intent.setAction(CRASH_ACTION);
-                intent.putExtra("total", totalMoney);
-                intent.setClass(getContext(), TransferActivity.class);
-                startActivityForResult(intent, REQUEST_CRASH);
-                break;*/
-            case R.id.yesterday_span:
-                LocalLog.d(TAG, "查看当前收益");
+            case R.id.total_span:
+            case R.id.money_span:
+                LocalLog.d(TAG, "总收入");
                 mIndex = 0;
                 onTabIndex(mIndex);
                 break;
-            case R.id.month_span:
-                LocalLog.d(TAG, "查看月收入");
+            case R.id.step_dollor_span:
+            case R.id.step_span:
                 mIndex = 1;
-                onTabIndex(mIndex);
-                break;
-            case R.id.total_span:
-                LocalLog.d(TAG, "总收入");
-                mIndex = 2;
                 onTabIndex(mIndex);
                 break;
             default:
@@ -337,101 +287,11 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
         mCurrentIndex = fragmentIndex;
     }
 
-    /**
-     * 刷新。
-     */
-    private SwipeRefreshLayout.OnRefreshListener mRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
-        @Override
-        public void onRefresh() {
-            LocalLog.d(TAG, "刷新当前页面!");
-            walletRefresh.setRefreshing(false);
-            if (mCurrentIndex == 0) {
-                //loadYesterData(yesterData);
-            } else if (mCurrentIndex == 1) {
-                //loadMonthData(monthData);
-            } else if (mCurrentIndex == 2) {
-                //loadAllData(allData);
-            }
-        }
-    };
-
-
-    /**
-     * 第一次加载数据。
-     */
-    private void loadYesterData(ArrayList<IncomeResponse.DataBeanX.DataBean> dataBeans) {
-        LocalLog.d(TAG, "loadYesterData() enter");
-        yesterDayAdapter.notifyDataSetChanged(dataBeans);
-
-        walletRefresh.setRefreshing(false);
-
-        // 第一次加载数据：一定要掉用这个方法。
-        // 第一个参数：表示此次数据是否为空，假如你请求到的list为空(== null || list.size == 0)，那么这里就要true。
-        // 第二个参数：表示是否还有更多数据，根据服务器返回给你的page等信息判断是否还有更多，这样可以提供性能，如果不能判断则传true。
-        if (dataBeans == null || dataBeans.size() == 0) {
-            yesterDayIncomeFragment.loadMoreFinish(true, true);
-        } else {
-            yesterDayIncomeFragment.loadMoreFinish(false, true);
-        }
-    }
-
-    private void loadYesterDayMore(ArrayList<IncomeResponse.DataBeanX.DataBean> newData) {
-        LocalLog.d(TAG, "loadYesterDayMore() enter");
-        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
-        yesterData.addAll(newData);
-        // notifyItemRangeInserted()或者notifyDataSetChanged().
-        yesterDayAdapter.notifyItemRangeInserted(yesterData.size() - newData.size(), newData.size());
-
-        // 数据完更多数据，一定要掉用这个方法。
-        // 第一个参数：表示此次数据是否为空。
-        // 第二个参数：表示是否还有更多数据。
-        yesterDayIncomeFragment.loadMoreFinish(false, true);
-
-        // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
-        // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
-        // errorMessage是会显示到loadMoreView上的，用户可以看到。
-        // mRecyclerView.loadMoreError(0, "请求网络失败");
-    }
-
-    private void loadMonthData(ArrayList<IncomeResponse.DataBeanX.DataBean> dataBeans) {
-        LocalLog.d(TAG, "loadMonthData() enter");
-        monthAdapter.notifyDataSetChanged(dataBeans);
-
-        walletRefresh.setRefreshing(false);
-
-        // 第一次加载数据：一定要掉用这个方法。
-        // 第一个参数：表示此次数据是否为空，假如你请求到的list为空(== null || list.size == 0)，那么这里就要true。
-        // 第二个参数：表示是否还有更多数据，根据服务器返回给你的page等信息判断是否还有更多，这样可以提供性能，如果不能判断则传true。
-        if (dataBeans == null || dataBeans.size() == 0) {
-            monthIncomeFragment.loadMoreFinish(true, true);
-        } else {
-            monthIncomeFragment.loadMoreFinish(false, true);
-        }
-    }
-
-    private void loadMonthMore(ArrayList<IncomeResponse.DataBeanX.DataBean> newData) {
-        LocalLog.d(TAG, "loadMonthMore() enter");
-        /*ArrayList<ChoiceCircleResponse.DataBeanX.DataBean> strings = createDataList(adapter.getItemCount(), newData);*/
-        monthData.addAll(newData);
-        // notifyItemRangeInserted()或者notifyDataSetChanged().
-        monthAdapter.notifyItemRangeInserted(monthData.size() - newData.size(), newData.size());
-
-        // 数据完更多数据，一定要掉用这个方法。
-        // 第一个参数：表示此次数据是否为空。
-        // 第二个参数：表示是否还有更多数据。
-        monthIncomeFragment.loadMoreFinish(false, true);
-
-        // 如果加载失败调用下面的方法，传入errorCode和errorMessage。
-        // errorCode随便传，你自定义LoadMoreView时可以根据errorCode判断错误类型。
-        // errorMessage是会显示到loadMoreView上的，用户可以看到。
-        // mRecyclerView.loadMoreError(0, "请求网络失败");
-    }
 
     private void loadAllData(ArrayList<AllIncomeResponse.DataBeanX.DataBean> dataBeans) {
         LocalLog.d(TAG, "loadAllData() enter");
         allAdapter.notifyDataSetChanged(dataBeans);
 
-        walletRefresh.setRefreshing(false);
 
         // 第一次加载数据：一定要掉用这个方法。
         // 第一个参数：表示此次数据是否为空，假如你请求到的list为空(== null || list.size == 0)，那么这里就要true。
@@ -470,31 +330,6 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
         public void onLoadMore() {
             LocalLog.d(TAG, "加载更多!");
             if (mCurrentIndex == 0) {
-                if (pageYDCount == 0) {
-                    LocalLog.d(TAG, "第一次刷新");
-                } else {
-                    if (pageIndexYD > pageYDCount) {
-                        /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
-                        yesterDayIncomeFragment.loadMoreFinish(false, true);
-                        return;
-                    }
-                }
-
-                Presenter.getInstance(getContext()).getIncome("today", pageIndexYD, PAGE_SIZE_DEFAULT);
-            } else if (mCurrentIndex == 1) {
-                if (pageMonthCount == 0) {
-                    LocalLog.d(TAG, "第一次刷新");
-                } else {
-                    if (pageIndexMonth > pageMonthCount) {
-                        /*Toast.makeText(getContext(), "没有更多内容", Toast.LENGTH_SHORT).show();*/
-                        monthIncomeFragment.loadMoreFinish(false, true);
-                        return;
-                    }
-                }
-
-                Presenter.getInstance(getContext()).getIncome("month", pageIndexMonth, PAGE_SIZE_DEFAULT);
-
-            } else if (mCurrentIndex == 2) {
                 if (pageAllCount == 0) {
                     LocalLog.d(TAG, "第一次刷新");
                 } else {
@@ -516,12 +351,6 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
         }
         LocalLog.d(TAG, " 所有收益 responseAll() enter" + allIncomeResponse.toString());
         if (allIncomeResponse.getError() == 0) {
-            if (allIncomeResponse.getData() != null) {
-                if (totalIncomeNum == null) {
-                    return;
-                }
-                totalIncomeNum.setText(String.valueOf(allIncomeResponse.getData().getTotal_amount()));
-            }
             pageAllCount = allIncomeResponse.getData().getPagenation().getTotalPage();
             LocalLog.d(TAG, "pageIndexAll = " + pageIndexAll + " ,pageAllCount = " + pageAllCount);
             loadAllMore((ArrayList<AllIncomeResponse.DataBeanX.DataBean>) allIncomeResponse.getData().getData());
@@ -540,105 +369,22 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
     }
 
     @Override
-    public void responseMonth(IncomeResponse incomeResponse) {
-        LocalLog.d(TAG, " 月收益 responseMonth() enter" + incomeResponse.toString());
-        if (!isAdded()) {
-            return;
-        }
-        if (incomeResponse.getError() == 0) {
-            monthIncomeFragment.nullDataVisibleSet(View.GONE);
-            if (incomeResponse.getData() != null) {
-                if (monthIncomeNum == null) {
-                    return;
-                }
-                monthIncomeNum.setText(String.valueOf(incomeResponse.getData().getTotal_amount()));
-            }
-            pageMonthCount = incomeResponse.getData().getPagenation().getTotalPage();
-            LocalLog.d(TAG, "pageIndexAll = " + pageIndexMonth + " ,pageAllCount = " + pageMonthCount);
-            loadMonthMore((ArrayList<IncomeResponse.DataBeanX.DataBean>) incomeResponse.getData().getData());
-            if (pageIndexMonth == 1) {
-                monthIncomeFragment.scrollTop();
-            }
-            pageIndexMonth++;
-        } else if (incomeResponse.getError() == 1) {
-            if (pageIndexMonth == 1) {
-                monthIncomeFragment.nullDataVisibleSet(View.VISIBLE);
-            }
-        } else if (incomeResponse.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
-        }
-
-    }
-
-    @Override
-    public void responseToday(IncomeResponse incomeResponse) {
-        LocalLog.d(TAG, "今天收益 responseToday() enter" + incomeResponse.toString());
-        if (!isAdded()) {
-            return;
-        }
-        if (incomeResponse.getError() == 0) {
-            yesterDayIncomeFragment.nullDataVisibleSet(View.GONE);
-            if (incomeDes == null) {
-                return;
-            }
-            incomeDes.setText(String.valueOf(incomeResponse.getData().getTotal_amount()));
-            yesterdayIncomeNum.setText(String.valueOf(incomeResponse.getData().getTotal_amount()));
-            pageYDCount = incomeResponse.getData().getPagenation().getTotalPage();
-            LocalLog.d(TAG, "pageIndexAll = " + pageIndexYD + " ,pageAllCount = " + pageYDCount);
-            loadYesterDayMore((ArrayList<IncomeResponse.DataBeanX.DataBean>) incomeResponse.getData().getData());
-            if (pageIndexYD == 1) {
-                yesterDayIncomeFragment.scrollTop();
-            }
-            pageIndexYD++;
-        } else if (incomeResponse.getError() == 1) {
-            if (pageIndexYD == 1) {
-                yesterDayIncomeFragment.nullDataVisibleSet(View.VISIBLE);
-            }
-        } else if (incomeResponse.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            exitTokenUnfect();
-        }
-
-    }
-
-/* 改为显示今日收益
-    @Override
-    public void responseYesterday(IncomeResponse yesterdayIncomeResponse) {
-        LocalLog.d(TAG, "昨日收益 responseYesterday() enter" + yesterdayIncomeResponse.toString());
-        if (yesterdayIncomeResponse.getError() == 0) {
-            if (yesterdayIncomeResponse.getData() != null) {
-                yesterdayIncomeNum.setText(String.valueOf(yesterdayIncomeResponse.getData().getTotal_amount()));
-            }
-
-            pageYDCount = yesterdayIncomeResponse.getData().getPagenation().getTotalPage();
-            LocalLog.d(TAG, "pageIndexAll = " + pageIndexYD + " ,pageAllCount = " + pageYDCount);
-            loadYesterDayMore((ArrayList<IncomeResponse.DataBeanX.DataBean>) yesterdayIncomeResponse.getData().getData());
-            if (pageIndexYD == 1) {
-                yesterDayIncomeFragment.scrollTop();
-            }
-            pageIndexYD++;
-        } else if (yesterdayIncomeResponse.getError() == -100) {
-            LocalLog.d(TAG, "Token 过期!");
-            Presenter.getInstance(getContext()).setId(-1);
-            Presenter.getInstance(getContext()).steLogFlg(false);
-            Presenter.getInstance(getContext()).setToken(getContext(), "");
-            getActivity().finish();
-            System.exit(0);
-        }
-    }*/
-
-    @Override
     public void response(UserInfoResponse userInfoResponse) {
         if (!isAdded()) {
             return;
         }
         if (userInfoResponse.getError() == 0) {
-            if (incomeMoney == null) {
-                return;
-            }
-            incomeMoney.setText("钱包余额:" + userInfoResponse.getData().getBalance());
-            totalMoney = Float.parseFloat(userInfoResponse.getData().getBalance());
+
+            totalIncomeNum.setText(userInfoResponse.getData().getBalance());
+            stepDollorNum.setText(String.valueOf(userInfoResponse.getData().getCredit()));
+            String moneyStr = String.valueOf(userInfoResponse.getData().getBalance()) + " 元";
+            SpannableString moneyString = new SpannableString(moneyStr);
+            moneyString.setSpan(new AbsoluteSizeSpan(12, true), String.valueOf(userInfoResponse.getData().getBalance()).length(), moneyStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            totalIncomeNum.setText(moneyString);
+            String creditStr = String.valueOf(userInfoResponse.getData().getCredit()) + " 步币";
+            SpannableString creditString = new SpannableString(creditStr);
+            creditString.setSpan(new AbsoluteSizeSpan(12, true), String.valueOf(userInfoResponse.getData().getCredit()).length(), creditStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            stepDollorNum.setText(creditString);
         } else if (userInfoResponse.getError() == -100) {
             LocalLog.d(TAG, "Token 过期!");
             exitTokenUnfect();
@@ -655,27 +401,6 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
             exitTokenUnfect();
         }
     }
-
-  /*  private void getCurrentState() {
-        Presenter.getInstance(getActivity()).postPaoBuSimple(NetApi.GET_PERSON_IDENTIFY_STATE + Presenter.getInstance(getActivity()).getId(), null, new PaoCallBack() {
-            @Override
-            protected void onSuc(String s) {
-                try {
-                    JSONObject jsonObj = new JSONObject(s);
-                    jsonObj = jsonObj.getJSONObject("data");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
-                if (errorBean != null) {
-                    PaoToastUtils.showShortToast(getActivity(), errorBean.getMessage());
-                }
-            }
-        });
-    }*/
 
     @Override
     public void onResume() {
@@ -695,4 +420,13 @@ public class MyWalletFragment extends BaseBarImageViewFragment implements UserIn
         }
     }
 
+    @Override
+    public void responseToday(IncomeResponse incomeResponse) {
+
+    }
+
+    @Override
+    public void responseMonth(IncomeResponse incomeResponse) {
+
+    }
 }

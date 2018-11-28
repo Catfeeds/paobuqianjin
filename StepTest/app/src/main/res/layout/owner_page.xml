@@ -152,135 +152,7 @@
                 android:orientation="vertical">
 
                 <!---->
-                <LinearLayout
-                    android:id="@+id/wallet_dollor_span"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_below="@+id/center_part"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/color_f8"
-                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:id="@+id/wallet_span"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/wallet_icon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/wallet" />
-
-                        <TextView
-                            android:id="@+id/wallet_desc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:includeFontPadding="false"
-                            android:text="钱包"
-                            android:textColor="@color/color_161727"
-                            android:textSize="15dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/invite_people_span"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/invite_people_ico"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ivte_dic" />
-
-                        <TextView
-                            android:id="@+id/invite_people_des"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:includeFontPadding="false"
-                            android:text="@string/invite_people"
-                            android:textColor="@color/color_161727"
-                            android:textSize="15dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/money_span"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/money_icon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/money_more" />
-
-                        <TextView
-                            android:id="@+id/step_dollar_desc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:includeFontPadding="false"
-                            android:text="赚钱攻略"
-                            android:textColor="@color/color_161727"
-                            android:textSize="15dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/vip_span"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/vip_icon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/vip_demo" />
-
-                        <TextView
-                            android:id="@+id/vip_desc"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="10dp"
-                            android:includeFontPadding="false"
-                            android:text="会员"
-                            android:textColor="@color/color_161727"
-                            android:textSize="15dp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginLeft="14dp"
-                    android:layout_marginRight="14dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/color_d9d9d9" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -290,6 +162,7 @@
                     android:paddingBottom="10dp">
 
                     <ImageView
+                        android:id="@+id/wallet_img"
                         android:layout_width="80dp"
                         android:layout_height="82dp"
                         android:layout_gravity="center_vertical"
@@ -307,7 +180,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="余额 (元)"
+                            android:text="钱包"
                             android:textColor="#626266"
                             android:textSize="14dp" />
 
@@ -317,7 +190,15 @@
                             android:layout_height="wrap_content"
                             android:text=""
                             android:textColor="@color/color_161727"
-                            android:textSize="24dp" />
+                            android:textSize="18dp" />
+
+                        <TextView
+                            android:id="@+id/wallet_step"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/color_161727"
+                            android:textSize="18dp" />
 
                     </LinearLayout>
 
@@ -357,41 +238,144 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/circle_other"
+                android:id="@+id/wallet_dollor_span"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="80dp"
                 android:layout_below="@+id/center_part"
                 android:layout_marginTop="8dp"
-                android:background="@color/white"
+                android:background="@color/color_f8"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/step_dollar_span"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/invite_people_span"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:paddingBottom="10dp">
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/invite_people_ico"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ivte_dic" />
 
                     <TextView
-                        android:id="@+id/step_dollar_number"
+                        android:id="@+id/invite_people_des"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text=""
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:includeFontPadding="false"
+                        android:text="@string/invite_people"
                         android:textColor="@color/color_161727"
                         android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/money_span"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/money_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/money_more" />
 
                     <TextView
+                        android:id="@+id/step_dollar_desc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="center"
                         android:layout_marginTop="10dp"
-                        android:text="步币"
-                        android:textColor="@color/color_8a8a8a"
-                        android:textSize="12dp" />
+                        android:includeFontPadding="false"
+                        android:text="新手赚钱"
+                        android:textColor="@color/color_161727"
+                        android:textSize="15dp" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/wallet_span"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/wallet_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/lishi" />
+
+                    <TextView
+                        android:id="@+id/wallet_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:includeFontPadding="false"
+                        android:text="历史记录"
+                        android:textColor="@color/color_161727"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/vip_span"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/vip_icon"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/vip_demo" />
+
+                    <TextView
+                        android:id="@+id/vip_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:includeFontPadding="false"
+                        android:text="会员"
+                        android:textColor="@color/color_161727"
+                        android:textSize="15dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/dive_line_top"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/wallet_dollor_span"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@drawable/d_line" />
+
+            <LinearLayout
+                android:id="@+id/circle_other"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dive_line_top"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
 
                 <LinearLayout
                     android:id="@+id/circle_rel"
@@ -402,24 +386,25 @@
                     android:orientation="vertical"
                     android:paddingBottom="10dp">
 
-                    <TextView
+
+                    <ImageView
                         android:id="@+id/circle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text=""
-                        android:textColor="@color/color_161727"
-                        android:textSize="15dp" />
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/shequn" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="center"
                         android:layout_marginTop="10dp"
+                        android:includeFontPadding="false"
                         android:text="社群"
-                        android:textColor="@color/color_8a8a8a"
-                        android:textSize="12dp" />
+                        android:textColor="@color/color_161727"
+                        android:textSize="15dp" />
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:id="@+id/friend_span"
@@ -427,26 +412,53 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp">
+
+                    <ImageView
+                        android:id="@+id/friend"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/guanzhu" />
 
                     <TextView
-                        android:id="@+id/friend"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text=""
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:includeFontPadding="false"
+                        android:text="关注好友"
                         android:textColor="@color/color_161727"
                         android:textSize="15dp" />
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/step_dollar_span"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp">
+
+                    <ImageView
+                        android:id="@+id/step_dollar_number"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/tonzhi" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/friend"
-                        android:layout_gravity="center_horizontal"
+                        android:layout_gravity="center"
                         android:layout_marginTop="10dp"
-                        android:text="好友"
-                        android:textColor="@color/color_8a8a8a"
-                        android:textSize="12dp" />
+                        android:includeFontPadding="false"
+                        android:text="通知"
+                        android:textColor="@color/color_161727"
+                        android:textSize="15dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -455,26 +467,26 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp">
+
+
+                    <ImageView
+                        android:id="@+id/like_num"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/choujiang" />
 
                     <TextView
-                        android:id="@+id/like_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:text=""
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:includeFontPadding="false"
+                        android:text="抽奖"
                         android:textColor="@color/color_161727"
                         android:textSize="15dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/friend"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="10dp"
-                        android:text="关注"
-                        android:textColor="@color/color_8a8a8a"
-                        android:textSize="12dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -507,19 +519,20 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/gitf_span"
+            <View
+                android:id="@+id/dive_line_second"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="1dp"
                 android:layout_below="@+id/circle_other"
-                android:scaleType="centerCrop"
-                android:src="@drawable/invite" />
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:background="@drawable/d_line" />
 
             <LinearLayout
                 android:id="@+id/collect_sponsor_span"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:layout_below="@+id/gitf_span"
+                android:layout_below="@+id/dive_line_second"
                 android:background="@color/color_f8"
                 android:orientation="horizontal">
 
@@ -635,6 +648,14 @@
                         android:textSize="15dp" />
                 </LinearLayout>
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/gitf_span"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_below="@+id/collect_sponsor_span"
+                android:scaleType="centerCrop"
+                android:src="@drawable/invite" />
         </RelativeLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 

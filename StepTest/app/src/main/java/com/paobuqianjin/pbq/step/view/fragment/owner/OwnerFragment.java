@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,15 +46,18 @@ import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.activity.GetMoreMoneyActivity;
 import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.InviteDetailActivity;
+import com.paobuqianjin.pbq.step.view.activity.MessageActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyDynamicActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyFriendActivity;
 import com.paobuqianjin.pbq.step.view.activity.MyWalletActivity;
 import com.paobuqianjin.pbq.step.view.activity.OwnerCircleActivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeMakeActivity;
 import com.paobuqianjin.pbq.step.view.activity.SettingActivity;
+import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorCollectActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
 import com.paobuqianjin.pbq.step.view.activity.SuggestionActivity;
@@ -98,15 +104,13 @@ public final class OwnerFragment extends BaseFragment {
     @Bind(R.id.user_span)
     LinearLayout userSpan;
     @Bind(R.id.circle)
-    TextView circle;
+    ImageView circle;
     @Bind(R.id.circle_rel)
     LinearLayout circleRel;
-    @Bind(R.id.friend)
-    TextView friend;
     @Bind(R.id.friend_span)
     LinearLayout friendSpan;
     @Bind(R.id.like_num)
-    TextView likeNum;
+    ImageView likeNum;
     @Bind(R.id.like_span)
     LinearLayout likeSpan;
     @Bind(R.id.near_by)
@@ -168,7 +172,7 @@ public final class OwnerFragment extends BaseFragment {
     @Bind(R.id.collect_sponsor_span)
     LinearLayout collectSponsorSpan;
     @Bind(R.id.step_dollar_number)
-    TextView stepDollarNumber;
+    ImageView stepDollarNumber;
     @Bind(R.id.circle_other)
     LinearLayout circleOther;
     @Bind(R.id.dan_icon)
@@ -177,8 +181,10 @@ public final class OwnerFragment extends BaseFragment {
     TextView danDesc;
     @Bind(R.id.owner_page)
     RelativeLayout ownerPage;
+    @Bind(R.id.wallet_step)
+    TextView walletStep;
     private String userAvatar;
-    TextView friends;
+    ImageView friends;
     private int vip = 0;
     private int cVip = 0;
     private int gVip = 0;
@@ -224,19 +230,20 @@ public final class OwnerFragment extends BaseFragment {
         userIcon = (RelativeLayout) viewRoot.findViewById(R.id.user_icon);
         userName = (TextView) viewRoot.findViewById(R.id.user_name);
         userId = (TextView) viewRoot.findViewById(R.id.user_id);
-        circle = (TextView) viewRoot.findViewById(R.id.circle);
-        friends = (TextView) viewRoot.findViewById(R.id.friend);
-        likeNum = (TextView) viewRoot.findViewById(R.id.like_num);
+        circle = (ImageView) viewRoot.findViewById(R.id.circle);
+        friends = (ImageView) viewRoot.findViewById(R.id.friend);
+        likeNum = (ImageView) viewRoot.findViewById(R.id.like_num);
         walletSpan = (LinearLayout) viewRoot.findViewById(R.id.wallet_span);
         stepDollarSpan = (LinearLayout) viewRoot.findViewById(R.id.step_dollar_span);
         dynamicSpan = (LinearLayout) viewRoot.findViewById(R.id.dynamic_span);
         suggestionSpan = (LinearLayout) viewRoot.findViewById(R.id.suggestion_span);
         goldenSponsor = (ImageView) viewRoot.findViewById(R.id.golden_sponsor);
         walletMoney = (TextView) viewRoot.findViewById(R.id.wallet_money);
+        walletStep = (TextView) viewRoot.findViewById(R.id.wallet_step);
         mScreenWidth = ImagePickerComUtils.getScreenWidth(getContext());
         mScreenHeight = ImagePickerComUtils.getScreenHeight(getContext());
         qrLinear = (RelativeLayout) viewRoot.findViewById(R.id.qr_linear);
-        stepDollarNumber = (TextView) viewRoot.findViewById(R.id.step_dollar_number);
+        stepDollarNumber = (ImageView) viewRoot.findViewById(R.id.step_dollar_number);
     }
 
     @Override
@@ -247,7 +254,7 @@ public final class OwnerFragment extends BaseFragment {
         Presenter.getInstance(getContext()).dispatchUiInterface(ownerUiInterface);
     }
 
-    @OnClick({R.id.user_span, R.id.wallet_span, R.id.step_dollar_span, R.id.dynamic_span, R.id.suggestion_span, R.id.like_span, R.id.circle_rel, R.id.setting_span, R.id.vip_span,
+    @OnClick({R.id.user_span, R.id.wallet_img, R.id.step_dollar_span, R.id.dynamic_span, R.id.suggestion_span, R.id.like_span, R.id.circle_rel, R.id.setting_span, R.id.vip_span,
             R.id.collect_span, R.id.money_span, R.id.crash_button, R.id.wallet_detail_button, R.id.friend_span, R.id.invite_people_span, R.id.gitf_span})
     public void onClick(View view) {
         Intent intent = new Intent();
@@ -262,18 +269,15 @@ public final class OwnerFragment extends BaseFragment {
                 }
                 break;
             case R.id.wallet_span:
+                PaoToastUtils.showLongToast(getContext(),"敬请期待");
+                break;
+            case R.id.wallet_img:
                 LocalLog.d(TAG, "钱包");
                 intent.setClass(getContext(), MyWalletActivity.class);
                 startActivity(intent);
                 break;
             case R.id.step_dollar_span:
-                LocalLog.d(TAG, "步币");
-                if (this.userInfoResponse != null && this.userInfoResponse.getData() != null) {
-                    intent.putExtra("userinfo", this.userInfoResponse.getData());
-                    intent.setClass(getContext(), StepDollarActivity.class);
-                    startActivity(intent);
-                }
-
+                startActivity(new Intent(getActivity(), MessageActivity.class));
                 break;
             case R.id.gitf_span:
                 LocalLog.d(TAG, "推荐人");
@@ -302,10 +306,8 @@ public final class OwnerFragment extends BaseFragment {
                 startActivity(intent);
                 break;
             case R.id.like_span:
-                LocalLog.d(TAG, "关注");
-                intent.setAction(ACTION_STRANGE_ACTION);
-                intent.setClass(getContext(), MyFriendActivity.class);
-                startActivity(intent);
+                //抽奖
+                startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", NetApi.urlChongjiang));
                 break;
             case R.id.circle_rel:
                 LocalLog.d(TAG, "圈子");
@@ -538,17 +540,20 @@ public final class OwnerFragment extends BaseFragment {
                 Presenter.getInstance(getContext()).setNo(userInfoResponse.getData().getNo());
                 Presenter.getInstance(getContext()).setNickName(getContext(), userInfoResponse.getData().getNickname());
                 Presenter.getInstance(getContext()).getPlaceErrorImage(headIcon, userInfoResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
-                walletMoney.setText(userInfoResponse.getData().getBalance());
+                String moneyStr = String.valueOf(userInfoResponse.getData().getBalance()) + " 元";
+                SpannableString moneyString = new SpannableString(moneyStr);
+                moneyString.setSpan(new AbsoluteSizeSpan(12, true), String.valueOf(userInfoResponse.getData().getBalance()).length(), moneyStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                walletMoney.setText(moneyString);
+                String creditStr =  String.valueOf(userInfoResponse.getData().getCredit()) + " 步币";
+                SpannableString creditString = new SpannableString(creditStr);
+                creditString.setSpan(new AbsoluteSizeSpan(12, true), String.valueOf(userInfoResponse.getData().getCredit()).length(), creditStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                walletStep.setText(creditString);
                 userName.setText(userInfoResponse.getData().getNickname());
                 userId.setText("跑步钱进号:" + userInfoResponse.getData().getNo());
-                circle.setText(String.valueOf(userInfoResponse.getData().getCircleCount()));
-                friends.setText(String.valueOf(userInfoResponse.getData().getFriendCount()));
-                likeNum.setText(String.valueOf(userInfoResponse.getData().getFollowCount()));
                 urlIcon = userInfoResponse.getData().getAvatar();
                 vip = userInfoResponse.getData().getVip();
                 cVip = userInfoResponse.getData().getCusvip();
                 gVip = userInfoResponse.getData().getGvip();
-                stepDollarNumber.setText(String.valueOf(userInfoResponse.getData().getCredit()));
                 qrImage();
                 if (vip == 1 || cVip == 1 || gVip == 1) {
                     userIcon.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.golden_back));

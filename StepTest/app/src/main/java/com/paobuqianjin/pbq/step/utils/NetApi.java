@@ -387,4 +387,10 @@ public class NetApi {
     public final static String tickXiXiUrl = "https://mobile.yangkeduo.com/duo_cms_mall.html?pid=7320636_40070876&cpsSign=CM7320636_40070876_c93ba20c9497f2a9a6e7924099a2cef4&duoduo_type=2";
     //蘑菇街
     public final static String urlMoguUrl ="https://act.mogujie.com/cps/lqx?userid=1cqywgg&gid=0";
+    //抽奖
+    public final static String urlChongjiang = "https://action.huomob.cn/hdgg?appkey=7ff1937bf0d4be5116eabe03061a1037&adhdkey=c38b684cbce278176b46a11ff77a402d";
+    //
+    public final static String urlTianMao = "https://s.click.taobao.com/ENAfZJw";
+    //
+    public final static String urlJd = "https://union-click.jd.com/jdc?e=0&p=AyIPZRprFDJWWA1FBCVbV0IUEEULXg1cAAQJS14MCQVONUtXHgJlRSsXQUJHE0w5C3R3bjJBL20LGlcHe1cZbBEGVRJbFQEbBl0rWxEFFQ9dHF4cAiIHVBpbFQsaDl0eayUCFzcedVolAhYBVR1YEwcXD2UbXxAAEABTHlwVAhoGZRxrdkZNWwFED10yIjdlK2sVAiIHZUQfSF8iBVQaWhI%3D&t=W1dCFBBFC14NXAAECUteDAkFTjVLVx4C";
 }

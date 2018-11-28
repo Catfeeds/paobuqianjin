@@ -160,9 +160,9 @@ public class StepDollarDetailResponse {
              */
 
             private int id;
-            private int userid;
+            private String userid;
             private int type;
-            private int source;
+            private String source;
             private int credit;
             private int create_time;
             private String sname;
@@ -178,11 +178,11 @@ public class StepDollarDetailResponse {
                 this.id = id;
             }
 
-            public int getUserid() {
+            public String getUserid() {
                 return userid;
             }
 
-            public void setUserid(int userid) {
+            public void setUserid(String userid) {
                 this.userid = userid;
             }
 
@@ -194,11 +194,11 @@ public class StepDollarDetailResponse {
                 this.type = type;
             }
 
-            public int getSource() {
+            public String getSource() {
                 return source;
             }
 
-            public void setSource(int source) {
+            public void setSource(String source) {
                 this.source = source;
             }
 

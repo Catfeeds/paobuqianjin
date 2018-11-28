@@ -515,11 +515,21 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                                 intoWallet.setVisibility(View.INVISIBLE);
                             }
                         } else {
-                            if (Double.parseDouble(roundDetailStyleResponse.getData().getIncome_money()) <= 0.0d
-                                    && Integer.parseInt(roundDetailStyleResponse.getData().getCredit()) < 1) {
+                            if (type == 1 && Double.parseDouble(roundDetailStyleResponse.getData().getIncome_money()) <= 0.0d) {
                                 if (TextUtils.isEmpty(result_str)) {
                                     redSuccess.setText("还未领取过该红包");
                                     redSuccess.setVisibility(View.VISIBLE);
+                                } else {
+                                    redSuccess.setText(result_str);
+                                }
+                            }
+
+                            if (type == 2 && (Integer.parseInt(roundDetailStyleResponse.getData().getCredit()) < 1)) {
+                                if (TextUtils.isEmpty(result_str)) {
+                                    redSuccess.setText("还未领取过该红包");
+                                    redSuccess.setVisibility(View.VISIBLE);
+                                } else {
+                                    redSuccess.setText(result_str);
                                 }
                             }
                         }
