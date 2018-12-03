@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -51,7 +52,7 @@ public class MyFollowFragment extends BaseFragment {
     ArrayList<UserIdFollowResponse.DataBeanX.DataBean> myFollowData = new ArrayList<>();
     private boolean isSearch = false;
     private int mCurrentIndex = 1;
-    ArrayList<UserIdFollowResponse.DataBeanX.DataBean> searchData;
+    ArrayList<UserIdFollowResponse.DataBeanX.DataBean> searchData = new ArrayList<>();
 
     @Override
     protected int getLayoutResId() {
@@ -71,7 +72,16 @@ public class MyFollowFragment extends BaseFragment {
         super.initView(viewRoot);
 
         inviteDanRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.invite_dan_recycler);
-        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext()) {
+            @Override
+            public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                try {
+                    super.onLayoutChildren(recycler, state);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        };
         inviteDanRecycler.setLayoutManager(layoutManager);
         adapter = new FollowAdapter(getActivity(), null);
         inviteDanRecycler.setAdapter(adapter);

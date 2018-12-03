@@ -885,6 +885,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
             stepSpan.setVisibility(View.VISIBLE);
             crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_A6A9D9));
             stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_6c71c4));
+            etRedBagNum.setHint(R.string.red_num_des_step);
         } else {
             LocalLog.d(TAG, "选择现金");
             switchDoll.setImageResource(R.drawable.sdoar_switch_b);
@@ -893,6 +894,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
             crashSpan.setVisibility(View.VISIBLE);
             stepSpan.setVisibility(View.GONE);
             etRedBagTotalMoney.setText(data);
+            etRedBagNum.setHint(R.string.red_num_des_money);
         }
     }
 
@@ -906,6 +908,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
             boolStepDoll = !boolStepDoll;
             crashMoney.setTextColor(ContextCompat.getColor(this, R.color.color_A6A9D9));
             stepDolls.setTextColor(ContextCompat.getColor(this, R.color.color_6c71c4));
+            etRedBagNum.setHint(R.string.red_num_des_step);
         } else {
             LocalLog.d(TAG, "选择现金");
             switchDoll.setImageResource(R.drawable.sdoar_switch_b);
@@ -915,6 +918,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
             crashSpan.setVisibility(View.VISIBLE);
             stepSpan.setVisibility(View.GONE);
             boolStepDoll = !boolStepDoll;
+            etRedBagNum.setHint(R.string.red_num_des_money);
         }
     }
 

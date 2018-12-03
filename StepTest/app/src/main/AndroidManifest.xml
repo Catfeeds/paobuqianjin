@@ -1070,6 +1070,15 @@
         <activity
             android:name=".view.activity.ConsumRedInfoActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.shop.TaoTianActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.shop.FavorIdActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.activity.shop.TianMaoDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -47,6 +47,7 @@ import com.paobuqianjin.pbq.step.presenter.im.OwnerUiInterface;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.view.activity.FriendStepDanActivity;
 import com.paobuqianjin.pbq.step.view.activity.GetMoreMoneyActivity;
 import com.paobuqianjin.pbq.step.view.activity.InoutcomDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.InviteDetailActivity;
@@ -192,12 +193,14 @@ public final class OwnerFragment extends BaseFragment {
     private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
     private final static String ACTION_STRANGE_ACTION = "com.paobuqianjin.pbq.step.STRANGE_ACTION";
     private final static String ACTION_FRIEND_ACTION = "com.paobuqianjn.step.FRIEND_ACTION";
+    private final static String ACTION_FRIEND_HONOR = "com.paobuqianjin.pbq.ACTION_FRIEND_HONOR";
     private View popBirthSelectView;
     private PopupWindow popupSelectWindow;
     private TranslateAnimation animationCircleType;
     private int mScreenWidth;
     private int mScreenHeight;
     private RelativeLayout qrLinear;
+    String money = "";
 
     @Override
     public void onAttach(Context context) {
@@ -254,7 +257,7 @@ public final class OwnerFragment extends BaseFragment {
         Presenter.getInstance(getContext()).dispatchUiInterface(ownerUiInterface);
     }
 
-    @OnClick({R.id.user_span, R.id.wallet_img, R.id.step_dollar_span, R.id.dynamic_span, R.id.suggestion_span, R.id.like_span, R.id.circle_rel, R.id.setting_span, R.id.vip_span,
+    @OnClick({R.id.wallet_span, R.id.user_span, R.id.wallet_img, R.id.step_dollar_span, R.id.dynamic_span, R.id.suggestion_span, R.id.like_span, R.id.circle_rel, R.id.setting_span, R.id.vip_span,
             R.id.collect_span, R.id.money_span, R.id.crash_button, R.id.wallet_detail_button, R.id.friend_span, R.id.invite_people_span, R.id.gitf_span})
     public void onClick(View view) {
         Intent intent = new Intent();
@@ -269,7 +272,10 @@ public final class OwnerFragment extends BaseFragment {
                 }
                 break;
             case R.id.wallet_span:
-                PaoToastUtils.showLongToast(getContext(),"敬请期待");
+                intent = new Intent();
+                intent.setAction(ACTION_FRIEND_HONOR);
+                intent.setClass(getContext(), FriendStepDanActivity.class);
+                startActivity(intent);
                 break;
             case R.id.wallet_img:
                 LocalLog.d(TAG, "钱包");
@@ -335,8 +341,8 @@ public final class OwnerFragment extends BaseFragment {
                 startActivity(GetMoreMoneyActivity.class, null);
                 break;
             case R.id.crash_button:
-                if (!TextUtils.isEmpty(walletMoney.getText().toString().trim())) {
-                    intent.putExtra("total", walletMoney.getText().toString().trim());
+                if (!TextUtils.isEmpty(money)) {
+                    intent.putExtra("total", money);
                     intent.setAction(CRASH_ACTION);
                     intent.setClass(getContext(), TransferActivity.class);
                     startActivity(intent);
@@ -540,11 +546,12 @@ public final class OwnerFragment extends BaseFragment {
                 Presenter.getInstance(getContext()).setNo(userInfoResponse.getData().getNo());
                 Presenter.getInstance(getContext()).setNickName(getContext(), userInfoResponse.getData().getNickname());
                 Presenter.getInstance(getContext()).getPlaceErrorImage(headIcon, userInfoResponse.getData().getAvatar(), R.drawable.default_head_ico, R.drawable.default_head_ico);
+                money = userInfoResponse.getData().getBalance();
                 String moneyStr = String.valueOf(userInfoResponse.getData().getBalance()) + " 元";
                 SpannableString moneyString = new SpannableString(moneyStr);
                 moneyString.setSpan(new AbsoluteSizeSpan(12, true), String.valueOf(userInfoResponse.getData().getBalance()).length(), moneyStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 walletMoney.setText(moneyString);
-                String creditStr =  String.valueOf(userInfoResponse.getData().getCredit()) + " 步币";
+                String creditStr = String.valueOf(userInfoResponse.getData().getCredit()) + " 步币";
                 SpannableString creditString = new SpannableString(creditStr);
                 creditString.setSpan(new AbsoluteSizeSpan(12, true), String.valueOf(userInfoResponse.getData().getCredit()).length(), creditStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 walletStep.setText(creditString);

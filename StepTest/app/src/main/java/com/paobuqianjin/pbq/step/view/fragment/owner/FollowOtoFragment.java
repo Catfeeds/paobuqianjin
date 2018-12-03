@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -33,6 +34,7 @@ import com.paobuqianjin.pbq.step.view.activity.AddFriendAddressActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.owner.FollowAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarImageViewFragment;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
+import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.yanzhenjie.loading.LoadingView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
@@ -47,27 +49,13 @@ import static com.paobuqianjin.pbq.step.utils.Utils.PAGE_SIZE_DEFAULT;
  * Created by pbq on 2018/3/1.
  */
 
-public class FollowOtoFragment extends BaseBarStyleTextViewFragment {
+public class FollowOtoFragment extends BaseFragment {
     private final static String TAG = FollowOtoFragment.class.getSimpleName();
     @Bind(R.id.invite_dan_recycler)
     SwipeMenuRecyclerView inviteDanRecycler;
     LinearLayoutManager layoutManager;
     @Bind(R.id.not_found_data)
     TextView notFoundData;
-    @Bind(R.id.bar_return_drawable)
-    ImageView barReturnDrawable;
-    @Bind(R.id.button_return_bar)
-    RelativeLayout buttonReturnBar;
-    @Bind(R.id.bar_title)
-    TextView barTitle;
-    @Bind(R.id.bar_tv_right)
-    TextView barTvRight;
-    @Bind(R.id.search_icon)
-    RelativeLayout searchIcon;
-    @Bind(R.id.search_circle_text)
-    EditText searchCircleText;
-    @Bind(R.id.cancel_icon)
-    RelativeLayout cancelIcon;
     private FollowAdapter adapter;
     DefineLoadMoreView loadMoreView;
     private int pageFollowOtoCount = 0;
@@ -75,22 +63,12 @@ public class FollowOtoFragment extends BaseBarStyleTextViewFragment {
     private int mCurrentIndex = 1;
     private String keyWord = "";
     ArrayList<UserFollowOtOResponse.DataBeanX.DataBean> followOtoData = new ArrayList<>();
-    ArrayList<UserFollowOtOResponse.DataBeanX.DataBean> searchData;
+    ArrayList<UserFollowOtOResponse.DataBeanX.DataBean> searchData = new ArrayList<>();
     private boolean isSearch = false;
 
     @Override
     protected int getLayoutResId() {
         return R.layout.friend_fg;
-    }
-
-    @Override
-    public Object right() {
-        return "添加关注";
-    }
-
-    @Override
-    protected String title() {
-        return "好友";
     }
 
     @Override
@@ -102,47 +80,7 @@ public class FollowOtoFragment extends BaseBarStyleTextViewFragment {
     }
 
 
-    private TextWatcher textWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            String temp = s.toString();
-            if (!TextUtils.isEmpty(temp)) {
-                LocalLog.d(TAG, "显示取消搜索界面");
-                cancelIcon.setVisibility(View.VISIBLE);
-                cancelIcon.setOnClickListener(onClickListener);
-            } else {
-                LocalLog.d(TAG, "隐藏搜索界面");
-                cancelIcon.setVisibility(View.GONE);
-                keyWord = "";
-                searchKeyWord(keyWord);
-            }
-        }
-    };
-
-    private View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.cancel_icon:
-                    LocalLog.d(TAG, "取消搜索,显示原来的数据");
-                    searchCircleText.setText(null);
-                    keyWord = "";
-                    break;
-            }
-        }
-    };
-
-    private void searchKeyWord(String keyWord) {
+    public void searchKeyWord(String keyWord) {
         this.keyWord = keyWord;
         LocalLog.d(TAG, "keyWord = " + keyWord);
         if (TextUtils.isEmpty(keyWord)) {
@@ -179,7 +117,16 @@ public class FollowOtoFragment extends BaseBarStyleTextViewFragment {
     @Override
     protected void initView(View viewRoot) {
         inviteDanRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.invite_dan_recycler);
-        layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext()) {
+            @Override
+            public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+                try {
+                    super.onLayoutChildren(recycler, state);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
         inviteDanRecycler.setLayoutManager(layoutManager);
         adapter = new FollowAdapter(getActivity(), null);
         inviteDanRecycler.setAdapter(adapter);
@@ -190,37 +137,6 @@ public class FollowOtoFragment extends BaseBarStyleTextViewFragment {
         loadFollowOtOData(followOtoData);
         notFoundData = (TextView) viewRoot.findViewById(R.id.not_found_data);
         Presenter.getInstance(getContext()).getFollows("mutual", pageIndexFollowOto, PAGE_SIZE_DEFAULT, keyWord, OtoFriendCallBack);
-        setToolBarListener(new BaseBarImageViewFragment.ToolBarListener() {
-            @Override
-            public void clickLeft() {
-                getActivity().onBackPressed();
-            }
-
-            @Override
-            public void clickRight() {
-                Intent friendAddressIntent = new Intent();
-                friendAddressIntent.setClass(getContext(), AddFriendAddressActivity.class);
-                startActivity(friendAddressIntent);
-            }
-        });
-        searchCircleText = (EditText) viewRoot.findViewById(R.id.search_circle_text);
-        searchCircleText.setHint("搜索跑步钱进号、用户昵称");
-        searchIcon = (RelativeLayout) viewRoot.findViewById(R.id.search_icon);
-
-        searchCircleText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_SEARCH) {
-                    searchKeyWord(searchCircleText.getText().toString().trim());
-                    Utils.hideInput(getContext());
-                }
-                return false;
-            }
-        });
-        searchCircleText.addTextChangedListener(textWatcher);
-
-        cancelIcon = (RelativeLayout) viewRoot.findViewById(R.id.cancel_icon);
-        cancelIcon.setOnClickListener(onClickListener);
     }
 
     private InnerCallBack OtoFriendCallBack = new InnerCallBack() {

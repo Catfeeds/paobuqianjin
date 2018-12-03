@@ -174,7 +174,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     @Bind(R.id.fiend_task_num)
     TextView fiendTaskNum;
     @Bind(R.id.banner_tv)
-    TextView bannerTv;
+    ImageView bannerTv;
 
     private PopupWindow popupRedPkgWindow;
     private TranslateAnimation animationCircleType;
@@ -208,7 +208,6 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private GridGoodAdpter gridGoodAdpter;
     private String shopUrl = null;
     RelativeLayout redLayout;
-    private final static String bannerStr = "在京东、淘宝、天猫、拼多多网购最多省80%";
     ArrayList<RedDataBean> redArray = new ArrayList<>();
     //1.朋友专享 2.长辈专享 3.夫妻专享 4.孩子专享 5.父母专享
     private ArrayList<TaskNumResponse.DataBean> arrayList = new ArrayList<>();
@@ -281,11 +280,6 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         loveTaskNum = (TextView) viewRoot.findViewById(R.id.love_task_num);
         gridGoodAdpter = new GridGoodAdpter(getContext(), 12);
         goodGrid = (RongGridView) viewRoot.findViewById(R.id.good_grid);
-        bannerTv = (TextView) viewRoot.findViewById(R.id.banner_tv);
-        SpannableString banSpanning = new SpannableString(bannerStr);
-        banSpanning.setSpan(new AbsoluteSizeSpan(20, true), bannerStr.length() - 3, banSpanning.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-        
-        bannerTv.setText(banSpanning);
         for (int i = 1; i <= 5; i++) {
             TaskNumResponse.DataBean dataBean = new TaskNumResponse.DataBean();
             dataBean.setType(i);
@@ -780,10 +774,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                             }
                         });
                     }
-                } catch (
-                        JsonSyntaxException e)
-
-                {
+                } catch (JsonSyntaxException e) {
                     e.printStackTrace();
                 }
             }

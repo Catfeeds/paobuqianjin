@@ -290,7 +290,7 @@
     <string name="repositioning">重新定位</string>
     <string name="my_sponsor">我的商铺</string>
     <string name="sponosor_des">请填写店铺经营范围(或推广信息)300个字以内</string>
-    <string name="vip_goto">"亲，小主。想领更多更大的红包，请办理个人会员。现在办理每年3元，以后办理每年300元!"</string>
+    <string name="vip_goto">"亲，小主。想领更多更大的红包，请办理个人会员。现在办理每年19.9元，以后办理每年199元!"</string>
     <string name="golden_vip_attion">温馨提示：只有金牌商家会员才能发布消费红包。现在办理365元每年，以后办理3650元每年！现在开通!</string>
     <string name="golden_vip_near">温馨提示：现在可免费试用，以后只有金牌商家会员才能发布附近红包。现在办理365元每年，以后办理每年3650元每年！现在开通!</string>
     <string name="golden_vip_around">温馨提示：现在可免费试用，以后只有金牌商家会员才能发布遍地红包。现在办理365元每年，以后办理每年3650元每年！现在开通!</string>
@@ -301,7 +301,9 @@
     <string name="parent_red_des">给父母发个跑步红包吧！\n让他天天健康起来</string>
     <string name="older_red_des">给长辈发个跑步红包吧！\n让他天天健康起来</string>
     <string name="child_red_des">给孩子发个跑步红包吧！\n让他天天健康起来</string>
-    <string name="friend_red_des">给父母发个跑步红包吧！\n让他天天健康起来</string>
+    <string name="friend_red_des">给朋友发个跑步红包吧！\n让他天天健康起来</string>
     <string name="dear_red_des">给爱人发个跑步红包吧！\n让他天天健康起来</string>
     <string name="new_s">最新\n资讯</string>
+    <string name="red_num_des_money">最高2万个(每个红包≥0.02元)</string>
+    <string name="red_num_des_step">最高2万个(每个红包≥2步币)</string>
 </resources>

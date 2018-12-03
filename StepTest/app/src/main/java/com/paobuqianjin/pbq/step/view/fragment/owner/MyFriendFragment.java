@@ -46,7 +46,7 @@ import butterknife.ButterKnife;
 public class MyFriendFragment extends BaseBarStyleTextViewFragment {
     private final static String TAG = MyFriendFragment.class.getSimpleName();
 
-    String[] titles = {"已关注", "关注我的"};
+    String[] titles = {"好友", "已关注", "关注我的",};
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.button_return_bar)
@@ -73,6 +73,7 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
     RelativeLayout myFriendFg;
     private MyFollowFragment myFollowFragment;
     private FollowMeFragment followMeFragment;
+    private FollowOtoFragment followOtoFragment;
     private int selectPage = 0;
     private String keyWord = "";
 
@@ -113,7 +114,9 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
 
         myFollowFragment = new MyFollowFragment();
         followMeFragment = new FollowMeFragment();
+        followOtoFragment = new FollowOtoFragment();
         List<Fragment> fragments = new ArrayList<>();
+        fragments.add(followOtoFragment);
         fragments.add(myFollowFragment);
         fragments.add(followMeFragment);
         TabAdapter tabAdapter = new TabAdapter(getContext()
@@ -131,8 +134,10 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
                 if (i == EditorInfo.IME_ACTION_SEARCH) {
                     LocalLog.d(TAG, "onEditorAction() selectPage = " + selectPage);
                     if (selectPage == 0) {
-                        myFollowFragment.searchKeyWord(searchCircleText.getText().toString());
+                        followOtoFragment.searchKeyWord(searchCircleText.getText().toString());
                     } else if (selectPage == 1) {
+                        myFollowFragment.searchKeyWord(searchCircleText.getText().toString());
+                    } else if (selectPage == 2) {
                         followMeFragment.searchKeyWord(searchCircleText.getText().toString());
                     }
                     Utils.hideInput(getContext());
@@ -170,6 +175,9 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
                     case 1:
                         selectPage = 1;
                         LocalLog.d(TAG, "onTabSelected() selectPage = " + selectPage);
+                        break;
+                    case 2:
+                        selectPage = 2;
                         break;
                     default:
                         break;
@@ -227,8 +235,10 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
                 keyWord = "";
                 LocalLog.d(TAG, "afterTextChanged() enter selectPage" + selectPage);
                 if (selectPage == 0) {
-                    myFollowFragment.searchKeyWord("");
+                    followOtoFragment.searchKeyWord("");
                 } else if (selectPage == 1) {
+                    myFollowFragment.searchKeyWord("");
+                } else {
                     followMeFragment.searchKeyWord("");
                 }
             }
@@ -242,9 +252,11 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
         public void onRefresh() {
             LocalLog.d(TAG, "刷新当前页面! selectPage" + selectPage);
             if (selectPage == 0) {
-                //myFollowFragment.update();
+
             } else if (selectPage == 1) {
-                //followMeFragment.update();
+
+            } else if (selectPage == 2) {
+
             }
             if (createCircleSwipe != null) {
                 createCircleSwipe.postDelayed(new Runnable() {
@@ -282,6 +294,13 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
         return view;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+/*        followOtoFragment.update();
+        followMeFragment.update();*/
+    }
 
     public void setIndicator(TabLayout tab, int leftDip, int rightDip) {
         if (tab == null) {

@@ -386,11 +386,21 @@ public class NetApi {
     //券多多
     public final static String tickXiXiUrl = "https://mobile.yangkeduo.com/duo_cms_mall.html?pid=7320636_40070876&cpsSign=CM7320636_40070876_c93ba20c9497f2a9a6e7924099a2cef4&duoduo_type=2";
     //蘑菇街
-    public final static String urlMoguUrl ="https://act.mogujie.com/cps/lqx?userid=1cqywgg&gid=0";
+    public final static String urlMoguUrl = "https://act.mogujie.com/cps/lqx?userid=1cqywgg&gid=0";
     //抽奖
     public final static String urlChongjiang = "https://action.huomob.cn/hdgg?appkey=7ff1937bf0d4be5116eabe03061a1037&adhdkey=c38b684cbce278176b46a11ff77a402d";
     //
     public final static String urlTianMao = "https://s.click.taobao.com/ENAfZJw";
     //
     public final static String urlJd = "https://union-click.jd.com/jdc?e=0&p=AyIPZRprFDJWWA1FBCVbV0IUEEULXg1cAAQJS14MCQVONUtXHgJlRSsXQUJHE0w5C3R3bjJBL20LGlcHe1cZbBEGVRJbFQEbBl0rWxEFFQ9dHF4cAiIHVBpbFQsaDl0eayUCFzcedVolAhYBVR1YEwcXD2UbXxAAEABTHlwVAhoGZRxrdkZNWwFED10yIjdlK2sVAiIHZUQfSF8iBVQaWhI%3D&t=W1dCFBBFC14NXAAECUteDAkFTjVLVx4C";
+    //[天猫]获取好券分类
+    public final static String urlCouponCateStyleS = url + "v1/CoalitionLine/couponCateList";
+    //[天猫]获取好券商品列表(带分类)
+    public final static String urlCouponCateList = url + "v1/CoalitionLine/getCouponList";
+    //[天猫]获取指定选品库下商品列
+    public final static String urlFavGoodList = url + "v1/CoalitionLine/favoritesItem";
+    //[天猫]根据商品id获取商品详情[精简版]
+    public final static String urlGoodsDetail = url + "v1/CoalitionLine/goodsDetails";
+    //[天猫]favorColumn [天猫]获取选品库列表和H5栏目
+    public final static String urlFavorColumnH5 = url + "v1/CoalitionLine/favorColumn";
 }

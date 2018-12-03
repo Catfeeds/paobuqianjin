@@ -2,6 +2,8 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -51,6 +53,7 @@ import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.app.Activity.RESULT_OK;
+import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 
 /**
  * Created by pbq on 2018/3/30.
@@ -128,6 +131,7 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
     private final static int REQUEST_ICON = 204;
     private NormalDialog normalDialog;
     private final static int ACCOUNT_CHANGE = 305;
+    private final static String SETTINGS_ACTION = "android.settings.APPLICATION_DETAILS_SETTINGS";
 
     @Override
     protected int getLayoutResId() {
@@ -179,9 +183,30 @@ public class SettingFragment extends BaseBarStyleTextViewFragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.user_head_icon_change, R.id.user_name_change, R.id.change_male, R.id.change_birth, R.id.exit, R.id.update_check, R.id.some_problems, R.id.account_change_span})
+    private void getAppSetting() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BASE
+                && Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+            Intent intent = new Intent()
+                    .setAction(SETTINGS_ACTION)
+                    .setData(Uri.fromParts("package",
+                            getPackageName(), null));
+            startActivity(intent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Intent intent = new Intent()
+                    .setAction(SETTINGS_ACTION)
+                    .setData(Uri.fromParts("package",
+                            getPackageName(), null));
+            startActivity(intent);
+            return;
+        }
+    }
+
+    @OnClick({R.id.setting_check, R.id.user_head_icon_change, R.id.user_name_change, R.id.change_male, R.id.change_birth, R.id.exit, R.id.update_check, R.id.some_problems, R.id.account_change_span})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.setting_check:
+                getAppSetting();
+                break;
             case R.id.user_head_icon_change:
                 LocalLog.d(TAG, "个人资料");
                 if (userInfo != null) {

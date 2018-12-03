@@ -190,14 +190,14 @@
                             android:src="@drawable/older_red" />
 
                         <TextView
-                            android:textSize="10dp"
-                            android:textColor="@color/color_f8"
                             android:id="@+id/older_task_num"
                             android:layout_width="15dp"
                             android:layout_height="15dp"
                             android:layout_alignRight="@+id/older_img"
                             android:background="@drawable/home_task_bg"
                             android:gravity="center"
+                            android:textColor="@color/color_f8"
+                            android:textSize="10dp"
                             android:visibility="gone" />
                     </RelativeLayout>
 
@@ -234,14 +234,14 @@
                             android:src="@drawable/parent_red" />
 
                         <TextView
-                            android:textSize="10dp"
-                            android:textColor="@color/color_f8"
                             android:id="@+id/parent_task_num"
                             android:layout_width="15dp"
                             android:layout_height="15dp"
                             android:layout_alignRight="@+id/parent_img"
                             android:background="@drawable/home_task_bg"
                             android:gravity="center"
+                            android:textColor="@color/color_f8"
+                            android:textSize="10dp"
                             android:visibility="gone" />
                     </RelativeLayout>
 
@@ -278,14 +278,14 @@
                             android:src="@drawable/love_red" />
 
                         <TextView
-                            android:textSize="10dp"
-                            android:textColor="@color/color_f8"
                             android:id="@+id/love_task_num"
                             android:layout_width="15dp"
                             android:layout_height="15dp"
                             android:layout_alignRight="@+id/love_img"
                             android:background="@drawable/home_task_bg"
                             android:gravity="center"
+                            android:textColor="@color/color_f8"
+                            android:textSize="10dp"
                             android:visibility="gone" />
                     </RelativeLayout>
 
@@ -322,14 +322,14 @@
                             android:src="@drawable/baby_red" />
 
                         <TextView
-                            android:textSize="10dp"
-                            android:textColor="@color/color_f8"
                             android:id="@+id/baby_task_num"
                             android:layout_width="15dp"
                             android:layout_height="15dp"
                             android:layout_alignRight="@+id/baby_img"
                             android:background="@drawable/home_task_bg"
                             android:gravity="center"
+                            android:textColor="@color/color_f8"
+                            android:textSize="10dp"
                             android:visibility="gone" />
                     </RelativeLayout>
 
@@ -370,11 +370,11 @@
                             android:id="@+id/fiend_task_num"
                             android:layout_width="15dp"
                             android:layout_height="15dp"
-                            android:textSize="10dp"
-                            android:textColor="@color/color_f8"
                             android:layout_alignRight="@+id/friend_img"
                             android:background="@drawable/home_task_bg"
                             android:gravity="center"
+                            android:textColor="@color/color_f8"
+                            android:textSize="10dp"
                             android:visibility="gone" />
                     </RelativeLayout>
 
@@ -481,6 +481,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
+                android:paddingBottom="13dp"
                 android:background="@drawable/rect_out_gray"
                 android:orientation="vertical">
 
@@ -494,12 +495,28 @@
                     <FrameLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1">
+
+                        <ImageView
+                            android:id="@+id/pingduoduo"
+                            android:layout_width="54dp"
+                            android:layout_height="54dp"
+                            android:layout_gravity="center_horizontal"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/pinduoduo" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1">
 
                         <ImageView
                             android:id="@+id/tianmao"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="54dp"
+                            android:layout_height="54dp"
+                            android:scaleType="centerCrop"
                             android:layout_gravity="center"
                             android:src="@drawable/tianmao" />
                     </FrameLayout>
@@ -513,13 +530,14 @@
 
                         <ImageView
                             android:id="@+id/jingdong"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="54dp"
+                            android:layout_height="54dp"
                             android:layout_gravity="center_horizontal"
                             android:scaleType="centerCrop"
                             android:src="@drawable/jingdong" />
 
                     </FrameLayout>
+
 
                     <FrameLayout
                         android:layout_width="0dp"
@@ -529,8 +547,8 @@
 
                         <ImageView
                             android:id="@+id/weipinghui"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="54dp"
+                            android:layout_height="54dp"
                             android:layout_gravity="center_horizontal"
                             android:scaleType="centerCrop"
                             android:src="@drawable/weipinhui" />
@@ -543,39 +561,21 @@
                         android:layout_weight="1">
 
                         <ImageView
-                            android:id="@+id/pingduoduo"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_gravity="center_horizontal"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/pinduoduo" />
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="1">
-
-                        <ImageView
                             android:id="@+id/mogu"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="54dp"
+                            android:layout_height="54dp"
                             android:layout_gravity="center_horizontal"
                             android:scaleType="centerCrop"
                             android:src="@drawable/mogujie" />
                     </FrameLayout>
                 </LinearLayout>
 
-                <TextView
+                <ImageView
                     android:id="@+id/banner_tv"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:background="@drawable/home_banner"
-                    android:gravity="center"
-                    android:text=""
-                    android:textColor="@color/color_f8"
-                    android:textSize="13dp"></TextView>
+                    android:layout_height="35dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/home_banner"></ImageView>
             </LinearLayout>
 
             <io.rong.imkit.model.RongGridView

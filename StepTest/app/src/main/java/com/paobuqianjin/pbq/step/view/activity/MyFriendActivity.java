@@ -30,20 +30,11 @@ public class MyFriendActivity extends BaseActivity {
     protected void initView() {
         Intent intent = getIntent();
         if (intent != null) {
-            if (ACTION_STRANGE_ACTION.equals(intent.getAction())) {
-                MyFriendFragment myFriendFragment = new MyFriendFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.my_friend_container, myFriendFragment)
-                        .show(myFriendFragment)
-                        .commit();
-            } else if (ACTION_FRIEND_ACTION.equals(intent.getAction())) {
-                LocalLog.d(TAG, "");
-                FollowOtoFragment followOtoFragment = new FollowOtoFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.my_friend_container, followOtoFragment)
-                        .show(followOtoFragment)
-                        .commit();
-            }
+            MyFriendFragment myFriendFragment = new MyFriendFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.my_friend_container, myFriendFragment)
+                    .show(myFriendFragment)
+                    .commit();
         }
     }
 }

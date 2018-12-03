@@ -232,6 +232,7 @@ public class SingleWebViewActivity extends BaseBarActivity implements BaseBarAct
         setContentView(R.layout.activity_single_web_view);
         ButterKnife.bind(this);
         setToolBarListener(this);
+        showLoadingBar();
         urlStr = getIntent().getStringExtra("url");
         red_id = getIntent().getStringExtra("red_id");
         LocalLog.d(TAG, "urlStr: " + urlStr + "red_id =" + red_id);
@@ -323,6 +324,7 @@ public class SingleWebViewActivity extends BaseBarActivity implements BaseBarAct
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                hideLoadingBar();
                 String title = view.getTitle();
                 if (!TextUtils.isEmpty(title)) {
                     barTitle.setText(title);

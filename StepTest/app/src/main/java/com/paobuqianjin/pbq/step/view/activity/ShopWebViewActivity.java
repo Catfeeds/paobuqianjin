@@ -79,6 +79,7 @@ public class ShopWebViewActivity extends BaseBarActivity implements BaseBarActiv
         setContentView(R.layout.activity_single_web_view);
         ButterKnife.bind(this);
         setToolBarListener(this);
+        showLoadingBar();
         urlStr = getIntent().getStringExtra("url");
         WebSettings webSettings = webview.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -143,6 +144,7 @@ public class ShopWebViewActivity extends BaseBarActivity implements BaseBarActiv
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                hideLoadingBar();
                 String title = view.getTitle();
                 if (!TextUtils.isEmpty(title)) {
                     barTitle.setText(title);

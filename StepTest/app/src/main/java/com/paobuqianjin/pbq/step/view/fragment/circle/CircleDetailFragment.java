@@ -729,7 +729,7 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
                         if (pop_money != null) {
                             if (postRevRedPkgResponse.getData() != null) {
                                 pop_money.setText(String.valueOf("￥ " + postRevRedPkgResponse.getData().getAmount()));
-                                Presenter.getInstance(getContext()).getCircleDetail(circleId);
+                                getCircleDetail(circleId);
                             }
                         }
                         //popCircleRedPkg.dismiss();
@@ -1181,20 +1181,20 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
                 if (requestCode == REQUEST_MEMBER) {
                     LocalLog.d(TAG, "执行过成员删除操作!");
                     if (circleId != -1) {
-                        Presenter.getInstance(getContext()).getCircleDetail(circleId);
+                        getCircleDetail(circleId);
                     }
                 } else if (requestCode == REQUEST_EDIT) {
                     LocalLog.d(TAG, "编辑过圈子");
                     if (circleId != -1) {
-                        Presenter.getInstance(getContext()).getCircleDetail(circleId);
+                        getCircleDetail(circleId);
                     }
                 } else if (requestCode == REQUEST_RECHARGE) {
                     if (circleId != -1) {
-                        Presenter.getInstance(getContext()).getCircleDetail(circleId);
+                        getCircleDetail(circleId);
                     }
                 } else if (requestCode == REQUEST_CHANGE_BANNER) {
                     if (circleId != -1) {
-                        Presenter.getInstance(getContext()).getCircleDetail(circleId);
+                        getCircleDetail(circleId);
                     }
                 }
                 break;
