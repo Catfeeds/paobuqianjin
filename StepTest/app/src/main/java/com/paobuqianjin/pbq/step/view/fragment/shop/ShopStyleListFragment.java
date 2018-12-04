@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ConSumRedStyleResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CouponCateListResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CouponListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PagenationBean;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ShopSendedRedBagResponse;
@@ -53,7 +54,7 @@ public class ShopStyleListFragment extends BaseFragment implements SwipeMenuRecy
     LinearLayout linearEmpty;
     @Bind(R.id.refresh_layout)
     SwipeRefreshLayout refreshLayout;
-    private List<CouponCateListResponse.DataBean> listData = new ArrayList<>();
+    private List<CouponListResponse.DataBean.TbkCouponBean> listData = new ArrayList<>();
     private ShopStyleAdapter adapter;
     LinearLayoutManager layoutManager;
     private CouponCateListResponse.DataBean dataBean;
@@ -66,7 +67,7 @@ public class ShopStyleListFragment extends BaseFragment implements SwipeMenuRecy
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.consum_red_fg;
+        return R.layout.shop_style_fg;
     }
 
     @Override
@@ -153,9 +154,9 @@ public class ShopStyleListFragment extends BaseFragment implements SwipeMenuRecy
                     listData.clear();
                     rvCoupon.loadMoreFinish(false, true);
                 }
-                CouponCateListResponse couponCateListResponse = new Gson().fromJson(s, CouponCateListResponse.class);
-                if (couponCateListResponse.getData().size() > 0) {
-                    listData.addAll(couponCateListResponse.getData());
+                CouponListResponse couponListResponse = new Gson().fromJson(s, CouponListResponse.class);
+                if (couponListResponse.getData().getTbk_coupon().size() > 0) {
+                    listData.addAll(couponListResponse.getData().getTbk_coupon());
                     adapter.notifyDataSetChanged();
                     rvCoupon.loadMoreFinish(false, true);
                 } else {

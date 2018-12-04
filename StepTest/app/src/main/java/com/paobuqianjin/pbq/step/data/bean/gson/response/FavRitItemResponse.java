@@ -101,7 +101,6 @@ public class FavRitItemResponse {
             private String reserve_price;
             private String seller_id;
             private String shop_title;
-            private SmallImagesBean small_images;
             private String status;
             private String title;
             private String tk_rate;
@@ -213,13 +212,6 @@ public class FavRitItemResponse {
                 this.shop_title = shop_title;
             }
 
-            public SmallImagesBean getSmall_images() {
-                return small_images;
-            }
-
-            public void setSmall_images(SmallImagesBean small_images) {
-                this.small_images = small_images;
-            }
 
             public String getStatus() {
                 return status;
@@ -333,17 +325,6 @@ public class FavRitItemResponse {
                 this.coupon_total_count = coupon_total_count;
             }
 
-            public static class SmallImagesBean {
-                private List<String> string;
-
-                public List<String> getString() {
-                    return string;
-                }
-
-                public void setString(List<String> string) {
-                    this.string = string;
-                }
-            }
         }
     }
 }

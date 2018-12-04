@@ -24,14 +24,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
-import com.paobuqianjin.pbq.step.adapter.GridAddPic2Adapter;
 import com.paobuqianjin.pbq.step.adapter.GridTextAdapter;
 import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.CouponCateListResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FavorColResponse;
-import com.paobuqianjin.pbq.step.data.bean.table.SelectPicBean;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
@@ -151,7 +149,6 @@ public class TaoTianActivity extends BaseBarActivity {
                     });
                 }
             } else {
-                LocalLog.d(TAG, "打开H5链接");
                 partOneSpan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -175,7 +172,6 @@ public class TaoTianActivity extends BaseBarActivity {
                     });
                 }
             } else {
-                LocalLog.d(TAG, "打开H5链接");
                 partTwoSpan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -199,7 +195,6 @@ public class TaoTianActivity extends BaseBarActivity {
                     });
                 }
             } else {
-                LocalLog.d(TAG, "打开H5链接");
                 partThreeSpan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -208,7 +203,7 @@ public class TaoTianActivity extends BaseBarActivity {
                 });
 
             }
-        } else if (i == 3) {
+        } else if (i == 1) {
             partForSpan.setVisibility(View.VISIBLE);
             title4.setText(dataBean.getFavorites_title());
             Presenter.getInstance(this).getPlaceErrorImage(pic4, dataBean.getIcon_url(), R.drawable.bitmap_null, R.drawable.bitmap_null);
@@ -223,7 +218,6 @@ public class TaoTianActivity extends BaseBarActivity {
                     });
                 }
             } else {
-                LocalLog.d(TAG, "打开H5链接");
                 partForSpan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -232,7 +226,7 @@ public class TaoTianActivity extends BaseBarActivity {
                 });
 
             }
-        } else if (i == 1) {
+        } else if (i == 4) {
             partFivSpan.setVisibility(View.VISIBLE);
             title5.setText(dataBean.getFavorites_title());
             Presenter.getInstance(this).getPlaceErrorImage(pic5, dataBean.getIcon_url(), R.drawable.bitmap_null, R.drawable.bitmap_null);
@@ -247,7 +241,6 @@ public class TaoTianActivity extends BaseBarActivity {
                     });
                 }
             } else {
-                LocalLog.d(TAG, "打开H5链接");
                 partFivSpan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -271,7 +264,6 @@ public class TaoTianActivity extends BaseBarActivity {
                     });
                 }
             } else {
-                LocalLog.d(TAG, "打开H5链接");
                 partSixSpan.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -364,10 +356,10 @@ public class TaoTianActivity extends BaseBarActivity {
                                 fragments.add(shopStyleListFragment);
                                 strings.add(tabData.get(i).getCate_name());
                             }
-                            viewPager.setAdapter(new TabAdapter(TaoTianActivity.this,
-                                    getSupportFragmentManager(), fragments, strings.toArray()));
-                            tablayout.setupWithViewPager(viewPager);
                         }
+                        viewPager.setAdapter(new TabAdapter(TaoTianActivity.this,
+                                getSupportFragmentManager(), fragments, strings.toArray()));
+                        tablayout.setupWithViewPager(viewPager);
                         initGo();
                     }
                 } catch (Exception e) {
@@ -458,6 +450,10 @@ public class TaoTianActivity extends BaseBarActivity {
 
     @OnClick(R.id.more)
     public void onClick() {
-        moreGridView.setVisibility(View.VISIBLE);
+        if (moreGridView.getVisibility() == View.GONE) {
+            moreGridView.setVisibility(View.VISIBLE);
+        } else if (moreGridView.getVisibility() == View.VISIBLE) {
+            moreGridView.setVisibility(View.GONE);
+        }
     }
 }
