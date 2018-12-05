@@ -72,6 +72,7 @@ import com.paobuqianjin.pbq.step.view.activity.ShopWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskActivity;
 import com.paobuqianjin.pbq.step.view.activity.shop.TaoTianActivity;
+import com.paobuqianjin.pbq.step.view.activity.shop.TianMaoActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
@@ -1147,7 +1148,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 startActivity(TaskActivity.class, bundle);
                 break;
             case R.id.tianmao:
-                startActivity(TaoTianActivity.class, null);
+                startActivity(TianMaoActivity.class, null);
                 break;
             case R.id.jingdong:
                 startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", NetApi.urlJd));

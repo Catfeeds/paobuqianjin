@@ -3,19 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
+    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+        android:id="@+id/page_recycler"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-            android:id="@+id/tian_mao_home"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
+        android:layout_height="match_parent"></com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
 
     <include
-        android:id="@+id/bar"
+        android:id="@+id/bar_null"
         layout="@layout/bar_return_null_bg_style" />
+
+    <include
+        android:id="@+id/item_shop"
+        layout="@layout/tao_middle_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar_null"
+        android:visibility="gone" />
 </RelativeLayout>

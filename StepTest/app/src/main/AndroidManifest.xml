@@ -1074,6 +1074,9 @@
             android:name=".view.activity.shop.TaoTianActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".view.activity.shop.TianMaoActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".view.activity.shop.FavorIdActivity"
             android:screenOrientation="portrait" />
         <activity
