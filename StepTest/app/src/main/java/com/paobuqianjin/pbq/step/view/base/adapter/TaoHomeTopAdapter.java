@@ -9,9 +9,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +43,7 @@ import com.paobuqianjin.pbq.step.utils.ShopToolUtil;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.shop.FavorIdActivity;
+import com.paobuqianjin.pbq.step.view.activity.shop.TianMaoActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -65,8 +68,11 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     private final static int TYPE_THREE = 3;
     private FragmentManager fm;
     private int currentPage = 0;
+    private int selectTab = 0;
     //商品列表
     private List<CouponListResponse.DataBean.TbkCouponBean> listData = new ArrayList<>();
+    private List<CouponCateListResponse.DataBean> strings = new ArrayList<>();
+    TianMaoActivity.LoadDataInterface loadDataInterface;
 
     public void setFirstItem() {
 
@@ -80,9 +86,31 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     }
 
+
+    public int getSelectTab() {
+        return selectTab;
+    }
+
+
+    public void setSelectTab(int position) {
+        selectTab = position;
+        if (strings.size() > 0) {
+            getPageData(1, strings.get(position));
+        }
+    }
+
     public TaoHomeTopAdapter(Context context, FragmentManager fm) {
         this.context = context;
         this.fm = fm;
+    }
+
+    public void setLoadMoreInterface(TianMaoActivity.LoadDataInterface loadMoreInterface) {
+        this.loadDataInterface = loadMoreInterface;
+    }
+
+    public void loadMore() {
+        LocalLog.d(TAG, "loadMore() enter");
+        getPageData(currentPage + 1, strings.get(selectTab));
     }
 
     @Override
@@ -103,7 +131,32 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        LocalLog.d(TAG, "onBindViewHolder() enter position = " + position);
+        if (holder instanceof ThreeViewHolder && position > 1) {
+            int dataPosition = position -2;
+            try {
+                if (((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getPict_url() != null &&
+                        !TextUtils.isEmpty(((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getPict_url())) {
+                    Presenter.getInstance(context).getPlaceErrorImage(((ThreeViewHolder) holder).goodPic, ((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getPict_url(),
+                            R.drawable.bitmap_null, R.drawable.bitmap_null);
+                    if (((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getUser_type() == 0) {
+                        //插入淘宝图标
+                    } else if (((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getUser_type() == 1) {
+                        //插入天猫图标
+                    }
+                    ((ThreeViewHolder) holder).goodName.setText(((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getTitle());
+                    ((ThreeViewHolder) holder).taobaoPrice.setText("淘宝价: ￥" + String.valueOf(((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getZk_final_price()));
 
+                    ((ThreeViewHolder) holder).salesNum.setText("销量 " + String.valueOf(((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getVolume()));
+
+                    ((ThreeViewHolder) holder).quanAfterPrice.setText("券后价  ￥" + String.valueOf(((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getCoupon_info()));
+
+                    ((ThreeViewHolder) holder).taoquanTv.setText("￥ " + ((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getCoupon_info());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -137,6 +190,9 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 if (couponListResponse.getData().getTbk_coupon().size() > 0) {
                     listData.addAll(couponListResponse.getData().getTbk_coupon());
                     notifyDataSetChanged();
+                }
+                if (loadDataInterface != null) {
+                    loadDataInterface.canLoadMore();
                 }
             }
 
@@ -473,6 +529,7 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         LinearLayout partSixSpan;
     }
 
+
     public class MiddleViewHolder extends RecyclerView.ViewHolder {
         private Context context;
         private FragmentManager fm;
@@ -503,7 +560,7 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                             if (size == 0) {
                                 return;
                             }
-                            final List<CouponCateListResponse.DataBean> strings = new ArrayList<>();
+                            strings = new ArrayList<>();
                             for (int i = 0; i < size; i++) {
                                 strings.add(couponCateListResponse.getData().get(i));
                             }
@@ -531,11 +588,42 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                 }
                             });
                             tablayout.setupWithViewPager(viewPager);
+                            for (int i = 0; i < tablayout.getTabCount(); i++) {
+                                TabLayout.Tab tab = tablayout.getTabAt(i);
+                                if (tab != null) {
+                                    TextView textView = new TextView(context);
+                                    textView.setMinWidth(30);
+                                    textView.setText(strings.get(i).getCate_name());
+                                    textView.setGravity(Gravity.CENTER);
+                                    textView.setTextSize(14);
+                                    tab.setCustomView(textView);
+                                    if (i == 0) {
+                                        textView.setTextColor(ContextCompat.getColor(context, R.color.color_FF3E7E));
+                                    }
+                                    if (tab.getCustomView() != null) {
+                                        View tabView = (View) tab.getCustomView().getParent();
+                                        tabView.setTag(i);
+                                    }
+                                }
+                            }
+
+                            tablayout.getTabAt(0).select();
+                            selectTab = 0;
                             tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                                 @Override
                                 public void onTabSelected(TabLayout.Tab tab) {
                                     try {
                                         LocalLog.d(TAG, "postion =" + tab.getPosition());
+                                        getPageData(1, strings.get(tab.getPosition()));
+                                        selectTab = tab.getPosition();
+                                        View customView = tab.getCustomView();
+                                        try {
+                                            if (customView != null && customView instanceof TextView) {
+                                                ((TextView) customView).setTextColor(ContextCompat.getColor(context, R.color.color_FF3E7E));
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -543,7 +631,14 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
                                 @Override
                                 public void onTabUnselected(TabLayout.Tab tab) {
-
+                                    View customView = tab.getCustomView();
+                                    try {
+                                        if (customView != null && customView instanceof TextView) {
+                                            ((TextView) customView).setTextColor(ContextCompat.getColor(context, R.color.color_646464));
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
 
                                 @Override

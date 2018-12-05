@@ -1,15 +1,17 @@
 package com.paobuqianjin.pbq.step.view.activity.shop;
 
+import android.annotation.TargetApi;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -60,6 +62,8 @@ public class TianMaoActivity extends BaseBarActivity implements SwipeMenuRecycle
     private int scrollY = 0;
     RelativeLayout barNull;
     LinearLayout barItem;
+    private int selectPosition = 0;
+    TaoHomeTopAdapter taoHomeTopAdapter;
 
     @Override
     protected String title() {
@@ -82,7 +86,9 @@ public class TianMaoActivity extends BaseBarActivity implements SwipeMenuRecycle
         pageRecycler.addFooterView(loadMoreView); // 添加为Footer。
         pageRecycler.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         pageRecycler.setLoadMoreListener(this);
-        pageRecycler.setAdapter(new TaoHomeTopAdapter(this, getSupportFragmentManager()));
+        taoHomeTopAdapter = new TaoHomeTopAdapter(this, getSupportFragmentManager());
+        taoHomeTopAdapter.setLoadMoreInterface(loadDataInterface);
+        pageRecycler.setAdapter(taoHomeTopAdapter);
         pageRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -107,11 +113,18 @@ public class TianMaoActivity extends BaseBarActivity implements SwipeMenuRecycle
                             barNull.setBackground(getDrawableResource(R.drawable.shop_bar));
                             viewCate.setVisibility(View.GONE);
                             barItem.setVisibility(View.VISIBLE);
+                            selectPosition = taoHomeTopAdapter.getSelectTab();
+                            tablayout.getTabAt(selectPosition).select();
+                            LocalLog.d(TAG, "selectPosition =  " + selectPosition);
                         } else if (location[1] > Utils.dp2px(getApplicationContext(), 64)
                                 && viewCate.getVisibility() == View.GONE && dy < 0) {
                             barItem.setVisibility(View.GONE);
                             viewCate.setVisibility(View.VISIBLE);
                             barNull.setBackground(null);
+                            TabLayout tabLayout = (TabLayout) viewCate.findViewById(R.id.tablayout);
+                            if (tabLayout != null) {
+                                tabLayout.getTabAt(selectPosition).select();
+                            }
                         }
                     }
                 } catch (Exception e) {
@@ -126,9 +139,31 @@ public class TianMaoActivity extends BaseBarActivity implements SwipeMenuRecycle
 
     @Override
     public void onLoadMore() {
-
+        LocalLog.d(TAG, "onLoadMore() enter");
+        if (taoHomeTopAdapter != null) {
+            taoHomeTopAdapter.loadMore();
+        }
     }
 
+    public interface LoadDataInterface {
+        public void canLoadMore();
+
+        public void canNoLoadMore();
+    }
+
+    private LoadDataInterface loadDataInterface = new LoadDataInterface() {
+        @Override
+        public void canLoadMore() {
+            pageRecycler.loadMoreFinish(false, true);
+        }
+
+        @Override
+        public void canNoLoadMore() {
+            pageRecycler.loadMoreFinish(false, false);
+        }
+    };
+
+    @TargetApi(23)
     private void getCouponCateList() {
         Presenter.getInstance(this).postPaoBuSimple(NetApi.urlCouponCateStyleS, null, new PaoCallBack() {
             @Override
@@ -168,11 +203,39 @@ public class TianMaoActivity extends BaseBarActivity implements SwipeMenuRecycle
                             }
                         });
                         tablayout.setupWithViewPager(viewPager);
+                        for (int i = 0; i < tablayout.getTabCount(); i++) {
+                            TabLayout.Tab tab = tablayout.getTabAt(i);
+                            if (tab != null) {
+                                TextView textView = new TextView(TianMaoActivity.this);
+                                textView.setMinWidth(30);
+                                textView.setText(strings.get(i).getCate_name());
+                                textView.setGravity(Gravity.CENTER);
+                                textView.setTextSize(14);
+                                tab.setCustomView(textView);
+                                if (tab.getCustomView() != null) {
+                                    View tabView = (View) tab.getCustomView().getParent();
+                                    tabView.setTag(i);
+                                }
+                            }
+                        }
                         tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                             @Override
                             public void onTabSelected(TabLayout.Tab tab) {
                                 try {
                                     LocalLog.d(TAG, "postion =" + tab.getPosition());
+                                    selectPosition = tab.getPosition();
+                                    taoHomeTopAdapter.setSelectTab(selectPosition);
+
+                                    //更新相应数据
+                                    //
+                                    View customView = tab.getCustomView();
+                                    try {
+                                        if (customView != null && customView instanceof TextView) {
+                                            ((TextView) customView).setTextColor(getColor(R.color.color_FF3E7E));
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -180,7 +243,14 @@ public class TianMaoActivity extends BaseBarActivity implements SwipeMenuRecycle
 
                             @Override
                             public void onTabUnselected(TabLayout.Tab tab) {
-
+                                View customView = tab.getCustomView();
+                                try {
+                                    if (customView != null && customView instanceof TextView) {
+                                        ((TextView) customView).setTextColor(getColor(R.color.color_646464));
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
 
                             @Override
@@ -204,4 +274,12 @@ public class TianMaoActivity extends BaseBarActivity implements SwipeMenuRecycle
             }
         });
     }
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //
+            LocalLog.d(TAG, "查看更多!");
+        }
+    };
 }
