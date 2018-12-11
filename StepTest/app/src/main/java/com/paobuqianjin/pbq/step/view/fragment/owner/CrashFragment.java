@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -99,6 +98,8 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     TextView crashDes;
     @Bind(R.id.grid_view)
     RongGridView gridView;
+    @Bind(R.id.des_more)
+    TextView desMore;
     private float canCrashNum;
     private final static String CRASH_ACTION = "com.paobuqianjin.pbq.step.CRASH_ACTION";
     private final static int CRASH_PROTOCAL = 206;
@@ -111,6 +112,7 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
     GridMoneyAdapter gridMoneyAdapter;
     List<DrawMoneyListResponse.DataBean> listData = new ArrayList<>();
     private String crashMoney;//选择提现的金额
+    List<String> rules = new ArrayList<>();
 
     @Override
     protected String title() {
@@ -145,6 +147,7 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
         wxDearName = (TextView) viewRoot.findViewById(R.id.wx_dear_name);
         walletMoney = (TextView) viewRoot.findViewById(R.id.wallet_money);
         gridView = (RongGridView) viewRoot.findViewById(R.id.grid_view);
+        desMore = (TextView) viewRoot.findViewById(R.id.des_more);
         if (!Presenter.getInstance(getActivity()).getReadCrashProtocol(getActivity())) {
             LocalLog.d(TAG, "未阅读过提现协议");
             confirmCrash.setEnabled(false);
@@ -160,7 +163,7 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
             canCrashNum = Float.parseFloat(intent.getStringExtra("total"));
 /*            String canCrashStrFormat = getActivity().getString(R.string.can_crash);
             String canCrashStr = String.format(canCrashStrFormat, canCrashNum);*/
-            walletMoney.setText("钱包余额: "+ String.valueOf(canCrashNum));
+            walletMoney.setText("钱包余额: " + String.valueOf(canCrashNum));
         }
         String part1 = "我已认真阅读", part2 = "《提现协议》";
         String protoclStr = part1 + part2;
@@ -188,6 +191,9 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                     DrawMoneyListResponse drawMoneyListResponse = new Gson().fromJson(s, DrawMoneyListResponse.class);
                     if (drawMoneyListResponse.getData() != null && drawMoneyListResponse.getData().size() > 0) {
                         for (int i = 0; i < drawMoneyListResponse.getData().size(); i++) {
+                            if (i == 0) {
+                                rules.addAll(drawMoneyListResponse.getData().get(0).getWithdraw_tips());
+                            }
                             if (drawMoneyListResponse.getData().get(i).getIs_disable() == 0) {
                                 crashMoney = drawMoneyListResponse.getData().get(i).getMoney();
                                 drawMoneyListResponse.getData().get(i).setIs_select(true);
@@ -224,6 +230,13 @@ public class CrashFragment extends BaseBarStyleTextViewFragment implements Crash
                                 }
                             }
                         });
+                    }
+                    if (rules.size() > 0) {
+                        String ruleStr = "";
+                        for (int line = 0; line < rules.size(); line++) {
+                            ruleStr += String.valueOf(line + 1) + ". " + rules.get(line) + "\n";
+                        }
+                        desMore.setText(ruleStr);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

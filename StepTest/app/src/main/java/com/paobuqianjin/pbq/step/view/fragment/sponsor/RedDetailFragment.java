@@ -678,9 +678,9 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                                     if (money > 0f) {
                                         redSuccessTv.setVisibility(View.VISIBLE);
                                         redInWalletTv.setVisibility(View.VISIBLE);
-                                        String showResult = "￥" + redResultStr + "元";
+                                        String showResult = "¥" + redResultStr + "元";
                                         SpannableString spannableString = new SpannableString(showResult);
-                                        spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("￥" + redResultStr).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                                        spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("¥" + redResultStr).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                                         redResultTV.setText(spannableString);
                                     } else {
                                         redResultTV.setTextSize(14);
@@ -701,11 +701,11 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                         /*优惠券*/
                         if (nearByRedResponse.getData().getVoucherid() > 0) {
                             ticketS.setVisibility(View.VISIBLE);
-                            String money = "￥" + nearByRedResponse.getData().getVoucher().getMoney() + "店铺优惠券";
+                            String money = "¥" + nearByRedResponse.getData().getVoucher().getMoney() + "店铺优惠券";
                             SpannableString spannableString = new SpannableString(money);
-                            spannableString.setSpan(new AbsoluteSizeSpan(28, true), "￥".length(), ("￥" + nearByRedResponse.getData().getVoucher().getMoney()).length(),
+                            spannableString.setSpan(new AbsoluteSizeSpan(28, true), "¥".length(), ("¥" + nearByRedResponse.getData().getVoucher().getMoney()).length(),
                                     Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                            spannableString.setSpan(new TypefaceSpan("bold"), "￥".length(), ("￥" + nearByRedResponse.getData().getVoucher().getMoney()).length(),
+                            spannableString.setSpan(new TypefaceSpan("bold"), "¥".length(), ("¥" + nearByRedResponse.getData().getVoucher().getMoney()).length(),
                                     Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                             tickMoney.setText(spannableString);
                             tickCondition.setText("订单满" + nearByRedResponse.getData().getVoucher().getCondition() + "元可用");
@@ -1269,7 +1269,7 @@ public class RedDetailFragment extends BaseBarStyleTextViewFragment {
                                     if (money > 0f) {
                                         redSuccessTv.setVisibility(View.VISIBLE);
                                         redInWalletTv.setVisibility(View.VISIBLE);
-                                        redResultTV.setText("￥" + redResultStr + "元");
+                                        redResultTV.setText("¥" + redResultStr + "元");
                                     }
                                 } catch (Exception e) {
                                     redResultTV.setText(redResultStr);

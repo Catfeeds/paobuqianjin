@@ -71,7 +71,6 @@ import com.paobuqianjin.pbq.step.view.activity.RoundRedDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.ShopWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskActivity;
-import com.paobuqianjin.pbq.step.view.activity.shop.TaoTianActivity;
 import com.paobuqianjin.pbq.step.view.activity.shop.TianMaoActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;

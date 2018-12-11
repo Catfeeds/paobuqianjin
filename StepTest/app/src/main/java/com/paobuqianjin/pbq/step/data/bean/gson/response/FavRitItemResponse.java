@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -89,40 +90,17 @@ public class FavRitItemResponse {
              * coupon_total_count : 10000
              */
 
-            private String category;
             private String click_url;
-            private String event_end_time;
-            private String event_start_time;
-            private String item_url;
-            private String nick;
             private String num_iid;
             private String pict_url;
-            private String provcity;
-            private String reserve_price;
-            private String seller_id;
-            private String shop_title;
-            private String status;
             private String title;
-            private String tk_rate;
-            private String type;
-            private String user_type;
+            private int user_type;
             private String volume;
             private String zk_final_price;
             private String zk_final_price_wap;
             private String coupon_click_url;
-            private String coupon_end_time;
             private String coupon_info;
-            private String coupon_remain_count;
-            private String coupon_start_time;
-            private String coupon_total_count;
 
-            public String getCategory() {
-                return category;
-            }
-
-            public void setCategory(String category) {
-                this.category = category;
-            }
 
             public String getClick_url() {
                 return click_url;
@@ -132,37 +110,7 @@ public class FavRitItemResponse {
                 this.click_url = click_url;
             }
 
-            public String getEvent_end_time() {
-                return event_end_time;
-            }
 
-            public void setEvent_end_time(String event_end_time) {
-                this.event_end_time = event_end_time;
-            }
-
-            public String getEvent_start_time() {
-                return event_start_time;
-            }
-
-            public void setEvent_start_time(String event_start_time) {
-                this.event_start_time = event_start_time;
-            }
-
-            public String getItem_url() {
-                return item_url;
-            }
-
-            public void setItem_url(String item_url) {
-                this.item_url = item_url;
-            }
-
-            public String getNick() {
-                return nick;
-            }
-
-            public void setNick(String nick) {
-                this.nick = nick;
-            }
 
             public String getNum_iid() {
                 return num_iid;
@@ -180,46 +128,9 @@ public class FavRitItemResponse {
                 this.pict_url = pict_url;
             }
 
-            public String getProvcity() {
-                return provcity;
-            }
-
-            public void setProvcity(String provcity) {
-                this.provcity = provcity;
-            }
-
-            public String getReserve_price() {
-                return reserve_price;
-            }
-
-            public void setReserve_price(String reserve_price) {
-                this.reserve_price = reserve_price;
-            }
-
-            public String getSeller_id() {
-                return seller_id;
-            }
-
-            public void setSeller_id(String seller_id) {
-                this.seller_id = seller_id;
-            }
-
-            public String getShop_title() {
-                return shop_title;
-            }
-
-            public void setShop_title(String shop_title) {
-                this.shop_title = shop_title;
-            }
 
 
-            public String getStatus() {
-                return status;
-            }
 
-            public void setStatus(String status) {
-                this.status = status;
-            }
 
             public String getTitle() {
                 return title;
@@ -229,27 +140,12 @@ public class FavRitItemResponse {
                 this.title = title;
             }
 
-            public String getTk_rate() {
-                return tk_rate;
-            }
 
-            public void setTk_rate(String tk_rate) {
-                this.tk_rate = tk_rate;
-            }
-
-            public String getType() {
-                return type;
-            }
-
-            public void setType(String type) {
-                this.type = type;
-            }
-
-            public String getUser_type() {
+            public int getUser_type() {
                 return user_type;
             }
 
-            public void setUser_type(String user_type) {
+            public void setUser_type(int user_type) {
                 this.user_type = user_type;
             }
 
@@ -285,44 +181,12 @@ public class FavRitItemResponse {
                 this.coupon_click_url = coupon_click_url;
             }
 
-            public String getCoupon_end_time() {
-                return coupon_end_time;
-            }
-
-            public void setCoupon_end_time(String coupon_end_time) {
-                this.coupon_end_time = coupon_end_time;
-            }
-
             public String getCoupon_info() {
                 return coupon_info;
             }
 
             public void setCoupon_info(String coupon_info) {
                 this.coupon_info = coupon_info;
-            }
-
-            public String getCoupon_remain_count() {
-                return coupon_remain_count;
-            }
-
-            public void setCoupon_remain_count(String coupon_remain_count) {
-                this.coupon_remain_count = coupon_remain_count;
-            }
-
-            public String getCoupon_start_time() {
-                return coupon_start_time;
-            }
-
-            public void setCoupon_start_time(String coupon_start_time) {
-                this.coupon_start_time = coupon_start_time;
-            }
-
-            public String getCoupon_total_count() {
-                return coupon_total_count;
-            }
-
-            public void setCoupon_total_count(String coupon_total_count) {
-                this.coupon_total_count = coupon_total_count;
             }
 
         }

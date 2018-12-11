@@ -54,6 +54,7 @@ public class FavorColResponse {
          * icon_url : https://img.alicdn.com/bao/uploaded/i3/4131061455/O1CN011McQjzajp172OcG_!!0-item_pic.jpg_220x220_.webp
          * column : 1
          * android : https://jhs.m.taobao.com/?spm=a219t.7664554.1998457203.222.512235d9ekJ37V
+         * desc:"大额优惠"
          */
 
         private String favorites_id;
@@ -61,6 +62,12 @@ public class FavorColResponse {
         private String type;
         private String icon_url;
         private int column;
+
+        public String getDesc() {
+            return desc;
+        }
+
+        private String desc;
         private String android;
 
         public String getFavorites_id() {

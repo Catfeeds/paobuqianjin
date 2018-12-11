@@ -520,7 +520,7 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
                                     if (money > 0f) {
                                         redSuccessTv.setVisibility(View.VISIBLE);
                                         redInWalletTv.setVisibility(View.VISIBLE);
-                                        redResultTV.setText("￥" + redResultStr + "元");
+                                        redResultTV.setText("¥" + redResultStr + "元");
                                     }
                                 } catch (Exception e) {
                                     redResultTV.setText(redResultStr);
@@ -988,7 +988,7 @@ public class SponsorDetailFragment extends BaseBarStyleTextViewFragment {
                                     if (money > 0f) {
                                         redSuccessTv.setVisibility(View.VISIBLE);
                                         redInWalletTv.setVisibility(View.VISIBLE);
-                                        redResultTV.setText("￥" + redResultStr + "元");
+                                        redResultTV.setText("¥" + redResultStr + "元");
                                     }
                                 } catch (Exception e) {
                                     redResultTV.setText(redResultStr);

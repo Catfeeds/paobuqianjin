@@ -356,6 +356,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
         userInfo[0] = loginAccount.getText().toString();
         userInfo[1] = loginPwd.getText().toString();
         userInfo[2] = PushAgent.getInstance(this).getRegistrationId();
+        LocalLog.d(TAG,"useInfo[2] ="  +userInfo[2] );
         return userInfo;
     }
 
@@ -700,6 +701,7 @@ public class LoginActivity extends BaseActivity implements LoginSignCallbackInte
                 getAppIdThird(thirdPartyLoginParam);
                 return;
             }
+            thirdPartyLoginParam.setPushtoken(PushAgent.getInstance(getApplicationContext()).getRegistrationId());
             Presenter.getInstance(LoginActivity.this).postThirdPartyLogin(thirdPartyLoginParam);
             LocalLog.d(TAG, temp);
         }

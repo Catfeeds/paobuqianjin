@@ -1,1 +1,1 @@
-include ':app', ':okhttppaobu', 'todaystepcounterlib', ':IMLib', ':IMKit'
+include ':app', ':okhttppaobu', 'todaystepcounterlib', ':IMLib', ':IMKit', ':MPChartLib'

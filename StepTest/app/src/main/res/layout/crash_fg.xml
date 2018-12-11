@@ -129,7 +129,6 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="6dp"
-                android:text="@string/transfer_limite_tips"
                 android:textColor="@color/color_8a8a8a"
                 android:textSize="12sp" />
 

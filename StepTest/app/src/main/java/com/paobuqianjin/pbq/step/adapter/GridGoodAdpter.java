@@ -90,9 +90,9 @@ public class GridGoodAdpter extends BaseAdapter {
             if (Float.parseFloat(mData.get(position).getPoint_exchange()) > 0) {
                 holder.promotionPrice.setVisibility(View.VISIBLE);
                 holder.pointExchange.setVisibility(View.GONE);
-                String showNowMoney = "￥" + mData.get(position).getPromotion_price() + " + " + " " + " " + mData.get(position).getPoint_exchange();
+                String showNowMoney = "¥" + mData.get(position).getPromotion_price() + " + " + " " + " " + mData.get(position).getPoint_exchange();
                 SpannableString showSpan = new SpannableString(showNowMoney);
-                showSpan.setSpan(imageSpan, ("￥" + mData.get(position).getPromotion_price() + " + ").length(), ("￥" + mData.get(position).getPromotion_price() + " + " + " ").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                showSpan.setSpan(imageSpan, ("¥" + mData.get(position).getPromotion_price() + " + ").length(), ("¥" + mData.get(position).getPromotion_price() + " + " + " ").length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 holder.promotionPrice.setText(showSpan);
                 //特殊处理
                 holder.pointExchange.setVisibility(View.VISIBLE);
@@ -101,7 +101,7 @@ public class GridGoodAdpter extends BaseAdapter {
             } else {
 
                 holder.promotionPrice.setVisibility(View.GONE);
-                holder.pointExchange.setText("￥" + mData.get(position).getPromotion_price());
+                holder.pointExchange.setText("¥" + mData.get(position).getPromotion_price());
                 holder.pointExchange.setVisibility(View.VISIBLE);
                 //特殊处理
             }

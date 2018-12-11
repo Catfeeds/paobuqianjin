@@ -683,7 +683,7 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
                 case 3:
                     pop_message_red_a.setVisibility(View.VISIBLE);
                     pop_message_red_b.setText("今日达标红包");
-                    pop_money.setText("￥" + circleDetailResponse.getData().getRed_packet_money());
+                    pop_money.setText("¥" + circleDetailResponse.getData().getRed_packet_money());
                     break;
                 case 4:
                     pop_message_red_a.setVisibility(View.INVISIBLE);
@@ -696,7 +696,7 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
     /*    if (!TextUtils.isEmpty(circleDetailResponse.getData().getRed_packet_money())) {
             imageView.clearAnimation();
             imageView.setVisibility(View.GONE);
-            pop_money.setText(String.valueOf("￥ " + circleDetailResponse.getData().getRed_packet_money()));
+            pop_money.setText(String.valueOf("¥ " + circleDetailResponse.getData().getRed_packet_money()));
         }
 */
         animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
@@ -728,7 +728,7 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
                         imageView.setVisibility(View.GONE);
                         if (pop_money != null) {
                             if (postRevRedPkgResponse.getData() != null) {
-                                pop_money.setText(String.valueOf("￥ " + postRevRedPkgResponse.getData().getAmount()));
+                                pop_money.setText(String.valueOf("¥ " + postRevRedPkgResponse.getData().getAmount()));
                                 getCircleDetail(circleId);
                             }
                         }

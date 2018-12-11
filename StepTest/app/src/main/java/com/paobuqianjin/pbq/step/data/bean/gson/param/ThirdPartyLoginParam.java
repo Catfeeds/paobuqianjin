@@ -28,6 +28,14 @@ side	用户端：0未知|1ios|2android|3小程序|4web	false	int
     private String unionid;
     private int sex;
 
+    public ThirdPartyLoginParam setPushtoken(String pushtoken) {
+        this.pushtoken = pushtoken;
+        param.put("pushtoken", pushtoken);
+        return this;
+    }
+
+    private String pushtoken;
+
     public int getSide() {
         return side;
     }

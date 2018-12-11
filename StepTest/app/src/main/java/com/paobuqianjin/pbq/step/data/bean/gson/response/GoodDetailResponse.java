@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.data.bean.gson.response;
 
+import java.util.List;
+
 /**
  * Created by pbq on 2018/11/29.
  */
@@ -10,10 +12,11 @@ package com.paobuqianjin.pbq.step.data.bean.gson.response;
 *@description
 */
 public class GoodDetailResponse {
+
     /**
      * error : 0
      * message : success
-     * data : {"n_tbk_item":{"cat_leaf_name":"冰箱磁性贴","cat_name":"家居饰品","item_url":"https://h5.m.taobao.com/awp/core/detail.htm?id=578834910065","material_lib_type":"1","nick":"带上潮包去旅行","num_iid":"578834910065","pict_url":"https://img.alicdn.com/bao/uploaded/i1/835933167/O1CN011ZGWnu70uluvMaK_!!835933167.jpg","provcity":"江苏 无锡","reserve_price":"33.8","seller_id":"835933167","small_images":{"string":"https://img.alicdn.com/i4/835933167/O1CN011ZGWntX8kXAgjNX_!!835933167.jpg"},"title":"包邮mm巧克力豆小磁铁强磁冰箱贴 圆形强力创意磁贴办公教具","user_type":"0","volume":"0","zk_final_price":"18.15"}}
+     * data : {"n_tbk_item":{"cat_leaf_name":"连衣裙","cat_name":"女装/女士精品","item_url":"https://h5.m.taobao.com/awp/core/detail.htm?id=583196938569","material_lib_type":[],"nick":"兴成时尚女装店","num_iid":"583196938569","pict_url":"https://img.alicdn.com/bao/uploaded/i4/2054833620/O1CN01kktADN1cc0EtA680V_!!0-item_pic.jpg","provcity":"广东 广州","reserve_price":"49","seller_id":"2054833620","small_images":{"string":["https://img.alicdn.com/i3/2054833620/O1CN01Y1h4e71cc0EuFgXjU_!!2054833620.jpg","https://img.alicdn.com/i4/2054833620/O1CN01m0G1PZ1cc0ErIuoqz_!!2054833620.jpg","https://img.alicdn.com/i4/2054833620/O1CN01dWZFpt1cc0ErItc1r_!!2054833620.jpg"]},"title":"2018春秋冬季新款韩版女装显瘦两件套套装裙子七分袖上衣连衣裙","user_type":"0","volume":"0","zk_final_price":"49"}}
      */
 
     private int error;
@@ -46,7 +49,7 @@ public class GoodDetailResponse {
 
     public static class DataBean {
         /**
-         * n_tbk_item : {"cat_leaf_name":"冰箱磁性贴","cat_name":"家居饰品","item_url":"https://h5.m.taobao.com/awp/core/detail.htm?id=578834910065","material_lib_type":"1","nick":"带上潮包去旅行","num_iid":"578834910065","pict_url":"https://img.alicdn.com/bao/uploaded/i1/835933167/O1CN011ZGWnu70uluvMaK_!!835933167.jpg","provcity":"江苏 无锡","reserve_price":"33.8","seller_id":"835933167","small_images":{"string":"https://img.alicdn.com/i4/835933167/O1CN011ZGWntX8kXAgjNX_!!835933167.jpg"},"title":"包邮mm巧克力豆小磁铁强磁冰箱贴 圆形强力创意磁贴办公教具","user_type":"0","volume":"0","zk_final_price":"18.15"}
+         * n_tbk_item : {"cat_leaf_name":"连衣裙","cat_name":"女装/女士精品","item_url":"https://h5.m.taobao.com/awp/core/detail.htm?id=583196938569","material_lib_type":[],"nick":"兴成时尚女装店","num_iid":"583196938569","pict_url":"https://img.alicdn.com/bao/uploaded/i4/2054833620/O1CN01kktADN1cc0EtA680V_!!0-item_pic.jpg","provcity":"广东 广州","reserve_price":"49","seller_id":"2054833620","small_images":{"string":["https://img.alicdn.com/i3/2054833620/O1CN01Y1h4e71cc0EuFgXjU_!!2054833620.jpg","https://img.alicdn.com/i4/2054833620/O1CN01m0G1PZ1cc0ErIuoqz_!!2054833620.jpg","https://img.alicdn.com/i4/2054833620/O1CN01dWZFpt1cc0ErItc1r_!!2054833620.jpg"]},"title":"2018春秋冬季新款韩版女装显瘦两件套套装裙子七分袖上衣连衣裙","user_type":"0","volume":"0","zk_final_price":"49"}
          */
 
         private NTbkItemBean n_tbk_item;
@@ -61,54 +64,31 @@ public class GoodDetailResponse {
 
         public static class NTbkItemBean {
             /**
-             * cat_leaf_name : 冰箱磁性贴
-             * cat_name : 家居饰品
-             * item_url : https://h5.m.taobao.com/awp/core/detail.htm?id=578834910065
-             * material_lib_type : 1
-             * nick : 带上潮包去旅行
-             * num_iid : 578834910065
-             * pict_url : https://img.alicdn.com/bao/uploaded/i1/835933167/O1CN011ZGWnu70uluvMaK_!!835933167.jpg
-             * provcity : 江苏 无锡
-             * reserve_price : 33.8
-             * seller_id : 835933167
-             * small_images : {"string":"https://img.alicdn.com/i4/835933167/O1CN011ZGWntX8kXAgjNX_!!835933167.jpg"}
-             * title : 包邮mm巧克力豆小磁铁强磁冰箱贴 圆形强力创意磁贴办公教具
+             * cat_leaf_name : 连衣裙
+             * cat_name : 女装/女士精品
+             * item_url : https://h5.m.taobao.com/awp/core/detail.htm?id=583196938569
+             * material_lib_type : []
+             * nick : 兴成时尚女装店
+             * num_iid : 583196938569
+             * pict_url : https://img.alicdn.com/bao/uploaded/i4/2054833620/O1CN01kktADN1cc0EtA680V_!!0-item_pic.jpg
+             * provcity : 广东 广州
+             * reserve_price : 49
+             * seller_id : 2054833620
+             * small_images : {"string":["https://img.alicdn.com/i3/2054833620/O1CN01Y1h4e71cc0EuFgXjU_!!2054833620.jpg","https://img.alicdn.com/i4/2054833620/O1CN01m0G1PZ1cc0ErIuoqz_!!2054833620.jpg","https://img.alicdn.com/i4/2054833620/O1CN01dWZFpt1cc0ErItc1r_!!2054833620.jpg"]}
+             * title : 2018春秋冬季新款韩版女装显瘦两件套套装裙子七分袖上衣连衣裙
              * user_type : 0
              * volume : 0
-             * zk_final_price : 18.15
+             * zk_final_price : 49
              */
-
-            private String cat_leaf_name;
-            private String cat_name;
             private String item_url;
-            private String material_lib_type;
-            private String nick;
             private String num_iid;
             private String pict_url;
-            private String provcity;
-            private String reserve_price;
-            private String seller_id;
-            private SmallImagesBean small_images;
+            /*       private SmallImagesBean small_images;*/
             private String title;
-            private String user_type;
+            private int user_type;
             private String volume;
             private String zk_final_price;
 
-            public String getCat_leaf_name() {
-                return cat_leaf_name;
-            }
-
-            public void setCat_leaf_name(String cat_leaf_name) {
-                this.cat_leaf_name = cat_leaf_name;
-            }
-
-            public String getCat_name() {
-                return cat_name;
-            }
-
-            public void setCat_name(String cat_name) {
-                this.cat_name = cat_name;
-            }
 
             public String getItem_url() {
                 return item_url;
@@ -118,21 +98,6 @@ public class GoodDetailResponse {
                 this.item_url = item_url;
             }
 
-            public String getMaterial_lib_type() {
-                return material_lib_type;
-            }
-
-            public void setMaterial_lib_type(String material_lib_type) {
-                this.material_lib_type = material_lib_type;
-            }
-
-            public String getNick() {
-                return nick;
-            }
-
-            public void setNick(String nick) {
-                this.nick = nick;
-            }
 
             public String getNum_iid() {
                 return num_iid;
@@ -150,37 +115,6 @@ public class GoodDetailResponse {
                 this.pict_url = pict_url;
             }
 
-            public String getProvcity() {
-                return provcity;
-            }
-
-            public void setProvcity(String provcity) {
-                this.provcity = provcity;
-            }
-
-            public String getReserve_price() {
-                return reserve_price;
-            }
-
-            public void setReserve_price(String reserve_price) {
-                this.reserve_price = reserve_price;
-            }
-
-            public String getSeller_id() {
-                return seller_id;
-            }
-
-            public void setSeller_id(String seller_id) {
-                this.seller_id = seller_id;
-            }
-
-            public SmallImagesBean getSmall_images() {
-                return small_images;
-            }
-
-            public void setSmall_images(SmallImagesBean small_images) {
-                this.small_images = small_images;
-            }
 
             public String getTitle() {
                 return title;
@@ -190,11 +124,11 @@ public class GoodDetailResponse {
                 this.title = title;
             }
 
-            public String getUser_type() {
+            public int getUser_type() {
                 return user_type;
             }
 
-            public void setUser_type(String user_type) {
+            public void setUser_type(int user_type) {
                 this.user_type = user_type;
             }
 
@@ -215,17 +149,13 @@ public class GoodDetailResponse {
             }
 
             public static class SmallImagesBean {
-                /**
-                 * string : https://img.alicdn.com/i4/835933167/O1CN011ZGWntX8kXAgjNX_!!835933167.jpg
-                 */
+                private List<String> string;
 
-                private String string;
-
-                public String getString() {
+                public List<String> getString() {
                     return string;
                 }
 
-                public void setString(String string) {
+                public void setString(List<String> string) {
                     this.string = string;
                 }
             }

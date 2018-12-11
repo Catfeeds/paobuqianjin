@@ -59,8 +59,8 @@
     <string name="near_by_step">当天健步%1d步</string>
     <string name="near_by_distance">%.0fm</string>
     <string name="total_income">总金额%.2f元</string>
-    <string name="today_income">￥%.2f</string>
-    <string name="month_income">￥%.2f</string>
+    <string name="today_income">¥%.2f</string>
+    <string name="month_income">¥%.2f</string>
     <string name="pay_money">%.2f</string>
     <string name="user_target">%1d步</string>
     <string name="step_dollar">%ld步币</string>
@@ -220,7 +220,7 @@
     <string name="shop_red_bag">店铺红包</string>
     <string name="target_step_s">目标步数</string>
     <string name="use_by_x">满%1$s可用</string>
-    <string name="yuan_icon">￥</string>
+    <string name="yuan_icon">¥</string>
     <string name="get_his">领取记录</string>
     <string name="cut_down">下架</string>
     <string name="already_cut_down">已下架</string>

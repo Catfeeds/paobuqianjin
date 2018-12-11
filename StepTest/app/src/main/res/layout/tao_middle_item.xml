@@ -34,13 +34,14 @@
                 android:layout_weight="1"
                 app:tabSelectedTextColor="#FF3E7E"
                 android:layout_width="wrap_content"
-                app:tabTextColor="@color/color_646464"
+                app:tabTextColor="@color/color_161727"
                 app:tabIndicatorColor="#FF3E7E"
                 android:layout_height="wrap_content">
 
             </android.support.design.widget.TabLayout>
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/more"
                 android:layout_width="36dp"
                 android:layout_height="match_parent"

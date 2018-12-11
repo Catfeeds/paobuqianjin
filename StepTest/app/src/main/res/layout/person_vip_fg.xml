@@ -3,41 +3,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_d6d6d6" />
+
     <ImageView
         android:id="@+id/vip_banner"
         android:layout_width="match_parent"
-        android:layout_height="185dp"
-        android:scaleType="centerCrop"
+        android:layout_height="151dp"
+        android:layout_below="@+id/line"
+        android:layout_marginTop="15dp"
+        android:scaleType="centerInside"
         android:src="@drawable/banner_personal" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="282dp"
         android:layout_below="@+id/vip_banner"
-        android:layout_marginTop="30dp">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerInside"
-            android:src="@drawable/vip_des_bg" />
-
-        <TextView
-            android:id="@+id/title_vip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="7dp"
-            android:text="个人会员权益"
-            android:textColor="#FDCE16"
-            android:textSize="16dp" />
+        android:layout_marginTop="25dp">
 
         <LinearLayout
+            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title_vip"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="35dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -57,7 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="8dp"
-                    android:text="享受免费使用本软件的一般性功能"
+                    android:text="在步币商城使用步币兑换全步币商品"
                     android:textColor="#5B5B5B"
                     android:textSize="15dp" />
             </LinearLayout>
@@ -80,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="8dp"
-                    android:text="享受保留每日走路或跑步步数等健康数据"
+                    android:text="享受领红包等权益"
                     android:textColor="#5B5B5B"
                     android:textSize="15dp" />
             </LinearLayout>
@@ -103,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="8dp"
-                    android:text="享受比普通用户多的可点击红包数量"
+                    android:text="办理赠送步币2000个"
                     android:textColor="#5B5B5B"
                     android:textSize="15dp" />
             </LinearLayout>
@@ -126,7 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="8dp"
-                    android:text="享受新版本和新功能的优先使用特权"
+                    android:text="推荐新用户，立将1000步币和陆续奖励30元现金。"
                     android:textColor="#5B5B5B"
                     android:textSize="15dp" />
             </LinearLayout>
@@ -149,7 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="8dp"
-                    android:text="享受本软件后续推出的其他权益和利益"
+                    android:text="所推荐用户以后办理商城会员，有5%"
                     android:textColor="#5B5B5B"
                     android:textSize="15dp" />
             </LinearLayout>

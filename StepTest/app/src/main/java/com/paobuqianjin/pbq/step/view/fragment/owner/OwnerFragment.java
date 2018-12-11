@@ -61,6 +61,7 @@ import com.paobuqianjin.pbq.step.view.activity.SettingActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SponsorCollectActivity;
 import com.paobuqianjin.pbq.step.view.activity.StepDollarActivity;
+import com.paobuqianjin.pbq.step.view.activity.StepHistoryActivity;
 import com.paobuqianjin.pbq.step.view.activity.SuggestionActivity;
 import com.paobuqianjin.pbq.step.view.activity.TransferActivity;
 import com.paobuqianjin.pbq.step.view.activity.UserInfoSettingActivity;
@@ -274,7 +275,7 @@ public final class OwnerFragment extends BaseFragment {
             case R.id.wallet_span:
                 intent = new Intent();
                 intent.setAction(ACTION_FRIEND_HONOR);
-                intent.setClass(getContext(), FriendStepDanActivity.class);
+                intent.setClass(getContext(), StepHistoryActivity.class);
                 startActivity(intent);
                 break;
             case R.id.wallet_img:

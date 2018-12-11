@@ -82,41 +82,15 @@ public class CouponListResponse {
              * volume : 29
              * zk_final_price : 15.00
              */
-
-            private String category;
-            private String commission_rate;
             private String coupon_click_url;
-            private String coupon_end_time;
             private String coupon_info;
-            private String coupon_remain_count;
-            private String coupon_start_time;
-            private String coupon_total_count;
-            private String item_url;
-            private String nick;
             private String num_iid;
             private String pict_url;
-            private String seller_id;
-            private String shop_title;
             private String title;
             private int user_type;
             private String volume;
             private String zk_final_price;
 
-            public String getCategory() {
-                return category;
-            }
-
-            public void setCategory(String category) {
-                this.category = category;
-            }
-
-            public String getCommission_rate() {
-                return commission_rate;
-            }
-
-            public void setCommission_rate(String commission_rate) {
-                this.commission_rate = commission_rate;
-            }
 
             public String getCoupon_click_url() {
                 return coupon_click_url;
@@ -124,14 +98,6 @@ public class CouponListResponse {
 
             public void setCoupon_click_url(String coupon_click_url) {
                 this.coupon_click_url = coupon_click_url;
-            }
-
-            public String getCoupon_end_time() {
-                return coupon_end_time;
-            }
-
-            public void setCoupon_end_time(String coupon_end_time) {
-                this.coupon_end_time = coupon_end_time;
             }
 
             public String getCoupon_info() {
@@ -142,45 +108,6 @@ public class CouponListResponse {
                 this.coupon_info = coupon_info;
             }
 
-            public String getCoupon_remain_count() {
-                return coupon_remain_count;
-            }
-
-            public void setCoupon_remain_count(String coupon_remain_count) {
-                this.coupon_remain_count = coupon_remain_count;
-            }
-
-            public String getCoupon_start_time() {
-                return coupon_start_time;
-            }
-
-            public void setCoupon_start_time(String coupon_start_time) {
-                this.coupon_start_time = coupon_start_time;
-            }
-
-            public String getCoupon_total_count() {
-                return coupon_total_count;
-            }
-
-            public void setCoupon_total_count(String coupon_total_count) {
-                this.coupon_total_count = coupon_total_count;
-            }
-
-            public String getItem_url() {
-                return item_url;
-            }
-
-            public void setItem_url(String item_url) {
-                this.item_url = item_url;
-            }
-
-            public String getNick() {
-                return nick;
-            }
-
-            public void setNick(String nick) {
-                this.nick = nick;
-            }
 
             public String getNum_iid() {
                 return num_iid;
@@ -197,23 +124,7 @@ public class CouponListResponse {
             public void setPict_url(String pict_url) {
                 this.pict_url = pict_url;
             }
-
-            public String getSeller_id() {
-                return seller_id;
-            }
-
-            public void setSeller_id(String seller_id) {
-                this.seller_id = seller_id;
-            }
-
-            public String getShop_title() {
-                return shop_title;
-            }
-
-            public void setShop_title(String shop_title) {
-                this.shop_title = shop_title;
-            }
-
+            
             public String getTitle() {
                 return title;
             }

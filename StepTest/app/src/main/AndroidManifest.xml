@@ -313,14 +313,9 @@
             android:theme="@style/ImageTranslucentTheme" />
         <!-- 个人榜单 -->
         <activity
-            android:name=".view.activity.FriendStepDanActivity"
+            android:name=".view.activity.StepHistoryActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ImageTranslucentTheme">
-            <intent-filter>
-                <action android:name="com.paobuqianjin.pbq.ACTION_FRIEND_HONOR" />
-                <action android:name="com.paobuqianjin.pbq.ACTION_CIRCLE_HONOR" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/ImageTranslucentTheme"></activity>
         <!-- 我的钱包 -->
         <activity
             android:name=".view.activity.MyWalletActivity"
@@ -1069,9 +1064,6 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".view.activity.ConsumRedInfoActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".view.activity.shop.TaoTianActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.activity.shop.TianMaoActivity"

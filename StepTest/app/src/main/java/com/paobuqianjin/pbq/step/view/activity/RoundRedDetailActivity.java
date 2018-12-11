@@ -300,9 +300,9 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                     float red_result = Float.parseFloat(result_str);
                     redSuccess.setVisibility(View.VISIBLE);
                     if (type == 1) {
-                        String showResult = "￥" + red_result + "元";
+                        String showResult = "¥" + red_result + "元";
                         SpannableString spannableString = new SpannableString(showResult);
-                        spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("￥" + red_result).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                        spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("¥" + red_result).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                         redResult.setText(spannableString);
                         intoWallet.setVisibility(View.VISIBLE);
                     } else if (type == 2) {
@@ -500,9 +500,9 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                             redSuccess.setText("你已经领取过");
                             redSuccess.setVisibility(View.VISIBLE);
                             if (type == 1) {
-                                String showResult = "￥" + roundDetailStyleResponse.getData().getIncome_money() + "元";
+                                String showResult = "¥" + roundDetailStyleResponse.getData().getIncome_money() + "元";
                                 SpannableString spannableString = new SpannableString(showResult);
-                                spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("￥" + roundDetailStyleResponse.getData().getIncome_money()).length(),
+                                spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("¥" + roundDetailStyleResponse.getData().getIncome_money()).length(),
                                         showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                                 redResult.setText(spannableString);
                                 intoWallet.setVisibility(View.VISIBLE);
@@ -569,11 +569,11 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                                             /*优惠券*/
                         if (roundDetailStyleResponse.getData().getVoucherid() > 0) {
                             ticketS.setVisibility(View.VISIBLE);
-                            String money = "￥" + roundDetailStyleResponse.getData().getVoucher().getMoney() + "店铺优惠券";
+                            String money = "¥" + roundDetailStyleResponse.getData().getVoucher().getMoney() + "店铺优惠券";
                             SpannableString spannableString = new SpannableString(money);
-                            spannableString.setSpan(new AbsoluteSizeSpan(28, true), "￥".length(), ("￥" + roundDetailStyleResponse.getData().getVoucher().getMoney()).length(),
+                            spannableString.setSpan(new AbsoluteSizeSpan(28, true), "¥".length(), ("¥" + roundDetailStyleResponse.getData().getVoucher().getMoney()).length(),
                                     Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                            spannableString.setSpan(new TypefaceSpan("bold"), "￥".length(), ("￥" + roundDetailStyleResponse.getData().getVoucher().getMoney()).length(),
+                            spannableString.setSpan(new TypefaceSpan("bold"), "¥".length(), ("¥" + roundDetailStyleResponse.getData().getVoucher().getMoney()).length(),
                                     Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                             tickMoney.setText(spannableString);
                             tickCondition.setText("订单满" + roundDetailStyleResponse.getData().getVoucher().getCondition() + "元可用");

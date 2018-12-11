@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +48,7 @@ import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.shop.FavorIdActivity;
 import com.paobuqianjin.pbq.step.view.activity.shop.TianMaoActivity;
+import com.paobuqianjin.pbq.step.view.activity.shop.TianMaoDetailActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -133,25 +138,69 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         LocalLog.d(TAG, "onBindViewHolder() enter position = " + position);
         if (holder instanceof ThreeViewHolder && position > 1) {
-            int dataPosition = position -2;
+            final int dataPosition = position - 2;
             try {
+                if (holder.itemView != null) {
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String good_num = listData.get(dataPosition).getNum_iid();
+                            Intent intent = new Intent();
+                            intent.putExtra(context.getPackageName() + "num_id", good_num);
+                            if (!TextUtils.isEmpty(listData.get(dataPosition).getCoupon_info())) {
+                                intent.putExtra(context.getPackageName() + "coupon_info", listData.get(dataPosition).getCoupon_info());
+                            }
+                            if (!TextUtils.isEmpty(listData.get(dataPosition).getCoupon_click_url())) {
+                                intent.putExtra(context.getPackageName() + "coupon_click_url", listData.get(dataPosition).getCoupon_click_url());
+                            }
+                            intent.setClass(context, TianMaoDetailActivity.class);
+                            context.startActivity(intent);
+                        }
+                    });
+                }
                 if (((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getPict_url() != null &&
                         !TextUtils.isEmpty(((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getPict_url())) {
                     Presenter.getInstance(context).getPlaceErrorImage(((ThreeViewHolder) holder).goodPic, ((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getPict_url(),
                             R.drawable.bitmap_null, R.drawable.bitmap_null);
                     if (((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getUser_type() == 0) {
                         //插入淘宝图标
+                        ((ThreeViewHolder) holder).icon.setImageResource(R.drawable.tao_ic);
+                        ((ThreeViewHolder) holder).taobaoPrice.setText("淘宝原价: ¥" + ((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getZk_final_price());
+
                     } else if (((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getUser_type() == 1) {
                         //插入天猫图标
+                        ((ThreeViewHolder) holder).icon.setImageResource(R.drawable.tian_ic);
+                        ((ThreeViewHolder) holder).taobaoPrice.setText("天猫原价: ¥" + ((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getZk_final_price());
+
+                    } else {
+                        ((ThreeViewHolder) holder).icon.setImageResource(R.drawable.null_bitmap);
+                        ((ThreeViewHolder) holder).taobaoPrice.setText("原价: ¥" + ((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getZk_final_price());
                     }
                     ((ThreeViewHolder) holder).goodName.setText(((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getTitle());
-                    ((ThreeViewHolder) holder).taobaoPrice.setText("淘宝价: ￥" + String.valueOf(((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getZk_final_price()));
 
                     ((ThreeViewHolder) holder).salesNum.setText("销量 " + String.valueOf(((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getVolume()));
+                    //处理券面信息
+                    String quanMoney = ((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getCoupon_info();
+                    if (!TextUtils.isEmpty(quanMoney)) {
+                        String[] result = new String[2];
+                        if (!TextUtils.isEmpty(quanMoney) && quanMoney.startsWith("满")) {
+                            result = quanMoney.split("减");
+                        }
+                        LocalLog.d(TAG, "result[0]= " + result[0] + ",result[1] =" + result[1]);
+                        result = result[1].split("元");
+                        LocalLog.d(TAG, "result[0] =" + result[0]);
+                        String quanDeStr = "¥" + result[0] + " 券";
+                        SpannableString quanDeStrString = new SpannableString(quanDeStr);
+                        quanDeStrString.setSpan(new AbsoluteSizeSpan(12, true), 0, ("¥" + result[0]).length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        ((ThreeViewHolder) holder).taoquanTv.setText(quanDeStrString);
+                        float afterPrice = Float.parseFloat(((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getZk_final_price())
+                                - Float.parseFloat(result[0]);
+                        String moneyFormat = String.format(context.getString(R.string.month_income), afterPrice);
+                        SpannableString spannableString = new SpannableString(moneyFormat);
+                        spannableString.setSpan(new AbsoluteSizeSpan(12, true), 0, "¥".length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        ((ThreeViewHolder) holder).quanAfterPrice.setText(spannableString);
 
-                    ((ThreeViewHolder) holder).quanAfterPrice.setText("券后价  ￥" + String.valueOf(((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getCoupon_info()));
-
-                    ((ThreeViewHolder) holder).taoquanTv.setText("￥ " + ((CouponListResponse.DataBean.TbkCouponBean) listData.get(dataPosition)).getCoupon_info());
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -199,7 +248,9 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
                 super.onFal(e, errorStr, errorBean);
-
+                if (loadDataInterface != null) {
+                    loadDataInterface.canNoLoadMore();
+                }
             }
         });
     }
@@ -215,16 +266,17 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             getFavorColumn();
         }
 
-        private void startFavorIdActivity(final String favorId) {
-            LocalLog.d(TAG, "favorId = " + favorId);
+        private void startFavorIdActivity(final FavorColResponse.DataBean dataBean) {
+            LocalLog.d(TAG, "favorId = " + dataBean.getFavorites_id());
             Intent intent = new Intent();
-            intent.putExtra(context.getPackageName() + "favor_id", favorId);
+            intent.putExtra(context.getPackageName() + "favor_id", dataBean.getFavorites_id());
+            intent.putExtra(context.getPackageName() + "title", dataBean.getFavorites_title());
             intent.setClass(context, FavorIdActivity.class);
             context.startActivity(intent);
         }
 
         private void initPartI(int i, final FavorColResponse.DataBean dataBean) {
-            if (i == 3) {
+            if (i == 0) {
                 partOneSpan.setVisibility(View.VISIBLE);
                 title1.setText(dataBean.getFavorites_title());
                 if (!TextUtils.isEmpty(dataBean.getIcon_url())) {
@@ -235,8 +287,7 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         partOneSpan.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                LocalLog.d(TAG, "favorites_id = " + dataBean.getAndroid());
-                                startFavorIdActivity(dataBean.getFavorites_id());
+                                startFavorIdActivity(dataBean);
                             }
                         });
                     }
@@ -249,7 +300,7 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     });
 
                 }
-            } else if (i == 0) {
+            } else if (i == 1) {
                 partTwoSpan.setVisibility(View.VISIBLE);
                 title2.setText(dataBean.getFavorites_title());
                 if (!TextUtils.isEmpty(dataBean.getIcon_url())) {
@@ -260,8 +311,7 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         partTwoSpan.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                LocalLog.d(TAG, "favorites_id = " + dataBean.getAndroid());
-                                startFavorIdActivity(dataBean.getFavorites_id());
+                                startFavorIdActivity(dataBean);
                             }
                         });
                     }
@@ -285,8 +335,7 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         partThreeSpan.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                LocalLog.d(TAG, "favorites_id = " + dataBean.getAndroid());
-                                startFavorIdActivity(dataBean.getFavorites_id());
+                                startFavorIdActivity(dataBean);
                             }
                         });
                     }
@@ -299,19 +348,21 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     });
 
                 }
-            } else if (i == 1) {
+            } else if (i == 3) {
                 partForSpan.setVisibility(View.VISIBLE);
                 title4.setText(dataBean.getFavorites_title());
                 if (!TextUtils.isEmpty(dataBean.getIcon_url())) {
                     Presenter.getInstance(context).getPlaceErrorImage(pic4, dataBean.getIcon_url(), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                }
+                if (!TextUtils.isEmpty(dataBean.getDesc())) {
+                    desFor.setText(dataBean.getDesc());
                 }
                 if (TextUtils.isEmpty(dataBean.getAndroid())) {
                     if (!TextUtils.isEmpty(dataBean.getFavorites_id())) {
                         partForSpan.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                LocalLog.d(TAG, "favorites_id = " + dataBean.getAndroid());
-                                startFavorIdActivity(dataBean.getFavorites_id());
+                                startFavorIdActivity(dataBean);
                             }
                         });
                     }
@@ -328,15 +379,18 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 partFivSpan.setVisibility(View.VISIBLE);
                 title5.setText(dataBean.getFavorites_title());
                 if (!TextUtils.isEmpty(dataBean.getIcon_url())) {
+                    LocalLog.d(TAG,"dataBean.getIcon_url() ="  + dataBean.getIcon_url());
                     Presenter.getInstance(context).getPlaceErrorImage(pic5, dataBean.getIcon_url(), R.drawable.bitmap_null, R.drawable.bitmap_null);
+                }
+                if (!TextUtils.isEmpty(dataBean.getDesc())) {
+                    title5des.setText(dataBean.getDesc());
                 }
                 if (TextUtils.isEmpty(dataBean.getAndroid())) {
                     if (!TextUtils.isEmpty(dataBean.getFavorites_id())) {
                         partFivSpan.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                LocalLog.d(TAG, "favorites_id = " + dataBean.getAndroid());
-                                startFavorIdActivity(dataBean.getFavorites_id());
+                                startFavorIdActivity(dataBean);
                             }
                         });
                     }
@@ -360,8 +414,7 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                         partSixSpan.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                LocalLog.d(TAG, "favorites_id = " + dataBean.getFavorites_id());
-                                startFavorIdActivity(dataBean.getFavorites_id());
+                                startFavorIdActivity(dataBean);
                             }
                         });
                     }
@@ -494,7 +547,7 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             pic2 = (ImageView) viewRoot.findViewById(R.id.pic_2);
             pic3 = (ImageView) viewRoot.findViewById(R.id.pic_3);
             pic4 = (ImageView) viewRoot.findViewById(R.id.pic_4);
-            pic5 = (ImageView) viewRoot.findViewById(R.id.pic_6);
+            pic5 = (ImageView) viewRoot.findViewById(R.id.pic_5);
             pic6 = (ImageView) viewRoot.findViewById(R.id.pic_6);
 
             partOneSpan = (LinearLayout) viewRoot.findViewById(R.id.part_one_span);
@@ -504,6 +557,8 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             partFivSpan = (LinearLayout) viewRoot.findViewById(R.id.part_fiv_span);
             partSixSpan = (LinearLayout) viewRoot.findViewById(R.id.part_six_span);
 
+            title5des = (TextView) viewRoot.findViewById(R.id.title5_des);
+            desFor = (TextView) viewRoot.findViewById(R.id.des_for);
         }
 
 
@@ -527,6 +582,8 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         TextView title6;
         ImageView pic6;
         LinearLayout partSixSpan;
+        TextView title5des;
+        TextView desFor;
     }
 
 
@@ -593,6 +650,7 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                 if (tab != null) {
                                     TextView textView = new TextView(context);
                                     textView.setMinWidth(30);
+                                    textView.setTypeface(Typeface.DEFAULT_BOLD);
                                     textView.setText(strings.get(i).getCate_name());
                                     textView.setGravity(Gravity.CENTER);
                                     textView.setTextSize(14);
@@ -674,19 +732,29 @@ public class TaoHomeTopAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         TextView salesNum;
         TextView quanAfterPrice;
         TextView taoquanTv;
+        ImageView icon;
+        View Item;
 
         public ThreeViewHolder(View viewRoot) {
             super(viewRoot);
             initView(viewRoot);
+            Item = viewRoot;
+            viewRoot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
         }
 
         private void initView(View viewRoot) {
             goodPic = (CircularImageView) viewRoot.findViewById(R.id.good_pic);
             goodName = (TextView) viewRoot.findViewById(R.id.good_name);
-            taobaoPrice = (TextView) viewRoot.findViewById(R.id.sales_num);
+            taobaoPrice = (TextView) viewRoot.findViewById(R.id.taobao_price);
             salesNum = (TextView) viewRoot.findViewById(R.id.sales_num);
             quanAfterPrice = (TextView) viewRoot.findViewById(R.id.quan_after_price);
             taoquanTv = (TextView) viewRoot.findViewById(R.id.taoquan_tv);
+            icon = (ImageView) viewRoot.findViewById(R.id.icon);
         }
     }
 }

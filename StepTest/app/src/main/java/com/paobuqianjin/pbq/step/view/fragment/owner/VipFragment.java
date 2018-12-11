@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
+import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.base.adapter.TabAdapter;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 
@@ -46,7 +47,7 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
     TabLayout vipTabBar;
     @Bind(R.id.vip_viewpager)
     ViewPager vipViewpager;
-    String[] titles = {"个人会员", "金牌会员"};
+    String[] titles = {"个人会员", "金牌会员", "联盟商家", "优选商家"};
     private int selectPage = 0;
 
     @Override
@@ -61,12 +62,26 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
 
     @Override
     protected void initView(final View viewRoot) {
-        SponsorVipFragment sponsorVipFragment = new SponsorVipFragment();
+
         PersonVipFragment personVipFragment = new PersonVipFragment();
         List<Fragment> fragments = new ArrayList<>();
 
         fragments.add(personVipFragment);
-        fragments.add(sponsorVipFragment);
+        for (int i = 0; i < 3; i++) {
+            if (i == 0) {
+                H5VipFragment h5VipFragmentA = new H5VipFragment();
+                h5VipFragmentA.setUrl(NetApi.urlGoldenH5);
+                fragments.add(h5VipFragmentA);
+            } else if (i == 1) {
+                H5VipFragment h5VipFragmentB = new H5VipFragment();
+                h5VipFragmentB.setUrl(NetApi.urlUnionH5);
+                fragments.add(h5VipFragmentB);
+            } else if (i == 2) {
+                H5VipFragment h5VipFragmentC = new H5VipFragment();
+                h5VipFragmentC.setUrl(NetApi.urlGoodSelectH5);
+                fragments.add(h5VipFragmentC);
+            }
+        }
 
         TabAdapter tabAdapter = new TabAdapter(getContext()
                 , getActivity().getSupportFragmentManager(), fragments, titles);
@@ -78,14 +93,6 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
             LocalLog.d(TAG, "initView() i = " + i);
             vipTabBar.getTabAt(i).setCustomView(getTabView(i));
         }
-        vipTabBar.post(new Runnable() {
-            @Override
-            public void run() {
-                if (vipTabBar != null) {
-                    setIndicator(vipTabBar, 40, 40);
-                }
-            }
-        });
         vipTabBar.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -157,6 +164,12 @@ public class VipFragment extends BaseBarStyleTextViewFragment {
             view.setGravity(Gravity.CENTER);
         } else if (position == 1) {
             textView.setText(titles[1]);
+            view.setGravity(Gravity.CENTER);
+        } else if (position == 2) {
+            textView.setText(titles[2]);
+            view.setGravity(Gravity.CENTER);
+        } else if (position == 3) {
+            textView.setText(titles[3]);
             view.setGravity(Gravity.CENTER);
         }
         return view;

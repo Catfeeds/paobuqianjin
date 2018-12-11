@@ -517,9 +517,9 @@ public class RedInfoActivity extends BaseBarActivity {
                         redSuccess.setText("你已经领取过");
                         redSuccess.setVisibility(View.VISIBLE);
                         if (roundHisResponse.getData().getType() == 1) {
-                            String showResult = "￥" + roundHisResponse.getData().getIncome_money() + "元";
+                            String showResult = "¥" + roundHisResponse.getData().getIncome_money() + "元";
                             SpannableString spannableString = new SpannableString(showResult);
-                            spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("￥" + roundHisResponse.getData().getIncome_money()).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                            spannableString.setSpan(new AbsoluteSizeSpan(14, true), ("¥" + roundHisResponse.getData().getIncome_money()).length(), showResult.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                             redResult.setText(spannableString);
                             intoWallet.setVisibility(View.VISIBLE);
                         } else if (roundHisResponse.getData().getType() == 2) {
@@ -572,11 +572,11 @@ public class RedInfoActivity extends BaseBarActivity {
                     /*优惠券*/
                     if (roundHisResponse.getData().getVoucherid() > 0) {
                         ticketS.setVisibility(View.VISIBLE);
-                        String money = "￥" + roundHisResponse.getData().getVoucher().getMoney() + "店铺优惠券";
+                        String money = "¥" + roundHisResponse.getData().getVoucher().getMoney() + "店铺优惠券";
                         SpannableString spannableString = new SpannableString(money);
-                        spannableString.setSpan(new AbsoluteSizeSpan(28, true), "￥".length(), ("￥" + roundHisResponse.getData().getVoucher().getMoney()).length(),
+                        spannableString.setSpan(new AbsoluteSizeSpan(28, true), "¥".length(), ("¥" + roundHisResponse.getData().getVoucher().getMoney()).length(),
                                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                        spannableString.setSpan(new TypefaceSpan("bold"), "￥".length(), ("￥" + roundHisResponse.getData().getVoucher().getMoney()).length(),
+                        spannableString.setSpan(new TypefaceSpan("bold"), "¥".length(), ("¥" + roundHisResponse.getData().getVoucher().getMoney()).length(),
                                 Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                         tickMoney.setText(spannableString);
                         tickCondition.setText("订单满" + roundHisResponse.getData().getVoucher().getCondition() + "元可用");

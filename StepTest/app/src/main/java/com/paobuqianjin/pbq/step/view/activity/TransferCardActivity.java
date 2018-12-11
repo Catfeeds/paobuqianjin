@@ -72,6 +72,7 @@ public class TransferCardActivity extends BaseBarActivity {
     List<DrawMoneyListResponse.DataBean> crashData = new ArrayList<>();
     private String crashMoney;//选择提现的金额
     GridMoneyAdapter gridMoneyAdapter;
+    List<String> rules = new ArrayList<>();
 
     @Override
     protected String title() {
@@ -122,7 +123,7 @@ public class TransferCardActivity extends BaseBarActivity {
 //        rvBank.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         cbAgree.setChecked(Presenter.getInstance(this).getReadCrashProtocol(this));
-        transferLimit.setText(R.string.transfer_limite_tips);
+
         initGrid();
         initData();
     }
@@ -137,6 +138,9 @@ public class TransferCardActivity extends BaseBarActivity {
                     DrawMoneyListResponse drawMoneyListResponse = new Gson().fromJson(s, DrawMoneyListResponse.class);
                     if (drawMoneyListResponse.getData() != null && drawMoneyListResponse.getData().size() > 0) {
                         for (int i = 0; i < drawMoneyListResponse.getData().size(); i++) {
+                            if (i == 0) {
+                                rules.addAll(drawMoneyListResponse.getData().get(0).getWithdraw_tips());
+                            }
                             if (drawMoneyListResponse.getData().get(i).getIs_disable() == 0) {
                                 crashMoney = drawMoneyListResponse.getData().get(i).getMoney();
                                 drawMoneyListResponse.getData().get(i).setIs_select(true);
@@ -172,6 +176,13 @@ public class TransferCardActivity extends BaseBarActivity {
                                 }
                             }
                         });
+                    }
+                    if (rules.size() > 0) {
+                        String ruleStr = "";
+                        for (int line = 0; line < rules.size(); line++) {
+                            ruleStr += String.valueOf(line + 1) + ". " + rules.get(line) + "\n";
+                        }
+                        transferLimit.setText(ruleStr);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

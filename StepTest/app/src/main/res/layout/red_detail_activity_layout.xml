@@ -533,7 +533,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:includeFontPadding="false"
-                                        android:text="￥20.00店铺优惠券"
+                                        android:text="¥20.00店铺优惠券"
                                         android:textColor="#FF3131"
                                         android:textSize="12dp" />
 

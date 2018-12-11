@@ -100,7 +100,7 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.View
     private void updateListItem(RecyclerView.ViewHolder holder, int position) {
         if (mData.get(position) instanceof ReleaseRecordResponse.DataBeanX.DataBean) {
             if (((ReleaseRecordResponse.DataBeanX.DataBean) mData.get(position)).getTrade_way() == 1) {
-                ((ReleaseRecordViewHolder) holder).moneyTv.setText("￥" + ((ReleaseRecordResponse.DataBeanX.DataBean) mData.get(position)).getReward_amount() + "元");
+                ((ReleaseRecordViewHolder) holder).moneyTv.setText("¥" + ((ReleaseRecordResponse.DataBeanX.DataBean) mData.get(position)).getReward_amount() + "元");
             } else if (((ReleaseRecordResponse.DataBeanX.DataBean) mData.get(position)).getTrade_way() == 2) {
                 ((ReleaseRecordViewHolder) holder).moneyTv.setText(((ReleaseRecordResponse.DataBeanX.DataBean) mData.get(position)).getCredit() + "步币");
             }
@@ -139,7 +139,7 @@ public class ReleaseRecordAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
             ((ReleaseRecordViewHolder) holder).statusStr = red_status;
             ((ReleaseRecordViewHolder) holder).releaseDetails.setText(red_status);
-            ((ReleaseRecordViewHolder) holder).moneyTv.setText("￥" + ((SponsorPkgRecordResponse.DataBeanX.DataBean) mData.get(position)).getMoney() + "元");
+            ((ReleaseRecordViewHolder) holder).moneyTv.setText("¥" + ((SponsorPkgRecordResponse.DataBeanX.DataBean) mData.get(position)).getMoney() + "元");
         } else if (mData.get(position) instanceof NearBySponsorResponse.DataBean.NearedpacketBean) {
             if (((NearBySponsorResponse.DataBean.NearedpacketBean) mData.get(position)).getRed_id() == 0) {
 

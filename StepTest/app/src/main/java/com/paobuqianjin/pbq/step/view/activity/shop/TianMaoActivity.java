@@ -1,12 +1,12 @@
 package com.paobuqianjin.pbq.step.view.activity.shop;
 
 import android.annotation.TargetApi;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -59,6 +59,8 @@ public class TianMaoActivity extends BaseBarActivity implements SwipeMenuRecycle
     TabLayout tablayout;
     @Bind(R.id.more)
     ImageView more;
+    @Bind(R.id.bg_img)
+    ImageView bgImg;
     private int scrollY = 0;
     RelativeLayout barNull;
     LinearLayout barItem;
@@ -67,15 +69,18 @@ public class TianMaoActivity extends BaseBarActivity implements SwipeMenuRecycle
 
     @Override
     protected String title() {
-        return null;
+        return "天猫";
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("天猫");
         setContentView(R.layout.tao_tian_activity_layout);
         ButterKnife.bind(this);
         barNull = (RelativeLayout) findViewById(R.id.bar_null);
+        bgImg = (ImageView) barNull.findViewById(R.id.bg_img);
+        bgImg.setVisibility(View.VISIBLE);
         barItem = (LinearLayout) findViewById(R.id.item_shop);
         barItem.setVisibility(View.GONE);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -86,9 +91,11 @@ public class TianMaoActivity extends BaseBarActivity implements SwipeMenuRecycle
         pageRecycler.addFooterView(loadMoreView); // 添加为Footer。
         pageRecycler.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
         pageRecycler.setLoadMoreListener(this);
+        barTitle = barNull.findViewById(R.id.bar_title);
         taoHomeTopAdapter = new TaoHomeTopAdapter(this, getSupportFragmentManager());
         taoHomeTopAdapter.setLoadMoreInterface(loadDataInterface);
         pageRecycler.setAdapter(taoHomeTopAdapter);
+        bgImg.setVisibility(View.GONE);
         pageRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -110,7 +117,7 @@ public class TianMaoActivity extends BaseBarActivity implements SwipeMenuRecycle
                         LocalLog.d(TAG, "location[0] =" + location[0] + ",location[1]= " + location[1]);
                         if (location[1] <= Utils.dp2px(getApplicationContext(), 64)
                                 && viewCate.getVisibility() == View.VISIBLE && dy > 0) {
-                            barNull.setBackground(getDrawableResource(R.drawable.shop_bar));
+                            bgImg.setVisibility(View.VISIBLE);
                             viewCate.setVisibility(View.GONE);
                             barItem.setVisibility(View.VISIBLE);
                             selectPosition = taoHomeTopAdapter.getSelectTab();
@@ -120,7 +127,7 @@ public class TianMaoActivity extends BaseBarActivity implements SwipeMenuRecycle
                                 && viewCate.getVisibility() == View.GONE && dy < 0) {
                             barItem.setVisibility(View.GONE);
                             viewCate.setVisibility(View.VISIBLE);
-                            barNull.setBackground(null);
+                            bgImg.setVisibility(View.GONE);
                             TabLayout tabLayout = (TabLayout) viewCate.findViewById(R.id.tablayout);
                             if (tabLayout != null) {
                                 tabLayout.getTabAt(selectPosition).select();
@@ -208,6 +215,7 @@ public class TianMaoActivity extends BaseBarActivity implements SwipeMenuRecycle
                             if (tab != null) {
                                 TextView textView = new TextView(TianMaoActivity.this);
                                 textView.setMinWidth(30);
+                                textView.setTypeface(Typeface.DEFAULT_BOLD);
                                 textView.setText(strings.get(i).getCate_name());
                                 textView.setGravity(Gravity.CENTER);
                                 textView.setTextSize(14);

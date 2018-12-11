@@ -59,6 +59,32 @@ public final class DateTimeUtil {
 
     }
 
+
+    public static String formatDateToMD(String str) {
+        SimpleDateFormat sf1 = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sf2 = new SimpleDateFormat("MM-d");
+        String formatStr = "";
+        try {
+            formatStr = sf2.format(sf1.parse(str));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formatStr;
+    }
+
+
+    public static String formatDateToD(String str) {
+        SimpleDateFormat sf1 = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sf2 = new SimpleDateFormat("d");
+        String formatStr = "";
+        try {
+            formatStr = sf2.format(sf1.parse(str));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return formatStr;
+    }
+
     /**
      * 将日期格式化成友好的字符串：几分钟前、几小时前、几天前、几月前、几年前、刚刚
      *
@@ -109,7 +135,7 @@ public final class DateTimeUtil {
         Date date = new Date(dateL);
         return sdf.format(date);
     }
-    
+
     /**
      * 将日期以yyyy-MM-dd HH:mm:ss格式化
      *

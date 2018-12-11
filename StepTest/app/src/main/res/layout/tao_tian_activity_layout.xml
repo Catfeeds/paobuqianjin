@@ -10,7 +10,7 @@
 
     <include
         android:id="@+id/bar_null"
-        layout="@layout/bar_return_null_bg_style" />
+        layout="@layout/shop_bar_style" />
 
     <include
         android:id="@+id/item_shop"

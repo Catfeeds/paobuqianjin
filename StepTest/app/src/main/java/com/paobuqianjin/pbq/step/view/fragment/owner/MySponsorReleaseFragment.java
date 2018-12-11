@@ -168,7 +168,7 @@ public class MySponsorReleaseFragment extends BaseBarStyleTextViewFragment {
                     LocalLog.d(TAG, "sponsorResponse = " + sponsorResponse.toString());
                     if (sponsorResponse.getData() != null) {
                         redName.setText(sponsorResponse.getData().getRed_name());
-                        redMoney.setText("奖励金额:￥" + sponsorResponse.getData().getMoney() + "元");
+                        redMoney.setText("奖励金额:¥" + sponsorResponse.getData().getMoney() + "元");
                         if (!TextUtils.isEmpty(statusStr)) {
                             statusDes.setText("活动状态:" + statusStr);
                         }

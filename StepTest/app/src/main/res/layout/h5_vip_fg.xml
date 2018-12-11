@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/color_d6d6d6" />
+
+    <WebView
+        android:layout_below="@+id/line"
+        android:layout_marginTop="1dp"
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/pay_button">
+
+    </WebView>
+
+    <LinearLayout
+        android:id="@+id/pay_button"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/vip_friend"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/gold_angle_out_line"
+            android:stateListAnimator="@null"
+            android:text="赠送好友"
+            android:textColor="@color/color_161727"
+            android:textSize="18dp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/vip_self"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/gold_angle_background"
+            android:stateListAnimator="@null"
+            android:text="我要购买"
+            android:textColor="@color/color_f8"
+            android:textSize="18dp" />
+    </LinearLayout>
+</RelativeLayout>
