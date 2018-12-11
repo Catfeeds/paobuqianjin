@@ -3,6 +3,8 @@ package com.paobuqianjin.pbq.step.view.activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -13,11 +15,15 @@ import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.customview.LineChartManager;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.HisStepRankDayResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.StepHisResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.Constants;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
+import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorDetailAdapter;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
@@ -34,7 +40,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by pbq on 2018/12/10.
  */
 
-public class StepHistoryActivity extends BaseBarActivity {
+public class StepHistoryActivity extends BaseBarActivity implements SwipeMenuRecyclerView.LoadMoreListener {
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
     @Bind(R.id.time_wait)
@@ -73,8 +79,18 @@ public class StepHistoryActivity extends BaseBarActivity {
     List<StepHisResponse.DataBean.StepListBean> monthList = new ArrayList<>();
     @Bind(R.id.line_chart)
     LineChart lineChart;
+    @Bind(R.id.like_num)
+    TextView likeNum;
+    @Bind(R.id.like_ico)
+    ImageView likeIco;
     private LineChartManager lineChartManager1;
     private boolean isShowMonth = false;
+    private int currentPage = 0;
+    private HonorDetailAdapter adapter;
+    List<HisStepRankDayResponse.DataBean.MemberBean> listData = new ArrayList<>();
+    private boolean is_vote;
+    private int localVoteNum;
+    private String step_record_id;
 
     @Override
     protected String title() {
@@ -91,8 +107,19 @@ public class StepHistoryActivity extends BaseBarActivity {
         Drawable drawable = getResources().getDrawable(R.drawable.fade_blue);
         lineChartManager1.setChartFillDrawable(drawable);
         lineChartManager1.setMarkerView(StepHistoryActivity.this);
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        danDetailRecycler.setLayoutManager(linearLayoutManager);
+        danDetailRecycler.setHasFixedSize(true);
+        danDetailRecycler.setNestedScrollingEnabled(false);
+/*        DefineLoadMoreView loadMoreView = new DefineLoadMoreView(this);
+        danDetailRecycler.addFooterView(loadMoreView); // 添加为Footer。
+        danDetailRecycler.setLoadMoreView(loadMoreView); // 设置LoadMoreView更新监听。
+        danDetailRecycler.setLoadMoreListener(this);*/
+        adapter = new HonorDetailAdapter(this, listData);
+        danDetailRecycler.setAdapter(adapter);
         getWeekMonthStep("1");
         getWeekMonthStep("2");
+        getFriendRank(1);
     }
 
     /*@desc
@@ -131,6 +158,43 @@ public class StepHistoryActivity extends BaseBarActivity {
         });
     }
 
+    @Override
+    public void onLoadMore() {
+        //getFriendRank(currentPage + 1);
+    }
+
+    private void getFriendRank(final int page) {
+        currentPage = page;
+        Map<String, String> param = new HashMap<>();
+        param.put("userid", String.valueOf(Presenter.getInstance(this).getId()));
+        param.put("action", "step");
+        param.put("page", String.valueOf(page));
+        param.put("pagesize", String.valueOf(Constants.PAGE_SIZE));
+        Presenter.getInstance(this).getPaoBuSimple(NetApi.urlUserFriends, param, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    HisStepRankDayResponse friendStepRankDayResponse = new Gson().fromJson(s, HisStepRankDayResponse.class);
+                    userNameRank.setText(String.valueOf(friendStepRankDayResponse.getData().getMydata().getNickname()));
+                    yourDan.setText(String.valueOf(friendStepRankDayResponse.getData().getMydata().getRank()));
+                    stepNumMy.setText(String.valueOf(friendStepRankDayResponse.getData().getMydata().getStep_number()));
+                    Presenter.getInstance(StepHistoryActivity.this).getPlaceErrorImage(headIconUser, friendStepRankDayResponse.getData().getMydata().getAvatar()
+                            , R.drawable.default_head_ico, R.drawable.default_head_ico);
+                    listData.addAll(friendStepRankDayResponse.getData().getMember());
+                    perStep.setText(String.valueOf(friendStepRankDayResponse.getData().getMydata().getStep_number()));
+                    adapter.notifyDataSetChanged(listData);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
+    }
+
     @OnClick(R.id.switch_doll)
     public void onClick() {
         if (!isShowMonth) {
@@ -153,6 +217,17 @@ public class StepHistoryActivity extends BaseBarActivity {
                 lineChartManager1.showLineChart(weekList, "步数", getResources().getColor(R.color.blue));
                 lineChart.invalidate();
             }
+        }
+    }
+
+    @OnClick({R.id.switch_doll, R.id.like_ico})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.switch_doll:
+
+                break;
+            case R.id.like_ico:
+                break;
         }
     }
 }
