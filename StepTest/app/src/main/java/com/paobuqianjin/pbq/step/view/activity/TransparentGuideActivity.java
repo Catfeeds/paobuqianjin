@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.utils.LocalLog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,11 +22,11 @@ public class TransparentGuideActivity extends Activity {
     private static final String TAG = TransparentGuideActivity.class.getSimpleName();
     @Bind(R.id.btn_home_page)
     TextView btnHomePage;
-    @Bind(R.id.btn_task)
+    @Bind(R.id.btn_shop_live)
     TextView btnTask;
-    @Bind(R.id.btn_friend_circle)
+    @Bind(R.id.btn_shang_cheng)
     TextView btnFriendCircle;
-    @Bind(R.id.btn_honor)
+    @Bind(R.id.btn_conversion)
     TextView btnHonor;
     @Bind(R.id.btn_owner)
     TextView btnOwner;

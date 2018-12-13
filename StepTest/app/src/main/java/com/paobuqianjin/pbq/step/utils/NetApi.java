@@ -411,5 +411,7 @@ public class NetApi {
     public final static String urlGoodSelectH5 = "https://mer.runmoneyin.com/Admin/Activity/optimiMember";
     //获取用户周期内步数记录
     public final static String urlStepLineChart = url + "v1/UserStep/stepLineChart";
+    //
+    public final static String urlCommonGoods = url + "v1/Zcomposite/communnityGoods";
 
 }

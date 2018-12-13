@@ -38,6 +38,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/today_step_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="今日步数"
@@ -55,11 +56,12 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:text=""
-                        android:textColor="#4FADE4"
+                        android:textColor="@color/color_f8"
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/today_doll_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -77,11 +79,12 @@
                         android:minWidth="67dp"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
-                        android:textColor="#4FADE4"
+                        android:textColor="@color/color_f8"
                         android:textSize="20dp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/today_crash_label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
@@ -100,7 +103,7 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:text=""
-                        android:textColor="#4FADE4"
+                        android:textColor="@color/color_f8"
                         android:textSize="20dp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -125,7 +128,7 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:text="发红包"
-                        android:textColor="#4FADE4"
+                        android:textColor="@color/color_f8"
                         android:textSize="20dp" />
 
 
@@ -140,7 +143,7 @@
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:text="查记录"
-                        android:textColor="#4FADE4"
+                        android:textColor="@color/color_f8"
                         android:textSize="20dp" />
                 </LinearLayout>
 
@@ -394,8 +397,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:background="@color/color_f6f6f6"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/new_s"
@@ -423,7 +425,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingBottom="12dp"
-                android:paddingTop="14dp">
+                android:paddingTop="14dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:id="@+id/linear_shop"
@@ -481,9 +484,10 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
-                android:paddingBottom="13dp"
                 android:background="@drawable/rect_out_gray"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="13dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -516,8 +520,8 @@
                             android:id="@+id/tianmao"
                             android:layout_width="54dp"
                             android:layout_height="54dp"
-                            android:scaleType="centerCrop"
                             android:layout_gravity="center"
+                            android:scaleType="centerCrop"
                             android:src="@drawable/tianmao" />
                     </FrameLayout>
 
@@ -578,11 +582,51 @@
                     android:src="@drawable/home_banner"></ImageView>
             </LinearLayout>
 
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"></com.youth.banner.Banner>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_marginRight="8dp"
+                        android:layout_width="60dp"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/yellow0" />
+
+                    <ImageView
+                        android:layout_width="183dp"
+                        android:layout_height="29dp"
+                        android:layout_gravity="center"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/exchange_bar" />
+
+                    <View
+                        android:layout_marginLeft="8dp"
+                        android:layout_width="60dp"
+                        android:layout_height="1dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@color/yellow0" />
+                </LinearLayout>
+
+            </LinearLayout>
+
             <io.rong.imkit.model.RongGridView
                 android:id="@+id/good_grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:background="@color/color_f6f6f6"
                 android:gravity="center"
                 android:horizontalSpacing="7dp"
@@ -603,7 +647,8 @@
                 android:background="@color/color_f6f6f6"
                 android:gravity="center"
                 android:textColor="@color/color_161727"
-                android:textSize="14dp" />
+                android:textSize="14dp"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -624,6 +669,7 @@
             android:layout_marginLeft="14dp" />
 
         <TextView
+            android:id="@+id/app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -634,18 +680,19 @@
             android:textSize="18dp" />
 
         <ImageView
+            android:padding="5dp"
             android:id="@+id/scan_mark_home"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="14dp"
+            android:layout_marginRight="10dp"
             android:scaleType="centerCrop"
             android:src="@drawable/scan" />
     </LinearLayout>
 
 
     <ImageView
-        android:id="@+id/shop_ping"
+        android:id="@+id/release_goods"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentRight="true"
@@ -653,5 +700,5 @@
         android:layout_marginRight="14dp"
         android:layout_marginTop="350dp"
         android:scaleType="centerInside"
-        android:src="@drawable/shop_ing" />
+        android:src="@drawable/release_goods" />
 </RelativeLayout>

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <include
+        android:id="@+id/bar"
+        layout="@layout/bar_no_return" />
+
+    <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/bar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/step_dollar_shop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="14dp">
+
+                    <LinearLayout
+                        android:id="@+id/linear_shop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="25dp"
+                            android:text="走路有红包"
+                            android:textColor="#939393"
+                            android:textSize="12dp" />
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="8dp"
+                            android:layout_gravity="center_vertical"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/step_left" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="8dp"
+                            android:paddingRight="8dp"
+                            android:text="步币商城"
+                            android:textColor="#FFA202"
+                            android:textSize="16dp" />
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="8dp"
+                            android:layout_gravity="center_vertical"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/step_right" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="25dp"
+                            android:text="步币换商品"
+                            android:textColor="#939393"
+                            android:textSize="12dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:layout_marginRight="14dp"
+                    android:background="@drawable/rect_out_gray"
+                    android:orientation="vertical"
+                    android:paddingBottom="13dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingBottom="11dp"
+                        android:paddingTop="11dp">
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/pingduoduo"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:layout_gravity="center_horizontal"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/pinduoduo" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/tianmao"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:layout_gravity="center"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/tianmao" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:layout_marginRight="12dp"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/jingdong"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:layout_gravity="center_horizontal"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/jingdong" />
+
+                        </FrameLayout>
+
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/weipinghui"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:layout_gravity="center_horizontal"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/weipinhui" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1">
+
+                            <ImageView
+                                android:id="@+id/mogu"
+                                android:layout_width="54dp"
+                                android:layout_height="54dp"
+                                android:layout_gravity="center_horizontal"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/mogujie" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/banner_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/home_banner"></ImageView>
+
+                </LinearLayout>
+
+                <io.rong.imkit.model.RongGridView
+                    android:id="@+id/good_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_f6f6f6"
+                    android:gravity="center"
+                    android:horizontalSpacing="7dp"
+                    android:numColumns="auto_fit"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:scrollbars="none"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="8dp">
+
+                </io.rong.imkit.model.RongGridView>
+
+                <TextView
+                    android:id="@+id/go_shoping_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/color_f6f6f6"
+                    android:gravity="center"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14dp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
+
+    <ImageView
+        android:id="@+id/release_goods"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/bar"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="100dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/shop_ing" />
+</RelativeLayout>

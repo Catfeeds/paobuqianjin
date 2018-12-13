@@ -3,6 +3,7 @@ package com.paobuqianjin.pbq.step.view.fragment.owner;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,9 +77,9 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
     private final static String LIKE_MESSAGE_ACTION = "com.paobuqianjin.pbq.step.LIKE_MESSAGE_ACTION";
     private final static String CONTENT_MESSAGE_ACTION = "com.paobuqianjin.pbq.step.CONTENT_MESSAGE_ACTION";
     private final static String SYS_MESSAGE_ACTION = "com.paobuqianjin.pbq.step.SYS_MESSAGE_ACTION";
+    private String action;
 
     @Override
-
     protected String title() {
         return "消息";
     }
@@ -104,10 +105,33 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
-        Presenter.getInstance(getContext()).getMessage(2, 1, 10);
-        Presenter.getInstance(getContext()).getMessage(3, 1, 10);
-        Presenter.getInstance(getContext()).getMessage(4, 1, 10);
+        Intent intent = getActivity().getIntent();
+        messageSpan = (RelativeLayout) viewRoot.findViewById(R.id.message_span);
+        likeSpan = (RelativeLayout) viewRoot.findViewById(R.id.like_span);
+        systemSpan = (RelativeLayout) viewRoot.findViewById(R.id.system_span);
+        if (intent != null) {
+            action = intent.getAction();
+            if (LIKE_MESSAGE_ACTION.equals(action)) {
+                Presenter.getInstance(getContext()).getMessage(2, 1, 10);
+                messageSpan.setVisibility(View.GONE);
+                systemSpan.setVisibility(View.GONE);
+            } else if (CONTENT_MESSAGE_ACTION.equals(action)) {
+                Presenter.getInstance(getContext()).getMessage(3, 1, 10);
+                likeSpan.setVisibility(View.GONE);
+                systemSpan.setVisibility(View.GONE);
+            } else if (SYS_MESSAGE_ACTION.equals(action)) {
+                messageSpan.setVisibility(View.GONE);
+                likeSpan.setVisibility(View.GONE);
+                Presenter.getInstance(getContext()).getMessage(4, 1, 10);
+            } else {
+                LocalLog.d(TAG, "推送进入！");
+                Presenter.getInstance(getContext()).getMessage(2, 1, 10);
+                Presenter.getInstance(getContext()).getMessage(3, 1, 10);
+                Presenter.getInstance(getContext()).getMessage(4, 1, 10);
+            }
+
+
+        }
         contentDesMsg = (TextView) viewRoot.findViewById(R.id.content_des_msg);
         likeDesMsg = (TextView) viewRoot.findViewById(R.id.like_des_msg);
     }
@@ -189,7 +213,7 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
             }
             if (messageLikeResponse.getData() != null && messageLikeResponse.getData().getPagenation() != null) {
                 likeDesMsg.setText(String.valueOf(messageLikeResponse.getData().getPagenation().getTotalCount()) + "个赞");
-            }else{
+            } else {
                 likeDesMsg.setText("0个赞");
             }
         } else if (messageLikeResponse.getError() == -100) {
@@ -231,7 +255,7 @@ public class MsgSpanFragment extends BaseBarStyleTextViewFragment implements Mes
             }
             if ((messageContentResponse.getData() != null && messageContentResponse.getData().getPagenation() != null)) {
                 contentDesMsg.setText(String.valueOf(messageContentResponse.getData().getPagenation().getTotalCount()) + "条消息");
-            }else{
+            } else {
                 contentDesMsg.setText("0条消息");
             }
         } else if (messageContentResponse.getError() == -100) {

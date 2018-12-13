@@ -2,6 +2,7 @@ package com.paobuqianjin.pbq.step.view.base.adapter.dan;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,7 +150,7 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
             /*if (((StepRandWeekResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getVip() == 1) {
                 holder.vipFlg.setVisibility(View.VISIBLE);
             }*/
-        } else if (mData.get(position) instanceof HisStepRankDayResponse.DataBean.MemberBean) {
+        } else if (mData.get(position) instanceof HisStepRankDayResponse.DataBeanX.DataBean.MemberBean) {
             if (position == 0) {
                 holder.rankIcon.setImageResource(R.drawable.honor_master);
             } else if (position == 1) {
@@ -161,19 +162,20 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
                 holder.rankNum.setText(String.valueOf(position + 1));
                 holder.rankIcon.setVisibility(View.INVISIBLE);
             }
-            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((HisStepRankDayResponse.DataBean.MemberBean) mData.get(position)).getAvatar()
+            Presenter.getInstance(context).getPlaceErrorImage(holder.headIconUser, ((HisStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getAvatar()
                     , R.drawable.default_head_ico, R.drawable.default_head_ico);
-            holder.stepNum.setText(String.valueOf(((HisStepRankDayResponse.DataBean.MemberBean) mData.get(position)).getStep_number()));
-            holder.userNameRank.setText(((HisStepRankDayResponse.DataBean.MemberBean) mData.get(position)).getNickname());
-            if (((HisStepRankDayResponse.DataBean.MemberBean) mData.get(position)).getIs_zan() == 1) {
+            holder.stepNum.setText(String.valueOf(((HisStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getStep_number()));
+            holder.userNameRank.setText(((HisStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getNickname());
+            if (((HisStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getIs_zan() == 1) {
                 holder.likeIco.setImageResource(R.drawable.like_step_more);
                 holder.is_vote = true;
             } else {
                 holder.likeIco.setImageResource(R.drawable.like_step_zero);
                 holder.is_vote = false;
             }
-            holder.localVoteNum = ((HisStepRankDayResponse.DataBean.MemberBean) mData.get(position)).getZan_count();
-            holder.likeNum.setText(String.valueOf(((HisStepRankDayResponse.DataBean.MemberBean) mData.get(position)).getZan_count()));
+            holder.localVoteNum = ((HisStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getZan_count();
+            holder.likeNum.setText(String.valueOf(((HisStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getZan_count()));
+            holder.user_step_id = ((HisStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(position)).getUser_step_id();
         }
     }
 
@@ -202,25 +204,29 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
         TextView likeNum;
         boolean is_vote = false;
         int localVoteNum;
+        String user_step_id = "";
 
-        /*点赞*/
+        /*鐐硅禐*/
         private void voteSponsor(final int status, final String step_record_id) {
+            if (TextUtils.isEmpty(step_record_id)) {
+                return;
+            }
             Map<String, String> param = new HashMap<>();
             param.put("status", String.valueOf(status));
-            param.put("type", "4");
-            param.put("step_record_id", step_record_id);
+            param.put("type", "5");
+            param.put("user_step_rid", step_record_id);
             Presenter.getInstance(context).postPaoBuSimple(NetApi.urlVoteSponsor, param, new PaoCallBack() {
                 @Override
                 protected void onSuc(String s) {
                     if (status == 1) {
-                        LocalLog.d("voteSponsor", "点赞成功!");
+                        LocalLog.d("voteSponsor", "鐐硅禐鎴愬姛!");
                         is_vote = true;
-                        likeIco.setImageResource(R.drawable.like_step_zero);
+                        likeIco.setImageResource(R.drawable.like_step_more);
                         localVoteNum++;
                     } else if (status == 2) {
-                        LocalLog.d("voteSponsor", "取消点赞!");
+                        LocalLog.d("voteSponsor", "鍙栨秷鐐硅禐!");
                         is_vote = false;
-                        likeIco.setImageResource(R.drawable.like_step_more);
+                        likeIco.setImageResource(R.drawable.like_step_zero);
                         localVoteNum--;
 
                     }
@@ -251,11 +257,15 @@ public class HonorDetailAdapter extends RecyclerView.Adapter<HonorDetailAdapter.
             likeIco.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mData.get(getAdapterPosition()) instanceof HisStepRankDayResponse.DataBean.MemberBean) {
+                    if (Presenter.getInstance(context).getId() == ((HisStepRankDayResponse.DataBeanX.DataBean.MemberBean) mData.get(getAdapterPosition())).getUserid()
+                            || "0".equals(user_step_id)) {
+                        return;
+                    }
+                    if (mData.get(getAdapterPosition()) instanceof HisStepRankDayResponse.DataBeanX.DataBean.MemberBean) {
                         if (is_vote) {
-                            voteSponsor(2, ((HisStepRankDayResponse.DataBean.MemberBean) mData.get(getAdapterPosition())).getUser_step_id());
+                            voteSponsor(2, user_step_id);
                         } else {
-                            voteSponsor(1, ((HisStepRankDayResponse.DataBean.MemberBean) mData.get(getAdapterPosition())).getUser_step_id());
+                            voteSponsor(1, user_step_id);
                         }
                     }
                 }

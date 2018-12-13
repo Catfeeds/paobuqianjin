@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_760000">
+
+    <ImageView
+        android:id="@+id/bg_good"
+        android:layout_width="285dp"
+        android:layout_height="375dp"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/tanchuang" />
+
+    <ImageView
+        android:id="@+id/close_release_common"
+        android:layout_width="35dp"
+        android:layout_height="38dp"
+        android:layout_alignRight="@+id/bg_good"
+        android:layout_alignTop="@+id/bg_good"
+        android:scaleType="centerInside"
+        android:src="@drawable/release_close" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/bg_good"
+        android:layout_alignLeft="@+id/bg_good"
+        android:layout_alignRight="@+id/bg_good"
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="欢迎使用跑步钱进平台"
+            android:textColor="#343434"
+            android:textSize="17dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:lineSpacingExtra="8dp"
+            android:text="手机发布暂时不能使用，请您在电脑登录以下网址即可免费发布置换物品。"
+            android:textColor="#343434"
+            android:textSize="14dp" />
+
+        <TextView
+            android:id="@+id/text_web"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+            android:layout_marginTop="8dp"
+            android:text="!!!!!!!!!!!!!"
+            android:textColor="#FD1616"
+            android:textSize="12dp" />
+
+        <Button
+            android:id="@+id/copy_button"
+            android:layout_width="200dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/home_element_white"
+            android:gravity="center"
+            android:text="点击复制"
+            android:textColor="@color/color_f8"
+            android:textSize="14dp" />
+    </LinearLayout>
+</RelativeLayout>

@@ -56,7 +56,7 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/btn_task"
+                android:id="@+id/btn_shop_live"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
@@ -80,7 +80,7 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/btn_friend_circle"
+                android:id="@+id/btn_shang_cheng"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentStart="true"
@@ -105,7 +105,7 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/btn_honor"
+                android:id="@+id/btn_conversion"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"

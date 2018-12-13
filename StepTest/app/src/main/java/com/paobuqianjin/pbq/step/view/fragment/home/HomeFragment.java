@@ -1,5 +1,7 @@
 package com.paobuqianjin.pbq.step.view.fragment.home;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -7,6 +9,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +29,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -36,15 +40,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.paobuqianjin.pbq.step.R;
-import com.paobuqianjin.pbq.step.adapter.GridGoodAdpter;
+import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
+import com.paobuqianjin.pbq.step.adapter.CommonGoodAdapter;
 import com.paobuqianjin.pbq.step.customview.LooperTextView;
 import com.paobuqianjin.pbq.step.customview.RedPkgAnimation;
 import com.paobuqianjin.pbq.step.data.bean.AdObject;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.Adresponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AllIncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.AroundRedBagResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.CommonGoodResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
-import com.paobuqianjin.pbq.step.data.bean.gson.response.HomeGoodResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.IncomeResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.PostUserStepResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorRedPkgResponse;
@@ -63,14 +68,20 @@ import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
+import com.paobuqianjin.pbq.step.utils.SharedPreferencesUtil;
+import com.paobuqianjin.pbq.step.utils.ShopToolUtil;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.AddAroundRedBagActivity;
+import com.paobuqianjin.pbq.step.view.activity.AddConsumptiveRedBagActivity;
+import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.RedHsRecordActivity;
 import com.paobuqianjin.pbq.step.view.activity.RoundRedDetailActivity;
 import com.paobuqianjin.pbq.step.view.activity.ShopWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.SingleWebViewActivity;
 import com.paobuqianjin.pbq.step.view.activity.TaskActivity;
+import com.paobuqianjin.pbq.step.view.activity.TaskReleaseActivity;
+import com.paobuqianjin.pbq.step.view.activity.VipActivity;
 import com.paobuqianjin.pbq.step.view.activity.shop.TianMaoActivity;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseFragment;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
@@ -83,6 +94,10 @@ import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Rationale;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import org.json.JSONObject;
 
@@ -136,7 +151,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     LinearLayout linearShop;
     @Bind(R.id.home_page_v1)
     RelativeLayout homePageV1;
-    @Bind(R.id.shop_ping)
+    @Bind(R.id.release_goods)
     ImageView shopPing;
     @Bind(R.id.go_shoping_tv)
     TextView goShopingTv;
@@ -176,8 +191,18 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     TextView fiendTaskNum;
     @Bind(R.id.banner_tv)
     ImageView bannerTv;
+    @Bind(R.id.banner)
+    Banner banner;
+    @Bind(R.id.today_step_label)
+    TextView todayStepLabel;
+    @Bind(R.id.today_doll_label)
+    TextView todayDollLabel;
+    @Bind(R.id.today_crash_label)
+    TextView todayCrashLabel;
+    @Bind(R.id.app_name)
+    TextView appName;
 
-    private PopupWindow popupRedPkgWindow;
+    private PopupWindow popupRedPkgWindow, vipPopWnd;
     private TranslateAnimation animationCircleType;
 
     private static Map<String, Integer> weatherMap = new LinkedHashMap<>();
@@ -206,13 +231,16 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private SharedPreferences sharedPreferences;
     private boolean isBind = false;
     private LinearLayout barHome;
-    private GridGoodAdpter gridGoodAdpter;
+    private CommonGoodAdapter gridGoodAdpter;
     private String shopUrl = null;
     RelativeLayout redLayout;
     ArrayList<RedDataBean> redArray = new ArrayList<>();
     //1.朋友专享 2.长辈专享 3.夫妻专享 4.孩子专享 5.父母专享
     private ArrayList<TaskNumResponse.DataBean> arrayList = new ArrayList<>();
-
+    private final static int REQUEST_VIP = 102;
+    private final static String SPOSNOR_ACTION = "com.paobuqianjin.person.SPONSOR_ACTION";
+    private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
+    private boolean isVip;
 
     @Override
     public void onAttach(Context context) {
@@ -264,6 +292,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
 
     @Override
     protected void initView(View viewRoot) {
+        appName = (TextView) viewRoot.findViewById(R.id.app_name);
         sharedPreferences = Presenter.getInstance(getContext()).getSharePreferences();
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         toayStep = (TextView) viewRoot.findViewById(R.id.toay_step);
@@ -279,8 +308,13 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         fiendTaskNum = (TextView) viewRoot.findViewById(R.id.fiend_task_num);
         babyTaskNum = (TextView) viewRoot.findViewById(R.id.baby_task_num);
         loveTaskNum = (TextView) viewRoot.findViewById(R.id.love_task_num);
-        gridGoodAdpter = new GridGoodAdpter(getContext(), 12);
+        gridGoodAdpter = new CommonGoodAdapter(getContext(), 12);
         goodGrid = (RongGridView) viewRoot.findViewById(R.id.good_grid);
+        todayStepLabel = (TextView) viewRoot.findViewById(R.id.today_step_label);
+        todayDollLabel = (TextView) viewRoot.findViewById(R.id.today_doll_label);
+        todayCrashLabel = (TextView) viewRoot.findViewById(R.id.today_crash_label);
+        banner = (Banner) viewRoot.findViewById(R.id.banner);
+        scanMarkHome = (ImageView) viewRoot.findViewById(R.id.scan_mark_home);
         for (int i = 1; i <= 5; i++) {
             TaskNumResponse.DataBean dataBean = new TaskNumResponse.DataBean();
             dataBean.setType(i);
@@ -294,8 +328,8 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position < gridGoodAdpter.getData().size()) {
-                    if (!TextUtils.isEmpty(gridGoodAdpter.getData().get(position).getTarget_url())) {
-                        String goodUrl = gridGoodAdpter.getData().get(position).getTarget_url() + "&" + Presenter.getInstance(getContext()).getShopEnd();
+                    if (!TextUtils.isEmpty(gridGoodAdpter.getData().get(position).getPic_url())) {
+                        String goodUrl = gridGoodAdpter.getData().get(position).getPic_url() + "&" + Presenter.getInstance(getContext()).getShopEnd();
                         startActivity(new Intent(getActivity(), ShopWebViewActivity.class).putExtra("url",
                                 goodUrl));
                     }
@@ -308,37 +342,54 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 LocalLog.d(TAG, "l =  " + l + ",t = " + t + ",oldl= " + oldl + "," + oldt);
                 if (Utils.px2dip(getContext(), (float) t) > 64 / 2) {
                     barHome.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_232433));
+                    scanMarkHome.setImageResource(R.drawable.scan);
+                    appName.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));
                 } else {
                     barHome.setBackground(null);
+                    if (isWhite()) {
+                        scanMarkHome.setImageResource(R.drawable.scan_withe_day);
+                        appName.setTextColor(ContextCompat.getColor(getContext(), R.color.cloor_3b33b3b));
+                    } else {
+                        scanMarkHome.setImageResource(R.drawable.scan);
+                        appName.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    }
                 }
             }
         });
+        loadTextBanner();
         loadBanner();
         initGridGood();
-        shopPing = (ImageView) viewRoot.findViewById(R.id.shop_ping);
+        shopPing = (ImageView) viewRoot.findViewById(R.id.release_goods);
         goShopingTv = (TextView) viewRoot.findViewById(R.id.go_shoping_tv);
         SpannableString spannableString = new SpannableString("去商城逛逛 查看更多");
         spannableString.setSpan(new TypefaceSpan("default-bold"), 1, 3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(0xFFFFA202), 1, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         goShopingTv.setText(spannableString);
+        if (isWhite()) {
+            scanMarkHome.setImageResource(R.drawable.scan_withe_day);
+            appName.setTextColor(ContextCompat.getColor(getContext(), R.color.cloor_3b33b3b));
+        } else {
+            scanMarkHome.setImageResource(R.drawable.scan);
+            appName.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+        }
         updateUiTime();
-
     }
 
     private void updateUiTime() {
         if (isWhite()) {
             LocalLog.d(TAG, "白天");
             moonWhiteBg.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.white_day));
-            todayIncomeNum.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_withe));
+            todayIncomeNum.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));
             todayIncomeNum.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_white));
-            toayStep.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_withe));
+            toayStep.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));
             toayStep.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_white));
-            toayStepDollor.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_withe));
+            toayStepDollor.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));
             toayStepDollor.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_white));
-            pushRedPkg.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_withe));
+            pushRedPkg.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));
             pushRedPkg.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_white));
-            historyRecord.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_withe));
+            historyRecord.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));
             historyRecord.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_white));
+            setLabelColor(ContextCompat.getColor(getContext(), R.color.color_161727));
         } else {
             LocalLog.d(TAG, "黑夜");
             moonWhiteBg.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.moon_day));
@@ -352,22 +403,27 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             pushRedPkg.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_bg_moon));
             historyRecord.setTextColor(ContextCompat.getColor(getContext(), R.color.color_home_moon));
             historyRecord.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.home_element_bg_moon));
+            setLabelColor(ContextCompat.getColor(getContext(), R.color.color_f8));
         }
+    }
+
+    private void setLabelColor(int Color) {
+        todayStepLabel.setTextColor(Color);
+        todayDollLabel.setTextColor(Color);
+        todayCrashLabel.setTextColor(Color);
     }
 
     private void initGridGood() {
         LocalLog.d(TAG, "init() enter");
-        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlShopHome, null, new PaoCallBack() {
+        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlCommonGoods, null, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 if (!isAdded())
                     return;
                 try {
-                    HomeGoodResponse homeGoodResponse = new Gson().fromJson(s, HomeGoodResponse.class);
-                    if (!TextUtils.isEmpty(homeGoodResponse.getData().getShop_url())) {
-                        shopUrl = homeGoodResponse.getData().getShop_url() + "?" + Presenter.getInstance(getContext()).getShopEnd();
-                    }
-                    gridGoodAdpter.setDatas(homeGoodResponse.getData().getGoods_list());
+                    CommonGoodResponse homeGoodResponse = new Gson().fromJson(s, CommonGoodResponse.class);
+
+                    gridGoodAdpter.setDatas(homeGoodResponse.getData().getData());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -397,6 +453,10 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         if (popupRedPkgWindow != null) {
             popupRedPkgWindow.dismiss();
             popupRedPkgWindow = null;
+        }
+        if (vipPopWnd != null) {
+            vipPopWnd.dismiss();
+            vipPopWnd = null;
         }
     }
 
@@ -730,6 +790,78 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
 
 
     private void loadBanner() {
+        final String bannerUrl = NetApi.urlAd + "?position=redpack_list" + Presenter.getInstance(getContext()).getLocationStrFormat();
+        LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
+        Presenter.getInstance(getActivity()).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    Adresponse adresponse = new Gson().fromJson(s, Adresponse.class);
+                    final ArrayList<AdObject> adList = new ArrayList<>();
+                    if (adresponse.getData() != null && adresponse.getData().size() > 0) {
+                        int size = adresponse.getData().size();
+                        for (int i = 0; i < size; i++) {
+                            if (adresponse.getData().get(i).getImgs() != null
+                                    && adresponse.getData().get(i).getImgs().size() > 0) {
+                                int imgSize = adresponse.getData().get(i).getImgs().size();
+                                for (int j = 0; j < imgSize; j++) {
+                                    AdObject adObject = new AdObject();
+                                    adObject.setRid(Integer.parseInt(adresponse.getData().get(i).getRid()));
+                                    adObject.setImg_url(adresponse.getData().get(i).getImgs().get(j).getImg_url());
+                                    adObject.setTarget_url(adresponse.getData().get(i).getTarget_url());
+                                    adList.add(adObject);
+                                }
+                            }
+                        }
+                    }
+                    banner.setImageLoader(new BannerImageLoader())
+                            .setImages(adList)
+                            .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
+                            .setBannerAnimation(Transformer.Default)
+                            .isAutoPlay(true)
+                            .setDelayTime(2000)
+                            .setIndicatorGravity(BannerConfig.CENTER)
+                            .setOnBannerListener(new OnBannerListener() {
+                                @Override
+                                public void OnBannerClick(int position) {
+                                    if (adList.get(position).getRid() == 0) {
+                                        LocalLog.d(TAG, "复制微信号");
+                                        ClipboardManager cmb = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                                        ClipData textClipData = ClipData.newPlainText("Label", getString(R.string.wx_code));
+                                        cmb.setPrimaryClip(textClipData);
+                                        LocalLog.d(TAG, "  msg = " + cmb.getText());
+                                        PaoToastUtils.showLongToast(getActivity(), "微信号复制成功");
+                                    }
+                                    String targetUrl = adList.get(position).getTarget_url();
+                                    String result = ShopToolUtil.taoBaoString(targetUrl);
+                                    if (!TextUtils.isEmpty(result)) {
+                                        if (result.startsWith(ShopToolUtil.TaoBaoSchema)
+                                                && Utils.checkPackage(getContext(), ShopToolUtil.TaoBao)) {
+                                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(result));
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
+                                        } else {
+                                            startActivity(new Intent(getContext(), SingleWebViewActivity.class).putExtra("url", targetUrl));
+                                        }
+                                    }
+
+                                }
+                            })
+                            .start();
+                } catch (JsonSyntaxException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                LocalLog.d(TAG, "获取失败!");
+            }
+        });
+    }
+
+
+    private void loadTextBanner() {
         String bannerUrl = NetApi.urlAd + "?position=homepage";
         LocalLog.d(TAG, "bannerUrl  = " + bannerUrl);
         Presenter.getInstance(getContext()).getPaoBuSimple(bannerUrl, null, new PaoCallBack() {
@@ -872,6 +1004,55 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         popRoundRedPkg(redId);
     }
 
+
+    private void releaseGoods() {
+        if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
+            LocalLog.d(TAG, "弹窗在显示");
+            return;
+        }
+        popRedPkgView = View.inflate(getContext(), R.layout.release_common_pop_window, null);
+        ImageView closeButton = (ImageView) popRedPkgView.findViewById(R.id.close_release_common);
+        Button copyButton = (Button) popRedPkgView.findViewById(R.id.copy_button);
+        copyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClipboardManager cmb = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData textClipData = ClipData.newPlainText("Label", getString(R.string.wx_code));
+                cmb.setPrimaryClip(textClipData);
+                LocalLog.d(TAG, "  msg = " + cmb.getText());
+                PaoToastUtils.showLongToast(getActivity(), "网址复制成功");
+                popupRedPkgWindow.dismiss();
+
+            }
+        });
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (popupRedPkgWindow != null)
+                    popupRedPkgWindow.dismiss();
+            }
+        });
+        popupRedPkgWindow = new PopupWindow(popRedPkgView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        popupRedPkgWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                popupRedPkgWindow = null;
+            }
+        });
+        popupRedPkgWindow.setFocusable(true);
+        popupRedPkgWindow.setOutsideTouchable(true);
+        popupRedPkgWindow.setBackgroundDrawable(new BitmapDrawable());
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+        popupRedPkgWindow.showAtLocation(getView().findViewById(R.id.home_page_v1), Gravity.CENTER, 0, 0);
+
+        popRedPkgView.startAnimation(animationCircleType);
+
+    }
 
     private void popRoundRedPkg(final String redId) {
         if (popupRedPkgWindow != null && popupRedPkgWindow.isShowing()) {
@@ -1020,6 +1201,25 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                     if (aroundRedBagResponse.getData() != null
                             && aroundRedBagResponse.getData().getRedpacket_list() != null
                             && aroundRedBagResponse.getData().getRedpacket_list().size() > 0) {
+                        switch (aroundRedBagResponse.getData().getIs_receive()) {
+                            case 0:
+                        /*popVipWindow(aroundRedBagResponse.getMessage(), aroundRedBagResponse.getData().getIs_receive());*/
+                                break;
+                            case 1:
+                                LocalLog.d(TAG, "无限制领取");
+                                break;
+                            case -1:
+                            case 2:
+                            case 3:
+                            case 4:
+                            case 5:
+                            case 6:
+                                popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
+                                break;
+                            default:
+                                popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
+                                break;
+                        }
                         //随机算法生成红包
                         for (int i = 0; i < aroundRedBagResponse.getData().getRedpacket_list().size(); i++) {
                             if (i == 0) {
@@ -1067,6 +1267,212 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         });
     }
 
+    /*@desc
+*@function  检查当天是否提示过该提醒
+*@param
+*@return
+*/
+    private boolean checkShowedToday(String title, int errorCode) {
+        if (errorCode == 0) {
+            return false;
+        }
+        String historyDays = (String) SharedPreferencesUtil.get("around_error" + String.valueOf(errorCode), "");
+        String today = DateTimeUtil.getCurrentTime();
+        if (historyDays.equals(today)) {
+            return true;
+        }
+        return false;
+    }
+
+    public void popVipWindow(String title, int errorCode) {
+        if (TextUtils.isEmpty(title)) {
+            return;
+        }
+        if (vipPopWnd != null && vipPopWnd.isShowing()) {
+            LocalLog.d(TAG, "在显示");
+            return;
+        }
+        if (checkShowedToday(title, errorCode))
+            return;
+        View vipView = View.inflate(getContext(), R.layout.target_dest_popwindow, null);
+        vipPopWnd = new PopupWindow(vipView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        vipPopWnd.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                vipPopWnd = null;
+            }
+        });
+        vipPopWnd.setFocusable(true);
+        vipPopWnd.setOutsideTouchable(true);
+        vipPopWnd.setBackgroundDrawable(new BitmapDrawable());
+
+        TextView textTile = (TextView) vipView.findViewById(R.id.quit_title);
+        TextView textDes = (TextView) vipView.findViewById(R.id.read_des);
+        TextView textLeft = (TextView) vipView.findViewById(R.id.read_des_left);
+        LocalLog.d(TAG, "error_code = " + errorCode);
+        switch (errorCode) {
+            case -1:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("发红包");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        LocalLog.d(TAG, "发遍地红包");
+                        Intent intentAround = new Intent();
+                        intentAround.setAction(SEND_ACTION);
+                        intentAround.setClass(getContext(), AddAroundRedBagActivity.class);
+                        startActivityForResult(intentAround, REQUEST_AROUND);
+                    }
+                });
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                break;
+            case 0:
+                SpannableString spannableString = new SpannableString(title);
+                spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.color_e4393c)),
+                        0, title.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                textTile.setText(spannableString);
+                textTile.setGravity(Gravity.CENTER);
+
+                textDes.setText("去开通");
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        Intent intent = new Intent();
+                        intent.setClass(getContext(), VipActivity.class);
+                        startActivityForResult(intent, REQUEST_VIP);
+                    }
+                });
+                break;
+            case 2:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("发红包");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        LocalLog.d(TAG, "发遍地红包");
+                        Intent intentAround = new Intent();
+                        intentAround.setAction(SEND_ACTION);
+                        intentAround.setClass(getContext(), AddAroundRedBagActivity.class);
+                        startActivityForResult(intentAround, REQUEST_AROUND);
+                    }
+                });
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                break;
+            case 3:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("发红包");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        LocalLog.d(TAG, "发附近红包");
+                        Intent intent = new Intent();
+                        intent.setAction(SPOSNOR_ACTION);
+                        intent.setClass(getContext(), TaskReleaseActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                break;
+            case 4:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("发红包");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        LocalLog.d(TAG, "发专享红包");
+                        Intent intent = new Intent();
+                        intent.setAction(PKG_ACTION);
+                        intent.setClass(getContext(), TaskReleaseActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                break;
+            case 5:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("去开通");
+                if (isVip) {
+                    textDes.setText("发红包");
+                }
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        LocalLog.d(TAG, "办理金牌会员");
+                        if (isVip) {
+                            Intent intent = new Intent();
+                            intent.setClass(getContext(), AddConsumptiveRedBagActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent();
+                            intent.setClass(getContext(), GoldenSponsoractivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                break;
+            case 6:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("发红包");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                        LocalLog.d(TAG, "发消费红包");
+                        Intent intent = new Intent();
+                        intent.setClass(getContext(), AddConsumptiveRedBagActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                textLeft.setVisibility(View.VISIBLE);
+                textLeft.setText("取消");
+                break;
+            default:
+                PaoToastUtils.showLongToast(getContext(), title);
+                break;
+        }
+        if (errorCode >= 7) {
+            vipPopWnd = null;
+            return;
+        }
+        textLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                vipPopWnd.dismiss();
+            }
+        });
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT,
+                0, Animation.RELATIVE_TO_PARENT, 0, Animation.RELATIVE_TO_PARENT,
+                1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+        vipPopWnd.showAtLocation(getView().findViewById(R.id.home_page_v1), Gravity.CENTER, 0, 0);
+
+        vipView.startAnimation(animationCircleType);
+        SharedPreferencesUtil.put("around_error" + String.valueOf(errorCode), DateTimeUtil.getCurrentTime());
+    }
+
     private void clear() {
         LocalLog.d(TAG, "清理首页红包");
         int size = redArray.size();
@@ -1102,7 +1508,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         }
     }
 
-    @OnClick({R.id.go_shoping_tv, R.id.shop_ping, R.id.parent_red, R.id.baby_red, R.id.love_red, R.id.older_red, R.id.friend_red, R.id.tianmao,
+    @OnClick({R.id.go_shoping_tv, R.id.release_goods, R.id.parent_red, R.id.baby_red, R.id.love_red, R.id.older_red, R.id.friend_red, R.id.tianmao,
             R.id.jingdong, R.id.weipinghui, R.id.pingduoduo, R.id.mogu, R.id.scan_mark_home, R.id.push_red_pkg, R.id.history_record})
     public void onClick(View view) {
         Bundle bundle = new Bundle();
@@ -1122,9 +1528,9 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 if (!TextUtils.isEmpty(shopUrl))
                     startActivity(new Intent(getActivity(), ShopWebViewActivity.class).putExtra("url", shopUrl));
                 break;
-            case R.id.shop_ping:
-                if (!TextUtils.isEmpty(shopUrl))
-                    startActivity(new Intent(getActivity(), ShopWebViewActivity.class).putExtra("url", shopUrl));
+            case R.id.release_goods:
+                //发布步币兑换商品
+                releaseGoods();
                 break;
             case R.id.parent_red:
                 bundle.putInt("style", 5);

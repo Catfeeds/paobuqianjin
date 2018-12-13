@@ -24,6 +24,7 @@ import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.dan.HonorDetailAdapter;
+import com.paobuqianjin.pbq.step.view.base.view.DefineLoadMoreView;
 import com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView;
 
 import java.util.ArrayList;
@@ -87,10 +88,8 @@ public class StepHistoryActivity extends BaseBarActivity implements SwipeMenuRec
     private boolean isShowMonth = false;
     private int currentPage = 0;
     private HonorDetailAdapter adapter;
-    List<HisStepRankDayResponse.DataBean.MemberBean> listData = new ArrayList<>();
-    private boolean is_vote;
-    private int localVoteNum;
-    private String step_record_id;
+    List<HisStepRankDayResponse.DataBeanX.DataBean.MemberBean> listData = new ArrayList<>();
+    private final static int PAGE_SIZE = 10;
 
     @Override
     protected String title() {
@@ -169,20 +168,26 @@ public class StepHistoryActivity extends BaseBarActivity implements SwipeMenuRec
         param.put("userid", String.valueOf(Presenter.getInstance(this).getId()));
         param.put("action", "step");
         param.put("page", String.valueOf(page));
-        param.put("pagesize", String.valueOf(Constants.PAGE_SIZE));
+        param.put("pagesize", String.valueOf(PAGE_SIZE));
         Presenter.getInstance(this).getPaoBuSimple(NetApi.urlUserFriends, param, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 try {
                     HisStepRankDayResponse friendStepRankDayResponse = new Gson().fromJson(s, HisStepRankDayResponse.class);
-                    userNameRank.setText(String.valueOf(friendStepRankDayResponse.getData().getMydata().getNickname()));
-                    yourDan.setText(String.valueOf(friendStepRankDayResponse.getData().getMydata().getRank()));
-                    stepNumMy.setText(String.valueOf(friendStepRankDayResponse.getData().getMydata().getStep_number()));
-                    Presenter.getInstance(StepHistoryActivity.this).getPlaceErrorImage(headIconUser, friendStepRankDayResponse.getData().getMydata().getAvatar()
+                    userNameRank.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getNickname()));
+                    yourDan.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getRank()));
+                    stepNumMy.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
+                    Presenter.getInstance(StepHistoryActivity.this).getPlaceErrorImage(headIconUser, friendStepRankDayResponse.getData().getData().getMydata().getAvatar()
                             , R.drawable.default_head_ico, R.drawable.default_head_ico);
-                    listData.addAll(friendStepRankDayResponse.getData().getMember());
-                    perStep.setText(String.valueOf(friendStepRankDayResponse.getData().getMydata().getStep_number()));
+                    listData.addAll(friendStepRankDayResponse.getData().getData().getMember());
+                    perStep.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getStep_number()));
+                    likeNum.setText(String.valueOf(friendStepRankDayResponse.getData().getData().getMydata().getZan_count()));
                     adapter.notifyDataSetChanged(listData);
+                    /*if (currentPage < friendStepRankDayResponse.getData().getPagenation().getTotalPage()) {
+                        danDetailRecycler.loadMoreFinish(false, true);
+                    } else {0
+                        danDetailRecycler.loadMoreFinish(true, false);
+                    }*/
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -195,36 +200,31 @@ public class StepHistoryActivity extends BaseBarActivity implements SwipeMenuRec
         });
     }
 
-    @OnClick(R.id.switch_doll)
-    public void onClick() {
-        if (!isShowMonth) {
-            isShowMonth = true;
-            //显示月数据
-            if (monthList.size() > 0) {
-                switchDoll.setImageResource(R.drawable.month_switch);
-                weekStep.setVisibility(View.INVISIBLE);
-                monthStep.setVisibility(View.VISIBLE);
-                lineChartManager1.showLineChart(monthList, "步数", getResources().getColor(R.color.blue));
-                lineChart.invalidate();
-            }
-        } else {
-            isShowMonth = false;
-            //显示周数据
-            if (weekList.size() > 0) {
-                switchDoll.setImageResource(R.drawable.week_switch);
-                weekStep.setVisibility(View.VISIBLE);
-                monthStep.setVisibility(View.INVISIBLE);
-                lineChartManager1.showLineChart(weekList, "步数", getResources().getColor(R.color.blue));
-                lineChart.invalidate();
-            }
-        }
-    }
-
     @OnClick({R.id.switch_doll, R.id.like_ico})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.switch_doll:
-
+                if (!isShowMonth) {
+                    isShowMonth = true;
+                    //显示月数据
+                    if (monthList.size() > 0) {
+                        switchDoll.setImageResource(R.drawable.month_switch);
+                        weekStep.setVisibility(View.INVISIBLE);
+                        monthStep.setVisibility(View.VISIBLE);
+                        lineChartManager1.showLineChart(monthList, "步数", getResources().getColor(R.color.blue));
+                        lineChart.invalidate();
+                    }
+                } else {
+                    isShowMonth = false;
+                    //显示周数据
+                    if (weekList.size() > 0) {
+                        switchDoll.setImageResource(R.drawable.week_switch);
+                        weekStep.setVisibility(View.VISIBLE);
+                        monthStep.setVisibility(View.INVISIBLE);
+                        lineChartManager1.showLineChart(weekList, "步数", getResources().getColor(R.color.blue));
+                        lineChart.invalidate();
+                    }
+                }
                 break;
             case R.id.like_ico:
                 break;

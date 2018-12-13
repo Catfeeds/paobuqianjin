@@ -26,8 +26,9 @@ import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.base.view.DragPointView;
 import com.paobuqianjin.pbq.step.view.fragment.chat.MyConversationListFragment;
-import com.paobuqianjin.pbq.step.view.fragment.circle.FriendCircleFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.HomeFragment;
+import com.paobuqianjin.pbq.step.view.fragment.home.PaoBuShopFragment;
+import com.paobuqianjin.pbq.step.view.fragment.home.ShopLiveFragment;
 import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerFragment;
 
 import org.json.JSONObject;
@@ -45,22 +46,22 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
     private final static String TAG = MainActivity.class.getSimpleName();
     //Fragment页面索引
     private HomeFragment mHomePageFragment;
-    //private HonorFragment mHonorFragment;
-    private FriendCircleFragment mFriendCircleFragment;
+    private PaoBuShopFragment paoBuShopFragment;
     private OwnerFragment mOwnerFragment;
     private Fragment[] mFragments;
     private int mIndex = 0;
     private TextView[] mTabSelect;
     private TextView mBtn_home;
-    private TextView mBtn_friend;
-    private TextView mBtn_task;
-    private TextView mBtn_honor;
+    private TextView mBtn_shangcheng;
+    private TextView mBtn_shoplive;
+    private TextView mBtn_conversion;
     private TextView mBtn_owner;
     private long firstBackClickTime = 0;
     private DragPointView mUnreadNumView;
     private int mCurrentIndex = 0;
     private int[][] icon = new int[][]{{R.drawable.home_n, R.drawable.home_s}
-            , {R.drawable.task_n, R.drawable.task_s}
+            , {R.drawable.shop_live_n, R.drawable.shop_live_s}
+            , {R.drawable.shangcheng_n, R.drawable.shangcheng_s}
             , {R.drawable.circle_n, R.drawable.circle_s}
             , {R.drawable.me_n, R.drawable.me_s}};
     private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.SCAN_ACTION";
@@ -68,6 +69,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
     private final static String GUIDE_ACTION = "com.paobuqianjin.pbq.GUIDE_ACTION";
     public static final int REQUEST_CODE = 0x0000c0de; // Only use bottom 16 bits
     private MyConversationListFragment mConversationListFragment;
+    private ShopLiveFragment shopLiveFragment;
     private Conversation.ConversationType[] mConversationsTypes;
     private SponsorDialog sponsorDialog;
 
@@ -94,17 +96,17 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
 
     private void initTab() {
         mBtn_home = (TextView) findViewById(R.id.btn_home_page);
-        mBtn_friend = (TextView) findViewById(R.id.btn_friend_circle);
-        mBtn_task = (TextView) findViewById(R.id.btn_task);
-        mBtn_honor = (TextView) findViewById(R.id.btn_honor);
+        mBtn_shangcheng = (TextView) findViewById(R.id.btn_shang_cheng);
+        mBtn_shoplive = (TextView) findViewById(R.id.btn_shop_live);
+        mBtn_conversion = (TextView) findViewById(R.id.btn_conversion);
         mBtn_owner = (TextView) findViewById(R.id.btn_owner);
         mUnreadNumView = findViewById(R.id.tv_unread);
-        mTabSelect = new TextView[4];
+        mTabSelect = new TextView[5];
         mTabSelect[0] = mBtn_home;
-        mTabSelect[1] = mBtn_task;
-        mTabSelect[2] = mBtn_friend;
-  /*      mTabSelect[3] = mBtn_honor;*/
-        mTabSelect[3] = mBtn_owner;
+        mTabSelect[1] = mBtn_shoplive;
+        mTabSelect[2] = mBtn_shangcheng;
+        mTabSelect[3] = mBtn_conversion;
+        mTabSelect[4] = mBtn_owner;
         mTabSelect[0].setSelected(true);
         initTextViewIcon();
         initFragment();
@@ -115,19 +117,19 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
     //更改图片大小
     private void initTextViewIcon() {
         Drawable home = getResources().getDrawable(R.drawable.home_s);
-        Drawable circle = getResources().getDrawable(R.drawable.circle_n);
-        Drawable task = getResources().getDrawable(R.drawable.task_n);
-      /*  Drawable honor = getResources().getDrawable(R.drawable.list_n);*/
+        Drawable shopLive = getResources().getDrawable(R.drawable.shop_live_n);
+        Drawable shangcheng = getResources().getDrawable(R.drawable.shangcheng_n);
+        Drawable conversion = getResources().getDrawable(R.drawable.circle_n);
         Drawable me = getResources().getDrawable(R.drawable.me_n);
 
         home.setBounds(0, 0, 54, 54);
         mBtn_home.setCompoundDrawables(null, home, null, null);
-        circle.setBounds(0, 0, 54, 54);
-        mBtn_friend.setCompoundDrawables(null, circle, null, null);
-        task.setBounds(0, 0, 54, 54);
-        mBtn_task.setCompoundDrawables(null, task, null, null);
-/*        honor.setBounds(0, 0, 54, 54);
-        mBtn_honor.setCompoundDrawables(null, honor, null, null);*/
+        shopLive.setBounds(0, 0, 54, 54);
+        mBtn_shangcheng.setCompoundDrawables(null, shopLive, null, null);
+        shangcheng.setBounds(0, 0, 54, 54);
+        mBtn_shoplive.setCompoundDrawables(null, shangcheng, null, null);
+        conversion.setBounds(0, 0, 54, 54);
+        mBtn_conversion.setCompoundDrawables(null, conversion, null, null);
         me.setBounds(0, 0, 54, 54);
         mBtn_owner.setCompoundDrawables(null, me, null, null);
 
@@ -136,21 +138,20 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
     private void initFragment() {
 
         mHomePageFragment = new HomeFragment();
-        mFriendCircleFragment = new FriendCircleFragment();
-//        mConversationListFragment = new MyConversationListFragment();
         initConversationList();
-        //mHonorFragment = new HonorFragment();
+        shopLiveFragment = new ShopLiveFragment();
+        paoBuShopFragment = new PaoBuShopFragment();
         mOwnerFragment = new OwnerFragment();
-        mFragments = new Fragment[]{mHomePageFragment, mConversationListFragment, mFriendCircleFragment, mOwnerFragment};
+        mFragments = new Fragment[]{mHomePageFragment, shopLiveFragment, paoBuShopFragment, mConversationListFragment, mOwnerFragment};
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mHomePageFragment)
+                .add(R.id.fragment_container, shopLiveFragment)
+                .add(R.id.fragment_container, paoBuShopFragment)
                 .add(R.id.fragment_container, mConversationListFragment)
-                .add(R.id.fragment_container, mFriendCircleFragment)
-                //.add(R.id.fragment_container, mHonorFragment)
                 .add(R.id.fragment_container, mOwnerFragment)
-                .hide(mFriendCircleFragment)
+                .hide(shopLiveFragment)
+                .hide(paoBuShopFragment)
                 .hide(mConversationListFragment)
-                //.hide(mHonorFragment)
                 .hide(mOwnerFragment)
                 .show(mHomePageFragment).commit();
     }
@@ -158,11 +159,6 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
     @Override
     protected void onResume() {
         super.onResume();
-        if (mIndex != 2) {
-            if (mFriendCircleFragment.isAdded()) {
-                mFriendCircleFragment.pullCreateDiss(mIndex);
-            }
-        }
     }
 
     @Override
@@ -177,17 +173,17 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
                 case R.id.btn_home_page:
                     mIndex = 0;
                     break;
-                case R.id.btn_friend_circle:
-                    mIndex = 2;
-                    break;
-                case R.id.btn_task:
+                case R.id.btn_shop_live:
                     mIndex = 1;
                     break;
-/*                case R.id.btn_honor:
+                case R.id.btn_shang_cheng:
+                    mIndex = 2;
+                    break;
+                case R.id.btn_conversion:
                     mIndex = 3;
-                    break;*/
+                    break;
                 case R.id.btn_owner:
-                    mIndex = 3;
+                    mIndex = 4;
                     break;
                 default:
                     break;
@@ -231,21 +227,11 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
             trx.show(mFragments[fragmentIndex]).commitAllowingStateLoss();
         }
         mCurrentIndex = fragmentIndex;
-        controlTransparentGuide(fragmentIndex);
+/*        controlTransparentGuide(fragmentIndex);
         controllCircleChangeGuide(fragmentIndex);
         if (fragmentIndex == 3) {
             vipCheckTimeOut();
-        }
-
-        if (fragmentIndex == 2) {
-            if (mFriendCircleFragment.isAdded()) {
-                mFriendCircleFragment.popCreateShow(fragmentIndex);
-            }
-        } else {
-            if (mFriendCircleFragment.isAdded()) {
-                mFriendCircleFragment.pullCreateDiss(fragmentIndex);
-            }
-        }
+        }*/
     }
 
     private void controlTransparentGuide(int fragmentIndex) {
@@ -352,8 +338,8 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
                 finish();
             } else if (GUIDE_ACTION.equals(intent.getAction())) {
                 LocalLog.d(TAG, intent.getAction());
-                mIndex = 3;
-                onTabIndex(3);
+                mIndex = 4;
+                onTabIndex(4);
             }
         }
 

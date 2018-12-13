@@ -8,12 +8,14 @@
 
 
     <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
+        android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
 
             <LinearLayout
@@ -176,7 +178,7 @@
                     android:layout_above="@+id/like_ico"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="22.5dp"
-                    android:text="1"
+                    android:text="0"
                     android:textColor="#BCBCD3"
                     android:textSize="12dp" />
 
@@ -196,12 +198,19 @@
                 android:layout_height="10dp"
                 android:background="@color/color_f3f3f5" />
 
-            <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-                android:id="@+id/dan_detail_recycler"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
 
-            </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+                <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+                    android:id="@+id/dan_detail_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+            </RelativeLayout>
+
         </LinearLayout>
     </com.paobuqianjin.pbq.step.view.base.view.BounceScrollView>
 </LinearLayout>

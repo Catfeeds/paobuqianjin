@@ -441,7 +441,16 @@
             android:name=".view.activity.MessageActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/ImageTranslucentTheme" />
+            android:theme="@style/ImageTranslucentTheme">
+            <intent-filter>
+                <action android:name="com.paobuqianjin.pbq.step.CONTENT_MESSAGE_ACTION"></action>
+                <action android:name="com.paobuqianjin.pbq.step.CONTENT_MESSAGE_ACTION"></action>
+                <action android:name="com.paobuqianjin.pbq.step.SYS_MESSAGE_ACTION"></action>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.activity.FriendCircleActivity"
+            android:screenOrientation="portrait" />
         <!-- 意见反馈 -->
         <activity
             android:name=".view.activity.SuggestionActivity"
