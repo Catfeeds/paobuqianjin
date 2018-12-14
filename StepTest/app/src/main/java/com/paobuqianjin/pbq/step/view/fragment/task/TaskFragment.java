@@ -311,7 +311,6 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
     @Override
@@ -322,8 +321,8 @@ public class TaskFragment extends BaseBarStyleTextViewFragment implements TaskMy
 
         }
         allTaskList = null;
-
         finishTaskList = null;
+        Presenter.getInstance(getContext()).dispatchUiInterface(this);
     }
 
     @OnClick({R.id.task_all, R.id.task_un_finish, R.id.task_finished, R.id.bar_tv_right, R.id.bar_return_drawable})

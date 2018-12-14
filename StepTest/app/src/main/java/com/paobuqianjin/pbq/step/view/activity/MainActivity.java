@@ -1,11 +1,19 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -30,6 +38,8 @@ import com.paobuqianjin.pbq.step.view.fragment.home.HomeFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.PaoBuShopFragment;
 import com.paobuqianjin.pbq.step.view.fragment.home.ShopLiveFragment;
 import com.paobuqianjin.pbq.step.view.fragment.owner.OwnerFragment;
+import com.tot.badges.IconBadgeNumManager;
+
 
 import org.json.JSONObject;
 
@@ -427,6 +437,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
 
     @Override
     public void onCountChanged(int count) {
+        LocalLog.d(TAG, "count = " + count);
         if (count == 0) {
             mUnreadNumView.setVisibility(View.GONE);
         } else if (count > 0 && count < 100) {
@@ -435,6 +446,11 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
         } else {
             mUnreadNumView.setVisibility(View.VISIBLE);
             mUnreadNumView.setText(R.string.no_read_message);
+        }
+        try {
+            new IconBadgeNumManager().setIconBadgeNum(getApplication(), count);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

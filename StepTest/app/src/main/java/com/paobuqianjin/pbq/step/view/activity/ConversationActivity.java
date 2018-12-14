@@ -67,7 +67,6 @@ public class ConversationActivity extends BaseBarActivity implements BaseBarActi
 
     @Override
     protected void initView() {
-        super.initView();
         setToolBarListener(this);
         String chatToken = (String) SharedPreferencesUtil.get(Constants.SP_RONGYUN_CHAT_TOKEN, "");
         mConversationType = Conversation.ConversationType.valueOf(getIntent().getData()
