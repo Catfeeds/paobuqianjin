@@ -113,6 +113,10 @@ public class CommonGoodResponse {
         }
 
         public static class DataBean {
+            public String getTarget_url() {
+                return target_url;
+            }
+
             /**
              * goods_id : 7
              * goods_name : 华为HRD强烈推荐的800份表格
@@ -129,8 +133,10 @@ public class CommonGoodResponse {
              * evaluates : 0
              * picture : 34
              * pic_url : http://api-test1.runmoneyin.com/upload/goods/05e7fc8f403fb5f69258e18406041dce3.jpg
+             * target_url: http:\/\/shop.runmoneyin.com\/\/wap\/goods\/goodsdetail?id=7
              */
 
+            private String target_url;
             private int goods_id;
             private String goods_name;
             private int promotion_type;

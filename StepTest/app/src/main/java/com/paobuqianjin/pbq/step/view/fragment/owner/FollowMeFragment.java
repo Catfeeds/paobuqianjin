@@ -53,6 +53,12 @@ public class FollowMeFragment extends BaseFragment {
     private int mCurrentIndex = 1;
     ArrayList<FollowUserResponse.DataBeanX.DataBean> searchData = new ArrayList<>();
 
+    public void setUpFollowMeInterface(MyFriendFragment.UpFollowMeInterface upFollowMeInterface) {
+        this.upFollowMeInterface = upFollowMeInterface;
+    }
+
+    private MyFriendFragment.UpFollowMeInterface upFollowMeInterface;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.invite_dan_fg;
@@ -68,7 +74,6 @@ public class FollowMeFragment extends BaseFragment {
 
     @Override
     protected void initView(View viewRoot) {
-        super.initView(viewRoot);
 
         inviteDanRecycler = (SwipeMenuRecyclerView) viewRoot.findViewById(R.id.invite_dan_recycler);
         layoutManager = new LinearLayoutManager(getContext()) {
@@ -76,7 +81,7 @@ public class FollowMeFragment extends BaseFragment {
             public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
                 try {
                     super.onLayoutChildren(recycler, state);
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -146,6 +151,9 @@ public class FollowMeFragment extends BaseFragment {
                             }
                             pageIndexFollowMe++;
                             mCurrentIndex = pageIndexFollowMe;
+                            if (upFollowMeInterface != null) {
+                                upFollowMeInterface.update(((FollowUserResponse) object).getData().getPagenation().getTotalCount());
+                            }
                         } else {
                             pageFollowMeCount = ((FollowUserResponse) object).getData().getPagenation().getTotalPage();
                             LocalLog.d(TAG, "pageIndexFollowMe = " + pageIndexFollowMe + "  , pageFollowMeCount = " + pageFollowMeCount);

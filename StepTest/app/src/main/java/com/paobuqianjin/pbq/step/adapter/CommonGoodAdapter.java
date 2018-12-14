@@ -63,7 +63,7 @@ public class CommonGoodAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         GoodViewHolder holder;
-        convertView = inflater.inflate(R.layout.good_grid_item, parent, false);
+        convertView = inflater.inflate(R.layout.common_good_grid_item, parent, false);
         holder = new GoodViewHolder(convertView);
         holder.goodsName.setText(mData.get(position).getGoods_name());
         Presenter.getInstance(mContext).getPlaceErrorImage(holder.goodPic, mData.get(position).getPic_url(), R.drawable.bitmap_null, R.drawable.bitmap_null);

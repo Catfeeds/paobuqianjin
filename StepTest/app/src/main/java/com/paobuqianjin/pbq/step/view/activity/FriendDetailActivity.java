@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.paobuqianjin.pbq.step.R;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ChatUserInfoResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.FriendDetailResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.UserFollowOtOResponse;
@@ -19,12 +20,14 @@ import com.paobuqianjin.pbq.step.data.bean.table.ChatUserInfo;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoTipsCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.RongYunChatUtils;
 import com.paobuqianjin.pbq.step.utils.RongYunUserInfoManager;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +39,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import io.rong.imlib.model.Conversation;
 
 public class FriendDetailActivity extends BaseBarActivity {
-
+    private final static String TAG = FriendDetailActivity.class.getSimpleName();
     private static final int REQ_CHANGE_REMARK = 1;
     @Bind(R.id.rl_bar)
     RelativeLayout rlBar;
@@ -89,7 +92,7 @@ public class FriendDetailActivity extends BaseBarActivity {
         super.onResume();
         if (userId < 0 && TextUtils.isEmpty(userNo)) {
             finish();
-        }else{
+        } else {
             initData();
         }
     }
@@ -98,7 +101,7 @@ public class FriendDetailActivity extends BaseBarActivity {
         Map<String, String> params = new HashMap<>();
         if (userId > -1) {
             params.put("otherid", userId + "");
-        }else{
+        } else {
             params.put("otherno", userNo + "");
         }
         Presenter.getInstance(this).getPaoBuSimple(NetApi.getFriendDetail, params, new PaoTipsCallBack() {
@@ -120,11 +123,11 @@ public class FriendDetailActivity extends BaseBarActivity {
                             ivImg1.setTag("1");
                             ivImg1.setVisibility(View.VISIBLE);
                             Presenter.getInstance(FriendDetailActivity.this).getImage(ivImg1, dImg.getOneimg());
-                        } else if (ivImg2.getTag() == null && list.size()>1) {
+                        } else if (ivImg2.getTag() == null && list.size() > 1) {
                             ivImg2.setTag("1");
                             ivImg2.setVisibility(View.VISIBLE);
                             Presenter.getInstance(FriendDetailActivity.this).getImage(ivImg2, dImg.getOneimg());
-                        } else if(list.size()>2){
+                        } else if (list.size() > 2) {
                             ivImg3.setTag("1");
                             ivImg3.setVisibility(View.VISIBLE);
                             Presenter.getInstance(FriendDetailActivity.this).getImage(ivImg3, dImg.getOneimg());
@@ -134,7 +137,7 @@ public class FriendDetailActivity extends BaseBarActivity {
                 }
                 switch (detailBean.getIs_follow()) {
                     case 0:
-                        btnConfirm.setBackgroundResource(R.drawable.shape_bg_round5_gray);
+                        btnConfirm.setBackgroundResource(R.drawable.shape_bg_round5_purple);
                         tvNickname.setVisibility(View.GONE);
                         linearMark.setVisibility(View.GONE);
                         tvAttendtion.setText(R.string.attention);
@@ -142,7 +145,7 @@ public class FriendDetailActivity extends BaseBarActivity {
                         tvAttendtion.setTextColor(getResources().getColor(R.color.color_6c71c4));
                         break;
                     case 1:
-                        btnConfirm.setBackgroundResource(R.drawable.shape_bg_round5_gray);
+                        btnConfirm.setBackgroundResource(R.drawable.shape_bg_round5_purple);
                         tvNickname.setVisibility(View.GONE);
                         linearMark.setVisibility(View.GONE);
                         tvAttendtion.setText(R.string.attentioned);
@@ -160,23 +163,23 @@ public class FriendDetailActivity extends BaseBarActivity {
                             tvNickname.setVisibility(View.VISIBLE);
                             tvNickname.setText(getString(R.string.nickname_x, detailBean.getNickname()));
                             tvName.setText(detailBean.getRemark_name());
-                        }else {
+                        } else {
                             tvNickname.setVisibility(View.GONE);
                         }
-                        RongYunUserInfoManager.getInstance().getServerUserInfoById(userId+"");
                         break;
                 }
-
+                RongYunUserInfoManager.getInstance().getServerUserInfoById(userId + "");
             }
         });
     }
 
+
     @OnClick({R.id.linear_mark, R.id.linear_dynamic, R.id.btn_confirm, R.id.tv_attendtion})
     public void onClick(View view) {
-        if(detailBean == null) return;
+        if (detailBean == null) return;
         switch (view.getId()) {
             case R.id.linear_mark:
-                startActivityForResult(new Intent(this,SetRemarkNameActivity.class).putExtra("userid",userId+""),REQ_CHANGE_REMARK);
+                startActivityForResult(new Intent(this, SetRemarkNameActivity.class).putExtra("userid", userId + ""), REQ_CHANGE_REMARK);
                 break;
             case R.id.linear_dynamic:
                 Intent intent = getIntent();
@@ -187,14 +190,14 @@ public class FriendDetailActivity extends BaseBarActivity {
             case R.id.btn_confirm:
                 switch (detailBean.getIs_follow()) {
                     case 0:
-                        PaoToastUtils.showShortToast(this,getString(R.string.tips_must_attend));
-                        break;
+/*                        PaoToastUtils.showShortToast(this,getString(R.string.tips_must_attend));
+                        break;*/
                     case 1:
-                        PaoToastUtils.showShortToast(this,getString(R.string.tips_must_be_attended));
-                        break;
+/*                        PaoToastUtils.showShortToast(this,getString(R.string.tips_must_be_attended));
+                        break;*/
                     case 2:
                         String title = TextUtils.isEmpty(detailBean.getRemark_name()) ? detailBean.getNickname() : detailBean.getRemark_name();
-                        RongYunChatUtils.getInstance().chatTo(this
+                        RongYunChatUtils.getInstance().chatTo(FriendDetailActivity.this
                                 , Conversation.ConversationType.PRIVATE
                                 , userId + ""
                                 , title);
@@ -233,7 +236,7 @@ public class FriendDetailActivity extends BaseBarActivity {
         if (requestCode == REQ_CHANGE_REMARK && resultCode == RESULT_OK) {
             data.getStringExtra("intent_remark");
             initData();
-        }else{
+        } else {
             setResult(resultCode);
             finish();
         }

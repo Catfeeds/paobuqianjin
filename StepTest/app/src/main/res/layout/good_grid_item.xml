@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="220dp"
+    android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -13,6 +13,7 @@
         android:src="@drawable/bitmap_null" />
 
     <TextView
+        android:layout_marginTop="10dp"
         android:id="@+id/goods_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,7 +21,7 @@
         android:enabled="true"
         android:maxLength="12"
         android:maxLines="1"
-        android:text="王老吉凉茶"
+        android:text=""
         android:textColor="@color/color_161727"
         android:textSize="14dp" />
 
@@ -28,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <TextView

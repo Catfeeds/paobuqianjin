@@ -241,6 +241,31 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private final static String SPOSNOR_ACTION = "com.paobuqianjin.person.SPONSOR_ACTION";
     private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
     private boolean isVip;
+    private String urlShopApply;
+
+    private static class ErrorBean {
+        private String title;
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public int getErr() {
+            return err;
+        }
+
+        public void setErr(int err) {
+            this.err = err;
+        }
+
+        private int err;
+    }
+
+    private ErrorBean errorBean = new ErrorBean();
 
     @Override
     public void onAttach(Context context) {
@@ -328,8 +353,8 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position < gridGoodAdpter.getData().size()) {
-                    if (!TextUtils.isEmpty(gridGoodAdpter.getData().get(position).getPic_url())) {
-                        String goodUrl = gridGoodAdpter.getData().get(position).getPic_url() + "&" + Presenter.getInstance(getContext()).getShopEnd();
+                    if (!TextUtils.isEmpty(gridGoodAdpter.getData().get(position).getTarget_url())) {
+                        String goodUrl = gridGoodAdpter.getData().get(position).getTarget_url() + "&" + Presenter.getInstance(getContext()).getShopEnd();
                         startActivity(new Intent(getActivity(), ShopWebViewActivity.class).putExtra("url",
                                 goodUrl));
                     }
@@ -373,6 +398,25 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             appName.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
         updateUiTime();
+        shopApplyUrl();
+    }
+
+    private void shopApplyUrl() {
+        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlShopApplyRes, null, new PaoCallBack() {
+            @Override
+            protected void onSuc(String s) {
+                try {
+                    urlShopApply = new JSONObject(s).getJSONObject("data").getString("url");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+            }
+        });
     }
 
     private void updateUiTime() {
@@ -1001,7 +1045,12 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     @Override
     public void recRedPkg(String redId) {
         LocalLog.d(TAG, "领红包 " + redId);
-        popRoundRedPkg(redId);
+        if (errorBean != null && errorBean.getErr() >= 7) {
+            popVipWindow(errorBean.getTitle(), errorBean.getErr());
+            return;
+        } else {
+            popRoundRedPkg(redId);
+        }
     }
 
 
@@ -1013,14 +1062,20 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         popRedPkgView = View.inflate(getContext(), R.layout.release_common_pop_window, null);
         ImageView closeButton = (ImageView) popRedPkgView.findViewById(R.id.close_release_common);
         Button copyButton = (Button) popRedPkgView.findViewById(R.id.copy_button);
+        TextView textView = (TextView) popRedPkgView.findViewById(R.id.text_web);
+        if (!TextUtils.isEmpty(urlShopApply)) {
+            textView.setText(urlShopApply);
+        }
         copyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ClipboardManager cmb = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                ClipData textClipData = ClipData.newPlainText("Label", getString(R.string.wx_code));
-                cmb.setPrimaryClip(textClipData);
-                LocalLog.d(TAG, "  msg = " + cmb.getText());
-                PaoToastUtils.showLongToast(getActivity(), "网址复制成功");
+                if (!TextUtils.isEmpty(urlShopApply)) {
+                    ClipboardManager cmb = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData textClipData = ClipData.newPlainText("Label", urlShopApply);
+                    cmb.setPrimaryClip(textClipData);
+                    LocalLog.d(TAG, "  msg = " + cmb.getText());
+                    PaoToastUtils.showLongToast(getActivity(), "网址复制成功");
+                }
                 popupRedPkgWindow.dismiss();
 
             }
@@ -1214,12 +1269,17 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                             case 4:
                             case 5:
                             case 6:
-                                popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
+                                //popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
                                 break;
                             default:
+                                if (checkShowedToday(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive()))
+                                    return;
                                 popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
                                 break;
                         }
+
+                        errorBean.setTitle(aroundRedBagResponse.getData().getMessage());
+                        errorBean.setErr(aroundRedBagResponse.getData().getIs_receive());
                         //随机算法生成红包
                         for (int i = 0; i < aroundRedBagResponse.getData().getRedpacket_list().size(); i++) {
                             if (i == 0) {
@@ -1292,8 +1352,6 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
             LocalLog.d(TAG, "在显示");
             return;
         }
-        if (checkShowedToday(title, errorCode))
-            return;
         View vipView = View.inflate(getContext(), R.layout.target_dest_popwindow, null);
         vipPopWnd = new PopupWindow(vipView,
                 WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
@@ -1448,14 +1506,33 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 textLeft.setVisibility(View.VISIBLE);
                 textLeft.setText("取消");
                 break;
+            case 7:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("好的");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                    }
+                });
+                break;
+            case 8:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("好的");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                    }
+                });
+                break;
             default:
                 PaoToastUtils.showLongToast(getContext(), title);
                 break;
         }
-        if (errorCode >= 7) {
-            vipPopWnd = null;
-            return;
-        }
+
         textLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

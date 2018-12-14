@@ -76,6 +76,7 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
     private FollowOtoFragment followOtoFragment;
     private int selectPage = 0;
     private String keyWord = "";
+    private TextView viewNum;
 
     @Override
 
@@ -114,6 +115,7 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
 
         myFollowFragment = new MyFollowFragment();
         followMeFragment = new FollowMeFragment();
+        followMeFragment.setUpFollowMeInterface(upFollowMeInterface);
         followOtoFragment = new FollowOtoFragment();
         List<Fragment> fragments = new ArrayList<>();
         fragments.add(followOtoFragment);
@@ -198,6 +200,24 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
 
     }
 
+    private UpFollowMeInterface upFollowMeInterface = new UpFollowMeInterface() {
+        @Override
+        public void update(int data) {
+            if (!isAdded() || viewNum == null) {
+                return;
+            }
+            if (data > 0) {
+                viewNum.setText(String.valueOf(data));
+                viewNum.setVisibility(View.VISIBLE);
+            } else {
+                viewNum.setVisibility(View.GONE);
+            }
+        }
+    };
+
+    public interface UpFollowMeInterface {
+        public void update(int data);
+    }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -290,6 +310,7 @@ public class MyFriendFragment extends BaseBarStyleTextViewFragment {
         } else if (position == 2) {
             textView.setText(titles[2]);
             view.setGravity(Gravity.RIGHT);
+            viewNum = (TextView) view.findViewById(R.id.att_num);
         }
         return view;
     }

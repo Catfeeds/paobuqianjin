@@ -4,12 +4,25 @@
     android:layout_height="wrap_content">
 
     <TextView
+        android:id="@+id/att_num"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/home_task_bg"
+        android:textColor="@color/color_f8"
+        android:textStyle="bold"
+        android:textSize="10dp"
+        android:gravity="center"
+        android:visibility="gone"/>
+
+    <TextView
         android:id="@+id/tab_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@+id/icon"
         android:gravity="center"
+        android:text=""
         android:textColor="@color/color_161727"
         android:textSize="15dp" />
 </RelativeLayout>
