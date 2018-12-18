@@ -121,7 +121,7 @@ public class MyConversationListFragment extends ConversationListFragment impleme
         animationCircleType.setDuration(200);
 
 
-        popupOpWindowTop.showAsDropDown(bar_right_drawable, 20, -10);
+        popupOpWindowTop.showAsDropDown(bar_right_drawable, 20, -20);
         popCircleOpBar.startAnimation(animationCircleType);
     }
 

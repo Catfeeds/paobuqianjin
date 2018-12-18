@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <style name="RCTheme.PaoBu" parent="@android:style/Theme.NoTitleBar.Fullscreen"/>
     <style name="RCTheme" parent="@android:style/Theme.Light">
         <item name="android:listDivider">@android:color/transparent</item>
         <item name="android:listSelector">@android:color/transparent</item>

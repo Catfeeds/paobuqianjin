@@ -56,6 +56,7 @@ public class CircleGuideActivity extends Activity {
         switch (view.getId()) {
             case R.id.known_bts:
                 finish();
+                SharedPreferencesUtil.put(Constants.CIRCLE_GUIDE, false);
                 break;
             case R.id.go_bt:
                 Intent intent = new Intent();

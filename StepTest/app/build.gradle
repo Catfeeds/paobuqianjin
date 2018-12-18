@@ -8,8 +8,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 23
         multiDexEnabled true
-        versionCode 39
-        versionName "4.5.7"
+        versionCode 40
+        versionName "4.5.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         /*ndk {
@@ -150,5 +150,6 @@ dependencies {
     //广告轮播框架
     compile 'com.youth.banner:banner:1.4.10'
     compile 'com.aliyun.dpa:oss-android-sdk:+'
-    compile project(':MPChartLib')
+    compile project(':MPChartLib');
+    compile project(':badges');
 }

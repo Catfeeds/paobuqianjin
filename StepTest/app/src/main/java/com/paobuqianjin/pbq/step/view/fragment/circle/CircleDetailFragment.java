@@ -276,7 +276,7 @@ public class CircleDetailFragment extends BaseBarImageViewFragment {
         animationCircleType.setDuration(200);
 
 
-        popupOpWindowTop.showAsDropDown(barTvRight, 20, -10);
+        popupOpWindowTop.showAsDropDown(barTvRight, 20, -20);
         popCircleOpBar.startAnimation(animationCircleType);
     }
 

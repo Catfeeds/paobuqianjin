@@ -135,9 +135,9 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
         home.setBounds(0, 0, 54, 54);
         mBtn_home.setCompoundDrawables(null, home, null, null);
         shopLive.setBounds(0, 0, 54, 54);
-        mBtn_shangcheng.setCompoundDrawables(null, shopLive, null, null);
+        mBtn_shoplive.setCompoundDrawables(null, shopLive, null, null);
         shangcheng.setBounds(0, 0, 54, 54);
-        mBtn_shoplive.setCompoundDrawables(null, shangcheng, null, null);
+        mBtn_shangcheng.setCompoundDrawables(null, shangcheng, null, null);
         conversion.setBounds(0, 0, 54, 54);
         mBtn_conversion.setCompoundDrawables(null, conversion, null, null);
         me.setBounds(0, 0, 54, 54);
@@ -164,6 +164,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
                 .hide(mConversationListFragment)
                 .hide(mOwnerFragment)
                 .show(mHomePageFragment).commit();
+        controllCircleChangeGuide(0);
     }
 
     @Override
@@ -237,9 +238,8 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
             trx.show(mFragments[fragmentIndex]).commitAllowingStateLoss();
         }
         mCurrentIndex = fragmentIndex;
-/*        controlTransparentGuide(fragmentIndex);
-        controllCircleChangeGuide(fragmentIndex);
-        if (fragmentIndex == 3) {
+/*        controlTransparentGuide(fragmentIndex);*/
+/*        if (fragmentIndex == 3) {
             vipCheckTimeOut();
         }*/
     }
@@ -316,7 +316,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
 
     private void controllCircleChangeGuide(int fragmentIndex) {
         String versionName = Utils.getVerName(this);
-        if (fragmentIndex == 2 && versionName.equals("4.2")) {
+        if (versionName.equals("4.5.8")) {
             boolean isFirstTime = (boolean) SharedPreferencesUtil.get(Constants.CIRCLE_GUIDE, true);
             if (isFirstTime) {
                 Intent intent = new Intent(this, CircleGuideActivity.class);
