@@ -274,7 +274,7 @@
     <string name="time_out">您申请的商家金牌会员还有%1s天时间就已经到期了。是否去开通商家金牌会员，享受更多权益，为店铺引流推广</string>
     <string name="red_bag_map">地图红包</string>
     <string name="search_circle">搜索圈子</string>
-    <string name="add_around_red_bag">添加遍地红包</string>
+    <string name="add_around_red_bag">添加精准红包</string>
     <string name="send_red_bag">发红包</string>
     <string name="red_bag_num">红包个数</string>
     <string name="out_link">外部链接</string>

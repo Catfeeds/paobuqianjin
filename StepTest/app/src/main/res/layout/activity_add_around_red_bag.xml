@@ -148,7 +148,6 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:textColor="@color/color_6c71c4"
                         android:id="@+id/crash_money"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -156,10 +155,10 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="现金"
+                        android:textColor="@color/color_6c71c4"
                         android:textSize="12dp" />
 
                     <TextView
-                        android:textColor="@color/color_A6A9D9"
                         android:id="@+id/step_dolls"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -167,6 +166,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="步币"
+                        android:textColor="@color/color_A6A9D9"
                         android:textSize="12dp" />
 
                 </LinearLayout>
@@ -185,6 +185,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
                     android:text="@string/red_bag_num"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
@@ -231,6 +232,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
                     android:text="@string/total_red_bag_money"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
@@ -278,6 +280,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
                     android:text="@string/step_dollar_total"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
@@ -323,6 +326,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
                     android:text="@string/out_link"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
@@ -360,10 +364,9 @@
                 android:id="@+id/select_circle"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/rect_out_white_shape"
                 android:gravity="center_vertical">
 
@@ -411,10 +414,9 @@
                 android:id="@+id/password_circle"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/rect_out_white_shape"
                 android:gravity="center_vertical"
                 android:visibility="gone">
@@ -423,6 +425,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
                     android:text="社群密码"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
@@ -444,13 +447,54 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/people_target_span"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/rect_out_white_shape"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/target_people_day_des"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
+                    android:text="目标人群"
+                    android:textColor="@color/color_161727"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/target_people_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="39dp"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:hint="立即筛选(必填)"
+                    android:textColor="@color/color_161727"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="7dp"
+                    android:layout_height="14dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="19dp"
+                    android:src="@drawable/go_to" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/linear_shop"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/rect_out_white_shape"
                 android:gravity="center_vertical">
 
@@ -458,6 +502,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
                     android:text="商铺信息"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
@@ -498,10 +543,9 @@
                 android:id="@+id/linear_consum_red"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="14dp"
                 android:layout_marginRight="14dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/rect_out_white_shape"
                 android:gravity="center_vertical">
 
@@ -509,6 +553,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="14dp"
                     android:text="消费红包"
                     android:textColor="@color/color_161727"
                     android:textSize="15sp" />
@@ -559,7 +604,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="14dp"
-                    android:text="遍地红包说明"
+                    android:text="精准红包说明"
                     android:textSize="14dp" />
 
                 <ImageView

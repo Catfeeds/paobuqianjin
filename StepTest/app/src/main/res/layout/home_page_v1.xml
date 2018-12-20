@@ -20,7 +20,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <com.tencent.tencentmap.mapsdk.map.MapView
+                    android:id="@+id/mapview"
+                    android:layout_width="match_parent"
+                    android:layout_height="265dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:scaleType="fitXY" />
+
                 <ImageView
+                    android:src="@color/color_800000"
                     android:id="@+id/moon_white_bg"
                     android:layout_width="match_parent"
                     android:layout_height="265dp"
@@ -32,7 +41,7 @@
                     android:id="@+id/home_data_linear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/moon_white_bg"
+                    android:layout_alignBottom="@+id/mapview"
                     android:layout_marginBottom="30dp"
                     android:layout_marginLeft="14dp"
                     android:orientation="vertical">
@@ -112,7 +121,7 @@
                     android:id="@+id/push_rec"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/moon_white_bg"
+                    android:layout_alignBottom="@+id/mapview"
                     android:layout_alignParentRight="true"
                     android:layout_marginBottom="30dp"
                     android:layout_marginRight="14dp"
@@ -187,8 +196,8 @@
 
                         <ImageView
                             android:id="@+id/older_img"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/older_red" />
 
@@ -230,8 +239,8 @@
 
                         <ImageView
                             android:id="@+id/parent_img"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
                             android:layout_gravity="center_horizontal"
                             android:scaleType="centerCrop"
                             android:src="@drawable/parent_red" />
@@ -274,8 +283,8 @@
 
                         <ImageView
                             android:id="@+id/love_img"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
                             android:layout_gravity="center_horizontal"
                             android:scaleType="centerCrop"
                             android:src="@drawable/love_red" />
@@ -318,8 +327,8 @@
 
                         <ImageView
                             android:id="@+id/baby_img"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
                             android:layout_gravity="center_horizontal"
                             android:scaleType="centerCrop"
                             android:src="@drawable/baby_red" />
@@ -363,8 +372,8 @@
 
                         <ImageView
                             android:id="@+id/friend_img"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="52dp"
+                            android:layout_height="52dp"
                             android:layout_gravity="center_horizontal"
                             android:scaleType="centerCrop"
                             android:src="@drawable/friend_red" />
@@ -585,7 +594,8 @@
             <com.youth.banner.Banner
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"></com.youth.banner.Banner>
+                android:layout_height="100dp"
+                android:visibility="gone"></com.youth.banner.Banner>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -600,10 +610,10 @@
                     android:orientation="horizontal">
 
                     <View
-                        android:layout_marginRight="8dp"
                         android:layout_width="60dp"
                         android:layout_height="1dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginRight="8dp"
                         android:background="@color/yellow0" />
 
                     <ImageView
@@ -614,10 +624,10 @@
                         android:src="@drawable/exchange_bar" />
 
                     <View
-                        android:layout_marginLeft="8dp"
                         android:layout_width="60dp"
                         android:layout_height="1dp"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
                         android:background="@color/yellow0" />
                 </LinearLayout>
 
@@ -625,12 +635,12 @@
 
             <io.rong.imkit.model.RongGridView
                 android:id="@+id/good_grid"
-                android:nestedScrollingEnabled="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_f6f6f6"
                 android:gravity="center"
                 android:horizontalSpacing="7dp"
+                android:nestedScrollingEnabled="false"
                 android:numColumns="auto_fit"
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
@@ -663,11 +673,14 @@
         android:orientation="horizontal"
         android:paddingTop="20dp">
 
-        <View
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+        <TextView
+            android:textSize="14dp"
+            android:textColor="@color/white"
+            android:id="@+id/city_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="14dp" />
+            android:layout_marginLeft="15dp" />
 
         <TextView
             android:id="@+id/app_name"
@@ -681,12 +694,12 @@
             android:textSize="18dp" />
 
         <ImageView
-            android:padding="5dp"
             android:id="@+id/scan_mark_home"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="10dp"
+            android:padding="5dp"
             android:scaleType="centerCrop"
             android:src="@drawable/scan" />
     </LinearLayout>

@@ -843,6 +843,10 @@ public final class Presenter {
         return engine.getLocation();
     }
 
+    public void setLocationAction(double la, double lb) {
+        engine.setLocationAction(la, lb);
+    }
+
     public void postBindWq(PostBindUnBindWqParam postBindUnBindWqParam) {
         engine.postBindWq(postBindUnBindWqParam);
     }

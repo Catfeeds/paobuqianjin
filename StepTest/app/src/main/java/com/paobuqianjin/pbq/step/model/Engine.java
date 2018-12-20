@@ -3844,6 +3844,11 @@ public final class Engine {
         return laction;
     }
 
+    public void setLocationAction(double lat, double lbt) {
+        la = lat;
+        lb = lbt;
+    }
+
     public String getLocationStrFormat() {
         String result = "";
         if (location != null) {

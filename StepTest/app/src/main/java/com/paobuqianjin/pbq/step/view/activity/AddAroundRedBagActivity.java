@@ -43,6 +43,7 @@ import com.paobuqianjin.pbq.step.R;
 import com.paobuqianjin.pbq.step.activity.base.BannerImageLoader;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorInfoActivity;
 import com.paobuqianjin.pbq.step.activity.sponsor.SponsorManagerActivity;
+import com.paobuqianjin.pbq.step.activity.sponsor.TargetPeopleActivity;
 import com.paobuqianjin.pbq.step.adapter.GridAddPic2Adapter;
 import com.paobuqianjin.pbq.step.customview.NormalDialog;
 import com.paobuqianjin.pbq.step.data.alioss.AliOss;
@@ -149,6 +150,10 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     EditText stepDollor;
     @Bind(R.id.step_span)
     LinearLayout stepSpan;
+    @Bind(R.id.people_target_span)
+    LinearLayout peopleTargetSpan;
+    @Bind(R.id.target_people_detail)
+    TextView targetPeopleDetail;
     private GridAddPic2Adapter adapter;
     private View popupCircleTypeView;
     private PopupWindow popupCircleTypeWindow;
@@ -174,7 +179,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     private static String ROUND_RED = "com.paobuqianjin.pbq.ROUND_RED";
     private final static String SEND_ACTION = "com.paobuqianin.pbq.step.SEND";//发红包
     private final static String EDIT_ACTION = "com.paobuqianjin.pbq.step.EDIT";
-    private final static String ROUND_RED_RULE = "com.paobuqianjin.pbq.step.ROUND_RED_RULE";
+    private final static String NEAR_RED_RULE = "com.paobuqianjin.pbq.step.NEAR_RED_RULE";
     RedSendHisResponse.DataBeanX.RedpacketListBean.DataBean dataBean;
     String hisImage = "";
     NormalDialog normalDialog, lowDialog;
@@ -183,6 +188,18 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     private String currentAction;
     //是否选择步币
     private boolean boolStepDoll = false;
+    //新增加目标人群
+    private String sexStr;
+    private String ageMinStr;
+    private String ageMaxStr;
+    private double longitudeStr;
+    private double latitudeStr;
+    private String distanceStr;
+    private String city;
+    private String cityCode;
+    private String address;
+    private static String TARGET_PEOPLE_ACTION = "com.paobuqianjin.pbq.step.TARGET_ACTION";
+    private final static int REQUEST_TARGET_PEOPLE = 0;
 
     @Override
     protected String title() {
@@ -308,7 +325,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                     circleDelete.setVisibility(View.VISIBLE);
                     circleId = String.valueOf(dataBean.getCircleid());
                     if (!TextUtils.isEmpty(dataBean.getCircle_pwd())) {
-                        passwordCircle.setVisibility(View.VISIBLE);
+                        passwordCircle.setVisibility(View.GONE);
                         circlePass.setText(dataBean.getCircle_pwd());
                     } else {
                         passwordCircle.setVisibility(View.GONE);
@@ -332,6 +349,7 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         if (dataBean.getVoucherid() > 0) {
             consumRedDes.setText(dataBean.getVname());
             if (EDIT_ACTION.equals(currentAction)) {
+                targetPeopleDetail.setText("已筛选");
                 linearConsumRed.setEnabled(false);
                 consumRedDes.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -750,6 +768,24 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
         } else if (requestCode == VIP_REQUEST) {
             LocalLog.d(TAG, "VIP");
             getVipStatus();
+        } else if (requestCode == REQUEST_TARGET_PEOPLE) {
+            if (resultCode != 0) {
+                sexStr = data.getStringExtra("sexStr");
+                ageMinStr = data.getStringExtra("minAgeStr");
+                ageMaxStr = data.getStringExtra("maxAgeStr");
+                longitudeStr = data.getDoubleExtra("longitudeStr", 0);
+                latitudeStr = data.getDoubleExtra("latitudeStr", 0);
+                distanceStr = data.getStringExtra("targetSelectStr");
+                city = data.getStringExtra("city");
+                cityCode = data.getStringExtra("cityCode");
+                address = data.getStringExtra("address");
+
+                LocalLog.d(TAG, sexStr + " " + ageMinStr + "\n" + ageMaxStr + "\n" +
+                        cityCode + "\n" + address + "\n" + city + "\n"
+                        + longitudeStr + "\n" + latitudeStr + "\n" + distanceStr + "\n"
+                );
+                targetPeopleDetail.setText("已筛选");
+            }
         }
     }
 
@@ -923,16 +959,36 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
     }
 
     @OnClick({R.id.switch_doll, R.id.linear_shop, R.id.btn_confirm, R.id.attion, R.id.select_circle, R.id.iv_delete, R.id.btn_prescan, R.id.select_historty,
-            R.id.circle_delete, R.id.red_rule, R.id.iv_delete_consum, R.id.linear_consum_red})
+            R.id.circle_delete, R.id.red_rule, R.id.iv_delete_consum, R.id.linear_consum_red, R.id.people_target_span})
     public void onClick(View view) {
+        Intent intent = new Intent();
         switch (view.getId()) {
+            case R.id.people_target_span:
+                if (EDIT_ACTION.equals(currentAction)) {
+                    LocalLog.d(TAG, "编辑不可选");
+                    return;
+                }
+                LocalLog.d(TAG, "目标人群筛选");
+                intent.setClass(this, TargetPeopleActivity.class);
+                intent.putExtra("sexStr", sexStr);
+                intent.putExtra("minAgeStr", ageMinStr);
+                intent.putExtra("maxAgeStr", ageMaxStr);
+                intent.putExtra("longitudeStr", longitudeStr);
+                intent.putExtra("latitudeStr", latitudeStr);
+                intent.putExtra("targetSelectStr", distanceStr);
+                intent.putExtra("city", city);
+                intent.putExtra("cityCode", cityCode);
+                intent.putExtra("address", address);
+                intent.setAction(TARGET_PEOPLE_ACTION);
+                startActivityForResult(intent, REQUEST_TARGET_PEOPLE);
+                break;
             case R.id.switch_doll:
                 etInformation.setFocusable(false);
                 check_swicth(null);
                 break;
             case R.id.red_rule:
                 LocalLog.d(TAG, "查看红包规则");
-                startActivity(AgreementActivity.class, null, false, ROUND_RED_RULE);
+                startActivity(AgreementActivity.class, null, false, NEAR_RED_RULE);
                 break;
             case R.id.iv_delete_consum:
                 consumRedDes.setText(null);
@@ -969,7 +1025,6 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                 startActivityForResult(new Intent().setClass(AddAroundRedBagActivity.this, GoldenSponsoractivity.class), VIP_REQUEST);
                 break;
             case R.id.linear_shop:
-                Intent intent = new Intent();
                 if (hasBusiness) {
                     LocalLog.d(TAG, "商铺信息");
                     intent.setClass(this, SponsorManagerActivity.class);
@@ -1034,6 +1089,28 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                         if (!TextUtils.isEmpty(circlePass.getText().toString()))
                             params.put("circle_pwd", circlePass.getText().toString());
                     }
+
+                    if (!TextUtils.isEmpty(sexStr)) {
+                        params.put("sex", sexStr);
+                    }
+                    if (latitudeStr > 0.0d) {
+                        params.put("latitude", String.valueOf(latitudeStr));
+                    }
+                    if (longitudeStr > 0.0d) {
+                        params.put("longitude", String.valueOf(longitudeStr));
+                    }
+
+                    if (!TextUtils.isEmpty(ageMinStr)) {
+                        params.put("age_min", ageMinStr);
+                    }
+
+                    if (!TextUtils.isEmpty(ageMaxStr)) {
+                        params.put("age_max", ageMaxStr);
+                    }
+                    if (!TextUtils.isEmpty(distanceStr)) {
+                        params.put("distance", distanceStr);
+                    }
+
                     if (tickDataValue != null) {
                         params.put("voucher_name", tickDataValue.getVoucher_name());
                         params.put("spend_money", tickDataValue.getSpend_money());

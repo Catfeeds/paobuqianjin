@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.fragment.home;
 
+import android.Manifest;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -60,7 +62,6 @@ import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoTipsCallBack;
 import com.paobuqianjin.pbq.step.model.FlagPreference;
 import com.paobuqianjin.pbq.step.model.broadcast.StepLocationReciver;
-import com.paobuqianjin.pbq.step.model.services.local.LocalBaiduService;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
 import com.paobuqianjin.pbq.step.presenter.im.HomePageInterface;
 import com.paobuqianjin.pbq.step.presenter.im.HomeRecInterface;
@@ -73,6 +74,7 @@ import com.paobuqianjin.pbq.step.utils.ShopToolUtil;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.activity.AddAroundRedBagActivity;
 import com.paobuqianjin.pbq.step.view.activity.AddConsumptiveRedBagActivity;
+import com.paobuqianjin.pbq.step.view.activity.ConsumptiveRedBag2Activity;
 import com.paobuqianjin.pbq.step.view.activity.GoldenSponsoractivity;
 import com.paobuqianjin.pbq.step.view.activity.QrCodeScanActivity;
 import com.paobuqianjin.pbq.step.view.activity.RedHsRecordActivity;
@@ -89,6 +91,16 @@ import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.RedDataBean;
 import com.paobuqianjin.pbq.step.view.base.view.Rotate3dAnimation;
+import com.tencent.map.geolocation.TencentLocation;
+import com.tencent.map.geolocation.TencentLocationListener;
+import com.tencent.map.geolocation.TencentLocationManager;
+import com.tencent.map.geolocation.TencentLocationRequest;
+import com.tencent.map.geolocation.TencentPoi;
+import com.tencent.mapsdk.raster.model.LatLng;
+import com.tencent.mapsdk.raster.model.Marker;
+import com.tencent.tencentmap.mapsdk.map.MapView;
+import com.tencent.tencentmap.mapsdk.map.TencentMap;
+import com.tencent.tencentmap.mapsdk.map.UiSettings;
 import com.today.step.lib.TodayStepService;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
@@ -117,7 +129,7 @@ import io.rong.imkit.model.RongGridView;
  * Created by pbq on 2018/11/14.
  */
 
-public class HomeFragment extends BaseFragment implements HomePageInterface, SharedPreferences.OnSharedPreferenceChangeListener, HomeRecInterface {
+public class HomeFragment extends BaseFragment implements HomePageInterface, SharedPreferences.OnSharedPreferenceChangeListener, HomeRecInterface, TencentMap.OnMapClickListener, TencentMap.OnMarkerClickListener, TencentLocationListener {
     private final static String TAG = HomeFragment.class.getSimpleName();
     @Bind(R.id.toay_step)
     TextView toayStep;
@@ -201,6 +213,10 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     TextView todayCrashLabel;
     @Bind(R.id.app_name)
     TextView appName;
+    @Bind(R.id.mapview)
+    MapView mapview;
+    @Bind(R.id.city_name)
+    TextView cityName;
 
     private PopupWindow popupRedPkgWindow, vipPopWnd;
     private TranslateAnimation animationCircleType;
@@ -240,8 +256,16 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
     private final static int REQUEST_VIP = 102;
     private final static String SPOSNOR_ACTION = "com.paobuqianjin.person.SPONSOR_ACTION";
     private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
-    private boolean isVip;
+    private boolean isVip = true;
     private String urlShopApply;
+    private int currentPage, pageCount;
+    private boolean isLoadingData;
+    private boolean isFirstLocation = true;
+    private TencentLocationManager locationManager;
+    private String req;//定位类型
+    private double[] currentLocation = {0, 0};
+    private double[] nowLocation = {0, 0};
+    private TencentMap tencentMap;
 
     private static class ErrorBean {
         private String title;
@@ -291,7 +315,182 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         getContext().registerReceiver(stepLocationReciver, intentFilter);
         Presenter.getInstance(getContext()).attachUiInterface(this);
         Presenter.getInstance(getContext()).getHomePageIncome("today", 1, 1);
+        initMapView(savedInstanceState);
         return view;
+    }
+
+
+    @Override
+    public void onStatusUpdate(String s, int i, String s1) {
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        return false;
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        startActivity(new Intent(getContext(), ConsumptiveRedBag2Activity.class).putExtra("isNoConsumptive", true));
+    }
+
+    /**
+     * 开始定位
+     */
+    private void startLocation() {
+        TencentLocationRequest request = TencentLocationRequest.create();
+        request.setRequestLevel(TencentLocationRequest.REQUEST_LEVEL_POI);
+        request.setAllowGPS(true);
+        req = request.toString();
+        locationManager = TencentLocationManager.getInstance(getContext());
+        int error = locationManager.requestLocationUpdates(request, this);
+        LocalLog.d(TAG, "错误---------" + error);
+    }
+
+
+    private void stopLocation() {
+        locationManager.removeUpdates(this);
+    }
+
+    private void logMsg(TencentLocation location) {
+        StringBuilder sb = new StringBuilder(256);
+        sb.append("time : ");
+        sb.append(location.getTime());
+        sb.append("\n定位参数 : ");// 定位类型
+        sb.append(req);
+        sb.append("\nlatitude : ");// 纬度
+        sb.append(location.getLatitude());
+        sb.append("\nlontitude : ");// 经度
+        sb.append(location.getLongitude());
+        sb.append("\n精度 : ");
+        sb.append(location.getAccuracy());
+        sb.append("\n来源 : ");// 国家码
+        sb.append(location.getProvider());
+        sb.append("\n名称 : ");//
+        sb.append(location.getName());
+        sb.append("\nCountry : ");// 国家名称
+        sb.append(location.getCity());
+        sb.append("\nprovince:");//省份
+        sb.append(location.getProvince());
+        sb.append("\ncitycode : ");// 城市编码
+        sb.append(location.getCityCode());
+        sb.append("\ncity : ");// 城市
+        sb.append(location.getCity());
+        sb.append("\nDistrict : ");// 区
+        sb.append(location.getDistrict());
+        sb.append("\nStreet : ");// 街道
+        sb.append(location.getStreet());
+        sb.append("\naddr : ");// 地址信息
+        sb.append(location.getAddress());
+        sb.append("\nUserIndoorState: ");// *****返回用户室内外判断结果*****
+        sb.append(location.getIndoorLocationType());
+        sb.append("\nDirection(not all devices have value): ");
+        sb.append(location.getDirection());// 方向
+        sb.append("\nPoi: ");// POI信息
+        if (location.getPoiList() != null && !location.getPoiList().isEmpty()) {
+            for (int i = 0; i < location.getPoiList().size(); i++) {
+                TencentPoi poi = location.getPoiList().get(i);
+                sb.append(poi.getName()).append(";");
+            }
+        }
+        if (TencentLocation.GPS_PROVIDER.equals(location.getProvider())) {// GPS定位结果
+            sb.append("\nspeed : ");
+            sb.append(location.getSpeed());// 速度 单位：km/h
+            sb.append("\nheight : ");
+            sb.append(location.getAltitude());// 海拔高度 单位：米
+            sb.append("\ngps status : ");
+            sb.append(location.getGPSRssi());// *****gps质量判断*****
+            sb.append("\ndescribe : ");
+            sb.append("gps定位成功");
+        } else if (TencentLocation.NETWORK_PROVIDER.equals(location.getProvider())) {// 网络定位结果
+            // 运营商信息
+            sb.append("\ndescribe : ");
+            sb.append("网络定位成功");
+        }
+        LocalLog.d(TAG, sb.toString());
+    }
+
+
+    @Override
+    public void onLocationChanged(TencentLocation location, int error, String s) {
+        if (error == TencentLocation.ERROR_OK && isFirstLocation) {
+            isFirstLocation = false;
+            stopLocation();
+            logMsg(location);
+            String city = location.getCity();
+            cityName.setText(city);
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            Presenter.getInstance(getContext()).setLocationAction(latitude, longitude);
+            this.currentLocation[0] = latitude;
+            this.currentLocation[1] = longitude;
+            this.nowLocation[0] = latitude;
+            this.nowLocation[1] = longitude;
+//            tencentMap.setOnMapCameraChangeListener(onMapCameraChangeListener);
+//            tencentMap.zoomToSpan(new LatLng(currentLocation[0] - 0.01, currentLocation[1] - 0.01), new LatLng(currentLocation[0] + 0.01, currentLocation[1] + 0.01));
+            tencentMap.setCenter(new LatLng(currentLocation[0], currentLocation[1]));
+//            tencentMap.animateTo(new LatLng(currentLocation[0], currentLocation[1]));
+/*            setPosition(latitude, longitude, true, true);*/
+            getAroundRedBag();
+        } else {
+            //PaoToastUtils.showShortToast(this, reason);
+            LocalLog.e(TAG, s);
+        }
+    }
+
+    private void initMapView(Bundle savedInstanceState) {
+        mapview.onCreate(savedInstanceState);
+        //获取TencentMap实例
+        tencentMap = mapview.getMap();
+//设置卫星底图
+//        tencentMap.setSatelliteEnabled(true);
+//设置实时路况开启
+//        tencentMap.setTrafficEnabled(true);
+//设置地图中心点
+        tencentMap.setCenter(new LatLng(Presenter.getInstance(getContext()).getLocation()[1], Presenter.getInstance(getContext()).getLocation()[0]));
+//设置缩放级别
+        tencentMap.setZoom(11);
+//        tencentMap.zoomToSpan(Presenter.getInstance(this).getLocation()[1], Presenter.getInstance(this).getLocation()[0]);
+        //获取UiSettings实例
+        UiSettings uiSettings = mapview.getUiSettings();
+//设置logo到屏幕底部中心
+        //uiSettings.setLogoPosition(UiSettings.LOGO_POSITION_CENTER_BOTTOM);
+//设置比例尺到屏幕右下角
+        uiSettings.setScaleViewPosition(UiSettings.SCALEVIEW_POSITION_RIGHT_BOTTOM);
+//启用缩放手势(更多的手势控制请参考开发手册)
+        uiSettings.setZoomGesturesEnabled(false);
+        uiSettings.setScrollGesturesEnabled(false);
+        uiSettings.setScaleControlsEnabled(false);
+
+//        addRedBagView();
+        tencentMap.setOnMapClickListener(this);
+        tencentMap.setOnMarkerClickListener(this);
+        if (Build.VERSION.SDK_INT >= 23) {
+            String[] permissions = {
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.READ_PHONE_STATE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            };
+            requestPermission(permissions);
+        } else {
+            startLocation();
+        }
+        setDefaultLocation();
+    }
+
+
+    private void setDefaultLocation() {
+        LocalLog.d(TAG, "default location");
+        String city = "深圳市";
+        double latitude = 22.548826;
+        double longitude = 113.930819;
+        this.currentLocation[0] = latitude;
+        this.currentLocation[1] = longitude;
+        this.nowLocation[0] = latitude;
+        this.nowLocation[1] = longitude;
+        tencentMap.setCenter(new LatLng(currentLocation[0], currentLocation[1]));
+        getAroundRedBag();
     }
 
     @Override
@@ -307,16 +506,31 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
 
     @Override
     public void onResume() {
+        mapview.onResume();
         super.onResume();
         Presenter.getInstance(getContext()).refreshStep();
         updateIncome();
         getAroundRedBag();
         getTaskNum();
-        updateUiTime();
+        //updateUiTime();
+    }
+
+    @Override
+    public void onStop() {
+        mapview.onStop();
+        super.onStop();
+    }
+
+    @Override
+    public void onPause() {
+        mapview.onPause();
+        super.onPause();
     }
 
     @Override
     protected void initView(View viewRoot) {
+        currentLocation = Presenter.getInstance(getContext()).getLocation();
+        mapview = (MapView) viewRoot.findViewById(R.id.mapview);
         appName = (TextView) viewRoot.findViewById(R.id.app_name);
         sharedPreferences = Presenter.getInstance(getContext()).getSharePreferences();
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
@@ -340,6 +554,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         todayCrashLabel = (TextView) viewRoot.findViewById(R.id.today_crash_label);
         banner = (Banner) viewRoot.findViewById(R.id.banner);
         scanMarkHome = (ImageView) viewRoot.findViewById(R.id.scan_mark_home);
+        cityName = (TextView) viewRoot.findViewById(R.id.city_name);
         for (int i = 1; i <= 5; i++) {
             TaskNumResponse.DataBean dataBean = new TaskNumResponse.DataBean();
             dataBean.setType(i);
@@ -361,43 +576,57 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 }
             }
         });
+        homeScroll.setTopBottomListener(new BounceScrollView.TopBottomListener() {
+            @Override
+            public void topBottom(int topOrBottom) {
+                if (topOrBottom == 0) {
+
+                } else if (topOrBottom == 1) {
+                    if (currentPage < pageCount && !isLoadingData) {
+                        initGridGood(currentPage + 1);
+                    } else {
+                        LocalLog.d(TAG, "正在加载或没有更多数据了");
+                    }
+                }
+            }
+        });
         homeScroll.setScrollListener(new BounceScrollView.ScrollListener() {
             @Override
             public void scrollOritention(int l, int t, int oldl, int oldt) {
                 LocalLog.d(TAG, "l =  " + l + ",t = " + t + ",oldl= " + oldl + "," + oldt);
                 if (Utils.px2dip(getContext(), (float) t) > 64 / 2) {
                     barHome.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.color_232433));
-                    scanMarkHome.setImageResource(R.drawable.scan);
-                    appName.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));
+/*                    scanMarkHome.setImageResource(R.drawable.scan);
+                    appName.setTextColor(ContextCompat.getColor(getContext(), R.color.color_f8));*/
                 } else {
                     barHome.setBackground(null);
-                    if (isWhite()) {
+                    /*if (isWhite()) {
                         scanMarkHome.setImageResource(R.drawable.scan_withe_day);
                         appName.setTextColor(ContextCompat.getColor(getContext(), R.color.cloor_3b33b3b));
                     } else {
                         scanMarkHome.setImageResource(R.drawable.scan);
                         appName.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
-                    }
+                    }*/
                 }
             }
         });
         loadTextBanner();
-        loadBanner();
-        initGridGood();
+        //loadBanner();
+        initGridGood(1);
         shopPing = (ImageView) viewRoot.findViewById(R.id.release_goods);
         goShopingTv = (TextView) viewRoot.findViewById(R.id.go_shoping_tv);
         SpannableString spannableString = new SpannableString("去商城逛逛 查看更多");
         spannableString.setSpan(new TypefaceSpan("default-bold"), 1, 3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(0xFFFFA202), 1, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         goShopingTv.setText(spannableString);
-        if (isWhite()) {
+/*        if (isWhite()) {
             scanMarkHome.setImageResource(R.drawable.scan_withe_day);
             appName.setTextColor(ContextCompat.getColor(getContext(), R.color.cloor_3b33b3b));
         } else {
             scanMarkHome.setImageResource(R.drawable.scan);
             appName.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
         }
-        updateUiTime();
+        updateUiTime();*/
         shopApplyUrl();
     }
 
@@ -457,24 +686,31 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
         todayCrashLabel.setTextColor(Color);
     }
 
-    private void initGridGood() {
+    private void initGridGood(final int page) {
         LocalLog.d(TAG, "init() enter");
-        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlCommonGoods, null, new PaoCallBack() {
+        currentPage = page;
+        Map<String, String> param = new HashMap<>();
+        param.put("page", String.valueOf(page));
+        param.put("pagesize", String.valueOf(12));
+        isLoadingData = true;
+        Presenter.getInstance(getContext()).postPaoBuSimple(NetApi.urlCommonGoods, param, new PaoCallBack() {
             @Override
             protected void onSuc(String s) {
                 if (!isAdded())
                     return;
                 try {
                     CommonGoodResponse homeGoodResponse = new Gson().fromJson(s, CommonGoodResponse.class);
-
+                    pageCount = homeGoodResponse.getData().getPagenation().getTotalPage();
                     gridGoodAdpter.setDatas(homeGoodResponse.getData().getData());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                isLoadingData = false;
             }
 
             @Override
             protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+                isLoadingData = false;
                 if (!isAdded()) {
                     return;
                 }
@@ -489,6 +725,9 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
 
     @Override
     public void onDestroy() {
+        if (mapview != null) {
+            mapview.onDestroy();
+        }
         super.onDestroy();
         Presenter.getInstance(getContext()).dispatchUiInterface(this);
         updateHandler.removeCallbacksAndMessages(null);
@@ -512,7 +751,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                 .onGranted(new Action() {
                     @Override
                     public void onAction(List<String> permissions) {
-                        Presenter.getInstance(getContext()).startService(null, LocalBaiduService.class);
+                        startLocation();
                     }
                 }).onDenied(new Action() {
             @Override
@@ -1243,7 +1482,10 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
 
     private void getAroundRedBag() {
         LocalLog.d(TAG, "获取红包");
-        Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlGetRedpacketMap, null, new PaoTipsCallBack() {
+        Map<String, String> param = new HashMap<>();
+        param.put("latitude", String.valueOf(Presenter.getInstance(getContext()).getLocation()[0]));
+        param.put("longitude", String.valueOf(Presenter.getInstance(getContext()).getLocation()[1]));
+        Presenter.getInstance(getContext()).getPaoBuSimple(NetApi.urlGetRedpacketMap, param, new PaoTipsCallBack() {
             @Override
             protected void onSuc(String s) {
                 if (!isAdded()) {
@@ -1258,7 +1500,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                             && aroundRedBagResponse.getData().getRedpacket_list().size() > 0) {
                         switch (aroundRedBagResponse.getData().getIs_receive()) {
                             case 0:
-                        /*popVipWindow(aroundRedBagResponse.getMessage(), aroundRedBagResponse.getData().getIs_receive());*/
+                                popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
                                 break;
                             case 1:
                                 LocalLog.d(TAG, "无限制领取");
@@ -1269,7 +1511,7 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                             case 4:
                             case 5:
                             case 6:
-                                //popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
+                                popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
                                 break;
                             default:
                                 if (checkShowedToday(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive()))

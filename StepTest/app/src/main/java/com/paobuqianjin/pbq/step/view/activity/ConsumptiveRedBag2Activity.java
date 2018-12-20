@@ -890,19 +890,22 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     */
     private void getAroundRedBag() {
         if (!isNoConsumptive) return;
-        Presenter.getInstance(this).getPaoBuSimple(NetApi.urlGetRedpacketMap, null, new PaoTipsCallBack() {
+        Map<String, String> param = new HashMap<>();
+        param.put("latitude", String.valueOf(Presenter.getInstance(this).getLocation()[0]));
+        param.put("longitude", String.valueOf(Presenter.getInstance(this).getLocation()[1]));
+        Presenter.getInstance(this).getPaoBuSimple(NetApi.urlGetRedpacketMap, param, new PaoTipsCallBack() {
             @Override
             protected void onSuc(String s) {
                 hideLoadingBar();
                 AroundRedBagResponse aroundRedBagResponse = new Gson().fromJson(s, AroundRedBagResponse.class);
                 switch (aroundRedBagResponse.getData().getIs_receive()) {
                     case 0:
-                        canRev = false;
+                        /*canRev = false;*/
                         vip_message = aroundRedBagResponse.getData().getMessage();
                         /*popVipWindow(aroundRedBagResponse.getMessage(), aroundRedBagResponse.getData().getIs_receive());*/
                         break;
                     case 1:
-                        canRev = true;
+                        /*canRev = true;*/
                         LocalLog.d(TAG, "无限制领取");
                         break;
                     case -1:
@@ -911,10 +914,12 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                     case 4:
                     case 5:
                     case 6:
-                        canRev = true;
+                        /*canRev = true;*/
                         popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
                         break;
                     default:
+                        if (checkShowedToday(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive()))
+                            return;
                         popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
                         break;
                 }

@@ -218,6 +218,7 @@ public final class FlagPreference {
     public static String getToken(Context context) {
         SharedPreferences flagPreference = context.getSharedPreferences(SHARE_PREF_NAME, Context.MODE_PRIVATE);
         String user_token = flagPreference.getString("user_token", "");
+        /*判断Token过期时间，例如还有一个小时过期，则先刷新token*/
         return user_token;
     }
 

@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +30,11 @@ import java.util.List;
 public class CommonGoodAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private Context mContext;
-    private int mMaxSize = 12;
     List<CommonGoodResponse.DataBeanX.DataBean> mData = new ArrayList<>();
 
     public CommonGoodAdapter(Context context, int maxSize) {
         inflater = LayoutInflater.from(context);
         mContext = context;
-        mMaxSize = maxSize;
     }
 
     public void setData(CommonGoodResponse.DataBeanX.DataBean bean) {
@@ -54,9 +53,6 @@ public class CommonGoodAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        if (mData.size() >= mMaxSize) {
-            return mMaxSize;
-        }
         return mData.size();
     }
 
@@ -76,6 +72,14 @@ public class CommonGoodAdapter extends BaseAdapter {
             holder.price.setText("原价" + mData.get(position).getMarket_price() + "元");
         } else {
             holder.price.setVisibility(View.GONE);
+        }
+        if (!TextUtils.isEmpty(mData.get(position).getShipping_fee())) {
+            if ("0".equals(mData.get(position).getShipping_fee()) || "0.0".equals(mData.get(position).getShipping_fee()) ||
+                    "0.00".equals(mData.get(position).getShipping_fee())) {
+                holder.triffPay.setText("包邮");
+            } else {
+                holder.triffPay.setText("不包邮");
+            }
         }
         if (Float.parseFloat(mData.get(position).getPromotion_price()) > 0) {
             holder.allBuBiTv.setVisibility(View.GONE);
@@ -135,6 +139,7 @@ public class CommonGoodAdapter extends BaseAdapter {
         TextView price;
         TextView promotionPrice;
         TextView allBuBiTv;
+        TextView triffPay;
 
         public GoodViewHolder(View view) {
             goodPic = (ImageView) view.findViewById(R.id.good_pic);
@@ -143,6 +148,7 @@ public class CommonGoodAdapter extends BaseAdapter {
             price = (TextView) view.findViewById(R.id.price);
             promotionPrice = (TextView) view.findViewById(R.id.promotion_price);
             allBuBiTv = (TextView) view.findViewById(R.id.all_bubi);
+            triffPay = (TextView) view.findViewById(R.id.triff_pay);
         }
     }
 }

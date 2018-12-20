@@ -414,6 +414,6 @@ public class NetApi {
     //
     public final static String urlCommonGoods = url + "v1/Zcomposite/communnityGoods";
     //店铺审核结果
-    public final static String urlShopApplyRes = url +"v1/Zcomposite/shopApplyRes";
+    public final static String urlShopApplyRes = url + "v1/Zcomposite/shopApplyRes";
 
 }
