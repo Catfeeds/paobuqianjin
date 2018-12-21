@@ -238,6 +238,22 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                     } else {
 
                     }
+                    try {
+                        if (Integer.parseInt(dataBean.getAge_max()) > 0 || Integer.parseInt(dataBean.getAge_min()) > 0
+                                || (dataBean.getLatitude() > 0d && dataBean.getLongitude() > 0d) || !TextUtils.isEmpty(dataBean.getTarget_addr())) {
+                            LocalLog.d(TAG, "选择过目标人群");
+                            sexStr = dataBean.getSex();
+                            ageMinStr = dataBean.getAge_min();
+                            ageMaxStr = dataBean.getAge_max();
+                            latitudeStr = dataBean.getLatitude();
+                            longitudeStr = dataBean.getLongitude();
+                            address = dataBean.getTarget_addr();
+                            targetPeopleDetail.setText("已筛选");
+                            distanceStr = dataBean.getDistance();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     initEdit(dataBean, true);
                     selectHistorty.setVisibility(View.GONE);
                 } else {
@@ -1111,19 +1127,23 @@ public class AddAroundRedBagActivity extends BaseBarActivity implements BaseBarA
                         params.put("distance", distanceStr);
                     }
 
-                    if (tickDataValue != null) {
-                        params.put("voucher_name", tickDataValue.getVoucher_name());
-                        params.put("spend_money", tickDataValue.getSpend_money());
-                        params.put("voucher_number", tickDataValue.getVoucher_number());
-                        params.put("valid_day", tickDataValue.getValid_day());
-                        params.put("deduction_money", tickDataValue.getDeduction_money());
-                        /*链接或者店铺必选其一*/
-                        if (TextUtils.isEmpty(sponorMsgDesDetail.getText().toString().trim())
-                                && TextUtils.isEmpty(tvLink.getText().toString().trim())) {
-                            PaoToastUtils.showLongToast(this, "有优惠券时店铺或者网店链接必填一项");
-                            return;
-                        }
+                    if (!TextUtils.isEmpty(address)) {
+                        params.put("target_addr", address);
                     }
+                    if (!TextUtils.isEmpty(address))
+                        if (tickDataValue != null) {
+                            params.put("voucher_name", tickDataValue.getVoucher_name());
+                            params.put("spend_money", tickDataValue.getSpend_money());
+                            params.put("voucher_number", tickDataValue.getVoucher_number());
+                            params.put("valid_day", tickDataValue.getValid_day());
+                            params.put("deduction_money", tickDataValue.getDeduction_money());
+                        /*链接或者店铺必选其一*/
+                            if (TextUtils.isEmpty(sponorMsgDesDetail.getText().toString().trim())
+                                    && TextUtils.isEmpty(tvLink.getText().toString().trim())) {
+                                PaoToastUtils.showLongToast(this, "有优惠券时店铺或者网店链接必填一项");
+                                return;
+                            }
+                        }
                     if (params.keySet().size() <= 0) {
                         PaoToastUtils.showLongToast(AddAroundRedBagActivity.this, "参数为空");
                         return;

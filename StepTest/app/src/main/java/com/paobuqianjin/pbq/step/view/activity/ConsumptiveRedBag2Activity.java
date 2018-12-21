@@ -91,7 +91,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     private final static String ROUND_ACTION = "com.paobuqianjin.pbq.ROUND_PKG.ACTION";
     private final static String PKG_ACTION = "com.paobuqianjin.person.PKG_ACTION";
     private final static String SEND_ACTION = "com.paobuqianin.pbq.step.SEND";//发红包
-    private final static String ROUND_RED_RULE = "com.paobuqianjin.pbq.step.ROUND_RED_RULE";
+    private final static String NEAR_RED_RULE = "com.paobuqianjin.pbq.step.NEAR_RED_RULE";
     @Bind(R.id.mapview)
     MapView mapview;
     @Bind(R.id.iv_location)
@@ -150,7 +150,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     protected String title() {
         isNoConsumptive = getIntent().getBooleanExtra("isNoConsumptive", false);
         if (isNoConsumptive) {
-            return "遍地红包";
+            return "精准红包";
         } else {
             return getString(R.string.red_bag_map);
         }
@@ -181,7 +181,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
             protected void onSuc(String s) {
                 try {
                     UserInfoResponse userInfoResponse = new Gson().fromJson(s, UserInfoResponse.class);
-                    isVip = userInfoResponse.getData().getGvip() == 1;
+                    isVip = true;
                 } catch (Exception j) {
                     j.printStackTrace();
                 }
@@ -537,12 +537,14 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         TextView textTile = (TextView) vipView.findViewById(R.id.quit_title);
         TextView textDes = (TextView) vipView.findViewById(R.id.read_des);
         TextView textLeft = (TextView) vipView.findViewById(R.id.read_des_left);
+        ImageView centerLine = (ImageView) vipView.findViewById(R.id.center_line);
         LocalLog.d(TAG, "error_code = " + errorCode);
         switch (errorCode) {
             case -1:
                 textTile.setGravity(Gravity.CENTER);
                 textTile.setText(title);
                 textDes.setText("发红包");
+                centerLine.setVisibility(View.VISIBLE);
                 textDes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -567,7 +569,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                 textDes.setText("去开通");
                 textLeft.setVisibility(View.VISIBLE);
                 textLeft.setText("取消");
-
+                centerLine.setVisibility(View.VISIBLE);
                 textDes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -593,6 +595,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                         startActivityForResult(intentAround, REQUEST_AROUND);
                     }
                 });
+                centerLine.setVisibility(View.VISIBLE);
                 textLeft.setVisibility(View.VISIBLE);
                 textLeft.setText("取消");
                 break;
@@ -611,6 +614,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                         startActivity(intent);
                     }
                 });
+                centerLine.setVisibility(View.VISIBLE);
                 textLeft.setVisibility(View.VISIBLE);
                 textLeft.setText("取消");
                 break;
@@ -629,6 +633,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                         startActivity(intent);
                     }
                 });
+                centerLine.setVisibility(View.VISIBLE);
                 textLeft.setVisibility(View.VISIBLE);
                 textLeft.setText("取消");
                 break;
@@ -639,6 +644,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                 if (isVip) {
                     textDes.setText("发红包");
                 }
+                centerLine.setVisibility(View.VISIBLE);
                 textDes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -659,6 +665,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                 textLeft.setText("取消");
                 break;
             case 6:
+                centerLine.setVisibility(View.VISIBLE);
                 textTile.setGravity(Gravity.CENTER);
                 textTile.setText(title);
                 textDes.setText("发红包");
@@ -675,14 +682,33 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                 textLeft.setVisibility(View.VISIBLE);
                 textLeft.setText("取消");
                 break;
+            case 7:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("好的");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                    }
+                });
+                break;
+            case 8:
+                textTile.setGravity(Gravity.CENTER);
+                textTile.setText(title);
+                textDes.setText("好的");
+                textDes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        vipPopWnd.dismiss();
+                    }
+                });
+                break;
             default:
                 PaoToastUtils.showLongToast(ConsumptiveRedBag2Activity.this, title);
                 break;
         }
-        if (errorCode >= 7) {
-            vipPopWnd = null;
-            return;
-        }
+
         textLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1221,7 +1247,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
         switch (view.getId()) {
             case R.id.red_rule:
                 LocalLog.d(TAG, "查看红包规则");
-                startActivity(AgreementActivity.class, null, false, ROUND_RED_RULE);
+                startActivity(AgreementActivity.class, null, false, NEAR_RED_RULE);
                 break;
             case R.id.search_circle_text:
                 Intent intent = new Intent(this,

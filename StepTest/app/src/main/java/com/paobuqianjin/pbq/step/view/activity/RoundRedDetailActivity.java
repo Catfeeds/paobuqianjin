@@ -1,5 +1,6 @@
 package com.paobuqianjin.pbq.step.view.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -7,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -51,26 +53,41 @@ import com.paobuqianjin.pbq.step.customview.ImageViewPager;
 import com.paobuqianjin.pbq.step.data.bean.bundle.GoodImageData;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.ErrorCode;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.RoundDetailStyleResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.ShareResponse;
 import com.paobuqianjin.pbq.step.data.bean.gson.response.SponsorDetailResponse;
+import com.paobuqianjin.pbq.step.data.bean.gson.response.UserInfoResponse;
 import com.paobuqianjin.pbq.step.data.netcallback.PaoCallBack;
 import com.paobuqianjin.pbq.step.presenter.Presenter;
+import com.paobuqianjin.pbq.step.utils.Constants;
 import com.paobuqianjin.pbq.step.utils.DateTimeUtil;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
 import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.ShopToolUtil;
 import com.paobuqianjin.pbq.step.utils.Utils;
+import com.paobuqianjin.pbq.step.view.base.activity.BaseActivity;
 import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.adapter.ImageViewPagerAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.LikeUserAdapter;
 import com.paobuqianjin.pbq.step.view.base.adapter.SponsorContentAdapter;
 import com.paobuqianjin.pbq.step.view.base.view.BounceScrollView;
 import com.paobuqianjin.pbq.step.view.base.view.CustomEdit;
+import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
+import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.RecyclerItemClickListener;
 import com.paobuqianjin.pbq.step.view.emoji.EmotionKeyboard;
 import com.paobuqianjin.pbq.step.view.emoji.EmotionLayout;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionExtClickListener;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionSelectedListener;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
+import com.yanzhenjie.permission.Action;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.Permission;
+import com.yanzhenjie.permission.Rationale;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -88,7 +105,7 @@ import static com.paobuqianjin.pbq.step.view.emoji.EmotionViewPagerAdapter.numTo
  * Created by pbq on 2018/8/17.
  */
 
-public class RoundRedDetailActivity extends BaseBarActivity {
+public class RoundRedDetailActivity extends BaseActivity {
     private final static String TAG = RoundRedDetailActivity.class.getSimpleName();
     @Bind(R.id.bar_return_drawable)
     ImageView barReturnDrawable;
@@ -97,7 +114,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     @Bind(R.id.bar_title)
     TextView barTitle;
     @Bind(R.id.bar_tv_right)
-    TextView barTvRight;
+    ImageView barTvRight;
     @Bind(R.id.red_success)
     TextView redSuccess;
     @Bind(R.id.red_result)
@@ -202,6 +219,8 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     TextView recvTick;
     @Bind(R.id.ticket_s)
     RelativeLayout ticketS;
+    @Bind(R.id.frame_img)
+    FrameLayout frameImg;
     private int localVoteNum = 0;
     private int localCommentNum = 0;
     CustomEdit commentEditText;
@@ -213,6 +232,8 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     private TranslateAnimation animationCircleType;
     private View popBirthSelectView;
     private PopupWindow popupSelectWindow;
+    private View popupCircleTypeView;
+    private PopupWindow popupCircleTypeWindow;
     private int mScreenWidth;
     private int mScreenHeight;
     List<String> urlImage = new ArrayList<>();
@@ -229,10 +250,12 @@ public class RoundRedDetailActivity extends BaseBarActivity {
     private Handler mHandler = new Handler();
     private int type = -1;
 
-    @Override
-    protected String title() {
-        return "红包详情";
-    }
+    private SHARE_MEDIA share_media;
+    private UMWeb web;
+    private UMImage umImage;
+    private Rationale mRationale;
+    private PermissionSetting mSetting;
+    private int share_to_style = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -243,6 +266,14 @@ public class RoundRedDetailActivity extends BaseBarActivity {
 
     @Override
     protected void initView() {
+        barTitle = (TextView) findViewById(R.id.bar_title);
+        barTitle.setText("红包详情");
+        buttonReturnBar = (RelativeLayout) findViewById(R.id.button_return_bar);
+        barTvRight = (ImageView) findViewById(R.id.bar_tv_right);
+        barTvRight.setImageResource(R.drawable.share_icon);
+        buttonReturnBar.setOnClickListener(onClickListener);
+        barTvRight.setOnClickListener(onClickListener);
+        frameImg = (FrameLayout) findViewById(R.id.frame_img);
         scrollView = (BounceScrollView) findViewById(R.id.scroll_view);
         mScreenWidth = ImagePickerComUtils.getScreenWidth(this);
         mScreenHeight = ImagePickerComUtils.getScreenHeight(this);
@@ -272,6 +303,16 @@ public class RoundRedDetailActivity extends BaseBarActivity {
         contentRecycler.setAdapter(sponsorContentAdapter);
         editStill = (LinearLayout) findViewById(R.id.linear_edit);
         qrLinear = (RelativeLayout) findViewById(R.id.circle_qr);
+        mRationale = new DefaultRationale();
+        mSetting = new PermissionSetting(this);
+        UserInfoResponse.DataBean userInfo = Presenter.getInstance(this).getCurrentUser();
+        if (userInfo != null) {
+            web = new UMWeb(NetApi.urlShareIc + userInfo.getNo());
+            web.setTitle("走路就能领红包的APP");
+            web.setThumb(new UMImage(this, R.mipmap.app_icon));
+            web.setDescription("邀请好友成功注册,陆续将获得三十元奖励");
+        }
+
         contentRecycler.addOnItemTouchListener(new RecyclerItemClickListener(RoundRedDetailActivity.this, contentRecycler, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void OnItemLongClick(View view, int position) {
@@ -356,6 +397,239 @@ public class RoundRedDetailActivity extends BaseBarActivity {
 
     }
 
+
+    private UMShareListener shareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+            LocalLog.d(TAG, share_media.toString() + "开始分享");
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+            PaoToastUtils.showLongToast(RoundRedDetailActivity.this, "分享成功");
+            if (popupCircleTypeWindow != null) {
+                popupCircleTypeWindow.dismiss();
+            }
+            Map<String, String> param = new HashMap<>();
+            param.put("type", String.valueOf(1));
+            param.put("targetid", String.valueOf(share_to_style));
+            Presenter.getInstance(RoundRedDetailActivity.this).postPaoBuSimple(NetApi.urlShareRecord, param, new PaoCallBack() {
+                @Override
+                protected void onSuc(String s) {
+                    try {
+                        ShareResponse shareResponse = new Gson().fromJson(s, ShareResponse.class);
+                        shareReward(shareResponse);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                protected void onFal(Exception e, String errorStr, ErrorCode errorBean) {
+
+                }
+            });
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+            PaoToastUtils.showLongToast(RoundRedDetailActivity.this, "失败");
+            if (popupCircleTypeWindow != null) {
+                popupCircleTypeWindow.dismiss();
+            }
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+            PaoToastUtils.showLongToast(RoundRedDetailActivity.this, "取消分享");
+            if (popupCircleTypeWindow != null) {
+                popupCircleTypeWindow.dismiss();
+            }
+        }
+    };
+
+
+    private void shareReward(ShareResponse shareResponse) {
+        popupCircleTypeView = View.inflate(this, R.layout.share_reward_window, null);
+        popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupCircleTypeWindow onDismiss() enter");
+                popupCircleTypeWindow = null;
+            }
+        });
+        ImageView imageView = (ImageView) popupCircleTypeView.findViewById(R.id.known_button);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupCircleTypeWindow.dismiss();
+            }
+        });
+        TextView moneyDes = (TextView) popupCircleTypeView.findViewById(R.id.money_des);
+        String showStr = "";
+        if (Float.parseFloat(shareResponse.getData().getReward().getMoney()) > 0f) {
+            showStr += shareResponse.getData().getReward().getMoney() + "元";
+        }
+
+        if (shareResponse.getData().getReward().getCredit() > 0) {
+            showStr += shareResponse.getData().getReward().getCredit() + "步币";
+        }
+
+        if (TextUtils.isEmpty(showStr)) {
+            return;
+        }
+        SpannableString showSpan = new SpannableString(showStr);
+        if (showStr.contains("元")) {
+            showSpan.setSpan(new AbsoluteSizeSpan(12, true), shareResponse.getData().getReward().getMoney().length(),
+                    (shareResponse.getData().getReward().getMoney() + "元").length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        }
+        if (showStr.contains("步币")) {
+            showSpan.setSpan(new AbsoluteSizeSpan(12, true), showStr.length() - "步币".length(),
+                    showStr.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        }
+        moneyDes.setText(showSpan);
+        popupCircleTypeWindow.setFocusable(true);
+        popupCircleTypeWindow.setOutsideTouchable(true);
+        popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
+                , 0, Animation.RELATIVE_TO_PARENT, 0,
+                Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupCircleTypeWindow.showAtLocation(findViewById(R.id.red_detail_layout), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
+                , 0, 0);
+        popupCircleTypeView.startAnimation(animationCircleType);
+    }
+
+    private void selectShare() {
+        /*umImage = new UMImage(this, getFragmentBitmap());*/
+        popupCircleTypeView = View.inflate(this, R.layout.share_pop_window, null);
+        popupCircleTypeWindow = new PopupWindow(popupCircleTypeView,
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        popupCircleTypeWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                LocalLog.d(TAG, "popupCircleTypeWindow onDismiss() enter");
+                popupCircleTypeWindow = null;
+            }
+        });
+        RelativeLayout friendCircle = (RelativeLayout) popupCircleTypeView.findViewById(R.id.friend_circle);
+        RelativeLayout wechat = (RelativeLayout) popupCircleTypeView.findViewById(R.id.we_chat);
+        RelativeLayout qq_icon = (RelativeLayout) popupCircleTypeView.findViewById(R.id.qq_icon);
+        friendCircle.setOnClickListener(onClickListener);
+        wechat.setOnClickListener(onClickListener);
+        qq_icon.setOnClickListener(onClickListener);
+        popupCircleTypeWindow.setFocusable(true);
+        popupCircleTypeWindow.setOutsideTouchable(true);
+        popupCircleTypeWindow.setBackgroundDrawable(new BitmapDrawable());
+
+        animationCircleType = new TranslateAnimation(Animation.RELATIVE_TO_PARENT
+                , 0, Animation.RELATIVE_TO_PARENT, 0,
+                Animation.RELATIVE_TO_PARENT, 1, Animation.RELATIVE_TO_PARENT, 0);
+        animationCircleType.setInterpolator(new AccelerateInterpolator());
+        animationCircleType.setDuration(200);
+
+
+        popupCircleTypeWindow.showAtLocation(findViewById(R.id.red_detail_layout), Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL
+                , 0, 0);
+        popupCircleTypeView.startAnimation(animationCircleType);
+    }
+
+
+    public Bitmap getFragmentBitmap() {
+        LocalLog.d(TAG, "截图");
+        View v = findViewById(R.id.red_detail_layout);
+        v.buildDrawingCache(false);
+        return v.getDrawingCache();
+    }
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.button_return_bar:
+                    onBackPressed();
+                    break;
+                case R.id.bar_tv_right:
+                    LocalLog.d(TAG, "分享");
+                    selectShare();
+                    break;
+                case R.id.friend_circle:
+                    if (popupCircleTypeWindow != null) {
+                        popupCircleTypeWindow.dismiss();
+                    }
+                    share_media = SHARE_MEDIA.WEIXIN_CIRCLE;
+                    share_to_style = Constants.SHARE_TO_WCIR;
+                    if (web == null) {
+                        PaoToastUtils.showLongToast(RoundRedDetailActivity.this, "分享失败");
+                        return;
+                    }
+                    new ShareAction(RoundRedDetailActivity.this).withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(shareListener).share();
+                    break;
+                case R.id.we_chat:
+                    share_media = SHARE_MEDIA.WEIXIN;
+                    share_to_style = Constants.SHARE_TO_WX;
+                    if (popupCircleTypeWindow != null) {
+                        popupCircleTypeWindow.dismiss();
+                    }
+                    if (web == null) {
+                        PaoToastUtils.showLongToast(RoundRedDetailActivity.this, "分享失败");
+                        return;
+                    }
+                    new ShareAction(RoundRedDetailActivity.this).withMedia(web)
+                            .setPlatform(share_media)
+                            .setCallback(shareListener).share();
+                    break;
+                case R.id.qq_icon:
+                    if (popupCircleTypeWindow != null) {
+                        popupCircleTypeWindow.dismiss();
+                    }
+                    requestPermission(Permission.Group.STORAGE);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+        /*权限适配*/
+
+    private void requestPermission(String... permissions) {
+        AndPermission.with(this)
+                .permission(permissions)
+                .rationale(mRationale)
+                .onGranted(new Action() {
+                    @Override
+                    public void onAction(List<String> permissions) {
+                        LocalLog.d(TAG, "获取权限成功");
+                        share_media = SHARE_MEDIA.QQ;
+                        share_to_style = Constants.SHARE_TO_QQ;
+                        if (web == null) {
+                            PaoToastUtils.showLongToast(RoundRedDetailActivity.this, "分享失败");
+                            return;
+                        }
+                        new ShareAction(RoundRedDetailActivity.this).withMedia(web)
+                                .setPlatform(share_media)
+                                .setCallback(shareListener).share();
+                    }
+                }).onDenied(new Action() {
+            @Override
+            public void onAction(List<String> permissions) {
+                if (AndPermission.hasAlwaysDeniedPermission(RoundRedDetailActivity.this, permissions)) {
+                    mSetting.showSetting(permissions);
+                }
+            }
+        }).start();
+
+    }
+
     private void secondWait() {
         timeWait.setVisibility(View.VISIBLE);
         buttonReturnBar.setEnabled(false);
@@ -432,6 +706,14 @@ public class RoundRedDetailActivity extends BaseBarActivity {
         super.onDestroy();
         if (thread != null && thread.isAlive()) {
             thread.interrupt();
+        }
+        if (popupCircleTypeWindow != null) {
+            popupCircleTypeWindow.dismiss();
+            popupCircleTypeWindow = null;
+        }
+        if (popupSelectWindow != null) {
+            popupSelectWindow.dismiss();
+            popupSelectWindow = null;
         }
     }
 
@@ -647,8 +929,10 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                                 Mview.add(view);
                             }
                         }
-                        if (Mview.size() > 0) {
-                            picIntor.setVisibility(View.VISIBLE);
+                        if (Mview.size() >= 1) {
+                            if (Mview.size() == 1) {
+                                picIntor.setVisibility(View.GONE);
+                            }
                             currentPic.setText(String.valueOf(1) + "/" + Mview.size());
                             sponsorImages.setAdapter(new ImageViewPagerAdapter(RoundRedDetailActivity.this, Mview));
                             sponsorImages.addOnPageChangeListener(onPageChangeListener);
@@ -669,8 +953,7 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                                 }
                             });
                         } else {
-                            sponsorImages.setVisibility(View.GONE);
-                            picIntor.setVisibility(View.GONE);
+                            frameImg.setVisibility(View.GONE);
                         }
 
                         //环境照
@@ -1248,4 +1531,6 @@ public class RoundRedDetailActivity extends BaseBarActivity {
                 break;
         }
     }
+
+
 }

@@ -30,6 +30,7 @@ import com.paobuqianjin.pbq.step.utils.BitmapUtil;
 import com.paobuqianjin.pbq.step.utils.Defaultcontent;
 import com.paobuqianjin.pbq.step.utils.LocalLog;
 import com.paobuqianjin.pbq.step.utils.NetApi;
+import com.paobuqianjin.pbq.step.utils.PaoToastUtils;
 import com.paobuqianjin.pbq.step.utils.Utils;
 import com.paobuqianjin.pbq.step.view.base.fragment.BaseBarStyleTextViewFragment;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
@@ -317,17 +318,20 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
 
         @Override
         public void onResult(SHARE_MEDIA share_media) {
-            Toast.makeText(getContext(), "分享成功", Toast.LENGTH_SHORT).show();
+            PaoToastUtils.showLongToast(getContext(),"分享成功");
+            LocalLog.d(TAG,"分享成功");
         }
 
         @Override
         public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-            Toast.makeText(getContext(), "失败" + throwable.getMessage(), Toast.LENGTH_LONG).show();
+            PaoToastUtils.showLongToast(getContext(),"分享失败");
+            LocalLog.d(TAG,"分享失败");
         }
 
         @Override
         public void onCancel(SHARE_MEDIA share_media) {
-            Toast.makeText(getContext(), "取消分享", Toast.LENGTH_LONG).show();
+            PaoToastUtils.showLongToast(getContext(),"取消分享");
+            LocalLog.d(TAG,"取消分享");
         }
     };
 
@@ -335,6 +339,12 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(getContext()).onActivityResult(requestCode, resultCode, data);
+        try{
+            LocalLog.d(TAG,"requestCode = " + requestCode + "resultCode =" + requestCode
+            + "data = "+data.toString());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

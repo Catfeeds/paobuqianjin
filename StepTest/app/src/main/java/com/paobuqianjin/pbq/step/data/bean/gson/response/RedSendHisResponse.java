@@ -184,6 +184,62 @@ public class RedSendHisResponse {
                     this.pay_credit = pay_credit;
                 }
 
+                public String getSex() {
+                    return sex;
+                }
+
+                public String getAge_min() {
+                    return age_min;
+                }
+
+                public String getAge_max() {
+                    return age_max;
+                }
+
+                public double getLongitude() {
+                    return longitude;
+                }
+
+                public double getLatitude() {
+                    return latitude;
+                }
+
+                public String getDistance() {
+                    return distance;
+                }
+
+                public String getTarget_addr() {
+                    return target_addr;
+                }
+
+                public void setSex(String sex) {
+                    this.sex = sex;
+                }
+
+                public void setAge_min(String age_min) {
+                    this.age_min = age_min;
+                }
+
+                public void setAge_max(String age_max) {
+                    this.age_max = age_max;
+                }
+
+                public void setLongitude(double longitude) {
+                    this.longitude = longitude;
+                }
+
+                public void setLatitude(double latitude) {
+                    this.latitude = latitude;
+                }
+
+                public void setDistance(String distance) {
+                    this.distance = distance;
+                }
+
+                public void setTarget_addr(String target_addr) {
+                    this.target_addr = target_addr;
+                }
+
                 /**
                  * money : 100.00
                  * voucherid:242
@@ -212,8 +268,15 @@ public class RedSendHisResponse {
                  * map_img : http://pbqj-cdn.oss-cn-shenzhen.aliyuncs.com/2018/8/30/35822201808301506825244.jpg
                  * zan_count : 0
                  * comment_count : 0
+                 * "sex":0,"age_max":0,"age_min":0,"distance":5000,"longitude":"0.000000","latitude":"0.000000","target_addr":""
                  */
-
+                private String sex;
+                private String age_min;
+                private String age_max;
+                private double longitude;
+                private double latitude;
+                private String distance;
+                private String target_addr;
                 private int pay_credit;
 
                 public int getType() {

@@ -1531,7 +1531,6 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                                 RedDataBean redDataBean = new RedDataBean(dibiao,
                                         aroundRedBagResponse.getData().getRedpacket_list().get(i).getRed_id(), HomeFragment.this);
                                 redArray.add(redDataBean);
-
                             } else {
                                 LocalLog.d(TAG, "new Red");
                                 ImageView view = new ImageView(getContext());

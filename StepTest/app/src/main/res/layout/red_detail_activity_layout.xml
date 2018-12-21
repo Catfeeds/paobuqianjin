@@ -2,22 +2,22 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/red_detail_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#E33D2F">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <include
             android:id="@+id/red_detail"
-            layout="@layout/bar_return_a_style" />
+            layout="@layout/bar_return_b_style" />
 
 
         <com.paobuqianjin.pbq.step.view.base.view.BounceScrollView
             android:id="@+id/scroll_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/red_detail"
             android:layout_marginBottom="48dp"
             android:layout_marginLeft="14dp"
@@ -68,6 +68,7 @@
 
 
                     <FrameLayout
+                        android:id="@+id/frame_img"
                         android:layout_width="match_parent"
                         android:layout_height="140dp"
                         android:layout_marginLeft="14dp"
@@ -97,6 +98,7 @@
                                 android:visibility="gone" />
 
                             <RelativeLayout
+                                android:visibility="gone"
                                 android:id="@+id/pic_intor"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
