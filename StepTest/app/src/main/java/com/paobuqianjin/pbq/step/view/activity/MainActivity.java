@@ -71,8 +71,8 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
     private int mCurrentIndex = 0;
     private int[][] icon = new int[][]{{R.drawable.home_n, R.drawable.home_s}
             , {R.drawable.shop_live_n, R.drawable.shop_live_s}
-            , {R.drawable.shangcheng_n, R.drawable.shangcheng_s}
             , {R.drawable.circle_n, R.drawable.circle_s}
+            , {R.drawable.shangcheng_n, R.drawable.shangcheng_s}
             , {R.drawable.me_n, R.drawable.me_s}};
     private final static String ACTION_SCAN_CIRCLE_ID = "com.paobuqianjin.pbq.step.SCAN_ACTION";
     private final static String RE_LOGIN_ACTION = "com.paobuqianjin.pbq.step.RE_LOGIN";
@@ -114,8 +114,8 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
         mTabSelect = new TextView[5];
         mTabSelect[0] = mBtn_home;
         mTabSelect[1] = mBtn_shoplive;
-        mTabSelect[2] = mBtn_shangcheng;
-        mTabSelect[3] = mBtn_conversion;
+        mTabSelect[3] = mBtn_shangcheng;
+        mTabSelect[2] = mBtn_conversion;
         mTabSelect[4] = mBtn_owner;
         mTabSelect[0].setSelected(true);
         initTextViewIcon();
@@ -152,12 +152,12 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
         shopLiveFragment = new ShopLiveFragment();
         paoBuShopFragment = new PaoBuShopFragment();
         mOwnerFragment = new OwnerFragment();
-        mFragments = new Fragment[]{mHomePageFragment, shopLiveFragment, paoBuShopFragment, mConversationListFragment, mOwnerFragment};
+        mFragments = new Fragment[]{mHomePageFragment, shopLiveFragment, mConversationListFragment, paoBuShopFragment, mOwnerFragment};
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mHomePageFragment)
                 .add(R.id.fragment_container, shopLiveFragment)
-                .add(R.id.fragment_container, paoBuShopFragment)
                 .add(R.id.fragment_container, mConversationListFragment)
+                .add(R.id.fragment_container, paoBuShopFragment)
                 .add(R.id.fragment_container, mOwnerFragment)
                 .hide(shopLiveFragment)
                 .hide(paoBuShopFragment)
@@ -188,10 +188,10 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
                     mIndex = 1;
                     break;
                 case R.id.btn_shang_cheng:
-                    mIndex = 2;
+                    mIndex = 3;
                     break;
                 case R.id.btn_conversion:
-                    mIndex = 3;
+                    mIndex = 2;
                     break;
                 case R.id.btn_owner:
                     mIndex = 4;

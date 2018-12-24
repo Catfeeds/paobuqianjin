@@ -339,12 +339,6 @@ public class QrCodeFragment extends BaseBarStyleTextViewFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(getContext()).onActivityResult(requestCode, resultCode, data);
-        try{
-            LocalLog.d(TAG,"requestCode = " + requestCode + "resultCode =" + requestCode
-            + "data = "+data.toString());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
     @Override

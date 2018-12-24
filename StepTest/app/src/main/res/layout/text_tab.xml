@@ -3,6 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
+    <TextView
+        android:id="@+id/tab_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/color_161727"
+        android:textSize="15dp" />
     <TextView
         android:id="@+id/att_num"
         android:layout_width="15dp"
@@ -15,14 +25,4 @@
         android:textSize="10dp"
         android:gravity="center"
         android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/tab_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:text=""
-        android:textColor="@color/color_161727"
-        android:textSize="15dp" />
 </RelativeLayout>

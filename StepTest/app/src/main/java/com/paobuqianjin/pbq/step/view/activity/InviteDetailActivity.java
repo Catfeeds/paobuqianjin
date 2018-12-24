@@ -286,6 +286,8 @@ public class InviteDetailActivity extends BaseBarActivity implements BaseBarActi
             popupCircleTypeWindow.dismiss();
             popupCircleTypeWindow = null;
         }
+
+        UMShareAPI.get(this).release();
     }
 
     /*权限适配*/
@@ -317,6 +319,7 @@ public class InviteDetailActivity extends BaseBarActivity implements BaseBarActi
         }).start();
 
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

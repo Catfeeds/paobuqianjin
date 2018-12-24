@@ -53,6 +53,7 @@ import com.paobuqianjin.pbq.step.view.base.activity.BaseBarActivity;
 import com.paobuqianjin.pbq.step.view.base.view.DefaultRationale;
 import com.paobuqianjin.pbq.step.view.base.view.PermissionSetting;
 import com.paobuqianjin.pbq.step.view.base.view.Rotate3dAnimation;
+import com.paobuqianjin.pbq.step.view.fragment.home.HomeFragment;
 import com.tencent.map.geolocation.TencentLocation;
 import com.tencent.map.geolocation.TencentLocationListener;
 import com.tencent.map.geolocation.TencentLocationManager;
@@ -145,6 +146,7 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
     String vip_message = "";
     private boolean isVip;
     private String current_rec_id = "";
+    private ErrorBean errorBean = new ErrorBean();
 
     @Override
     protected String title() {
@@ -188,6 +190,28 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
             }
 
         });
+    }
+
+    private static class ErrorBean {
+        private String title;
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public int getErr() {
+            return err;
+        }
+
+        public void setErr(int err) {
+            this.err = err;
+        }
+
+        private int err;
     }
 
     private void loadBanner() {
@@ -519,8 +543,6 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
             LocalLog.d(TAG, "在显示");
             return;
         }
-        if (checkShowedToday(title, errorCode))
-            return;
         vipView = View.inflate(this, R.layout.target_dest_popwindow, null);
         vipPopWnd = new PopupWindow(vipView,
                 WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
@@ -941,15 +963,23 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                     case 5:
                     case 6:
                         /*canRev = true;*/
-                        popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
+                        if (checkShowedToday(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive())) {
+
+                        } else {
+                            popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
+                        }
                         break;
                     default:
-                        if (checkShowedToday(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive()))
-                            return;
-                        popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
+                        if (checkShowedToday(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive())) {
+
+                        } else {
+                            popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
+                        }
                         break;
                 }
 
+                errorBean.setTitle(aroundRedBagResponse.getData().getMessage());
+                errorBean.setErr(aroundRedBagResponse.getData().getIs_receive());
                 listAroundRedBagBean.clear();
                 listAroundRedBagBean.addAll(aroundRedBagResponse.getData().getRedpacket_list());
                /* if (aroundRedBagResponse.getData().getRemain_time() > 0) {
@@ -1146,7 +1176,13 @@ public class ConsumptiveRedBag2Activity extends BaseBarActivity implements Tence
                         if (redBagBean.getStatus() == 0) {
                             if (canRev) {
                                 if (TextUtils.isEmpty(listAroundRedBagBean.get(position).getAd_url())) {
-                                    popRoundRedPkg(position);
+                                    if (errorBean != null && errorBean.getErr() >= 7) {
+                                        popVipWindow(errorBean.getTitle(), errorBean.getErr());
+                                        return true;
+                                    } else {
+                                        popRoundRedPkg(position);
+                                    }
+
                                 } else {
                                     startActivityForResult(new Intent(ConsumptiveRedBag2Activity.this, SingleWebViewActivity.class)
                                             .putExtra("url", listAroundRedBagBean.get(position).getAd_url())

@@ -44,11 +44,11 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingTop="8dp">
+            android:paddingTop="8dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/btn_shop_live"
@@ -76,36 +76,10 @@
             android:paddingTop="8dp">
 
             <TextView
-                android:id="@+id/btn_shang_cheng"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:drawablePadding="-7dp"
-                android:drawableTop="@drawable/shangcheng_n"
-                android:gravity="center"
-                android:onClick="onTabSelect"
-                android:paddingBottom="0dip"
-                android:paddingTop="2dp"
-                android:scaleType="matrix"
-                android:text="商城"
-                android:textColor="@color/color_8a8a8a"
-                android:textSize="12dp" />
-
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:paddingTop="8dp">
-
-            <TextView
                 android:id="@+id/btn_conversion"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:drawablePadding="-7dp"
                 android:drawableTop="@drawable/circle_n"
@@ -127,6 +101,32 @@
                 android:textColor="@android:color/white"
                 android:textSize="12sp"
                 android:visibility="invisible" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:id="@+id/btn_shang_cheng"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:drawablePadding="-7dp"
+                android:drawableTop="@drawable/shangcheng_n"
+                android:gravity="center"
+                android:onClick="onTabSelect"
+                android:paddingBottom="0dip"
+                android:paddingTop="2dp"
+                android:scaleType="matrix"
+                android:text="商城"
+                android:textColor="@color/color_8a8a8a"
+                android:textSize="12dp" />
+
         </RelativeLayout>
 
         <RelativeLayout

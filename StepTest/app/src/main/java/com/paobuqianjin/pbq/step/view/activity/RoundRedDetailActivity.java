@@ -80,6 +80,7 @@ import com.paobuqianjin.pbq.step.view.emoji.EmotionLayout;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionExtClickListener;
 import com.paobuqianjin.pbq.step.view.emoji.IEmotionSelectedListener;
 import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
@@ -630,6 +631,7 @@ public class RoundRedDetailActivity extends BaseActivity {
 
     }
 
+
     private void secondWait() {
         timeWait.setVisibility(View.VISIBLE);
         buttonReturnBar.setEnabled(false);
@@ -715,6 +717,7 @@ public class RoundRedDetailActivity extends BaseActivity {
             popupSelectWindow.dismiss();
             popupSelectWindow = null;
         }
+        UMShareAPI.get(this).release();
     }
 
     private void encodeBitmap(ImageView imageView, String url, int mgWidth, int imgWidth) {
@@ -1532,5 +1535,10 @@ public class RoundRedDetailActivity extends BaseActivity {
         }
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        LocalLog.d(TAG, "requestCode = " + requestCode + ",resultCode = " + resultCode + "data =" + data.toString());
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
 }

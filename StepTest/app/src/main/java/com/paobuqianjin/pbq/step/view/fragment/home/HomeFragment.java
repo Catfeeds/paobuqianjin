@@ -1514,9 +1514,11 @@ public class HomeFragment extends BaseFragment implements HomePageInterface, Sha
                                 popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
                                 break;
                             default:
-                                if (checkShowedToday(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive()))
-                                    return;
-                                popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
+                                if (checkShowedToday(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive())) {
+
+                                } else {
+                                    popVipWindow(aroundRedBagResponse.getData().getMessage(), aroundRedBagResponse.getData().getIs_receive());
+                                }
                                 break;
                         }
 
